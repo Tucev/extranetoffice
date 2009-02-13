@@ -1,0 +1,7 @@
+jquery: MIT
+openid: LGPL
+pChart: GPL
+phpinputfilter: GPL
+phpmailer: LGPL
+phpxmlrpc: BSD style
+simplepie: BSD style

@@ -1,0 +1,274 @@
+/**
+* @version 		$Id: styles.css 39 2009-01-28 22:35:49Z luis.montero $
+* @package		ExtranetOffice
+* @subpackage 	tmpl_default
+* @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+* @license		BSD revised. See LICENSE.
+* @author 		Luis Montero [e-noise.com]
+*/
+
+@CHARSET "UTF-8";
+
+/* Generic HTML tags */
+
+body {
+margin-bottom:10px;
+background-color: #F0F0F0;
+}
+
+body, th, td, p, div, select {
+font-size:11px;
+font-family:arial, helvetica, sans-serif;
+color: #333333;
+}
+
+h1 {
+font-size:32px;
+color: #333333;
+}
+
+table {
+border:1px solid #999999;
+}
+
+th {
+text-align:left;
+}
+th, td {
+border-bottom:1px dotted #CCCCCC;
+border-right:1px dotted #CCCCCC;
+padding:3px;
+}
+
+a {
+text-decoration: none;
+color: #336699;
+}
+
+hr {
+height:1px;
+color: #CCCCCC;
+}
+
+form {
+padding: 0;
+margin: 0;
+}
+
+/* Structure */
+
+div#top {
+float: right;
+margin-top: 15px;
+}
+
+div#sitename {
+font-size:24px;
+color: #333333;
+padding: 3px 0 20px 0;
+}
+
+div#breadcrumb {
+color: #999999;
+font-size: 0.8em;
+padding: 4px 3px 3px 10px;
+}
+div#breadcrumb span.pathway img {
+padding: 0 5px;
+}
+div#breadcrumb span.pathway a {
+color: white;
+}
+div#breadcrumb span.pathway a:hover {
+color: #ffff99;
+}
+
+div#wrapper_outer {
+border:1px solid #999999;
+background-color: #333333;
+padding:20px;
+height:100%;
+color: #333333;
+}
+
+div#wrapper {
+border: 1px solid #999999;
+padding:20px;
+background-color: white;
+}
+
+ul#menu {
+list-style-type:none;
+margin:0 0 5px 10px;
+padding:0;
+height:22px;
+}
+ul#menu li {
+/* display:inline; */
+float: left;
+font-size:14px;
+margin:0 1px -1px 1px;
+padding:5px 15px;
+background-color: #CCCCCC;
+border-top: 1px solid #999999;
+border-right: 1px solid #999999;
+border-bottom: 1px solid #999999;
+border-left: 1px solid #999999;
+}
+ul#menu li a {
+float: left;
+height: 16px;
+}
+ul#menu li:hover {
+background-color: #ffff99;
+}
+ul#menu li.selected {
+background-color: #FFFFFF;
+border-bottom: 1px solid #FFFFFF;
+}
+
+div#footer {
+padding: 10px;
+font-size: 0.8em;
+color: #999999;
+}
+
+/* Framework.error */
+
+span.system_msg_outer {
+background-color: #ffff99;
+border: 1px dotted #999999;
+padding: 8px;
+}
+span.system_msg {
+padding: 2px 2px 2px 20px;
+background-repeat: no-repeat;
+background-position: center left;
+font-style: italic;
+}
+span.error {
+background-image: url(../images/icons/generic/16x16/error.png);
+}
+span.warning {
+background-image: url(../images/icons/generic/16x16/warning.png);
+}
+span.notice {
+background-image: url(../images/icons/generic/16x16/info.png);
+}
+span.message {
+background-image: url(../images/icons/generic/16x16/info.png);
+}
+
+/* Icons */
+
+span.icons_16_outer {
+border: 1px dotted #999999;
+padding: 8px;
+margin-left: 5px;
+}
+span.icons_16 {
+padding: 2px 2px 2px 20px;
+background-repeat: no-repeat;
+background-position: center left;
+}
+span.users_16 {
+background-image: url(../images/icons/generic/16x16/people.png);
+}
+span.sysadmin_16 {
+background-image: url(../images/icons/generic/16x16/sysadmin.png);
+}
+span.security_16 {
+background-image: url(../images/icons/generic/16x16/security.png);
+}
+
+/* Standard components output */
+
+/* Component structure */
+
+div#main_col {
+margin-right: 230px;
+min-height: 300px;
+border-right: 1px dotted #999999;
+}
+
+div#right_col {
+float:right;
+width: 210px;
+padding: 0 0 0 10px;
+}
+
+.rss_top_right {
+float:right;
+background-image: url(../images/icons/generic/16x16/rss.png);
+background-repeat: no-repeat;
+padding: 2px 0 0 20px;
+height:16px;
+}
+
+/* Component forms */
+
+.label_small {
+font-size: 0.8em;
+}
+
+.input_big {
+font-size: 1.6em;
+}
+
+/* data list filter */
+
+div.filter_container {
+border: 1px solid #CCCCCC;
+padding: 10px;
+background-color: #F0F0F0;
+}
+
+table.report {
+width: 100%;
+}
+table.report tr th {
+}
+table.report tr.row0 { 
+background-color: #f9f9f9;
+}
+table.report tr.row1 {
+background-color: #eeeeee;
+}
+table.report tr.row0:hover,
+table.report tr.row1:hover { 
+background-color: #ffff99;
+}
+
+div.packages_table {
+width:75%;
+float:left;
+}
+div.packages_totals {
+width:24%;
+float:right;
+border:1px solid #CCCCCC;
+background-color:#ffffcc;
+color:#666666;
+}
+
+div.packages_totals p {
+padding:10px;
+}
+
+/* Component specific styles */
+
+/* Login component */
+
+div#login_wrapper {
+text-align: center;
+padding: 50px 0 0 0;
+}
+
+.table_login {
+text-align: left;
+padding: 3px;
+background-color: #FFFFFF;
+}
+.table_login tr td {
+border: none;
+}
