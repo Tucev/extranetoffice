@@ -1,0 +1,10 @@
+REQUIREMENTS
+------------
+
+PHP 5.2.0 or higher
+
+PHP Extensions:
+- Filter
+- GD
+- IMAP
+- MySQL
