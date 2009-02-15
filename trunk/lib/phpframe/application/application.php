@@ -36,6 +36,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 class application extends singleton {
 	/**
+	 * Debugger object
+	 * 
+	 * @var object
+	 */
+	var $debug=null;
+	/**
 	 * The configuration object
 	 *
 	 * @var object
@@ -90,7 +96,18 @@ class application extends singleton {
 	 */
 	var $output=null;
 	
+	/**
+	 * Constructor
+	 * 
+	 * The application constructor loads the config, request and db objects.
+	 * 
+	 * @since	1.0
+	 * @return 	void
+	 */
 	protected function __construct() {
+		// instantiate debbuger
+		$this->debug = new debug();
+
 		// load config
 		$this->config = new config;
 		
@@ -110,11 +127,21 @@ class application extends singleton {
 		$this->db->connect($this->config->db_host, $this->config->db_user, $this->config->db_pass, $this->config->db_name);
 	}
 	
+	/**
+	 * auth()
+	 * 
+	 * This method should be invoked after instantiating the application class.
+	 * It instantiates the session and user objects and returns a boolean depending 
+	 * on whether the current user has been authenticated.
+	 * 
+	 * @since	1.0
+	 * @return	bool
+	 */
 	public function auth() {
 		// get session object (singeton)
 		$this->session =& session::getInstance('session');
 		
-		// get user object (singeton)
+		// get user object
 		$this->user = new user();
 		
 		if (!empty($this->session->userid)) {
@@ -132,6 +159,14 @@ class application extends singleton {
 		return $this->auth;
 	}
 	
+	/**
+	 * exec()
+	 * 
+	 * This method executes the request and stores the component's output buffer in $this->component_output.
+	 * 
+	 * @since	1.0
+	 * @return	void
+	 */
 	public function exec() {
 		// set the component path
 		define("COMPONENT_PATH", _ABS_PATH.DS."components".DS.request::getVar('option', 'com_dashboard'));
@@ -176,8 +211,19 @@ class application extends singleton {
 		ob_end_clean();
 	}
 	
+	/**
+	 * output()
+	 * 
+	 * Send the application output back to the client. This method should be invoked last, after all processing has been done.
+	 * 
+	 * @since	1.0
+	 * @return	void
+	 */
 	public function output() {
 		echo $this->output;
+		
+		// Display debug output
+		$this->debug->display();
 		
 		// clear errors after displaying
 		$this->session->setVar('error', null);

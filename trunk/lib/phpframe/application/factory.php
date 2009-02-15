@@ -20,22 +20,22 @@ class factory {
 	}
 	
 	function getDB() {
-		$application = application::getInstance('application');
+		$application = phpFrame::getInstance('application');
 		return $application->db;
 	}
 	
 	function getUser() {
-		$application = application::getInstance('application');
+		$application = phpFrame::getInstance('application');
 		return $application->user;
 	}
 	
 	function getSession() {
-		$application = application::getInstance('application');
+		$application = phpFrame::getInstance('application');
 		return $application->session;
 	}
 	
 	function getApplication() {
-		return application::getInstance('application');
+		return phpFrame::getInstance('application');
 	}
 }
 ?>

@@ -52,6 +52,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @abstract 
  */
 abstract class model extends singleton {
-
+	function __construct() {
+		
+	}
 }
 ?>
