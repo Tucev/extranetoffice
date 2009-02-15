@@ -59,6 +59,12 @@ class db extends singleton {
 	 * @var resource
 	 */
 	var $rs=null;
+	/**
+	 * The MySQL error msg
+	 * 
+	 * @var string
+	 */
+	var $error=null;
     
 	/**
 	 * Connect to MySQL server and select database.
@@ -162,6 +168,23 @@ class db extends singleton {
 	}
 	
 	/**
+	 * Get db escaped string
+	 *
+	 * @param	string	The string to be escaped
+	 * @param	boolean	Optional parameter to provide extra escaping
+	 * @return	string
+	 * @access	public
+	 * @abstract
+	 */
+	public function getEscaped($text, $extra = false) {
+		$result = mysql_real_escape_string($text, $this->link);
+		if ($extra) {
+			$result = addcslashes( $result, '%_' );
+		}
+		return $result;
+	}
+	
+	/**
 	 * Run SQL query and return mysql record set resource.
 	 *
 	 * @return resource
@@ -173,6 +196,37 @@ class db extends singleton {
 		}
 		
 		return $this->rs;
+	}
+	
+	/**
+	 * Retrieves the number of rows from the latest result set. 
+	 * This method after having run a query with statements like SELECT or SHOW that return an actual result set.
+	 * To retrieve the number of rows affected by a INSERT, UPDATE, REPLACE or DELETE query, use getAffectedRows(). 
+	 * 
+	 * @return 	int
+	 * @see		getAffectedRows()
+	 */
+	public function getNumRows() {
+		if (!$num_rows = mysql_num_rows($this->rs)) {
+			$this->error = mysql_error();
+			return false;
+		}
+		
+		return $num_rows;
+	}
+	
+	/**
+	 * Get the number of affected rows by the last INSERT, UPDATE, REPLACE or DELETE query.
+	 * 
+	 * @return 	int
+	 * @see		getNumRows()
+	 */
+	public function getAffectedRows() {
+		if (!$affected_rows = mysql_affected_rows()) {
+			$this->error = mysql_error();
+			return false;
+		}
+		return $affected_rows;
 	}
 	
 	/**

@@ -39,7 +39,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * 		}
  * }
  * 
- * $myView =& myView::getInstance('myView');
+ * $myView =& phpFrame::getInstance('myView');
  * echo $myView->doSomething();
  * </code>
  * This will echo 'something'.
@@ -92,11 +92,18 @@ abstract class view extends singleton {
 	}
 	
     /**
+     * display()
+     * 
      * This method loads the template layer of the view.
      * 
-     * This method will trigger layout specific methods. 
+     * This method  also trigger layout specific methods. 
      * For example, if we are displaying layout "list" and there is a method called 
      * displayMyviewList within the extended view class this method will be automatically invoked.
+     * 
+     * Method name to be triggered will be formed as follows:
+     * <code>
+     * $tmpl_specific_method = "display".ucfirst(request::getVar('view')).ucfirst($this->tmpl);
+     * </code>
      *
      * @since	1.0
      */
@@ -114,10 +121,12 @@ abstract class view extends singleton {
     }
     
     /**
+     * loadTemplate()
+     * 
      * This method loads a given view template.
      *
-     * @param string $layout The name of the view template (ie: "list" will load default_list.php)
-     * @todo This method should also load other layouts depending on client (pc, mobile, api)
+     * @param	string $layout The name of the view template (ie: "list" will load default_list.php)
+     * @since	1.0
      */
     function loadTemplate() {
     	if (!empty($this->tmpl)) {
@@ -138,10 +147,13 @@ abstract class view extends singleton {
     }
     
 	/**
+	 * getModel()
+	 * 
 	 * Gets a named model within the component.
 	 *
-	 * @param string $name The model name. If empty the view name is used as default.
-	 * @return object
+	 * @param	string $name The model name. If empty the view name is used as default.
+	 * @return	object
+	 * @since	1.0
 	 */
 	public function getModel($name='') {
 		if (empty($name)) {

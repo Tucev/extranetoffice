@@ -11,7 +11,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 define("_PHPFRAME_PATH", dirname(__FILE__));
 
-// Include object class
+// Include base object classes
 require_once _PHPFRAME_PATH.DS."objects".DS."singleton.php";
 require_once _PHPFRAME_PATH.DS."objects".DS."standard.php";
 // include database classes
@@ -33,10 +33,16 @@ require_once _PHPFRAME_PATH.DS."application".DS."pathway.php";
 require_once _PHPFRAME_PATH.DS."application".DS."route.php";
 require_once _PHPFRAME_PATH.DS."application".DS."view.php";
 require_once _PHPFRAME_PATH.DS."application".DS."user.php";
+// Include HTML classes
+require_once _PHPFRAME_PATH.DS."html".DS."pagination.php";
+require_once _PHPFRAME_PATH.DS."html".DS."text.php";
 // Include utils classes
 require_once _PHPFRAME_PATH.DS."utils".DS."crypt.php";
-require_once _PHPFRAME_PATH.DS."utils".DS."text.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."utility.php";
 // include document class
 require_once _PHPFRAME_PATH.DS."document".DS."document.php";
+
+class phpFrame extends singleton {
+	var $version='1.0 Alpha';
+}
 ?>
