@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: singleton.php 46 2009-02-13 01:37:49Z luis.montero $
+ * @version		$Id$
  * @package		phpFrame
  * @subpackage	objects
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.

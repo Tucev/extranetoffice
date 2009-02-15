@@ -44,8 +44,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * </code>
  * This will echo 'something'.
  * 
- * @package		ExtranetOffice
- * @subpackage 	framework
+ * @package		phpFrame
+ * @subpackage 	application
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  * @see 		controller, view

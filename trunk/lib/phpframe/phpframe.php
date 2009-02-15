@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: phpframe.php 45 2009-02-05 11:45:04Z luis.montero $
+ * @version		$Id$
  * @package		phpFrame
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -42,6 +42,45 @@ require_once _PHPFRAME_PATH.DS."utils".DS."utility.php";
 // include document class
 require_once _PHPFRAME_PATH.DS."document".DS."document.php";
 
+/**
+ * phpFrame Class
+ * 
+ * This is the framework class.
+ * 
+ * This class extends the "singleton" class in order to implement the singleton design pattern.
+ * 
+ * The class is used to access the framework. For example:
+ * 
+ * <code>
+ * $application =& phpFrame::getInstance('application');
+ * </code>
+ * 
+ * Before we instantiate the application we first need to set a few useful constants,
+ * check for dependencies, include required framework files and then finally 
+ * instantiate the application and run the apps methods in the following order:
+ * 
+ * <code>
+ * define("_EXEC", true);
+ * define('_ABS_PATH', dirname(__FILE__) );
+ * define( 'DS', DIRECTORY_SEPARATOR );
+ * 
+ * // include config
+ * require_once _ABS_PATH.DS."inc".DS."config.php";
+ * 
+ * // Include phpFrame
+ * require_once _ABS_PATH.DS."lib".DS."phpframe".DS."phpframe.php";
+ * 
+ * $application =& phpFrame::getInstance('application');
+ * $application->auth();
+ * $application->exec();
+ * $application->render();
+ * $application->output();
+ * </code>
+ * 
+ * @package		phpFrame
+ * @author 		Luis Montero [e-noise.com]
+ * @since 		1.0
+ */
 class phpFrame extends singleton {
 	var $version='1.0 Alpha';
 }

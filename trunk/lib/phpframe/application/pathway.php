@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: pathway.php 45 2009-02-05 11:45:04Z luis.montero $
+ * @version		$Id$
  * @package		phpFrame
  * @subpackage 	application
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
@@ -13,8 +13,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * Pathway Class
  * 
- * @package		ExtranetOffice
- * @subpackage 	framework
+ * @package		phpFrame
+ * @subpackage 	application
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
