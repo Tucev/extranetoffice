@@ -77,6 +77,6 @@ class config {
 	 *
 	 * @var bool
 	 */
-	var $debugger=false;
+	var $debug=false;
 }
 ?>
