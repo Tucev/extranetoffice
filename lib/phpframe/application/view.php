@@ -58,36 +58,58 @@ abstract class view extends singleton {
 	 * @var object
 	 */
 	var $config=null;
+	/**
+	 * The view name
+	 * 
+	 * @var string
+	 */
 	var $view=null;
-	var $tmpl=null;
+	/**
+	 * The template prefix. Default value is "default", other possible values: "mobile", "xml".
+	 * 
+	 * @var string
+	 */
+	var $tmpl='default';
+	/**
+	 * The layout to load. Typical values: "list", "detail", "form", ...
+	 * 
+	 * @var string
+	 */
+	var $layout=null;
     
+	/**
+	 * Constructor
+	 * 
+	 * @since	1.0
+	 * @return	void
+	 */
 	function __construct() {
-		// set view name in view
+		// set view name in view object
     	$this->view =& request::getVar('view');
+    	
+    	// Assign references to user object for quick access in tmpl
+		$this->user =& factory::getUser();
 	}
 	
     /**
      * This method loads the template layer of the view.
+     * 
+     * This method will trigger layout specific methods. 
+     * For example, if we are displaying layout "list" and there is a method called 
+     * displayMyviewList within the extended view class this method will be automatically invoked.
      *
-     * @todo This method should also load other layouts depending on client (pc, mobile, api)
+     * @since	1.0
      */
     function display() {
-		// If there is a tmpl specific method we trigger it before including the tmpl file.
-		$tmpl_specific_method = "display".ucfirst(request::getVar('view')).ucfirst($this->tmpl);
+		// If there is a layout specific method we trigger it before including the tmpl file.
+		$tmpl_specific_method = "display".ucfirst(request::getVar('view')).ucfirst($this->layout);
 		if (method_exists($this, $tmpl_specific_method)) {
 			// Invoke layout specific display method
 			$this->$tmpl_specific_method();
 		}
 		
     	if (!empty($this->view)) {
-    		$view_path = COMPONENT_PATH.DS."views".DS.$this->view.DS."tmpl".DS."default.php";
-    		if (file_exists($view_path)) {
-    			require_once $view_path;
-    		}
-    		else {
-    			error::raise(500, "error", "Default view template file ".$view_path." not found.");
-    			return false;
-    		}
+    		$this->loadTemplate();
     	}
     }
     
@@ -99,7 +121,11 @@ abstract class view extends singleton {
      */
     function loadTemplate() {
     	if (!empty($this->tmpl)) {
-    		$tmpl_path = COMPONENT_PATH.DS."views".DS.$this->view.DS."tmpl".DS."default_".$this->tmpl.".php";
+    		$tmpl_path = COMPONENT_PATH.DS."views".DS.$this->view.DS."tmpl".DS.$this->tmpl;
+    		if (!empty($this->layout)) {
+    			$tmpl_path .= "_".$this->layout;
+    		}
+    		$tmpl_path .= ".php";
     		if (file_exists($tmpl_path)) {
     			require_once $tmpl_path;
     			return true;
