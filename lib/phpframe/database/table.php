@@ -17,8 +17,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * of the table class. The table class is an abstract class so it will be used to implement 
  * specific database tables and each of the child instances will need to be a singleton.
  * 
- * @package		ExtranetOffice
- * @subpackage 	framework
+ * @package		phpFrame
+ * @subpackage 	database
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  * @abstract 

@@ -23,22 +23,11 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * $application =& phpFrame::getInstance('application');
  * </code>
  * 
- * In order to instantiate the application we first set a few useful constants,
- * check for dependencies, include required framework files and then finally 
- * instantiate the application and run the apps methods in the following order:
- * 
- * <code>
- * $application =& phpFrame::getInstance('application');
- * $application->auth();
- * $application->exec();
- * $application->render();
- * $application->output();
- * </code>
- * 
- * @package		ExtranetOffice
- * @subpackage 	framework
+ * @package		phpFrame
+ * @subpackage 	application
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
+ * @see			phpFrame
  */
 class application extends singleton {
 	/**

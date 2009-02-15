@@ -13,8 +13,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * Session Class
  * 
- * @package		ExtranetOffice
- * @subpackage 	framework
+ * @package		phpFrame
+ * @subpackage 	environment
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */

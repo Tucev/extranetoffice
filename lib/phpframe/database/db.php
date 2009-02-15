@@ -35,8 +35,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * established, as this is done by the application on load), run a query, return the 
  * result as an array of objects and then dump the raw data to the screen.
  * 
- * @package		ExtranetOffice
- * @subpackage 	framework
+ * @package		phpFrame
+ * @subpackage 	database
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
