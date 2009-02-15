@@ -20,13 +20,19 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * The class should be instantiated as:
  * 
  * <code>
- * $application =& application::getInstance('application');
+ * $application =& phpFrame::getInstance('application');
  * </code>
  * 
- * or 
+ * In order to instantiate the application we first set a few useful constants,
+ * check for dependencies, include required framework files and then finally 
+ * instantiate the application and run the apps methods in the following order:
  * 
  * <code>
- * $application =& singleton::getInstance('application');
+ * $application =& phpFrame::getInstance('application');
+ * $application->auth();
+ * $application->exec();
+ * $application->render();
+ * $application->output();
  * </code>
  * 
  * @package		ExtranetOffice
