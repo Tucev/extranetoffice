@@ -12,27 +12,29 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 $projectid = request::getVar('projectid', 0);
 
-//$controller =& phpFrame::getInstance('projectsController');
+$controller =& phpFrame::getInstance('projectsController');
+$views_available = $controller->views_available;
 ?>
 
 <?php if (!empty($projectid)) : ?>
 
 <h3>Project tools</h3>
 	
-<ul class="ioffice_right_col_menu">
+<ul>
 	
 <li>
-	<a href="<?php echo route::_("index.php?option=".request::getVar('option')."&view=".$this->view."&layout=detail&projectid=".$this->projectid); ?>">
+	<a href="<?php echo route::_("index.php?option=".request::getVar('option')."&view=projects&layout=detail&projectid=".request::getVar('projectid')); ?>">
 	Project Home
 	</a>
 </li>
 	
-<?php foreach($this->tools as $tool) : ?>
-<?php if ($this->roleid <= $tool[1]) : ?>
+<?php foreach($views_available as $tool) : ?>
+<?php $access_property = "access_".$tool; ?>
+<?php if ($this->roleid <= $controller->project->$access_property && $tool != 'projects') : ?>
 <li>
-	<a href="<?php echo route::_("index.php?option=".request::getVar('option')."&view=".$this->view."&layout=".$tool[0]."&projectid=".$this->projectid); ?>">
+	<a href="<?php echo route::_("index.php?option=".request::getVar('option')."&view=".$tool."&projectid=".request::getVar('projectid')); ?>">
 	<?php 
-	$tool_name = "_INTRANETOFFICE_".strtoupper($tool[0]);
+	$tool_name = "_LANG_".strtoupper($tool);
 	eval("echo $tool_name;");
 	?>
 	</a>
@@ -47,14 +49,14 @@ $projectid = request::getVar('projectid', 0);
 	
 <h3>Project details</h3>
 	
-<div class="ioffice_project_details">
-	<?php echo text::_( _INTRANETOFFICE_PROJECTS_DESCRIPTION ); ?>: <br />
-	<?php echo $this->project->description; ?> <br />
+<div class="project_details">
+	<?php echo text::_( _LANG_PROJECTS_DESCRIPTION ); ?>: <br />
+	<?php echo $controller->project->description; ?> <br />
 	<br />
-	<?php echo text::_( _INTRANETOFFICE_PROJECTS_PROJECT_TYPE ); ?>: <?php echo $this->project->project_type_name; ?> <br />
-	<?php echo text::_( _INTRANETOFFICE_PROJECTS_PRIORITY ); ?>: <?php echo projectsHelperProjects::priorityid2name($this->project->priority); ?> <br />
-	<?php echo text::_( _INTRANETOFFICE_PROJECTS_ACCESS ); ?>: <?php echo projectsHelperProjects::global_accessid2name($this->project->access); ?> <br />
-	<?php echo text::_( _INTRANETOFFICE_PROJECTS_STATUS ); ?>: <?php echo projectsHelperProjects::statusid2name($this->project->status); ?>
+	<?php echo text::_( _LANG_PROJECTS_PROJECT_TYPE ); ?>: <?php echo $controller->project->project_type_name; ?> <br />
+	<?php echo text::_( _LANG_PROJECTS_PRIORITY ); ?>: <?php echo projectsHelperProjects::priorityid2name($controller->project->priority); ?> <br />
+	<?php echo text::_( _LANG_PROJECTS_ACCESS ); ?>: <?php echo projectsHelperProjects::global_accessid2name($controller->project->access); ?> <br />
+	<?php echo text::_( _LANG_PROJECTS_STATUS ); ?>: <?php echo projectsHelperProjects::statusid2name($controller->project->status); ?>
 </div>
 
 <?php endif; ?>

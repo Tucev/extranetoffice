@@ -23,7 +23,11 @@ define("_LANG_PROJECTS_NEW", "New project");
 define("_LANG_PROJECTS_UPDATES", "Project updates");
 define("_LANG_DASHBOARD_MY_PROJECTS", "My projects");
 
+define("_LANG_ISSUES_OVERDUE", "Overdue issues");
+define("_LANG_MILESTONES_UPCOMING", "Upcoming milestones");
+
 define("_LANG_PROJECTS_NAME", "Project name");
+define("_LANG_PROJECTS_DESCRIPTION", "Description");
 define("_LANG_PROJECTS_STATUS", "Status");
 define("_LANG_PROJECTS_PROJECT_TYPE", "Type");
 define("_LANG_PROJECTS_PRIORITY", "Priority");
@@ -41,6 +45,15 @@ define("_LANG_PROJECTS_PRIORITY_HIGH", "High");
 
 define("_LANG_PROJECTS_ACCESS_PUBLIC", "Public");
 define("_LANG_PROJECTS_ACCESS_PRIVATE", "Private");
+
+define("_LANG_PROJECTS_HOME", "Project home");
+define("_LANG_ADMIN", "Admin");
+define("_LANG_FILES", "Files");
+define("_LANG_ISSUES", "Issues");
+define("_LANG_MEETINGS", "Meetings");
+define("_LANG_MESSAGES", "Messages");
+define("_LANG_MILESTONES", "Milestones");
+define("_LANG_PEOPLE", "People");
 
 // com_billing
 define("_LANG_BILLING", "Billing");

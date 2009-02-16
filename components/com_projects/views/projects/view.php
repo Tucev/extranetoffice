@@ -61,7 +61,7 @@ class projectsViewProjects extends view {
 			return false;
 		}
 		else {
-			$this->page_title = projectsHelperProjects::id2name($projectid).' - '. _INTRANETOFFICE_PROJECTS_HOME;
+			$this->page_title = projectsHelperProjects::id2name($projectid).' - '. _LANG_PROJECTS_HOME;
 			//$this->doBreadcrumbs(_INTRANETOFFICE_PROJECTS_HOME);
 			
 			// Get overdue issues

@@ -20,7 +20,7 @@ function confirm_delete(id, label) {
 }
 </script>
 
-<h2><?php echo $this->page_title; ?></h2>
+<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 
 <?php if ($this->user->groupid == 1) : ?>
 <div class="new">

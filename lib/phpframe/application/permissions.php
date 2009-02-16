@@ -32,7 +32,7 @@ class permissions {
 	/**
 	 * Constructor
 	 *
-	 * @since 1.0.1
+	 * @since 1.0
 	 */
 	function __construct() {
 		// Get URL vars
@@ -60,7 +60,7 @@ class permissions {
 		$this->group = $this->getGroup($this->userid);
 		
 		// decide if user is allowed to go ahead ased on group membership
-		if (!$this->checkACL()) {
+		if ($this->checkACL()) {
 			return false;
 		}
 		else {
@@ -70,7 +70,7 @@ class permissions {
 	}
 	
 	/**
-	 * getGroup()
+	 * Get group
 	 * 
 	 * This method gets the group object for the given user. 
 	 * 
@@ -78,6 +78,7 @@ class permissions {
 	 * 
 	 * @param $userid
 	 * @return object
+	 * @since 1.0
 	 */
 	function getGroup($userid) {
 		$db =& factory::getDB();
@@ -89,11 +90,12 @@ class permissions {
 	}
 	
 	/**
-	 * checkACL()
+	 * Check Access Level
 	 * 
 	 * This method checks the user's access level against the access level list and sets the is_allowed property.
 	 * 
 	 * @return bool
+	 * @since 1.0
 	 */
 	function checkACL() {
 		// Get group ACL

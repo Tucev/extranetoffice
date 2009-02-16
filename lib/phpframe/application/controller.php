@@ -75,6 +75,18 @@ abstract class controller extends singleton {
 	 */
 	var $layout=null;
 	/**
+	 * Permissions object
+	 * 
+	 * @var object
+	 */
+	var $permissions=null;
+	/**
+	 * Array containing a list of with the available views
+	 * 
+	 * @var array
+	 */
+	var $views_available=null;
+	/**
 	 * The currently loaded view object.
 	 *
 	 * @var object
@@ -101,6 +113,9 @@ abstract class controller extends singleton {
 		
 		// Check permissions
 		$this->permissions = new permissions();
+		
+		// Get available views
+		$this->views_available = $this->getAvailableViews();
 	}
 	
     /**
@@ -224,7 +239,7 @@ abstract class controller extends singleton {
 			return $view;
 		}
 		else {
-			error::raise(500, "error", "Model file ".$model_path." not found.");
+			error::raise(500, "error", "View file ".$model_path." not found.");
 			return false;
 		}
 	}
