@@ -135,6 +135,7 @@ abstract class view extends singleton {
     			$tmpl_path .= "_".$this->layout;
     		}
     		$tmpl_path .= ".php";
+    		
     		if (file_exists($tmpl_path)) {
     			require_once $tmpl_path;
     			return true;

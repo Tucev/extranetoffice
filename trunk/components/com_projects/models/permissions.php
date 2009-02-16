@@ -20,14 +20,49 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		model
  */
 class projectsModelPermissions extends model {
+	/**
+	 * The current project object
+	 * 
+	 * @var object
+	 */
 	var $project=null;
+	/**
+	 * The current user's role id for the current project
+	 * 
+	 * @var int
+	 */
 	var $roleid=null;
+	/**
+	 * Array containing a list of the available views
+	 * 
+	 * @var array
+	 */
 	var $tools=null;
+	/**
+	 * A boolean indicating whether the permissions check was passed
+	 * 
+	 * @var bool
+	 */
 	var $is_allowed=null;
+	/**
+	 * The currently loaded tool/view
+	 * 
+	 * @var string
+	 */
 	var $current_tool=null;
 	
-	function checkProjectAccess(&$project) {
+	/**
+	 * Check project access
+	 * 
+	 * This method checks access to a given project.
+	 * 
+	 * @param	object	$project
+	 * @param	array	$views_available
+	 * @return 	bool
+	 */
+	function checkProjectAccess(&$project, $views_available) {
 		$this->project = $project;
+		$this->tools = $views_available;
 		
 		// get role id
 		$user =& factory::getUser();
@@ -40,7 +75,7 @@ class projectsModelPermissions extends model {
 			return false;
 		}
 		
-		// Check tool-specific access
+		// Check tool-specific (views) access
 		if (!empty($project->id)) {
 			if ($this->checkViewAccess() !== true) {
 				error::raise('', 'warning', "You do not have access to this tool in this project");
@@ -50,7 +85,7 @@ class projectsModelPermissions extends model {
 		}
 		
 		$this->is_allowed = true;
-		return $this->current_tool;
+		return true;
 	}
 	
 	/**
@@ -70,90 +105,40 @@ class projectsModelPermissions extends model {
 		$view = request::getVar('view');
 		$task = request::getVar('task');
 		
-		if ($view == 'projects') {
+		// if a task has been requested we get the tool keyword from the task
+		if (!empty($task)) {
+			$task_tool = substr($task, (strpos($task, '_')+1));
+		}
+		
+		// Return true when no specific project tool has been selected (projects view)
+		if ($view == 'projects' || strpos('projects', $task_tool) !== false) {
 			return true;
 		}
 		else {
+			$this->current_tool = $view;
 			$access_property_name = 'access_'.$view;
-			echo $access_property_name;
 			$view_access_level = $this->project->$access_property_name;
-			
-			// if a task has been requested we get the tool keyword from the task
-			if (!empty($task)) {
-				$task_tool = substr($task, (strpos($task, '_')+1));
+			echo 'view_access_level: '.$view_access_level.'<br />';
+			echo 'roleid: '.$this->roleid;
+			switch ($view_access_level) {
+				case '1' : // Admins only
+					if ($this->roleid == 1) return true;
+					else return false;
+					break;
+				case '2' : // Admins + Project workers only
+					if ($this->roleid < 3) return true;
+					else return false;
+					break;
+				case '3' : // Admins + Project workers + Guests only
+					if ($this->roleid < 4) return true;
+					else return false;
+					break;
+				case '4' : // Admins + Project workers + Guests + Public
+					return true;
+					break;
 			}
-			if (strpos($view, $task_tool) !== false) {
-				$this->current_tool = $tool[0];
-				switch ($tool[1]) {
-					case '1' : // Admins only
-						if ($this->roleid == 1) return true;
-						else return false;
-						break;
-					case '2' : // Admins + Project workers only
-						if ($this->roleid < 3) return true;
-						else return false;
-						break;
-					case '3' : // Admins + Project workers + Guests only
-						if ($this->roleid < 4) return true;
-						else return false;
-						break;
-					case '4' : // Admins + Project workers + Guests + Public
-						return true;
-						break;
-				}
-			}
-			
 		}
 	}
 	
-	function checkToolsAccess() {
-		// Build array with string to identify tools and their access level in this project
-		$this->tools = array();
-		$this->tools[] = array('issues', $this->project->access_issues);
-		$this->tools[] = array('messages', $this->project->access_messages);
-		$this->tools[] = array('milestones', $this->project->access_milestones);
-		$this->tools[] = array('files', $this->project->access_files);
-		$this->tools[] = array('meetings', $this->project->access_meetings);
-		//TODO: Have to uncomment this lines to enable polls and reports
-		//$this->tools[] = array('polls', $this->project->access_polls);
-		//$this->tools[] = array('reports', $this->project->access_reports);
-		$this->tools[] = array('people', $this->project->access_people);
-		$this->tools[] = array('admin', $this->project->access_admin);
-		// We add the rest of the options outside the object't tool array, as they are sub-tools
-		$tools = $this->tools;
-		$tools[] = array('member_form', $this->project->access_admin);
-		$tools[] = array('remove_project', $this->project->access_admin);
-		// Access levels for non-tool specific views
-		// This must go after the tool-specific to deal with those view types that haven't been matched yet
-		$tools[] = array('detail', 4); 
-		$tools[] = array('edit', $this->project->access_admin);
-		
-		foreach ($tools as $tool) {
-			// if a task has been requested we get the tool keyword from the task
-			if (!empty($this->task)) {
-				$task_tool = substr($this->task, (strpos($this->task, '_')+1));
-			}
-			if (strpos($tool[0], $task_tool) !== false || strpos($this->view, $tool[0]) !== false) {
-				$this->current_tool = $tool[0];
-				switch ($tool[1]) {
-					case '1' : // Admins only
-						if ($this->roleid == 1) return true;
-						else return false;
-						break;
-					case '2' : // Admins + Project workers only
-						if ($this->roleid < 3) return true;
-						else return false;
-						break;
-					case '3' : // Admins + Project workers + Guests only
-						if ($this->roleid < 4) return true;
-						else return false;
-						break;
-					case '4' : // Admins + Project workers + Guests + Public
-						return true;
-						break;
-				}
-			}
-		}
-	}
 }
 ?>

@@ -11,17 +11,17 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
-<div class="ioffice_dashboard_rss">
+<div class="rss_top_right">
 	<a href="#">
 	RSS
 	</a>
 </div>
 
-<div class="componentheading"><?php echo $this->page_title; ?></div>
+<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 
 
-<div class="ioffice_dashboard_item">
-	<h3 class="overdue_issues"><?php echo _INTRANETOFFICE_ISSUES_OVERDUE; ?></h3>
+<div class="main_col_module">
+	<h3 class="overdue_issues"><?php echo _LANG_ISSUES_OVERDUE; ?></h3>
 	
 	<?php if (is_array($this->overdue_issues) && count($this->overdue_issues) > 0) : ?>
 	<table>
@@ -36,7 +36,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			</a>
 		</td>
 		<td>
-			<?php echo _INTRANETOFFICE_ASSIGNEES; ?>: 
+			<?php echo _LANG_ASSIGNEES; ?>: 
 			<?php if (!empty($issue->assignees)) : ?>
 	    	<?php for ($j=0; $j<count($issue->assignees); $j++) : ?>
 	    		<?php if ($j>0) echo ', '; ?>
@@ -53,12 +53,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	
 </div>
 
-<div class="ioffice_dashboard_item">
-	<h3 class="upcoming_milestones"><?php echo _INTRANETOFFICE_MILESTONES_UPCOMING; ?></h3>
+<div class="main_col_module">
+	<h3 class="upcoming_milestones"><?php echo _LANG_MILESTONES_UPCOMING; ?></h3>
 </div>
 
-<div class="ioffice_dashboard_item">
-	<h3 class="project_updates"><?php echo _INTRANETOFFICE_PROJECTS_UPDATES; ?></h3>
+<div class="main_col_module">
+	<h3 class="project_updates"><?php echo _LANG_PROJECTS_UPDATES; ?></h3>
 	
 	<?php if (is_array($this->activitylog) && count($this->activitylog) > 0) : ?>
 	<table>

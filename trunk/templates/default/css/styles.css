@@ -65,7 +65,7 @@ margin-top: 15px;
 div#sitename {
 font-size:3em;
 color: #FFFFFF;
-padding: 3px 0 20px 0;
+padding: 3px 0 10px 0;
 }
 div#sitename a {
 color: #FFFFFF;
@@ -95,10 +95,11 @@ color: #333333;
 }
 
 div#wrapper {
-border: 1px solid #999999;
+overflow: auto;
+border:1px solid #CCCCCC;
+background-color: #FFFFFF;
+margin: 0;
 padding:20px;
-background-color: white;
-height:100%;
 }
 
 ul#menu {
@@ -165,6 +166,15 @@ float:right;
 width: 210px;
 padding: 0 0 0 10px;
 }
+div#right_col ul {
+padding:0;
+margin:0;
+list-style: none;
+}
+div#right_col ul li {
+border-top: 1px dotted #336699;
+padding: 5px 0;
+}
 
 .rss_top_right {
 float:right;
@@ -172,6 +182,34 @@ background-image: url(../images/icons/generic/16x16/rss.png);
 background-repeat: no-repeat;
 padding: 2px 0 0 20px;
 height:16px;
+}
+
+.componentheading {
+font-size: 2.4em;
+padding: 0 0 8px 0;
+margin: 0 0 10px 0;
+border-bottom: 1px solid #CCCCCC;
+font-weight: normal;
+}
+
+div.main_col_module {
+border:1px dotted #CCCCCC;
+background-color: #F6F6F6;
+padding: 5px 8px 10px 8px;
+margin: 0 10px 5px 0;
+}
+div.main_col_module h3,
+div.main_col_module_half h3 {
+background-repeat: no-repeat;
+background-position: 0 5px;
+padding: 0 0 0 40px;
+margin: 0;
+height: 46px;
+display:table-cell;
+vertical-align: middle;
+font-size: 1.4em;
+font-weight: normal;
+color: #333333;
 }
 
 /* Component forms */
@@ -289,4 +327,32 @@ background-color: #FFFFFF;
 }
 .table_login tr td {
 border: none;
+}
+
+/* Projects component */
+h3.overdue_issues {
+background-image: url(../images/icons/projects/32x32/overdue.png);
+}
+h3.upcoming_milestones {
+background-image: url(../images/icons/projects/32x32/milestones.png);
+}
+h3.project_updates {
+background-image: url(../images/icons/projects/32x32/project_updates.png);
+}
+h3.recent_email {
+background-image: url(../images/icons/email/32x32/email.png);
+}
+h3.project_details {
+background-image: url(../images/icons/projects/32x32/projects.png);
+}
+h3.project_permissions {
+background-image: url(../images/icons/projects/32x32/security.png);
+}
+h3.people {
+background-image: url(../images/icons/projects/32x32/people.png);
+}
+div.project_details {
+font-size: 0.9em;
+padding: 10px;
+border: 1px dotted #CCCCCC;
 }
