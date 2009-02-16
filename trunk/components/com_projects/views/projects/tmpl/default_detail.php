@@ -31,7 +31,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			<?php echo date("D, d M Y", strtotime($issue->dtend)); ?>
 		</td>
 		<td>
-			<a href="<?php echo JRoute::_("index.php?option=com_intranetoffice&view=projects&type=issues_detail&projectid=".$this->projectid."&issueid=".$issue->id); ?>">
+			<a href="<?php echo route::_("index.php?option=com_intranetoffice&view=projects&type=issues_detail&projectid=".$this->projectid."&issueid=".$issue->id); ?>">
 			<?php echo $issue->title; ?>
 			</a>
 		</td>
@@ -40,7 +40,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			<?php if (!empty($issue->assignees)) : ?>
 	    	<?php for ($j=0; $j<count($issue->assignees); $j++) : ?>
 	    		<?php if ($j>0) echo ', '; ?>
-	    		<a href="<?php echo JRoute::_("index.php?option=com_intranetoffice&view=users&type=detail&userid=".$issue->assignees[$j]['id']); ?>">
+	    		<a href="<?php echo route::_("index.php?option=com_intranetoffice&view=users&type=detail&userid=".$issue->assignees[$j]['id']); ?>">
 	    		<?php echo $issue->assignees[$j]['name']; ?>
 	    		</a>
 	    	<?php endfor; ?>
@@ -66,15 +66,15 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	<tr>
 		<td width="70">
 			<div class="activitylog_<?php echo $log->type; ?>">
-				<?php echo iOfficeHelperProjects::activitylog_type2printable($log->type); ?>
+				<?php echo projectsHelperProjects::activitylog_type2printable($log->type); ?>
 			</div>
 		</td>
 		<td>
-			<a href="<?php echo JRoute::_($log->url); ?>">
+			<a href="<?php echo route::_($log->url); ?>">
 			<?php echo $log->title; ?>
 			</a>
 		</td>
-		<td><?php echo $log->action." by ".iOfficeHelperUsers::id2name($log->userid); ?></td>
+		<td><?php echo $log->action." by ".usersHelperUsers::id2name($log->userid); ?></td>
 		<td><?php echo date("D, d M Y H:ia", strtotime($log->ts)); ?></td>
 	</tr>
 	<?php endforeach; ?>

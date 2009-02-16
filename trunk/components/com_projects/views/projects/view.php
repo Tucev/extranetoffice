@@ -72,9 +72,8 @@ class projectsViewProjects extends view {
 			// Get upcoming milestones
 			
 			// Get project updates
-			//$modelActivitylog = new iOfficeModelActivitylog();
-			//$activitylog = $modelActivitylog->getActivityLog($this->projectid);
-			//$this->assignRef('activitylog', $activitylog);
+			$modelActivitylog = $this->getModel('activitylog');
+			$this->activitylog =& $modelActivitylog->getActivityLog($this->projectid);
 		}
 		
 	}
