@@ -55,6 +55,18 @@ define("_LANG_MESSAGES", "Messages");
 define("_LANG_MILESTONES", "Milestones");
 define("_LANG_PEOPLE", "People");
 
+define("_LANG_FILE", "File");
+
+define("_LANG_MESSAGE", "Message");
+
+define("_LANG_ISSUE", "Issue");
+
+define("_LANG_MILESTONE", "Milestone");
+
+define("_LANG_MEETING", "Meeting");
+
+define("_LANG_COMMENTS", "Comments");
+
 // com_billing
 define("_LANG_BILLING", "Billing");
 define("_LANG_BILLING_INVOICES", "Invoices");

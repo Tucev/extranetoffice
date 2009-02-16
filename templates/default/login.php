@@ -23,6 +23,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 </head>
 
 <body>
+
 <a name="up" id="up"></a>
  
 <!-- Content -->
@@ -43,7 +44,7 @@ Extranet Office 2.0 Alpha<br />
 &copy; 2009 E-noise.com Limited
 </div>
 
-</div><!-- close #wrapper -->
+</div><!-- close #login_wrapper -->
 
 </body>
 </html>

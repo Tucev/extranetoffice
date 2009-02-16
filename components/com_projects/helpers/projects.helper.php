@@ -8,7 +8,7 @@
  * @author 		Luis Montero [e-noise.com]
  */
 
-defined( '_EXEC' ) or die( 'Direct Access to this location is not allowed.' );
+defined( '_EXEC' ) or die( 'Restricted access' );
 
 class projectsHelperProjects {
 	/**

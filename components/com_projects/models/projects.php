@@ -34,7 +34,6 @@ class projectsModelProjects extends model {
 	 */
 	function __construct() {
 		$this->init();
-		
 		parent::__construct();
 	}
 	

@@ -11,13 +11,20 @@
 
 /* Generic HTML tags */
 
+/* BODY class added because otherwise background colour wouldn't work on Safari */
+BODY {
+background-color: #333333;
+}
+
 body {
+font-size:12px;
+font-family:arial, helvetica, sans-serif;
 margin-bottom:10px;
 background-color: #333333;
 }
 
-body, th, td, p, div, select {
-font-size:11px;
+th, td, p, div, select {
+font-size:12px;
 font-family:arial, helvetica, sans-serif;
 color: #333333;
 }
@@ -28,16 +35,18 @@ color: #333333;
 }
 
 table {
-border:1px solid #999999;
+/* border:1px solid #999999; */
 }
 
 th {
 text-align:left;
 }
 th, td {
+/*
 border-bottom:1px dotted #CCCCCC;
 border-right:1px dotted #CCCCCC;
 padding:3px;
+*/
 }
 
 a {
@@ -212,6 +221,31 @@ font-weight: normal;
 color: #333333;
 }
 
+div.main_col_module table {
+width:100%;
+background-color: white;
+}
+div.main_col_module table th {
+text-align: left;
+padding:2px;
+vertical-align: top;
+font-size:0.9em;
+}
+div.main_col_module table tbody tr:hover {
+background-color: #F0F0F0;
+}
+div.main_col_module table tbody tr.row0 {
+background-color: #F6F6F6;
+}
+div.main_col_module table tbody tr.row0:hover {
+background-color: #F0F0F0;
+}
+div.main_col_module table tbody td {
+padding:2px;
+vertical-align: middle;
+font-size:0.9em;
+}
+
 /* Component forms */
 
 .label_small {
@@ -230,36 +264,36 @@ padding: 10px;
 background-color: #F0F0F0;
 }
 
-table.report {
-width: 100%;
+/* Data tables */
+
+table.data_list {
+padding: 0 10px 0 0;
 }
-table.report tr th {
+table.data_list img {
+border:0;
 }
-table.report tr.row0 { 
-background-color: #f9f9f9;
+table.data_list thead tr th {
+padding:5px;
+vertical-align: top;
+font-size:0.9em;
+text-align: left;
 }
-table.report tr.row1 {
-background-color: #eeeeee;
-}
-table.report tr.row0:hover,
-table.report tr.row1:hover { 
+table.data_list tbody tr:hover {
 background-color: #ffff99;
 }
-
-div.packages_table {
-width:75%;
-float:left;
+table.data_list tbody tr.row0 {
+background-color: #F6F6F6;
 }
-div.packages_totals {
-width:24%;
-float:right;
-border:1px solid #CCCCCC;
-background-color:#ffffcc;
-color:#666666;
+table.data_list tbody tr.row0:hover {
+background-color: #ffff99;
 }
-
-div.packages_totals p {
-padding:10px;
+table.data_list tbody tr td {
+padding:2px;
+vertical-align: middle;
+font-size:0.9em;
+}
+table.data_list tbody tr.deleted td {
+text-decoration: line-through;
 }
 
 /* Framework.error */
@@ -355,4 +389,41 @@ div.project_details {
 font-size: 0.9em;
 padding: 10px;
 border: 1px dotted #CCCCCC;
+}
+
+/* Activity log */
+
+div.activitylog_files,
+div.activitylog_messages,
+div.activitylog_issues,
+div.activitylog_meetings,
+div.activitylog_comments,
+div.activitylog_milestones {
+display: table-cell;
+min-height: 16px;
+min-width: 70px;
+padding:3px;
+text-align: right;
+vertical-align: middle;
+color: white;
+font-size: 0.9em;
+font-weight: bold;
+}
+div.activitylog_files {
+background-color: #913024;
+}
+div.activitylog_messages {
+background-color: #7094b7;
+}
+div.activitylog_issues {
+background-color: #f3a839;
+}
+div.activitylog_meetings {
+background-color: #6a7a54;
+}
+div.activitylog_comments {
+background-color: #ac75c8;
+}
+div.activitylog_milestones {
+background-color: #aea148;
 }

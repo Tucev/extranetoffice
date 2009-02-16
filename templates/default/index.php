@@ -28,6 +28,7 @@ $module_positions['right'] = $this->modules->display('right');
 </head>
 
 <body>
+
 <a name="up" id="up"></a>
 
 <div id="top">

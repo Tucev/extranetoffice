@@ -58,7 +58,7 @@ function submit_filter(reset) {
 <br />
 
 <?php if (is_array($this->rows) && count($this->rows) > 0) : ?>
-<table class="ioffice_list" width="100%" cellpadding="0" cellspacing="0">
+<table class="data_list" width="100%" cellpadding="0" cellspacing="0">
   <thead>
   <tr>
     <th><?php echo _LANG_PROJECTS_NAME; ?></th>
