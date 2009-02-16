@@ -83,7 +83,7 @@ abstract class controller extends singleton {
 	/**
 	 * A string containing a url to be redirected to. Leave empty for no redirection.
 	 *
-	 * @var unknown_type
+	 * @var string
 	 */
 	var $redirect_url=null;
 	
@@ -104,7 +104,7 @@ abstract class controller extends singleton {
 	}
 	
     /**
-     * display()
+     * Display view
      * 
      * This method triggers the view.
      *
@@ -124,7 +124,7 @@ abstract class controller extends singleton {
 	}
 	
 	/**
-	 * execute()
+	 * Execute task
 	 * 
 	 * This method executes a given task (runs a named member method).
 	 *
@@ -137,7 +137,7 @@ abstract class controller extends singleton {
 	}
 	
 	/**
-	 * cancel()
+	 * Cancel
 	 * 
 	 * Cancel and set redirect to index.
 	 *
@@ -149,7 +149,7 @@ abstract class controller extends singleton {
 	}
 	
 	/**
-	 * setRedirect()
+	 * Set redirection url
 	 * 
 	 * Set the redirection URL.
 	 *
@@ -162,7 +162,7 @@ abstract class controller extends singleton {
 	}
 	
 	/**
-	 * redirect()
+	 * Redirect
 	 * 
 	 * Redirect browser to redirect URL.
 	 * @return 	void
@@ -176,12 +176,12 @@ abstract class controller extends singleton {
 	}
 	
 	/**
-	 * getModel()
+	 * Get model
 	 * 
 	 * Gets a named model within the component.
 	 *
-	 * @param string $name The model name. If empty the view name is used as default.
-	 * @return object
+	 * @param	string	$name The model name. If empty the view name is used as default.
+	 * @return	object
 	 * @since	1.0
 	 */
 	public function getModel($name='') {
@@ -203,12 +203,12 @@ abstract class controller extends singleton {
 	}
 	
 	/**
-	 * getView()
+	 * Get view
 	 * 
 	 * Get a named view within the component.
 	 *
-	 * @param string $name
-	 * @return object
+	 * @param	string	$name
+	 * @return	object
 	 * @since	1.0
 	 */
 	public function getView($name='') {
@@ -225,6 +225,40 @@ abstract class controller extends singleton {
 		}
 		else {
 			error::raise(500, "error", "Model file ".$model_path." not found.");
+			return false;
+		}
+	}
+	
+	/**
+	 * Get available views
+	 * 
+	 * This method scans the views directory for directories that may contain views 
+	 * and returns an array with the directory names. If no view directories found it 
+	 * returns false.
+	 * 
+	 * @return	array
+	 * @since	1.0
+	 */
+	function getAvailableViews() {
+		$views_path = COMPONENT_PATH.DS."views";
+		$array = scandir($views_path);
+		
+		if (is_array($array) && count($array) > 0) {
+			// Filter out files and directories starting with a "."
+			foreach ($array as $item) {
+				if (is_dir($views_path.DS.$item) && strpos($item, '.') !== 0) {
+					$views_available[] = $item;
+				}
+			}
+			if (is_array($views_available) && count($views_available) > 0) {
+				return $views_available;	
+			}
+			else {
+				return false;
+			}
+			
+		}
+		else {
 			return false;
 		}
 	}
