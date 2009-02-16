@@ -1,8 +1,8 @@
 <?php
 /**
  * @version 	$Id: controller.php 40 2009-01-29 02:17:50Z luis.montero $
- * @package		ExtranetOffice.Billing
- * @subpackage	controllers
+ * @package		ExtranetOffice
+ * @subpackage	com_billing
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  * @author 		Luis Montero [e-noise.com]
@@ -13,8 +13,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * billingController Class
  * 
- * @package		ExtranetOffice.Billing
- * @subpackage 	controllers
+ * @package		ExtranetOffice
+ * @subpackage 	com_billing
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */

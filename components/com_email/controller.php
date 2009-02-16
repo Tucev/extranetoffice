@@ -1,7 +1,7 @@
 <?php
 /**
-* @package		ExtranetOffice.Email
-* @subpackage	controllers
+* @package		ExtranetOffice
+* @subpackage	com_email
 * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
 * @license		BSD revised. See LICENSE.
 * @author 		Luis Montero [e-noise.com]

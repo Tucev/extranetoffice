@@ -1,8 +1,8 @@
 <?php
 /**
  * @version 	$Id: invoices.php 46 2009-02-13 01:37:49Z luis.montero $
- * @package		ExtranetOffice.Billing
- * @subpackage	models
+ * @package		ExtranetOffice
+ * @subpackage	com_billing
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  * @author 		Luis Montero [e-noise.com]
@@ -13,8 +13,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * billingModelInvoices Class
  * 
- * @package		ExtranetOffice.Billing
- * @subpackage 	models
+ * @package		ExtranetOffice
+ * @subpackage 	com_billing
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  * @see 		model
