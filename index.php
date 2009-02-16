@@ -5,12 +5,11 @@
  * This is the file that we browse to access the ExtranetOffice web application.
  * 
  * In order to instantiate the application we first set a few useful constants,
- * check for dependencies, load the debugger,  include required framework files
- * and then finally instantiate the application and run the apps methods in the
- * following order:
+ * check for dependencies, include required framework files and then finally 
+ * instantiate the application and run the apps methods in the following order:
  * 
  * <code>
- * $application =& application::getInstance('application');
+ * $application =& phpFrame::getInstance('application');
  * $application->auth();
  * $application->exec();
  * $application->render();
@@ -59,16 +58,10 @@ if ($dependencies->status === false) {
 // Include phpFrame
 require_once _ABS_PATH.DS."lib".DS."phpframe".DS."phpframe.php";
 
-// instantiate debbuger
-$debug = new debug();
-
 // Instantiate application
-$application =& application::getInstance('application');
+$application =& phpFrame::getInstance('application');
 $application->auth();
 $application->exec();
 $application->render();
 $application->output();
-
-// Display debug output
-$debug->display();
 ?>
