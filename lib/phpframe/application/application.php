@@ -73,11 +73,17 @@ class application extends singleton {
 	 */
 	var $user=null;
 	/**
-	 * The menu object
+	 * Global application permissions object
+	 * 
+	 * @var object
+	 */
+	var $permissions=null;
+	/**
+	 * The modules object
 	 *
 	 * @var object
 	 */
-	var $menu=null;
+	var $modules=null;
 	/**
 	 * The output buffer produced by the executed component
 	 *
@@ -180,9 +186,10 @@ class application extends singleton {
 			$template_filename = 'login.php';
 		}
 		else {
-			// load menu
-			$this->menu = new menu();
 			$template_filename = 'index.php';
+			
+			// load modules
+			$this->modules = new modules();
 		}
 		
 		switch ($this->client) {
@@ -218,7 +225,9 @@ class application extends singleton {
 		echo $this->output;
 		
 		// Display debug output
-		$this->debug->display();
+		if ($this->config->debug) {
+			$this->debug->display();	
+		}
 		
 		// clear errors after displaying
 		$this->session->setVar('error', null);

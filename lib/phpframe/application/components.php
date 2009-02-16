@@ -11,14 +11,14 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 /**
- * Component Class
+ * Components Class
  *
  * @package		phpFrame
  * @subpackage 	application
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class component extends table {
+class components extends table {
 	var $name=null;
 	var $menu_name=null;
 	var $author=null;

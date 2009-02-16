@@ -164,14 +164,13 @@ abstract class view extends singleton {
 		if (file_exists($model_path)) {
 			require_once $model_path;
 			$model_class_name = substr(request::getVar('option'), 4).'Model'.ucfirst($name);
-			eval('$model =& '.$model_class_name.'::getInstance('.$model_class_name.');');
+			eval('$model =& phpFrame::getInstance('.$model_class_name.');');
 			return $model;
 		}
 		else {
 			error::raise(500, "error", "Model file ".$model_path." not found.");
 			return false;
 		}
-		
 		
 	}
 }
