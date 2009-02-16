@@ -1,8 +1,8 @@
 <?php
 /**
  * @version 	$Id: view.php 46 2009-02-13 01:37:49Z luis.montero $
- * @package		ExtranetOffice.Billing
- * @subpackage	viewInvoices
+ * @package		ExtranetOffice
+ * @subpackage	com_billing
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  * @author 		Luis Montero [e-noise.com]
@@ -16,8 +16,14 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * The methods in this class are invoked by its parent class. See display() 
  * method in 'view' class.
  * 
- * @package		ExtranetOffice.Billing
- * @subpackage 	viewInvoices
+ * Method name to be triggered will be formed as follows:
+ * 
+ * <code>
+ * $tmpl_specific_method = "display".ucfirst(request::getVar('view')).ucfirst($this->tmpl);
+ * </code>
+ * 
+ * @package		ExtranetOffice
+ * @subpackage 	com_billing
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  * @see 		view, controller

@@ -2,7 +2,6 @@
 /**
  * @version		$Id: dependencies.php 25 2009-01-28 14:31:38Z luis.montero $
  * @package		ExtranetOffice
- * @subpackage 	framework
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  * @author 		Luis Montero [e-noise.com]

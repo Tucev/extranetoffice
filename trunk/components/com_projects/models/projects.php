@@ -1,8 +1,8 @@
 <?php
 /**
  * @version 	$Id$
- * @package		ExtranetOffice.Projects
- * @subpackage	models
+ * @package		ExtranetOffice
+ * @subpackage	com_projects
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  * @author 		Luis Montero [e-noise.com]
@@ -13,8 +13,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * projectsModelProjects Class
  * 
- * @package		ExtranetOffice.Projects
- * @subpackage 	models
+ * @package		ExtranetOffice
+ * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  * @see 		model

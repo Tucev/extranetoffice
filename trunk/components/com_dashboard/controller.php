@@ -13,18 +13,18 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * dashboardController Class
  * 
- * @package		ExtranetOffice.Billing
- * @subpackage 	controllers
+ * @package		ExtranetOffice
+ * @subpackage 	com_dashboard
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
 class dashboardController extends controller {
 	function __construct() {
-		// set default view if none has been set
-		$view = request::getVar('view', '');
-		if (empty($view)) {
-			request::setVar('view', 'dashboard');
-		}
+		// set default view and layout if none has been set
+		$this->view = request::getVar('view', 'dashboard');
+		$this->layout = request::getVar('layout', '');
+		
+		parent::__construct();
 	}
 	
 }

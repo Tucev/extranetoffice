@@ -15,7 +15,7 @@ require_once COMPONENT_PATH.DS.'controller.php';
 // Create the controller
 $controller =& dashboardController::getInstance('dashboardController');
 // Execute task
-$controller->execute(request::getVar('task', 'display'));	
+$controller->execute(request::getVar('task'));	
 // Redirect if set by the controller
 $controller->redirect();
 ?>

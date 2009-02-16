@@ -19,10 +19,35 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  */
 class session extends table {
+	/**
+	 * The session id
+	 * 
+	 * @var int
+	 */
 	var $id=null;
+	/**
+	 * The user id
+	 * 
+	 * @var int
+	 */
 	var $userid=null;
+	/**
+	 * The group id
+	 * 
+	 * @var int
+	 */
 	var $groupid=null;
+	/**
+	 * The session data array
+	 * 
+	 * @var array
+	 */
 	var $data=array();
+	/**
+	 * Modified datetime in MySQL format - date("Y-m-d H:i:s")
+	 * 
+	 * @var string
+	 */
 	var $modified=null;
 	
 	/**
@@ -42,7 +67,9 @@ class session extends table {
 	 * Start session
 	 * 
 	 * Start php session and load application session accordingly.
-	 *
+	 * 
+	 * @return	void
+	 * @since	1.0
 	 */
 	function start() {
 		// start php session
@@ -62,6 +89,8 @@ class session extends table {
 	 * Load session data from database
 	 *
 	 * @param string $id The php session id
+	 * @return	void
+	 * @since	1.0
 	 */
 	function load($id) {
 		parent::load($id);
@@ -72,7 +101,9 @@ class session extends table {
 	
 	/**
 	 * Write session to database table
-	 *
+	 * 
+	 * @return	void
+	 * @since	1.0
 	 */
 	function write() {
 		// Serialize data array to store in db
@@ -89,6 +120,8 @@ class session extends table {
 	 *
 	 * @param string $key The key where to store the value.
 	 * @param mixed $value This can be any value, an integer, string, array, object...
+	 * @return	void
+	 * @since	1.0
 	 */
 	function setVar($key, $value) {
 		$this->data[$key] = $value;
@@ -101,6 +134,7 @@ class session extends table {
 	 * @param string $key The key or session variable name.
 	 * @param mixed $value This parameter is used to give a default value in case the variable is empty.
 	 * @return mixed
+	 * @since	1.0
 	 */
 	function getVar($key, $value="") {
 		if (empty($this->data[$key])) {
