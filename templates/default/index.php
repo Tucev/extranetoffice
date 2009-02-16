@@ -9,6 +9,11 @@
 */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
+
+// render module positions for output
+$module_positions = array();
+$module_positions['topmenu'] = $this->modules->display('topmenu');
+$module_positions['right'] = $this->modules->display('right');
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -57,11 +62,25 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <!-- Content -->
 <div id="wrapper_outer">
 
-	<?php $this->menu->display(); ?>
+	<?php echo $module_positions['topmenu']; ?>
 	
 	<div id="wrapper">
-		<?php error::display(); ?>
-		<?php echo $this->component_output; ?>
+		<?php $column_count = 1; ?>
+		
+		<?php if (!empty($module_positions['right'])) : ?>
+			<div id="right_col">
+				<?php echo $module_positions['right']; ?>
+			</div><!-- close #right_col -->
+			<?php $column_count++; ?>
+		<?php endif; ?>
+		
+		<div id="main_col_<?php echo $column_count; ?>">
+			<div id="main_col_inner">
+			<?php error::display(); ?>
+			<?php echo $this->component_output; ?>
+			</div><!-- close #main_col_inner -->
+		</div><!-- close #main_col -->
+
 	</div><!-- close #wrapper -->
 
 </div><!-- close #wrapper_outer -->
