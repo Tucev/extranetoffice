@@ -37,7 +37,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * 		}
  * }
  * 
- * $myController =& myController::getInstance('myController');
+ * $myController =& phpFrame::getInstance('myController');
  * echo $myController->doSomething();
  * </code>
  * This will echo 'something'.
