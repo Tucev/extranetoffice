@@ -13,7 +13,7 @@
 
 body {
 margin-bottom:10px;
-background-color: #F0F0F0;
+background-color: #333333;
 }
 
 body, th, td, p, div, select {
@@ -63,9 +63,12 @@ margin-top: 15px;
 }
 
 div#sitename {
-font-size:24px;
-color: #333333;
+font-size:3em;
+color: #FFFFFF;
 padding: 3px 0 20px 0;
+}
+div#sitename a {
+color: #FFFFFF;
 }
 
 div#breadcrumb {
@@ -85,7 +88,7 @@ color: #ffff99;
 
 div#wrapper_outer {
 border:1px solid #999999;
-background-color: #333333;
+background-color: #F0F0F0;
 padding:20px;
 height:100%;
 color: #333333;
@@ -95,6 +98,7 @@ div#wrapper {
 border: 1px solid #999999;
 padding:20px;
 background-color: white;
+height:100%;
 }
 
 ul#menu {
@@ -133,62 +137,27 @@ font-size: 0.8em;
 color: #999999;
 }
 
-/* Framework.error */
-
-span.system_msg_outer {
-background-color: #ffff99;
-border: 1px dotted #999999;
-padding: 8px;
-}
-span.system_msg {
-padding: 2px 2px 2px 20px;
-background-repeat: no-repeat;
-background-position: center left;
-font-style: italic;
-}
-span.error {
-background-image: url(../images/icons/generic/16x16/error.png);
-}
-span.warning {
-background-image: url(../images/icons/generic/16x16/warning.png);
-}
-span.notice {
-background-image: url(../images/icons/generic/16x16/info.png);
-}
-span.message {
-background-image: url(../images/icons/generic/16x16/info.png);
-}
-
-/* Icons */
-
-span.icons_16_outer {
-border: 1px dotted #999999;
-padding: 8px;
-margin-left: 5px;
-}
-span.icons_16 {
-padding: 2px 2px 2px 20px;
-background-repeat: no-repeat;
-background-position: center left;
-}
-span.users_16 {
-background-image: url(../images/icons/generic/16x16/people.png);
-}
-span.sysadmin_16 {
-background-image: url(../images/icons/generic/16x16/sysadmin.png);
-}
-span.security_16 {
-background-image: url(../images/icons/generic/16x16/security.png);
-}
-
 /* Standard components output */
 
 /* Component structure */
 
-div#main_col {
+div#main_col_1 {
+min-height: 300px;
+}
+div#main_col_2 {
 margin-right: 230px;
 min-height: 300px;
 border-right: 1px dotted #999999;
+}
+div#main_col_3 {
+margin-right: 230px;
+margin-left: 230px;
+min-height: 300px;
+border-right: 1px dotted #999999;
+}
+
+div#main_col_inner {
+padding: 0 15px 0 0;
 }
 
 div#right_col {
@@ -253,6 +222,55 @@ color:#666666;
 
 div.packages_totals p {
 padding:10px;
+}
+
+/* Framework.error */
+
+span.system_msg_outer {
+background-color: #ffff99;
+border: 1px dotted #999999;
+padding: 8px;
+}
+span.system_msg {
+padding: 2px 2px 2px 20px;
+background-repeat: no-repeat;
+background-position: center left;
+font-style: italic;
+}
+span.error {
+background-image: url(../images/icons/generic/16x16/error.png);
+}
+span.warning {
+background-image: url(../images/icons/generic/16x16/warning.png);
+}
+span.notice {
+background-image: url(../images/icons/generic/16x16/info.png);
+}
+span.message {
+background-image: url(../images/icons/generic/16x16/info.png);
+}
+
+/* Icons */
+
+span.icons_16_outer {
+border: 1px dotted #999999;
+padding: 8px;
+margin-left: 5px;
+background-color: #CCCCCC;
+}
+span.icons_16 {
+padding: 2px 2px 2px 20px;
+background-repeat: no-repeat;
+background-position: center left;
+}
+span.users_16 {
+background-image: url(../images/icons/generic/16x16/people.png);
+}
+span.sysadmin_16 {
+background-image: url(../images/icons/generic/16x16/sysadmin.png);
+}
+span.security_16 {
+background-image: url(../images/icons/generic/16x16/security.png);
 }
 
 /* Component specific styles */
