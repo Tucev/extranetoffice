@@ -16,17 +16,17 @@ class usersHelperUsers {
 	 * @param 	int		The ID to be translated
 	 * @return 	string	If no id is passed returns false, otherwise returns the username as a string
 	 */
-	function id2name($id=0) {
+	static function id2name($id=0) {
 		if (!empty($id)) { // No user has been selected
 			$db = factory::getDB(); // Instantiate joomla database object
-			$query = "SELECT name FROM #__users WHERE id = '".$id."'";
+			$query = "SELECT firstname, lastname FROM #__users WHERE id = '".$id."'";
 			$db -> setQuery($query);
-			$name = $db->loadResult();
+			$row = $db->loadObject();
 			if ($db->error) {
 			  echo $db->error;
 			  return false;
 			}
-			return $name;
+			return strtoupper(substr($row->firstname, 0, 1)).'. '.$row->lastname;
 		}
 		else {
 			return false;
@@ -38,7 +38,7 @@ class usersHelperUsers {
 	 * @param 	string	The username to be translated
 	 * @return 	int		If no username is passed returns false, otherwise returns the user ID
 	 */
-	function username2id($username='') {
+	static function username2id($username='') {
 		if (!empty($username)) { // No user has been selected
 			$db = factory::getDB(); // Instantiate joomla database object
 			$query = "SELECT id FROM #__users WHERE username = '".$username."'";
@@ -60,7 +60,7 @@ class usersHelperUsers {
 	 * @param 	string	The email to be translated
 	 * @return 	int		If no email is passed returns false, otherwise returns the user ID
 	 */
-	function email2id($email='') {
+	static function email2id($email='') {
 		if (!empty($email)) { // No user has been selected
 			$db = factory::getDB(); // Instantiate joomla database object
 			$query = "SELECT id FROM #__users WHERE email = '".$email."'";
@@ -77,7 +77,7 @@ class usersHelperUsers {
 		}
 	}
 	
-	function id2email($id) {
+	static function id2email($id) {
 		if (!empty($id)) { // No user has been selected
 			$db = factory::getDB(); // Instantiate joomla database object
 			$query = "SELECT email FROM #__users WHERE id = '".$id."'";
@@ -94,7 +94,7 @@ class usersHelperUsers {
 		}
 	}
 	
-	function id2photo($id) {
+	static function id2photo($id) {
 		if (!empty($id)) { // No user has been selected
 			$db = factory::getDB(); // Instantiate joomla database object
 			$query = "SELECT photo FROM #__intranetoffice_settings WHERE userid = '".$id."'";
@@ -118,7 +118,7 @@ class usersHelperUsers {
 	 * @param 	string	Attributes for the <select> tag
 	 * @return 	string	A string with the HTML select
 	 */
-	function select($selected=0, $attribs='', $fieldname='userid', $projectid=0) {
+	static function select($selected=0, $attribs='', $fieldname='userid', $projectid=0) {
 		// assemble users to the array
 		$options = array();
 		$options[] = JHTML::_('select.option', '0', JText::_( '-- Select a User --' ) );
@@ -149,7 +149,7 @@ class usersHelperUsers {
 		return $output;		
 	}
 	
-	function assignees($selected=0, $attribs='', $fieldname='assignees[]', $projectid=0) {
+	static function assignees($selected=0, $attribs='', $fieldname='assignees[]', $projectid=0) {
 		// get joomla users from #__users
 		$db = factory::getDB(); // Instantiate joomla database object
 		$query = "SELECT u.id, u.name ";
@@ -190,7 +190,7 @@ class usersHelperUsers {
 		return $output;		
 	}
 	
-	function autocompleteUsername($form_name) {
+	static function autocompleteUsername($form_name) {
 		// get joomla users from #__users
 		$db = factory::getDB(); // Instantiate joomla database object
 		$query = "SELECT id, username FROM #__users ";
