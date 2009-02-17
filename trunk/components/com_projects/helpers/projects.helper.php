@@ -42,7 +42,7 @@ class projectsHelperProjects {
 	function select($selected=0, $attribs='') {
 		// assemble projects into the array
 		$options = array();
-		$options[] = JHTML::_('select.option', '0', JText::_( '-- Select a Project --' ) );
+		$options[] = html::_('select.option', '0', text::_( '-- Select a Project --' ) );
 		
 		// get projects from db
 		$db = factory::getDB(); // Instantiate joomla database object
@@ -60,11 +60,11 @@ class projectsHelperProjects {
 		}
 		
 		foreach ($rows as $row) {
-			$options[] = JHTML::_('select.option', $row->id, $row->name );
+			$options[] = html::_('select.option', $row->id, $row->name );
 		}
 		
 		$attribs .= ' class="inputbox"';
-		$output = JHTML::_('select.genericlist', $options, 'projectid', $attribs, 'value', 'text', $selected);
+		$output = html::_('select.genericlist', $options, 'projectid', $attribs, 'value', 'text', $selected);
 		return $output;
 	}
 	
@@ -88,7 +88,7 @@ class projectsHelperProjects {
 	function project_type_select($selected=0, $attribs='') {
 		// assemble project types into the array
 		$options = array();
-		$options[] = JHTML::_('select.option', '0', JText::_( '-- Select a Project Type --' ) );
+		$options[] = html::_('select.option', '0', text::_( '-- Select a Project Type --' ) );
 		
 		// get project_types from db
 		$db = factory::getDB(); // Instantiate joomla database object
@@ -102,11 +102,11 @@ class projectsHelperProjects {
 		}
 		
 		foreach ($rows as $row) {
-			$options[] = JHTML::_('select.option', $row->id, $row->name );
+			$options[] = html::_('select.option', $row->id, $row->name );
 		}
 		
 		$attribs .= ' class="inputbox"';
-		$output = JHTML::_('select.genericlist', $options, 'project_type', $attribs, 'value', 'text', $selected);
+		$output = html::_('select.genericlist', $options, 'project_type', $attribs, 'value', 'text', $selected);
 		return $output;
 	}
 	
@@ -125,12 +125,12 @@ class projectsHelperProjects {
 		// assemble priorities into the array
 		$options = array();
 		
-		$options[] = JHTML::_('select.option', 0, _LANG_PROJECTS_PRIORITY_LOW );
-		$options[] = JHTML::_('select.option', 1, _LANG_PROJECTS_PRIORITY_MEDIUM );
-		$options[] = JHTML::_('select.option', 2, _LANG_PROJECTS_PRIORITY_HIGH );
+		$options[] = html::_('select.option', 0, _LANG_PROJECTS_PRIORITY_LOW );
+		$options[] = html::_('select.option', 1, _LANG_PROJECTS_PRIORITY_MEDIUM );
+		$options[] = html::_('select.option', 2, _LANG_PROJECTS_PRIORITY_HIGH );
 		
 		$attribs .= ' class="inputbox"';
-		$output = JHTML::_('select.genericlist', $options, 'priority', $attribs, 'value', 'text', $selected);
+		$output = html::_('select.genericlist', $options, 'priority', $attribs, 'value', 'text', $selected);
 		return $output;
 	}
 	
@@ -146,13 +146,13 @@ class projectsHelperProjects {
 	function global_access_select($fieldname='access', $selected=1, $attribs='') {
 		// assemble access into the array
 		$options = array();
-		//$options[] = JHTML::_('select.option', '', JText::_( '-- Select an Access Level --' ) );
+		//$options[] = html::_('select.option', '', text::_( '-- Select an Access Level --' ) );
 		
-		$options[] = JHTML::_('select.option', 0, _LANG_PROJECTS_ACCESS_PUBLIC );
-		$options[] = JHTML::_('select.option', 1, _LANG_PROJECTS_ACCESS_PRIVATE );
+		$options[] = html::_('select.option', 0, _LANG_PROJECTS_ACCESS_PUBLIC );
+		$options[] = html::_('select.option', 1, _LANG_PROJECTS_ACCESS_PRIVATE );
 		
 		$attribs .= ' class="inputbox"';
-		$output = JHTML::_('select.genericlist', $options, $fieldname, $attribs, 'value', 'text', $selected);
+		$output = html::_('select.genericlist', $options, $fieldname, $attribs, 'value', 'text', $selected);
 		return $output;
 	}
 	
@@ -172,15 +172,15 @@ class projectsHelperProjects {
 	function access_select($fieldname='access', $selected=0, $attribs='') {
 		// assemble access into the array
 		$options = array();
-		$options[] = JHTML::_('select.option', '0', JText::_( '-- Select an Access Level --' ) );
+		$options[] = html::_('select.option', '0', text::_( '-- Select an Access Level --' ) );
 		
-		$options[] = JHTML::_('select.option', 1, _LANG_PROJECTS_ACCESS_ADMINS );
-		$options[] = JHTML::_('select.option', 2, _LANG_PROJECTS_ACCESS_WORKERS );
-		$options[] = JHTML::_('select.option', 3, _LANG_PROJECTS_ACCESS_GUESTS );
-		$options[] = JHTML::_('select.option', 4, _LANG_PROJECTS_ACCESS_PUBLIC );
+		$options[] = html::_('select.option', 1, _LANG_PROJECTS_ACCESS_ADMINS );
+		$options[] = html::_('select.option', 2, _LANG_PROJECTS_ACCESS_WORKERS );
+		$options[] = html::_('select.option', 3, _LANG_PROJECTS_ACCESS_GUESTS );
+		$options[] = html::_('select.option', 4, _LANG_PROJECTS_ACCESS_PUBLIC );
 		
 		$attribs .= ' class="inputbox"';
-		$output = JHTML::_('select.genericlist', $options, $fieldname, $attribs, 'value', 'text', $selected);
+		$output = html::_('select.genericlist', $options, $fieldname, $attribs, 'value', 'text', $selected);
 		return $output;
 	}
 	
@@ -202,16 +202,16 @@ class projectsHelperProjects {
 	function status_select($selected=0, $attribs='') {
 		// assemble access into the array
 		$options = array();
-		$options[] = JHTML::_('select.option', '0', JText::_( '-- Select an Status --' ) );
+		$options[] = html::_('select.option', '0', text::_( '-- Select an Status --' ) );
 		
-		$options[] = JHTML::_('select.option', '0', _LANG_PROJECTS_STATUS_PLANNING );
-		$options[] = JHTML::_('select.option', '1', _LANG_PROJECTS_STATUS_IN_PROGRESS );
-		$options[] = JHTML::_('select.option', '2', _LANG_PROJECTS_STATUS_PAUSED );
-		$options[] = JHTML::_('select.option', '3', _LANG_PROJECTS_STATUS_FINISHED );
-		$options[] = JHTML::_('select.option', '-1', _LANG_PROJECTS_STATUS_ARCHIVED );
+		$options[] = html::_('select.option', '0', _LANG_PROJECTS_STATUS_PLANNING );
+		$options[] = html::_('select.option', '1', _LANG_PROJECTS_STATUS_IN_PROGRESS );
+		$options[] = html::_('select.option', '2', _LANG_PROJECTS_STATUS_PAUSED );
+		$options[] = html::_('select.option', '3', _LANG_PROJECTS_STATUS_FINISHED );
+		$options[] = html::_('select.option', '-1', _LANG_PROJECTS_STATUS_ARCHIVED );
 		
 		$attribs .= ' class="inputbox"';
-		$output = JHTML::_('select.genericlist', $options, 'status', $attribs, 'value', 'text', $selected);
+		$output = html::_('select.genericlist', $options, 'status', $attribs, 'value', 'text', $selected);
 		return $output;
 	}
 	
@@ -235,7 +235,7 @@ class projectsHelperProjects {
 	function project_role_select($selected=0, $attribs='') {
 		// assemble project types into the array
 		$options = array();
-		$options[] = JHTML::_('select.option', '0', JText::_( '-- Select a Role --' ) );
+		$options[] = html::_('select.option', '0', text::_( '-- Select a Role --' ) );
 		
 		// get project_types from db
 		$db = factory::getDB(); // Instantiate joomla database object
@@ -249,11 +249,11 @@ class projectsHelperProjects {
 		}
 		
 		foreach ($rows as $row) {
-			$options[] = JHTML::_('select.option', $row->id, $row->name );
+			$options[] = html::_('select.option', $row->id, $row->name );
 		}
 		
 		$attribs .= ' class="inputbox"';
-		$output = JHTML::_('select.genericlist', $options, 'roleid', $attribs, 'value', 'text', $selected);
+		$output = html::_('select.genericlist', $options, 'roleid', $attribs, 'value', 'text', $selected);
 		return $output;
 	}
 	
@@ -277,7 +277,7 @@ class projectsHelperProjects {
 	function issue_type_select($selected=0, $attribs='') {
 		// assemble project types into the array
 		$options = array();
-		$options[] = JHTML::_('select.option', '0', JText::_( '-- Select an issue type (optional) --' ) );
+		$options[] = html::_('select.option', '0', text::_( '-- Select an issue type (optional) --' ) );
 		
 		// get project_types from db
 		$db = factory::getDB(); // Instantiate joomla database object
@@ -291,11 +291,11 @@ class projectsHelperProjects {
 		}
 		
 		foreach ($rows as $row) {
-			$options[] = JHTML::_('select.option', $row->id, $row->name );
+			$options[] = html::_('select.option', $row->id, $row->name );
 		}
 		
 		$attribs .= ' class="inputbox"';
-		$output = JHTML::_('select.genericlist', $options, 'issue_type', $attribs, 'value', 'text', $selected);
+		$output = html::_('select.genericlist', $options, 'issue_type', $attribs, 'value', 'text', $selected);
 		return $output;
 	}
 	
