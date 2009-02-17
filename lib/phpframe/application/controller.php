@@ -129,8 +129,11 @@ abstract class controller extends singleton {
 	public function display() {
 		if ($this->permissions->is_allowed === true) {
 			$this->view_obj = $this->getView(request::getVar('view'));
-			if ($this->view_obj !== false) {
+			if (is_callable(array($this->view_obj, 'display'))) {
 				$this->view_obj->display();	
+			}
+			else {
+				error::raise('', 'error', 'display() method not found in view class.');
 			}
 		}
 		else {
@@ -208,7 +211,7 @@ abstract class controller extends singleton {
 		if (file_exists($model_path)) {
 			require_once $model_path;
 			$model_class_name = substr(request::getVar('option'), 4).'Model'.ucfirst($name);
-			eval('$model =& phpFrame::getInstance('.$model_class_name.');');
+			$model =& phpFrame::getInstance($model_class_name);
 			return $model;
 		}
 		else {
@@ -235,7 +238,7 @@ abstract class controller extends singleton {
 		if (file_exists($view_path)) {
 			require_once $view_path;
 			$view_class_name = substr(request::getVar('option'), 4).'View'.ucfirst($name);
-			eval('$view =& phpFrame::getInstance('.$view_class_name.');');
+			$view =& phpFrame::getInstance($view_class_name);
 			return $view;
 		}
 		else {
