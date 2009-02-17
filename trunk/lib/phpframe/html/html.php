@@ -12,5 +12,45 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 class html {
 	
+	function selectOption($value, $label) {
+		$html = '<option value="'.$value.'">';
+		$html .= $label;
+		$html .= '</option>';
+		
+		return $html;
+	}
+	
+	function selectGenericlist($options, $name, $attribs, $key='value', $text='text', $selected=NULL, $idtag=false, $translate=false) {
+		$html = '<select name="'.$name.'" '.$attribs.'>';
+		foreach ($options as $option) {
+			$html .= $option;
+		}
+		$html .= '</select>';
+		
+		echo $html;
+	}
+	
+	/**
+	 * Class loader method
+	 * 
+	 * @param $str
+	 * @return void
+	 */
+	function _($str) {
+		
+		$array = explode('.', $str);
+		$function_name = $array[0].ucfirst($array[1]);
+		
+		if (is_callable( array( 'html', $function_name) )) {
+			$args = func_get_args();
+			array_shift( $args );
+			return call_user_func_array( array( 'html', $function_name ), $args );
+		}
+		else {
+			error::raise('', 'warning', 'html::'.$function_name.' not supported.' );
+			return false;
+		}
+		
+	}
 }
 ?>
