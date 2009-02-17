@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class projectsTableUsersRoles extends JTable {
+class projectsTableUsersRoles extends table {
 	/**
 	 * Id
 	 * 
