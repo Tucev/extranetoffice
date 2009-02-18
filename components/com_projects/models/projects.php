@@ -81,10 +81,6 @@ class projectsModelProjects extends model {
 			$limitstart = request::getVar('limitstart', 0);
 			$limit = request::getVar('limit', 20);
 		}
-		else {
-			$limitstart = request::getVar('limitstart', 0);
-			$limit = request::getVar('limit', 1);
-		}
 
 		$where = array();
 		
@@ -121,8 +117,6 @@ class projectsModelProjects extends model {
 		$this->db->query();
 		$total = $this->db->getNumRows();
 		
-		$pageNav = new pagination($total, $limitstart, $limit);
-		
 		// get the subset (based on limits) of required records
 		$query = "SELECT 
 				  p.*, 
@@ -135,11 +129,13 @@ class projectsModelProjects extends model {
 				  LEFT JOIN #__users_roles ur ON p.id = ur.projectid "
 				  . $where . 
 				  " GROUP BY p.id ";
-		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
-		//echo str_replace('#__', 'eo_', $query); exit;
-		$this->db->setQuery($query);
 		
 		if ($total > 1) {
+			$pageNav = new pagination($total, $limitstart, $limit);
+			
+			$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
+			//echo str_replace('#__', 'eo_', $query); exit;
+			$this->db->setQuery($query);
 			$rows = $this->db->loadObjectList();
 		
 			// table ordering
@@ -157,6 +153,7 @@ class projectsModelProjects extends model {
 			return $return;
 		}
 		else {
+			$this->db->setQuery($query);
 			return $this->db->loadObject();
 		}
 	}
@@ -235,7 +232,7 @@ class projectsModelProjects extends model {
 		$new_mail = new JMail();
 			
 		$sender = $this->config->get('notifications_fromaddress');
-		$recipient = iOfficeHelperUsers::id2email($userid);
+		$recipient = usersHelperUsers::id2email($userid);
 		$project_name = projectsHelperProjects::id2name($projectid);
 		$role_name = projectsHelperProjects::project_roleid2name($roleid);
 		$joomla_config = new JConfig();

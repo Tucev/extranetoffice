@@ -110,7 +110,7 @@ class projectsModelActivitylog extends model {
 		
 		$sender = $this->config->get('notifications_fromaddress');
 		$project_name = projectsHelperProjects::id2name($row->projectid);
-		$user_name = iOfficeHelperUsers::id2name($row->userid);
+		$user_name = usersHelperUsers::id2name($row->userid);
 		$subject = "[".$project_name."] ".$row->action." by ".$user_name;
 		$body = text::_(sprintf(_LANG_ACTIVITYLOG_NOTIFY_BODY, 
 								 $project_name, 
