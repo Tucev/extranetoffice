@@ -85,6 +85,12 @@ class application extends singleton {
 	 */
 	var $modules=null;
 	/**
+	 * A reference to the pathway object
+	 * 
+	 * @var object
+	 */
+	var $pathway=null;
+	/**
 	 * The output buffer produced by the executed component
 	 *
 	 * @var string
@@ -190,6 +196,9 @@ class application extends singleton {
 			
 			// load modules
 			$this->modules = new modules();
+			
+			// get pathway
+			$this->pathway =& factory::getPathway();
 		}
 		
 		switch ($this->client) {

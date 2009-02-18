@@ -34,6 +34,10 @@ class factory {
 		return $application->session;
 	}
 	
+	function getPathway() {
+		return phpFrame::getInstance('pathway');
+	}
+	
 	function getApplication() {
 		return phpFrame::getInstance('application');
 	}
