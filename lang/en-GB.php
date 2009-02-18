@@ -12,6 +12,13 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 // Generic
 define("_LANG_BACK", "Back");
+define("_LANG_EDIT", "Edit");
+define("_LANG_DELETE", "Delete");
+define("_LANG_NO_ENTRIES", "No entries found");
+define("_LANG_CREATED_BY", "Created by");
+define("_LANG_CREATED", "Date created");
+define("_LANG_NAME", "Name");
+define("_LANG_EMAIL", "Name");
 
 // com_dashboard
 define("_LANG_DASHBOARD", "Dashboard");
@@ -65,6 +72,7 @@ define("_LANG_PROJECTS_ACCESS_PRIVATE", "Private");
 define("_LANG_PROJECTS_HOME", "Project home");
 
 define("_LANG_ADMIN", "Admin");
+define("_LANG_PROJECTS_ROLE", "Role");
 
 // Files
 define("_LANG_FILES", "Files");

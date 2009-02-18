@@ -88,7 +88,7 @@ class projectsModelActivitylog extends model {
 		if ($notify === true) {
 			// Test return from _notify method. Raise error if needed and return accordingly.
 			if ($this->_notify($row, $assignees) === false) {
-				JError::raiseError( 500, JText::_( _INTRANETOFFICE_ACTIVITYLOG_NOTIFY_FAILED ) );
+				JError::raiseError( 500, text::_( _LANG_ACTIVITYLOG_NOTIFY_FAILED ) );
 				return false;
 			}	
 		}
@@ -108,11 +108,11 @@ class projectsModelActivitylog extends model {
 		jimport( 'joomla.mail.helper' );
 		$new_mail = new JMail();
 		
-		$sender = $this->iOfficeConfig->get('notifications_fromaddress');
-		$project_name = iOfficeHelperProjects::id2name($row->projectid);
+		$sender = $this->config->get('notifications_fromaddress');
+		$project_name = projectsHelperProjects::id2name($row->projectid);
 		$user_name = iOfficeHelperUsers::id2name($row->userid);
 		$subject = "[".$project_name."] ".$row->action." by ".$user_name;
-		$body = JText::_(sprintf(_INTRANETOFFICE_ACTIVITYLOG_NOTIFY_BODY, 
+		$body = text::_(sprintf(_LANG_ACTIVITYLOG_NOTIFY_BODY, 
 								 $project_name, 
 								 $row->action." by ".$user_name, 
 								 $row->description, 
@@ -148,15 +148,15 @@ class projectsModelActivitylog extends model {
 		$sender = JMailHelper::cleanAddress($sender);
 		$subject = JMailHelper::cleanSubject($subject);
 		$body = JMailHelper::cleanBody($body);
-		$new_mail->addReplyTo(array($sender, $this->iOfficeConfig->get('notifications_fromname')));
+		$new_mail->addReplyTo(array($sender, $this->config->get('notifications_fromname')));
 		$new_mail->setSender($sender);
-		$new_mail->FromName = $this->iOfficeConfig->get('notifications_fromname');
+		$new_mail->FromName = $this->config->get('notifications_fromname');
 		$new_mail->setSubject($subject);
 		$new_mail->setBody($body);
-		$new_mail->useSMTP($this->iOfficeConfig->get('notifications_smtpauth'), 
-						   $this->iOfficeConfig->get('notifications_smtphost'), 
-						   $this->iOfficeConfig->get('notifications_smtpusername'), 
-						   $this->iOfficeConfig->get('notifications_smtppassword'));
+		$new_mail->useSMTP($this->config->get('notifications_smtpauth'), 
+						   $this->config->get('notifications_smtphost'), 
+						   $this->config->get('notifications_smtpusername'), 
+						   $this->config->get('notifications_smtppassword'));
 		//$new_mail->useSendmail();
 		
 		//echo '<pre>'; var_dump($new_mail); exit;

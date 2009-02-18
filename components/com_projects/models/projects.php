@@ -138,21 +138,27 @@ class projectsModelProjects extends model {
 		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
 		//echo str_replace('#__', 'eo_', $query); exit;
 		$this->db->setQuery($query);
-		$rows = $this->db->loadObjectList();
 		
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
-
-		// search filter
-		$lists['search'] = $search;
+		if ($total > 1) {
+			$rows = $this->db->loadObjectList();
 		
-		// pack data into an array to return
-		$return['rows'] = $rows;
-		$return['pageNav'] = $pageNav;
-		$return['lists'] = $lists;
-		
-		return $return;
+			// table ordering
+			$lists['order_Dir']	= $filter_order_Dir;
+			$lists['order']		= $filter_order;
+	
+			// search filter
+			$lists['search'] = $search;
+			
+			// pack data into an array to return
+			$return['rows'] = $rows;
+			$return['pageNav'] = $pageNav;
+			$return['lists'] = $lists;
+			
+			return $return;
+		}
+		else {
+			return $this->db->loadObject();
+		}
 	}
 
 	function saveProject() {
@@ -196,13 +202,13 @@ class projectsModelProjects extends model {
 	}
 	
 	function getMembers($projectid, $userid=0) {
-		$query = "SELECT ur.userid, ur.roleid, r.name AS rolename, u.username, u.name, u.email ";
-		$query .= " FROM #__users_roles AS ur, #__users AS u, #__intranetoffice_roles AS r ";
+		$query = "SELECT ur.userid, ur.roleid, r.name AS rolename, u.username, CONCAT(firstname, ' ', lastname) AS name, u.email ";
+		$query .= " FROM #__users_roles AS ur, #__users AS u, #__roles AS r ";
 		$query .= " WHERE u.id = ur.userid AND r.id = ur.roleid AND ur.projectid = ".$projectid;
 		if (!empty($userid)) $query .= " AND ur.userid = ".$userid;
 		$query .= " ORDER BY ur.roleid ASC";
 		
-		//echo $query; exit;
+		//echo str_replace('#__', 'eo_', $query); exit;
 
 		$this->db->setQuery($query);
 		return $this->db->loadObjectList();
@@ -228,16 +234,16 @@ class projectsModelProjects extends model {
 		jimport( 'joomla.mail.helper' );
 		$new_mail = new JMail();
 			
-		$sender = $this->iOfficeConfig->get('notifications_fromaddress');
+		$sender = $this->config->get('notifications_fromaddress');
 		$recipient = iOfficeHelperUsers::id2email($userid);
-		$project_name = iOfficeHelperProjects::id2name($projectid);
-		$role_name = iOfficeHelperProjects::project_roleid2name($roleid);
+		$project_name = projectsHelperProjects::id2name($projectid);
+		$role_name = projectsHelperProjects::project_roleid2name($roleid);
 		$joomla_config = new JConfig();
 		$site_name = $joomla_config->sitename;
 		$site_url = JURI::Base();
 			
-		$subject = sprintf(_INTRANETOFFICE_ADMIN_INVITATION_SUBJECT, $this->user->get('name'), $project_name, $site_name);
-		$body = JText::_(sprintf(_INTRANETOFFICE_ADMIN_INVITATION_BODY,
+		$subject = sprintf(_LANG_ADMIN_INVITATION_SUBJECT, $this->user->get('name'), $project_name, $site_name);
+		$body = text::_(sprintf(_LANG_ADMIN_INVITATION_BODY,
 								 $this->user->get('name'), 
 								 $project_name, 
 								 $role_name, 
@@ -263,13 +269,13 @@ class projectsModelProjects extends model {
 		$body = JMailHelper::cleanBody($body);
 		$new_mail->addReplyTo(array($this->user->get('email'), $this->user->get('name')));
 		$new_mail->setSender($sender);
-		$new_mail->FromName = $this->iOfficeConfig->get('notifications_fromname');
+		$new_mail->FromName = $this->config->get('notifications_fromname');
 		$new_mail->setSubject($subject);
 		$new_mail->setBody($body);
-		$new_mail->useSMTP($this->iOfficeConfig->get('notifications_smtpauth'), 
-						   $this->iOfficeConfig->get('notifications_smtphost'), 
-						   $this->iOfficeConfig->get('notifications_smtpusername'), 
-						   $this->iOfficeConfig->get('notifications_smtppassword'));
+		$new_mail->useSMTP($this->config->get('notifications_smtpauth'), 
+						   $this->config->get('notifications_smtphost'), 
+						   $this->config->get('notifications_smtpusername'), 
+						   $this->config->get('notifications_smtppassword'));
 		//$new_mail->useSendmail();
 		
 		//echo '<pre>'; var_dump($new_mail); exit;

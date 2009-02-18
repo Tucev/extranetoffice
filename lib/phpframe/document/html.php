@@ -11,14 +11,20 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 /**
- * Document Class
+ * HTML Document Class
  * 
  * @package		phpFrame
  * @subpackage 	document
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-abstract class document extends singleton {
+class documentHTML extends document {
+	function addScript() {
+		
+	}
 	
+	function addStyleSheet() {
+		
+	}
 }
 ?>

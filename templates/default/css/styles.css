@@ -64,6 +64,10 @@ padding: 0;
 margin: 0;
 }
 
+img {
+border:0;
+}
+
 /* Structure */
 
 div#top {
@@ -207,6 +211,16 @@ background-color: #F6F6F6;
 padding: 5px 8px 10px 8px;
 margin: 0 10px 5px 0;
 }
+div.main_col_module_half {
+border:1px dotted #CCCCCC;
+background-color: #F6F6F6;
+padding: 5px 8px 10px 8px;
+margin: 0 10px 5px 0;
+float: left;
+width:45%;
+height: 205px;
+overflow: auto;
+}
 div.main_col_module h3,
 div.main_col_module_half h3 {
 background-repeat: no-repeat;
@@ -246,7 +260,82 @@ vertical-align: middle;
 font-size:0.9em;
 }
 
-/* Component forms */
+/* Framework.error */
+
+span.system_msg_outer {
+background-color: #ffff99;
+border: 1px dotted #999999;
+padding: 8px;
+display:table;
+margin-bottom: 5px;
+}
+span.system_msg {
+padding: 2px 2px 2px 20px;
+background-repeat: no-repeat;
+background-position: center left;
+font-style: italic;
+display:table-cell;
+}
+span.error {
+background-image: url(../images/icons/generic/16x16/error.png);
+}
+span.warning {
+background-image: url(../images/icons/generic/16x16/warning.png);
+}
+span.notice {
+background-image: url(../images/icons/generic/16x16/info.png);
+}
+span.message {
+background-image: url(../images/icons/generic/16x16/info.png);
+}
+
+/* Default Actions */
+div.new {
+background-image: url(../images/icons/generic/16x16/new.png);
+background-repeat: no-repeat;
+padding:2px 20px 0 20px;
+height:16px;
+float:right;
+}
+div.edit {
+background-image: url(../images/icons/generic/16x16/edit.png);
+background-repeat: no-repeat;
+padding:2px 0 0 20px;
+height:16px;
+}
+div.delete {
+background-image: url(../images/icons/generic/16x16/remove.png);
+background-repeat: no-repeat;
+padding:2px 0 0 20px;
+height:16px;
+}
+
+/* System Icons */
+
+span.icons_16_outer {
+border: 1px dotted #999999;
+padding: 8px;
+margin-left: 5px;
+background-color: #CCCCCC;
+}
+span.icons_16 {
+padding: 2px 2px 2px 20px;
+background-repeat: no-repeat;
+background-position: center left;
+}
+span.users_16 {
+background-image: url(../images/icons/generic/16x16/people.png);
+}
+span.sysadmin_16 {
+background-image: url(../images/icons/generic/16x16/sysadmin.png);
+}
+span.security_16 {
+background-image: url(../images/icons/generic/16x16/security.png);
+}
+
+/*************** Component specific styles ***************/
+
+/* Generic Component forms */
 
 .label_small {
 font-size: 0.8em;
@@ -296,61 +385,7 @@ table.data_list tbody tr.deleted td {
 text-decoration: line-through;
 }
 
-/* Framework.error */
-
-span.system_msg_outer {
-background-color: #ffff99;
-border: 1px dotted #999999;
-padding: 8px;
-display:table;
-margin-bottom: 5px;
-}
-span.system_msg {
-padding: 2px 2px 2px 20px;
-background-repeat: no-repeat;
-background-position: center left;
-font-style: italic;
-display:table-cell;
-}
-span.error {
-background-image: url(../images/icons/generic/16x16/error.png);
-}
-span.warning {
-background-image: url(../images/icons/generic/16x16/warning.png);
-}
-span.notice {
-background-image: url(../images/icons/generic/16x16/info.png);
-}
-span.message {
-background-image: url(../images/icons/generic/16x16/info.png);
-}
-
-/* Icons */
-
-span.icons_16_outer {
-border: 1px dotted #999999;
-padding: 8px;
-margin-left: 5px;
-background-color: #CCCCCC;
-}
-span.icons_16 {
-padding: 2px 2px 2px 20px;
-background-repeat: no-repeat;
-background-position: center left;
-}
-span.users_16 {
-background-image: url(../images/icons/generic/16x16/people.png);
-}
-span.sysadmin_16 {
-background-image: url(../images/icons/generic/16x16/sysadmin.png);
-}
-span.security_16 {
-background-image: url(../images/icons/generic/16x16/security.png);
-}
-
-/* Component specific styles */
-
-/* Login component */
+/*************** Login component (com_login) ***************/
 
 div#login_wrapper {
 text-align: center;
@@ -366,7 +401,8 @@ background-color: #FFFFFF;
 border: none;
 }
 
-/* Projects component */
+/*************** Projects component (com_project) ***************/
+
 h3.overdue_issues {
 background-image: url(../images/icons/projects/32x32/overdue.png);
 }
@@ -392,6 +428,36 @@ div.project_details {
 font-size: 0.9em;
 padding: 10px;
 border: 1px dotted #CCCCCC;
+}
+
+/* Admin */
+
+table.projects_permissions_detail {
+padding: 3px 10px 3px 10px;
+border: 1px solid #CCCCCC;
+}
+table.projects_permissions_detail img {
+border:0;
+}
+table.projects_permissions_detail thead tr th {
+padding:1px;
+vertical-align: top;
+font-size:0.8em;
+text-align: left;
+}
+table.projects_permissions_detail tbody tr.row0 {
+background-color: #F6F6F6;
+}
+table.projects_permissions_detail tbody tr th {
+padding:0;
+vertical-align: middle;
+font-size:0.8em;
+text-align: left;
+}
+table.projects_permissions_detail tbody tr td {
+padding:0;
+vertical-align: middle;
+font-size:0.8em;
 }
 
 /* Activity log */

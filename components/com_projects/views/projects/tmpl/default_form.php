@@ -226,7 +226,7 @@ function submitbutton(action) {
 <button class="button" type="button" onclick="submitbutton('apply');return false;"><?php echo text::_('Apply'); ?></button>
 
 <input type="hidden" name="id" value="<?php echo $this->project->id;?>" />
-<input type="hidden" name="option" value="com_intranetoffice" />
+<input type="hidden" name="option" value="com_projects" />
 <input type="hidden" name="task" value="save_project" />
 <input type="hidden" name="type" value="" />
 <?php echo html::_( 'form.token' ); ?>

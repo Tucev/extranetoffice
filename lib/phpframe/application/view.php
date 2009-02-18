@@ -65,6 +65,12 @@ abstract class view extends singleton {
 	 */
 	var $view=null;
 	/**
+	 * A reference to the user object
+	 * 
+	 * @var object
+	 */
+	var $user=null;
+	/**
 	 * The template prefix. Default value is "default", other possible values: "mobile", "xml".
 	 * 
 	 * @var string
@@ -84,6 +90,9 @@ abstract class view extends singleton {
 	 * @return	void
 	 */
 	function __construct() {
+		// Assign reference to config object
+		$this->config =& factory::getConfig();
+		
 		// set view name in view object
     	$this->view =& request::getVar('view');
     	

@@ -62,7 +62,7 @@ class projectsViewProjects extends view {
 		}
 		else {
 			$this->page_title = projectsHelperProjects::id2name($projectid).' - '. _LANG_PROJECTS_HOME;
-			//$this->doBreadcrumbs(_INTRANETOFFICE_PROJECTS_HOME);
+			//$this->doBreadcrumbs(_LANG_PROJECTS_HOME);
 			
 			// Get overdue issues
 			//$modelIssues = new iOfficeModelIssues();
@@ -75,6 +75,34 @@ class projectsViewProjects extends view {
 			$modelActivitylog = $this->getModel('activitylog');
 			$this->activitylog =& $modelActivitylog->getActivityLog($this->projectid);
 		}
+		
+	}
+	
+	function displayProjectsForm() {
+		if ($this->type == 'edit') {
+			$this->page_title = _LANG_PROJECTS_EDIT;
+		}
+		else {
+			$this->page_title = _LANG_PROJECTS_NEW;
+			// Set default values for tools
+			$this->project->access = '1';
+			$this->project->access_issues = '2';
+			$this->project->access_messages = '2';
+			$this->project->access_milestones = '2';
+			$this->project->access_files = '2';
+			$this->project->access_meetings = '3';
+			$this->project->access_polls = '3';
+			$this->project->access_reports = '1';
+			$this->project->access_people = '3';
+			$this->project->access_admin = '1';
+			// set the vie type to edit to load template
+			$this->type = 'edit';
+		}
+		
+		$this->doBreadcrumbs($this->page_title);
+	}
+	
+	function doBreadcrumbs() {
 		
 	}
 }
