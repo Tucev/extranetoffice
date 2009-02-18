@@ -21,16 +21,19 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  */
 class standardObject {
-	function get() {
-		
+	function get($property, $value=null) {
+		if (!$this->$property && $value) {
+			$this->$property = $value;
+		}
+		return $this->$property;
 	}
 	
-	function set() {
-		
+	function set($property, $value) {
+		$this->$property = $value;
 	}
 	
 	function toString() {
-		
+		return serialize($this);
 	}
 }
 ?>
