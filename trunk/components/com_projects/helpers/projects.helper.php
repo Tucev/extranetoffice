@@ -218,7 +218,7 @@ class projectsHelperProjects {
 	function project_roleid2name($id=0) {
 		if (!empty($id)) { // No category has been selected
 			$db = factory::getDB(); // Instantiate joomla database object
-			$query = "SELECT name FROM #__intranetoffice_roles WHERE id = '".$id."'";
+			$query = "SELECT name FROM #__roles WHERE id = '".$id."'";
 			$db -> setQuery($query);
 			$name = $db->loadResult();
 			if ($db->error) {
@@ -239,7 +239,7 @@ class projectsHelperProjects {
 		
 		// get project_types from db
 		$db = factory::getDB(); // Instantiate joomla database object
-		$query = "SELECT id, name FROM #__intranetoffice_roles ";
+		$query = "SELECT id, name FROM #__roles ";
 		$query .= " ORDER BY id ASC";
 		$db -> setQuery($query);
 		$rows = $db->loadObjectList();
@@ -260,7 +260,7 @@ class projectsHelperProjects {
 	function issue_typeid2name($id=0) {
 		if (!empty($id)) { // No category has been selected
 			$db = factory::getDB(); // Instantiate joomla database object
-			$query = "SELECT name FROM #__intranetoffice_issue_types WHERE id = '".$id."'";
+			$query = "SELECT name FROM #__issue_types WHERE id = '".$id."'";
 			$db -> setQuery($query);
 			$name = $db->loadResult();
 			if ($db->error) {
@@ -281,7 +281,7 @@ class projectsHelperProjects {
 		
 		// get project_types from db
 		$db = factory::getDB(); // Instantiate joomla database object
-		$query = "SELECT id, name FROM #__intranetoffice_issue_types ";
+		$query = "SELECT id, name FROM #__issue_types ";
 		$query .= " ORDER BY id ASC";
 		$db -> setQuery($query);
 		$rows = $db->loadObjectList();
@@ -302,7 +302,7 @@ class projectsHelperProjects {
 	function fileid2name($id=0) {
 		if (!empty($id)) { // No file has been selected
 			$db = factory::getDB(); // Instantiate joomla database object
-			$query = "SELECT title FROM #__intranetoffice_files WHERE id = '".$id."'";
+			$query = "SELECT title FROM #__files WHERE id = '".$id."'";
 			$db -> setQuery($query);
 			$name = $db->loadResult();
 			if ($db->error) {

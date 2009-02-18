@@ -62,7 +62,16 @@ class projectsModelPermissions extends model {
 	 */
 	function checkProjectAccess(&$project, $views_available) {
 		$this->project = $project;
-		$this->tools = $views_available;
+		
+		// Load tools/views and their access levels into tools array
+		foreach ($views_available as $view) {
+			// Filter out "projects" view (this is not a tool)
+			if ($view != 'projects') {
+				$access_property_name = 'access_'.$view;
+				$view_access_level = $this->project->$access_property_name;
+				$this->tools[] = array($view, $view_access_level);	
+			}
+		}
 		
 		// get role id
 		$user =& factory::getUser();
@@ -118,8 +127,8 @@ class projectsModelPermissions extends model {
 			$this->current_tool = $view;
 			$access_property_name = 'access_'.$view;
 			$view_access_level = $this->project->$access_property_name;
-			echo 'view_access_level: '.$view_access_level.'<br />';
-			echo 'roleid: '.$this->roleid;
+			//echo 'view_access_level: '.$view_access_level.'<br />';
+			//echo 'roleid: '.$this->roleid;
 			switch ($view_access_level) {
 				case '1' : // Admins only
 					if ($this->roleid == 1) return true;

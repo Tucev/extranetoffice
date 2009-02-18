@@ -74,7 +74,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 <?php //if ($this->iOfficeConfig->get('enable_email_client') && $this->settings->enable_email_client) : ?>
 
-<div class="ioffice_dashboard_item">
+<div class="main_col_module">
 	
 	<h3 class="recent_email"><?php echo _LANG_DASHBOARD_RECENT_EMAILS; ?></h3>
 	
@@ -137,7 +137,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 <?php //if ($this->iOfficeConfig->get('enable_projects')) : ?>
 	
-<div class="ioffice_dashboard_item">
+<div class="main_col_module">
 	<h3 class="project_updates"><?php echo _LANG_PROJECTS_UPDATES; ?></h3>
 	
 	<?php if (is_array($this->projects) && count($this->projects) > 0) : ?>

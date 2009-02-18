@@ -1,0 +1,44 @@
+<?php
+/**
+ * @version 	$Id$
+ * @package		ExtranetOffice
+ * @subpackage 	com_projects
+ * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+ * @license		BSD revised. See LICENSE.
+ * @author 		Luis Montero [e-noise.com]
+ */
+
+defined( '_EXEC' ) or die( 'Restricted access' );
+?>
+
+<h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
+
+
+<h2 class="subheading <?php echo $this->current_tool; ?>">
+	<a href="<?php echo route::_('index.php?option=com_projects&view=projects&layout='.$this->current_tool.'&projectid='.$this->projectid); ?>">
+		<?php echo $this->page_subheading; ?>
+	</a>
+</h2>
+
+
+<?php if (is_array($this->rows) && count($this->rows) > 0) : ?>
+
+<?php foreach($this->rows as $row) : ?>
+<div class="ioffice_row_icons">
+	
+	<a href="<?php echo route::_("index.php?option=com_projects&view=users&layout=detail&userid=".$row->id); ?>">
+	<img border="0" src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo !empty($row->settings->photo) ? $row->settings->photo : 'default.png'; ?>" />
+	</a>
+	
+	<div class="ioffice_row_icons_heading">
+	<a href="<?php echo route::_("index.php?option=com_projects&view=users&layout=detail&userid=".$row->id); ?>">
+		<?php echo $row->name; ?>
+	</a>
+	</div>
+
+</div>
+<?php endforeach; ?>
+
+<?php else : ?>
+<?php echo text::_( _LANG_NO_PEOPLE ); ?>
+<?php endif; ?>
