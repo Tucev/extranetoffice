@@ -78,5 +78,11 @@ class config {
 	 * @var bool
 	 */
 	var $debug=false;
+	/**
+	 * Secret string used to generate secure hash
+	 * 
+	 * @var string
+	 */
+	var $secret='MaHmncUHNyq2IAN7DoUlRcQo';
 }
 ?>

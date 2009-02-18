@@ -49,6 +49,12 @@ class session extends table {
 	 * @var string
 	 */
 	var $modified=null;
+	/**
+	 * Session token
+	 * 
+	 * @var string
+	 */
+	var $token=null;
 	
 	/**
 	 * Constructor
@@ -143,6 +149,50 @@ class session extends table {
 		}
 		
 		return $this->data[$key];
+	}
+	
+	/**
+	 * Get a session token, if a token isn't set yet one will be generated.
+	 * 
+	 * Tokens are used to secure forms from spamming attacks. Once a token
+	 * has been generated the system will check the post request to see if
+	 * it is present, if not it will invalidate the session.
+	 * 
+	 * @param boolean $forceNew If true, force a new token to be created
+	 * @access public
+	 * @return string The session token
+	 */
+
+	function getToken($forceNew = false) {
+		$token = $this->token;
+
+		//create a token
+		if ($token === null || $forceNew) {
+			$token = $this->_createToken(12);
+			$this->setVar('token', $token);
+		}
+
+		return $token;
+	}
+	
+	/**
+	 * Create a token-string
+	 * 
+	 * @access protected
+	 * @param int $length lenght of string
+	 * @return string $id generated token
+	 */
+	function _createToken($length = 32) {
+		static $chars = '0123456789abcdef';
+		$max = strlen( $chars ) - 1;
+		$token = '';
+		$name = session_name();
+		
+		for($i=0; $i<$length; ++$i) {
+			$token .= $chars[ (rand( 0, $max )) ];
+		}
+
+		return md5($token.$name);
 	}
 }
 ?>

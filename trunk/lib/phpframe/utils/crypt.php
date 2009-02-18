@@ -12,6 +12,32 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 class crypt {
 	/**
+	 * Provides a secure hash based on a seed
+	 * 
+	 * @param string Seed string
+	 * @return string 
+	 */
+	function getHash($seed) {
+		$config =& factory::getConfig();
+		return md5($config->secret.$seed);
+    }
+
+    /**
+     * Method to determine a hash for anti-spoofing variable names
+     * 
+     * @return    string    Hashed var name
+     * @since    1.5
+     * @static
+     */
+    function getToken($forceNew = false) {
+    	$user = &factory::getUser();
+    	$session =& factory::getSession();
+    	$hash = crypt::getHash($user->id.$session->getToken( $forceNew ));
+
+    	return $hash;
+    }
+    
+	/**
 	 * Formats a password using the current encryption.
 	 *
 	 * @access	public

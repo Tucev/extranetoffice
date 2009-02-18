@@ -31,6 +31,17 @@ class html {
 	}
 	
 	/**
+	 * Displays a hidden token field to reduce the risk of CSRF exploits.
+	 * 
+     * Use in conjuction with JRequest::checkToken
+     * 
+	 * @return string
+	 */
+	function formToken() {
+		return '<input type="hidden" name="'.crypt::getToken().'" value="1" />';
+	}
+	
+	/**
 	 * Class loader method
 	 * 
 	 * @param $str
