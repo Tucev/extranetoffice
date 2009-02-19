@@ -56,7 +56,7 @@ class projectsViewAdmin extends view {
 	 */
 	function displayAdminList() {
 		$this->page_title = projectsHelperProjects::id2name($this->projectid).' - '. _LANG_ADMIN;
-		$this->doBreadcrumbs(_LANG_ADMIN);
+		$this->addPathwayItem(_LANG_ADMIN);
 		
 		// Push model into the view
 		$model =& $this->getModel('projects');
@@ -68,7 +68,7 @@ class projectsViewAdmin extends view {
 	 */
 	function displayAdminMemberRole() {
 		$this->page_title = projectsHelperProjects::id2name($this->projectid).' - '. _LANG_ADMIN;
-		$this->doBreadcrumbs(_LANG_PROJECTS_MEMBERS);
+		$this->addPathwayItem(_LANG_PROJECTS_MEMBERS);
 		
 		$this->userid = request::getVar('userid', 0);
 		
@@ -84,7 +84,7 @@ class projectsViewAdmin extends view {
 	 */
 	function displayMemberForm() {
 		$this->page_title = projectsHelperProjects::id2name($this->projectid).' - '. _LANG_PROJECTS_MEMBERS;
-		$this->doBreadcrumbs(_LANG_PROJECTS_MEMBERS);
+		$this->addPathwayItem(_LANG_PROJECTS_MEMBERS);
 		
 		$userid = request::getVar('userid', 0);
 		
@@ -95,7 +95,7 @@ class projectsViewAdmin extends view {
 		}
 	}
 	
-	function doBreadcrumbs() {
+	function addPathwayItem() {
 		
 	}
 }

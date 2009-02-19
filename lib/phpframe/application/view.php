@@ -174,7 +174,7 @@ abstract class view extends singleton {
 		if (file_exists($model_path)) {
 			require_once $model_path;
 			$model_class_name = substr(request::getVar('option'), 4).'Model'.ucfirst($name);
-			eval('$model =& phpFrame::getInstance('.$model_class_name.');');
+			$model =& phpFrame::getInstance($model_class_name);
 			return $model;
 		}
 		else {
@@ -182,6 +182,20 @@ abstract class view extends singleton {
 			return false;
 		}
 		
+	}
+	
+	/**
+	 * Add item to pathway
+	 * 
+	 * @param	string	$title
+	 * @param	string	$url
+	 * @return	void
+	 * @since	1.0
+	 */
+	function addPathwayItem($title, $url='') {
+		$pathway =& factory::getPathway();
+		// add item
+		$pathway->addItem($title, $url);
 	}
 }
 ?>

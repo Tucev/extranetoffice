@@ -39,12 +39,14 @@ class projectsViewProjects extends view {
 		// Set reference to projectid
 		$this->projectid =& request::getVar('projectid', 0);
 		
+		// Add component level pathway item
+		$this->addPathwayItem(_LANG_PROJECTS, "index.php?option=com_projects");
+		
 		parent::__construct();
 	}
 	
 	function displayProjectsList() {
 		$this->page_title = _LANG_PROJECTS;
-		//$this->doBreadcrumbs($this->page_title);
 		
 		// Push model into the view
 		$model =& $this->getModel();
@@ -54,32 +56,40 @@ class projectsViewProjects extends view {
 		$this->lists =& $projects['lists'];
 	}
 	
-	function displayProjectsDetail() {
-		$projectid = request::getVar('projectid', 0);
+	function displayProjectsDetail($projectid=0) {
+		if (empty($projectid)) {
+			$projectid = request::getVar('projectid', 0);
+		}
 		
 		if (empty($projectid)) {
+			error::raise('', 'error', 'No project was selected');
 			return false;
 		}
 		else {
-			$this->page_title = projectsHelperProjects::id2name($projectid).' - '. _LANG_PROJECTS_HOME;
-			//$this->doBreadcrumbs(_LANG_PROJECTS_HOME);
+			$project_name = projectsHelperProjects::id2name($projectid);
+			$this->page_title = $project_name.' - '. _LANG_PROJECTS_HOME;
+			$this->addPathwayItem($project_name, "index.php?option=com_projects&view=projects&layout=detail&projectid=".$projectid);
+			$this->addPathwayItem(_LANG_PROJECTS_HOME);
 			
 			// Get overdue issues
-			//$modelIssues = new iOfficeModelIssues();
-			//$overdue_issues = $modelIssues->getIssues($this->projectid, true);
-			//$this->assignRef('overdue_issues', $overdue_issues['rows']);
+			$modelIssues =& $this->getModel('issues');
+			$overdue_issues = $modelIssues->getIssues($projectid, true);
+			$this->overdue_issues =& $overdue_issues['rows'];
 			
 			// Get upcoming milestones
 			
 			// Get project updates
-			$modelActivitylog = $this->getModel('activitylog');
-			$this->activitylog =& $modelActivitylog->getActivityLog($this->projectid);
+			$modelActivitylog =& $this->getModel('activitylog');
+			$this->activitylog = $modelActivitylog->getActivityLog($projectid);
 		}
 		
 	}
 	
+	/**
+	 * @todo This method needs to be ported to extranetoffice from intranetoffice
+	 */
 	function displayProjectsForm() {
-		if ($this->type == 'edit') {
+		if (!empty($this->projectid)) {
 			$this->page_title = _LANG_PROJECTS_EDIT;
 		}
 		else {
@@ -99,11 +109,7 @@ class projectsViewProjects extends view {
 			$this->type = 'edit';
 		}
 		
-		$this->doBreadcrumbs($this->page_title);
-	}
-	
-	function doBreadcrumbs() {
-		
+		$this->addPathwayItem($this->page_title);
 	}
 }
 ?>

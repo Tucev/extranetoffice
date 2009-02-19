@@ -56,7 +56,7 @@ $module_positions['right'] = $this->modules->display('right');
 </div>
 
 <div id="breadcrumb">
-	Home &gt;&gt;
+	<?php $this->pathway->display(); ?>
 </div>
 <div style="clear:both;"></div>
  

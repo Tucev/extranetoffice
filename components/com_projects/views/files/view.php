@@ -43,7 +43,7 @@ class projectsViewFiles extends view {
 	}
 	
 	function displayFiles() {
-		$this->doBreadcrumbs($this->page_subheading);
+		$this->addPathwayItem($this->page_subheading);
 		
 		$modelFiles = new iOfficeModelFiles();
 		$files = $modelFiles->getFiles($this->projectid);
@@ -54,8 +54,8 @@ class projectsViewFiles extends view {
 	
 	function displayFilesForm() {
 		$this->page_title .= ' - '._LANG_FILES_NEW;
-		$this->doBreadcrumbs($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
-		$this->doBreadcrumbs(_LANG_FILES_NEW);
+		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem(_LANG_FILES_NEW);
 		
 		$parentid = request::getVar('parentid', 0);
 		$parent_title = projectsHelperProjects::fileid2name($parentid);
@@ -64,14 +64,14 @@ class projectsViewFiles extends view {
 	}
 	
 	function displayFilesDetail() {
-		$this->doBreadcrumbs($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));	
+		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));	
 		
 		$modelFiles = new iOfficeModelFiles();
 		$file = $modelFiles->getFilesDetail($this->projectid, $this->fileid);
 		$this->assignRef('row', $file);
 		
 		$this->page_title .= ' - '.$file->title;
-		$this->doBreadcrumbs($file->title);
+		$this->addPathwayItem($file->title);
 	}
 	
 }

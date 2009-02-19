@@ -43,7 +43,7 @@ class projectsViewPeople extends view {
 	}
 	
 	function displayPeople() {
-		$this->doBreadcrumbs($this->page_subheading);
+		$this->addPathwayItem($this->page_subheading);
 		
 		$modelUsers = new iOfficeModelUsers();
 		$data = $modelUsers->getUsers($this->projectid);

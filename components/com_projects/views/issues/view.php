@@ -43,10 +43,10 @@ class projectsViewIssues extends view {
 	}
 	
 	function displayIssues() {
-		$this->doBreadcrumbs($this->page_subheading);
+		$this->addPathwayItem($this->page_subheading);
 		
 		// Push model into the view
-		$modelIssues = new iOfficeModelIssues();
+		$modelIssues = $this->getModel('issues');
 		$issues = $modelIssues->getIssues($this->projectid);
 		$this->assignRef('rows', $issues['rows']);
 		$this->assignRef('pageNav', $issues['pageNav']);
@@ -56,7 +56,7 @@ class projectsViewIssues extends view {
 	function displayIssuesForm() {
 		if (!empty($this->issueid)) {
 			$action = _LANG_ISSUES_EDIT;
-			$modelIssues = new iOfficeModelIssues();
+			$modelIssues = $this->getModel('issues');
 			$issue = $modelIssues->getIssuesDetail($this->projectid, $this->issueid);
 			$this->assignRef('row', $issue);
 		}
@@ -67,19 +67,19 @@ class projectsViewIssues extends view {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->doBreadcrumbs($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
-		$this->doBreadcrumbs($action);
+		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem($action);
 	}
 	
 	function displayIssuesDetail() {
-		$this->doBreadcrumbs($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
 		
-		$modelIssues = new iOfficeModelIssues();
+		$modelIssues = $this->getModel('issues');
 		$issue = $modelIssues->getIssuesDetail($this->projectid, $this->issueid);
 		$this->assignRef('row', $issue);
 		
 		$this->page_title .= ' - '.$issue->title;
-		$this->doBreadcrumbs($issue->title);
+		$this->addPathwayItem($issue->title);
 	}
 }
 ?>
