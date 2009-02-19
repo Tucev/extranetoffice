@@ -130,7 +130,7 @@ class projectsModelProjects extends model {
 				  . $where . 
 				  " GROUP BY p.id ";
 		
-		if ($total > 1) {
+		if (empty($projectid)) {
 			$pageNav = new pagination($total, $limitstart, $limit);
 			
 			$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
