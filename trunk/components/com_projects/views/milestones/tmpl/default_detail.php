@@ -72,7 +72,7 @@ function confirm_delete(projectid, milestoneid, label) {
 	<?php foreach ($this->row->comments as $comment) : ?>
 		<div class="ioffice_comment_row">
 			<div style="float:left; margin-right: 10px;">
-				<img src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo iOfficeHelperUsers::id2photo($comment->userid); ?>" />
+				<img src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo usersHelperUsers::id2photo($comment->userid); ?>" />
 			</div>
 			<div style="margin-left: 95px;">
 				<div class="ioffice_comment_details">

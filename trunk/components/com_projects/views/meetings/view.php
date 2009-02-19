@@ -43,7 +43,7 @@ class projectsViewMeetings extends view {
 	}
 	
 	function displayMeetings() {
-		$this->doBreadcrumbs($this->page_subheading);
+		$this->addPathwayItem($this->page_subheading);
 		
 		$modelMeetings = new iOfficeModelMeetings();
 		$meetings = $modelMeetings->getMeetings($this->projectid);
@@ -58,7 +58,7 @@ class projectsViewMeetings extends view {
 		$document->addScript('media/system/js/mootools.js');
 		$document->addScript('administrator/components/com_projects/lib/slimbox/js/slimbox.js');
 		
-		$this->doBreadcrumbs($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));	
+		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));	
 		
 		$modelMeetings = new iOfficeModelMeetings();
 		// Get meeting details
@@ -66,7 +66,7 @@ class projectsViewMeetings extends view {
 		$this->assignRef('row', $meeting);
 		
 		$this->page_title .= ' - '.$meeting->name;
-		$this->doBreadcrumbs($meeting->name);
+		$this->addPathwayItem($meeting->name);
 	}
 	
 	function displayMeetingsForm() {
@@ -82,8 +82,8 @@ class projectsViewMeetings extends view {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->doBreadcrumbs($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
-		$this->doBreadcrumbs($action);
+		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem($action);
 	}
 	
 	function displayMeetingsSlideshowsForm() {
@@ -99,8 +99,8 @@ class projectsViewMeetings extends view {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->doBreadcrumbs($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
-		$this->doBreadcrumbs($action);
+		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem($action);
 	}
 	
 }

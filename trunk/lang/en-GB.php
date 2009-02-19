@@ -19,6 +19,7 @@ define("_LANG_CREATED_BY", "Created by");
 define("_LANG_CREATED", "Date created");
 define("_LANG_NAME", "Name");
 define("_LANG_EMAIL", "Name");
+define("_LANG_ASSIGNEES", "Assignees");
 
 // com_dashboard
 define("_LANG_DASHBOARD", "Dashboard");
@@ -55,6 +56,11 @@ define("_LANG_PROJECTS_ACCESS_POLLS", "Polls access");
 define("_LANG_PROJECTS_ACCESS_PEOPLE", "People access");
 define("_LANG_PROJECTS_ACCESS_REPORTS", "Reports access");
 define("_LANG_PROJECTS_ACCESS_ADMIN", "Admin access");
+
+define("_LANG_PROJECTS_ACCESS_ADMINS", "Admins");
+define("_LANG_PROJECTS_ACCESS_WORKERS", "Project workers");
+define("_LANG_PROJECTS_ACCESS_GUESTS", "Guests");
+define("_LANG_PROJECTS_ACCESS_PUBLIC", "Public");
 
 define("_LANG_PROJECTS_STATUS_PLANNING", "Planning");
 define("_LANG_PROJECTS_STATUS_IN_PROGRESS", "In progress");

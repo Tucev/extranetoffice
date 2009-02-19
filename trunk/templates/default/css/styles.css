@@ -84,18 +84,18 @@ div#sitename a {
 color: #FFFFFF;
 }
 
-div#breadcrumb {
+div.pathway {
 color: #999999;
-font-size: 0.8em;
+font-size: 0.5em;
 padding: 4px 3px 3px 10px;
 }
-div#breadcrumb span.pathway img {
-padding: 0 5px;
+div.pathway span.pathway_item {
+font-size: 1.6em;
 }
-div#breadcrumb span.pathway a {
+div.pathway span.pathway_item a {
 color: white;
 }
-div#breadcrumb span.pathway a:hover {
+div.pathway span.pathway_item a:hover {
 color: #ffff99;
 }
 

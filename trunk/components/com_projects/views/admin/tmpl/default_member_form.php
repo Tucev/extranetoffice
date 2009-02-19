@@ -51,7 +51,7 @@ function submitbutton() {
 	
 	<fieldset class="josform">
 		<legend><?php echo text::_( _LANG_PROJECTS_ADD_EXISTING_MEMBER ); ?></legend>
-		Select existing users by username: <?php echo iOfficeHelperUsers::autocompleteUsername('iofficenewmemberform'); ?>
+		Select existing users by username: <?php echo usersHelperUsers::autocompleteUsername('iofficenewmemberform'); ?>
 	</fieldset>
 	
 	<div style="padding:10px 5px 5px 5px; font-size: 1.4em;">or</div>

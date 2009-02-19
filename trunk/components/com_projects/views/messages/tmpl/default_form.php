@@ -72,7 +72,7 @@ function submitbutton() {
 		</label>
 	</td>
 	<td>
-		<?php echo iOfficeHelperUsers::assignees($this->tracker->assignees, '', 'assignees[]', $this->projectid); ?>
+		<?php echo usersHelperUsers::assignees($this->tracker->assignees, '', 'assignees[]', $this->projectid); ?>
 	</td>
 </tr>
 <tr>

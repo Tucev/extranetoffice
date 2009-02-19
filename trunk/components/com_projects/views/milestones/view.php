@@ -43,7 +43,7 @@ class projectsViewMilestones extends view {
 	}
 	
 	function displayMilestones() {
-		$this->doBreadcrumbs($this->page_subheading);
+		$this->addPathwayItem($this->page_subheading);
 		
 		$modelMilestones = new iOfficeModelMilestones();
 		$milestones = $modelMilestones->getMilestones($this->projectid);
@@ -53,14 +53,14 @@ class projectsViewMilestones extends view {
 	}
 	
 	function displayMilestonesDetail() {
-		$this->doBreadcrumbs($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));	
+		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));	
 	
 		$modelMilestones = new iOfficeModelMilestones();
 		$milestone = $modelMilestones->getMilestonesDetail($this->projectid, $this->milestoneid);
 		$this->assignRef('row', $milestone);
 		
 		$this->page_title .= ' - '.$milestone->title;
-		$this->doBreadcrumbs($milestone->title);
+		$this->addPathwayItem($milestone->title);
 	}
 	
 	function displayMilestonesForm() {
@@ -76,8 +76,8 @@ class projectsViewMilestones extends view {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->doBreadcrumbs($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
-		$this->doBreadcrumbs($action);
+		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem($action);
 	}
 }
 ?>

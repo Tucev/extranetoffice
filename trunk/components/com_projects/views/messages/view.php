@@ -43,7 +43,7 @@ class projectsViewMessages extends view {
 	}
 	
 	function displayMessages() {
-		$this->doBreadcrumbs($this->page_subheading);
+		$this->addPathwayItem($this->page_subheading);
 		
 		$modelMessages = new iOfficeModelMessages();
 		$messages = $modelMessages->getMessages($this->projectid);
@@ -53,20 +53,20 @@ class projectsViewMessages extends view {
 	}
 	
 	function displayMessagesDetail() {
-		$this->doBreadcrumbs($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
 		
 		$modelMessages = new iOfficeModelMessages();
 		$message = $modelMessages->getMessagesDetail($this->projectid, $this->messageid);
 		$this->assignRef('row', $message);
 		
 		$this->page_title .= ' - '.$message->subject;
-		$this->doBreadcrumbs($message->subject);
+		$this->addPathwayItem($message->subject);
 	}
 	
 	function displayMessagesForm() {
 		$this->page_title .= ' - '._LANG_MESSAGES_NEW;
-		$this->doBreadcrumbs($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
-		$this->doBreadcrumbs(_LANG_MESSAGES_NEW);
+		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem(_LANG_MESSAGES_NEW);
 	}
 }
 ?>

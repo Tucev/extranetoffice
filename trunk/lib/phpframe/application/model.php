@@ -55,5 +55,18 @@ abstract class model extends singleton {
 	function __construct() {
 		
 	}
+	
+	function getModel($name) {
+		// Get current component option from request
+		$option =& request::getVar('option');
+		// Figure out controller instance name
+		$controller_class_name = substr($option, 4).'Controller';
+		// Assign reference to controller
+		$controller =& phpFrame::getInstance($controller_class_name);
+		// Get model using controller's method
+		$model =& $controller->getModel($name);
+		
+		return $model;
+	}
 }
 ?>
