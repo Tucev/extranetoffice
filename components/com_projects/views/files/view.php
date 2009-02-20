@@ -42,14 +42,19 @@ class projectsViewFiles extends view {
 		parent::__construct();
 	}
 	
-	function displayFiles() {
+	function displayFilesList() {
 		$this->addPathwayItem($this->page_subheading);
 		
-		$modelFiles = new iOfficeModelFiles();
+		$document =& factory::getDocument('html');
+		$document->addScript('lib/jquery/jquery-1.3.1.min.js');
+		$document->addScript('lib/thickbox/thickbox-compressed.js');
+		$document->addStyleSheet('lib/thickbox/thickbox.css');
+		
+		/*$modelFiles = new iOfficeModelFiles();
 		$files = $modelFiles->getFiles($this->projectid);
 		$this->assignRef('rows', $files['rows']);
 		$this->assignRef('pageNav', $files['pageNav']);
-		$this->assignRef('lists', $files['lists']);
+		$this->assignRef('lists', $files['lists']);*/
 	}
 	
 	function displayFilesForm() {
@@ -65,6 +70,11 @@ class projectsViewFiles extends view {
 	
 	function displayFilesDetail() {
 		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));	
+		
+		$document =& factory::getDocument('html');
+		$document->addScript('lib/jquery/jquery-1.3.1.min.js');
+		$document->addScript('lib/thickbox/thickbox-compressed.js');
+		$document->addStyleSheet('lib/thickbox/thickbox.css');
 		
 		$modelFiles = new iOfficeModelFiles();
 		$file = $modelFiles->getFilesDetail($this->projectid, $this->fileid);

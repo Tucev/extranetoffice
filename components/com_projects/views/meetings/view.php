@@ -42,14 +42,19 @@ class projectsViewMeetings extends view {
 		parent::__construct();
 	}
 	
-	function displayMeetings() {
+	function displayMeetingsList() {
 		$this->addPathwayItem($this->page_subheading);
 		
-		$modelMeetings = new iOfficeModelMeetings();
+		$document =& factory::getDocument('html');
+		$document->addScript('lib/jquery/jquery-1.3.1.min.js');
+		$document->addScript('lib/thickbox/thickbox-compressed.js');
+		$document->addStyleSheet('lib/thickbox/thickbox.css');
+		
+		/*$modelMeetings = new iOfficeModelMeetings();
 		$meetings = $modelMeetings->getMeetings($this->projectid);
 		$this->assignRef('rows', $meetings['rows']);
 		$this->assignRef('pageNav', $meetings['pageNav']);
-		$this->assignRef('lists', $meetings['lists']);
+		$this->assignRef('lists', $meetings['lists']);*/
 	}
 	
 	function displayMeetingsDetail() {
