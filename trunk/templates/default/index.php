@@ -20,12 +20,11 @@ $module_positions['right'] = $this->modules->display('right');
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->lang; ?>" lang="<?php echo $this->lang; ?>" >
 <head>
 <title><?php echo $this->config->sitename; ?><?php echo $this->document->title; ?></title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<?php $this->document->printHead(); ?>
 <link rel="stylesheet" href="templates/<?php echo $this->config->template ?>/css/styles.css" type="text/css" />
 <!--[if lte IE 6]>
 <link href="templates/<?php echo $this->config->template; ?>/css/ieonly.css" rel="stylesheet" type="text/css" />
 <![endif]-->
-<?php $this->document->printHead(); ?>
 </head>
 
 <body>

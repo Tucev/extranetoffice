@@ -81,7 +81,30 @@ class documentHTML extends document {
 	 * @var	 string
 	 * @access  private
 	 */
-	var $_tagTypes = array("_scripts_linked","_styles_linked");
+	var $_tagTypes = array("_metaTags","_scripts_linked","_styles_linked");
+	
+	/**
+	 * Constructor
+	 *
+	 * @return void
+	 * @since 0.1
+	 * @access public 
+	 */
+	function __construct(){
+		parent::__construct();
+		$this->_type = $this->_mime."; charset=".$this->_charset;
+	}
+	
+	/**
+	 * Add meta tag
+	 * 
+	 * @param $name
+	 * @param $content
+	 * @return void
+	 */
+	function addMetaTag($name, $content) {
+		$this->_metaTags[] = '<meta name="'.$name.'" content="'.$content.'" />';
+	}
 	
 	/**
 	 * Add linked scrip in document head
@@ -116,6 +139,13 @@ class documentHTML extends document {
 	 */
 	function printHead() {
 		
+		// add meta tags
+		$this->_metaTags[] = '<meta name="generator" content="Extranet Office" />';
+		$this->_metaTags[] = '<meta name="Content-Type" content="'.$this->_type.'" />';
+		
+		// print base url
+		echo '<base href="'.$this->base.'" />'.$this->_lineEnd;
+		
 		// For each tag type
 		foreach($this->_tagTypes as $tagType){
 			if (is_array($this->$tagType) && count($this->$tagType) > 0) {
@@ -125,9 +155,10 @@ class documentHTML extends document {
 	}
 	
 	/**
-	 * Make a path absolute
+	 * Make path absolute
 	 * 
-	 * @return string
+	 * @param $path
+	 * @return void
 	 */
 	private function _makeAbsolute(&$path)
 	{
