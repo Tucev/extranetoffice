@@ -11,6 +11,10 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 class factory {
+	function getApplication() {
+		return phpFrame::getInstance('application');
+	}
+	
 	function getConfig() {
 		return $GLOBALS['application']->config;
 	}
@@ -38,8 +42,12 @@ class factory {
 		return phpFrame::getInstance('pathway');
 	}
 	
-	function getApplication() {
-		return phpFrame::getInstance('application');
+	function getDocument($type) {
+		return phpFrame::getInstance('document'.strtoupper($type));
+	}
+	
+	function getURI() {
+		return phpFrame::getInstance('uri');
 	}
 }
 ?>

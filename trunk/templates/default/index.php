@@ -19,15 +19,17 @@ $module_positions['right'] = $this->modules->display('right');
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->lang; ?>" lang="<?php echo $this->lang; ?>" >
 <head>
-<title><?php echo $this->config->sitename; ?></title>
+<title><?php echo $this->config->sitename; ?><?php echo $this->document->title; ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <link rel="stylesheet" href="templates/<?php echo $this->config->template ?>/css/styles.css" type="text/css" />
 <!--[if lte IE 6]>
 <link href="templates/<?php echo $this->config->template; ?>/css/ieonly.css" rel="stylesheet" type="text/css" />
 <![endif]-->
+<?php $this->document->printHead(); ?>
 </head>
 
 <body>
+<?php //echo '<pre>'; var_dump($this->document); exit; ?>
 
 <a name="up" id="up"></a>
 
@@ -88,7 +90,7 @@ $module_positions['right'] = $this->modules->display('right');
 <!-- End Content -->
 
 <div id="footer">
-Extranet Office 2.0 Alpha<br />
+Powered by Extranet Office 1.0 Alpha<br />
 &copy; 2009 E-noise.com Limited
 </div>
 
