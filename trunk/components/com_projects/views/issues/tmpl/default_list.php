@@ -20,17 +20,16 @@ function confirm_delete(projectid, issueid, label) {
 }
 </script>
 
-<!-- mootools slider for filter panel -->
+<!-- jquery slider for filter panel -->
 <script language="javascript" type="text/javascript">
-window.addEvent('domready', function() {
-	var mySlide = new Fx.Slide('filterpanel');
-	mySlide.hide();
-		
-	$('toggle_filterpannel').addEvent('click', function(e){
-		e = new Event(e);
-		mySlide.toggle();
-		e.stop();
-	});
+$(document).ready(function() {
+ // hides the filterpanel as soon as the DOM is ready
+ $('#filterpanel.ioffice_list_filter').hide();
+// toggles the filterpanel on clicking the noted link  
+  $('a#toggle_filterpannel').click(function() {
+    $('#filterpanel.ioffice_list_filter').slideToggle('normal');
+    return false;
+  });
 });
 </script>
 
