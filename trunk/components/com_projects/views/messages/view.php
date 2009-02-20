@@ -42,14 +42,19 @@ class projectsViewMessages extends view {
 		parent::__construct();
 	}
 	
-	function displayMessages() {
+	function displayMessagesList() {
 		$this->addPathwayItem($this->page_subheading);
 		
-		$modelMessages = new iOfficeModelMessages();
+		$document =& factory::getDocument('html');
+		$document->addScript('lib/jquery/jquery-1.3.1.min.js');
+		$document->addScript('lib/thickbox/thickbox-compressed.js');
+		$document->addStyleSheet('lib/thickbox/thickbox.css');
+		
+		/*$modelMessages = new iOfficeModelMessages();
 		$messages = $modelMessages->getMessages($this->projectid);
 		$this->assignRef('rows', $messages['rows']);
 		$this->assignRef('pageNav', $messages['pageNav']);
-		$this->assignRef('lists', $messages['lists']);
+		$this->assignRef('lists', $messages['lists']);*/
 	}
 	
 	function displayMessagesDetail() {

@@ -42,15 +42,20 @@ class projectsViewIssues extends view {
 		parent::__construct();
 	}
 	
-	function displayIssues() {
+	function displayIssuesList() {
 		$this->addPathwayItem($this->page_subheading);
 		
+		$document =& factory::getDocument('html');
+		$document->addScript('lib/jquery/jquery-1.3.1.min.js');
+		$document->addScript('lib/thickbox/thickbox-compressed.js');
+		$document->addStyleSheet('lib/thickbox/thickbox.css');
+		
 		// Push model into the view
-		$modelIssues = $this->getModel('issues');
+		/*$modelIssues = $this->getModel('issues');
 		$issues = $modelIssues->getIssues($this->projectid);
 		$this->assignRef('rows', $issues['rows']);
 		$this->assignRef('pageNav', $issues['pageNav']);
-		$this->assignRef('lists', $issues['lists']);
+		$this->assignRef('lists', $issues['lists']);*/
 	}
 	
 	function displayIssuesForm() {

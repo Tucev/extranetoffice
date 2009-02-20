@@ -42,14 +42,19 @@ class projectsViewMilestones extends view {
 		parent::__construct();
 	}
 	
-	function displayMilestones() {
+	function displayMilestonesList() {
 		$this->addPathwayItem($this->page_subheading);
 		
-		$modelMilestones = new iOfficeModelMilestones();
+		$document =& factory::getDocument('html');
+		$document->addScript('lib/jquery/jquery-1.3.1.min.js');
+		$document->addScript('lib/thickbox/thickbox-compressed.js');
+		$document->addStyleSheet('lib/thickbox/thickbox.css');
+		
+		/*$modelMilestones = new iOfficeModelMilestones();
 		$milestones = $modelMilestones->getMilestones($this->projectid);
 		$this->assignRef('rows', $milestones['rows']);
 		$this->assignRef('pageNav', $milestones['pageNav']);
-		$this->assignRef('lists', $milestones['lists']);
+		$this->assignRef('lists', $milestones['lists']);*/
 	}
 	
 	function displayMilestonesDetail() {

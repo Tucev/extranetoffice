@@ -1,4 +1,4 @@
-<?php
+w<?php
 /**
  * @version 	$Id$
  * @package		ExtranetOffice
@@ -10,22 +10,6 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
-
-<!-- initialize squeezebox (lightbox) -->
-<script type="text/javascript">
-window.addEvent('domready', function() {
-
-	SqueezeBox.initialize({});
-
-	$$('a.modal').each(function(el) {
-		el.addEvent('click', function(e) {
-			new Event(e).stop();
-			SqueezeBox.fromElement(el);
-		});
-	});
-	
-});
-</script>
 
 <script language="javascript" type="text/javascript">
 function confirm_delete(projectid, label) {
