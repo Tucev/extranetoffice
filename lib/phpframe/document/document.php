@@ -97,7 +97,7 @@ class document extends singleton {
 	 * @var		string
 	 * @access	private
 	 */
-	var $_mime = '';
+	var $_mime = 'text/html';
 
 	/**
 	 * Document namespace
