@@ -58,6 +58,9 @@ class projectsViewAdmin extends view {
 		$this->page_title = projectsHelperProjects::id2name($this->projectid).' - '. _LANG_ADMIN;
 		$this->addPathwayItem(_LANG_ADMIN);
 		
+		$document =& factory::getDocument('html');
+		$document->addScript('lib/jquery/jquery-1.3.1.min.js');
+		
 		// Push model into the view
 		$model =& $this->getModel('projects');
 		$this->members = $model->getMembers($this->projectid);

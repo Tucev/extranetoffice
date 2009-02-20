@@ -91,6 +91,12 @@ class application extends singleton {
 	 */
 	var $pathway=null;
 	/**
+	 * Document object
+	 * 
+	 * @var object
+	 */
+	var $document=null;
+	/**
 	 * The output buffer produced by the executed component
 	 *
 	 * @var string
@@ -129,7 +135,7 @@ class application extends singleton {
 		$this->request = request::init();
 		
 		// instantiate db object and store in application
-		$this->db =& db::getInstance('db');
+		$this->db =& phpFrame::getInstance('db');
 		// connect to MySQL server
 		$this->db->connect($this->config->db_host, $this->config->db_user, $this->config->db_pass, $this->config->db_name);
 	}
@@ -199,6 +205,9 @@ class application extends singleton {
 			
 			// get pathway
 			$this->pathway =& factory::getPathway();
+			
+			// get document object
+			$this->document =& factory::getDocument('html');
 		}
 		
 		switch ($this->client) {
