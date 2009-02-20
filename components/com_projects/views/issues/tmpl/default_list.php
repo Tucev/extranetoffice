@@ -23,13 +23,13 @@ function confirm_delete(projectid, issueid, label) {
 <!-- jquery slider for filter panel -->
 <script language="javascript" type="text/javascript">
 $(document).ready(function() {
- // hides the filterpanel as soon as the DOM is ready
- $('#filterpanel.ioffice_list_filter').hide();
-// toggles the filterpanel on clicking the noted link  
-  $('a#toggle_filterpannel').click(function() {
-    $('#filterpanel.ioffice_list_filter').slideToggle('normal');
-    return false;
-  });
+	// hides the filterpanel as soon as the DOM is ready
+	$('#filterpanel.ioffice_list_filter').hide();
+	// toggles the filterpanel on clicking the noted link  
+	$('a#toggle_filterpannel').click(function() {
+		$('#filterpanel.ioffice_list_filter').slideToggle('normal');
+		return false;
+  	});
 });
 </script>
 
