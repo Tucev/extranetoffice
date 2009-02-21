@@ -22,7 +22,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @abstract 
  */
-abstract class singleton {
+abstract class singleton extends standardObject {
 	/**
 	 * Get the single instance of this sigleton class.
 	 * 
