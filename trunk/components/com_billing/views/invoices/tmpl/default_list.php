@@ -38,7 +38,7 @@ function submitbutton(task) {
 //-->
 </script>
 		
-<div class="filter_container">
+<div class="list_filter_container">
 		
 		<form name="filterForm" id="filterForm" action="index.php" method="POST">
 		
@@ -109,7 +109,7 @@ function submitbutton(task) {
 		<input type="button" name="export_qif_btn" value="Export QIF" onclick="submitbutton('export');" />
 		</form>
 		
-		</div><!-- close .filter_container -->
+		</div><!-- close .list_filter_container -->
 		
 		
 		<h4>Period: Between <?php echo $filter['date_range']; ?></h4>

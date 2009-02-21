@@ -24,10 +24,10 @@ function confirm_delete(projectid, issueid, label) {
 <script language="javascript" type="text/javascript">
 $(document).ready(function() {
 	// hides the filterpanel as soon as the DOM is ready
-	$('#filterpanel.ioffice_list_filter').hide();
+	$('#filterpanel.list_filter_container').hide();
 	// toggles the filterpanel on clicking the noted link  
 	$('a#toggle_filterpannel').click(function() {
-		$('#filterpanel.ioffice_list_filter').slideToggle('normal');
+		$('#filterpanel.list_filter_container').slideToggle('normal');
 		return false;
   	});
 });
@@ -51,7 +51,7 @@ $(document).ready(function() {
 
 <a id="toggle_filterpannel" href="#">Refine search</a>
 
-<div id="filterpanel" class="ioffice_list_filter">
+<div id="filterpanel" class="list_filter_container">
 	<form name="listsearchform" action="index.php" method="post">
 	<table border="0" cellpadding="3" cellspacing="1">
 	<tr>

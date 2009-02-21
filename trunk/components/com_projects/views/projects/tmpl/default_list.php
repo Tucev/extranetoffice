@@ -44,7 +44,7 @@ function submit_filter(reset) {
 	form.submit();
 }
 </script>
-<div class="filter_container">
+<div class="list_filter_container">
 <form action="index.php" id="listsearchform" name="listsearchform" method="post">
 <input class="inputbox" type="text" name="search" id="search" value="<?php echo $this->lists['search']; ?>">
 <button type="button" class="button" onclick="submit_filter(false);">Search</button>
