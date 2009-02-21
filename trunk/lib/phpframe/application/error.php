@@ -33,7 +33,7 @@ class error {
 	 */
 	function raise($code='', $level='error', $msg) {
 		// create standard object holding error
-		$error = new stdClass();
+		$error = new standardObject();
 		$error->code = $code;
 		$error->level = $level;
 		$error->msg = $msg;
