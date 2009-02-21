@@ -32,6 +32,12 @@ class projectsViewMessages extends view {
 	var $page_title=null;
 	var $projectid=null;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @return 	void
+	 * @since	1.0
+	 */
 	function __construct() {
 		// Set the view template to load (default value is set in controller)
 		$this->layout =& request::getVar('layout');
@@ -39,11 +45,40 @@ class projectsViewMessages extends view {
 		// Set reference to projectid
 		$this->projectid =& request::getVar('projectid', 0);
 		
+		// Set reference to project object loaded in controller
+		if (!empty($this->projectid)) {
+			$controller =& phpFrame::getInstance('projectsController');
+			$this->project =& $controller->project;
+		}
+		
 		parent::__construct();
 	}
 	
+	/**
+	 * Override view display method
+	 * 
+	 * This method overrides the parent display() method and appends the page title to the document title.
+	 * 
+	 * @return	void
+	 * @since	1.0
+	 */
+	function display() {
+		parent::display();
+		
+		// Append page title to document title
+		$document =& factory::getDocument('html');
+		$document->title .= ' - '.$this->page_title;
+	}
+	
+	/**
+	 * Custom display method triggered by list layout.
+	 * 
+	 * @return void
+	 */
 	function displayMessagesList() {
-		$this->addPathwayItem($this->page_subheading);
+		$this->page_title = _LANG_MESSAGES;
+		$this->page_heading = $this->project->name.' - '._LANG_MESSAGES;
+		$this->addPathwayItem($this->page_title);
 		
 		$document =& factory::getDocument('html');
 		$document->addScript('lib/jquery/jquery-1.3.1.min.js');

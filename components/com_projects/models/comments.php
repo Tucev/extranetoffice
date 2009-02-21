@@ -55,7 +55,7 @@ class projectsModelComments extends model {
 	}
 	
 	function saveComment($projectid) {
-		$row = new iOfficeTableComments();
+		$row = new projectsTableComments();
 		
 		$post = request::get( 'post' );
 		
@@ -82,7 +82,7 @@ class projectsModelComments extends model {
 		//TODO: This function should also check permissions before deleting
 		
 		// Instantiate table object
-		$row = new iOfficeTableComments();
+		$row = new projectsTableComments();
 		
 		// Delete row from database
 		if (!$row->delete($commentid)) {

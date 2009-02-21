@@ -42,6 +42,14 @@ class projectsController extends controller {
 			// Do security check with custom permission model for projects
 			$this->project_permissions =& $this->getModel('permissions');
 			$this->project_permissions->checkProjectAccess($this->project, $this->views_available);
+			
+			// Add pathway item
+			$this->addPathwayItem($this->project->name, 'index.php?option=com_projects&view=projects&layout=detail&projectid='.$this->project->id);
+			
+			// Append page component name to document title
+			$document =& factory::getDocument('html');
+			if (!empty($document->title)) $document->title .= ' - ';
+			$document->title .= $this->project->name;
 		}
 	}
 }

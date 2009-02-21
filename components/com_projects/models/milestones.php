@@ -188,7 +188,7 @@ class projectsModelMilestones extends model {
 	}
 	
 	function saveMilestone($projectid) {
-		$row = new iOfficeTableMilestones();
+		$row = new projectsTableMilestones();
 		
 		$post = request::get( 'post' );
 		
@@ -249,7 +249,7 @@ class projectsModelMilestones extends model {
 		$this->db->query();
 		
 		// Instantiate table object
-		$row = new iOfficeTableMilestones();
+		$row = new projectsTableMilestones();
 		
 		// Delete row from database
 		if (!$row->delete($milestoneid)) {

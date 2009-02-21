@@ -159,7 +159,7 @@ class projectsModelProjects extends model {
 	}
 
 	function saveProject() {
-		$row = new iOfficeTableProjects();
+		$row = new projectsTableProjects();
 		
 		$post = request::get( 'post' );
 		if (!$row->bind( $post )) {
@@ -191,7 +191,7 @@ class projectsModelProjects extends model {
 	function deleteProject($projectid) {
 		//TODO: Before deleting the project we need to delete all its tracker items, lists, files, ...
 		// Instantiate table object
-		$row = new iOfficeTableProjects();
+		$row = new projectsTableProjects();
 		// Delete row from database
 		if (!$row->delete($projectid)) {
 			JError::raiseError(500, $row->getError() );
@@ -212,7 +212,7 @@ class projectsModelProjects extends model {
 	}
 	
 	function saveMember($projectid, $userid, $roleid) {
-		$row = new iOfficeTableUsersRoles();
+		$row = new projectsTableUsersRoles();
 		$row->load($userid, $projectid);
 		
 		$row->userid = $userid;

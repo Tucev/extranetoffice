@@ -65,7 +65,7 @@ class projectsModelActivitylog extends model {
 	 */
 	function saveActivityLog($projectid, $userid, $type, $action, $title, $description, $url, $assignees, $notify) {
 		// Store notification in db
-		$row = new iOfficeTableActivitylog();
+		$row = new projectsTableActivitylog();
 		$row->projectid = $projectid;
 		$row->userid = $userid;
 		$row->type = $type;

@@ -34,6 +34,12 @@ class projectsViewAdmin extends view {
 	var $project=null;
 	var $tools=null;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @return 	void
+	 * @since	1.0
+	 */
 	function __construct() {
 		// Set the view template to load (default value is set in controller)
 		$this->layout =& request::getVar('layout');
@@ -46,16 +52,35 @@ class projectsViewAdmin extends view {
 			$controller =& phpFrame::getInstance('projectsController');
 			$this->project =& $controller->project;
 			$this->project_permissions =& $controller->project_permissions;
+			$this->page_title = projectsHelperProjects::id2name($this->projectid);
 		}
 		
 		parent::__construct();
 	}
 	
 	/**
-	 * @todo This method needs to be ported to extranetoffice from intranetoffice
+	 * Override view display method
+	 * 
+	 * This method overrides the parent display() method and appends the page title to the document title.
+	 * 
+	 * @return	void
+	 * @since	1.0
+	 */
+	function display() {
+		parent::display();
+		
+		// Append page title to document title
+		$document =& factory::getDocument('html');
+		$document->title .= ' - '.$this->page_title;
+	}
+	
+	/**
+	 * Custom display method triggered by list layout.
+	 * 
+	 * @return void
 	 */
 	function displayAdminList() {
-		$this->page_title = projectsHelperProjects::id2name($this->projectid).' - '. _LANG_ADMIN;
+		$this->page_title .= ' - '._LANG_ADMIN;
 		$this->addPathwayItem(_LANG_ADMIN);
 		
 		$document =& factory::getDocument('html');
@@ -98,10 +123,6 @@ class projectsViewAdmin extends view {
 		if (!empty($userid)) {
 			$this->members = $model->getMembers($this->projectid, $userid);	
 		}
-	}
-	
-	function addPathwayItem() {
-		
 	}
 }
 ?>
