@@ -347,7 +347,7 @@ font-size: 1.6em;
 
 /* data list filter */
 
-div.filter_container {
+div.list_filter_container {
 border: 1px solid #CCCCCC;
 padding: 10px;
 background-color: #F0F0F0;
