@@ -80,7 +80,7 @@ function confirm_delete(projectid, fileid, label) {
 	
 	<?php if (!empty($row->changelog)) : ?>
 	<div class="ioffice_thread_body">
-		<?php echo nl2br(enoiseFormat::limit_words($row->changelog, 255)); ?>
+		<?php echo nl2br(text::limit_words($row->changelog, 255)); ?>
 	</div>
 	<?php endif; ?>
 	
@@ -115,7 +115,7 @@ function confirm_delete(projectid, fileid, label) {
 				(Revision <?php echo $child->revision; ?> - <?php echo date("D, d M Y H:ia", strtotime($child->ts)); ?>) 
 				Uploaded by: <?php echo $child->created_by_name; ?>
 				<br />
-				<?php echo nl2br(enoiseFormat::limit_words($child->changelog, 255)); ?>
+				<?php echo nl2br(text::limit_words($child->changelog, 255)); ?>
 			</div>
 		<?php endforeach; ?>
 	</div>

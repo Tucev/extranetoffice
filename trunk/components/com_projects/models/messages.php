@@ -151,7 +151,7 @@ class projectsModelMessages extends model {
 	}
 	
 	function saveMessage($projectid) {
-		$row = new iOfficeTableMessages();
+		$row = new projectsTableMessages();
 		
 		$post = request::get( 'post' );
 		
@@ -213,7 +213,7 @@ class projectsModelMessages extends model {
 		$this->db->query();
 		
 		// Instantiate table object
-		$row = new iOfficeTableMessages();
+		$row = new projectsTableMessages();
 		
 		// Delete row from database
 		if (!$row->delete($messageid)) {

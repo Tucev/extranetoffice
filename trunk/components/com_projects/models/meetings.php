@@ -149,7 +149,7 @@ class projectsModelMeetings extends model {
 	}
 	
 	function saveMeeting($projectid, $meetingid=0) {
-		$row = new iOfficeTableMeetings();
+		$row = new projectsTableMeetings();
 		
 		if (empty($meetingid)) {
 			$row->created_by = $this->user->id;
@@ -213,7 +213,7 @@ class projectsModelMeetings extends model {
 		$this->db->query();
 		
 		// Instantiate table object
-		$row = new iOfficeTableMeetings();
+		$row = new projectsTableMeetings();
 		
 		// Delete row from database
 		if (!$row->delete($meetingid)) {

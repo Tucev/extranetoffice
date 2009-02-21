@@ -31,7 +31,14 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 class projectsViewFiles extends view {
 	var $page_title=null;
 	var $projectid=null;
+	var $project=null;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @return 	void
+	 * @since	1.0
+	 */
 	function __construct() {
 		// Set the view template to load (default value is set in controller)
 		$this->layout =& request::getVar('layout');
@@ -39,22 +46,51 @@ class projectsViewFiles extends view {
 		// Set reference to projectid
 		$this->projectid =& request::getVar('projectid', 0);
 		
+		// Set reference to project object loaded in controller
+		if (!empty($this->projectid)) {
+			$controller =& phpFrame::getInstance('projectsController');
+			$this->project =& $controller->project;
+		}
+		
 		parent::__construct();
 	}
 	
+	/**
+	 * Override view display method
+	 * 
+	 * This method overrides the parent display() method and appends the page title to the document title.
+	 * 
+	 * @return	void
+	 * @since	1.0
+	 */
+	function display() {
+		parent::display();
+		
+		// Append page title to document title
+		$document =& factory::getDocument('html');
+		$document->title .= ' - '.$this->page_title;
+	}
+	
+	/**
+	 * Custom display method triggered by list layout.
+	 * 
+	 * @return void
+	 */
 	function displayFilesList() {
-		$this->addPathwayItem($this->page_subheading);
+		$this->page_title = _LANG_FILES;
+		$this->page_heading = $this->project->name.' - '._LANG_FILES;
+		$this->addPathwayItem($this->page_title);
 		
 		$document =& factory::getDocument('html');
 		$document->addScript('lib/jquery/jquery-1.3.1.min.js');
 		$document->addScript('lib/thickbox/thickbox-compressed.js');
 		$document->addStyleSheet('lib/thickbox/thickbox.css');
 		
-		/*$modelFiles = new iOfficeModelFiles();
+		$modelFiles =& $this->getModel('files');
 		$files = $modelFiles->getFiles($this->projectid);
-		$this->assignRef('rows', $files['rows']);
-		$this->assignRef('pageNav', $files['pageNav']);
-		$this->assignRef('lists', $files['lists']);*/
+		$this->rows =& $files['rows'];
+		$this->pageNav =& $files['pageNav'];
+		$this->lists =& $files['lists'];
 	}
 	
 	function displayFilesForm() {
@@ -76,7 +112,7 @@ class projectsViewFiles extends view {
 		$document->addScript('lib/thickbox/thickbox-compressed.js');
 		$document->addStyleSheet('lib/thickbox/thickbox.css');
 		
-		$modelFiles = new iOfficeModelFiles();
+		$modelFiles =& $this->getModel('files');
 		$file = $modelFiles->getFilesDetail($this->projectid, $this->fileid);
 		$this->assignRef('row', $file);
 		

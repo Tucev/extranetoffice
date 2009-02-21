@@ -188,7 +188,7 @@ class projectsModelIssues extends model {
 	}
 	
 	function saveIssue($projectid, $issueid=0) {
-		$row = new iOfficeTableIssues();
+		$row = new projectsTableIssues();
 		
 		if (empty($issueid)) {
 			$row->created_by = $this->user->id;
@@ -252,7 +252,7 @@ class projectsModelIssues extends model {
 		$this->db->query();
 		
 		// Instantiate table object
-		$row = new iOfficeTableIssues();
+		$row = new projectsTableIssues();
 		
 		// Delete row from database
 		if (!$row->delete($issueid)) {
@@ -288,7 +288,7 @@ class projectsModelIssues extends model {
 		$this->db->setQuery($query);
 		$this->db->query();
 		
-		$row = new iOfficeTableIssues();
+		$row = new projectsTableIssues();
 		$row->load($issueid);
 		return $row;
 	}
@@ -299,7 +299,7 @@ class projectsModelIssues extends model {
 		$this->db->setQuery($query);
 		$this->db->query();
 		
-		$row = new iOfficeTableIssues();
+		$row = new projectsTableIssues();
 		$row->load($issueid);
 		return $row;
 	}

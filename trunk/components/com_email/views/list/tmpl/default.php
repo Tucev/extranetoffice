@@ -218,7 +218,7 @@ function confirm_delete_folder(mailbox, label) {
 	<div>
 	Current system time: <?php echo $this->messages['check']->Date; ?><br />
   	Number of messages: <?php echo $this->messages['check']->Nmsgs; ?><br />
-	Mailbox Size: <?php echo enoiseFormat::bytes($this->messages['check']->Size); ?>
+	Mailbox Size: <?php echo text::bytes($this->messages['check']->Size); ?>
 	</div>
 </div>
 <div id="mailbox-info-right">
@@ -279,7 +279,7 @@ function confirm_delete_folder(mailbox, label) {
     		</a>
     	</div>
     	<div class="ioffice_cell size">
-    		<?php echo enoiseFormat::bytes($email->size); ?>
+    		<?php echo text::bytes($email->size); ?>
     	</div>
     	<div class="ioffice_cell date">
     		<?php echo date("d M Y H:i:s", strtotime($email->date)); ?>

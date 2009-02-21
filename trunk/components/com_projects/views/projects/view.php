@@ -32,6 +32,12 @@ class projectsViewProjects extends view {
 	var $page_title=null;
 	var $projectid=null;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @return 	void
+	 * @since	1.0
+	 */
 	function __construct() {
 		// Set the view template to load (default value is set in controller)
 		$this->layout =& request::getVar('layout');
@@ -39,23 +45,50 @@ class projectsViewProjects extends view {
 		// Set reference to projectid
 		$this->projectid =& request::getVar('projectid', 0);
 		
-		// Add component level pathway item
-		$this->addPathwayItem(_LANG_PROJECTS, "index.php?option=com_projects");
-		
 		parent::__construct();
 	}
 	
+	/**
+	 * Override view display method
+	 * 
+	 * This method overrides the parent display() method and appends the page title to the document title.
+	 * 
+	 * @return	void
+	 * @since	1.0
+	 */
+	function display() {
+		parent::display();
+		
+		// Append page title to document title
+		if (request::getVar('layout') != 'list') {
+			$document =& factory::getDocument('html');
+			$document->title .= ' - '.$this->page_title;
+		}
+	}
+	
+	/**
+	 * Custom display method triggered by list layout.
+	 * 
+	 * @return void
+	 */
 	function displayProjectsList() {
 		$this->page_title = _LANG_PROJECTS;
 		
 		// Push model into the view
 		$model =& $this->getModel();
+		
+		// Get projects and store data in view
 		$projects = $model->getProjects();
 		$this->rows =& $projects['rows'];
 		$this->pageNav =& $projects['pageNav'];
 		$this->lists =& $projects['lists'];
 	}
 	
+	/**
+	 * Custom display method triggered by detail layout.
+	 * 
+	 * @return void
+	 */
 	function displayProjectsDetail($projectid=0) {
 		if (empty($projectid)) {
 			$projectid = request::getVar('projectid', 0);
@@ -68,7 +101,6 @@ class projectsViewProjects extends view {
 		else {
 			$project_name = projectsHelperProjects::id2name($projectid);
 			$this->page_title = $project_name.' - '. _LANG_PROJECTS_HOME;
-			$this->addPathwayItem($project_name, "index.php?option=com_projects&view=projects&layout=detail&projectid=".$projectid);
 			$this->addPathwayItem(_LANG_PROJECTS_HOME);
 			
 			// Get overdue issues

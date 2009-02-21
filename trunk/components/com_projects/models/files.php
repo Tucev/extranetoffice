@@ -78,13 +78,12 @@ class projectsModelFiles extends model {
 				  u.username AS created_by_name
 				  FROM #__files AS f 
 				  JOIN #__users u ON u.id = f.userid 
-				  INNER JOIN (SELECT MAX(id) AS id FROM jos_intranetoffice_files GROUP BY parentid) ids ON f.id = ids.id "
+				  INNER JOIN (SELECT MAX(id) AS id FROM #__files GROUP BY parentid) ids ON f.id = ids.id "
 				  . $where;
 		//echo $query; exit;	  
 		$this->db->setQuery( $query );
 		$this->db->query();
 		$total = $this->db->getNumRows();
-
 		
 		$pageNav = new pagination( $total, $limitstart, $limit );
 
@@ -155,7 +154,7 @@ class projectsModelFiles extends model {
 	}
 	
 	function saveFile($projectid) {
-		$row = new iOfficeTableFiles();
+		$row = new projectsTableFiles();
 		
 		$post = request::get( 'post' );
 		if (!$row->bind( $post )) {
@@ -218,7 +217,7 @@ class projectsModelFiles extends model {
 		//TODO: This function should delete related items if any (comments, ...)
 		
 		// Instantiate table object
-		$row = new iOfficeTableFiles();
+		$row = new projectsTableFiles();
 		// Load row data
 		$row->load($fileid);
 		
@@ -237,7 +236,7 @@ class projectsModelFiles extends model {
 	
 	function downloadFile($projectid, $fileid) {
 		//TODO: This function should also check permissions
-		$row = new iOfficeTableFiles();
+		$row = new projectsTableFiles();
 		// Load row data
 		$row->load($fileid);
 		

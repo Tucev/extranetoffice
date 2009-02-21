@@ -149,7 +149,7 @@ $(document).ready(function() {
 	
 	<?php if (!empty($row->description)) : ?>
 	<div class="ioffice_thread_body">
-		<?php echo nl2br(enoiseFormat::limit_words($row->description, 255)); ?>
+		<?php echo nl2br(text::limit_words($row->description, 255)); ?>
 	</div>
 	<?php endif; ?>
 	
