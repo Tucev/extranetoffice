@@ -127,7 +127,7 @@ class db extends singleton {
 		}
 		
 		$row = mysql_fetch_assoc($this->rs);
-		$row_obj = new stdClass();
+		$row_obj = new standardObject();
 		if (is_array($row)) {
 			foreach ($row as $key=>$value) {
 				$row_obj->$key = $value;
@@ -155,7 +155,7 @@ class db extends singleton {
 		$rows = array();
 		
 		while ($row = mysql_fetch_assoc($this->rs)) {
-			$row_obj = new stdClass();
+			$row_obj = new standardObject();
 			if (is_array($row)) {
 				foreach ($row as $key=>$value) {
 					$row_obj->$key = $value;
