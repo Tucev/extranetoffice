@@ -19,18 +19,100 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  */
 class projectsTableFiles extends table {
-	var $id=null; // int(11) auto_increment
-	var $projectid=null; // int(11)
-	var $userid=null; // int(11)
-	var $parentid=null; // int(11)
-	var $title=null; // varchar(64)
-	var $revision=null; // int(11)
-	var $changelog=null; // text
-	var $filename=null; // varchar(128)
-	var $mimetype=null; // varchar(50)
-	var $filesize=null; // int(11)
-	var $ts=null; // timestamp
-  
+	/**
+	 * The row id
+	 * 
+	 * int(11), auto_increment, Primary Key
+	 * 
+	 * @var unknown_type
+	 */
+	var $id=null;
+	/**
+	 * Project ID
+	 * 
+	 * int(11), Foreign Key (table: #__projects)
+	 * 
+	 * @var int
+	 */
+	var $projectid=null;
+	/**
+	 * User ID
+	 * 
+	 * int(11), Foreign Key (table: #__users)
+	 * 
+	 * @var int
+	 */
+	var $userid=null;
+	/**
+	 * The parent fileid if any. Parent files have parentid 0.
+	 * 
+	 * int(11)
+	 * 
+	 * @var int
+	 */
+	var $parentid=null;
+	/**
+	 * The file title
+	 * 
+	 * varchar(64)
+	 * 
+	 * @var string
+	 */
+	var $title=null;
+	/**
+	 * The revision number
+	 * 
+	 * int(11)
+	 * 
+	 * @var int
+	 */
+	var $revision=null;
+	/**
+	 * Revision log message
+	 * 
+	 * text
+	 * 
+	 * @var string
+	 */
+	var $changelog=null;
+	/**
+	 * The filename
+	 * 
+	 * varchar(128)
+	 * 
+	 * @var string
+	 */
+	var $filename=null;
+	/**
+	 * The mime type
+	 * 
+	 * varchar(50)
+	 * 
+	 * @var string
+	 */
+	var $mimetype=null;
+	/**
+	 * File size in bytes
+	 * 
+	 * int(11)
+	 * 
+	 * @var int
+	 */
+	var $filesize=null;
+	/**
+	 * MySQL Timestamp
+	 * 
+	 * timestamp
+	 * 
+	 * @var string
+	 */
+	var $ts=null;
+	
+	/**
+	 * Constructor
+	 * 
+	 * @return void
+	 */
 	function __construct() {
 		$db =& factory::getDB();
 		parent::__construct( '#__files', 'id', $db );
