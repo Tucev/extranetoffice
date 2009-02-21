@@ -33,6 +33,27 @@ class components extends table {
 	}
 	
 	/**
+	 * Load component by option (ie: com_dashboard)
+	 * 
+	 * it loads properties from database table and returns the row object.
+	 * 
+	 * @param	string	$option The option string.
+	 * @return	object
+	 */
+	public function loadByOption($option) {
+		$query = "SELECT * FROM #__components WHERE name = '".substr($option, 4)."'";
+		$this->db->setQuery($query);
+		$row = $this->db->loadObject();
+		foreach ($this->cols as $col) {
+			$col_name = $col->Field;
+			$col_value = $row->$col_name;
+			$this->$col_name = $col_value;
+		}
+		
+		return $row;
+	}
+	
+	/**
 	 * This methods tests whether the specified component is installed and enabled.
 	 *
 	 * @access public

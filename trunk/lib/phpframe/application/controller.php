@@ -116,6 +116,10 @@ abstract class controller extends singleton {
 		
 		// Get available views
 		$this->views_available = $this->getAvailableViews();
+		
+		// Add pathway item
+		$application =& factory::getApplication();
+		$this->addPathwayItem(ucwords($application->component_info->name), 'index.php?option='.$this->option);
 	}
 	
     /**
@@ -279,6 +283,20 @@ abstract class controller extends singleton {
 		else {
 			return false;
 		}
+	}
+	
+	/**
+	 * Add item to pathway
+	 * 
+	 * @param	string	$title
+	 * @param	string	$url
+	 * @return	void
+	 * @since	1.0
+	 */
+	function addPathwayItem($title, $url='') {
+		$pathway =& factory::getPathway();
+		// add item
+		$pathway->addItem($title, $url);
 	}
 }
 ?>

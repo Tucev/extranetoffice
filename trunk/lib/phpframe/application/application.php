@@ -97,6 +97,18 @@ class application extends singleton {
 	 */
 	var $document=null;
 	/**
+	 * The component option (ie: com_dashboard)
+	 * 
+	 * @var string
+	 */
+	var $option=null;
+	/**
+	 * The component info (data stored in components table)
+	 * 
+	 * @var object
+	 */
+	var $component_info=null;
+	/**
 	 * The output buffer produced by the executed component
 	 *
 	 * @var string
@@ -181,12 +193,18 @@ class application extends singleton {
 	 * @return	void
 	 */
 	public function exec() {
+		// Set component option in application
+		$this->option =& request::getVar('option', 'com_dashboard');
+		// Get component info
+		$components =& phpFrame::getInstance('components');
+		$this->component_info = $components->loadByOption($this->option);
+		
 		// set the component path
-		define("COMPONENT_PATH", _ABS_PATH.DS."components".DS.request::getVar('option', 'com_dashboard'));
+		define("COMPONENT_PATH", _ABS_PATH.DS."components".DS.$this->option);
 		// Start buffering
 		ob_start();
 		// Load component file
-		require_once COMPONENT_PATH.DS.substr(request::getVar('option'), 4).'.php';
+		require_once COMPONENT_PATH.DS.substr($this->option, 4).'.php';
 		// save buffer
 		$this->component_output = ob_get_contents();
 		// clean output buffer
