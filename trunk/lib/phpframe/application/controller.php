@@ -117,9 +117,16 @@ abstract class controller extends singleton {
 		// Get available views
 		$this->views_available = $this->getAvailableViews();
 		
-		// Add pathway item
+		// Get reference to application
 		$application =& factory::getApplication();
+		
+		// Add pathway item
 		$this->addPathwayItem(ucwords($application->component_info->name), 'index.php?option='.$this->option);
+		
+		// Append component name in ducument title
+		$document =& factory::getDocument('html');
+		if (!empty($document->title)) $document->title .= ' - ';
+		$document->title .= ucwords($application->component_info->name);
 	}
 	
     /**
