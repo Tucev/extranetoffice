@@ -12,8 +12,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 define("_PHPFRAME_PATH", dirname(__FILE__));
 
 // Include base object classes
-require_once _PHPFRAME_PATH.DS."base".DS."singleton.php";
 require_once _PHPFRAME_PATH.DS."base".DS."standard.php";
+require_once _PHPFRAME_PATH.DS."base".DS."singleton.php";
 // include database classes
 require_once _PHPFRAME_PATH.DS."database".DS."db.php";
 require_once _PHPFRAME_PATH.DS."database".DS."table.php";
