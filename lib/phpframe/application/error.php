@@ -10,7 +10,23 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
+/**
+ * Error Class
+ * 
+ * @package		phpFrame
+ * @subpackage 	application
+ * @author 		Luis Montero [e-noise.com]
+ * @since 		1.0
+ */
 class error {
+	/**
+	 * Display error messges.
+	 * 
+	 * This method should be called from the template.
+	 * 
+	 * @return	void
+	 * @since 	1.0
+	 */
 	function display() {
 		$session =& factory::getSession();
 		$error = $session->getVar('error');
@@ -27,9 +43,10 @@ class error {
 	/**
 	 * Raise error and store it in session
 	 *
-	 * @param int $code The error code if any
-	 * @param string $level Error level. (error, warning, notice, message)
-	 * @param string $msg The error message
+	 * @param	int		$code The error code if any
+	 * @param	string	$level Error level. (error, warning, notice, message)
+	 * @param	string	$msg The error message
+	 * @since 	1.0
 	 */
 	function raise($code='', $level='error', $msg) {
 		// create standard object holding error
