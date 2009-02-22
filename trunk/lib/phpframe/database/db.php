@@ -140,7 +140,6 @@ class db extends singleton {
 			return $result[0];
 		}
 		else {
-			error::raise('', 'error', mysql_error().' Query: <code>'.$this->query.'</code>');
 			return false;
 		}
 	}
@@ -232,7 +231,6 @@ class db extends singleton {
 		
 		$row = mysql_fetch_assoc($this->rs);
 		if ($row === false) {
-			error::raise('', 'error', mysql_error().' Query: <code>'.$this->query.'</code>');
 			return false;
 		}
 		
