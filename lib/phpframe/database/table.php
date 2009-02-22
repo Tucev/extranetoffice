@@ -29,6 +29,15 @@ abstract class table extends singleton {
 	var $primary_key=null;
 	var $cols=array();
 	
+	/**
+	 * Contructor
+	 * 
+	 * @param	object	$db The database object (passed by reference).
+	 * @param	string	$table_name The table name in the database.
+	 * @param	string	$primary_key The column name of the table's primary key.
+	 * @return	void
+	 * @since 	1.0
+	 */
 	function __construct(&$db, $table_name, $primary_key) {
 		$this->db =& $db;
 		$this->table_name = $table_name;
@@ -37,12 +46,25 @@ abstract class table extends singleton {
 		$this->getColumns();
 	}
 	
+	/**
+	 * Get columns for table in database and store column info in $this->cols.
+	 * 
+	 * @return	void
+	 * @since 	1.0
+	 */
 	function getColumns() {
 		$query = "SHOW COLUMNS FROM ".$this->table_name;
 		$this->db->setQuery($query);
 		$this->cols = $this->db->loadObjectList();
 	}
 	
+	/**
+	 * Load row by id and return row object.
+	 * 
+	 * @param	int	$id The row id.
+	 * @return	object
+	 * @since 	1.0
+	 */
 	function load($id) {
 		$query = "SELECT * FROM ".$this->table_name." WHERE ".$this->primary_key." = '".$id."'";
 		$this->db->setQuery($query);
@@ -52,8 +74,16 @@ abstract class table extends singleton {
 			$col_value = $row->$col_name;
 			$this->$col_name = $col_value;
 		}
+		
+		return $row;
 	}
 	
+	/**
+	 * Store current row to database.
+	 * 
+	 * @return	void
+	 * @since 	1.0
+	 */
 	function store() {
 		$primary_key = $this->primary_key;
 		
@@ -101,6 +131,13 @@ abstract class table extends singleton {
 		$this->db->query();
 	}
 	
+	/**
+	 * Check whether a row exists with the passed id.
+	 * 
+	 * @param	int	$id The row id.
+	 * @return	bool
+	 * @since 	1.0
+	 */
 	function rowExists($id) {
 		$query = "SELECT ".$this->primary_key." FROM ".$this->table_name." WHERE ".$this->primary_key." = '".$id."'";
 		$this->db->setQuery($query);

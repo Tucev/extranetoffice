@@ -13,8 +13,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * XML Document Class
  * 
- * @todo This class still needs to be implemented
- * 
+ * @todo		This class still needs to be implemented
  * @package		phpFrame
  * @subpackage 	document
  * @author 		Luis Montero [e-noise.com]

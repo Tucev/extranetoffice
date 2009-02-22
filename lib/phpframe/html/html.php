@@ -10,9 +10,24 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
+/**
+ * HTML Class
+ * 
+ * @package		phpFrame
+ * @subpackage 	html
+ * @author 		Luis Montero [e-noise.com]
+ * @since 		1.0
+ */
 class html {
-	
-	function selectOption($value, $label) {
+	/**
+	 * Build an html option tag
+	 * 
+	 * @param	string	$value The option value
+	 * @param	string	$label The option label
+	 * @return 	string
+	 * @since 	1.0
+	 */
+	static function selectOption($value, $label) {
 		$html = '<option value="'.$value.'">';
 		$html .= $label;
 		$html .= '</option>';
@@ -20,7 +35,18 @@ class html {
 		return $html;
 	}
 	
-	function selectGenericlist($options, $name, $attribs, $key='value', $text='text', $selected=NULL, $idtag=false, $translate=false) {
+	/**
+	 * Build a generic select tag.
+	 * 
+	 * @todo	Have to make selected item actually be selected...
+	 * @param	array	$options An array of option tags
+	 * @param	string	$name
+	 * @param	string	$attribs
+	 * @param 	string	$selected
+	 * @return	string
+	 * @since 	1.0
+	 */
+	static function selectGenericlist($options, $name, $attribs, $selected=NULL) {
 		$html = '<select name="'.$name.'" '.$attribs.'>';
 		foreach ($options as $option) {
 			$html .= $option;
@@ -35,19 +61,30 @@ class html {
 	 * 
      * Use in conjuction with JRequest::checkToken
      * 
-	 * @return string
+	 * @return	string
+	 * @since 	1.0
 	 */
-	function formToken() {
+	static function formToken() {
 		return '<input type="hidden" name="'.crypt::getToken().'" value="1" />';
 	}
 	
 	/**
-	 * Class loader method
+	 * Loader method.
 	 * 
-	 * @param $str
-	 * @return void
+	 * Use this method to create html elements by using keywords to invoke the methods.
+	 * 
+	 * For example: 
+	 * 
+	 * <code>
+	 * $options[] = html::_('select.option', $row->id, $row->name );
+	 * $output = html::_('select.genericlist', $options, 'projectid', $attribs, $selected);
+	 * </code>
+	 * 
+	 * @param	string	$str
+	 * @return 	void
+	 * @since 	1.0
 	 */
-	function _($str) {
+	static function _($str) {
 		
 		$array = explode('.', $str);
 		$function_name = $array[0].ucfirst($array[1]);

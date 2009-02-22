@@ -39,7 +39,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * 		}
  * }
  * 
- * $myModel =& myModel::getInstance('myModel');
+ * $myModel =& phpFrame::getInstance('myModel');
  * echo $myModel->doSomething();
  * </code>
  * This will echo 'something'.
@@ -52,10 +52,21 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @abstract 
  */
 abstract class model extends singleton {
+	/**
+	 * Constructor
+	 * 
+	 * @return void
+	 */
 	function __construct() {
 		
 	}
 	
+	/**
+	 * Get a named model
+	 * 
+	 * @param	string	$name
+	 * @return	object
+	 */
 	function getModel($name) {
 		// Get current component option from request
 		$option =& request::getVar('option');

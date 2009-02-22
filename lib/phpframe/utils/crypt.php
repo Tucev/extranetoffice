@@ -10,6 +10,14 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
+/**
+ * Crypt Class
+ * 
+ * @package		phpFrame
+ * @subpackage 	utils
+ * @author 		Luis Montero [e-noise.com]
+ * @since 		1.0
+ */
 class crypt {
 	/**
 	 * Provides a secure hash based on a seed

@@ -23,7 +23,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * 
  * Usage example:
  * <code>
- * $db =& db::getInstance('db');
+ * $db =& phpFrame::getInstance('db');
  * $query = "SELECT * FROM #__components";
  * $db->setQuery($query);
  * $array = $db->loadObjectList();

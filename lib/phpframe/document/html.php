@@ -87,8 +87,8 @@ class documentHTML extends document {
 	 * Constructor
 	 *
 	 * @return void
-	 * @since 0.1
-	 * @access public 
+	 * @access public
+	 * @since 0.1 
 	 */
 	function __construct(){
 		parent::__construct();
@@ -101,6 +101,7 @@ class documentHTML extends document {
 	 * @param $name
 	 * @param $content
 	 * @return void
+	 * @since 1.0
 	 */
 	function addMetaTag($name, $content) {
 		$this->_metaTags[] = '<meta name="'.$name.'" content="'.$content.'" />';
@@ -114,6 +115,7 @@ class documentHTML extends document {
 	 * @param $src
 	 * @param $type
 	 * @return void
+	 * @since 1.0
 	 */
 	function addScript($src, $type='text/javascript') {
 		$this->_makeAbsolute($src);
@@ -126,6 +128,7 @@ class documentHTML extends document {
 	 * @param $href
 	 * @param $type
 	 * @return void
+	 * @since 1.0
 	 */
 	function addStyleSheet($href, $type='text/css') {
 		$this->_makeAbsolute($href);
@@ -136,6 +139,7 @@ class documentHTML extends document {
 	 * Print the head tags
 	 * 
 	 * @return void
+	 * @since 1.0
 	 */
 	function printHead() {
 		
@@ -159,9 +163,9 @@ class documentHTML extends document {
 	 * 
 	 * @param $path
 	 * @return void
+	 * @since 1.0
 	 */
-	private function _makeAbsolute(&$path)
-	{
+	private function _makeAbsolute(&$path) {
 		// Add the document base if a relative path
 		if (substr($path, 0, 4) != 'http') {
 			$path = $this->base.$path;
