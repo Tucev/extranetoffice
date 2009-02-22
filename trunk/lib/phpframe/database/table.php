@@ -24,9 +24,30 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @abstract 
  */
 abstract class table extends singleton {
+	/**
+	 * Reference to the database object
+	 * 
+	 * @var object
+	 */
 	var $db=null;
+	/**
+	 * The table name (this has to be the same as the MySQL table name, except for the table prefix).<br />
+	 * ie: eo_users in the database would be used as #__users in this class
+	 * 
+	 * @var string
+	 */
 	var $table_name=null;
+	/**
+	 * The table's primary key column
+	 * 
+	 * @var string
+	 */
 	var $primary_key=null;
+	/**
+	 * Columns info
+	 * 
+	 * @var array
+	 */
 	var $cols=array();
 	
 	/**
@@ -38,12 +59,22 @@ abstract class table extends singleton {
 	 * @return	void
 	 * @since 	1.0
 	 */
-	function __construct(&$db, $table_name, $primary_key) {
-		$this->db =& $db;
+	function __construct($table_name, $primary_key) {
+		$this->db =& factory::getDB();
 		$this->table_name = $table_name;
 		$this->primary_key = $primary_key;
 		
 		$this->getColumns();
+	}
+	
+	/**
+	 * Return latest error
+	 * 
+	 * @return string
+	 */
+	function getError() {
+		$error = $this->error[count($this->error)];
+		return $error;
 	}
 	
 	/**
@@ -53,7 +84,7 @@ abstract class table extends singleton {
 	 * @since 	1.0
 	 */
 	function getColumns() {
-		$query = "SHOW COLUMNS FROM ".$this->table_name;
+		$query = "SHOW COLUMNS FROM `".$this->table_name."`";
 		$this->db->setQuery($query);
 		$this->cols = $this->db->loadObjectList();
 	}
@@ -66,7 +97,7 @@ abstract class table extends singleton {
 	 * @since 	1.0
 	 */
 	function load($id) {
-		$query = "SELECT * FROM ".$this->table_name." WHERE ".$this->primary_key." = '".$id."'";
+		$query = "SELECT * FROM `".$this->table_name."` WHERE `".$this->primary_key."` = '".$id."'";
 		$this->db->setQuery($query);
 		$row = $this->db->loadObject();
 		foreach ($this->cols as $col) {
@@ -79,22 +110,110 @@ abstract class table extends singleton {
 	}
 	
 	/**
+	 * Bind array to row object
+	 * 
+	 * @param	array	$array
+	 * @return	bool
+	 */
+	function bind($array) {
+		if (is_array($array) && count($array) > 0) {
+			foreach ($this->cols as $col) {
+				if (array_key_exists($col->Field, $array)) {
+					$col_name = $col->Field;
+					$this->$col_name = $array[$col_name];
+				}
+			}
+			
+			return true;
+		}
+		else {
+			error::raise('', 'error', 'Could not bind array to row' );
+			return false;
+		}
+	}
+	
+	/**
+	 * Check integrity of data before we write it to the database
+	 * 
+	 * @todo	This function is not checking the data types yet. Have to work on it, its a mess at the moment...
+	 * @todo	Have to raise errors where appropriate.
+	 * @return	bool
+	 */
+	function check() {
+		foreach ($this->cols as $col) {
+			$col_name = $col->Field;
+			
+			if (strpos($col->Type, 'int') !== false) {
+				$this->$col_name = $this->$col_name;
+				if ((!is_int($this->$col_name) || $col->Null == 'YES' && $this->$col_name == null) && $col->Extra != 'auto_increment') {
+					//echo 'false';
+					//return false;
+				}
+			}
+			elseif (strpos($col->Type, 'float') !== false || strpos($col->Type, 'double') !== false || strpos($col->Type, 'decimal') !== false) {
+				$this->$col_name = (float) $this->$col_name;
+				if (!is_float($this->$col_name)) {
+					//return false;
+				}
+			}
+			elseif (strpos($col->Type, 'varchar') !== false || strpos($col->Type, 'text') !== false) {
+				$this->$col_name = (string) $this->$col_name;
+				if (!is_string($this->$col_name)) {
+					//return false;
+				}
+			}
+			elseif (strpos($col->Type, 'blob') !== false) {
+				
+			}
+			elseif (strpos($col->Type, 'enum') !== false) {
+				
+			}
+			elseif (strpos($col->Type, 'datetime') !== false) {
+				
+			}
+			elseif (strpos($col->Type, 'date') !== false) {
+				
+			}
+			elseif (strpos($col->Type, 'time') !== false) {
+				
+			}
+			elseif (strpos($col->Type, 'year') !== false) {
+				
+			}
+			elseif (strpos($col->Type, 'timestamp') !== false) {
+				
+			}
+			elseif (strpos($col->Type, 'binary') !== false) {
+				
+			}
+			elseif (strpos($col->Type, 'bool') !== false) {
+				
+			}
+		
+			//echo '<pre>'; var_dump($this); echo '</pre><hr />';
+		}
+		//exit;
+		return true;
+	}
+	
+	/**
 	 * Store current row to database.
 	 * 
+	 * @todo	Have to raise errors where appropriate.
 	 * @return	void
 	 * @since 	1.0
 	 */
 	function store() {
 		$primary_key = $this->primary_key;
 		
-		if (!$this->rowExists($this->id)) {
-			$query = "INSERT INTO ".$this->table_name." (";
+		if (!$this->rowExists($this->$primary_key)) {
+			$query = "INSERT INTO `".$this->table_name."` (";
 			$i=0;
 			foreach ($this->cols as $col) {
 				if ($i>0) { 
 					$query .= ", ";
 				}
-				$query .= $col->Field;
+				$query .= "`".$col->Field."`";
 				$i++;
 			}
 			$query .= ") VALUES (";
@@ -111,7 +230,7 @@ abstract class table extends singleton {
 			$query .= ")";
 		}
 		else {
-			$query = "UPDATE ".$this->table_name." SET ";
+			$query = "UPDATE `".$this->table_name."` SET ";
 			$i=0;
 			foreach ($this->cols as $col) {
 				if ($col->Field != $this->primary_key) {
@@ -129,6 +248,9 @@ abstract class table extends singleton {
 		
 		$this->db->setQuery($query);
 		$this->db->query();
+		if (empty($this->$primary_key)) {
+			$this->$primary_key = mysql_insert_id();
+		}
 	}
 	
 	/**
@@ -139,11 +261,16 @@ abstract class table extends singleton {
 	 * @since 	1.0
 	 */
 	function rowExists($id) {
-		$query = "SELECT ".$this->primary_key." FROM ".$this->table_name." WHERE ".$this->primary_key." = '".$id."'";
-		$this->db->setQuery($query);
-		$result = $this->db->loadResult();
-		if ($result) {
-			return true;
+		if (!empty($id)) {
+			$query = "SELECT ".$this->primary_key." FROM ".$this->table_name." WHERE ".$this->primary_key." = '".$id."'";
+			$this->db->setQuery($query);
+			$result = $this->db->loadResult();
+			if ($result) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 		else {
 			return false;
