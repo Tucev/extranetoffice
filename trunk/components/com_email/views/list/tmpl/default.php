@@ -113,7 +113,7 @@ function confirm_delete_folder(mailbox, label) {
 }
 </script>
 
-<div class="componentheading"><?php echo $this->page_title; ?></div>
+<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 
 <div id="ioffice_right_col">
 	

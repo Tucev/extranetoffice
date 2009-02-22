@@ -36,7 +36,7 @@ function submitbutton(action) {
 
 <form action="index.php" method="post" name="iofficeform">
 
-<fieldset class="josform">
+<fieldset>
 <legend><?php echo empty($this->issueid) ? _LANG_ISSUES_NEW : _LANG_ISSUES_EDIT; ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>

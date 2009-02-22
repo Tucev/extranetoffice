@@ -160,11 +160,8 @@ class projectsModelMeetings extends model {
 			$row->load($issueid);
 		}
 		
-		$post = request::get( 'post' );
-		
-		if (!$row->bind( $post )) {
-			JError::raiseError(500, $row->getError() );
-		}
+		$post = request::get('post');
+		$row->bind($post);
 		
 		if (!$row->check()) {
 			JError::raiseError(500, $row->getError() );

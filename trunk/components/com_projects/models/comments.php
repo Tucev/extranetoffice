@@ -57,11 +57,8 @@ class projectsModelComments extends model {
 	function saveComment($projectid) {
 		$row = new projectsTableComments();
 		
-		$post = request::get( 'post' );
-		
-		if (!$row->bind( $post )) {
-			JError::raiseError(500, $row->getError() );
-		}
+		$post = request::get('post');
+		$row->bind($post);
 		
 		$row->userid = $this->user->id;
 		$row->created = date("Y-m-d H:i:s");

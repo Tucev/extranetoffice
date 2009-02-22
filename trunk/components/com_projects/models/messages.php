@@ -153,11 +153,8 @@ class projectsModelMessages extends model {
 	function saveMessage($projectid) {
 		$row = new projectsTableMessages();
 		
-		$post = request::get( 'post' );
-		
-		if (!$row->bind( $post )) {
-			JError::raiseError(500, $row->getError() );
-		}
+		$post = request::get('post');
+		$row->bind($post);
 		
 		if (empty($row->id)) {
 			$row->userid = $this->user->id;

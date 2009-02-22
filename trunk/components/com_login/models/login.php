@@ -28,7 +28,7 @@ class loginModelLogin extends model {
 			$testcrypt = crypt::getCryptedPassword($password, $salt);
 			if ($crypt == $testcrypt) {
 				// Store user data in session
-				$session = factory::getSession();
+				$session =& factory::getSession();
 				$session->userid = $user->id;
 				$session->groupid = $user->groupid;
 				$session->write();
