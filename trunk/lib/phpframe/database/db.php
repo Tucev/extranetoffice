@@ -59,12 +59,6 @@ class db extends singleton {
 	 * @var resource
 	 */
 	var $rs=null;
-	/**
-	 * The MySQL error msg
-	 * 
-	 * @var string
-	 */
-	var $error=null;
     
 	/**
 	 * Connect to MySQL server and select database.
@@ -78,8 +72,19 @@ class db extends singleton {
 	 * @param string $db_name The MySQL database name.
 	 */
 	public function connect($db_host, $db_user, $db_pass, $db_name) {
-		$this->link = mysql_connect($db_host, $db_user, $db_pass) or die('Could not connect: ' . mysql_error());
-		mysql_select_db($db_name) or die('Could not select database');
+		// Connect to database server
+		$this->link = mysql_connect($db_host, $db_user, $db_pass);
+		// Check if link is valid
+		if ($this->link === false) {
+			error::raise('', 'error', mysql_error());
+			return false;
+		}
+		
+		// Select database
+		if (!mysql_select_db($db_name)) {
+			error::raise('', 'error', 'Could not select database');
+			return false;
+		}
 	}
 	
 	/**
@@ -90,7 +95,25 @@ class db extends singleton {
 	 * @param string $query The SQL query.
 	 */
 	public function setQuery($query) {
-		$this->query = str_replace('#__', 'eo_', $query);
+		$config =& factory::getConfig();
+		$this->query = str_replace('#__', $config->db_prefix, $query);
+	}
+	
+	/**
+	 * Run SQL query and return mysql record set resource.
+	 *
+	 * @return resource
+	 */
+	public function query() {
+		// Run SQL query
+		$this->rs = mysql_query($this->query);
+		// Check query result is valid
+		if ($this->rs === false) {
+			error::raise('', 'error', mysql_error().' Query: <code>'.$this->query.'</code>');
+			return false;
+		}
+		
+		return $this->rs;
 	}
 	
 	/**
@@ -103,13 +126,23 @@ class db extends singleton {
 	 * @return string
 	 */
 	public function loadResult() {
-		if (!$this->rs = mysql_query($this->query)) {
-			$this->error = mysql_error();
+		// Run SQL query
+		$this->rs = mysql_query($this->query);
+		// Check query result is valid
+		if ($this->rs === false) {
 			return false;
 		}
 		
+		// Fetch row
 		$result = mysql_fetch_row($this->rs);
-		return $result[0];
+		// Check row is valid and return
+		if ($result !== false) {
+			return $result[0];
+		}
+		else {
+			error::raise('', 'error', mysql_error().' Query: <code>'.$this->query.'</code>');
+			return false;
+		}
 	}
 	
 	/**
@@ -121,20 +154,31 @@ class db extends singleton {
 	 * @return object
 	 */
 	public function loadObject() {
-		if (!$this->rs = mysql_query($this->query)) {
-			$this->error = mysql_error();
+		// Run SQL query
+		$this->rs = mysql_query($this->query);
+		// Check query result is valid
+		if ($this->rs === false) {
 			return false;
 		}
 		
+		// Fetch row
 		$row = mysql_fetch_assoc($this->rs);
-		$row_obj = new standardObject();
-		if (is_array($row)) {
-			foreach ($row as $key=>$value) {
-				$row_obj->$key = $value;
+		// Check row is valid and return
+		if ($row !== false) {
+			$row_obj = new standardObject();
+			if (is_array($row) && count($row) > 0) {
+				foreach ($row as $key=>$value) {
+					$row_obj->$key = $value;
+				}
+				return $row_obj;
+			}
+			else {
+				return false;
 			}
 		}
-		
-		return $row_obj;
+		else {
+			return false;
+		}
 	}
 	
 	/**
@@ -147,16 +191,19 @@ class db extends singleton {
 	 * @return array
 	 */
 	public function loadObjectList() {
-		if (!$this->rs = mysql_query($this->query)) {
-			$this->error = mysql_error();
+		// Run SQL query
+		$this->rs = mysql_query($this->query);
+		// Check query result is valid
+		if ($this->rs === false) {
 			return false;
 		}
 		
 		$rows = array();
 		
+		// Fetch associative array
 		while ($row = mysql_fetch_assoc($this->rs)) {
 			$row_obj = new standardObject();
-			if (is_array($row)) {
+			if (is_array($row) && count($row) > 0) {
 				foreach ($row as $key=>$value) {
 					$row_obj->$key = $value;
 				}
@@ -165,6 +212,31 @@ class db extends singleton {
 		}
 		
 		return $rows;
+	}
+	
+	/**
+	 * Run query and load single row as associative array
+	 * 
+	 * Run query as set by preceding setQuery() call and return single row as an
+	 * associative array. This method is useful when we expect our query to return a single row.
+	 *
+	 * @return array
+	 */
+	public function loadAssoc() {
+		// Run SQL query
+		$this->rs = mysql_query($this->query);
+		// Check query result is valid
+		if ($this->rs === false) {
+			return false;
+		}
+		
+		$row = mysql_fetch_assoc($this->rs);
+		if ($row === false) {
+			error::raise('', 'error', mysql_error().' Query: <code>'.$this->query.'</code>');
+			return false;
+		}
+		
+		return $row;
 	}
 	
 	/**
@@ -185,20 +257,6 @@ class db extends singleton {
 	}
 	
 	/**
-	 * Run SQL query and return mysql record set resource.
-	 *
-	 * @return resource
-	 */
-	public function query() {
-		if (!$this->rs = mysql_query($this->query)) {
-			$this->error = mysql_error();
-			return false;
-		}
-		
-		return $this->rs;
-	}
-	
-	/**
 	 * Retrieves the number of rows from the latest result set. 
 	 * This method after having run a query with statements like SELECT or SHOW that return an actual result set.
 	 * To retrieve the number of rows affected by a INSERT, UPDATE, REPLACE or DELETE query, use getAffectedRows(). 
@@ -207,8 +265,10 @@ class db extends singleton {
 	 * @see		getAffectedRows()
 	 */
 	public function getNumRows() {
-		if (!$num_rows = mysql_num_rows($this->rs)) {
-			$this->error = mysql_error();
+		$num_rows = mysql_num_rows($this->rs);
+		// Check num_rows is valid
+		if ($num_rows === false) {
+			error::raise('', 'error', mysql_error().' Query: <code>'.$this->query.'</code>');
 			return false;
 		}
 		
@@ -222,8 +282,10 @@ class db extends singleton {
 	 * @see		getNumRows()
 	 */
 	public function getAffectedRows() {
-		if (!$affected_rows = mysql_affected_rows()) {
-			$this->error = mysql_error();
+		$affected_rows = mysql_affected_rows();
+		// Check affected rows is valid
+		if ($affected_rows == -1) {
+			error::raise('', 'error', mysql_error().' Query: <code>'.$this->query.'</code>');
 			return false;
 		}
 		return $affected_rows;
