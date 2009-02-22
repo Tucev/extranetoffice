@@ -46,13 +46,13 @@ class projectsTableUsersRoles extends table {
   
 	function __construct() {
 		$db =& factory::getDB();
-		parent::__construct( '#__users_roles', 'id', $db );
+		parent::__construct( '#__users_roles', 'id' );
 	}
 	
 	function load($userid, $projectid) {
 		$db =& factory::getDB();
 		$query = "SELECT * FROM #__users_roles WHERE userid = ".$userid." AND projectid = ".$projectid;
-		$db->setQuery($query);
+		$db->setQuery($query);	
 		$row = $db->loadAssoc();
 		if (is_array($row) && count($row) > 0) {
 			foreach ($row as $key=>$value) {

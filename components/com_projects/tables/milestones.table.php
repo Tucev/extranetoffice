@@ -27,10 +27,15 @@ class projectsTableMilestones extends table {
 	var $created=null; // datetime
 	var $closed_by=null; // int(11)
 	var $closed=null; // datetime
-  
+	
+	/**
+	 * Construct
+	 * 
+	 * @return	void
+	 * @since	1.0
+	 */
 	function __construct() {
-		$db =& factory::getDB();
-		parent::__construct( '#__milestones', 'id', $db );
+		parent::__construct( '#__milestones', 'id' );
 	}
 }
 ?>

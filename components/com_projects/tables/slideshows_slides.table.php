@@ -23,10 +23,14 @@ class projectsTableSlideshowsSlides extends table {
 	var $slideshowid=null; // int(11)
 	var $title=null; // varchar(128)
 	var $filename=null; // varchar(128)
-  
+	
+	/**
+	 * Construct
+	 * 
+	 * @return void
+	 */
 	function __construct() {
-		$db =& factory::getDB();
-		parent::__construct( '#__slideshows_slides', 'id', $db );
+		parent::__construct( '#__slideshows_slides', 'id' );
 	}
 }
 ?>

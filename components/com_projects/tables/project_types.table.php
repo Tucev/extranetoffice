@@ -21,10 +21,14 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 class projectsTableProjectTypes extends table {
 	var $id=null; // int(11) auto_increment
 	var $name=null; // varchar(50) NOT NULL
-  
+	
+	/**
+	 * Construct
+	 * 
+	 * @return void
+	 */
 	function __construct() {
-		$db =& factory::getDB();
-		parent::__construct( '#__project_types', 'id', $db );
+		parent::__construct( '#__project_types', 'id' );
 	}
 }
 ?>

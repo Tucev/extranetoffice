@@ -73,10 +73,14 @@ class projectsTableActivitylog extends table {
 	 * @var string
 	 */
 	var $ts=null;
-  
+	
+	/**
+	 * Construct
+	 * 
+	 * @return void
+	 */
 	function __construct() {
-		$db =& factory::getDB();
-		parent::__construct( '#__activitylog', 'id', $db );
+		parent::__construct( '#__activitylog', 'id' );
 	}
 }
 ?>

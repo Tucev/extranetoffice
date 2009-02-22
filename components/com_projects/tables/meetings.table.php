@@ -26,10 +26,15 @@ class projectsTableMeetings extends table {
 	var $dtend=null; // datetime
 	var $created_by=null; // int(11)
 	var $created=null; // datetime
-  
+	
+	/**
+	 * Construct
+	 * 
+	 * @return	void
+	 * @since	1.0
+	 */
 	function __construct() {
-		$db =& factory::getDB();
-		parent::__construct( '#__meetings', 'id', $db );
+		parent::__construct( '#__meetings', 'id' );
 	}
 }
 ?>

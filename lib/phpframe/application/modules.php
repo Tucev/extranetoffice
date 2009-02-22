@@ -34,8 +34,7 @@ class modules extends table {
 	 * @since 	1.0
 	 */
 	function __construct() {
-		$db = factory::getDB();
-		parent::__construct($db, '#__modules', 'id');
+		parent::__construct('#__modules', 'id');
 	}
 	
 	/**

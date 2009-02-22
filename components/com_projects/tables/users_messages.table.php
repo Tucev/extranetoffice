@@ -25,7 +25,7 @@ class projectsTableUsersMessages extends table {
   
 	function __construct() {
 		$db =& factory::getDB();
-		parent::__construct( '#__users_messages', 'id', $db );
+		parent::__construct( '#__users_messages', 'id' );
 	}
 }
 ?>

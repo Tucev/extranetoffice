@@ -27,9 +27,14 @@ class components extends table {
 	var $system=null;
 	var $ordering=null;
 	
+	/**
+	 * Construct
+	 * 
+	 * @return	void
+	 * @since	1.0
+	 */
 	function __construct() {
-		$db = factory::getDB();
-		parent::__construct($db, '#__components', 'id');
+		parent::__construct('#__components', 'id');
 	}
 	
 	/**

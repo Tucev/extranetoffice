@@ -23,6 +23,10 @@ class user extends table {
 	var $groupid=null;
 	var $username=null;
 	var $email=null;
+	var $firstname=null;
+	var $lastname=null;
+	var $name=null;
+	var $name_abbr=null;
 	
 	/**
 	 * Constructor
@@ -31,8 +35,7 @@ class user extends table {
 	 * @since	1.0
 	 */
 	function __construct() {
-		$db = factory::getDB();
-		parent::__construct($db, '#__users', 'id');
+		parent::__construct('#__users', 'id');
 	}
 	
 	/**
@@ -54,6 +57,8 @@ class user extends table {
 			$this->$col_name = $col_value;
 		}
 		$this->groupid = $this->getGroup($id);
+		$this->name = $this->firstname.' '.$this->lastname;
+		$this->name_abbr = substr($this->firstname, 0, 1).'. '.$this->lastname;;
 		
 		return $this;
 	}

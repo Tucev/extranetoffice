@@ -109,13 +109,13 @@ class projectsTableFiles extends table {
 	var $ts=null;
 	
 	/**
-	 * Constructor
+	 * Construct
 	 * 
-	 * @return void
+	 * @return	void
+	 * @since	1.0
 	 */
 	function __construct() {
-		$db =& factory::getDB();
-		parent::__construct( '#__files', 'id', $db );
+		parent::__construct( '#__files', 'id' );
 	}
 }
 ?>
