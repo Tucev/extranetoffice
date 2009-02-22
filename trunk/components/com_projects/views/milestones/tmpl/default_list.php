@@ -24,14 +24,14 @@ function confirm_delete(projectid, milestoneid, label) {
 
 
 <div class="new">
-	<a href="<?php echo route::_('index.php?option=com_projects&view=projects&layout='.$this->current_tool.'_form&projectid='.$this->projectid); ?>">
+	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&layout=form&projectid='.$this->projectid); ?>">
 		<?php echo text::_( _LANG_NEW ); ?>
 	</a>
 </div>
 
-<h2 class="subheading <?php echo $this->current_tool; ?>">
-	<a href="<?php echo route::_('index.php?option=com_projects&view=projects&layout='.$this->current_tool.'&projectid='.$this->projectid); ?>">
-		<?php echo $this->page_subheading; ?>
+<h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
+	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&projectid='.$this->projectid); ?>">
+		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
 
@@ -40,27 +40,27 @@ function confirm_delete(projectid, milestoneid, label) {
 
 <?php $k = 0; ?>
 <?php foreach($this->rows as $row) : ?>
-<div class="ioffice_thread_row<?php echo $k; ?>">
+<div class="thread_row<?php echo $k; ?>">
 
 	<?php if ($row->created_by == $this->user->id) : ?>
-	<div class="ioffice_thread_delete">
+	<div class="thread_delete">
 		<a href="Javascript:confirm_delete(<?php echo $row->projectid; ?>, <?php echo $row->id; ?>, '<?php echo text::_($row->title, true); ?>');">
 			<?php echo text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
-	<div class="ioffice_thread_heading">
-	<a href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=milestones_detail&projectid=".$row->projectid."&milestoneid=".$row->id); ?>">
+	<div class="thread_heading">
+	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&layout=detail&projectid='.$row->projectid.'&milestoneid='.$row->id); ?>">
 		<?php echo $row->title; ?>
 	</a>
 	</div>
 	
-	<div class="ioffice_thread_date">
+	<div class="thread_date">
 	<?php echo date("D, d M Y H:ia", strtotime($row->created)); ?>
 	</div>
 	
-	<div class="ioffice_thread_details">
+	<div class="thread_details">
 		<?php echo _LANG_POSTED_BY ?>: <?php echo $row->created_by_name; ?><br />
 		<?php echo _LANG_ASSIGNEES; ?>: 
 		<?php if (!empty($row->assignees)) : ?>
@@ -73,19 +73,21 @@ function confirm_delete(projectid, milestoneid, label) {
     	<?php endif; ?>
 	</div>
 	
-	<div class="ioffice_thread_due_date <?php echo $row->due_date_class; ?>">
-		<?php echo strtoupper($row->status); ?> &gt; 
-		<?php echo _LANG_MILESTONES_DUEDATE; ?>: 
-		<?php echo date("l, d M Y", strtotime($row->due_date)); ?>
-	</div>
+	<div class="<?php echo $row->due_date_class; ?> status">
+    	<span>
+    		<?php echo strtoupper($row->status); ?> &gt; 
+			<?php echo _LANG_MILESTONES_DUEDATE; ?>: 
+			<?php echo date("l, d M Y", strtotime($row->due_date)); ?>
+    	</span>
+    </div>
 	<br />
 	
-	<div class="ioffice_files_detail_comments">
-		<a href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=milestones_detail&projectid=".$this->projectid."&milestoneid=".$row->id); ?>">
+	<div class="files_detail_comments">
+		<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&layout=detail&projectid='.$this->projectid.'&milestoneid='.$row->id); ?>">
 			<?php echo $row->comments; ?> <?php echo _LANG_COMMENTS; ?>
 		</a>
 		 - 
-		<a href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=milestones_detail&projectid=".$this->projectid."&milestoneid=".$row->id."#post-comment"); ?>">
+		<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&layout=detail&projectid='.$this->projectid.'&milestoneid='.$row->id."#post-comment"); ?>">
 			<?php echo _LANG_COMMENTS_NEW; ?>
 		</a>
 	</div>
@@ -95,5 +97,5 @@ function confirm_delete(projectid, milestoneid, label) {
 <?php endforeach; ?>
 
 <?php else : ?>
-<?php echo text::_( _LANG_NO_MILESTONES ); ?>
+<?php echo text::_( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>

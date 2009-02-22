@@ -64,7 +64,7 @@ class projectsHelperProjects {
 		}
 		
 		$attribs .= ' class="inputbox"';
-		$output = html::_('select.genericlist', $options, 'projectid', $attribs, 'value', 'text', $selected);
+		$output = html::_('select.genericlist', $options, 'projectid', $attribs, $selected);
 		return $output;
 	}
 	
@@ -106,7 +106,7 @@ class projectsHelperProjects {
 		}
 		
 		$attribs .= ' class="inputbox"';
-		$output = html::_('select.genericlist', $options, 'project_type', $attribs, 'value', 'text', $selected);
+		$output = html::_('select.genericlist', $options, 'project_type', $attribs, $selected);
 		return $output;
 	}
 	
@@ -130,7 +130,7 @@ class projectsHelperProjects {
 		$options[] = html::_('select.option', 2, _LANG_PROJECTS_PRIORITY_HIGH );
 		
 		$attribs .= ' class="inputbox"';
-		$output = html::_('select.genericlist', $options, 'priority', $attribs, 'value', 'text', $selected);
+		$output = html::_('select.genericlist', $options, 'priority', $attribs, $selected);
 		return $output;
 	}
 	
@@ -152,7 +152,7 @@ class projectsHelperProjects {
 		$options[] = html::_('select.option', 1, _LANG_PROJECTS_ACCESS_PRIVATE );
 		
 		$attribs .= ' class="inputbox"';
-		$output = html::_('select.genericlist', $options, $fieldname, $attribs, 'value', 'text', $selected);
+		$output = html::_('select.genericlist', $options, $fieldname, $attribs, $selected);
 		return $output;
 	}
 	
@@ -180,7 +180,7 @@ class projectsHelperProjects {
 		$options[] = html::_('select.option', 4, _LANG_PROJECTS_ACCESS_PUBLIC );
 		
 		$attribs .= ' class="inputbox"';
-		$output = html::_('select.genericlist', $options, $fieldname, $attribs, 'value', 'text', $selected);
+		$output = html::_('select.genericlist', $options, $fieldname, $attribs, $selected);
 		return $output;
 	}
 	
@@ -211,7 +211,7 @@ class projectsHelperProjects {
 		$options[] = html::_('select.option', '-1', _LANG_PROJECTS_STATUS_ARCHIVED );
 		
 		$attribs .= ' class="inputbox"';
-		$output = html::_('select.genericlist', $options, 'status', $attribs, 'value', 'text', $selected);
+		$output = html::_('select.genericlist', $options, 'status', $attribs, $selected);
 		return $output;
 	}
 	
@@ -253,7 +253,7 @@ class projectsHelperProjects {
 		}
 		
 		$attribs .= ' class="inputbox"';
-		$output = html::_('select.genericlist', $options, 'roleid', $attribs, 'value', 'text', $selected);
+		$output = html::_('select.genericlist', $options, 'roleid', $attribs, $selected);
 		return $output;
 	}
 	
@@ -295,7 +295,7 @@ class projectsHelperProjects {
 		}
 		
 		$attribs .= ' class="inputbox"';
-		$output = html::_('select.genericlist', $options, 'issue_type', $attribs, 'value', 'text', $selected);
+		$output = html::_('select.genericlist', $options, 'issue_type', $attribs, $selected);
 		return $output;
 	}
 	

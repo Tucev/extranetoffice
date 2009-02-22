@@ -385,6 +385,76 @@ table.data_list tbody tr.deleted td {
 text-decoration: line-through;
 }
 
+/* Data list thread style */
+
+div.thread_row0,
+div.thread_row1 {
+border:1px dotted #CCCCCC;
+background-color: #F6F6F6;
+padding: 10px 8px;
+margin: 0 10px 5px 0;
+}
+div.thread_date {
+font-size: 0.9em;
+font-style: italic;
+color: #999999;
+}
+div.thread_heading {
+font-size: 1.4em;
+margin: 0 0 4px 0;
+}
+div.thread_details {
+font-size: 0.9em;
+padding: 0 0 4px 0;
+}
+div.thread_body {
+border:1px dotted #CCCCCC;
+background-color: #FFFFFF;
+padding: 10px;
+margin: 5px 0;
+}
+div.thread_delete,
+div.thread_download,
+div.thread_upload,
+div.thread_edit,
+div.thread_close,
+div.thread_reopen {
+float:right;
+background-position: 0 2px;
+background-repeat: no-repeat;
+padding: 5px 2px 2px 18px;
+margin: 0 0 0 3px;
+border: 1px dotted #CCCCCC;
+vertical-align: middle;
+min-height: 16px;
+}
+div.thread_delete {
+background-image: url(../images/icons/generic/16x16/remove.png);
+}
+div.thread_download {
+background-image: url(../images/icons/generic/16x16/down.png);
+}
+div.thread_upload {
+background-image: url(../images/icons/generic/16x16/up.png);
+}
+div.thread_edit {
+background-image: url(../images/icons/generic/16x16/edit.png);
+}
+div.thread_close {
+background-image: url(../images/icons/generic/16x16/ok.png);
+}
+div.thread_reopen {
+background-image: url(../images/icons/generic/16x16/reopen.png);
+}
+div.thread_delete:hover,
+div.thread_download:hover,
+div.thread_upload:hover,
+div.thread_edit:hover,
+div.thread_close:hover,
+div.thread_reopen:hover {
+background-color: #ffff99;
+}
+
 /*************** Login component (com_login) ***************/
 
 div#login_wrapper {
@@ -430,6 +500,43 @@ padding: 10px;
 border: 1px dotted #CCCCCC;
 }
 
+/* Tools subheadings */
+
+h2.subheading {
+margin: 0 0 12px 0;
+padding: 0;
+}
+h2.subheading a {
+display: table-cell;
+min-height: 16px;
+min-width: 160px;
+padding:4px 5px 3px 3px;
+text-align: right;
+vertical-align: middle;
+color: white;
+text-transform: uppercase;
+font-weight: normal;
+font-size: 12px;
+}
+h2.issues a {
+background-color: #f3a839;
+}
+h2.messages a {
+background-color: #7094b7;
+}
+h2.milestones a {
+background-color: #aea148;
+}
+h2.files a {
+background-color: #913024;
+}
+h2.meetings a {
+background-color: #6a7a54;
+}
+h2.people a {
+background-color: #333333;
+}
+
 /* Admin */
 
 table.projects_permissions_detail {
@@ -458,6 +565,45 @@ table.projects_permissions_detail tbody tr td {
 padding:0;
 vertical-align: middle;
 font-size:0.8em;
+}
+
+/* Files */
+div.thread_oldrevisions {
+border:1px dotted #CCCCCC;
+background-color: #FFFFFF;
+padding: 10px;
+margin: 5px 0;
+}
+div.thread_oldrevision_entry {
+border-bottom:1px dotted #CCCCCC;
+padding: 5px 0;
+font-size: 0.9em;
+}
+a.show_revisions {
+font-size: 0.8em;
+}
+
+/* Status colours */
+
+.status {
+margin: 7px 0 0 0;
+}
+.status span {
+padding: 3px;
+text-transform: uppercase;
+font-size: 0.8em;
+}
+.closed span {
+color: white;
+background-color: #339933;
+}
+.overdue span {
+color: white;
+background-color: #ff6666;
+}
+.open span {
+color: #333333;
+background-color: #ffff99;
 }
 
 /* Activity log */

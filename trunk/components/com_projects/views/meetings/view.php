@@ -51,6 +51,8 @@ class projectsViewMeetings extends view {
 			$this->project =& $controller->project;
 		}
 		
+		$this->current_tool = _LANG_MEETINGS;
+		
 		parent::__construct();
 	}
 	
@@ -80,27 +82,22 @@ class projectsViewMeetings extends view {
 		$this->page_heading = $this->project->name.' - '._LANG_MEETINGS;
 		$this->addPathwayItem($this->page_title);
 		
+		$modelMeetings =& $this->getModel('meetings');
+		$meetings = $modelMeetings->getMeetings($this->projectid);
+		$this->rows =& $meetings['rows'];
+		$this->pageNav =& $meetings['pageNav'];
+		$this->lists =& $meetings['lists'];
+	}
+	
+	function displayMeetingsDetail() {
+		$this->addPathwayItem($this->current_tool, "index.php?option=com_projects&view='.request::getVar('view').'&layout=".$this->current_tool."&projectid=".$this->projectid);	
+		
 		$document =& factory::getDocument('html');
 		$document->addScript('lib/jquery/jquery-1.3.1.min.js');
 		$document->addScript('lib/thickbox/thickbox-compressed.js');
 		$document->addStyleSheet('lib/thickbox/thickbox.css');
 		
-		/*$modelMeetings = new iOfficeModelMeetings();
-		$meetings = $modelMeetings->getMeetings($this->projectid);
-		$this->assignRef('rows', $meetings['rows']);
-		$this->assignRef('pageNav', $meetings['pageNav']);
-		$this->assignRef('lists', $meetings['lists']);*/
-	}
-	
-	function displayMeetingsDetail() {
-		$document =& JFactory::getDocument();
-		$document->addStyleSheet('administrator/components/com_projects/lib/slimbox/css/slimbox.css');
-		$document->addScript('media/system/js/mootools.js');
-		$document->addScript('administrator/components/com_projects/lib/slimbox/js/slimbox.js');
-		
-		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));	
-		
-		$modelMeetings = new iOfficeModelMeetings();
+		$modelMeetings =& $this->getModel('meetings');
 		// Get meeting details
 		$meeting = $modelMeetings->getMeetingsDetail($this->projectid, $this->meetingid);
 		$this->assignRef('row', $meeting);
@@ -112,7 +109,7 @@ class projectsViewMeetings extends view {
 	function displayMeetingsForm() {
 		if (!empty($this->meetingid)) {
 			$action = _LANG_MEETINGS_EDIT;
-			$modelMeetings = new iOfficeModelMeetings();
+			$modelMeetings =& $this->getModel('meetings');
 			$meeting = $modelMeetings->getMeetingsDetail($this->projectid, $this->meetingid);
 			$this->assignRef('row', $meeting);
 		}
@@ -122,14 +119,14 @@ class projectsViewMeetings extends view {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view='.request::getVar('view').'&layout=".$this->current_tool."&projectid=".$this->projectid));
 		$this->addPathwayItem($action);
 	}
 	
 	function displayMeetingsSlideshowsForm() {
 		if (!empty($this->slideshowid)) {
 			$action = _LANG_SLIDESHOWS_EDIT;
-			$modelSlideshows = new iOfficeModelMeetings();
+			$modelSlideshows =& $this->getModel('meetings');
 			$slideshow = $modelSlideshows->getSlideshowsDetail($this->projectid, $this->slideshowid);
 			$this->assignRef('row', $slideshow);
 		}
@@ -139,7 +136,7 @@ class projectsViewMeetings extends view {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view='.request::getVar('view').'&layout=".$this->current_tool."&projectid=".$this->projectid));
 		$this->addPathwayItem($action);
 	}
 	

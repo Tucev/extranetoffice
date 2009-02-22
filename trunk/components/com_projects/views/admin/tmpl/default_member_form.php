@@ -41,7 +41,7 @@ function submitbutton() {
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
 <h2 class="subheading people">
-	<a href="<?php echo route::_('index.php?option=com_projects&view=projects&layout='.$this->current_tool.'&projectid='.$this->projectid); ?>">
+	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&projectid='.$this->projectid); ?>">
 		<?php echo _LANG_PEOPLE; ?>
 	</a>
 </h2>
@@ -59,7 +59,7 @@ function submitbutton() {
 	<fieldset class="josform">
 		<legend><?php echo text::_( _LANG_PROJECTS_INVITE_NEW_MEMBER ); ?></legend>
 		
-		<table cellpadding="0" cellspacing="0" border="0" width="100%" class="ioffice_edit">
+		<table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 		<tr>
 			<td width="30%">
 				<label id="namemsg" for="name">

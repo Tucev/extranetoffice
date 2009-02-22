@@ -37,14 +37,14 @@ $(document).ready(function() {
 
 
 <div class="new">
-	<a href="<?php echo route::_('index.php?option=com_projects&view=projects&layout='.$this->current_tool.'_form&projectid='.$this->projectid); ?>">
+	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&layout=form&projectid='.$this->projectid); ?>">
 		<?php echo text::_( _LANG_NEW ); ?>
 	</a>
 </div>
 
-<h2 class="subheading <?php echo $this->current_tool; ?>">
-	<a href="<?php echo route::_('index.php?option=com_projects&view=projects&layout='.$this->current_tool.'&projectid='.$this->projectid); ?>">
-		<?php echo $this->page_subheading; ?>
+<h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
+	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&projectid='.$this->projectid); ?>">
+		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
 
@@ -107,27 +107,27 @@ $(document).ready(function() {
 
 <?php $k = 0; ?>
 <?php foreach($this->rows as $row) : ?>
-<div class="ioffice_thread_row<?php echo $k; ?>">
+<div class="thread_row<?php echo $k; ?>">
 
 	<?php if ($row->created_by == $this->user->id) : ?>
-	<div class="ioffice_thread_delete">
+	<div class="thread_delete">
 		<a href="Javascript:confirm_delete(<?php echo $row->projectid; ?>, <?php echo $row->id; ?>, '<?php echo text::_($row->subject, true); ?>');">
 			<?php echo text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
-	<div class="ioffice_thread_heading">
+	<div class="thread_heading">
 	<a href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=issues_detail&projectid=".$row->projectid."&issueid=".$row->id); ?>">
 		<?php echo $row->title; ?>
 	</a>
 	</div>
 	
-	<div class="ioffice_thread_date">
+	<div class="thread_date">
 	<?php echo date("D, d M Y H:ia", strtotime($row->created)); ?>
 	</div>
 	
-	<div class="ioffice_thread_details">
+	<div class="thread_details">
 		<?php echo _LANG_POSTED_BY ?>: <?php echo $row->created_by_name; ?><br />
 		<?php echo _LANG_ASSIGNEES; ?>: 
 		<?php if (!empty($row->assignees)) : ?>
@@ -142,18 +142,18 @@ $(document).ready(function() {
     	<?php echo _LANG_DTSTART; ?>: <?php echo date("d M Y", strtotime($row->dtstart)); ?> 
     	<?php echo _LANG_DTEND; ?>: <?php echo date("d M Y", strtotime($row->dtend)); ?>
     	<br />
-    	<div class="ioffice_<?php echo $row->status; ?> ioffice_status">
+    	<div class="<?php echo $row->status; ?> status">
     		<span><?php echo $row->status; ?></span>
     	</div>
 	</div>
 	
 	<?php if (!empty($row->description)) : ?>
-	<div class="ioffice_thread_body">
+	<div class="thread_body">
 		<?php echo nl2br(text::limit_words($row->description, 255)); ?>
 	</div>
 	<?php endif; ?>
 	
-	<div class="ioffice_files_detail_comments">
+	<div class="files_detail_comments">
 		<a href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=issues_detail&projectid=".$this->projectid."&issueid=".$row->id); ?>">
 			<?php echo $row->comments; ?> <?php echo _LANG_COMMENTS; ?>
 		</a>
@@ -178,7 +178,7 @@ $(document).ready(function() {
 </form>
 
 <?php else : ?>
-<?php echo text::_( _LANG_NO_ISSUES ); ?>
+<?php echo text::_( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>
 
 <?php //echo '<pre>'; var_dump($this->rows); echo '</pre>'; ?>

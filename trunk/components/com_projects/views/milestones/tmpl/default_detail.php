@@ -23,32 +23,32 @@ function confirm_delete(projectid, milestoneid, label) {
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
 
-<h2 class="subheading <?php echo $this->current_tool; ?>">
-	<a href="<?php echo route::_('index.php?option=com_projects&view=projects&layout='.$this->current_tool.'&projectid='.$this->projectid); ?>">
-		<?php echo $this->page_subheading; ?>
+<h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
+	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&projectid='.$this->projectid); ?>">
+		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
 
 
-<div class="ioffice_thread_row0">
+<div class="thread_row0">
 
 	<?php if ($this->row->created_by == $this->user->id) : ?>
-	<div class="ioffice_thread_delete">
+	<div class="thread_delete">
 		<a href="Javascript:confirm_delete(<?php echo $this->row->projectid; ?>, <?php echo $this->row->id; ?>, '<?php echo text::_($this->row->title, true); ?>');">
 			<?php echo text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
-	<div class="ioffice_thread_heading">
+	<div class="thread_heading">
 		<?php echo $this->row->title; ?>
 	</div>
 	
-	<div class="ioffice_thread_date">
+	<div class="thread_date">
 	<?php echo date("D, d M Y H:ia", strtotime($this->row->created)); ?>
 	</div>
 	
-	<div class="ioffice_thread_details">
+	<div class="thread_details">
 		<?php echo _LANG_POSTED_BY ?>: <?php echo $this->row->created_by_name; ?><br />
 		<?php echo _LANG_ASSIGNEES; ?>: 
 		<?php if (!empty($this->row->assignees)) : ?>
@@ -61,7 +61,7 @@ function confirm_delete(projectid, milestoneid, label) {
     	<?php endif; ?>
 	</div>
 	
-	<div class="ioffice_thread_due_date <?php echo $this->row->due_date_class; ?>">
+	<div class="thread_due_date <?php echo $this->row->due_date_class; ?>">
 		<?php echo strtoupper($this->row->status); ?> &gt; 
 		<?php echo _LANG_MILESTONES_DUEDATE; ?>: 
 		<?php echo date("l, d M Y", strtotime($this->row->due_date)); ?>
@@ -70,12 +70,12 @@ function confirm_delete(projectid, milestoneid, label) {
 	<?php if (is_array($this->row->comments) && count($this->row->comments) > 0) : ?>
 	<h3><?php echo _LANG_COMMENTS; ?></h3>
 	<?php foreach ($this->row->comments as $comment) : ?>
-		<div class="ioffice_comment_row">
+		<div class="comment_row">
 			<div style="float:left; margin-right: 10px;">
 				<img src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo usersHelperUsers::id2photo($comment->userid); ?>" />
 			</div>
 			<div style="margin-left: 95px;">
-				<div class="ioffice_comment_details">
+				<div class="comment_details">
 					<?php echo $comment->created_by_name; ?> &nbsp;&nbsp;
 					<?php echo date("D, d M Y H:ia", strtotime($comment->created)); ?>
 				</div>

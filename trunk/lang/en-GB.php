@@ -12,6 +12,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 // Generic
 define("_LANG_BACK", "Back");
+define("_LANG_NEW", "New");
 define("_LANG_EDIT", "Edit");
 define("_LANG_DELETE", "Delete");
 define("_LANG_NO_ENTRIES", "No entries found");
@@ -20,6 +21,10 @@ define("_LANG_CREATED", "Date created");
 define("_LANG_NAME", "Name");
 define("_LANG_EMAIL", "Name");
 define("_LANG_ASSIGNEES", "Assignees");
+define("_LANG_DOWNLOAD", "Download");
+define("_LANG_POSTED_BY", "Posted by");
+define("_LANG_DTSTART", "Date start");
+define("_LANG_DTEND", "Date end");
 
 // com_dashboard
 define("_LANG_DASHBOARD", "Dashboard");
@@ -80,9 +85,13 @@ define("_LANG_PROJECTS_HOME", "Project home");
 define("_LANG_ADMIN", "Admin");
 define("_LANG_PROJECTS_ROLE", "Role");
 
+define("_LANG_COMMENTS_NEW", "Post new comment");
+
 // Files
 define("_LANG_FILES", "Files");
 define("_LANG_FILE", "File");
+define("_LANG_FILES_UPLOAD_NEW_VERSION", "Upload new version");
+define("_LANG_FILES_FILENAME", "Filename");
 
 // Messages
 define("_LANG_MESSAGES", "Messages");
@@ -95,6 +104,8 @@ define("_LANG_ISSUE", "Issue");
 //  Milestones
 define("_LANG_MILESTONES", "Milestones");
 define("_LANG_MILESTONE", "Milestone");
+define("_LANG_MILESTONES_STATUS_OVERDUE", "Overdue");
+define("_LANG_MILESTONES_DUEDATE", "Due date");
 
 // Meetings
 define("_LANG_MEETINGS", "Meetings");

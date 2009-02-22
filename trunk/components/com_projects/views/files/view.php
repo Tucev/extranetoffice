@@ -52,6 +52,8 @@ class projectsViewFiles extends view {
 			$this->project =& $controller->project;
 		}
 		
+		$this->current_tool = _LANG_FILES;
+		
 		parent::__construct();
 	}
 	
@@ -95,7 +97,7 @@ class projectsViewFiles extends view {
 	
 	function displayFilesForm() {
 		$this->page_title .= ' - '._LANG_FILES_NEW;
-		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
 		$this->addPathwayItem(_LANG_FILES_NEW);
 		
 		$parentid = request::getVar('parentid', 0);
@@ -105,7 +107,7 @@ class projectsViewFiles extends view {
 	}
 	
 	function displayFilesDetail() {
-		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));	
+		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));	
 		
 		$document =& factory::getDocument('html');
 		$document->addScript('lib/jquery/jquery-1.3.1.min.js');

@@ -51,6 +51,8 @@ class projectsViewMessages extends view {
 			$this->project =& $controller->project;
 		}
 		
+		$this->current_tool = _LANG_MESSAGES;
+		
 		parent::__construct();
 	}
 	
@@ -85,17 +87,17 @@ class projectsViewMessages extends view {
 		$document->addScript('lib/thickbox/thickbox-compressed.js');
 		$document->addStyleSheet('lib/thickbox/thickbox.css');
 		
-		/*$modelMessages = new iOfficeModelMessages();
+		$modelMessages =& $this->getModel('messages');
 		$messages = $modelMessages->getMessages($this->projectid);
-		$this->assignRef('rows', $messages['rows']);
-		$this->assignRef('pageNav', $messages['pageNav']);
-		$this->assignRef('lists', $messages['lists']);*/
+		$this->rows =& $messages['rows'];
+		$this->pageNav =& $messages['pageNav'];
+		$this->lists =& $messages['lists'];
 	}
 	
 	function displayMessagesDetail() {
-		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
 		
-		$modelMessages = new iOfficeModelMessages();
+		$modelMessages =& $this->getModel('messages');
 		$message = $modelMessages->getMessagesDetail($this->projectid, $this->messageid);
 		$this->assignRef('row', $message);
 		
@@ -105,7 +107,7 @@ class projectsViewMessages extends view {
 	
 	function displayMessagesForm() {
 		$this->page_title .= ' - '._LANG_MESSAGES_NEW;
-		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
 		$this->addPathwayItem(_LANG_MESSAGES_NEW);
 	}
 }

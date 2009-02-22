@@ -24,14 +24,14 @@ function confirm_delete(projectid, meetingid, label) {
 
 
 <div class="new">
-	<a href="<?php echo route::_('index.php?option=com_projects&view=projects&layout='.$this->current_tool.'_form&projectid='.$this->projectid); ?>">
+	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&layout=form&projectid='.$this->projectid); ?>">
 		<?php echo text::_( _LANG_NEW ); ?>
 	</a>
 </div>
 
-<h2 class="subheading <?php echo $this->current_tool; ?>">
-	<a href="<?php echo route::_('index.php?option=com_projects&view=projects&layout='.$this->current_tool.'&projectid='.$this->projectid); ?>">
-		<?php echo $this->page_subheading; ?>
+<h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
+	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&projectid='.$this->projectid); ?>">
+		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
 
@@ -39,31 +39,31 @@ function confirm_delete(projectid, meetingid, label) {
 
 <?php $k = 0; ?>
 <?php foreach($this->rows as $row) : ?>
-<div class="ioffice_thread_row<?php echo $k; ?>">
+<div class="thread_row<?php echo $k; ?>">
 
 	<?php if ($row->created_by == $this->user->id) : ?>
-	<div class="ioffice_thread_delete">
+	<div class="thread_delete">
 		<a href="Javascript:confirm_delete(<?php echo $row->projectid; ?>, <?php echo $row->id; ?>, '<?php echo text::_($row->name, true); ?>');">
 			<?php echo text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
-	<div class="ioffice_thread_heading">
-	<a href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=meetings_detail&projectid=".$row->projectid."&meetingid=".$row->id); ?>">
+	<div class="thread_heading">
+	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&layout=detail&projectid='.$row->projectid.'&meetingid='.$row->id); ?>">
 		<?php echo $row->name; ?>
 	</a>
 	</div>
 	
-	<div class="ioffice_thread_date">
+	<div class="thread_date">
 	Start: <?php echo date("D, d M Y", strtotime($row->dtstart)); ?>
 	</div>
 	
-	<div class="ioffice_thread_date">
+	<div class="thread_date">
 	End: <?php echo date("D, d M Y", strtotime($row->dtend)); ?>
 	</div>
 	
-	<div class="ioffice_thread_details">
+	<div class="thread_details">
 		<?php echo _LANG_POSTED_BY ?>: <?php echo $row->created_by_name; ?><br />
 		<?php echo _LANG_ASSIGNEES; ?>: 
 		<?php if (!empty($row->assignees)) : ?>
@@ -77,7 +77,7 @@ function confirm_delete(projectid, meetingid, label) {
 	</div>
 	
 	<?php if (!empty($row->description)) : ?>
-	<div class="ioffice_thread_body">
+	<div class="thread_body">
 		<?php echo nl2br($row->description); ?>
 	</div>
 	<?php endif; ?>
@@ -87,5 +87,5 @@ function confirm_delete(projectid, meetingid, label) {
 <?php endforeach; ?>
 
 <?php else : ?>
-<?php echo text::_( _LANG_NO_MESSAGES ); ?>
+<?php echo text::_( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>

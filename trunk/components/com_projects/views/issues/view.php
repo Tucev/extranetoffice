@@ -51,6 +51,8 @@ class projectsViewIssues extends view {
 			$this->project =& $controller->project;
 		}
 		
+		$this->current_tool = _LANG_ISSUES;
+		
 		parent::__construct();
 	}
 	
@@ -86,11 +88,11 @@ class projectsViewIssues extends view {
 		$document->addStyleSheet('lib/thickbox/thickbox.css');
 		
 		// Push model into the view
-		/*$modelIssues = $this->getModel('issues');
+		$modelIssues = $this->getModel('issues');
 		$issues = $modelIssues->getIssues($this->projectid);
-		$this->assignRef('rows', $issues['rows']);
-		$this->assignRef('pageNav', $issues['pageNav']);
-		$this->assignRef('lists', $issues['lists']);*/
+		$this->rows =& $issues['rows'];
+		$this->pageNav =& $issues['pageNav'];
+		$this->lists =& $issues['lists'];
 	}
 	
 	function displayIssuesForm() {
@@ -107,12 +109,12 @@ class projectsViewIssues extends view {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
 		$this->addPathwayItem($action);
 	}
 	
 	function displayIssuesDetail() {
-		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
 		
 		$modelIssues = $this->getModel('issues');
 		$issue = $modelIssues->getIssuesDetail($this->projectid, $this->issueid);

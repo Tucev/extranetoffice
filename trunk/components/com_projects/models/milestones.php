@@ -125,15 +125,15 @@ class projectsModelMilestones extends model {
 				
 				// Sort out status according to due date
 				if ($row->due_date < date("Y-m-d H:i:s") && $row->closed == '0000-00-00 00:00:00') {
-					$row->due_date_class = 'overdue_milestone';
+					$row->due_date_class = 'overdue';
 					$row->status = _LANG_MILESTONES_STATUS_OVERDUE;
 				}
 				elseif ($row->due_date > date("Y-m-d H:i:s") && $row->closed == '0000-00-00 00:00:00') {
-					$row->due_date_class = 'upcoming_milestone';
+					$row->due_date_class = 'open';
 					$row->status = _LANG_MILESTONES_STATUS_UPCOMING;
 				}
 				elseif ($row->closed != '0000-00-00 00:00:00') {
-					$row->due_date_class = 'closed_milestone';
+					$row->due_date_class = 'closed';
 					$row->status = _LANG_MILESTONES_STATUS_CLOSED;
 				}
 			}

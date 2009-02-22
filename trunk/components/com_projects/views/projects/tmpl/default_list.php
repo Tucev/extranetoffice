@@ -100,5 +100,5 @@ function submit_filter(reset) {
 <?php echo $this->pageNav->getListFooter(); ?>
 
 <?php else : ?>
-<?php echo text::_( _LANG_NO_PROJECTS ); ?>
+<?php echo text::_( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>
