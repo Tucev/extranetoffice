@@ -51,6 +51,8 @@ class projectsViewMilestones extends view {
 			$this->project =& $controller->project;
 		}
 		
+		$this->current_tool = _LANG_MILESTONES;
+		
 		parent::__construct();
 	}
 	
@@ -80,22 +82,17 @@ class projectsViewMilestones extends view {
 		$this->page_heading = $this->project->name.' - '._LANG_MILESTONES;
 		$this->addPathwayItem($this->page_title);
 		
-		$document =& factory::getDocument('html');
-		$document->addScript('lib/jquery/jquery-1.3.1.min.js');
-		$document->addScript('lib/thickbox/thickbox-compressed.js');
-		$document->addStyleSheet('lib/thickbox/thickbox.css');
-		
-		/*$modelMilestones = new iOfficeModelMilestones();
+		$modelMilestones =& $this->getModel('milestones');
 		$milestones = $modelMilestones->getMilestones($this->projectid);
-		$this->assignRef('rows', $milestones['rows']);
-		$this->assignRef('pageNav', $milestones['pageNav']);
-		$this->assignRef('lists', $milestones['lists']);*/
+		$this->rows =& $milestones['rows'];
+		$this->pageNav =& $milestones['pageNav'];
+		$this->lists =& $milestones['lists'];
 	}
 	
 	function displayMilestonesDetail() {
-		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));	
+		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));	
 	
-		$modelMilestones = new iOfficeModelMilestones();
+		$modelMilestones =& $this->getModel('milestones');
 		$milestone = $modelMilestones->getMilestonesDetail($this->projectid, $this->milestoneid);
 		$this->assignRef('row', $milestone);
 		
@@ -106,7 +103,7 @@ class projectsViewMilestones extends view {
 	function displayMilestonesForm() {
 		if (!empty($this->milestoneid)) {
 			$action = _LANG_MILESTONES_EDIT;
-			$modelMilestones = new iOfficeModelMilestones();
+			$modelMilestones =& $this->getModel('milestones');
 			$milestone = $modelMilestones->getMilestonesDetail($this->projectid, $this->milestoneid);
 			$this->assignRef('row', $milestone);
 		}
@@ -116,7 +113,7 @@ class projectsViewMilestones extends view {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->addPathwayItem($this->page_subheading, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
 		$this->addPathwayItem($action);
 	}
 }

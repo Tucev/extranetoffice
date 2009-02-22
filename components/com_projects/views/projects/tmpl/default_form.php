@@ -41,7 +41,7 @@ function submitbutton(action) {
 
 <fieldset class="josform">
 <legend><?php echo text::_( _LANG_PROJECTS_DETAILS ); ?></legend>
-<table cellpadding="0" cellspacing="0" border="0" width="100%" class="ioffice_edit">
+<table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td width="30%">
 		<label id="namemsg" for="name">

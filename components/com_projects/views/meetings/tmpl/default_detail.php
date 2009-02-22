@@ -22,39 +22,39 @@ function confirm_delete(projectid, meetingid, label) {
 
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
-<div id="ioffice_right_col">
+<div id="right_col">
 	<?php require($this->template_path.DS.'menu.html.php'); ?>
-</div><!-- close .ioffice_right_col -->
+</div><!-- close .right_col -->
 
-<div id="ioffice_main_col">
+<div id="main_col">
 
-<h2 class="subheading <?php echo $this->current_tool; ?>">
-	<a href="<?php echo route::_('index.php?option=com_projects&view=projects&layout='.$this->current_tool.'&projectid='.$this->projectid); ?>">
-		<?php echo $this->page_subheading; ?>
+<h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
+	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&projectid='.$this->projectid); ?>">
+		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
 
-<div class="ioffice_thread_row0">
+<div class="thread_row0">
 
 	<?php if ($this->row->created_by == $this->user->id) : ?>
-	<div class="ioffice_thread_delete">
+	<div class="thread_delete">
 		<a href="Javascript:confirm_delete(<?php echo $this->row->projectid; ?>, <?php echo $this->row->id; ?>, '<?php echo text::_($this->row->name, true); ?>');">
 			<?php echo text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
-	<div class="ioffice_thread_edit">
-		<a href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=meetings_form&projectid=".$this->project->id."&meetingid=".$this->row->id); ?>">
+	<div class="thread_edit">
+		<a href="<?php echo route::_("index.php?option=com_projects&view='.request::getVar('view').'&layout=form&projectid=".$this->project->id."&meetingid=".$this->row->id); ?>">
 		<?php echo text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
 	
-	<div class="ioffice_thread_heading">
+	<div class="thread_heading">
 		<?php echo $this->row->name; ?>
 	</div>
 	
-	<div class="ioffice_thread_details">
+	<div class="thread_details">
 		<?php echo _LANG_POSTED_BY ?>: <?php echo $this->row->created_by_name; ?><br />
 		<?php echo _LANG_ASSIGNEES; ?>: 
 		<?php if (!empty($this->row->assignees)) : ?>
@@ -79,7 +79,7 @@ function confirm_delete(projectid, meetingid, label) {
 
 <!-- 
 <div>
-<a href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=meetings_slideshows_form&projectid=".$this->project->id."&meetingid=".$this->row->id); ?>">
+<a href="<?php echo route::_("index.php?option=com_projects&view='.request::getVar('view').'&layout=slideshows_form&projectid=".$this->project->id."&meetingid=".$this->row->id); ?>">
 Add new slideshow
 </a>
 </div>
@@ -94,7 +94,7 @@ Add new slideshow
 	<?php foreach ($this->row->slideshows[$k]->slides as $slide) : ?>
 	
 	<?php
-		$lightbox_comment_html = "<div class='ioffice_files_detail_comments'>
+		$lightbox_comment_html = "<div class='files_detail_comments'>
 									<a href=''>
 										0 Comments
 									</a>
@@ -105,7 +105,7 @@ Add new slideshow
 								  </div>";
 	?>
 	
-	<div class="ioffice_thumbnail">
+	<div class="thumbnail">
 	<a rel="lightbox[<?php echo $slide->slideshowid; ?>]" title="<?php echo $slide->title.$lightbox_comment_html; ?>" href="images/intranetoffice/projects/<?php echo $this->projectid; ?>/slideshows/<?php echo $slide->slideshowid."/".$slide->filename; ?>">
 	<img src="images/intranetoffice/projects/<?php echo $this->projectid; ?>/slideshows/<?php echo $slide->slideshowid."/thumb/".$slide->filename; ?>" alt="" />
 	</a>
@@ -132,7 +132,7 @@ No slideshows.
 <tr>
 	<td width="32">
 		<a href="index.php?option=com_projects&amp;task=download_file&amp;fileid=26">
-		<img border="0" height="32" width="32" src="templates/default/icons/mimetypes/32x32/pdf.png" />
+		<img border="0" height="32" width="32" src="templates/<?php echo $this->config->template; ?>/images/icons/mimetypes/32x32/pdf.png" />
 		</a>
 	</td>
 	<td>
@@ -144,7 +144,7 @@ No slideshows.
 <tr>
 	<td width="32">
 		<a href="index.php?option=com_projects&amp;task=download_file&amp;fileid=25">
-		<img border="0" height="32" width="32" src="templates/default/icons/mimetypes/32x32/pdf.png" />
+		<img border="0" height="32" width="32" src="templates/<?php echo $this->config->template; ?>/images/icons/mimetypes/32x32/pdf.png" />
 		</a>
 	</td>
 	<td>
@@ -156,7 +156,7 @@ No slideshows.
 <tr>
 	<td width="32">
 		<a href="index.php?option=com_projects&amp;task=download_file&amp;fileid=24">
-		<img border="0" height="32" width="32" src="templates/default/icons/mimetypes/32x32/pdf.png" />
+		<img border="0" height="32" width="32" src="templates/<?php echo $this->config->template; ?>/images/icons/mimetypes/32x32/pdf.png" />
 		</a>
 	</td>
 	<td>
@@ -171,7 +171,7 @@ No slideshows.
 <h2>Polls</h2>
  -->
 
-</div><!-- close #ioffice_main_col -->
+</div><!-- close #main_col -->
 
 <div style="clear: left;"></div>
 

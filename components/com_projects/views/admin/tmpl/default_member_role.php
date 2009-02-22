@@ -33,7 +33,7 @@ function submitbutton() {
 <fieldset>
 <legend><?php echo $this->page_title; ?></legend>
 
-<table cellpadding="0" cellspacing="0" border="0" width="100%" class="ioffice_edit">
+<table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 <td>
 	<label id="namemsg" for="name">

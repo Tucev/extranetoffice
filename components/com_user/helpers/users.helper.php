@@ -145,7 +145,7 @@ class usersHelperUsers {
 		}
 		
 		$attribs .= ' class="inputbox"';
-		$output = JHTML::_('select.genericlist', $options, $fieldname, $attribs, 'value', 'text', $selected);
+		$output = JHTML::_('select.genericlist', $options, $fieldname, $attribs, $selected);
 		return $output;		
 	}
 	

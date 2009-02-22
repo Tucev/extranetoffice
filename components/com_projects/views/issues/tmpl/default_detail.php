@@ -13,57 +13,57 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
-<div id="ioffice_right_col">
+<div id="right_col">
 	<?php require($this->template_path.DS.'menu.html.php'); ?>
-</div><!-- close .ioffice_right_col -->
+</div><!-- close .right_col -->
 
-<div id="ioffice_main_col">
+<div id="main_col">
 
-<h2 class="subheading <?php echo $this->current_tool; ?>">
-	<a href="<?php echo route::_('index.php?option=com_projects&view=projects&layout='.$this->current_tool.'&projectid='.$this->projectid); ?>">
-		<?php echo $this->page_subheading; ?>
+<h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
+	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&projectid='.$this->projectid); ?>">
+		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
 
-<div class="ioffice_thread_row0">
+<div class="thread_row0">
 	
 	<?php if ($this->row->created_by == $this->user->id) : ?>
-	<div class="ioffice_thread_delete">
+	<div class="thread_delete">
 		<a href="Javascript:confirm_delete(<?php echo $this->row->projectid; ?>, <?php echo $this->row->id; ?>, '<?php echo text::_($this->row->title, true); ?>');">
 			<?php echo text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
-	<div class="ioffice_thread_edit">
+	<div class="thread_edit">
 		<a href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=issues_form&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
 		<?php echo text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
 	
 	<?php if ($this->row->closed == "0000-00-00 00:00:00") : ?>
-	<div class="ioffice_thread_close">
+	<div class="thread_close">
 		<a href="<?php echo route::_("index.php?option=com_projects&task=close_issue&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
 		<?php echo text::_( _LANG_ISSUES_CLOSE ); ?>
 		</a>
 	</div>
 	<?php else : ?>
-	<div class="ioffice_thread_reopen">
+	<div class="thread_reopen">
 		<a href="<?php echo route::_("index.php?option=com_projects&task=reopen_issue&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
 		<?php echo text::_( _LANG_ISSUES_REOPEN ); ?>
 		</a>
 	</div>
 	<?php endif; ?>
 	
-	<div class="ioffice_thread_heading">
+	<div class="thread_heading">
 		<?php echo $this->row->title; ?>
 	</div>
 	
-	<div class="ioffice_thread_date">
+	<div class="thread_date">
 	<?php echo date("D, d M Y H:ia", strtotime($this->row->created)); ?>
 	</div>
 	
-	<div class="ioffice_thread_details">
+	<div class="thread_details">
 		<?php echo _LANG_POSTED_BY ?>: <?php echo $this->row->created_by_name; ?><br />
 		<?php echo _LANG_ASSIGNEES; ?>: 
 		<?php if (!empty($this->row->assignees)) : ?>
@@ -80,7 +80,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	</div>
 	
 	<?php if (!empty($this->row->description)) : ?>
-	<div class="ioffice_thread_body">
+	<div class="thread_body">
 		<?php echo nl2br($this->row->description); ?>
 	</div>
 	<?php endif; ?>
@@ -88,12 +88,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	<?php if (is_array($this->row->comments) && count($this->row->comments) > 0) : ?>
 	<h3><?php echo _LANG_COMMENTS; ?></h3>
 	<?php foreach ($this->row->comments as $comment) : ?>
-		<div class="ioffice_comment_row">
+		<div class="comment_row">
 			<div style="float:left; margin-right: 10px;">
 				<img src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo usersHelperUsers::id2photo($comment->userid); ?>" />
 			</div>
 			<div style="margin-left: 95px;">
-				<div class="ioffice_comment_details">
+				<div class="comment_details">
 					<?php echo $comment->created_by_name; ?> &nbsp;&nbsp;
 					<?php echo date("D, d M Y H:ia", strtotime($comment->created)); ?>
 				</div>
@@ -139,7 +139,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	</div>
 </div>
 
-</div><!-- close #ioffice_main_col -->
+</div><!-- close #main_col -->
 
 <div style="clear: left;"></div>
 

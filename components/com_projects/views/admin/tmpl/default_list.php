@@ -116,7 +116,7 @@ function confirm_delete_member(projectid, userid, label) {
 <br />
 
 <?php if (is_array($this->members) && count($this->members) > 0) : ?>
-<table class="ioffice_list" width="100%" cellpadding="0" cellspacing="0">
+<table class="list" width="100%" cellpadding="0" cellspacing="0">
   <thead>
   <tr>
     <th><?php echo _LANG_PROJECTS_ROLE; ?></th>
@@ -158,6 +158,6 @@ function confirm_delete_member(projectid, userid, label) {
 <?php echo text::_( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>
 
-</div><!-- close .ioffice_dashboard_item -->
+</div><!-- close .dashboard_item -->
 
 <?php //echo '<pre>'; var_dump($this->members); echo '</pre>'; ?>
