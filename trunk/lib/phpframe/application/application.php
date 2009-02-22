@@ -164,10 +164,10 @@ class application extends singleton {
 	 */
 	public function auth() {
 		// get session object (singeton)
-		$this->session =& session::getInstance('session');
+		$this->session =& phpFrame::getInstance('session');
 		
 		// get user object
-		$this->user = new user();
+		$this->user =& phpFrame::getInstance('user');
 		
 		if (!empty($this->session->userid)) {
 			$this->user->load($this->session->userid);
@@ -219,7 +219,7 @@ class application extends singleton {
 			$template_filename = 'index.php';
 			
 			// load modules
-			$this->modules = new modules();
+			$this->modules =& phpFrame::getInstance('modules');
 			
 			// get pathway
 			$this->pathway =& factory::getPathway();

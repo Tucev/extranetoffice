@@ -87,6 +87,11 @@ require_once _PHPFRAME_PATH.DS."document".DS."html.php";
  * @since 		1.0
  */
 class phpFrame extends singleton {
+	/**
+	 * The phpFrame version
+	 * 
+	 * @var string
+	 */
 	var $version='1.0 Alpha';
 }
 ?>

@@ -30,13 +30,21 @@ class modules extends table {
 	/**
 	 * Constructor
 	 * 
-	 * @return void
+	 * @return	void
+	 * @since 	1.0
 	 */
 	function __construct() {
 		$db = factory::getDB();
 		parent::__construct($db, '#__modules', 'id');
 	}
 	
+	/**
+	 * Count the number of modules assigned to the given position in the current component option.
+	 * 
+	 * @param	string $position
+	 * @return	int
+	 * @since 	1.0
+	 */
 	function countModules($position) {
 		$db = factory::getDB();
 		$query = "SELECT m.name AS name, mo.option AS `option` FROM #__modules AS m ";
@@ -56,14 +64,15 @@ class modules extends table {
 	}
 	
 	/**
-	 * display()
+	 * Display modules
 	 * 
 	 * This method displays modules assigned to a named position depending on 
 	 * whether the are also assigned to the current component.
 	 * 
-	 * @param $position
-	 * @param $class_suffix
+	 * @param	string	$position
+	 * @param	string	$class_suffix
 	 * @return mixed
+	 * @since 	1.0
 	 */
 	function display($position, $class_suffix='') {
 		$db = factory::getDB();

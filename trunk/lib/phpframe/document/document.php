@@ -22,7 +22,7 @@ class document extends singleton {
 	/**
 	 * Document title
 	 *
-	 * @var	 string
+	 * @var	 	string
 	 * @access  public
 	 */
 	var $title = '';
@@ -30,7 +30,7 @@ class document extends singleton {
 	/**
 	 * Document description
 	 *
-	 * @var	 string
+	 * @var	 	string
 	 * @access  public
 	 */
 	var $description = '';
@@ -38,7 +38,7 @@ class document extends singleton {
 	/**
 	 * Document URI
 	 *
-	 * @var	 string
+	 * @var	 	string
 	 * @access  public
 	 */
 	var $uri = '';
@@ -46,7 +46,7 @@ class document extends singleton {
 	/**
 	 * Document base URL
 	 *
-	 * @var	 string
+	 * @var	 	string
 	 * @access  public
 	 */
 	var $base = '';
@@ -54,7 +54,7 @@ class document extends singleton {
 	 /**
 	 * Contains the document language setting
 	 *
-	 * @var	 string
+	 * @var	 	string
 	 * @access  public
 	 */
 	var $language = 'en-gb';
@@ -63,7 +63,7 @@ class document extends singleton {
 	 * Document modified date
 	 *
 	 * @var		string
-	 * @access   private
+	 * @access	private
 	 */
 	var $_mdate = '';
 
@@ -86,7 +86,7 @@ class document extends singleton {
 	/**
 	 * Contains the character encoding string
 	 *
-	 * @var	 string
+	 * @var	 	string
 	 * @access  private
 	 */
 	var $_charset = 'utf-8';
@@ -103,11 +103,18 @@ class document extends singleton {
 	 * Document namespace
 	 *
 	 * @var		string
-	 * @access   private
+	 * @access	private
 	 */
 	var $_namespace = '';
 	
-	function __construct() {
+	/**
+	 * Constructor
+	 * 
+	 * @return	void
+	 * @access	public
+	 * @since	1.0
+	 */
+	public function __construct() {
 		$uri =& factory::getURI();
 		$this->base =& $uri->getBase();
 		$this->uri =& $uri->uri;

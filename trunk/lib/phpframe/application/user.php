@@ -10,17 +10,40 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
+/**
+ * User Class
+ *
+ * @package		phpFrame
+ * @subpackage 	application
+ * @author 		Luis Montero [e-noise.com]
+ * @since 		1.0
+ */
 class user extends table {
 	var $id=null;
 	var $groupid=null;
 	var $username=null;
 	var $email=null;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @return	void
+	 * @since	1.0
+	 */
 	function __construct() {
 		$db = factory::getDB();
 		parent::__construct($db, '#__users', 'id');
 	}
 	
+	/**
+	 * Load user row by id
+	 * 
+	 * This method overrides the inherited load method in order to load the user group as well.
+	 * 
+	 * @return	The loaded user object
+	 * @see		lib/phpframe/database/table#load($id)
+	 * @since	1.0
+	 */
 	function load($id) {
 		$query = "SELECT * FROM #__users WHERE id = '".$id."'";
 		$this->db->setQuery($query);
@@ -31,8 +54,17 @@ class user extends table {
 			$this->$col_name = $col_value;
 		}
 		$this->groupid = $this->getGroup($id);
+		
+		return $this;
 	}
 	
+	/**
+	 * Save user to database (work in progress)
+	 * 
+	 * @todo	This method needs to be finished.
+	 * @return 	void
+	 * @since	1.0
+	 */
 	function save() {
 		// Encrypt password
 		$salt = crypt::genRandomPassword(32);
@@ -40,6 +72,13 @@ class user extends table {
 		$encrypted_password = $crypt.':'.$salt;
 	}
 	
+	/**
+	 * Get group for given user
+	 * 
+	 * @param	int	$userid
+	 * @return 	int
+	 * @since	1.0
+	 */
 	function getGroup($userid) {
 		$query = "SELECT * FROM #__users_groups WHERE userid = '".$userid."'";
 		$this->db->setQuery($query);

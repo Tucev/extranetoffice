@@ -101,7 +101,7 @@ abstract class view extends singleton {
 	}
 	
     /**
-     * display()
+     * Display the view
      * 
      * This method loads the template layer of the view.
      * 
@@ -130,8 +130,6 @@ abstract class view extends singleton {
     }
     
     /**
-     * loadTemplate()
-     * 
      * This method loads a given view template.
      *
      * @param	string $layout The name of the view template (ie: "list" will load default_list.php)
@@ -157,8 +155,6 @@ abstract class view extends singleton {
     }
     
 	/**
-	 * getModel()
-	 * 
 	 * Gets a named model within the component.
 	 *
 	 * @param	string $name The model name. If empty the view name is used as default.

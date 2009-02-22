@@ -10,42 +10,103 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
+/**
+ * Factory Class
+ * 
+ * @package		phpFrame
+ * @subpackage 	application
+ * @author 		Luis Montero [e-noise.com]
+ * @since 		1.0
+ * @see			phpFrame
+ */
 class factory {
+	/**
+	 * Get application object
+	 * 
+	 * @return	object
+	 * @since 	1.0
+	 */
 	function getApplication() {
 		return phpFrame::getInstance('application');
 	}
 	
+	/**
+	 * Get configuration object
+	 * 
+	 * @return	object
+	 * @since 	1.0
+	 */
 	function getConfig() {
 		return $GLOBALS['application']->config;
 	}
 	
+	/**
+	 * Get "filtered" request array from application
+	 * 
+	 * @return	array
+	 * @since 	1.0
+	 */
 	function getRequest() {
 		return $GLOBALS['application']->request;
 	}
 	
+	/**
+	 * Get database object
+	 * 
+	 * @return	object
+	 * @since 	1.0
+	 */
 	function getDB() {
-		$application = phpFrame::getInstance('application');
-		return $application->db;
+		return phpFrame::getInstance('db');
 	}
 	
+	/**
+	 * Get user object
+	 * 
+	 * @return 	object
+	 * @since 	1.0
+	 */
 	function getUser() {
-		$application = phpFrame::getInstance('application');
-		return $application->user;
+		return phpFrame::getInstance('user');
 	}
 	
+	/**
+	 * Get session object
+	 * 
+	 * @return	object
+	 * @since 	1.0
+	 */
 	function getSession() {
-		$application = phpFrame::getInstance('application');
-		return $application->session;
+		return phpFrame::getInstance('session');
 	}
 	
+	/**
+	 * Get pathway object
+	 * 
+	 * @return	object
+	 * @since 	1.0
+	 */
 	function getPathway() {
 		return phpFrame::getInstance('pathway');
 	}
 	
+	/**
+	 * Get document object
+	 * 
+	 * @param	string	$type The document type (html or xml)
+	 * @return	object
+	 * @since 	1.0
+	 */
 	function getDocument($type) {
 		return phpFrame::getInstance('document'.strtoupper($type));
 	}
 	
+	/**
+	 * Get uri object
+	 * 
+	 * @return	object
+	 * @since 	1.0
+	 */
 	function getURI() {
 		return phpFrame::getInstance('uri');
 	}

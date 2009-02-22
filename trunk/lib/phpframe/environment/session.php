@@ -158,11 +158,11 @@ class session extends table {
 	 * has been generated the system will check the post request to see if
 	 * it is present, if not it will invalidate the session.
 	 * 
-	 * @param boolean $forceNew If true, force a new token to be created
-	 * @access public
-	 * @return string The session token
+	 * @access	public
+	 * @param	boolean $forceNew If true, force a new token to be created
+	 * @return	string
+	 * @since	1.0
 	 */
-
 	function getToken($forceNew = false) {
 		$token = $this->token;
 
@@ -178,9 +178,10 @@ class session extends table {
 	/**
 	 * Create a token-string
 	 * 
-	 * @access protected
-	 * @param int $length lenght of string
-	 * @return string $id generated token
+	 * @access	protected
+	 * @param	int			$length Lenght of string.
+	 * @return	string		$id Generated token.
+	 * @since	1.0
 	 */
 	function _createToken($length = 32) {
 		static $chars = '0123456789abcdef';
