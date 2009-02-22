@@ -20,25 +20,24 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 class html {
 	/**
-	 * Build an html option tag
+	 * Build an select option object
 	 * 
 	 * @param	string	$value The option value
 	 * @param	string	$label The option label
-	 * @return 	string
+	 * @return 	object
 	 * @since 	1.0
 	 */
 	static function selectOption($value, $label) {
-		$html = '<option value="'.$value.'">';
-		$html .= $label;
-		$html .= '</option>';
+		$option = new standardObject();
+		$option->value = $value;
+		$option->label = $label;
 		
-		return $html;
+		return $option;
 	}
 	
 	/**
 	 * Build a generic select tag.
 	 * 
-	 * @todo	Have to make selected item actually be selected...
 	 * @param	array	$options An array of option tags
 	 * @param	string	$name
 	 * @param	string	$attribs
@@ -49,7 +48,13 @@ class html {
 	static function selectGenericlist($options, $name, $attribs, $selected=NULL) {
 		$html = '<select name="'.$name.'" '.$attribs.'>';
 		foreach ($options as $option) {
-			$html .= $option;
+			$html .= '<option value="'.$option->value.'"';
+			if ($option->value == $selected) {
+				$html .= ' selected';
+			}
+			$html .= '>';
+			$html .= $option->label;
+			$html .= '</option>';
 		}
 		$html .= '</select>';
 		
