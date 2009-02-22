@@ -63,8 +63,7 @@ class session extends table {
 	 *
 	 */
 	function __construct() {
-		$db = factory::getDB();
-		parent::__construct($db, '#__session', 'id');
+		parent::__construct('#__session', 'id');
 		
 		$this->start();
 	}

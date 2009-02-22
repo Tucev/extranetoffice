@@ -29,7 +29,7 @@ class projectsTableSlideshows extends table {
   
 	function __construct() {
 		$db =& factory::getDB();
-		parent::__construct( '#__slideshows', 'id', $db );
+		parent::__construct( '#__slideshows', 'id' );
 	}
 }
 ?>

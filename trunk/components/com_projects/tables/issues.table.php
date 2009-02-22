@@ -147,10 +147,15 @@ class projectsTableIssues extends table {
 	 * @var string
 	 */
 	var $ts=null;
-  
+	
+	/**
+	 * Construct
+	 * 
+	 * @return	void
+	 * @since	1.0
+	 */
 	function __construct() {
-		$db =& factory::getDB();
-		parent::__construct( '#__issues', 'id', $db );
+		parent::__construct( '#__issues', 'id' );
 	}
 }
 ?>

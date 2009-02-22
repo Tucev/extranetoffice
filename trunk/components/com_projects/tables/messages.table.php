@@ -26,10 +26,15 @@ class projectsTableMessages extends table {
 	var $subject=null; // varchar(255)
 	var $body=null; // text
 	var $status=null; // enum('0', '1', '2') 0=pending; 1=active; 2=archived
-  
+	
+	/**
+	 * Construct
+	 * 
+	 * @return	void
+	 * @since	1.0
+	 */
 	function __construct() {
-		$db =& factory::getDB();
-		parent::__construct( '#__messages', 'id', $db );
+		parent::__construct( '#__messages', 'id' );
 	}
 }
 ?>

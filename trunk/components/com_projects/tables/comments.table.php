@@ -26,10 +26,15 @@ class projectsTableComments extends table {
 	var $itemid=null; // int(11) the trackerid, fileid, messageid...
 	var $body=null; // text
 	var $created=null; // datetime NOT NULL
-  
+	
+	/**
+	 * Construct
+	 * 
+	 * @return	void
+	 * @since	1.0
+	 */
 	function __construct() {
-		$db =& factory::getDB();
-		parent::__construct( '#__comments', 'id', $db );
+		parent::__construct( '#__comments', 'id' );
 	}
 }
 ?>

@@ -171,10 +171,15 @@ class projectsTableProjects extends table {
 	 * @var string
 	 */
 	var $created=null;
-  
+	
+	/**
+	 * Construct
+	 * 
+	 * @return	void
+	 * @since	1.0
+	 */
 	function __construct() {
-		$db =& factory::getDB();
-		parent::__construct( '#__projects', 'id', $db );
+		parent::__construct( '#__projects', 'id' );
 	}
 }
 ?>
