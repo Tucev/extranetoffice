@@ -189,14 +189,19 @@ abstract class table extends singleton {
 	/**
 	 * Store current row to database.
 	 * 
+	 * If new row inserts a new entry in db table, otherwise it updates existing row.
+	 * 
 	 * @todo	Have to raise errors where appropriate.
 	 * @return	void
 	 * @since 	1.0
 	 */
 	function store() {
 		$primary_key = $this->primary_key;
+		$row_exists = $this->rowExists($this->$primary_key);
 		
-		if (!$this->rowExists($this->$primary_key)) {
+		// Build either INSERT or UPDATE query depending on whether row 
+		// with given id already exists.
+		if ($row_exists === false) {
 			$query = "INSERT INTO `".$this->table_name."` (";
 			$i=0;
 			foreach ($this->cols as $col) {
@@ -233,12 +238,14 @@ abstract class table extends singleton {
 					$i++;
 				}
 			}
-			$query .= " WHERE ".$this->primary_key." = '".$this->$primary_key."'";
+			$query .= " WHERE `".$this->primary_key."` = '".$this->$primary_key."'";
 		}
 		
 		$this->db->setQuery($query);
 		$this->db->query();
-		if (empty($this->$primary_key)) {
+		
+		// Store new row id for new entries
+		if ($row_exists === false) {
 			$this->$primary_key = mysql_insert_id();
 		}
 	}
@@ -252,10 +259,10 @@ abstract class table extends singleton {
 	 */
 	function rowExists($id) {
 		if (!empty($id)) {
-			$query = "SELECT ".$this->primary_key." FROM ".$this->table_name." WHERE ".$this->primary_key." = '".$id."'";
+			$query = "SELECT `".$this->primary_key."` FROM `".$this->table_name."` WHERE `".$this->primary_key."` = '".$id."'";
 			$this->db->setQuery($query);
 			$result = $this->db->loadResult();
-			if ($result) {
+			if ($result != false && !empty($result)) {
 				return true;
 			}
 			else {
