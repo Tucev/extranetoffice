@@ -18,14 +18,14 @@ class usersHelperUsers {
 	 */
 	static function id2name($id=0) {
 		if (!empty($id)) { // No user has been selected
-			$db = factory::getDB(); // Instantiate joomla database object
+			$db =& factory::getDB(); // Instantiate joomla database object
 			$query = "SELECT firstname, lastname FROM #__users WHERE id = '".$id."'";
-			$db -> setQuery($query);
+			$db->setQuery($query);
 			$row = $db->loadObject();
-			if ($db->error) {
-			  echo $db->error;
-			  return false;
+			if ($row === false) {
+				return false;
 			}
+			
 			return strtoupper(substr($row->firstname, 0, 1)).'. '.$row->lastname;
 		}
 		else {
@@ -40,15 +40,10 @@ class usersHelperUsers {
 	 */
 	static function username2id($username='') {
 		if (!empty($username)) { // No user has been selected
-			$db = factory::getDB(); // Instantiate joomla database object
+			$db =& factory::getDB(); // Instantiate joomla database object
 			$query = "SELECT id FROM #__users WHERE username = '".$username."'";
 			$db -> setQuery($query);
-			$id = $db->loadResult();
-			if ($db->error) {
-			  echo $db->error;
-			  return false;
-			}
-			return $id;
+			return $db->loadResult();
 		}
 		else {
 			return false;
@@ -62,15 +57,10 @@ class usersHelperUsers {
 	 */
 	static function email2id($email='') {
 		if (!empty($email)) { // No user has been selected
-			$db = factory::getDB(); // Instantiate joomla database object
+			$db =& factory::getDB(); // Instantiate joomla database object
 			$query = "SELECT id FROM #__users WHERE email = '".$email."'";
 			$db -> setQuery($query);
-			$id = $db->loadResult();
-			if ($db->error) {
-			  echo $db->error;
-			  return false;
-			}
-			return $id;
+			return $db->loadResult();
 		}
 		else {
 			return false;
@@ -79,15 +69,10 @@ class usersHelperUsers {
 	
 	static function id2email($id) {
 		if (!empty($id)) { // No user has been selected
-			$db = factory::getDB(); // Instantiate joomla database object
+			$db =& factory::getDB(); // Instantiate joomla database object
 			$query = "SELECT email FROM #__users WHERE id = '".$id."'";
 			$db -> setQuery($query);
-			$email = $db->loadResult();
-			if ($db->error) {
-			  echo $db->error;
-			  return false;
-			}
-			return $email;
+			return $db->loadResult();
 		}
 		else {
 			return false;
@@ -96,14 +81,10 @@ class usersHelperUsers {
 	
 	static function id2photo($id) {
 		if (!empty($id)) { // No user has been selected
-			$db = factory::getDB(); // Instantiate joomla database object
+			$db =& factory::getDB(); // Instantiate joomla database object
 			$query = "SELECT photo FROM #__intranetoffice_settings WHERE userid = '".$id."'";
 			$db -> setQuery($query);
 			$photo = $db->loadResult();
-			if ($db->error) {
-			  echo $db->error;
-			  return false;
-			}
 			if (empty($photo)) { $photo = 'default.png'; }
 			return $photo;
 		}
@@ -124,7 +105,7 @@ class usersHelperUsers {
 		$options[] = JHTML::_('select.option', '0', JText::_( '-- Select a User --' ) );
 		
 		// get joomla users from #__users
-		$db = factory::getDB(); // Instantiate joomla database object
+		$db =& factory::getDB(); // Instantiate joomla database object
 		$query = "SELECT u.id, u.name ";
 		$query .= " FROM #__users AS u ";
 		if (!empty($projectid)) {
@@ -134,9 +115,7 @@ class usersHelperUsers {
 		$query .= " ORDER BY u.name";
 		//echo $query; exit;
 		$db -> setQuery($query);
-		$rows = $db->loadObjectList();
-		if ($db->error) {
-		  echo $db->error;
+		if (!$rows = $db->loadObjectList()) {
 		  return false;
 		}
 		
@@ -151,7 +130,7 @@ class usersHelperUsers {
 	
 	static function assignees($selected=0, $attribs='', $fieldname='assignees[]', $projectid=0) {
 		// get joomla users from #__users
-		$db = factory::getDB(); // Instantiate joomla database object
+		$db =& factory::getDB(); // Instantiate joomla database object
 		$query = "SELECT u.id, u.name ";
 		$query .= " FROM #__users AS u ";
 		if (!empty($projectid)) {
@@ -161,9 +140,7 @@ class usersHelperUsers {
 		$query .= " ORDER BY u.name";
 		//echo $query; exit;
 		$db -> setQuery($query);
-		$rows = $db->loadObjectList();
-		if ($db->error) {
-		  echo $db->error;
+		if (!$rows = $db->loadObjectList()) {
 		  return false;
 		}
 		
@@ -192,13 +169,11 @@ class usersHelperUsers {
 	
 	static function autocompleteUsername($form_name) {
 		// get joomla users from #__users
-		$db = factory::getDB(); // Instantiate joomla database object
+		$db =& factory::getDB(); // Instantiate joomla database object
 		$query = "SELECT id, username FROM #__users ";
 		$query .= " ORDER BY username";
 		$db -> setQuery($query);
-		$rows = $db->loadObjectList();
-		if ($db->error) {
-		  echo $db->error;
+		if (!$rows = $db->loadObjectList()) {
 		  return false;
 		}
 		

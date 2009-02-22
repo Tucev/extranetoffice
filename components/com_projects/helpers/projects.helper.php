@@ -18,15 +18,10 @@ class projectsHelperProjects {
 	 */
 	function id2name($id=0) {
 		if (!empty($id)) { // No category has been selected
-			$db = factory::getDB(); // Instantiate joomla database object
+			$db =& factory::getDB(); // Instantiate joomla database object
 			$query = "SELECT name FROM #__projects WHERE id = '".$id."'";
-			$db -> setQuery($query);
-			$name = $db->loadResult();
-			if ($db->error) {
-			  echo $db->error;
-			  return false;
-			}
-			return $name;
+			$db->setQuery($query);
+			return $db->loadResult();
 		}
 		else {
 			return false;
@@ -45,7 +40,7 @@ class projectsHelperProjects {
 		$options[] = html::_('select.option', '0', text::_( '-- Select a Project --' ) );
 		
 		// get projects from db
-		$db = factory::getDB(); // Instantiate joomla database object
+		$db =& factory::getDB(); // Instantiate joomla database object
 		$user =& factory::getUser();
 		$query = "SELECT p.id, p.name ";
 		$query .= "FROM #__projects AS p ";
@@ -54,10 +49,6 @@ class projectsHelperProjects {
 		
 		$db -> setQuery($query);
 		$rows = $db->loadObjectList();
-		if ($db->error) {
-		  echo $db->error;
-		  return false;
-		}
 		
 		foreach ($rows as $row) {
 			$options[] = html::_('select.option', $row->id, $row->name );
@@ -70,15 +61,10 @@ class projectsHelperProjects {
 	
 	function project_typeid2name($id=0) {
 		if (!empty($id)) { // No category has been selected
-			$db = factory::getDB(); // Instantiate joomla database object
+			$db =& factory::getDB(); // Instantiate joomla database object
 			$query = "SELECT name FROM #__project_types WHERE id = '".$id."'";
 			$db -> setQuery($query);
-			$name = $db->loadResult();
-			if ($db->error) {
-			  echo $db->error;
-			  return false;
-			}
-			return $name;
+			return $db->loadResult();
 		}
 		else {
 			return false;
@@ -91,15 +77,11 @@ class projectsHelperProjects {
 		$options[] = html::_('select.option', '0', text::_( '-- Select a Project Type --' ) );
 		
 		// get project_types from db
-		$db = factory::getDB(); // Instantiate joomla database object
+		$db =& factory::getDB(); // Instantiate joomla database object
 		$query = "SELECT id, name FROM #__project_types ";
 		$query .= " ORDER BY name";
 		$db -> setQuery($query);
 		$rows = $db->loadObjectList();
-		if ($db->error) {
-		  echo $db->error;
-		  return false;
-		}
 		
 		foreach ($rows as $row) {
 			$options[] = html::_('select.option', $row->id, $row->name );
@@ -217,15 +199,10 @@ class projectsHelperProjects {
 	
 	function project_roleid2name($id=0) {
 		if (!empty($id)) { // No category has been selected
-			$db = factory::getDB(); // Instantiate joomla database object
+			$db =& factory::getDB(); // Instantiate joomla database object
 			$query = "SELECT name FROM #__roles WHERE id = '".$id."'";
-			$db -> setQuery($query);
-			$name = $db->loadResult();
-			if ($db->error) {
-			  echo $db->error;
-			  return false;
-			}
-			return $name;
+			$db->setQuery($query);
+			return $db->loadResult();
 		}
 		else {
 			return false;
@@ -238,15 +215,11 @@ class projectsHelperProjects {
 		$options[] = html::_('select.option', '0', text::_( '-- Select a Role --' ) );
 		
 		// get project_types from db
-		$db = factory::getDB(); // Instantiate joomla database object
+		$db =& factory::getDB(); // Instantiate joomla database object
 		$query = "SELECT id, name FROM #__roles ";
 		$query .= " ORDER BY id ASC";
 		$db -> setQuery($query);
 		$rows = $db->loadObjectList();
-		if ($db->error) {
-		  echo $db->error;
-		  return false;
-		}
 		
 		foreach ($rows as $row) {
 			$options[] = html::_('select.option', $row->id, $row->name );
@@ -259,15 +232,10 @@ class projectsHelperProjects {
 	
 	function issue_typeid2name($id=0) {
 		if (!empty($id)) { // No category has been selected
-			$db = factory::getDB(); // Instantiate joomla database object
+			$db =& factory::getDB(); // Instantiate joomla database object
 			$query = "SELECT name FROM #__issue_types WHERE id = '".$id."'";
 			$db -> setQuery($query);
-			$name = $db->loadResult();
-			if ($db->error) {
-			  echo $db->error;
-			  return false;
-			}
-			return $name;
+			return $db->loadResult();
 		}
 		else {
 			return false;
@@ -280,15 +248,11 @@ class projectsHelperProjects {
 		$options[] = html::_('select.option', '0', text::_( '-- Select an issue type (optional) --' ) );
 		
 		// get project_types from db
-		$db = factory::getDB(); // Instantiate joomla database object
+		$db =& factory::getDB(); // Instantiate joomla database object
 		$query = "SELECT id, name FROM #__issue_types ";
 		$query .= " ORDER BY id ASC";
 		$db -> setQuery($query);
 		$rows = $db->loadObjectList();
-		if ($db->error) {
-		  echo $db->error;
-		  return false;
-		}
 		
 		foreach ($rows as $row) {
 			$options[] = html::_('select.option', $row->id, $row->name );
@@ -301,15 +265,10 @@ class projectsHelperProjects {
 	
 	function fileid2name($id=0) {
 		if (!empty($id)) { // No file has been selected
-			$db = factory::getDB(); // Instantiate joomla database object
+			$db =& factory::getDB(); // Instantiate joomla database object
 			$query = "SELECT title FROM #__files WHERE id = '".$id."'";
 			$db -> setQuery($query);
-			$name = $db->loadResult();
-			if ($db->error) {
-			  echo $db->error;
-			  return false;
-			}
-			return $name;
+			return $db->loadResult();
 		}
 		else {
 			return false;
