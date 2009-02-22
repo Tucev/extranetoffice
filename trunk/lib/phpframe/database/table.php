@@ -102,16 +102,16 @@ abstract class table extends singleton {
 	function load($id) {
 		$query = "SELECT * FROM `".$this->table_name."` WHERE `".$this->primary_key."` = '".$id."'";
 		$this->db->setQuery($query);
-		$row = $this->db->loadObject();
+		$row = $this->db->loadAssoc();
 		
 		if (is_array($row) && count($row) > 0) {
 			foreach ($this->cols as $col) {
 				$col_name = $col->Field;
-				$col_value = $row->$col_name;
+				$col_value = $row[$col_name];
 				$this->$col_name = $col_value;
 			}
-		
-			return $row;	
+			
+			return $this;	
 		}
 		else {
 			return false;
@@ -258,11 +258,11 @@ abstract class table extends singleton {
 		}
 		
 		$this->db->setQuery($query);
-		$this->db->query();
+		$insert_id = $this->db->query();
 		
 		// Store new row id for new entries
-		if ($row_exists === false) {
-			$this->$primary_key = mysql_insert_id();
+		if ($row_exists === false && !empty($insert_id)) {
+			$this->$primary_key = $insert_id;
 		}
 	}
 	
