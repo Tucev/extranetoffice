@@ -80,11 +80,15 @@ class db extends singleton {
 			return false;
 		}
 		
-		// Select database
+		// Select database. If it fails we destroy link and close connection
 		if (!mysql_select_db($db_name)) {
+			$this->close();
+			$this->link = false;
 			error::raise('', 'error', 'Could not select database');
 			return false;
 		}
+		
+		return true;
 	}
 	
 	/**
@@ -105,10 +109,15 @@ class db extends singleton {
 	 * @return resource
 	 */
 	public function query() {
+		// Only run query if active link is valid
+		if ($this->link === false) {
+			return false;
+		}
+		
 		// Run SQL query
 		$this->rs = mysql_query($this->query);
 		// Check query result is valid
-		if ($this->rs === false) {
+		if ($this->rs === false || mysql_error() != '') {
 			error::raise('', 'error', mysql_error().' Query: <code>'.$this->query.'</code>');
 			return false;
 		}

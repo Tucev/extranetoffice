@@ -65,6 +65,14 @@ abstract class table extends singleton {
 		$this->primary_key = $primary_key;
 		
 		$this->getColumns();
+		
+		// If there are no columns it is probably because the table doesnt't exist.
+		if (count($this->cols) > 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	/**
@@ -77,6 +85,11 @@ abstract class table extends singleton {
 		$query = "SHOW COLUMNS FROM `".$this->table_name."`";
 		$this->db->setQuery($query);
 		$this->cols = $this->db->loadObjectList();
+		// If no cols found set $this->cols to empty array to avoid problems with 
+		// foreach loops in other methods that use this property.
+		if (!is_array($this->cols)) {
+			$this->cols = array();
+		}
 	}
 	
 	/**
@@ -90,13 +103,19 @@ abstract class table extends singleton {
 		$query = "SELECT * FROM `".$this->table_name."` WHERE `".$this->primary_key."` = '".$id."'";
 		$this->db->setQuery($query);
 		$row = $this->db->loadObject();
-		foreach ($this->cols as $col) {
-			$col_name = $col->Field;
-			$col_value = $row->$col_name;
-			$this->$col_name = $col_value;
-		}
 		
-		return $row;
+		if (is_array($row) && count($row) > 0) {
+			foreach ($this->cols as $col) {
+				$col_name = $col->Field;
+				$col_value = $row->$col_name;
+				$this->$col_name = $col_value;
+			}
+		
+			return $row;	
+		}
+		else {
+			return false;
+		}
 	}
 	
 	/**
@@ -203,24 +222,21 @@ abstract class table extends singleton {
 		// with given id already exists.
 		if ($row_exists === false) {
 			$query = "INSERT INTO `".$this->table_name."` (";
-			$i=0;
-			foreach ($this->cols as $col) {
+			for ($i=0; $i<count($this->cols); $i++) {
 				if ($i>0) { 
 					$query .= ", ";
 				}
-				$query .= "`".$col->Field."`";
-				$i++;
+				$query .= "`".$this->cols[$i]->Field."`";
 			}
 			$query .= ") VALUES (";
-			$i=0;
-			foreach ($this->cols as $col) {
+			
+			for ($i=0; $i<count($this->cols); $i++) {
 				if ($i>0) { 
 					$query .= ", ";
 				}
-				$col_name = $col->Field;
+				$col_name = $this->cols[$i]->Field;
 				$col_value = $this->$col_name;
 				$query .= "'".$col_value."'";
-				$i++;
 			}
 			$query .= ")";
 		}

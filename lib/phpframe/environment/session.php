@@ -63,9 +63,10 @@ class session extends table {
 	 *
 	 */
 	function __construct() {
-		parent::__construct('#__session', 'id');
-		
-		$this->start();
+		$status = parent::__construct('#__session', 'id');
+		if ($status === true) {
+			$this->start();	
+		}
 	}
 	
 	/**
@@ -101,7 +102,9 @@ class session extends table {
 		parent::load($id);
 		
 		// Unserialize data
-		$this->data = unserialize($this->data);
+		if (is_string($this->data)) {
+			$this->data = unserialize($this->data);	
+		}
 	}
 	
 	/**

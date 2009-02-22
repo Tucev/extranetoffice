@@ -24,12 +24,20 @@ class error {
 	 * 
 	 * This method should be called from the template.
 	 * 
+	 * If no $error array is passed it displays errors stored in session.
+	 * 
+	 * @param	array	$error An eror array to display. Default is null. 
 	 * @return	void
 	 * @since 	1.0
 	 */
-	function display() {
-		$session =& factory::getSession();
-		$error = $session->getVar('error');
+	static function display($error=null) {
+		if (!$error) {
+			$session =& factory::getSession();
+			if ($session->id) {
+				$error = $session->getVar('error');	
+			}
+		}
+		
 		if (is_array($error) && count($error) > 0) {
 			foreach ($error as $error_msg) {
 				echo '<span class="system_msg_outer">';
@@ -48,7 +56,7 @@ class error {
 	 * @param	string	$msg The error message
 	 * @since 	1.0
 	 */
-	function raise($code='', $level='error', $msg) {
+	static function raise($code='', $level='error', $msg) {
 		// create standard object holding error
 		$error = new standardObject();
 		$error->code = $code;
@@ -57,9 +65,15 @@ class error {
 		
 		// Store error in session
 		$session =& factory::getSession();
-		$array = $session->getVar('error', array());
-		$array[] = $error;
-		$session->setVar('error', $array);
+		if (!$session->id) {
+			error::display(array($error));
+		}
+		else {
+			$array = $session->getVar('error', array());
+			$array[] = $error;
+			$session->setVar('error', $array);
+		}
+		
 	}
 }
 ?>
