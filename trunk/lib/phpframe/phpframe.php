@@ -11,6 +11,9 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 define("_PHPFRAME_PATH", dirname(__FILE__));
 
+// path to phpMailer
+define("_PHPMAILER_PATH", str_replace(DS.'phpframe', '', _PHPFRAME_PATH).DS."phpmailer");
+
 // Include base object classes
 require_once _PHPFRAME_PATH.DS."base".DS."standard.php";
 require_once _PHPFRAME_PATH.DS."base".DS."singleton.php";
@@ -42,6 +45,7 @@ require_once _PHPFRAME_PATH.DS."html".DS."pagination.php";
 require_once _PHPFRAME_PATH.DS."html".DS."text.php";
 // Include utils classes
 require_once _PHPFRAME_PATH.DS."utils".DS."crypt.php";
+require_once _PHPFRAME_PATH.DS."utils".DS."mail.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."utility.php";
 // include document class
 require_once _PHPFRAME_PATH.DS."document".DS."document.php";
