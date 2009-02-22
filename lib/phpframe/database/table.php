@@ -68,16 +68,6 @@ abstract class table extends singleton {
 	}
 	
 	/**
-	 * Return latest error
-	 * 
-	 * @return string
-	 */
-	function getError() {
-		$error = $this->error[count($this->error)];
-		return $error;
-	}
-	
-	/**
 	 * Get columns for table in database and store column info in $this->cols.
 	 * 
 	 * @return	void
