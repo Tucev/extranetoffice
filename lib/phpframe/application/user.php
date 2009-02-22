@@ -58,7 +58,7 @@ class user extends table {
 		}
 		$this->groupid = $this->getGroup($id);
 		$this->name = $this->firstname.' '.$this->lastname;
-		$this->name_abbr = substr($this->firstname, 0, 1).'. '.$this->lastname;;
+		$this->name_abbr = substr($this->firstname, 0, 1).'. '.$this->lastname;
 		
 		return $this;
 	}

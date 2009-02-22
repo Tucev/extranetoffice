@@ -105,6 +105,9 @@ class db extends singleton {
 	
 	/**
 	 * Run SQL query and return mysql record set resource.
+	 * 
+	 * It returns a myslql result resource or if it is an INSERT query it 
+	 * returns the insert id.
 	 *
 	 * @return resource
 	 */
@@ -116,10 +119,16 @@ class db extends singleton {
 		
 		// Run SQL query
 		$this->rs = mysql_query($this->query);
+		
 		// Check query result is valid
 		if ($this->rs === false || mysql_error() != '') {
 			error::raise('', 'error', mysql_error().' Query: <code>'.$this->query.'</code>');
 			return false;
+		}
+		
+		// If it is an INSERT query we return the insert id
+		if (stripos($this->query, 'INSERT') !== false) {
+			return mysql_insert_id();
 		}
 		
 		return $this->rs;

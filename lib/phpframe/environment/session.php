@@ -67,6 +67,14 @@ class session extends table {
 		if ($status === true) {
 			$this->start();	
 		}
+		else {
+			$error = new standardObject();
+			$error->code = '';
+			$error->level = 'error';
+			$error->msg = 'Fatal error: Session table (#__session) could not be initialised.';
+			error::display(array($error));
+			exit;
+		}
 	}
 	
 	/**
@@ -86,7 +94,6 @@ class session extends table {
 		if (!$this->id) {
 			$this->id = session_id();
 		}
-		
 		// Write session data to db
 		$this->write();
 	}
