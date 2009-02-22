@@ -13,7 +13,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 <script language="javascript" type="text/javascript">
 function submitbutton(action) {
-	var form = document.iofficelistsform;
+	var form = document.projectsform;
 
 	// do field validation
 	if (form.name.value == "") {
@@ -24,22 +24,22 @@ function submitbutton(action) {
 	
 	// set view type depending on action
 	if (action == 'save') {
-		form.type.value = 'admin';
+		form.layout.value = 'list';
 	}
 	else if (action == 'apply') {
-		form.type.value = 'edit';
+		form.layout.value = 'form';
 	}
 	
 	form.submit();
 }
 </script>
 
-<div class="componentheading"><?php echo $this->page_title; ?></div>
+<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 
 
-<form action="index.php" method="post" name="iofficelistsform">
+<form action="index.php" method="post" name="projectsform">
 
-<fieldset class="josform">
+<fieldset>
 <legend><?php echo text::_( _LANG_PROJECTS_DETAILS ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
@@ -228,7 +228,7 @@ function submitbutton(action) {
 <input type="hidden" name="id" value="<?php echo $this->project->id;?>" />
 <input type="hidden" name="option" value="com_projects" />
 <input type="hidden" name="task" value="save_project" />
-<input type="hidden" name="type" value="" />
+<input type="hidden" name="layout" value="" />
 <?php echo html::_( 'form.token' ); ?>
 
 </form>

@@ -30,13 +30,20 @@ class projectsModelProjects extends model {
 	/**
 	 * Constructor
 	 *
-	 * @since 1.0
+	 * @return	void
+	 * @since	1.0
 	 */
 	function __construct() {
 		$this->init();
 		parent::__construct();
 	}
 	
+	/**
+	 * Initialise the projects model. This method is invoked in the constructor.
+	 * 
+	 * @return	void
+	 * @since	1.0
+	 */
 	function init() {
 		$this->config =& factory::getConfig();
 		$this->user =& factory::getUser();
@@ -71,6 +78,12 @@ class projectsModelProjects extends model {
 		}
 	}
 	
+	/**
+	 * Get projects.
+	 * 
+	 * @param $projectid
+	 * @return mixed
+	 */
 	function getProjects($projectid=0) {
 		// Only apply filtering and ordering if browsing projects list
 		if (empty($projectid)) {
@@ -157,14 +170,21 @@ class projectsModelProjects extends model {
 			return $this->db->loadObject();
 		}
 	}
-
+	
+	/**
+	 * Save a project sent in the request.
+	 * 
+	 * Returns the project id or FALSE if it fails
+	 * 
+	 * @return int
+	 */
 	function saveProject() {
-		$row = new projectsTableProjects();
+		// Instantiate table object
+		require_once COMPONENT_PATH.DS.'tables'.DS.'projects.table.php';
+		$row =& phpFrame::getInstance('projectsTableProjects');
 		
-		$post = request::get( 'post' );
-		if (!$row->bind( $post )) {
-			JError::raiseError(500, $row->getError() );
-		}
+		$post = request::get('post');
+		$row->bind($post);
 		
 		if (empty($row->id)) {
 			$row->created = date("Y-m-d H:i:s");
@@ -172,29 +192,40 @@ class projectsModelProjects extends model {
 			$new_project = true;
 		}
 		
-		if (!$row->check()) {
-			JError::raiseError(500, $row->getError() );
-		}
-	
-		if (!$row->store()) {
-			JError::raiseError(500, $row->getError() );
-		}
+		$row->check();
+		$row->store();
 		
 		// Add role for user in the new project
 		if ($new_project === true) {
-			$this->saveMember($row->id, $this->user->id, '1');	
+			if (!$this->saveMember($row->id, $this->user->id, '1')) {
+				return false;
+			}
 		}
 		
-		return $row->id;
+		if (is_int($row->id) && !empty($row->id)) {
+			error::raise('', 'message', _LANG_PROJECT_SAVED);
+			return $row->id;
+		}
+		else {
+			error::raise('', 'message', _LANG_PROJECT_SAVE_ERROR);
+			return false;
+		}
 	}
 	
+	/**
+	 * Delete a project by id
+	 * 
+	 * @param	int	$projectid
+	 * @return	bool
+	 */
 	function deleteProject($projectid) {
 		//TODO: Before deleting the project we need to delete all its tracker items, lists, files, ...
 		// Instantiate table object
-		$row = new projectsTableProjects();
+		require_once COMPONENT_PATH.DS.'tables'.DS.'projects.table.php';
+		$row =& phpFrame::getInstance('projectsTableProjects');
 		// Delete row from database
 		if (!$row->delete($projectid)) {
-			JError::raiseError(500, $row->getError() );
+			error::raise('', 'error', $row->getError() );
 		}
 	}
 	
@@ -212,73 +243,45 @@ class projectsModelProjects extends model {
 	}
 	
 	function saveMember($projectid, $userid, $roleid) {
-		$row = new projectsTableUsersRoles();
+		// Instantiate table object
+		require_once COMPONENT_PATH.DS.'tables'.DS.'users_roles.table.php';
+		$row =& phpFrame::getInstance('projectsTableUsersRoles');
+		
+		// Load existing entry before we overwrite with new values
 		$row->load($userid, $projectid);
 		
 		$row->userid = $userid;
 		$row->projectid = $projectid;
 		$row->roleid = $roleid;
 			
-		if (!$row->check()) {
-			JError::raiseError(500, $row->getError() );
-		}
-		if (!$row->store()) {
-			JError::raiseError(500, $row->getError() );
-		}
+		$row->check();
+		$row->store();
 		
 		// Send invitation via email
-		jimport( 'joomla.mail.mail' );
-		jimport( 'joomla.mail.helper' );
-		$new_mail = new JMail();
-			
-		$sender = $this->config->get('notifications_fromaddress');
-		$recipient = usersHelperUsers::id2email($userid);
 		$project_name = projectsHelperProjects::id2name($projectid);
 		$role_name = projectsHelperProjects::project_roleid2name($roleid);
-		$joomla_config = new JConfig();
-		$site_name = $joomla_config->sitename;
-		$site_url = JURI::Base();
-			
-		$subject = sprintf(_LANG_ADMIN_INVITATION_SUBJECT, $this->user->get('name'), $project_name, $site_name);
-		$body = text::_(sprintf(_LANG_ADMIN_INVITATION_BODY,
+		$site_name = $this->config->sitename;
+		$uri =& factory::getURI();
+		$site_url = $uri->getBase();
+		
+		$new_mail = new mail();
+		$new_mail->Sender = $this->config->fromaddress;
+		$new_mail->From = $this->config->fromaddress;
+		$new_mail->FromName = $this->config->fromname;
+		$new_mail->Subject = sprintf(_LANG_ADMIN_INVITATION_SUBJECT, $this->user->get('name'), $project_name, $site_name);
+		$new_mail->Body = text::_(sprintf(_LANG_ADMIN_INVITATION_BODY,
 								 $this->user->get('name'), 
 								 $project_name, 
 								 $role_name, 
 								 $site_url)
-						);
-
-		$recipient = trim($recipient);
-		if (!JMailHelper::isEmailAddress($recipient)) {
-			$error	= JText::sprintf('EMAIL_INVALID', $recipient);
-			JError::raiseWarning(0, $error );
-		}
-		else {
-			$new_mail->addRecipient($recipient);	
-		}
-	
-		if ($error)	{
-			return false;
-		}
-		
-		// Clean the email data
-		$sender = JMailHelper::cleanAddress($sender);
-		$subject = JMailHelper::cleanSubject($subject);
-		$body = JMailHelper::cleanBody($body);
-		$new_mail->addReplyTo(array($this->user->get('email'), $this->user->get('name')));
-		$new_mail->setSender($sender);
-		$new_mail->FromName = $this->config->get('notifications_fromname');
-		$new_mail->setSubject($subject);
-		$new_mail->setBody($body);
-		$new_mail->useSMTP($this->config->get('notifications_smtpauth'), 
-						   $this->config->get('notifications_smtphost'), 
-						   $this->config->get('notifications_smtpusername'), 
-						   $this->config->get('notifications_smtppassword'));
-		//$new_mail->useSendmail();
+						  );
+						  
+		$new_mail->AddAddress(usersHelperUsers::id2email($userid), usersHelperUsers::id2name($userid));
 		
 		//echo '<pre>'; var_dump($new_mail); exit;
-						   
+		
 		if ($new_mail->Send() !== true) {
-			JError::raiseWarning( '', 'EMAIL_NOT_SENT' );
+			error::raise('', 'warning', 'Notification email failed');
 			return false;
 		}
 		else {

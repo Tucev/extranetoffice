@@ -67,6 +67,8 @@ class projectsViewProjects extends view {
 	}
 	
 	/**
+	 * Display project list layout
+	 * 
 	 * Custom display method triggered by list layout.
 	 * 
 	 * @return void
@@ -75,7 +77,7 @@ class projectsViewProjects extends view {
 		$this->page_title = _LANG_PROJECTS;
 		
 		// Push model into the view
-		$model =& $this->getModel();
+		$model =& $this->getModel('projects');
 		
 		// Get projects and store data in view
 		$projects = $model->getProjects();
@@ -85,7 +87,9 @@ class projectsViewProjects extends view {
 	}
 	
 	/**
-	 * Custom display method triggered by detail layout.
+	 * Display project detail layout
+	 * 
+	 * This method is a custom display method triggered by detail layout.
 	 * 
 	 * @return void
 	 */
@@ -118,7 +122,11 @@ class projectsViewProjects extends view {
 	}
 	
 	/**
-	 * @todo This method needs to be ported to extranetoffice from intranetoffice
+	 * Display project detail layout
+	 * 
+	 * This method is a custom display method triggered by detail layout.
+	 * 
+	 * @return void
 	 */
 	function displayProjectsForm() {
 		if (!empty($this->projectid)) {
@@ -137,8 +145,6 @@ class projectsViewProjects extends view {
 			$this->project->access_reports = '1';
 			$this->project->access_people = '3';
 			$this->project->access_admin = '1';
-			// set the vie type to edit to load template
-			$this->type = 'edit';
 		}
 		
 		$this->addPathwayItem($this->page_title);

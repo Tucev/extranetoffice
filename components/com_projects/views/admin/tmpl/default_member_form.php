@@ -49,14 +49,14 @@ function submitbutton() {
 
 <form action="index.php" method="post" name="iofficenewmemberform">
 	
-	<fieldset class="josform">
+	<fieldset>
 		<legend><?php echo text::_( _LANG_PROJECTS_ADD_EXISTING_MEMBER ); ?></legend>
 		Select existing users by username: <?php echo usersHelperUsers::autocompleteUsername('iofficenewmemberform'); ?>
 	</fieldset>
 	
 	<div style="padding:10px 5px 5px 5px; font-size: 1.4em;">or</div>
 	
-	<fieldset class="josform">
+	<fieldset>
 		<legend><?php echo text::_( _LANG_PROJECTS_INVITE_NEW_MEMBER ); ?></legend>
 		
 		<table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">

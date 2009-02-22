@@ -156,10 +156,8 @@ class projectsModelFiles extends model {
 	function saveFile($projectid) {
 		$row = new projectsTableFiles();
 		
-		$post = request::get( 'post' );
-		if (!$row->bind( $post )) {
-			JError::raiseError(500, $row->getError() );
-		}
+		$post = request::get('post');
+		$row->bind($post);
 		
 		// Generate revision
 		if (empty($row->parentid)) {
