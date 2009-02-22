@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: config.php-dist 34 2009-01-28 17:06:01Z luis.montero $
+ * @version		$Id$
  * @package		ExtranetOffice
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -10,12 +10,48 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 class config {
+	
+	/////////////////////////////////////////////////
+    // GENERAL PROPERTIES
+    /////////////////////////////////////////////////
+	
 	/**
 	 * The site name
 	 *
 	 * @var string
 	 */
-	var $sitename="Extranet Office 2.0";
+	var $sitename="Extranet Office 1.0";
+	
+	/**
+	 * Site template
+	 *
+	 * @var string
+	 */
+	var $template="default";
+	/**
+	 * The default language to load
+	 *
+	 * @var string
+	 */
+	var $default_lang="en-GB";
+	
+	/**
+	 * This option switched on/off the debugger for sys admins
+	 *
+	 * @var bool
+	 */
+	var $debug=false;
+	/**
+	 * Secret string used to generate secure hash
+	 * 
+	 * @var string
+	 */
+	var $secret='MaHmncUHNyq2IAN7DoUlRcQo';
+	
+	/////////////////////////////////////////////////
+    // DATABASE PROPERTIES
+    /////////////////////////////////////////////////
+    
 	/**
 	 * MySQL server
 	 *
@@ -46,18 +82,11 @@ class config {
 	 * @var string
 	 */
 	var $db_prefix="eo_";
-	/**
-	 * Site template
-	 *
-	 * @var string
-	 */
-	var $template="default";
-	/**
-	 * The default language to load
-	 *
-	 * @var string
-	 */
-	var $default_lang="en-GB";
+	
+	/////////////////////////////////////////////////
+    // FILESYSTEM PROPERTIES
+    /////////////////////////////////////////////////
+	
 	/**
 	 * Relative path to folder to allow uploads. 
 	 * Used for uploading images that will need to be accessible in html pages, 
@@ -71,18 +100,106 @@ class config {
 	 *
 	 * @var string
 	 */
-	var $filesystem="/path/to/extranetoffice/filesystem";
+	var $filesystem="/path/to/filesystem";
+	
+	/////////////////////////////////////////////////
+    // MAIL RETRIEVAL PROPERTIES
+    /////////////////////////////////////////////////
+    
 	/**
-	 * This option switched on/off the debugger for sys admins
-	 *
-	 * @var bool
-	 */
-	var $debug=false;
-	/**
-	 * Secret string used to generate secure hash
+	 * The IMAP host name or IP address
 	 * 
 	 * @var string
 	 */
-	var $secret='MaHmncUHNyq2IAN7DoUlRcQo';
+	var $imap_host='';
+	/**
+	 * The IMAP port number to use
+	 * 
+	 * @var int
+	 */
+	var $imap_port=143;
+	/**
+	 * The IMAP login username
+	 * 
+	 * @var string
+	 */
+	var $imap_user='';
+	/**
+	 * The IMAP password
+	 * 
+	 * @var string
+	 */
+	var $imap_password='';
+	
+	/////////////////////////////////////////////////
+    // MAIL SENDING PROPERTIES
+    /////////////////////////////////////////////////
+    
+	/**
+	 * Method to send mail: ("mail", "sendmail", or "smtp").
+	 * 
+	 * @var string
+	 */
+	var $mailer='mail';
+	/**
+	 * If using SMTP mailer enable smtp authentication
+	 * 
+	 * @var string
+	 */
+	var $smtp_auth=false;
+	/**
+	 * The SMTP host name or IP address.
+	 * 
+	 * @var string
+	 */
+	var $smtp_host='';
+	/**
+	 * The SMTP port to use
+	 * 
+	 * @var int
+	 */
+	var $smtp_port=25;
+	/**
+	 * The SMTP login name
+	 * 
+	 * @var string
+	 */
+	var $smtp_user='';
+	/**
+	 * The SMTP password
+	 * 
+	 * @var string
+	 */
+	var $smtp_password='';
+	/**
+	 * The email address to use for notifications
+	 *  
+	 * @var string
+	 */
+	var $fromaddress='';
+	/**
+	 * The from name for notifications
+	 *  
+	 * @var string
+	 */
+	var $fromname='';
+	
+	
+	/**
+	 * Get property
+	 * 
+	 * @todo This method has been added for compatibility with Intranet Office code and should be removed once we finish porting all the code.
+	 * 
+	 * @param $property
+	 * @return mixed
+	 */
+	function get($property) {
+		if ($this->$property) {
+			return $this->$property;
+		}
+		else {
+			return false;
+		}
+	}
 }
 ?>
