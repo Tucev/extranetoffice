@@ -34,6 +34,25 @@ class request {
 	}
 	
 	/**
+	 * Get get or post global array
+	 * 
+	 * @param	string	$global_key "get" or "post"
+	 * @return	array
+	 */
+	function get($global_key) {
+		$inputfilter = new InputFilter();
+		
+		switch ($global_key) {
+			case 'get' : 
+				return $inputfilter->process($_GET);
+				break;
+			case 'post' : 
+				return $inputfilter->process($_POST);
+				break;
+		}
+	}
+	
+	/**
 	 * Get request variable
 	 * 
 	 * @param	string	$name The array key.
@@ -41,11 +60,11 @@ class request {
 	 * @return	mixed
 	 * @since	1.0
 	 */
-	function getVar($name, $default='') {
-		if (empty($GLOBALS['application']->request[$name])) {
-			$GLOBALS['application']->request[$name] = $default;
+	function getVar($key, $default='') {
+		if (empty($GLOBALS['application']->request[$key])) {
+			$GLOBALS['application']->request[$key] = $default;
 		}
-		return $GLOBALS['application']->request[$name];
+		return $GLOBALS['application']->request[$key];
 	}
 	
 	/**
@@ -56,9 +75,9 @@ class request {
 	 * @return	void
 	 * @since	1.0
 	 */
-	function setVar($name, $value) {
+	function setVar($key, $value) {
 		$inputfilter = new InputFilter();
-		$GLOBALS['application']->request[$name] = $inputfilter->process($value);
+		$GLOBALS['application']->request[$key] = $inputfilter->process($value);
 	}
 	
 }
