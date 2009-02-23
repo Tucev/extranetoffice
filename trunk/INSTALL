@@ -1,0 +1,95 @@
+$Id$
+
+Extranet Office installation instructions
+-----------------------------------------
+
+This installation instructions are temporary and only intended to be used by developers.
+A web installer will be included with released versions, but since we don't have it yet 
+this basic guide should do for now.
+
+Requirements
+------------
+
+Before installing Extranet Office please make sure that you have a working web server 
+and the that it meets the recommended minimum requirements: 
+
+- MySQL 5.x or higher
+- PHP 5.2.0 or higher
+- PHP Extensions:
+	- MySQL
+	- Filter
+	- GD
+	- IMAP
+
+You can check your this by looking at the output of phpinfo() in a php script. Simply create 
+a text file in your web server and add the following code:
+
+<?php phpinfo(); ?>
+
+Browse this script on your web browser and that will show full details of your PHP installation.
+
+
+Command line installation
+-------------------------
+
+1. Download source from repository
+
+	Browse to the directory where you want to install Extranet Office. This will have to be 
+	inside the web root (ie: /var/www or /home/sites/mysite/public_html).
+	
+	Use this command to anonymously check out the latest project source code to the current 
+	working directory:
+	
+	svn checkout http://extranetoffice.googlecode.com/svn/trunk/ ./
+	
+	* Developers with commit access remember to checkout using HTTPS and authentication to be 
+	able to make changes. 
+
+
+2. Create database and database user
+
+	To do this you will need access to the mysql server with a user with privileges to create 
+	new users, databases and grant privileges to other users. We will use the MySQL root user 
+	in this example.
+
+	mysql -u root -p
+	mysql> CREATE USER 'extranetoffice'@'localhost' IDENTIFIED BY 'ChangeMe' ; 
+	mysql> GRANT USAGE ON * . * TO 'extranetoffice'@'localhost' IDENTIFIED BY 'ChangeMe' ; 
+	mysql> CREATE DATABASE `extranetoffice` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ; 
+	mysql> GRANT ALL PRIVILEGES ON `extranetoffice` . * TO 'extranetoffice'@'localhost' ;
+	mysql> quit
+	
+
+3. Import database structure and initial data
+	
+	mysql -u root -p extranetoffice < installation/install.sql
+	
+	
+4. Filesystem settings
+
+	Create "filesystem" folder outside of web root, but make sure the webserver has both read 
+	and write access. Also create a subdirectory named "projects"
+	
+	mkdir /var/extranet_fs
+	mkdir /var/extranet_fs/projects
+
+	Give web server user write access to uploads folder.
+	
+	Check overall filesystem permissions.
+
+
+5. Create configuration file
+
+	Rename or duplicate config.php-dist to config.php and fill in all parameters as described 
+	in the document's comments
+	
+	cp inc/config.php-dist inc/config.php
+	nano inc/config.php
+
+
+6. Delete installation directory
+
+	rm -rf installation
+
+Now you should be able to browse the site with your web browser.
+	
