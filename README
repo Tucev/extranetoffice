@@ -1,10 +1,14 @@
-REQUIREMENTS
-------------
+Extranet Office project resources
+---------------------------------
 
-PHP 5.2.0 or higher
+Project home page: http://www.extranetoffice.org/
 
-PHP Extensions:
-- Filter
-- GD
-- IMAP
-- MySQL
+Source documentation: http://www.extranetoffice.org/doc/
+
+Source: http://code.google.com/p/extranetoffice/source
+
+Tracker: http://code.google.com/p/extranetoffice/issues/list
+
+Developers discussion group: http://groups.google.com/group/extranetoffice-dev
+
+Commits list: http://groups.google.com/group/extranetoffice-commits 
