@@ -21,7 +21,7 @@ and the that it meets the recommended minimum requirements:
 	- GD
 	- IMAP
 
-You can check your this by looking at the output of phpinfo() in a php script. Simply create 
+You can check this by looking at the output of phpinfo() in a php script. Simply create 
 a text file in your web server and add the following code:
 
 <?php phpinfo(); ?>
