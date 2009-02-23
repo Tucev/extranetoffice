@@ -11,7 +11,7 @@ Requirements
 ------------
 
 Before installing Extranet Office please make sure that you have a working web server 
-and the that it meets the recommended minimum requirements: 
+and that it meets the recommended minimum requirements: 
 
 - MySQL 5.x or higher
 - PHP 5.2.0 or higher
@@ -22,7 +22,8 @@ and the that it meets the recommended minimum requirements:
 	- IMAP
 
 You can check this by looking at the output of phpinfo() in a php script. Simply create 
-a text file in your web server and add the following code:
+a text file in your web server, add the following code and save it with a .php extension 
+(ie: test.php, or info.php, ...):
 
 <?php phpinfo(); ?>
 
@@ -68,20 +69,23 @@ Command line installation
 4. Filesystem settings
 
 	Create "filesystem" folder outside of web root, but make sure the webserver has both read 
-	and write access. Also create a subdirectory named "projects"
+	and write access. Also create a subdirectory named "projects".
 	
+	For example:
 	mkdir /var/extranet_fs
 	mkdir /var/extranet_fs/projects
 
-	Give web server user write access to uploads folder.
+	Give web server user write access to uploads folder. By default this is a directory named 
+	"uploads".
 	
-	Check overall filesystem permissions.
+	Check overall filesystem permissions. Make sure the webserver has read access to the whole 
+	site, but only write access on the directories mentioned above.
 
 
 5. Create configuration file
 
 	Rename or duplicate config.php-dist to config.php and fill in all parameters as described 
-	in the document's comments
+	in the document's comments. This document can be found under the "inc/" directory.
 	
 	cp inc/config.php-dist inc/config.php
 	nano inc/config.php
