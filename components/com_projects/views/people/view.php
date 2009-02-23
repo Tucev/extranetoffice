@@ -78,14 +78,13 @@ class projectsViewPeople extends view {
 	 * @return void
 	 */
 	function displayPeopleList() {
+		$this->page_title = _LANG_PEOPLE;
+		$this->page_heading = $this->project->name.' - '._LANG_PEOPLE;
 		$this->addPathwayItem($this->current_tool);
 		
-		$modelUsers =& $this->getModel('projects');
-		$members = $modelUsers->getmembers($this->projectid);
-		var_dump($members);
-		$this->rows =& $members['rows'];
-		$this->pageNav =& $members['pageNav'];
-		$this->lists =& $members['lists'];
+		$modelProjects =& $this->getModel('projects');
+		$members = $modelProjects->getmembers($this->projectid);
+		$this->rows =& $members;
 	}
 
 }

@@ -52,8 +52,9 @@ class projectsViewAdmin extends view {
 			$controller =& phpFrame::getInstance('projectsController');
 			$this->project =& $controller->project;
 			$this->project_permissions =& $controller->project_permissions;
-			$this->page_title = projectsHelperProjects::id2name($this->projectid);
 		}
+		
+		$this->current_tool = _LANG_ADMIN;
 		
 		parent::__construct();
 	}
@@ -80,7 +81,8 @@ class projectsViewAdmin extends view {
 	 * @return void
 	 */
 	function displayAdminList() {
-		$this->page_title .= ' - '._LANG_ADMIN;
+		$this->page_title = _LANG_ADMIN;
+		$this->page_heading = $this->project->name.' - '._LANG_ADMIN;
 		$this->addPathwayItem(_LANG_ADMIN);
 		
 		$document =& factory::getDocument('html');

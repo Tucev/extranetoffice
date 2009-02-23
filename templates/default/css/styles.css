@@ -484,6 +484,21 @@ div.thread_reopen:hover {
 background-color: #ffff99;
 }
 
+/* data list rendered as icons */
+div.row_icons {
+width: 100px;
+float: left;
+border:1px dotted #CCCCCC;
+background-color: #F6F6F6;
+padding: 10px 8px;
+margin: 0 10px 5px 0;
+text-align: center;
+}
+div.row_icons_heading {
+padding: 10px 0 0 0;
+font-size: 1.2em;
+}
+
 /*************** Login component (com_login) ***************/
 
 div#login_wrapper {
