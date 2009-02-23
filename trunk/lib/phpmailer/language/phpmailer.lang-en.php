@@ -2,6 +2,10 @@
 /**
  * PHPMailer language file.
  * English Version
+ * 
+ * @package PHPMailer
+ * @author Brent R. Matzelle
+ * @copyright 2001 - 2003 Brent R. Matzelle
  */
 
 $PHPMAILER_LANG = array();
