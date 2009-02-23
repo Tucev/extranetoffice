@@ -122,12 +122,21 @@ abstract class table extends singleton {
 	 * Bind array to row object
 	 * 
 	 * @param	array	$array
+	 * @param	string	$exclude A list of key names to exclude from binding process separated by commas.
 	 * @return	bool
 	 */
-	function bind($array) {
+	function bind($array, $exclude='') {
+		// Process exclude
+		if (!empty($exclude)) {
+			$exclude = explode(',', $exclude);
+		}
+		else {
+			$exclude = array();
+		}
+		
 		if (is_array($array) && count($array) > 0) {
 			foreach ($this->cols as $col) {
-				if (array_key_exists($col->Field, $array)) {
+				if (array_key_exists($col->Field, $array) && !in_array($col->Field, $exclude)) {
 					$col_name = $col->Field;
 					$this->$col_name = $array[$col_name];
 				}
@@ -231,11 +240,9 @@ abstract class table extends singleton {
 			$query .= ") VALUES (";
 			
 			for ($i=0; $i<count($this->cols); $i++) {
-				if ($i>0) { 
-					$query .= ", ";
-				}
 				$col_name = $this->cols[$i]->Field;
 				$col_value = $this->$col_name;
+				if ($i>0) $query .= ", ";
 				$query .= "'".$col_value."'";
 			}
 			$query .= ")";
@@ -245,13 +252,13 @@ abstract class table extends singleton {
 			$i=0;
 			foreach ($this->cols as $col) {
 				if ($col->Field != $this->primary_key) {
-					if ($i>0) { 
-						$query .= ", ";
-					}
 					$col_name = $col->Field;
 					$col_value = $this->$col_name;
-					$query .= "`".$col_name."` = '".$col_value."'";
-					$i++;
+					if (!empty($col_value)) {
+						if ($i>0) $query .= ", ";
+						$query .= "`".$col_name."` = '".$col_value."'";
+						$i++;
+					}
 				}
 			}
 			$query .= " WHERE `".$this->primary_key."` = '".$this->$primary_key."'";
