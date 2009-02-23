@@ -62,6 +62,59 @@ class html {
 	}
 	
 	/**
+	 * Function to build input with autocomplete and display it
+	 * 
+	 * @static
+	 * @todo	This method needs to be refactored using jQuery instead of mootools.
+	 * @param	string	$form_name	The name of the form where this input tag will appear
+	 * @param 	string	$field_name	The name attribute fot the input tag
+	 * @param	string	$attribs 	A string containing attributes for the input tag
+	 * @param	array	$tokens		An array with the key/value pairs used to build the list of options
+	 * @return 	void
+	 * @since	1.0
+	 */
+	static function autocompleter($form_name, $field_name, $attribs, $tokens) {
+		// Attach style sheets and scripts
+		$document =& factory::getDocument('html');
+		$document->addScript('lib/jquery/jquery-1.3.1.min.js');
+		?>
+		
+		<input class="inputbox" autocomplete="off" name="<?php echo $field_name; ?>" id="<?php echo $field_name; ?>" type="text" <?php echo $attribs; ?> />
+
+		<script type="text/javascript">
+		window.addEvent('domready', function(){
+			var el = document.<?php echo $form_name; ?>.<?php echo $field_name; ?>;
+			
+			var tokens = [
+				<?php for($i=0; $i<count($tokens); $i++) : ?>
+				<?php if($i>0) { echo ', '; } ?>
+				['<?php echo $tokens[$i][0]; ?>','<?php echo $tokens[$i][1]; ?>']
+				<?php endfor; ?>
+			];
+			
+			var completer1 = new Autocompleter.Local(el, tokens, {
+				'delay': 100,
+				'filterTokens': function() {
+					var regex = new RegExp('^' + this.queryValue.escapeRegExp(), 'i');
+					return this.tokens.filter(function(token) {
+						return (regex.test(token[0]) || regex.test(token[1]));
+					});
+				},
+				'injectChoice': function(choice) {
+					var el = new Element('li', {'class': 'autocomplete'})
+					.setHTML(this.markQueryValue(choice[0]));
+					el.inputValue = choice[0];
+					this.addChoiceEvents(el).injectInside(this.choices);
+				}
+			});
+			
+		});
+		</script>
+		
+		<?php
+	}
+	
+	/**
 	 * Displays a hidden token field to reduce the risk of CSRF exploits.
 	 * 
      * Use in conjuction with JRequest::checkToken
