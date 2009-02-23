@@ -82,7 +82,7 @@ class usersHelperUsers {
 	static function id2photo($id) {
 		if (!empty($id)) { // No user has been selected
 			$db =& factory::getDB(); // Instantiate joomla database object
-			$query = "SELECT photo FROM #__intranetoffice_settings WHERE userid = '".$id."'";
+			$query = "SELECT photo FROM #__settings WHERE userid = '".$id."'";
 			$db -> setQuery($query);
 			$photo = $db->loadResult();
 			if (empty($photo)) { $photo = 'default.png'; }
@@ -109,7 +109,7 @@ class usersHelperUsers {
 		$query = "SELECT u.id, u.name ";
 		$query .= " FROM #__users AS u ";
 		if (!empty($projectid)) {
-			$query .= " LEFT JOIN #__intranetoffice_users_roles ur ON ur.userid = u.id ";
+			$query .= " LEFT JOIN #__users_roles ur ON ur.userid = u.id ";
 			$query .= " WHERE ur.projectid = ".$projectid;
 		}
 		$query .= " ORDER BY u.name";
@@ -134,7 +134,7 @@ class usersHelperUsers {
 		$query = "SELECT u.id, u.name ";
 		$query .= " FROM #__users AS u ";
 		if (!empty($projectid)) {
-			$query .= " LEFT JOIN #__intranetoffice_users_roles ur ON ur.userid = u.id ";
+			$query .= " LEFT JOIN #__users_roles ur ON ur.userid = u.id ";
 			$query .= " WHERE ur.projectid = ".$projectid;
 		}
 		$query .= " ORDER BY u.name";
@@ -167,6 +167,12 @@ class usersHelperUsers {
 		return $output;		
 	}
 	
+	/**
+	 * Build and display an input tag with username autocompleter
+	 * 
+	 * @param	string	$form_name The name of the form where the input tag will appear.
+	 * @return	void
+	 */
 	static function autocompleteUsername($form_name) {
 		// get joomla users from #__users
 		$db =& factory::getDB(); // Instantiate joomla database object
@@ -182,7 +188,7 @@ class usersHelperUsers {
 			$tokens[] = array($row->username, $row->id);
 		}
 		
-		return enoiseAutocompleter::input($form_name, 'username', '', $tokens);
+		html::autocompleter($form_name, 'username', '', $tokens);
 	}
 }
 ?>
