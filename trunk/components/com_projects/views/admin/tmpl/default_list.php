@@ -26,7 +26,7 @@ function confirm_delete_member(projectid, userid, label) {
 }
 </script>
 
-<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
+<h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
 
 <div class="main_col_module_half">
@@ -110,7 +110,7 @@ function confirm_delete_member(projectid, userid, label) {
 <h3 class="people">Members</h3>
 
 <div class="new">
-<a href="<?php echo route::_("index.php?option=".$this->option."&view=".$this->view."&layout=member_form&projectid=".$this->projectid); ?>">Add new member</a>
+<a href="<?php echo route::_("index.php?option=".request::getVar('option')."&view=".$this->view."&layout=member_form&projectid=".$this->projectid); ?>">Add new member</a>
 </div>
 
 <br />

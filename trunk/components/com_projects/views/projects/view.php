@@ -45,6 +45,12 @@ class projectsViewProjects extends view {
 		// Set reference to projectid
 		$this->projectid =& request::getVar('projectid', 0);
 		
+		if (!empty($this->projectid)) {
+			// get project data from controller
+			$controller =& phpFrame::getInstance('projectsController');
+			$this->project =& $controller->project;
+		}
+		
 		parent::__construct();
 	}
 	
@@ -103,8 +109,8 @@ class projectsViewProjects extends view {
 			return false;
 		}
 		else {
-			$project_name = projectsHelperProjects::id2name($projectid);
-			$this->page_title = $project_name.' - '. _LANG_PROJECTS_HOME;
+			$this->page_title = _LANG_PROJECTS_HOME;
+			$this->page_heading = $this->project->name.' - '._LANG_PROJECTS_HOME;
 			$this->addPathwayItem(_LANG_PROJECTS_HOME);
 			
 			// Get overdue issues

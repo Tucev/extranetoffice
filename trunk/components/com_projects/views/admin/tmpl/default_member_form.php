@@ -63,7 +63,7 @@ function submitbutton() {
 		<tr>
 			<td width="30%">
 				<label id="namemsg" for="name">
-					<?php echo _LANG_USERS_NAME; ?>:
+					<?php echo _LANG_NAME; ?>:
 				</label>
 			</td>
 			<td>
@@ -73,7 +73,7 @@ function submitbutton() {
 		<tr>
 			<td width="30%">
 				<label id="new_usernamemsg" for="new_username">
-					<?php echo _LANG_USERS_USERNAME; ?>:
+					<?php echo _LANG_USERNAME; ?>:
 				</label>
 			</td>
 			<td>
@@ -83,7 +83,7 @@ function submitbutton() {
 		<tr>
 			<td width="30%">
 				<label id="invite_member_emailmsg" for="invite_member_email">
-					<?php echo _LANG_USERS_EMAIL; ?>:
+					<?php echo _LANG_EMAIL; ?>:
 				</label>
 			</td>
 			<td>
