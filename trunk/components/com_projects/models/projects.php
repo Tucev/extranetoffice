@@ -202,7 +202,7 @@ class projectsModelProjects extends model {
 			}
 		}
 		
-		if (is_int($row->id) && !empty($row->id)) {
+		if (!empty($row->id)) {
 			error::raise('', 'message', _LANG_PROJECT_SAVED);
 			return $row->id;
 		}
