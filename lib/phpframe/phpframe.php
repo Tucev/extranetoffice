@@ -24,7 +24,6 @@ require_once _PHPFRAME_PATH.DS."database".DS."table.php";
 require_once _PHPFRAME_PATH.DS."environment".DS."request.php";
 require_once _PHPFRAME_PATH.DS."environment".DS."response.php";
 require_once _PHPFRAME_PATH.DS."environment".DS."session.php";
-require_once _PHPFRAME_PATH.DS."environment".DS."uri.php";
 // Include application classes
 require_once _PHPFRAME_PATH.DS."application".DS."application.php";
 require_once _PHPFRAME_PATH.DS."application".DS."components.php";
@@ -45,7 +44,9 @@ require_once _PHPFRAME_PATH.DS."html".DS."pagination.php";
 require_once _PHPFRAME_PATH.DS."html".DS."text.php";
 // Include utils classes
 require_once _PHPFRAME_PATH.DS."utils".DS."crypt.php";
+require_once _PHPFRAME_PATH.DS."utils".DS."filter.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."mail.php";
+require_once _PHPFRAME_PATH.DS."utils".DS."uri.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."utility.php";
 // include document class
 require_once _PHPFRAME_PATH.DS."document".DS."document.php";
