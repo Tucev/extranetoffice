@@ -17,6 +17,10 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * of the table class. The table class is an abstract class so it will be used to implement 
  * specific database tables and each of the child instances will need to be a singleton.
  * 
+ * NOTE: Errors should not be raised using error:raise() as the error object uses the table 
+ * class itself for storing data into the session. So we store errors internally instead in 
+ * property $this->error.
+ * 
  * @package		phpFrame
  * @subpackage 	database
  * @author 		Luis Montero [e-noise.com]
@@ -49,6 +53,12 @@ abstract class table extends singleton {
 	 * @var array
 	 */
 	var $cols=array();
+	/**
+	 * String containing error message if any
+	 * 
+	 * @var string
+	 */
+	var $error=null;
 	
 	/**
 	 * Contructor
@@ -145,7 +155,7 @@ abstract class table extends singleton {
 			return true;
 		}
 		else {
-			error::raise('', 'error', 'Could not bind array to row' );
+			$this->error = 'Could not bind array to row.';
 			return false;
 		}
 	}
@@ -153,7 +163,6 @@ abstract class table extends singleton {
 	/**
 	 * Check integrity of data before we write it to the database
 	 * 
-	 * @todo	This function is not checking the data types yet. Have to work on it, its a mess at the moment...
 	 * @todo	Have to raise errors where appropriate.
 	 * @return	bool
 	 */
@@ -161,57 +170,82 @@ abstract class table extends singleton {
 		foreach ($this->cols as $col) {
 			$col_name = $col->Field;
 			
-			if (strpos($col->Type, 'int') !== false) {
-				$this->$col_name = $this->$col_name;
-				if ((!is_int($this->$col_name) || $col->Null == 'YES' && $this->$col_name == null) && $col->Extra != 'auto_increment') {
-					//echo 'false';
-					//return false;
-				}
+			// If value is empty and null is allowed or is auto_increment we don't check data type
+			if (empty($this->$col_name) && ($col->Null == 'YES' || $col->Extra == 'auto_increment')) {
+				continue;
 			}
-			elseif (strpos($col->Type, 'float') !== false || strpos($col->Type, 'double') !== false || strpos($col->Type, 'decimal') !== false) {
-				$this->$col_name = (float) $this->$col_name;
-				if (!is_float($this->$col_name)) {
-					//return false;
-				}
+			else {
+				if ($this->checkDataType($this->$col_name, $col->Type) === false) {
+					$this->error = 'phpFrame: Row check() failed. Column '.$col->Field.' '.$this->$col_name.' is not type '.$col->Type;
+					return false;
+				}	
 			}
-			elseif (strpos($col->Type, 'varchar') !== false || strpos($col->Type, 'text') !== false) {
-				$this->$col_name = (string) $this->$col_name;
-				if (!is_string($this->$col_name)) {
-					//return false;
-				}
-			}
-			elseif (strpos($col->Type, 'blob') !== false) {
-				
-			}
-			elseif (strpos($col->Type, 'enum') !== false) {
-				
-			}
-			elseif (strpos($col->Type, 'datetime') !== false) {
-				
-			}
-			elseif (strpos($col->Type, 'date') !== false) {
-				
-			}
-			elseif (strpos($col->Type, 'time') !== false) {
-				
-			}
-			elseif (strpos($col->Type, 'year') !== false) {
-				
-			}
-			elseif (strpos($col->Type, 'timestamp') !== false) {
-				
-			}
-			elseif (strpos($col->Type, 'binary') !== false) {
-				
-			}
-			elseif (strpos($col->Type, 'bool') !== false) {
-				
-			}
-		
-			//echo '<pre>'; var_dump($this); echo '</pre><hr />';
 		}
 		//exit;
 		return true;
+	}
+	
+	/**
+	 * Check value is valid for a specific MySQL data type
+	 * 
+	 * @todo	This method is performing some basic checks but needs to check more specific data types.
+	 * @param	string	$value The value to validate
+	 * @param	string	$type The MySQL data type (int(11), tinyint, varchar(16), ...)
+	 * @return bool
+	 */
+	function checkDataType($value, $type) {
+		// Explode MySQL data type into type and length
+		$type_array = explode('(', $type);
+		$type = strtolower($type_array[0]); // make string lower case
+		$length = substr($type_array[1], 0, strlen($type_array[1])-1);
+		
+		// Make type variation prefix (ie: tinyint to int or longtext to long)
+		$prefixes = array('tiny', 'small', 'medium', 'big', 'long');
+		$type = str_replace($prefixes, '', $type);
+		
+		// Perform validation depending on data type
+		switch ($type) {
+			case 'int' : 
+				$isValid = filter::validate($value, 'int');
+				break;
+				
+			case 'float' :
+			case 'double' :
+			case 'decimal' :
+				$isValid = filter::validate($value, 'float');
+				break;
+				
+			case 'char' :
+			case 'varchar' :
+				if (strlen($value) <= $length) {
+					$isValid = filter::validate($value);	
+				}
+				else {
+					$isValid = false;
+				}
+				break;
+			
+			case 'text' :
+			case 'blob' :
+			case 'enum' :
+			case 'datetime' :
+			case 'date' :
+			case 'time' :
+			case 'year' :
+			case 'timestamp' :
+			case 'binary' :
+			case 'bool' :
+			default : 
+				$isValid = filter::validate($value);
+				break;
+		}
+		
+		if ($isValid !== false) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	/**
