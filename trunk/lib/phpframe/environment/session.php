@@ -13,6 +13,9 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * Session Class
  * 
+ * NOTE: The session class handles its own errors using its own raiseError() method.
+ * This is because the error object uses the session itself to store errors.
+ * 
  * @package		phpFrame
  * @subpackage 	environment
  * @author 		Luis Montero [e-noise.com]
@@ -68,13 +71,17 @@ class session extends table {
 			$this->start();	
 		}
 		else {
-			$error = new standardObject();
-			$error->code = '';
-			$error->level = 'error';
-			$error->msg = 'Fatal error: Session table (#__session) could not be initialised.';
-			error::display(array($error));
-			exit;
+			$this->raiseError('Fatal error: Session table (#__session) could not be initialised.');
 		}
+	}
+	
+	function raiseError($msg) {
+		$error = new standardObject();
+		$error->code = '';
+		$error->level = 'error';
+		$error->msg = $msg;
+		error::display(array($error));
+		exit;
 	}
 	
 	/**
@@ -124,6 +131,11 @@ class session extends table {
 		// Serialize data array to store in db
 		$this->data = serialize($this->data);
 		$this->modified = date("Y-m-d H:i:s");
+		
+		if (!$this->check()) {
+			$this->raiseError($this->error);
+		}
+		
 		$this->store();
 		
 		// Unserialize data after storing
