@@ -100,6 +100,8 @@ class session extends table {
 		// If new session we set the id
 		if (!$this->id) {
 			$this->id = session_id();
+			$this->userid = 0;
+			$this->groupid = 0;
 		}
 		// Write session data to db
 		$this->write();
