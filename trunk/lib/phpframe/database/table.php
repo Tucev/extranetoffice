@@ -319,7 +319,7 @@ abstract class table extends singleton {
 	 */
 	function delete($id) {
 		$query = "DELETE FROM `".$this->table_name."` WHERE `".$this->primary_key."` = '".$id."'";
-		$this->db->setQuery();
+		$this->db->setQuery($query);
 		if ($this->db->query() === true) {
 			return true;
 		}
