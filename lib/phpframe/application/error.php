@@ -75,5 +75,21 @@ class error {
 		}
 		
 	}
+	
+	/**
+	 * Raise fatal error, display it and stop execution
+	 * 
+	 * @param	string	$msg The error message to display 
+	 * @return	void
+	 * @since 	1.0
+	 */
+	function raiseFatalError($msg) {
+		$error = new standardObject();
+		$error->code = 500;
+		$error->level = 'error';
+		$error->msg = $msg;
+		error::display(array($error));
+		exit;
+	}
 }
 ?>

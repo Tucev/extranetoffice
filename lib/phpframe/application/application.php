@@ -149,7 +149,9 @@ class application extends singleton {
 		// instantiate db object and store in application
 		$this->db =& phpFrame::getInstance('db');
 		// connect to MySQL server
-		$this->db->connect($this->config->db_host, $this->config->db_user, $this->config->db_pass, $this->config->db_name);
+		if ($this->db->connect($this->config->db_host, $this->config->db_user, $this->config->db_pass, $this->config->db_name) !== true) {
+			error::raiseFatalError($this->db->error);
+		}
 	}
 	
 	/**
