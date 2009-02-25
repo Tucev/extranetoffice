@@ -89,7 +89,9 @@ define("_LANG_PROJECTS_HOME", "Project home");
 define("_LANG_ADMIN", "Admin");
 define("_LANG_PROJECT_SAVED", "Project successfully saved");
 define("_LANG_PROJECT_SAVE_ERROR", "An error occurred while saving the project.");
+define("_LANG_PROJECT_DELETED", "Project successfully deleted");
 define("_LANG_PROJECTS_ROLE", "Role");
+
 define("_LANG_PROJECTS_ADD_EXISTING_MEMBER", "Add existing user to this project");
 define("_LANG_PROJECTS_INVITE_NEW_MEMBER", "Invite a new user to this project");
 define("_LANG_PROJECTS_ROLE_REQUIRED", "Role is required");
