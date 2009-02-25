@@ -90,6 +90,7 @@ require_once _PHPFRAME_PATH.DS."document".DS."html.php";
  * @package		phpFrame
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
+ * @todo		phpFrame should be able to include whatever files i needed when getting "singleton" classes
  */
 class phpFrame extends singleton {
 	/**
