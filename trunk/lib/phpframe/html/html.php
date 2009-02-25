@@ -62,6 +62,21 @@ class html {
 	}
 	
 	/**
+	 * Build a date picker and display it
+	 * 
+	 * @param	string	$selected
+	 * @param	string	$name
+	 * @param	string	$id
+	 * @param	string	$format
+	 * @param 	array	$attribs
+	 * @return unknown_type
+	 */
+	static function calendar($selected, $name, $id='', $format='%Y-%m-%d', $attribs='') {
+		$html = '<input type="text" name="'.$name.'" />';
+		echo $html;
+	}
+	
+	/**
 	 * Function to build input with autocomplete and display it
 	 * 
 	 * @static
