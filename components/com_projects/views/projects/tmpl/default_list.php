@@ -11,15 +11,6 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
-<script language="javascript" type="text/javascript">
-function confirm_delete(id, label) {
-	var answer = confirm("Are you sure you want to delete project '"+label+"'?")
-	if (answer){
-		window.location = "index.php?option=com_projects&task=remove_project&layout=list&projectid="+id;
-	}
-}
-</script>
-
 <h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 
 <?php if ($this->user->groupid == 1) : ?>

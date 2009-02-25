@@ -82,13 +82,18 @@ class projectsController extends controller {
 		$this->setRedirect('index.php?option=com_projects&view='.$view.'&layout='.request::getVar('layout', 'list').'&projectid='.$projectid);
 	}
 	
+	/**
+	 * Delete project and all its associated data.
+	 * 
+	 * @return void
+	 */
 	function remove_project() {
-		$projectid = request::getVar('projectid', 0);
+		// get model
+		$modelProjects =& $this->getModel('projects');
 		
-		$modelProjects = &$this->getModel('projects');
-		$modelProjects->deleteProject($projectid);
-		
-		error::raise('', 'error', _LANG_PROJECT_DELETED);
+		if ($modelProjects->deleteProject($this->projectid) === true) {
+			error::raise('', 'message', _LANG_PROJECT_DELETED);	
+		}
 		
 		$this->setRedirect('index.php?option=com_projects&view=projects&type=list');
 	}

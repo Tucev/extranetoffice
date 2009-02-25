@@ -192,7 +192,11 @@ class projectsModelProjects extends model {
 			$new_project = true;
 		}
 		
-		$row->check();
+		if (!$row->check()) {
+			error::raise('', 'error', $row->error);
+			return false;
+		}
+		
 		$row->store();
 		
 		// Add role for user in the new project
@@ -207,7 +211,7 @@ class projectsModelProjects extends model {
 			return $row->id;
 		}
 		else {
-			error::raise('', 'message', _LANG_PROJECT_SAVE_ERROR);
+			error::raise('', 'error', _LANG_PROJECT_SAVE_ERROR);
 			return false;
 		}
 	}
@@ -215,17 +219,22 @@ class projectsModelProjects extends model {
 	/**
 	 * Delete a project by id
 	 * 
+	 * @todo	Before deleting the project we need to delete all its tracker items, lists, files, ...
 	 * @param	int	$projectid
 	 * @return	bool
 	 */
 	function deleteProject($projectid) {
-		//TODO: Before deleting the project we need to delete all its tracker items, lists, files, ...
 		// Instantiate table object
 		require_once COMPONENT_PATH.DS.'tables'.DS.'projects.table.php';
 		$row =& phpFrame::getInstance('projectsTableProjects');
+		
 		// Delete row from database
-		if (!$row->delete($projectid)) {
-			error::raise('', 'error', $row->getError() );
+		if ($row->delete($projectid) === false) {
+			error::raise('', 'error', $row->error);
+			return false;
+		}
+		else {
+			return true;
 		}
 	}
 	
@@ -253,8 +262,12 @@ class projectsModelProjects extends model {
 		$row->userid = $userid;
 		$row->projectid = $projectid;
 		$row->roleid = $roleid;
-			
-		$row->check();
+		
+		if (!$row->check()) {
+			error::raise('', 'error', $row->error);
+			return false;
+		}
+		
 		$row->store();
 		
 		// Send invitation via email
