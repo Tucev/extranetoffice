@@ -71,17 +71,8 @@ class session extends table {
 			$this->start();	
 		}
 		else {
-			$this->raiseError('Fatal error: Session table (#__session) could not be initialised.');
+			error::raiseFatalError('phpFrame: session::__construct(). Fatal error: Session table (#__session) could not be initialised.');
 		}
-	}
-	
-	function raiseError($msg) {
-		$error = new standardObject();
-		$error->code = '';
-		$error->level = 'error';
-		$error->msg = $msg;
-		error::display(array($error));
-		exit;
 	}
 	
 	/**
@@ -135,7 +126,7 @@ class session extends table {
 		$this->modified = date("Y-m-d H:i:s");
 		
 		if (!$this->check()) {
-			$this->raiseError($this->error);
+			error::raiseFatalError($this->error);
 		}
 		
 		$this->store();

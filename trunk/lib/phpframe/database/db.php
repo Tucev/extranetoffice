@@ -59,6 +59,12 @@ class db extends singleton {
 	 * @var resource
 	 */
 	var $rs=null;
+	/**
+	 * String containing latest error message if any
+	 * 
+	 * @var string
+	 */
+	var $error=null;
     
 	/**
 	 * Connect to MySQL server and select database.
@@ -74,9 +80,10 @@ class db extends singleton {
 	public function connect($db_host, $db_user, $db_pass, $db_name) {
 		// Connect to database server
 		$this->link = mysql_connect($db_host, $db_user, $db_pass);
+		
 		// Check if link is valid
 		if ($this->link === false) {
-			error::raise('', 'error', mysql_error());
+			$this->error = 'phpFrame: db::connect(). Could not connect to database. MySQL Error: '.mysql_error();
 			return false;
 		}
 		
@@ -84,7 +91,7 @@ class db extends singleton {
 		if (!mysql_select_db($db_name)) {
 			$this->close();
 			$this->link = false;
-			error::raise('', 'error', 'Could not select database');
+			$this->error = 'phpFrame: db::connect(). Could not select database. MySQL Error: '.mysql_error();
 			return false;
 		}
 		
@@ -121,8 +128,9 @@ class db extends singleton {
 		$this->rs = mysql_query($this->query);
 		
 		// Check query result is valid
-		if ($this->rs === false || mysql_error() != '') {
-			error::raise('', 'error', mysql_error().' Query: <code>'.$this->query.'</code>');
+		$mysql_error = mysql_error();
+		if ($mysql_error != '') {
+			$this->error = 'phpFrame: db::query(). Query failed. MySQL Error: '.$mysql_error;
 			return false;
 		}
 		
@@ -145,7 +153,7 @@ class db extends singleton {
 	 */
 	public function loadResult() {
 		// Run SQL query
-		$this->rs = mysql_query($this->query);
+		$this->rs = $this->query($this->query);
 		// Check query result is valid
 		if ($this->rs === false) {
 			return false;
@@ -172,7 +180,7 @@ class db extends singleton {
 	 */
 	public function loadObject() {
 		// Run SQL query
-		$this->rs = mysql_query($this->query);
+		$this->rs = $this->query($this->query);
 		// Check query result is valid
 		if ($this->rs === false) {
 			return false;
@@ -209,7 +217,7 @@ class db extends singleton {
 	 */
 	public function loadObjectList() {
 		// Run SQL query
-		$this->rs = mysql_query($this->query);
+		$this->rs = $this->query($this->query);
 		// Check query result is valid
 		if ($this->rs === false) {
 			return false;
@@ -241,7 +249,7 @@ class db extends singleton {
 	 */
 	public function loadAssoc() {
 		// Run SQL query
-		$this->rs = mysql_query($this->query);
+		$this->rs = $this->query($this->query);
 		// Check query result is valid
 		if ($this->rs === false) {
 			return false;
@@ -284,7 +292,7 @@ class db extends singleton {
 		$num_rows = mysql_num_rows($this->rs);
 		// Check num_rows is valid
 		if ($num_rows === false) {
-			error::raise('', 'error', mysql_error().' Query: <code>'.$this->query.'</code>');
+			$this->error = 'phpFrame: db::getNumRows(). MySQL Error: '.mysql_error();
 			return false;
 		}
 		
@@ -301,7 +309,7 @@ class db extends singleton {
 		$affected_rows = mysql_affected_rows();
 		// Check affected rows is valid
 		if ($affected_rows == -1) {
-			error::raise('', 'error', mysql_error().' Query: <code>'.$this->query.'</code>');
+			$this->error = 'phpFrame: db::getAffectedRows(). MySQL Error: '.mysql_error();
 			return false;
 		}
 		return $affected_rows;
