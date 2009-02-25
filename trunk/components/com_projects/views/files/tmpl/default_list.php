@@ -85,18 +85,20 @@ function confirm_delete(projectid, fileid, label) {
 	<?php endif; ?>
 	
 	<?php if (!empty($row->children)) : ?>
+	
+	<!-- jquery slider for show/hide older versions -->
 	<script language="javascript" type="text/javascript">
-	window.addEvent('domready', function() {
-		var mySlide = new Fx.Slide('oldrevisions<?php echo $row->id; ?>');
-		mySlide.hide();
-		
-		$('toggle<?php echo $row->id; ?>').addEvent('click', function(e){
-			e = new Event(e);
-			mySlide.toggle();
-			e.stop();
-		});
+	$(document).ready(function() {
+		// hides the filterpanel as soon as the DOM is ready
+		$('#oldrevisions<?php echo $row->id; ?>').hide();
+		// toggles the filterpanel on clicking the noted link  
+		$('a#toggle<?php echo $row->id; ?>').click(function() {
+			$('#oldrevisions<?php echo $row->id; ?>').slideToggle('normal');
+			return false;
+  		});
 	});
 	</script>
+		
 	<a class="show_revisions" id="toggle<?php echo $row->id; ?>" href="#">Show/Hide older versions</a>
 
 	<div id="oldrevisions<?php echo $row->id; ?>" class="thread_oldrevisions">
