@@ -134,6 +134,7 @@ abstract class table extends singleton {
 	 * @param	array	$array
 	 * @param	string	$exclude A list of key names to exclude from binding process separated by commas.
 	 * @return	bool
+	 * @since 	1.0
 	 */
 	function bind($array, $exclude='') {
 		// Process exclude
@@ -155,7 +156,7 @@ abstract class table extends singleton {
 			return true;
 		}
 		else {
-			$this->error = 'Could not bind array to row.';
+			$this->error = 'phpFrame: table::bind(). Could not bind array to row.';
 			return false;
 		}
 	}
@@ -165,6 +166,7 @@ abstract class table extends singleton {
 	 * 
 	 * @todo	Have to raise errors where appropriate.
 	 * @return	bool
+	 * @since 	1.0
 	 */
 	function check() {
 		foreach ($this->cols as $col) {
@@ -176,7 +178,7 @@ abstract class table extends singleton {
 			}
 			else {
 				if ($this->checkDataType($this->$col_name, $col->Type) === false) {
-					$this->error = 'phpFrame: Row check() failed. Column '.$col->Field.' '.$this->$col_name.' is not type '.$col->Type;
+					$this->error = 'phpFrame: table::check() failed. Column '.$col->Field.' '.$this->$col_name.' is not type '.$col->Type;
 					return false;
 				}	
 			}
@@ -191,7 +193,8 @@ abstract class table extends singleton {
 	 * @todo	This method is performing some basic checks but needs to check more specific data types.
 	 * @param	string	$value The value to validate
 	 * @param	string	$type The MySQL data type (int(11), tinyint, varchar(16), ...)
-	 * @return bool
+	 * @return	bool
+	 * @since 	1.0
 	 */
 	function checkDataType($value, $type) {
 		// Explode MySQL data type into type and length
@@ -304,6 +307,25 @@ abstract class table extends singleton {
 		// Store new row id for new entries
 		if ($row_exists === false && !empty($insert_id)) {
 			$this->$primary_key = $insert_id;
+		}
+	}
+	
+	/**
+	 * Delete a table row by id
+	 * 
+	 * @param	mixed	$id The row id. Normally a string or an integer.
+	 * @return bool
+	 * @since 	1.0
+	 */
+	function delete($id) {
+		$query = "DELETE FROM `".$this->table_name."` WHERE `".$this->primary_key."` = '".$id."'";
+		$this->db->setQuery();
+		if ($this->db->query() === true) {
+			return true;
+		}
+		else {
+			$this->error = 'phpFrame: table::delete() failed. Query: '.$query;
+			return false;
 		}
 	}
 	
