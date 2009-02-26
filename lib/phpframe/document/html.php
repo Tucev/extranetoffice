@@ -23,72 +23,72 @@ class documentHTML extends document {
 	 * Array of linked scripts
 	 *
 	 * @var		array
-	 * @access   private
+	 * @access	private
 	 */
 	var $_scripts_linked = array();
 
 	/**
 	 * Array of scripts placed in the header
 	 *
-	 * @var  array
-	 * @access   private
+	 * @var		array
+	 * @access	private
 	 */
 	var $_scripts_inline = array();
 
 	 /**
 	 * Array of linked style sheets
 	 *
-	 * @var	 array
-	 * @access  private
+	 * @var		array
+	 * @access	private
 	 */
 	var $_styles_linked = array();
 
 	/**
 	 * Array of included style declarations
 	 *
-	 * @var	 array
-	 * @access  private
+	 * @var		array
+	 * @access	private
 	 */
 	var $_styles_inline = array();
 
 	/**
 	 * Array of meta tags
 	 *
-	 * @var	 array
-	 * @access  private
+	 * @var		array
+	 * @access	private
 	 */
 	var $_metaTags = array();
 
 	/**
 	 * The rendering engine
 	 *
-	 * @var	 object
-	 * @access  private
+	 * @var		object
+	 * @access	private
 	 */
 	var $_engine = null;
 
 	/**
 	 * The document type
 	 *
-	 * @var	 string
-	 * @access  private
+	 * @var		string
+	 * @access	private
 	 */
 	var $_type = null;
 	
 	/**
 	 * Array for different tag types to be printed in <head></head>
 	 *
-	 * @var	 string
-	 * @access  private
+	 * @var		string
+	 * @access	private
 	 */
 	var $_tagTypes = array("_metaTags","_scripts_linked","_styles_linked");
 	
 	/**
 	 * Constructor
 	 *
-	 * @return void
-	 * @access public
-	 * @since 0.1 
+	 * @return	void
+	 * @access	public
+	 * @since	0.1 
 	 */
 	function __construct(){
 		parent::__construct();
@@ -98,9 +98,9 @@ class documentHTML extends document {
 	/**
 	 * Add meta tag
 	 * 
-	 * @param $name
-	 * @param $content
-	 * @return void
+	 * @param	string	$name
+	 * @param	string	$content
+	 * @return	void
 	 * @since 1.0
 	 */
 	function addMetaTag($name, $content) {
@@ -112,8 +112,8 @@ class documentHTML extends document {
 	 * 
 	 * It takes both relative and absolute values
 	 * 
-	 * @param $src
-	 * @param $type
+	 * @param	string	$src
+	 * @param	string	$type
 	 * @return void
 	 * @since 1.0
 	 */
@@ -125,8 +125,8 @@ class documentHTML extends document {
 	/**
 	 * Attach external stylesheet
 	 * 
-	 * @param $href
-	 * @param $type
+	 * @param	string	$href
+	 * @param	string	$type
 	 * @return void
 	 * @since 1.0
 	 */
@@ -138,8 +138,8 @@ class documentHTML extends document {
 	/**
 	 * Print the head tags
 	 * 
-	 * @return void
-	 * @since 1.0
+	 * @return	void
+	 * @since	1.0
 	 */
 	function printHead() {
 		
@@ -161,9 +161,9 @@ class documentHTML extends document {
 	/**
 	 * Make path absolute
 	 * 
-	 * @param $path
-	 * @return void
-	 * @since 1.0
+	 * @param	string	$path
+	 * @return	void
+	 * @since	1.0
 	 */
 	private function _makeAbsolute(&$path) {
 		// Add the document base if a relative path

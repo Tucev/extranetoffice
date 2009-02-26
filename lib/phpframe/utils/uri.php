@@ -139,7 +139,7 @@ class uri extends standardObject {
 	 * 
 	 * This method parses the passed URI and sets the object's properties accordingly.
 	 * 
-	 * @todo Method needs to be able to parse userinfo and fragment. At the moment it doesn't.
+	 * @todo 	Method needs to be able to parse userinfo and fragment. At the moment it doesn't.
 	 * @param	string	$uri The URI to parse
 	 * @return	void
 	 * @since	1.0
@@ -194,7 +194,7 @@ class uri extends standardObject {
 	 * 
 	 * This method retrieves the base URL for the current state of the URI object.
 	 * 
-	 * @return string
+	 * @return	string
 	 * @since	1.0
 	 */
 	function getBase() {
