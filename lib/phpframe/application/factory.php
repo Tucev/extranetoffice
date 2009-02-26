@@ -41,16 +41,6 @@ class factory {
 	}
 	
 	/**
-	 * Get "filtered" request array from application
-	 * 
-	 * @return	array
-	 * @since 	1.0
-	 */
-	function getRequest() {
-		return $GLOBALS['application']->request;
-	}
-	
-	/**
 	 * Get database object
 	 * 
 	 * @return	object
