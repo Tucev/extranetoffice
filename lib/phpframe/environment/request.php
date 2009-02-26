@@ -10,8 +10,14 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
-require_once 'lib/phpinputfilter/inputfilter.php';
-
+require_once _ABS_PATH.DS.'lib'.DS.'phpinputfilter'.DS.'inputfilter.php';
+/**
+ * PHP input filter object
+ * 
+ * @var object
+ */
+$inputfilter = new InputFilter();
+	
 /**
  * Request Class
  * 
@@ -23,14 +29,20 @@ require_once 'lib/phpinputfilter/inputfilter.php';
  */
 class request {
 	/**
+	 * Constructor
+	 * 
 	 * Initialise the request, filter input and return the request array.
 	 * 
 	 * @return	array
 	 * @since	1.0
 	 */
-	function init() {
-		$inputfilter = new InputFilter();
-		return $inputfilter->process($_REQUEST);
+	static function init() {
+		global $inputfilter;
+		
+		// Process incoming request arrays and store filtered data in class
+		$_REQUEST = $inputfilter->process($_REQUEST);
+		$_GET = $inputfilter->process($_GET);
+		$_POST = $inputfilter->process($_POST);
 	}
 	
 	/**
@@ -39,16 +51,15 @@ class request {
 	 * @param	string	$global_key "get" or "post"
 	 * @return	array
 	 */
-	function get($global_key) {
-		$inputfilter = new InputFilter();
+	static function get($global_key) {
+		$array_name = "\$_".strtoupper($global_key);
+		eval("\$array =& ".$array_name.";");
 		
-		switch ($global_key) {
-			case 'get' : 
-				return $inputfilter->process($_GET);
-				break;
-			case 'post' : 
-				return $inputfilter->process($_POST);
-				break;
+		if ($array) {
+			return $array;
+		}
+		else {
+			return false;
 		}
 	}
 	
@@ -60,11 +71,15 @@ class request {
 	 * @return	mixed
 	 * @since	1.0
 	 */
-	function getVar($key, $default='') {
-		if (empty($GLOBALS['application']->request[$key])) {
-			$GLOBALS['application']->request[$key] = $default;
+	static function getVar($key, $default='') {
+		global $inputfilter;
+		
+		// Set default value if var is empty
+		if (empty($_REQUEST[$key])) {
+			$_REQUEST[$key] = $inputfilter->process($default);
 		}
-		return $GLOBALS['application']->request[$key];
+		
+		return $_REQUEST[$key];
 	}
 	
 	/**
@@ -75,9 +90,10 @@ class request {
 	 * @return	void
 	 * @since	1.0
 	 */
-	function setVar($key, $value) {
-		$inputfilter = new InputFilter();
-		$GLOBALS['application']->request[$key] = $inputfilter->process($value);
+	static function setVar($key, $value) {
+		global $inputfilter;
+		
+		$_REQUEST[$key] = $inputfilter->process($value);
 	}
 	
 }
