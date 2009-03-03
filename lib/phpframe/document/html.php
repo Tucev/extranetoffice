@@ -110,29 +110,45 @@ class documentHTML extends document {
 	/**
 	 * Add linked scrip in document head
 	 * 
-	 * It takes both relative and absolute values
+	 * It takes both relative and absolute values.
 	 * 
-	 * @param	string	$src
-	 * @param	string	$type
-	 * @return void
-	 * @since 1.0
+	 * @param	string	$src	The relative or absolute URL to the script source.
+	 * @param	string	$type	The script type. Default is text/javascript.
+	 * @return	void
+	 * @since	1.0
 	 */
 	function addScript($src, $type='text/javascript') {
+		// Make source absolute URL
 		$this->_makeAbsolute($src);
-		$this->_scripts_linked[] = '<script type="'.$type.'" src="'.$src.'"></script>';
+		
+		// Build HTML <script> Tag
+		$script_tag = '<script type="'.$type.'" src="'.$src.'"></script>';
+		
+		// Add to linked scripts array if not in array already
+		if (!in_array($script_tag, $this->_scripts_linked)) {
+			$this->_scripts_linked[] = $script_tag;	
+		}
 	}
 	
 	/**
 	 * Attach external stylesheet
 	 * 
-	 * @param	string	$href
-	 * @param	string	$type
-	 * @return void
-	 * @since 1.0
+	 * @param	string	$href	The relative or absolute URL to the link source.
+	 * @param	string	$type	The link type. Default is text/css.
+	 * @return	void
+	 * @since 	1.0
 	 */
 	function addStyleSheet($href, $type='text/css') {
+		// Make source absolute URL
 		$this->_makeAbsolute($href);
-		$this->_styles_linked[] = '<link rel="stylesheet" href="'.$href.'" type="'.$type.'" />';
+		
+		// Build HTML <script> Tag
+		$link_tag = '<link rel="stylesheet" href="'.$href.'" type="'.$type.'" />';
+		
+		// Add to linked scripts array if not in array already
+		if (!in_array($link_tag, $this->_styles_linked)) {
+			$this->_styles_linked[] = $link_tag;	
+		}
 	}
 	
 	/**
