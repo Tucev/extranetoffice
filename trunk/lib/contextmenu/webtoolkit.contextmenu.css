@@ -1,0 +1,37 @@
+@CHARSET "UTF-8";
+
+ul.SimpleContextMenu {
+	display: none;
+	position: absolute;
+	margin: 0px;
+	padding: 5px !important;
+	font-size: 0.9em;
+	list-style-type: none;
+	border: 1px solid #999999;
+	background-color: #999999;
+}
+
+ul.SimpleContextMenu li {
+	border-bottom: 1px dotted #999999;
+	background-color: #F0F0F0;
+	min-height: 22px;
+	margin:0 !important;
+	padding:0 !important;
+}
+	
+ul.SimpleContextMenu li:hover {
+	background-color: #CCCCCC;
+	color:white;
+}
+
+ul.SimpleContextMenu li a {
+	display: block;
+	width: 100px;
+	padding: 3px 10px;
+	text-decoration: none;
+}
+
+ul.SimpleContextMenu li a:hover {
+	text-decoration: none;
+	color:white;
+}
