@@ -1,22 +1,36 @@
 <?php
 /**
-* @package		ExtranetOffice
-* @subpackage	com_email
-* @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
-* @license		BSD revised. See LICENSE.
-* @author 		Luis Montero [e-noise.com]
-* @version 		1.0.0
-*/
+ * @version 	$Id$
+ * @package		ExtranetOffice
+ * @subpackage	com_email
+ * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+ * @license		BSD revised. See LICENSE.
+ * @author 		Luis Montero [e-noise.com]
+ */
 
+defined( '_EXEC' ) or die( 'Restricted access' );
+
+/**
+ * emailController Class
+ * 
+ * @package		ExtranetOffice
+ * @subpackage 	com_email
+ * @author 		Luis Montero [e-noise.com]
+ * @since 		1.0
+ */
 class emailController extends controller {
+	/**
+	 * Constructor
+	 * 
+	 * @return	void
+	 * @since 	1.0
+	 */
 	function __construct() {
-		parent::__construct();
+		// set default request vars
+		$this->view = request::getVar('view', 'messages');
+		$this->layout = request::getVar('layout', 'list');
 		
-		// set default view if none has been set
-		$view = request::getVar('view', '');
-		if (empty($view)) {
-			request::setVar('view', 'list');
-		}
+		parent::__construct();
 	}
 	
 	function download_attachment() {

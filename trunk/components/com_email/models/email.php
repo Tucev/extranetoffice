@@ -1,25 +1,27 @@
 <?php
 /**
-* @package		ExtranetOffice
-* @subpackage	com_email
-* @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
-* @license		BSD revised. See LICENSE.
-* @author 		Luis Montero [e-noise.com]
-* @version 		1.0.0
-*/
+ * @version 	$Id$
+ * @package		ExtranetOffice
+ * @subpackage	com_email
+ * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+ * @license		BSD revised. See LICENSE.
+ * @author 		Luis Montero [e-noise.com]
+ */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
-jimport('joomla.application.component.model');
-
 /**
- * Extranet Office Email Model
- *
- * @since 1.0.1
+ * emailModelEmail Class
+ * 
+ * @package		ExtranetOffice
+ * @subpackage 	com_email
+ * @author 		Luis Montero [e-noise.com]
+ * @since 		1.0
+ * @see 		model
  */
-class emailModelEmail extends JModel {
-	var $iOfficeConfig=null;
-	var $settings=null;
+class emailModelEmail extends model {
+	var $accountid=null;
+	var $account=null;
 	var $stream=null;
 	var $mbox_name=null;
 	var $error_msg=null;
@@ -30,15 +32,15 @@ class emailModelEmail extends JModel {
 	 * @since 1.0.1
 	 */
 	function __construct() {
+		//TODO: Check permissions
 		parent::__construct();
 		
-		// Load component config
-		$this->iOfficeConfig =& JComponentHelper::getParams( 'com_intranetoffice' );
+		$this->accountid = request::getVar('accountid', 0);
 	}
 	
 	function checkDependencies() {
 		if (!function_exists('imap_open')) {
-			JError::raiseWarning("", 'IMAP Extention not installed. For more info visit <a href="http://uk3.php.net/manual/en/imap.setup.php">http://uk3.php.net/manual/en/imap.setup.php</a>');
+			error::raiseWarning("", 'IMAP Extention not installed. For more info visit <a href="http://uk3.php.net/manual/en/imap.setup.php">http://uk3.php.net/manual/en/imap.setup.php</a>');
 			return false;
 		}
 		else {
@@ -51,20 +53,20 @@ class emailModelEmail extends JModel {
 	 *
 	 * @param obj $config_array An object containing the mail account settings.
 	 */
-	function setEmailAccount($config_obj) {
-		$this->settings->from_name = $config_obj->from_name;
-		$this->settings->email_address = $config_obj->email_address;
-		$this->settings->email_signature = $config_obj->email_signature;
-		$this->settings->server_type = $config_obj->server_type;
-		$this->settings->incoming_server = $config_obj->incoming_server;
-		$this->settings->incoming_server_port = $config_obj->incoming_server_port;
-		$this->settings->incoming_server_username = $config_obj->incoming_server_username;
-		$this->settings->incoming_server_password = $config_obj->incoming_server_password;
-		$this->settings->outgoing_server = $config_obj->outgoing_server;
-		$this->settings->outgoing_server_port = $config_obj->outgoing_server_port;
-		$this->settings->outgoing_server_auth = $config_obj->outgoing_server_auth;
-		$this->settings->outgoing_server_username = $config_obj->outgoing_server_username;
-		$this->settings->outgoing_server_password = $config_obj->outgoing_server_password;
+	function setEmailAccount($account) {
+		$this->account->from_name = $account->from_name;
+		$this->account->email_address = $account->email_address;
+		$this->account->email_signature = $account->email_signature;
+		$this->account->server_type = $account->server_type;
+		$this->account->incoming_server = $account->incoming_server;
+		$this->account->incoming_server_port = $account->incoming_server_port;
+		$this->account->incoming_server_username = $account->incoming_server_username;
+		$this->account->incoming_server_password = $account->incoming_server_password;
+		$this->account->outgoing_server = $account->outgoing_server;
+		$this->account->outgoing_server_port = $account->outgoing_server_port;
+		$this->account->outgoing_server_auth = $account->outgoing_server_auth;
+		$this->account->outgoing_server_username = $account->outgoing_server_username;
+		$this->account->outgoing_server_password = $account->outgoing_server_password;
 	}
 	
 	/**
@@ -73,11 +75,11 @@ class emailModelEmail extends JModel {
 	 */
 	function loadUserEmailAccount() {
 		// Load settings
-		$user =& JFactory::getUser();
-		$settings = new iOfficeTableSettings();
-		$settings->load($user->id);
+		$accountModel =& $this->getModel('accounts');
+		$account = $accountModel->getAccounts($this->user->id, $this->accountid, true);
+		
 		// Set account details in model
-		$this->setEmailAccount($settings);
+		$this->setEmailAccount($account[0]);
 	}
 	
 	function openStream($folder='INBOX') {
@@ -85,23 +87,23 @@ class emailModelEmail extends JModel {
 		if($this->checkDependencies() !== true){
 			return false;
 		}
-		elseif (empty($this->settings->server_type)) {
-	  		JError::raiseWarning(0, _INTRANETOFFICE_EMAIL_NO_ACCOUNT );
+		elseif (empty($this->account->server_type)) {
+	  		error::raiseWarning(0, _LANG_EMAIL_NO_ACCOUNT );
 			return false;
 	  	}
 		
 	  	// Set mailbox name depending on server type
-	  	if ($this->settings->server_type == 'POP3') {
-	    	$this->mbox_name = '{'.$this->settings->incoming_server.':'.$this->settings->incoming_server_port.'/pop3}'.$folder;
+	  	if ($this->account->server_type == 'POP3') {
+	    	$this->mbox_name = '{'.$this->account->incoming_server.':'.$this->account->incoming_server_port.'/pop3}'.$folder;
 	  	}
-	  	if ($this->settings->server_type == 'IMAP') {
-	    	$this->mbox_name = '{'.$this->settings->incoming_server.':'.$this->settings->incoming_server_port.'/novalidate-cert}'.$folder;
+	  	if ($this->account->server_type == 'IMAP') {
+	    	$this->mbox_name = '{'.$this->account->incoming_server.':'.$this->account->incoming_server_port.'/novalidate-cert}'.$folder;
 	  	}
 	  		
 	  	// Open mailbox stream
-	  	$this->stream = @imap_open($this->mbox_name, $this->settings->incoming_server_username, $this->settings->incoming_server_password);
+	  	$this->stream = @imap_open($this->mbox_name, $this->account->incoming_server_username, $this->account->incoming_server_password);
 	  	if (!$this->stream) {
-	  		JError::raiseWarning(0, imap_last_error() );
+	  		error::raiseWarning(0, imap_last_error() );
 	  		return false;
 	  	}
 	  	return true;
@@ -136,13 +138,13 @@ class emailModelEmail extends JModel {
 	        }
 	    }
 	    else {
-	    	JError::raiseWarning(0, imap_last_error() );
+	    	error::raiseWarning(0, imap_last_error() );
 	  		return false;
 	    }
 	    
-	    // Sort mailboxes using IMAP_Sort (taken from the horde framework)
-	    require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'lib'.DS.'other'.DS.'imap_sort.php');
-	    $imap_sort = new IMAP_Sort('.');
+	    // Sort mailboxes using emailHelperIMAP_Sort (taken from the horde framework)
+	    require_once(COMPONENT_PATH.DS.'helpers'.DS.'imap_sort.helper.php');
+	    $imap_sort = new emailHelperIMAP_Sort('.');
 	    $imap_sort->sortMailboxes($list_boxes);
 	    
 	  	return $list_boxes;
@@ -156,7 +158,7 @@ class emailModelEmail extends JModel {
 	 */
 	function createMailbox($new_folder_name) {
 		if (!imap_createmailbox($this->stream, imap_utf7_encode($this->mbox_name.$new_folder_name))) {
-			JError::raiseWarning(0, imap_last_error() );
+			error::raiseWarning(0, imap_last_error() );
 	  		return false;
 		}
 		else {
@@ -173,7 +175,7 @@ class emailModelEmail extends JModel {
 	 */
 	function renameMailbox($old_box, $new_box) {
 		if (!imap_renamemailbox($this->stream, imap_utf7_encode($this->mbox_name.$old_box), imap_utf7_encode($this->mbox_name.$new_box))) {
-			JError::raiseWarning(0, imap_last_error() );
+			error::raiseWarning(0, imap_last_error() );
 	  		return false;
 		}
 		else {
@@ -188,7 +190,7 @@ class emailModelEmail extends JModel {
 	 */
 	function deleteMailbox() {
 		if (!imap_deletemailbox($this->stream, imap_utf7_encode($this->mbox_name))) {
-			JError::raiseWarning(0, imap_last_error() );
+			error::raiseWarning(0, imap_last_error() );
 	  		return false;
 		}
 		else {
@@ -221,15 +223,15 @@ class emailModelEmail extends JModel {
 	
 	function getMessageList() {
 		if (!$this->stream) {
-			JError::raiseWarning('', _INTRANETOFFICE_EMAIL_ERROR_GETTING_MESSAGES_NO_STREAM);
+			error::raiseWarning('', _LANG_EMAIL_ERROR_GETTING_MESSAGES_NO_STREAM);
 			return false;
 		} 
 		
 	  	// Get request vars
-	  	$page = JRequest::getVar('page', 1);
-	  	$per_page = JRequest::getVar('per_page', 20);
-	  	$order_by = JRequest::getVar('order_by', 'date');
-	  	$order_dir = JRequest::getVar('order_dir', 'desc');
+	  	$page = request::getVar('page', 1);
+	  	$per_page = request::getVar('per_page', 20);
+	  	$order_by = request::getVar('order_by', 'date');
+	  	$order_dir = request::getVar('order_dir', 'desc');
 	  	
 	  	// Check messages 
 	  	$check = imap_mailboxmsginfo($this->stream);
@@ -341,7 +343,7 @@ class emailModelEmail extends JModel {
 	 * @return unknown
 	 */
 	function sendMessage($recipients, $subject, $body, $cc='', $bcc='', $replyto='', $attachments) {
-		$sender = $this->settings->email_address;
+		$sender = $this->account->email_address;
 		
 		jimport( 'joomla.mail.mail' );
 		jimport( 'joomla.mail.helper' );
@@ -354,7 +356,7 @@ class emailModelEmail extends JModel {
 				$recipient = trim($recipient);
 				if (!JMailHelper::isEmailAddress($recipient)) {
 					$error	= JText::sprintf('EMAIL_INVALID', $recipient);
-					JError::raiseWarning(0, $error );
+					error::raiseWarning(0, $error );
 				}
 				else {
 					$new_mail->addRecipient($recipient);	
@@ -365,7 +367,7 @@ class emailModelEmail extends JModel {
 		// Check sender email address
 		if ( !$sender || !JMailHelper::isEmailAddress($sender) ) {
 			$error	= JText::sprintf('EMAIL_INVALID', $sender);
-			JError::raiseWarning(0, $error );
+			error::raiseWarning(0, $error );
 		}
 
 		if ($error)	{
@@ -400,14 +402,14 @@ class emailModelEmail extends JModel {
 			$new_mail->addReplyTo($replyto);
 		}
 		$new_mail->setSender($sender);
-		$new_mail->FromName = $this->settings->from_name;
+		$new_mail->FromName = $this->account->from_name;
 		$new_mail->setSubject($subject);
 		$new_mail->setBody($body);
-		$new_mail->useSMTP(true, $this->settings->outgoing_server, $this->settings->outgoing_server_username, $this->settings->outgoing_server_password);
+		$new_mail->useSMTP(true, $this->account->outgoing_server, $this->account->outgoing_server_username, $this->account->outgoing_server_password);
 		//$new_mail->useSendmail();
 		
 		if ($new_mail->Send() !== true) {
-			JError::raiseWarning( '', 'EMAIL_NOT_SENT' );
+			error::raiseWarning( '', 'EMAIL_NOT_SENT' );
 			return false;
 		}
 		
@@ -442,11 +444,11 @@ class emailModelEmail extends JModel {
                  . $body."\r\n";
         
 		if (imap_append($this->stream, $this->mbox_name, $message, $options)) {
-			JError::raiseNotice( '', _INTRANETOFFICE_EMAIL_MESSAGE_SAVED );
+			error::raiseNotice( '', _LANG_EMAIL_MESSAGE_SAVED );
 			return true;
 		}
 		else {
-			JError::raiseWarning( '', _INTRANETOFFICE_EMAIL_MESSAGE_NOT_SAVED );
+			error::raiseWarning( '', _LANG_EMAIL_MESSAGE_NOT_SAVED );
 			return false;
 		}
 	}

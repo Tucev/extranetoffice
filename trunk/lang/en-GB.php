@@ -15,6 +15,11 @@ define("_LANG_BACK", "Back");
 define("_LANG_NEW", "New");
 define("_LANG_EDIT", "Edit");
 define("_LANG_DELETE", "Delete");
+define("_LANG_RENAME", "Rename");
+define("_LANG_REPLY", "Reply");
+define("_LANG_REPLY_TO_ALL", "Reply to all");
+define("_LANG_ATTACHMENTS", "Attachments");
+define("_LANG_FORWARD", "Forward");
 define("_LANG_NO_ENTRIES", "No entries found");
 define("_LANG_CREATED_BY", "Created by");
 define("_LANG_CREATED", "Date created");
@@ -156,6 +161,26 @@ define("_LANG_COMMENTS", "Comments");
 // People
 define("_LANG_PEOPLE", "People");
 
+
+// com_email
+define("_LANG_NO_MAILBOXES", "No mailbox found");
+define("_LANG_NO_EMAIL", "No email messages found");
+define("_LANG_EMAIL_NEW_FOLDER", "New mail folder");
+define("_LANG_EMAIL_MOVE_TO_FOLDER", "Move to folder");
+define("_LANG_EMAIL_MOVE_TO_TRASH", "Move to trash");
+define("_LANG_EMAIL_EMPTY_TRASH", "Empty trash");
+define("_LANG_EMAIL_UNDELETE", "Undelete");
+define("_LANG_EMAIL_FROM", "From");
+define("_LANG_EMAIL_SUBJECT", "Subject");
+define("_LANG_EMAIL_SIZE", "Size");
+define("_LANG_EMAIL_DATE", "Date");
+define("_LANG_EMAIL_MARK_AS_READ", "Mark as read");
+define("_LANG_EMAIL_MARK_AS_UNREAD", "Mark as unread");
+define("_LANG_EMAIL_TO", "To");
+define("_LANG_REPLY_TO", "Reply-to");
+define("_LANG_EMAIL_NEW", "New email");
+define("_LANG_EMAIL_SAVE_COPY_IN_SENT_FOLDER", "Save copy in 'Sent' folder");
+define("_LANG_EMAIL_MESSAGE_DETAIL", "Message detail");
 
 // com_billing
 define("_LANG_BILLING", "Billing");
