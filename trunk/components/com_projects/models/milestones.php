@@ -20,35 +20,14 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		model
  */
 class projectsModelMilestones extends model {
-	var $config=null;
-	var $user=null;
-	var $db=null;
-	
 	/**
 	 * Constructor
 	 *
 	 * @since 1.0.1
 	 */
 	function __construct() {
-		parent::__construct();
-		
-		// Initialise model
-		if ($this->init()) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-	
-	function init() {
-		$this->config =& factory::getConfig();
-		$this->user =& factory::getUser();
-		$this->db =& factory::getDB(); // Instantiate joomla database object
-		
 		//TODO: Check permissions
-		
-		return true;
+		parent::__construct();
 	}
 	
 	function getMilestones($projectid) {

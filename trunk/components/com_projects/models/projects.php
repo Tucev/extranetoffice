@@ -20,9 +20,6 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		model
  */
 class projectsModelProjects extends model {
-	var $config=null;
-	var $user=null;
-	var $db=null;
 	var $view=null;
 	var $layout=null;
 	var $projectid=null;
@@ -34,8 +31,9 @@ class projectsModelProjects extends model {
 	 * @since	1.0
 	 */
 	function __construct() {
-		$this->init();
 		parent::__construct();
+		
+		$this->init();
 	}
 	
 	/**
@@ -45,10 +43,6 @@ class projectsModelProjects extends model {
 	 * @since	1.0
 	 */
 	function init() {
-		$this->config =& factory::getConfig();
-		$this->user =& factory::getUser();
-		$this->db =& factory::getDB();
-		
 		$this->view = request::getVar('view', 'projects');
 		$this->layout = request::getVar('layout', 'list');
 		$this->projectid = request::getVar('projectid', 0);

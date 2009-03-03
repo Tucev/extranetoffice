@@ -53,12 +53,33 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 abstract class model extends singleton {
 	/**
+	 * A reference to the config object
+	 * 
+	 * @var object
+	 */
+	var $config=null;
+	/**
+	 * A reference to the user object
+	 * 
+	 * @var object
+	 */
+	var $user=null;
+	/**
+	 * A reference to the database object
+	 * 
+	 * @var object
+	 */
+	var $db=null;
+	
+	/**
 	 * Constructor
 	 * 
 	 * @return void
 	 */
 	function __construct() {
-		
+		$this->config =& factory::getConfig();
+		$this->user =& factory::getUser();
+		$this->db =& factory::getDB();
 	}
 	
 	/**
