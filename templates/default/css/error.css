@@ -1,0 +1,40 @@
+/**
+* @version 		$Id$
+* @package		ExtranetOffice
+* @subpackage 	tmpl_default
+* @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+* @license		BSD revised. See LICENSE.
+* @author 		Luis Montero [e-noise.com]
+*/
+
+
+@CHARSET "UTF-8";
+
+/* Framework.error */
+
+span.system_msg_outer {
+background-color: #ffff99;
+border: 1px dotted #999999;
+padding: 8px;
+display:table;
+margin-bottom: 5px;
+}
+span.system_msg {
+padding: 2px 2px 2px 20px;
+background-repeat: no-repeat;
+background-position: center left;
+font-style: italic;
+display:table-cell;
+}
+span.error {
+background-image: url(../images/icons/generic/16x16/error.png);
+}
+span.warning {
+background-image: url(../images/icons/generic/16x16/warning.png);
+}
+span.notice {
+background-image: url(../images/icons/generic/16x16/info.png);
+}
+span.message {
+background-image: url(../images/icons/generic/16x16/info.png);
+}

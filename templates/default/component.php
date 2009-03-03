@@ -16,7 +16,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <head>
 <title><?php echo $this->config->sitename; ?> - <?php echo $this->document->title; ?></title>
 <?php $this->document->printHead(); ?>
-<link rel="stylesheet" href="templates/<?php echo $this->config->template ?>/css/styles.css" type="text/css" />
+<link rel="stylesheet" href="templates/<?php echo $this->config->template ?>/css/componentonly.css" type="text/css" />
 <!--[if lte IE 6]>
 <link href="templates/<?php echo $this->config->template; ?>/css/ieonly.css" rel="stylesheet" type="text/css" />
 <![endif]-->
@@ -25,23 +25,11 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <body>
 
 <a name="up" id="up"></a>
- 
-<!-- Content -->
-<div id="wrapper_outer">
 	
-	<div id="wrapper">
-		
-		<div id="main_col_1">
-			<div id="main_col_inner">
-			<?php error::display(); ?>
-			<?php echo $this->component_output; ?>
-			</div><!-- close #main_col_inner -->
-		</div><!-- close #main_col -->
-
-	</div><!-- close #wrapper -->
-
-</div><!-- close #wrapper_outer -->
-<!-- End Content -->
+<div id="component_wrapper">
+	<?php error::display(); ?>
+	<?php echo $this->component_output; ?>
+</div><!-- close #component_wrapper -->
 
 </body>
 </html>
