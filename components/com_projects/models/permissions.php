@@ -74,8 +74,7 @@ class projectsModelPermissions extends model {
 		}
 		
 		// get role id
-		$user =& factory::getUser();
-		$this->roleid = $this->getUserRole($user->id, $project->id);
+		$this->roleid = $this->getUserRole($this->user->id, $project->id);
 		
 		// Check project's global access level
 		if ($this->project->access > 0 && $this->roleid < 1) {
@@ -102,12 +101,11 @@ class projectsModelPermissions extends model {
 	 *
 	 */
 	function getUserRole($userid, $projectid) {
-		$db =& factory::getDB();
 		$query = "SELECT roleid ";
 		$query .= " FROM #__users_roles ";
 		$query .= " WHERE userid = ".$userid." AND projectid = ".$projectid;
-		$db->setQuery($query);
-		return $db->loadResult();
+		$this->db->setQuery($query);
+		return $this->db->loadResult();
 	}
 	
 	function checkViewAccess() {

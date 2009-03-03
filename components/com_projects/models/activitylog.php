@@ -20,26 +20,14 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		model
  */
 class projectsModelActivitylog extends model {
-	var $config=null;
-	var $user=null;
-	var $db=null;
-	
 	/**
 	 * Constructor
 	 *
 	 * @since 1.0.1
 	 */
 	function __construct() {
-		$this->init();
-		parent::__construct();
-	}
-	
-	function init() {
-		$this->config =& factory::getConfig();
-		$this->user =& factory::getUser();
-		$this->db =& factory::getDB();
-		
 		//TODO: Check permissions
+		parent::__construct();
 	}
 	
 	function getActivityLog($projectid=0) {
