@@ -21,7 +21,7 @@ $inputfilter = new InputFilter();
 /**
  * Request Class
  * 
- * @todo		This class needs to be rewritten to use php's filter extension and to extend singleton
+ * @todo		This class needs to be rewritten to use php's filter extension
  * @package		phpFrame
  * @subpackage 	environment
  * @author 		Luis Montero [e-noise.com]

@@ -64,6 +64,7 @@ class html {
 	/**
 	 * Build a date picker and display it
 	 * 
+	 * @todo	This method should display a date picker using jQuery UI tools. It is temporarily showing a simple input box.
 	 * @param	string	$selected
 	 * @param	string	$name
 	 * @param	string	$id
