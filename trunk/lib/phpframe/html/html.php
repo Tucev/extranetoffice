@@ -70,7 +70,7 @@ class html {
 	 * @param	string	$id
 	 * @param	string	$format
 	 * @param 	array	$attribs
-	 * @return unknown_type
+	 * @return	void
 	 */
 	static function calendar($selected, $name, $id='', $format='%Y-%m-%d', $attribs='') {
 		$html = '<input type="text" name="'.$name.'" />';
