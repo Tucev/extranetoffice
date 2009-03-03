@@ -25,7 +25,7 @@ class projectsController extends controller {
 	var $current_tool=null;
 	
 	/**
-	 * Construct
+	 * Constructor
 	 * 
 	 * @return	void
 	 * @since 	1.0
