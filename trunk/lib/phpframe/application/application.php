@@ -214,8 +214,14 @@ class application extends singleton {
 	}
 	
 	public function render() {
+		// get document object
+		$this->document =& factory::getDocument('html');
+			
 		if (!$this->auth) {
 			$template_filename = 'login.php';
+		}
+		elseif (request::getVar('tmpl') == 'component') {
+			$template_filename = 'component.php';
 		}
 		else {
 			$template_filename = 'index.php';
@@ -225,9 +231,6 @@ class application extends singleton {
 			
 			// get pathway
 			$this->pathway =& factory::getPathway();
-			
-			// get document object
-			$this->document =& factory::getDocument('html');
 		}
 		
 		switch ($this->client) {

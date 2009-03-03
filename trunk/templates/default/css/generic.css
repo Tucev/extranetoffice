@@ -1,0 +1,69 @@
+/**
+* @version 		$Id$
+* @package		ExtranetOffice
+* @subpackage 	tmpl_default
+* @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+* @license		BSD revised. See LICENSE.
+* @author 		Luis Montero [e-noise.com]
+*/
+
+@CHARSET "UTF-8";
+
+/* Generic HTML tags */
+
+/* BODY class added because otherwise background colour wouldn't work on Safari */
+BODY {
+background-color: #333333;
+}
+
+body {
+font-size:12px;
+font-family:arial, helvetica, sans-serif;
+margin-bottom:10px;
+background-color: #333333;
+}
+
+th, td, p, div, select {
+font-size:12px;
+font-family:arial, helvetica, sans-serif;
+color: #333333;
+}
+
+h1 {
+font-size:32px;
+color: #333333;
+}
+
+table {
+/* border:1px solid #999999; */
+}
+
+th {
+text-align:left;
+}
+th, td {
+/*
+border-bottom:1px dotted #CCCCCC;
+border-right:1px dotted #CCCCCC;
+padding:3px;
+*/
+}
+
+a {
+text-decoration: none;
+color: #336699;
+}
+
+hr {
+height:1px;
+color: #CCCCCC;
+}
+
+form {
+padding: 0;
+margin: 0;
+}
+
+img {
+border:0;
+}
