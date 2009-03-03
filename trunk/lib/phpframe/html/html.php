@@ -73,10 +73,30 @@ class html {
 	 * @return	void
 	 */
 	static function calendar($selected, $name, $id='', $format='%Y-%m-%d', $attribs='') {
-		$html = '<input type="text" name="'.$name.'" />';
-		echo $html;
-	}
-	
+		$document =& factory::getDocument('html');
+		$document->addScript('lib/jquery/jquery-1.3.1.min.js');
+		$document->addScript('lib/jquery/jquery-ui-personalized-1.5.3.min.js');
+		$document->addStyleSheet('lib/jquery/theme/ui.all.css');
+		
+		//set $id to $name if empty
+		if (empty($id)) {
+			$id = $name;
+		}
+		
+		//invoking datepicker via jquery
+		?>
+		<script type="text/javascript">
+		$(function(){
+			$('#<?php echo $id; ?>').datepicker({
+				inline: true,
+				defaultDate:
+			});
+		});	
+		</script>
+		<input id="<?php echo $id; ?>" type="text" name="<?php echo $name; ?>" />
+		<?php
+		
+	}	
 	/**
 	 * Function to build input with autocomplete and display it
 	 * 
