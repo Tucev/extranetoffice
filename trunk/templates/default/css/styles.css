@@ -686,3 +686,124 @@ background-color: #ac75c8;
 div.activitylog_milestones {
 background-color: #aea148;
 }
+
+
+/*************** Email component (com_email) ***************/
+
+div#email_detail_actions {}
+div#email_detail_actions div {
+float:left;
+width: 32px;
+height: 32px;
+border:1px dotted #CCCCCC;
+padding:3px;
+margin: 0 3px 0 0;
+}
+div#email_detail_actions div:hover {
+background-color: #F0F0F0;
+}
+
+table.ioffice_email_detail {
+padding:5px;
+border:1px dotted #CCCCCC;
+background-color: #F6F6F6;
+}
+table.ioffice_email_detail tr th {
+text-align: left;
+padding:3px 5px;
+vertical-align: top;
+font-size:0.8em;
+color: #666666;
+}	
+table.ioffice_email_detail tr td {
+padding: 0 2px;
+vertical-align: middle;
+font-size:0.8em;
+color: #666666;
+}
+
+div#mailbox-info-left {
+margin-right:2px;
+}
+div#mailbox-info-right,
+div#mailbox-info-left {
+float:left;
+width:49%;
+border:1px dotted #CCCCCC;
+background-color: #F6F6F6;
+}
+div#mailbox-info-right div,
+div#mailbox-info-left div {
+font-size:0.8em;
+padding:6px;
+color: #666666;	
+}
+
+div.seen0 div {
+font-weight:bold;
+}
+div.seen0 div a {
+font-weight:normal;
+}
+div.seen0 div a.bold {
+font-weight:bold;
+}
+
+div.email_detail_body {
+padding:20px;
+border:1px dotted #CCCCCC;
+}
+
+/* DIVs TABLE for emails */
+div.ioffice_table {
+padding: 0 10px 0 0;
+}
+div.ioffice_table img {
+border:0;
+}
+div.ioffice_table div.ioffice_row0 {
+background-color: #F6F6F6;
+}
+div.ioffice_table div.ioffice_row0:hover,
+div.ioffice_table div.ioffice_row1:hover {
+background-color: #ffff99;
+}
+div.ioffice_cell {
+padding:3px;
+font-size:0.9em;
+text-align: left;
+float: left;
+min-height:16px;
+}
+div.ioffice_cell a {
+vertical-align: middle;
+}
+div.selected {
+background-color: #336699;
+color: white;
+}
+div.icon_16 {
+width:22px;
+}
+div.from {
+width:30%;
+}
+div.subject {
+width:40%;
+}
+div.size {
+width:60px;
+}
+div.date {
+width:110px;
+}
+div.undelete {
+
+}
+div.ioffice_row_heading div.ioffice_cell {
+font-size: 1em;
+float: left;
+}
+div.ioffice_table div.deleted div.ioffice_cell {
+text-decoration: line-through;
+}
