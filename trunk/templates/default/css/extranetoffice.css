@@ -1,0 +1,161 @@
+/**
+* @version 		$Id:
+* @package		ExtranetOffice
+* @subpackage 	tmpl_default
+* @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+* @license		BSD revised. See LICENSE.
+* @author 		Luis Montero [e-noise.com]
+*/
+
+
+/* Component structure */
+
+div#main_col_1 {
+min-height: 300px;
+}
+div#main_col_2 {
+margin-right: 230px;
+min-height: 300px;
+border-right: 1px dotted #999999;
+}
+div#main_col_3 {
+margin-right: 230px;
+margin-left: 230px;
+min-height: 300px;
+border-right: 1px dotted #999999;
+}
+
+div#main_col_inner {
+padding: 0 15px 0 0;
+}
+
+div#right_col {
+float:right;
+width: 210px;
+padding: 0 0 0 10px;
+}
+div#right_col ul {
+padding:0;
+margin:0;
+list-style: none;
+}
+div#right_col ul li {
+border-top: 1px dotted #336699;
+padding: 5px 0;
+}
+
+.rss_top_right {
+float:right;
+background-image: url(../images/icons/generic/16x16/rss.png);
+background-repeat: no-repeat;
+padding: 2px 0 0 20px;
+height:16px;
+}
+
+.componentheading {
+font-size: 2.4em;
+padding: 0 0 8px 0;
+margin: 0 0 10px 0;
+border-bottom: 1px solid #CCCCCC;
+font-weight: normal;
+}
+
+div.main_col_module {
+border:1px dotted #CCCCCC;
+background-color: #F6F6F6;
+padding: 5px 8px 10px 8px;
+margin: 0 10px 5px 0;
+}
+div.main_col_module_half {
+border:1px dotted #CCCCCC;
+background-color: #F6F6F6;
+padding: 5px 8px 10px 8px;
+margin: 0 10px 5px 0;
+float: left;
+width:45%;
+height: 205px;
+overflow: auto;
+}
+div.main_col_module h3,
+div.main_col_module_half h3 {
+background-repeat: no-repeat;
+background-position: 0 5px;
+padding: 0 0 0 40px;
+margin: 0;
+height: 46px;
+display:table-cell;
+vertical-align: middle;
+font-size: 1.4em;
+font-weight: normal;
+color: #333333;
+}
+
+div.main_col_module table {
+width:100%;
+background-color: white;
+}
+div.main_col_module table th {
+text-align: left;
+padding:2px;
+vertical-align: top;
+font-size:0.9em;
+}
+div.main_col_module table tbody tr:hover {
+background-color: #F0F0F0;
+}
+div.main_col_module table tbody tr.row0 {
+background-color: #F6F6F6;
+}
+div.main_col_module table tbody tr.row0:hover {
+background-color: #F0F0F0;
+}
+div.main_col_module table tbody td {
+padding:2px;
+vertical-align: middle;
+font-size:0.9em;
+}
+
+
+/* Default Actions */
+div.new {
+background-image: url(../images/icons/generic/16x16/new.png);
+background-repeat: no-repeat;
+padding:2px 20px 0 20px;
+height:16px;
+float:right;
+}
+div.edit {
+background-image: url(../images/icons/generic/16x16/edit.png);
+background-repeat: no-repeat;
+padding:2px 0 0 20px;
+height:16px;
+}
+div.delete {
+background-image: url(../images/icons/generic/16x16/remove.png);
+background-repeat: no-repeat;
+padding:2px 0 0 20px;
+height:16px;
+}
+
+/* System Icons */
+
+span.icons_16_outer {
+border: 1px dotted #999999;
+padding: 8px;
+margin-left: 5px;
+background-color: #CCCCCC;
+}
+span.icons_16 {
+padding: 2px 2px 2px 20px;
+background-repeat: no-repeat;
+background-position: center left;
+}
+span.users_16 {
+background-image: url(../images/icons/generic/16x16/people.png);
+}
+span.sysadmin_16 {
+background-image: url(../images/icons/generic/16x16/sysadmin.png);
+}
+span.security_16 {
+background-image: url(../images/icons/generic/16x16/security.png);
+}

@@ -1,0 +1,24 @@
+/**
+* @version 		$Id:
+* @package		ExtranetOffice
+* @subpackage 	tmpl_default
+* @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+* @license		BSD revised. See LICENSE.
+* @author 		Luis Montero [e-noise.com]
+*/
+
+/*************** Login component (com_login) ***************/
+
+div#login_wrapper {
+text-align: center;
+padding: 50px 0 0 0;
+}
+
+.table_login {
+text-align: left;
+padding: 3px;
+background-color: #FFFFFF;
+}
+.table_login tr td {
+border: none;
+}
