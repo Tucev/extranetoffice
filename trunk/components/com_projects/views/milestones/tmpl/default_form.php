@@ -62,7 +62,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<?php echo html::_('calendar', $this->row->due_date, 'due_date', 'due_date', '%Y-%m-%d', array('class'=>'inputbox', 'size'=>'10',  'maxlength'=>'10')); ?>
+		<?php echo html::_('calendar', 'due_date', 'due_date', $this->row->due_date, 'dd/mm/yy', array('class'=>'inputbox', 'size'=>'10',  'maxlength'=>'10')); ?>
 	</td>
 </tr>
 
