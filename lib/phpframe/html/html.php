@@ -73,11 +73,6 @@ class html {
 	 * @return	void
 	 */
 	static function calendar($selected, $name, $id='', $format='%Y-%m-%d', $attribs='') {
-		$document =& factory::getDocument('html');
-		$document->addScript('lib/jquery/jquery-1.3.1.min.js');
-		$document->addScript('lib/jquery/jquery-ui-personalized-1.5.3.min.js');
-		$document->addStyleSheet('lib/jquery/theme/ui.all.css');
-		
 		//set $id to $name if empty
 		if (empty($id)) {
 			$id = $name;
@@ -109,9 +104,6 @@ class html {
 	 * @since	1.0
 	 */
 	static function autocompleter($form_name, $field_name, $attribs, $tokens) {
-		// Attach style sheets and scripts
-		$document =& factory::getDocument('html');
-		$document->addScript('lib/jquery/jquery-1.3.1.min.js');
 		?>
 		
 		<input class="inputbox" autocomplete="off" name="<?php echo $field_name; ?>" id="<?php echo $field_name; ?>" type="text" <?php echo $attribs; ?> />

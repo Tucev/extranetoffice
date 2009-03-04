@@ -20,11 +20,36 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		model
  */
 class emailModelEmail extends model {
+	/**
+	 * The id of the account to use. If not specified the default account for user is used.
+	 * 
+	 * @var int
+	 */
 	var $accountid=null;
+	/**
+	 * Object containing the email account settings
+	 * 
+	 * @var object
+	 */
 	var $account=null;
+	/**
+	 * The IMAP stream
+	 * 
+	 * @var resource
+	 */
 	var $stream=null;
+	/**
+	 * The mailbox name
+	 * 
+	 * @var string
+	 */
 	var $mbox_name=null;
-	var $error_msg=null;
+	/**
+	 * A string containing the latest error
+	 * 
+	 * @var string
+	 */
+	var $error=null;
 	
 	/**
 	 * Constructor
@@ -40,7 +65,6 @@ class emailModelEmail extends model {
 	
 	function checkDependencies() {
 		if (!function_exists('imap_open')) {
-			error::raiseWarning("", 'IMAP Extention not installed. For more info visit <a href="http://uk3.php.net/manual/en/imap.setup.php">http://uk3.php.net/manual/en/imap.setup.php</a>');
 			return false;
 		}
 		else {
@@ -50,8 +74,9 @@ class emailModelEmail extends model {
 	
 	/**
 	 * This function sets the mail account to use for connection
-	 *
-	 * @param obj $config_array An object containing the mail account settings.
+	 * 
+	 * @param	object	$account An object containing the mail account settings.
+	 * @return	void
 	 */
 	function setEmailAccount($account) {
 		$this->account->from_name = $account->from_name;
@@ -71,7 +96,8 @@ class emailModelEmail extends model {
 	
 	/**
 	 * Load current user's email account settings
-	 *
+	 * 
+	 * @return	void
 	 */
 	function loadUserEmailAccount() {
 		// Load settings
@@ -79,18 +105,28 @@ class emailModelEmail extends model {
 		$account = $accountModel->getAccounts($this->user->id, $this->accountid, true);
 		
 		// Set account details in model
-		$this->setEmailAccount($account[0]);
+		if (!empty($account[0]->server_type)) {
+			$this->setEmailAccount($account[0]);
+			return true;
+		}
+		else {
+			return false;
+		}
+		
 	}
 	
+	/**
+	 * Open IMAP stream
+	 * 
+	 * @param	string	$folder	The mail folder to connect to. Default id 'INBOX'.	
+	 * @return	bool
+	 */
 	function openStream($folder='INBOX') {
 		
 		if($this->checkDependencies() !== true){
-			return false;
+			$this->error = 'IMAP Extention not installed. For more info visit <a href="http://uk3.php.net/manual/en/imap.setup.php">http://uk3.php.net/manual/en/imap.setup.php</a>';
+			return $this->error;
 		}
-		elseif (empty($this->account->server_type)) {
-	  		error::raiseWarning(0, _LANG_EMAIL_NO_ACCOUNT );
-			return false;
-	  	}
 		
 	  	// Set mailbox name depending on server type
 	  	if ($this->account->server_type == 'POP3') {
@@ -103,9 +139,10 @@ class emailModelEmail extends model {
 	  	// Open mailbox stream
 	  	$this->stream = @imap_open($this->mbox_name, $this->account->incoming_server_username, $this->account->incoming_server_password);
 	  	if (!$this->stream) {
-	  		error::raiseWarning(0, imap_last_error() );
-	  		return false;
+	  		$this->error = imap_last_error();
+	  		return $this->error;
 	  	}
+	  	
 	  	return true;
 	}
 	
@@ -114,7 +151,6 @@ class emailModelEmail extends model {
 			imap_close($this->stream);
 			$this->stream = null;
 		}
-		
 	}
 	
 	function getMailboxList() {
@@ -138,7 +174,7 @@ class emailModelEmail extends model {
 	        }
 	    }
 	    else {
-	    	error::raiseWarning(0, imap_last_error() );
+	    	error::raise(0, 'warning', imap_last_error() );
 	  		return false;
 	    }
 	    
@@ -158,7 +194,7 @@ class emailModelEmail extends model {
 	 */
 	function createMailbox($new_folder_name) {
 		if (!imap_createmailbox($this->stream, imap_utf7_encode($this->mbox_name.$new_folder_name))) {
-			error::raiseWarning(0, imap_last_error() );
+			error::raise(0, 'warning', imap_last_error() );
 	  		return false;
 		}
 		else {
@@ -175,7 +211,7 @@ class emailModelEmail extends model {
 	 */
 	function renameMailbox($old_box, $new_box) {
 		if (!imap_renamemailbox($this->stream, imap_utf7_encode($this->mbox_name.$old_box), imap_utf7_encode($this->mbox_name.$new_box))) {
-			error::raiseWarning(0, imap_last_error() );
+			error::raise(0, 'warning', imap_last_error() );
 	  		return false;
 		}
 		else {
@@ -190,7 +226,7 @@ class emailModelEmail extends model {
 	 */
 	function deleteMailbox() {
 		if (!imap_deletemailbox($this->stream, imap_utf7_encode($this->mbox_name))) {
-			error::raiseWarning(0, imap_last_error() );
+			error::raise(0, 'warning', imap_last_error() );
 	  		return false;
 		}
 		else {
@@ -223,7 +259,7 @@ class emailModelEmail extends model {
 	
 	function getMessageList() {
 		if (!$this->stream) {
-			error::raiseWarning('', _LANG_EMAIL_ERROR_GETTING_MESSAGES_NO_STREAM);
+			error::raise('', 'warning', _LANG_EMAIL_ERROR_GETTING_MESSAGES_NO_STREAM);
 			return false;
 		} 
 		
@@ -356,7 +392,7 @@ class emailModelEmail extends model {
 				$recipient = trim($recipient);
 				if (!JMailHelper::isEmailAddress($recipient)) {
 					$error	= JText::sprintf('EMAIL_INVALID', $recipient);
-					error::raiseWarning(0, $error );
+					error::raise(0, 'warning', $error );
 				}
 				else {
 					$new_mail->addRecipient($recipient);	
@@ -367,7 +403,7 @@ class emailModelEmail extends model {
 		// Check sender email address
 		if ( !$sender || !JMailHelper::isEmailAddress($sender) ) {
 			$error	= JText::sprintf('EMAIL_INVALID', $sender);
-			error::raiseWarning(0, $error );
+			error::raise(0, 'warning', $error );
 		}
 
 		if ($error)	{
@@ -409,7 +445,7 @@ class emailModelEmail extends model {
 		//$new_mail->useSendmail();
 		
 		if ($new_mail->Send() !== true) {
-			error::raiseWarning( '', 'EMAIL_NOT_SENT' );
+			error::raise( '', 'warning', 'EMAIL_NOT_SENT' );
 			return false;
 		}
 		
@@ -448,7 +484,7 @@ class emailModelEmail extends model {
 			return true;
 		}
 		else {
-			error::raiseWarning( '', _LANG_EMAIL_MESSAGE_NOT_SAVED );
+			error::raise( '', 'warning', _LANG_EMAIL_MESSAGE_NOT_SAVED );
 			return false;
 		}
 	}
