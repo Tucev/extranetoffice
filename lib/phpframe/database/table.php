@@ -257,7 +257,7 @@ abstract class table extends singleton {
 	 * If new row inserts a new entry in db table, otherwise it updates existing row.
 	 * 
 	 * @todo	Have to raise errors where appropriate.
-	 * @return	void
+	 * @return	bool
 	 * @since 	1.0
 	 */
 	function store() {
@@ -304,10 +304,17 @@ abstract class table extends singleton {
 		$this->db->setQuery($query);
 		$insert_id = $this->db->query();
 		
+		if ($insert_id === false){
+			$this->error =& $this->db->error; 
+			return false;
+		}
+		
 		// Store new row id for new entries
 		if ($row_exists === false && !empty($insert_id)) {
 			$this->$primary_key = $insert_id;
 		}
+		
+		return true;
 	}
 	
 	/**

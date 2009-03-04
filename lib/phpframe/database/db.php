@@ -113,10 +113,10 @@ class db extends singleton {
 	/**
 	 * Run SQL query and return mysql record set resource.
 	 * 
-	 * It returns a myslql result resource or if it is an INSERT query it 
-	 * returns the insert id.
+	 * It returns a mysql result resource or if it is an INSERT query it 
+	 * returns the insert id or return false on fail.
 	 *
-	 * @return resource
+	 * @return mixed
 	 */
 	public function query() {
 		// Only run query if active link is valid
@@ -128,9 +128,8 @@ class db extends singleton {
 		$this->rs = mysql_query($this->query);
 		
 		// Check query result is valid
-		$mysql_error = mysql_error();
-		if ($mysql_error != '') {
-			$this->error = 'phpFrame: db::query(). Query failed. MySQL Error: '.$mysql_error;
+		if ($this->rs === false) {
+			$this->error = 'phpFrame: db::query(). Query failed: '.$this->query.'. MySQL Error: '.mysql_error();
 			return false;
 		}
 		
@@ -168,6 +167,31 @@ class db extends singleton {
 		else {
 			return false;
 		}
+	}
+	
+	/**
+	 * Run query and load single value for each row
+	 *
+	 * @return array an array containing single column for each row
+	 */
+	public function loadResultArray() {
+		// Run SQL query
+		$this->rs = $this->query($this->query);
+		// Check query result is valid
+		if ($this->rs === false) {
+			return false;
+		}
+		
+		$rows = array();
+		
+		// Fetch associative array
+		while ($row = mysql_fetch_array($this->rs)) {
+			if (is_array($row) && count($row) > 0) {
+				$rows[] = $row[0];	
+			}
+		}
+		
+		return $rows;
 	}
 	
 	/**
