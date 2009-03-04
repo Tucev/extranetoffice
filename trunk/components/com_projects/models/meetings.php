@@ -137,7 +137,8 @@ class projectsModelMeetings extends model {
 	}
 	
 	function saveMeeting($projectid, $meetingid=0) {
-		$row = new projectsTableMeetings();
+		require_once COMPONENT_PATH.DS."tables".DS."meetings.table.php";		
+		$row =& phpFrame::getInstance("projectsTableMeetings");
 		
 		if (empty($meetingid)) {
 			$row->created_by = $this->user->id;
@@ -145,19 +146,17 @@ class projectsModelMeetings extends model {
 			$new_meeting = true;
 		}
 		else {
-			$row->load($issueid);
+			$row->load($meetingid);
 		}
 		
 		$post = request::get('post');
 		$row->bind($post);
 		
 		if (!$row->check()) {
-			JError::raiseError(500, $row->getError() );
+			error::raise(500, 'error', $row->error);
 		}
-	
-		if (!$row->store()) {
-			JError::raiseError(500, $row->getError() );
-		}
+		
+		$row->store();
 		
 		// Delete existing assignees before we store new ones if editing existing issue
 		if ($new_meeting !== true) {
@@ -178,12 +177,20 @@ class projectsModelMeetings extends model {
 			$this->db->query();
 		}
 		
-		return $row;
+		if (!empty($row->id)) {
+			error::raise('', 'message', _LANG_MEETING_SAVED);
+			return $row;
+		}
+		else {
+			error::raise('', 'error', _LANG_MEETING_SAVE_ERROR);
+			return false;
+		}
 	}
 	
 	function deleteMeeting($projectid, $meetingid) {
 		//TODO: This function should allow ids as either int or array of ints.
 		//TODO: This function should also check permissions before deleting
+		require_once COMPONENT_PATH.DS."tables".DS."meetings.table.php";
 		
 		// Delete message's comments
 		$query = "DELETE FROM #__comments ";
@@ -202,7 +209,7 @@ class projectsModelMeetings extends model {
 		
 		// Delete row from database
 		if (!$row->delete($meetingid)) {
-			JError::raiseError(500, $row->getError() );
+			JError::raiseError(500, $row->error );
 			return false;
 		}
 		else {

@@ -99,18 +99,22 @@ class projectsViewMeetings extends view {
 		$modelMeetings =& $this->getModel('meetings');
 		// Get meeting details
 		$meeting = $modelMeetings->getMeetingsDetail($this->projectid, $this->meetingid);
-		$this->assignRef('row', $meeting);
+		$this->row =& $meeting;
 		
 		$this->page_title .= ' - '.$meeting->name;
 		$this->addPathwayItem($meeting->name);
 	}
 	
+	/**
+	 * @todo Asignees ... sort them out
+	 *
+	 */
 	function displayMeetingsForm() {
 		if (!empty($this->meetingid)) {
 			$action = _LANG_MEETINGS_EDIT;
 			$modelMeetings =& $this->getModel('meetings');
 			$meeting = $modelMeetings->getMeetingsDetail($this->projectid, $this->meetingid);
-			$this->assignRef('row', $meeting);
+			$this->row =& $meeting;
 		}
 		else {
 			$action = _LANG_MEETINGS_NEW;
@@ -128,7 +132,7 @@ class projectsViewMeetings extends view {
 			$action = _LANG_SLIDESHOWS_EDIT;
 			$modelSlideshows =& $this->getModel('meetings');
 			$slideshow = $modelSlideshows->getSlideshowsDetail($this->projectid, $this->slideshowid);
-			$this->assignRef('row', $slideshow);
+			$this->row =& $slideshow;
 		}
 		else {
 			$action = _LANG_SLIDESHOWS_NEW;

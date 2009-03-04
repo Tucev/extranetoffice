@@ -105,15 +105,15 @@ class projectsModelMilestones extends model {
 				// Sort out status according to due date
 				if ($row->due_date < date("Y-m-d H:i:s") && $row->closed == '0000-00-00 00:00:00') {
 					$row->due_date_class = 'overdue';
-					$row->status = _LANG_MILESTONES_STATUS_OVERDUE;
+					$row->status = _LANG_STATUS_OVERDUE;
 				}
 				elseif ($row->due_date > date("Y-m-d H:i:s") && $row->closed == '0000-00-00 00:00:00') {
 					$row->due_date_class = 'open';
-					$row->status = _LANG_MILESTONES_STATUS_UPCOMING;
+					$row->status = _LANG_STATUS_UPCOMING;
 				}
 				elseif ($row->closed != '0000-00-00 00:00:00') {
 					$row->due_date_class = 'closed';
-					$row->status = _LANG_MILESTONES_STATUS_CLOSED;
+					$row->status = _LANG_STATUS_CLOSED;
 				}
 			}
 		}
@@ -143,17 +143,17 @@ class projectsModelMilestones extends model {
 		$row = $this->db->loadObject();
 		
 		// Sort out status according to due date
-		if ($row->due_date < date("Y-m-d H:i:s") && $row->closed == '0000-00-00 00:00:00') {
+		if ($row->due_date < date("Y-m-d H:i:s") && $row->closed == null) {
 			$row->due_date_class = 'overdue_milestone';
-			$row->status = _LANG_MILESTONES_STATUS_OVERDUE;
+			$row->status = _LANG_STATUS_OVERDUE;
 		}
-		elseif ($row->due_date > date("Y-m-d H:i:s") && $row->closed == '0000-00-00 00:00:00') {
+		elseif ($row->due_date > date("Y-m-d H:i:s") && $row->closed == null) {
 			$row->due_date_class = 'upcoming_milestone';
-			$row->status = _LANG_MILESTONES_STATUS_UPCOMING;
+			$row->status = _LANG_STATUS_UPCOMING;
 		}
-		elseif ($row->closed != '0000-00-00 00:00:00') {
+		elseif ($row->closed != null) {
 			$row->due_date_class = 'closed_milestone';
-			$row->status = _LANG_MILESTONES_STATUS_CLOSED;
+			$row->status = _LANG_STATUS_CLOSED;
 		}
 		
 		// Get assignees
@@ -167,7 +167,8 @@ class projectsModelMilestones extends model {
 	}
 	
 	function saveMilestone($projectid) {
-		$row = new projectsTableMilestones();
+		require_once COMPONENT_PATH.DS."tables".DS."milestones.table.php";
+		$row =& phpFrame::getInstance("projectsTableMilestones");
 		
 		$post = request::get('post');
 		$row->bind($post);
@@ -179,11 +180,11 @@ class projectsModelMilestones extends model {
 		}
 		
 		if (!$row->check()) {
-			JError::raiseError(500, $row->getError() );
+			error::raise(500, 'error', $row->error );
 		}
-	
+		
 		if (!$row->store()) {
-			JError::raiseError(500, $row->getError() );
+			error::raise(500, 'error', $row->error );
 		}
 		
 		// Delete existing assignees before we store new ones if editing existing issue
@@ -212,6 +213,8 @@ class projectsModelMilestones extends model {
 		//TODO: This function should allow ids as either int or array of ints.
 		//TODO: This function should also check permissions before deleting
 		
+		require_once COMPONENT_PATH.DS."tables".DS."milestones.table.php";
+		
 		// Delete message's comments
 		$query = "DELETE FROM #__comments ";
 		$query .= " WHERE projectid = ".$projectid." AND type = 'milestones' AND itemid = ".$milestoneid;
@@ -225,11 +228,11 @@ class projectsModelMilestones extends model {
 		$this->db->query();
 		
 		// Instantiate table object
-		$row = new projectsTableMilestones();
+		$row =& phpFrame::getInstance("projectsTableMilestones");
 		
 		// Delete row from database
 		if (!$row->delete($milestoneid)) {
-			JError::raiseError(500, $row->getError() );
+			error::raise(500, ' error', $row->error );
 			return false;
 		}
 		else {

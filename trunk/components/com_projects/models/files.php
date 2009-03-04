@@ -178,11 +178,11 @@ class projectsModelFiles extends model {
 		$row->userid = $this->user->id;
 		
 		if (!$row->check()) {
-			JError::raiseError(500, $row->getError() );
+			JError::raiseError(500, $row->error );
 		}
 	
 		if (!$row->store()) {
-			JError::raiseError(500, $row->getError() );
+			JError::raiseError(500, $row->error );
 		}
 		
 		// Make parent files have their own id as their parentid
@@ -191,7 +191,7 @@ class projectsModelFiles extends model {
 		}
 		
 		if (!$row->store()) {
-			JError::raiseError(500, $row->getError() );
+			JError::raiseError(500, $row->error );
 		}
 		
 		return $row;
@@ -212,7 +212,7 @@ class projectsModelFiles extends model {
 		
 		// Delete row from database
 		if (!$row->delete($fileid)) {
-			JError::raiseError(500, $row->getError() );
+			JError::raiseError(500, $row->error );
 			return false;
 		}
 		else {

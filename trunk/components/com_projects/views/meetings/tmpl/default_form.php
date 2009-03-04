@@ -13,7 +13,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 <script language="javascript" type="text/javascript">
 function submitbutton() {
-	var form = document.iofficeform;
+	var form = document.meetingform;
 
 	// do field validation
 	if (form.name.value == "") {
@@ -45,7 +45,7 @@ function submitbutton() {
 </h2>
 
 
-<form action="index.php" method="post" name="iofficeform" enctype="multipart/form-data">
+<form action="index.php" method="post" name="meetingform" enctype="multipart/form-data">
 
 <fieldset>
 <legend><?php echo text::_( _LANG_MEETINGS_NEW ); ?></legend>

@@ -32,7 +32,14 @@ define("_LANG_DOWNLOAD", "Download");
 define("_LANG_POSTED_BY", "Posted by");
 define("_LANG_DTSTART", "Date start");
 define("_LANG_DTEND", "Date end");
+define("_LANG_START_DATE", "Start date");
+define("_LANG_END_DATE", "End date");
 define("_LANG_NAME_REQUIRED", "Name is required");
+define("_LANG_EMAIL_NOT_SENT", "Notification to %s not sent");
+define("_LANG_COMMENTS_SEND", "Comment");
+define("_LANG_STATUS_OVERDUE", "Overdue");
+define("_LANG_STATUS_CLOSED", "Closed");
+define("_LANG_STATUS_UPCOMING", "Upcoming");
 
 // com_dashboard
 define("_LANG_DASHBOARD", "Dashboard");
@@ -133,6 +140,8 @@ define("_LANG_PROJECT_MEMBER_ROLE_SAVED", "Member role in this project has been 
 
 define("_LANG_COMMENTS_NEW", "Post new comment");
 
+define("_LANG_ACTIVITYLOG_NOTIFY_FAILED", "An error occured while attemting to send notifications");
+
 // Files
 define("_LANG_FILES", "Files");
 define("_LANG_FILE", "File");
@@ -154,13 +163,34 @@ define("_LANG_ISSUES_EXPECTED_DURATION", "Expected duration");
 //  Milestones
 define("_LANG_MILESTONES", "Milestones");
 define("_LANG_MILESTONE", "Milestone");
-define("_LANG_MILESTONES_STATUS_OVERDUE", "Overdue");
 define("_LANG_MILESTONES_DUEDATE", "Due date");
+define("_LANG_MILESTONES_ACTION_NEW", "Set new milestone");
 define("_LANG_MILESTONES_NEW", "New milestone");
+define("_LANG_MILESTONES_EDIT", "Edit milestone");
+define("_LANG_MILESTONES_ACTIVITYLOG_DESCRIPTION", "A milestone has been added for %s
+
+Due date: %s
+
+");
+define("_LANG_MILESTONE_SAVED", "Milestone saved");
+define("_LANG_MILESTONES_DUEDATE_REQUIRED", "Due date is required to set a milestone");
+define("_LANG_MILESTONE_DELETED", "Milestone deleted"); 
 
 // Meetings
 define("_LANG_MEETINGS", "Meetings");
 define("_LANG_MEETING", "Meeting");
+define("_LANG_MEETINGS_NEW", "New meeting");
+define("_LANG_MEETINGS_EDIT", "Edit meeting");
+define("_LANG_MEETINGS_NAME_REQUIRED", "Meeting name is required to set up a new meeting");
+define("_LANG_MEETINGS_DTSTART_REQUIRED", "Start date is required to set up a meeting");
+define("_LANG_MEETINGS_DTEND_REQUIRED", "End date is required to set up a meeting");
+define("_LANG_MEETING_SAVED", "Meeting successfully saved");
+define("_LANG_MEETING_DELETED", "Meeting successfully deleted");
+define("_LANG_MEETINGS_ACTION_NEW", "Meeting successfully scheduled");
+
+// Slideshows
+define("_LANG_SLIDESHOWS_NEW", "New slideshow");
+define("_LANG_SLIDESHOWS_EDIT", "Edit slideshow");
 
 // Comments
 define("_LANG_COMMENTS", "Comments");

@@ -52,11 +52,11 @@ class projectsModelComments extends model {
 		$row->created = date("Y-m-d H:i:s");
 		
 		if (!$row->check()) {
-			JError::raiseError(500, $row->getError() );
+			JError::raiseError(500, $row->error );
 		}
 	
 		if (!$row->store()) {
-			JError::raiseError(500, $row->getError() );
+			JError::raiseError(500, $row->error );
 		}
 		
 		return $row;
@@ -71,7 +71,7 @@ class projectsModelComments extends model {
 		
 		// Delete row from database
 		if (!$row->delete($commentid)) {
-			JError::raiseError(500, $row->getError() );
+			JError::raiseError(500, $row->error );
 			return false;
 		}
 		else {
