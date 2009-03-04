@@ -28,12 +28,12 @@ class filter {
 	 * Validate data stored in variable
 	 * 
 	 * <code>
-	 *  $validEmail = filter::validate($email, "email");
+	 *  $validEmail = filter::validate($email, 'email');
 	 *  //validEmail will contain either the filtered string or boolean FALSE if validation fails
 	 * </code>
 	 * 
-	 * @param	mixed	$variable
-	 * @param	string	$type int, boolean, float, regexp, url, email, ip
+	 * @param	mixed	$variable to be evaluated	
+	 * @param	string	$type valid types are int, boolean, float, regexp, url, email, ip
 	 * @return	mixed	Returns the filtered data, or FALSE if the filter fails
 	 */
 	static function validate($variable, $type='default') {
