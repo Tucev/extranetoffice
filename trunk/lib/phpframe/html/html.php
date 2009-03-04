@@ -88,8 +88,7 @@ class html {
 		<script type="text/javascript">
 		$(function(){
 			$('#<?php echo $id; ?>').datepicker({
-				inline: true,
-				defaultDate:
+				inline: true
 			});
 		});	
 		</script>

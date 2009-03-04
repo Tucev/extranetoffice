@@ -146,6 +146,11 @@ class application extends singleton {
 		// load request into the application
 		$this->request = request::init();
 		
+		// Get client from request
+		if (client::checkMobile() == true) {
+			$this->client = 'mobile';	
+		}
+		
 		// instantiate db object and store in application
 		$this->db =& phpFrame::getInstance('db');
 		// connect to MySQL server
