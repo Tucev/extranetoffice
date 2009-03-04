@@ -44,6 +44,7 @@ class projectsViewMilestones extends view {
 		
 		// Set reference to projectid
 		$this->projectid =& request::getVar('projectid', 0);
+		$this->milestoneid =& request::getVar('milestoneid', 0);
 		
 		// Set reference to project object loaded in controller
 		if (!empty($this->projectid)) {

@@ -44,6 +44,7 @@ class projectsViewMessages extends view {
 		
 		// Set reference to projectid
 		$this->projectid =& request::getVar('projectid', 0);
+		$this->messageid =& request::getVar('messageid', 0);
 		
 		// Set reference to project object loaded in controller
 		if (!empty($this->projectid)) {
@@ -98,7 +99,7 @@ class projectsViewMessages extends view {
 		
 		$modelMessages =& $this->getModel('messages');
 		$message = $modelMessages->getMessagesDetail($this->projectid, $this->messageid);
-		$this->assignRef('row', $message);
+		$this->row =& $message;
 		
 		$this->page_title .= ' - '.$message->subject;
 		$this->addPathwayItem($message->subject);

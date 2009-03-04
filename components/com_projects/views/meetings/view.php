@@ -44,6 +44,7 @@ class projectsViewMeetings extends view {
 		
 		// Set reference to projectid
 		$this->projectid =& request::getVar('projectid', 0);
+		$this->meetingid =& request::getVar('meetingid', 0);
 		
 		// Set reference to project object loaded in controller
 		if (!empty($this->projectid)) {

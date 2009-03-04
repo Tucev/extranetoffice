@@ -139,8 +139,9 @@ class projectsModelMessages extends model {
 	}
 	
 	function saveMessage($projectid) {
-		$row = new projectsTableMessages();
-		
+		require_once COMPONENT_PATH.DS."tables".DS."messages.table.php";		
+		$row =& phpFrame::getInstance("projectsTableMessages");
+				
 		$post = request::get('post');
 		$row->bind($post);
 		
@@ -152,11 +153,13 @@ class projectsModelMessages extends model {
 		}
 		
 		if (!$row->check()) {
-			JError::raiseError(500, $row->error );
+			$this->error =& $row->error;
+			return false;
 		}
 	
 		if (!$row->store()) {
-			JError::raiseError(500, $row->error );
+			$this->error =& $row->error;
+			return false;
 		}
 		
 		// Delete existing assignees before we store new ones if editing existing issue
@@ -184,6 +187,7 @@ class projectsModelMessages extends model {
 	function deleteMessage($projectid, $messageid) {
 		//TODO: This function should allow ids as either int or array of ints.
 		//TODO: This function should also check permissions before deleting
+		require_once COMPONENT_PATH.DS."tables".DS."messages.table.php";
 		
 		// Delete message's comments
 		$query = "DELETE FROM #__comments ";
@@ -202,7 +206,7 @@ class projectsModelMessages extends model {
 		
 		// Delete row from database
 		if (!$row->delete($messageid)) {
-			JError::raiseError(500, $row->error );
+			$this->error =& $row->error;
 			return false;
 		}
 		else {

@@ -22,11 +22,6 @@ function confirm_delete(projectid, meetingid, label) {
 
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
-<div id="right_col">
-	<?php require($this->template_path.DS.'menu.html.php'); ?>
-</div><!-- close .right_col -->
-
-<div id="main_col">
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
 	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&projectid='.$this->projectid); ?>">
@@ -170,8 +165,6 @@ No slideshows.
 <!-- 
 <h2>Polls</h2>
  -->
-
-</div><!-- close #main_col -->
 
 <div style="clear: left;"></div>
 
