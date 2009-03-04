@@ -25,7 +25,7 @@ class client {
 	 * @return	bool
 	 * @since 	1.0
 	 */
-	function checkmobile() {
+	function checkMobile() {
 
 		if (isset($_SERVER["HTTP_X_WAP_PROFILE"])) {
 			return true;
