@@ -64,12 +64,13 @@ class html {
 	/**
 	 * Build a date picker and display it
 	 * 
-	 * @todo	This method should display a date picker using jQuery UI tools. It is temporarily showing a simple input box.
-	 * @param	string	$selected
-	 * @param	string	$name
-	 * @param	string	$id
-	 * @param	string	$format
-	 * @param 	array	$attribs
+	 * The generated input will hold a value in YYYY-MM-DD.
+	 * 
+	 * @param	string	$selected	The selected value if any. In YYYY-MM-DD.
+	 * @param	string	$name		The name attribute for the input tag. 
+	 * @param	string	$id			The id of the input tag
+	 * @param	string	$format		The format in which to present the date to the user. it doesn't affect the selected or returned date format
+	 * @param 	array	$attribs	The style attribute of the input tag
 	 * @return	void
 	 */
 	static function calendar($selected, $name, $id='', $format='%Y-%m-%d', $attribs='') {
@@ -82,15 +83,20 @@ class html {
 		?>
 		<script type="text/javascript">
 		$(function(){
-			$('#<?php echo $id; ?>').datepicker({
-				inline: true
+			$('#<?php echo $id; ?>_datePicker').datepicker({
+				inline: true,
+				appendText: '(dd/mm/yyyy)',
+				dateFormat: 'dd/mm/yy',
+				altField: '#<?php echo $id; ?>',
+				altFormat: 'yy-mm-dd'
 			});
 		});	
 		</script>
-		<input id="<?php echo $id; ?>" type="text" name="<?php echo $name; ?>" />
-		<?php
-		
-	}	
+		<input id="<?php echo $id; ?>_datePicker" type="text" name="<?php echo $name; ?>_datePicker" <?php echo $attribs; ?> />
+		<input id="<?php echo $id; ?>" type="hidden" name="<?php echo $name; ?>" />
+		<?php	
+	}
+	
 	/**
 	 * Function to build input with autocomplete and display it
 	 * 
