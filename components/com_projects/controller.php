@@ -426,7 +426,7 @@ class projectsController extends controller {
 		$description = sprintf(_LANG_MILESTONES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->due_date);
 		$url = route::_(uri::getBase()."index.php?option=com_projects&view=milestones&layout=detail&projectid=".$projectid."&milestoneid=".$row->id);
 		if ($notify == 'on') { $notify = true; }
-		//$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'milestones', $action, $title, $description, $url, $assignees, $notify);
+		$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'milestones', $action, $title, $description, $url, $assignees, $notify);
 		
 		error::raise('', 'message', _LANG_MILESTONE_SAVED);
 		
