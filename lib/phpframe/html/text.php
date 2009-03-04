@@ -65,5 +65,19 @@ class text {
 		
 		return $str;
 	}
+	
+	/**
+	 * Format full name to standard
+	 *
+	 * @param string $firstname
+	 * @param string $lastname
+	 * @return string full name in format: [Uppercase first initial]"." [Surname]  
+	 */
+	function fullname_format($firstname, $lastname){
+		
+		$str = strtoupper(substr($firstname,0,1)).". ".ucwords($lastname);
+				
+		return $str;
+	}
 }
 ?>
