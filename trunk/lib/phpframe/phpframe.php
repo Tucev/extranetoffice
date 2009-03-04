@@ -43,6 +43,7 @@ require_once _PHPFRAME_PATH.DS."html".DS."html.php";
 require_once _PHPFRAME_PATH.DS."html".DS."pagination.php";
 require_once _PHPFRAME_PATH.DS."html".DS."text.php";
 // Include utils classes
+require_once _PHPFRAME_PATH.DS."utils".DS."client.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."crypt.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."filter.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."mail.php";
