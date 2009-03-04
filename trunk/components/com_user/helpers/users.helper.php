@@ -79,6 +79,12 @@ class usersHelperUsers {
 		}
 	}
 	
+	/**
+	 * @todo	This method needs to be rewritten when we add custom user fields
+	 * 
+	 * @param	int	$id
+	 * @return string
+	 */
 	static function id2photo($id) {
 		if (!empty($id)) { // No user has been selected
 			$db =& factory::getDB(); // Instantiate joomla database object
@@ -95,6 +101,7 @@ class usersHelperUsers {
 	
 	/**
 	 * Function to build HTML select of users
+	 * 
 	 * @param	int		The selected value if any
 	 * @param 	string	Attributes for the <select> tag
 	 * @return 	string	A string with the HTML select
@@ -102,17 +109,17 @@ class usersHelperUsers {
 	static function select($selected=0, $attribs='', $fieldname='userid', $projectid=0) {
 		// assemble users to the array
 		$options = array();
-		$options[] = JHTML::_('select.option', '0', JText::_( '-- Select a User --' ) );
+		$options[] = html::_('select.option', '0', JText::_( '-- Select a User --' ) );
 		
 		// get joomla users from #__users
 		$db =& factory::getDB(); // Instantiate joomla database object
-		$query = "SELECT u.id, u.name ";
+		$query = "SELECT u.id, u.firstname, u.lastname ";
 		$query .= " FROM #__users AS u ";
 		if (!empty($projectid)) {
 			$query .= " LEFT JOIN #__users_roles ur ON ur.userid = u.id ";
 			$query .= " WHERE ur.projectid = ".$projectid;
 		}
-		$query .= " ORDER BY u.name";
+		$query .= " ORDER BY u.lastname";
 		//echo $query; exit;
 		$db -> setQuery($query);
 		if (!$rows = $db->loadObjectList()) {
@@ -120,24 +127,24 @@ class usersHelperUsers {
 		}
 		
 		foreach ($rows as $row) {
-			$options[] = JHTML::_('select.option', $row->id, $row->name );
+			$options[] = html::_('select.option', $row->id, strtoupper(substr($row->firstname, 0, 1)).'. '.$row->lastname);
 		}
 		
 		$attribs .= ' class="inputbox"';
-		$output = JHTML::_('select.genericlist', $options, $fieldname, $attribs, $selected);
+		$output = html::_('select.genericlist', $options, $fieldname, $attribs, $selected);
 		return $output;		
 	}
 	
 	static function assignees($selected=0, $attribs='', $fieldname='assignees[]', $projectid=0) {
 		// get joomla users from #__users
 		$db =& factory::getDB(); // Instantiate joomla database object
-		$query = "SELECT u.id, u.name ";
+		$query = "SELECT u.id, u.firstname, u.lastname ";
 		$query .= " FROM #__users AS u ";
 		if (!empty($projectid)) {
 			$query .= " LEFT JOIN #__users_roles ur ON ur.userid = u.id ";
 			$query .= " WHERE ur.projectid = ".$projectid;
 		}
-		$query .= " ORDER BY u.name";
+		$query .= " ORDER BY u.lastname";
 		//echo $query; exit;
 		$db -> setQuery($query);
 		if (!$rows = $db->loadObjectList()) {
@@ -159,7 +166,7 @@ class usersHelperUsers {
 			$output .= ' value="'.$rows[$i]->id.'" '.$attribs;
 			if (in_array($rows[$i]->id, $assignees)) { $output .= 'checked'; }
 			$output .= ' /> ';
-			$output .= $rows[$i]->name.'&nbsp;&nbsp;';
+			$output .= strtoupper(substr($rows[$i]->firstname, 0, 1)).'. '.$rows[$i]->lastname.'&nbsp;&nbsp;';
 			// Add line break every three entries (test using modulus)
 			if ((($i+1) % 3) == 0) { $output .= '<br />'; }
 		}

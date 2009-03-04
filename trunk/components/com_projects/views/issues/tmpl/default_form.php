@@ -82,7 +82,7 @@ function submitbutton(action) {
 <tr>
 	<td width="30%">
 		<label id="dtstartmsg" for="dtstart">
-			<?php echo _LANG_START_DATE; ?>:
+			<?php echo _LANG_DTSTART; ?>:
 		</label>
 	</td>
 	<td>
@@ -92,7 +92,7 @@ function submitbutton(action) {
 <tr>
 	<td width="30%">
 		<label id="dtendmsg" for="dtend">
-			<?php echo _LANG_END_DATE; ?>:
+			<?php echo _LANG_DTEND; ?>:
 		</label>
 	</td>
 	<td>

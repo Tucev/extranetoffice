@@ -27,10 +27,12 @@ define("_LANG_NAME", "Name");
 define("_LANG_USERNAME", "Username");
 define("_LANG_EMAIL", "Email");
 define("_LANG_ASSIGNEES", "Assignees");
+define("_LANG_NOTIFY_ASSIGNEES", "Notify assignees");
 define("_LANG_DOWNLOAD", "Download");
 define("_LANG_POSTED_BY", "Posted by");
 define("_LANG_DTSTART", "Date start");
 define("_LANG_DTEND", "Date end");
+define("_LANG_NAME_REQUIRED", "Name is required");
 
 // com_dashboard
 define("_LANG_DASHBOARD", "Dashboard");
@@ -140,16 +142,21 @@ define("_LANG_FILES_FILENAME", "Filename");
 // Messages
 define("_LANG_MESSAGES", "Messages");
 define("_LANG_MESSAGE", "Message");
+define("_LANG_MESSAGES_NEW", "New message");
 
 // Issues
 define("_LANG_ISSUES", "Issues");
 define("_LANG_ISSUE", "Issue");
+define("_LANG_ISSUES_NEW", "New issue");
+define("_LANG_ISSUES_TYPE", "Issue type");
+define("_LANG_ISSUES_EXPECTED_DURATION", "Expected duration");
 
 //  Milestones
 define("_LANG_MILESTONES", "Milestones");
 define("_LANG_MILESTONE", "Milestone");
 define("_LANG_MILESTONES_STATUS_OVERDUE", "Overdue");
 define("_LANG_MILESTONES_DUEDATE", "Due date");
+define("_LANG_MILESTONES_NEW", "New milestone");
 
 // Meetings
 define("_LANG_MEETINGS", "Meetings");
@@ -163,6 +170,7 @@ define("_LANG_PEOPLE", "People");
 
 
 // com_email
+define("_LANG_EMAIL_NO_ACCOUNT", "No email account");
 define("_LANG_NO_MAILBOXES", "No mailbox found");
 define("_LANG_NO_EMAIL", "No email messages found");
 define("_LANG_EMAIL_NEW_FOLDER", "New mail folder");

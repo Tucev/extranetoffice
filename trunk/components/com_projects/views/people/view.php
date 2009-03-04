@@ -79,7 +79,7 @@ class projectsViewPeople extends view {
 	 */
 	function displayPeopleList() {
 		$this->page_title = _LANG_PEOPLE;
-		$this->page_heading = $this->project->name.' - '._LANG_PEOPLE;
+		$this->page_heading = $this->project->name;
 		$this->addPathwayItem($this->current_tool);
 		
 		$modelProjects =& $this->getModel('projects');

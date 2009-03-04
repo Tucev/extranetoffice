@@ -80,7 +80,7 @@ class projectsViewFiles extends view {
 	 */
 	function displayFilesList() {
 		$this->page_title = _LANG_FILES;
-		$this->page_heading = $this->project->name.' - '._LANG_FILES;
+		$this->page_heading = $this->project->name;
 		$this->addPathwayItem($this->page_title);
 		
 		$document =& factory::getDocument('html');
@@ -96,13 +96,12 @@ class projectsViewFiles extends view {
 	
 	function displayFilesForm() {
 		$this->page_title .= ' - '._LANG_FILES_NEW;
+		$this->page_heading = $this->project->name;
 		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
 		$this->addPathwayItem(_LANG_FILES_NEW);
 		
-		$parentid = request::getVar('parentid', 0);
-		$parent_title = projectsHelperProjects::fileid2name($parentid);
-		$this->assign('parentid', $parentid);
-		$this->assign('parent_title', $parent_title);
+		$this->parentid = request::getVar('parentid', 0);
+		$this->parent_title = projectsHelperProjects::fileid2name($this->parentid);
 	}
 	
 	function displayFilesDetail() {
@@ -113,11 +112,10 @@ class projectsViewFiles extends view {
 		$document->addStyleSheet('lib/thickbox/thickbox.css');
 		
 		$modelFiles =& $this->getModel('files');
-		$file = $modelFiles->getFilesDetail($this->projectid, $this->fileid);
-		$this->assignRef('row', $file);
+		$this->row = $modelFiles->getFilesDetail($this->projectid, $this->fileid);
 		
-		$this->page_title .= ' - '.$file->title;
-		$this->addPathwayItem($file->title);
+		$this->page_title .= ' - '.$this->row->title;
+		$this->addPathwayItem($this->row->title);
 	}
 	
 }

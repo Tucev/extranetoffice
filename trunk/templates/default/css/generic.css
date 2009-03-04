@@ -64,6 +64,16 @@ padding: 0;
 margin: 0;
 }
 
+legend {
+color: #336699;
+padding: 6px;
+font-size: 1.4em;
+}
+
+fieldset {
+border: 1px solid #CCCCCC;
+}
+
 img {
 border:0;
 }

@@ -79,7 +79,7 @@ class projectsViewIssues extends view {
 	 */
 	function displayIssuesList() {
 		$this->page_title = _LANG_ISSUES;
-		$this->page_heading = $this->project->name.' - '._LANG_ISSUES;
+		$this->page_heading = $this->project->name;
 		$this->addPathwayItem($this->page_title);
 		
 		$document =& factory::getDocument('html');
@@ -108,6 +108,7 @@ class projectsViewIssues extends view {
 		}
 		
 		$this->page_title .= ' - '.$action;
+		$this->page_heading = $this->project->name;
 		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
 		$this->addPathwayItem($action);
 	}
