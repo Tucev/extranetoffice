@@ -1,7 +1,16 @@
+-- phpMyAdmin SQL Dump
+-- version 2.11.3
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost:3306
+-- Generation Time: Mar 04, 2009 at 03:32 PM
+-- Server version: 5.0.51
+-- PHP Version: 5.2.8
+
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
--- Database: `extranetoffice`
+-- Database: `extranetoffice_dist`
 --
 
 -- --------------------------------------------------------
@@ -19,95 +28,95 @@ CREATE TABLE IF NOT EXISTS `eo_acl_groups` (
   `layout` varchar(32) NOT NULL,
   `value` varchar(4) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=83 ;
 
 --
 -- Dumping data for table `eo_acl_groups`
 --
 
-INSERT INTO `eo_acl_groups` (`id`, `groupid`, `option`, `task`, `view`, `layout`, `value`) VALUES 
-(NULL, 1, 'com_login', 'display', 'login', '*', 'all'),
-(NULL, 2, 'com_login', 'display', 'login', '*', 'all'),
-(NULL, 1, 'com_dashboard', 'display', 'dashboard', '*', 'own'),
-(NULL, 2, 'com_dashboard', 'display', 'dashboard', '*', 'own'),
-(NULL, 1, 'com_email', 'display', 'email', '*', 'own'),
-(NULL, 1, 'com_email', 'download_attachment', '', '', 'own'),
-(NULL, 1, 'com_email', 'send_email', '', '', 'own'),
-(NULL, 1, 'com_email', 'move_email', '', '', 'own'),
-(NULL, 1, 'com_email', 'remove_email', '', '', 'own'),
-(NULL, 1, 'com_email', 'restore_email', '', '', 'own'),
-(NULL, 1, 'com_email', 'empty_deleted_items', '', '', 'own'),
-(NULL, 1, 'com_email', 'set_flags', '', '', 'own'),
-(NULL, 1, 'com_email', 'clear_flags', '', '', 'own'),
-(NULL, 1, 'com_email', 'create_mailbox', '', '', 'own'),
-(NULL, 1, 'com_email', 'rename_mailbox', '', '', 'own'),
-(NULL, 1, 'com_email', 'delete_mailbox', '', '', 'own'),
-(NULL, 2, 'com_email', 'download_attachment', '', '', 'own'),
-(NULL, 2, 'com_email', 'send_email', '', '', 'own'),
-(NULL, 2, 'com_email', 'move_email', '', '', 'own'),
-(NULL, 2, 'com_email', 'remove_email', '', '', 'own'),
-(NULL, 2, 'com_email', 'restore_email', '', '', 'own'),
-(NULL, 2, 'com_email', 'empty_deleted_items', '', '', 'own'),
-(NULL, 2, 'com_email', 'set_flags', '', '', 'own'),
-(NULL, 2, 'com_email', 'clear_flags', '', '', 'own'),
-(NULL, 2, 'com_email', 'create_mailbox', '', '', 'own'),
-(NULL, 2, 'com_email', 'rename_mailbox', '', '', 'own'),
-(NULL, 2, 'com_email', 'delete_mailbox', '', '', 'own'),
-(NULL, 2, 'com_email', 'display', 'email', '*', 'own'),
-(NULL, 1, 'com_email', 'add_attachment', '', '', 'own'),
-(NULL, 2, 'com_email', 'add_attachment', '', '', 'own'),
-(NULL, 1, 'com_email', 'empty_email_trash', '', '', 'own'),
-(NULL, 2, 'com_email', 'empty_email_trash', '', '', 'own'),
-(NULL, 1, 'com_addressbook', 'display', 'contacts', '*', 'own'),
-(NULL, 1, 'com_addressbook', 'save_contact', '', '', 'own'),
-(NULL, 1, 'com_addressbook', 'remove_contact', '', '', 'own'),
-(NULL, 1, 'com_addressbook', 'export_contact', '', '', 'own'),
-(NULL, 1, 'com_addressbook', 'import_contact', '', '', 'own'),
-(NULL, 2, 'com_addressbook', 'display', 'contacts', '*', 'own'),
-(NULL, 2, 'com_addressbook', 'save_contact', '', '', 'own'),
-(NULL, 2, 'com_addressbook', 'remove_contact', '', '', 'own'),
-(NULL, 2, 'com_addressbook', 'export_contact', '', '', 'own'),
-(NULL, 2, 'com_addressbook', 'import_contact', '', '', 'own'),
-(NULL, 1, 'com_projects', 'display', 'projects', '*', 'all'),
-(NULL, 2, 'com_projects', 'display', 'projects', '*', 'own'),
-(NULL, 2, 'com_projects', 'remove_member', '', '', 'own'),
-(NULL, 1, 'com_projects', 'remove_member', '', '', 'own'),
-(NULL, 1, 'com_projects', 'save_member', '', '', 'all'),
-(NULL, 2, 'com_projects', 'save_member', '', '', 'own'),
-(NULL, 1, 'com_projects', 'save_project', '', '', 'own'),
-(NULL, 2, 'com_projects', 'save_project', '', '', 'own'),
-(NULL, 1, 'com_projects', 'save_issue', '', '', 'all'),
-(NULL, 2, 'com_projects', 'save_issue', '', '', 'all'),
-(NULL, 1, 'com_projects', 'remove_issue', '', '', 'all'),
-(NULL, 2, 'com_projects', 'remove_issue', '', '', 'all'),
-(NULL, 1, 'com_projects', 'remove_project', '', '', 'own'),
-(NULL, 2, 'com_projects', 'remove_project', '', '', 'own'),
-(NULL, 1, 'com_projects', 'save_file', '', '', 'all'),
-(NULL, 2, 'com_projects', 'save_file', '', '', 'all'),
-(NULL, 1, 'com_projects', 'remove_file', '', '', 'own'),
-(NULL, 2, 'com_projects', 'remove_file', '', '', 'own'),
-(NULL, 1, 'com_projects', 'download_file', '', '', 'all'),
-(NULL, 2, 'com_projects', 'download_file', '', '', 'own'),
-(NULL, 1, 'com_projects', 'save_message', '', '', 'own'),
-(NULL, 2, 'com_projects', 'save_message', '', '', 'own'),
-(NULL, 1, 'com_projects', 'remove_message', '', '', 'own'),
-(NULL, 2, 'com_projects', 'remove_message', '', '', 'own'),
-(NULL, 1, 'com_projects', 'save_comment', '', '', 'own'),
-(NULL, 2, 'com_projects', 'save_comment', '', '', 'own'),
-(NULL, 1, 'com_projects', 'save_meeting', '', '', 'own'),
-(NULL, 2, 'com_projects', 'save_meeting', '', '', 'own'),
-(NULL, 1, 'com_projects', 'remove_meeting', '', '', 'own'),
-(NULL, 2, 'com_projects', 'remove_meeting', '', '', 'own'),
-(NULL, 1, 'com_projects', 'close_issue', '', '', 'all'),
-(NULL, 2, 'com_projects', 'close_issue', '', '', 'own'),
-(NULL, 1, 'com_projects', 'reopen_issue', '', '', 'all'),
-(NULL, 2, 'com_projects', 'reopen_issue', '', '', 'own'),
-(NULL, 1, 'com_projects', 'save_milestone', '', '', 'all'),
-(NULL, 2, 'com_projects', 'save_milestone', '', '', 'own'),
-(NULL, 1, 'com_projects', 'remove_milestone', '', '', 'all'),
-(NULL, 2, 'com_projects', 'remove_milestone', '', '', 'own'),
-(NULL, 1, 'com_projects', 'admin_change_member_role', '', '', 'all'),
-(NULL, 2, 'com_projects', 'admin_change_member_role', '', '', 'all');
+INSERT INTO `eo_acl_groups` (`id`, `groupid`, `option`, `task`, `view`, `layout`, `value`) VALUES
+(1, 1, 'com_login', 'display', 'login', '*', 'all'),
+(2, 2, 'com_login', 'display', 'login', '*', 'all'),
+(3, 1, 'com_dashboard', 'display', 'dashboard', '*', 'own'),
+(4, 2, 'com_dashboard', 'display', 'dashboard', '*', 'own'),
+(5, 1, 'com_email', 'display', 'email', '*', 'own'),
+(6, 1, 'com_email', 'download_attachment', '', '', 'own'),
+(7, 1, 'com_email', 'send_email', '', '', 'own'),
+(8, 1, 'com_email', 'move_email', '', '', 'own'),
+(9, 1, 'com_email', 'remove_email', '', '', 'own'),
+(10, 1, 'com_email', 'restore_email', '', '', 'own'),
+(11, 1, 'com_email', 'empty_deleted_items', '', '', 'own'),
+(12, 1, 'com_email', 'set_flags', '', '', 'own'),
+(13, 1, 'com_email', 'clear_flags', '', '', 'own'),
+(14, 1, 'com_email', 'create_mailbox', '', '', 'own'),
+(15, 1, 'com_email', 'rename_mailbox', '', '', 'own'),
+(16, 1, 'com_email', 'delete_mailbox', '', '', 'own'),
+(17, 2, 'com_email', 'download_attachment', '', '', 'own'),
+(18, 2, 'com_email', 'send_email', '', '', 'own'),
+(19, 2, 'com_email', 'move_email', '', '', 'own'),
+(20, 2, 'com_email', 'remove_email', '', '', 'own'),
+(21, 2, 'com_email', 'restore_email', '', '', 'own'),
+(22, 2, 'com_email', 'empty_deleted_items', '', '', 'own'),
+(23, 2, 'com_email', 'set_flags', '', '', 'own'),
+(24, 2, 'com_email', 'clear_flags', '', '', 'own'),
+(25, 2, 'com_email', 'create_mailbox', '', '', 'own'),
+(26, 2, 'com_email', 'rename_mailbox', '', '', 'own'),
+(27, 2, 'com_email', 'delete_mailbox', '', '', 'own'),
+(28, 2, 'com_email', 'display', 'email', '*', 'own'),
+(29, 1, 'com_email', 'add_attachment', '', '', 'own'),
+(30, 2, 'com_email', 'add_attachment', '', '', 'own'),
+(31, 1, 'com_email', 'empty_email_trash', '', '', 'own'),
+(32, 2, 'com_email', 'empty_email_trash', '', '', 'own'),
+(33, 1, 'com_addressbook', 'display', 'contacts', '*', 'own'),
+(34, 1, 'com_addressbook', 'save_contact', '', '', 'own'),
+(35, 1, 'com_addressbook', 'remove_contact', '', '', 'own'),
+(36, 1, 'com_addressbook', 'export_contact', '', '', 'own'),
+(37, 1, 'com_addressbook', 'import_contact', '', '', 'own'),
+(38, 2, 'com_addressbook', 'display', 'contacts', '*', 'own'),
+(39, 2, 'com_addressbook', 'save_contact', '', '', 'own'),
+(40, 2, 'com_addressbook', 'remove_contact', '', '', 'own'),
+(41, 2, 'com_addressbook', 'export_contact', '', '', 'own'),
+(42, 2, 'com_addressbook', 'import_contact', '', '', 'own'),
+(43, 1, 'com_projects', 'display', 'projects', '*', 'all'),
+(44, 2, 'com_projects', 'display', 'projects', '*', 'own'),
+(45, 2, 'com_projects', 'remove_member', '', '', 'own'),
+(46, 1, 'com_projects', 'remove_member', '', '', 'own'),
+(47, 1, 'com_projects', 'save_member', '', '', 'all'),
+(48, 2, 'com_projects', 'save_member', '', '', 'own'),
+(49, 1, 'com_projects', 'save_project', '', '', 'own'),
+(50, 2, 'com_projects', 'save_project', '', '', 'own'),
+(51, 1, 'com_projects', 'save_issue', '', '', 'all'),
+(52, 2, 'com_projects', 'save_issue', '', '', 'all'),
+(53, 1, 'com_projects', 'remove_issue', '', '', 'all'),
+(54, 2, 'com_projects', 'remove_issue', '', '', 'all'),
+(55, 1, 'com_projects', 'remove_project', '', '', 'own'),
+(56, 2, 'com_projects', 'remove_project', '', '', 'own'),
+(57, 1, 'com_projects', 'save_file', '', '', 'all'),
+(58, 2, 'com_projects', 'save_file', '', '', 'all'),
+(59, 1, 'com_projects', 'remove_file', '', '', 'own'),
+(60, 2, 'com_projects', 'remove_file', '', '', 'own'),
+(61, 1, 'com_projects', 'download_file', '', '', 'all'),
+(62, 2, 'com_projects', 'download_file', '', '', 'own'),
+(63, 1, 'com_projects', 'save_message', '', '', 'own'),
+(64, 2, 'com_projects', 'save_message', '', '', 'own'),
+(65, 1, 'com_projects', 'remove_message', '', '', 'own'),
+(66, 2, 'com_projects', 'remove_message', '', '', 'own'),
+(67, 1, 'com_projects', 'save_comment', '', '', 'own'),
+(68, 2, 'com_projects', 'save_comment', '', '', 'own'),
+(69, 1, 'com_projects', 'save_meeting', '', '', 'own'),
+(70, 2, 'com_projects', 'save_meeting', '', '', 'own'),
+(71, 1, 'com_projects', 'remove_meeting', '', '', 'own'),
+(72, 2, 'com_projects', 'remove_meeting', '', '', 'own'),
+(73, 1, 'com_projects', 'close_issue', '', '', 'all'),
+(74, 2, 'com_projects', 'close_issue', '', '', 'own'),
+(75, 1, 'com_projects', 'reopen_issue', '', '', 'all'),
+(76, 2, 'com_projects', 'reopen_issue', '', '', 'own'),
+(77, 1, 'com_projects', 'save_milestone', '', '', 'all'),
+(78, 2, 'com_projects', 'save_milestone', '', '', 'own'),
+(79, 1, 'com_projects', 'remove_milestone', '', '', 'all'),
+(80, 2, 'com_projects', 'remove_milestone', '', '', 'own'),
+(81, 1, 'com_projects', 'admin_change_member_role', '', '', 'all'),
+(82, 2, 'com_projects', 'admin_change_member_role', '', '', 'all');
 
 -- --------------------------------------------------------
 
@@ -126,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `eo_activitylog` (
   `url` varchar(256) NOT NULL,
   `ts` timestamp NOT NULL default CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `eo_activitylog`
@@ -148,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `eo_comments` (
   `body` text NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `eo_comments`
@@ -171,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `eo_components` (
   `system` enum('0','1') collate utf8_unicode_ci NOT NULL COMMENT 'system components are required',
   `ordering` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `eo_components`
@@ -184,7 +193,38 @@ INSERT INTO `eo_components` (`id`, `name`, `menu_name`, `author`, `version`, `en
 (4, 'email', 'Email', 'Luis Montero', '1.0.0', '1', '0', 2),
 (5, 'projects', 'Projects', 'Luis Montero', '1.0.0', '1', '0', 3),
 (6, 'user', 'Account', 'Luis Montero', '1.0.0', '1', '1', 99),
-(7, 'billing', 'Billing', 'Luis Montero', '1.0.0', '0', '0', 4);
+(7, 'billing', 'Billing', 'Luis Montero', '1.0.0', '1', '0', 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eo_email_accounts`
+--
+
+CREATE TABLE IF NOT EXISTS `eo_email_accounts` (
+  `id` int(11) NOT NULL auto_increment,
+  `userid` int(11) NOT NULL,
+  `email_signature` tinytext NOT NULL,
+  `server_type` varchar(32) NOT NULL,
+  `incoming_server` varchar(128) NOT NULL,
+  `incoming_server_port` varchar(6) NOT NULL,
+  `incoming_server_username` varchar(128) NOT NULL,
+  `incoming_server_password` varchar(64) NOT NULL,
+  `from_name` varchar(64) NOT NULL,
+  `email_address` varchar(128) NOT NULL,
+  `outgoing_server` varchar(128) NOT NULL,
+  `outgoing_server_port` varchar(6) NOT NULL,
+  `outgoing_server_auth` enum('0','1') NOT NULL,
+  `outgoing_server_username` varchar(128) NOT NULL,
+  `outgoing_server_password` varchar(64) NOT NULL,
+  `default` enum('0','1') NOT NULL default '0' COMMENT 'Is default account for user?',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `eo_email_accounts`
+--
+
 
 -- --------------------------------------------------------
 
@@ -205,7 +245,7 @@ CREATE TABLE IF NOT EXISTS `eo_files` (
   `filesize` int(11) NOT NULL,
   `ts` timestamp NOT NULL default CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `eo_files`
@@ -222,7 +262,7 @@ CREATE TABLE IF NOT EXISTS `eo_groups` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `eo_groups`
@@ -258,7 +298,7 @@ CREATE TABLE IF NOT EXISTS `eo_invoice` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `customerid` (`customerid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `eo_invoice`
@@ -293,7 +333,7 @@ CREATE TABLE IF NOT EXISTS `eo_invoiceentry` (
   `taxable` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `invoiceid` (`invoiceid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maintain information of work completed for customer' ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maintain information of work completed for customer' AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `eo_invoiceentry`
@@ -317,7 +357,7 @@ CREATE TABLE IF NOT EXISTS `eo_invoicetransaction` (
   `last4` varchar(5) NOT NULL default '0000',
   `amount` float default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `eo_invoicetransaction`
@@ -348,7 +388,7 @@ CREATE TABLE IF NOT EXISTS `eo_issues` (
   `closed` datetime NOT NULL,
   `ts` timestamp NOT NULL default CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `eo_issues`
@@ -370,7 +410,7 @@ CREATE TABLE IF NOT EXISTS `eo_meetings` (
   `created_by` int(11) NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `eo_meetings`
@@ -392,7 +432,7 @@ CREATE TABLE IF NOT EXISTS `eo_messages` (
   `body` text NOT NULL,
   `status` enum('0','1','2') NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `eo_messages`
@@ -412,10 +452,10 @@ CREATE TABLE IF NOT EXISTS `eo_milestones` (
   `due_date` date NOT NULL,
   `created_by` int(11) NOT NULL,
   `created` datetime NOT NULL,
-  `closed_by` int(11) NOT NULL,
-  `closed` datetime NOT NULL,
+  `closed_by` int(11) default '0',
+  `closed` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `eo_milestones`
@@ -438,7 +478,7 @@ CREATE TABLE IF NOT EXISTS `eo_modules` (
   `position` varchar(20) collate utf8_unicode_ci NOT NULL,
   `ordering` tinyint(4) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `eo_modules`
@@ -459,7 +499,7 @@ CREATE TABLE IF NOT EXISTS `eo_modules_options` (
   `moduleid` int(11) NOT NULL,
   `option` varchar(50) collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `eo_modules_options`
@@ -496,7 +536,7 @@ CREATE TABLE IF NOT EXISTS `eo_projects` (
   `created_by` int(11) NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `eo_projects`
@@ -513,7 +553,7 @@ CREATE TABLE IF NOT EXISTS `eo_project_types` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `eo_project_types`
@@ -536,7 +576,7 @@ CREATE TABLE IF NOT EXISTS `eo_roles` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(32) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `eo_roles`
@@ -562,6 +602,11 @@ CREATE TABLE IF NOT EXISTS `eo_session` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `eo_session`
+--
+
+
 -- --------------------------------------------------------
 
 --
@@ -577,7 +622,7 @@ CREATE TABLE IF NOT EXISTS `eo_users` (
   `lastname` varchar(50) collate utf8_unicode_ci NOT NULL,
   `block` enum('0','1') collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=65 ;
 
 --
 -- Dumping data for table `eo_users`
@@ -599,7 +644,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_files` (
   `userid` int(11) NOT NULL,
   `fileid` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `eo_users_files`
@@ -617,7 +662,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_groups` (
   `groupid` int(11) NOT NULL,
   `userid` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `eo_users_groups`
@@ -639,7 +684,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_issues` (
   `userid` int(11) NOT NULL,
   `issueid` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `eo_users_issues`
@@ -657,7 +702,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_meetings` (
   `userid` int(11) NOT NULL,
   `meetingid` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `eo_users_meetings`
@@ -675,7 +720,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_messages` (
   `userid` int(11) NOT NULL,
   `messageid` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `eo_users_messages`
@@ -693,7 +738,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_milestones` (
   `userid` int(11) NOT NULL,
   `milestoneid` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `eo_users_milestones`
@@ -712,7 +757,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_roles` (
   `roleid` int(11) NOT NULL,
   `projectid` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `eo_users_roles`
