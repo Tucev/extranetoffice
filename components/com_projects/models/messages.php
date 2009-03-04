@@ -152,11 +152,11 @@ class projectsModelMessages extends model {
 		}
 		
 		if (!$row->check()) {
-			JError::raiseError(500, $row->getError() );
+			JError::raiseError(500, $row->error );
 		}
 	
 		if (!$row->store()) {
-			JError::raiseError(500, $row->getError() );
+			JError::raiseError(500, $row->error );
 		}
 		
 		// Delete existing assignees before we store new ones if editing existing issue
@@ -202,7 +202,7 @@ class projectsModelMessages extends model {
 		
 		// Delete row from database
 		if (!$row->delete($messageid)) {
-			JError::raiseError(500, $row->getError() );
+			JError::raiseError(500, $row->error );
 			return false;
 		}
 		else {

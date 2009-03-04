@@ -21,11 +21,25 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 class projectsModelActivitylog extends model {
 	/**
+	 * Project object
+	 *
+	 * @var object
+	 */
+	var $project=null;
+	/**
 	 * Constructor
 	 *
 	 * @since 1.0.1
 	 */
 	function __construct() {
+		$this->projectid =& request::getVar('projectid', 0);
+		
+		if (!empty($this->projectid)) {
+			// get project data from controller
+			$controller =& phpFrame::getInstance('projectsController');
+			$this->project =& $controller->project;
+		}
+		
 		//TODO: Check permissions
 		parent::__construct();
 	}
@@ -53,7 +67,8 @@ class projectsModelActivitylog extends model {
 	 */
 	function saveActivityLog($projectid, $userid, $type, $action, $title, $description, $url, $assignees, $notify) {
 		// Store notification in db
-		$row = new projectsTableActivitylog();
+		require_once COMPONENT_PATH.DS."tables".DS."activitylog.table.php";
+		$row =& phpFrame::getInstance("projectsTableActivitylog");
 		$row->projectid = $projectid;
 		$row->userid = $userid;
 		$row->type = $type;
@@ -63,20 +78,17 @@ class projectsModelActivitylog extends model {
 		$row->url = $url;
 		
 		if (!$row->check()) {
-			JError::raiseError(500, $row->getError() );
+			error::raise(500, 'error', $row->error );
 			return false;
 		}
 		
-		if (!$row->store()) {
-			JError::raiseError(500, $row->getError() );
-			return false;
-		}
-		
+		$row->store();
+				
 		// Send notifications via email
 		if ($notify === true) {
 			// Test return from _notify method. Raise error if needed and return accordingly.
 			if ($this->_notify($row, $assignees) === false) {
-				JError::raiseError( 500, text::_( _LANG_ACTIVITYLOG_NOTIFY_FAILED ) );
+				error::raise( 500, 'error', text::_( _LANG_ACTIVITYLOG_NOTIFY_FAILED ) );
 				return false;
 			}	
 		}
@@ -90,18 +102,17 @@ class projectsModelActivitylog extends model {
 	 * @param obj $row
 	 * @param array $assignees
 	 * @return boolean
+	 * @todo sanatise address, subject & body
 	 */
 	function _notify($row, $assignees) {
-		jimport( 'joomla.mail.mail' );
-		jimport( 'joomla.mail.helper' );
-		$new_mail = new JMail();
+		$new_mail = new mail();
 		
-		$sender = $this->config->get('notifications_fromaddress');
-		$project_name = projectsHelperProjects::id2name($row->projectid);
 		$user_name = usersHelperUsers::id2name($row->userid);
-		$subject = "[".$project_name."] ".$row->action." by ".$user_name;
+		
+		$new_mail->Sender = $this->config->fromaddress;
+		$new_mail->Subject = "[".$this->project->name."] ".$row->action." by ".$user_name;
 		$body = text::_(sprintf(_LANG_ACTIVITYLOG_NOTIFY_BODY, 
-								 $project_name, 
+								 $this->project->name, 
 								 $row->action." by ".$user_name, 
 								 $row->description, 
 								 $row->url)
@@ -111,47 +122,30 @@ class projectsModelActivitylog extends model {
 		if (!is_array($assignees)) {
 			$assignees = array($assignees);
 		}
-		$query = "SELECT email FROM #__users WHERE id IN (".implode(',', $assignees).")";
+		$query = "SELECT firstname, lastname, email FROM #__users WHERE id IN (".implode(',', $assignees).")";
 		$this->db->setQuery($query);
 		$recipients = $this->db->loadObjectList();
 		
 		if (is_array($recipients) && count($recipients) > 0) {
 			foreach ($recipients as $recipient) {
-				$recipient = trim($recipient->email);
-				if (!JMailHelper::isEmailAddress($recipient)) {
-					$error	= JText::sprintf('EMAIL_INVALID', $recipient);
-					JError::raiseWarning(0, $error );
+				if (filter::validate($recipient->email, 'email') === false ){
+					$this->error = sprintf('EMAIL_INVALID', $recipient);
+					return $this->error;
 				}
 				else {
-					$new_mail->addRecipient($recipient);	
+					$new_mail->AddAddress($recipient->email, text::fullname_format($firstname, $lastname));
 				}
 			}				
 		}
-
-		if ($error)	{
-			return false;
-		}
 		
-		// Clean the email data
-		$sender = JMailHelper::cleanAddress($sender);
-		$subject = JMailHelper::cleanSubject($subject);
-		$body = JMailHelper::cleanBody($body);
-		$new_mail->addReplyTo(array($sender, $this->config->get('notifications_fromname')));
-		$new_mail->setSender($sender);
+		$new_mail->AddReplyTo($sender, $this->config->get('notifications_fromname'));
+		$new_mail->Sender = $sender;
 		$new_mail->FromName = $this->config->get('notifications_fromname');
-		$new_mail->setSubject($subject);
-		$new_mail->setBody($body);
-		$new_mail->useSMTP($this->config->get('notifications_smtpauth'), 
-						   $this->config->get('notifications_smtphost'), 
-						   $this->config->get('notifications_smtpusername'), 
-						   $this->config->get('notifications_smtppassword'));
-		//$new_mail->useSendmail();
-		
-		//echo '<pre>'; var_dump($new_mail); exit;
-						   
+		$new_mail->Body = $body;
+								   
 		if ($new_mail->Send() !== true) {
-			JError::raiseWarning( '', 'EMAIL_NOT_SENT' );
-			return false;
+			$this->error = sprintf('_LANG_EMAIL_NOT_SENT', $recipient);
+			return $this->error;
 		}
 		else {
 			return true;
