@@ -62,38 +62,73 @@ class html {
 	}
 	
 	/**
-	 * Build a date picker and display it
+	 * Build a date picker using jQuery UI Calendar and display it
 	 * 
-	 * The generated input will hold a value in YYYY-MM-DD.
+	 * This method will generate two input tags, one is shown to the user and it triggers 
+	 * the date picker, and the other one holding the date value in MySQL date format to 
+	 * be used for storing.
 	 * 
-	 * @param	string	$selected	The selected value if any. In YYYY-MM-DD.
+	 * @todo	add jQuery tooltip: display format hint in tooltip
 	 * @param	string	$name		The name attribute for the input tag. 
 	 * @param	string	$id			The id of the input tag
-	 * @param	string	$format		The format in which to present the date to the user. it doesn't affect the selected or returned date format
-	 * @param 	array	$attribs	The style attribute of the input tag
+	 * @param	string	$selected	The selected value if any. In YYYY-MM-DD.
+	 * @param	string	$format		Format in which to present the date to the user. Possible values 'dd/mm/yy', 'mm/dd/yy', 'yy/mm/dd'. 
+	 * 								This doesn't affect the hidden input value with the MySQL date.
+	 * @param 	array	$attribs	An array containing attributes for the input tag
+	 * @param	bool	$show_format_hint	Show/hide date format hint.
 	 * @return	void
 	 */
-	static function calendar($selected, $name, $id='', $format='%Y-%m-%d', $attribs='') {
+	static function calendar($name, $id='', $selected='', $format='dd/mm/yy', $attribs=array(), $show_format_hint=false) {
 		//set $id to $name if empty
 		if (empty($id)) {
 			$id = $name;
 		}
 		
+		// Convert attributes array to string
+		$attribs_str = '';
+		if (is_array($attribs) && count($attribs) > 0) {
+			foreach ($attribs as $key=>$value) {
+				$attribs_str .= $key.'="'.$value.'" ';
+			}
+		}
+		
+		// Format selected value using format parameter
+		$formatted_date = '';
+		$formatted_date_array = explode('-', $selected);
+		$format_array = explode('/', $format);
+		foreach ($format_array as $format_item) {
+			switch ($format_item) {
+				case 'yy' :
+					$key = 0;
+					break;
+				case 'mm' :
+					$key = 1;
+					break;
+				case 'dd' :
+					$key = 2;
+					break;
+			}
+			if (!empty($formatted_date)) {
+				$formatted_date .= '/';
+			} 
+			$formatted_date .= $formatted_date_array[$key];
+		}
+			
 		//invoking datepicker via jquery
 		?>
 		<script type="text/javascript">
 		$(function(){
 			$('#<?php echo $id; ?>_datePicker').datepicker({
 				inline: true,
-				appendText: '(dd/mm/yyyy)',
-				dateFormat: 'dd/mm/yy',
+				<?php if ($show_format_hint) : ?>appendText: '(dd/mm/yyyy)',<?php endif; ?>
+				dateFormat: '<?php echo $format; ?>',
 				altField: '#<?php echo $id; ?>',
 				altFormat: 'yy-mm-dd'
 			});
 		});	
 		</script>
-		<input id="<?php echo $id; ?>_datePicker" type="text" name="<?php echo $name; ?>_datePicker" <?php echo $attribs; ?> />
-		<input id="<?php echo $id; ?>" type="hidden" name="<?php echo $name; ?>" />
+		<input id="<?php echo $id; ?>_datePicker" type="text" name="<?php echo $name; ?>_datePicker" <?php echo $attribs_str; ?> value="<?php echo $formatted_date; ?>" />
+		<input id="<?php echo $id; ?>" type="hidden" name="<?php echo $name; ?>" value="<?php echo $selected; ?>" />
 		<?php	
 	}
 	

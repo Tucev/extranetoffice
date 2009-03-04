@@ -67,7 +67,7 @@ function submitbutton() {
 		</label>
 	</td>
 	<td>
-		<?php echo html::_('calendar', $this->row->dtstart, 'dtstart', 'dtstart', '%Y-%m-%d', array('class'=>'inputbox', 'size'=>'10',  'maxlength'=>'10')); ?>
+		<?php echo html::_('calendar', 'dtstart', 'dtstart', $this->row->dtstart, 'dd/mm/yy', array('class'=>'inputbox', 'size'=>'10',  'maxlength'=>'10')); ?>
 	</td>
 </tr>
 <tr>
@@ -77,7 +77,7 @@ function submitbutton() {
 		</label>
 	</td>
 	<td>
-		<?php echo html::_('calendar', $this->row->dtend, 'dtend', 'dtend', '%Y-%m-%d', array('class'=>'inputbox', 'size'=>'10',  'maxlength'=>'10')); ?>
+		<?php echo html::_('calendar', 'dtend', 'dtend', $this->row->dtend, 'dd/mm/yy', array('class'=>'inputbox', 'size'=>'10',  'maxlength'=>'10')); ?>
 	</td>
 </tr>
 
