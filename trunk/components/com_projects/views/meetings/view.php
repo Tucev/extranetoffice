@@ -93,7 +93,6 @@ class projectsViewMeetings extends view {
 		$this->addPathwayItem($this->current_tool, "index.php?option=com_projects&view='.request::getVar('view').'&layout=".$this->current_tool."&projectid=".$this->projectid);	
 		
 		$document =& factory::getDocument('html');
-		$document->addScript('lib/jquery/jquery-1.3.1.min.js');
 		$document->addScript('lib/thickbox/thickbox-compressed.js');
 		$document->addStyleSheet('lib/thickbox/thickbox.css');
 		

@@ -86,22 +86,32 @@ class emailViewMessages extends view {
 		$document->addStyleSheet('lib/contextmenu/webtoolkit.contextmenu.css');
 	
 		$model =& $this->getModel('email');
-		$model->loadUserEmailAccount();
+		if ($model->loadUserEmailAccount() === false) {
+			error::raise(0, 'warning', _LANG_EMAIL_NO_ACCOUNT );
+			return;
+		}
+		
+		// Connect to incoming mail server
+		if ($model->openStream($this->folder) !== true) {
+			error::raise(0, 'warning', $model->error );
+			return;
+		}
 		
 		// Get messages from inbox
-		$model->openStream($this->folder);
-		$messages = $model->getMessageList();
+		$this->messages = $model->getMessageList();
+		// Close connection
 		$model->closeStream();
-		$this->messages =& $messages;
 			
 		// Get mailboxes outside of inbox
-		$model->openStream('');		
-		$boxes = $model->getMailboxList();
+		if ($model->openStream('') !== true) {
+			error::raise(0, 'warning', $model->error );
+			return;
+		}	
+		$this->boxes = $model->getMailboxList();
 		$model->closeStream();
-		$this->boxes =& $boxes;
 			
 		// Set the page to auto refresh every set amount of time (in seconds)
-		$document =& factory::getDocument('html');
+		//$document =& factory::getDocument('html');
 		//$document->setMetaData('refresh', '120', true);
 	}
 	
@@ -118,7 +128,6 @@ class emailViewMessages extends view {
 		
 		// Include jQuery and thickbox
 		$document =& factory::getDocument('html');
-		$document->addScript('lib/jquery/jquery-1.3.1.min.js');
 		$document->addScript('lib/thickbox/thickbox-compressed.js');
 		$document->addStyleSheet('lib/thickbox/thickbox.css');
 		

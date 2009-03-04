@@ -11,22 +11,6 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
-<!-- initialize squeezebox (lightbox) -->
-<script type="text/javascript">
-window.addEvent('domready', function() {
-	
-	/* Lighbox iframe for new imap folders form */
-	SqueezeBox.initialize({});
-
-	$$('a.modal').each(function(el) {
-		el.addEvent('click', function(e) {
-			new Event(e).stop();
-			SqueezeBox.fromElement(el);
-		});
-	});
-	
-});
-</script>
 
 <script language="javascript" type="text/javascript">
 var selected_rows = new Array();

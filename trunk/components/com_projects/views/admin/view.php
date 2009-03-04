@@ -86,7 +86,6 @@ class projectsViewAdmin extends view {
 		$this->addPathwayItem(_LANG_ADMIN);
 		
 		$document =& factory::getDocument('html');
-		$document->addScript('lib/jquery/jquery-1.3.1.min.js');
 		$document->addScript('lib/thickbox/thickbox-compressed.js');
 		$document->addStyleSheet('lib/thickbox/thickbox.css');
 		

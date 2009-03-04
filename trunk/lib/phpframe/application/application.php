@@ -49,6 +49,12 @@ class application extends singleton {
 	 */
 	var $request=null;
 	/**
+	 * The client program accessing the the application (default, mobile, rss or api)
+	 * 
+	 * @var string
+	 */
+	var $client="default";
+	/**
 	 * The database object
 	 *
 	 * @var object
@@ -151,6 +157,16 @@ class application extends singleton {
 			$this->client = 'mobile';	
 		}
 		
+		// get document object
+		$this->document =& factory::getDocument('html');
+		
+		// If client is default (pc web browser) we add the jQuery library + jQuery UI
+		if ($this->client == "default") {
+			$this->document->addScript('lib/jquery/jquery-1.3.1.min.js');
+			$this->document->addScript('lib/jquery/jquery-ui-personalized-1.5.3.min.js');
+			$this->document->addStyleSheet('lib/jquery/theme/ui.all.css');	
+		}
+		
 		// instantiate db object and store in application
 		$this->db =& phpFrame::getInstance('db');
 		// connect to MySQL server
@@ -219,9 +235,6 @@ class application extends singleton {
 	}
 	
 	public function render() {
-		// get document object
-		$this->document =& factory::getDocument('html');
-			
 		if (!$this->auth) {
 			$template_filename = 'login.php';
 		}
