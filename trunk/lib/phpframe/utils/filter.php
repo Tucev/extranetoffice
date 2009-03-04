@@ -15,7 +15,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * 
  * This class requires that PHPs filter functions are available.
  * 
- * More info avout PHP Filter:
+ * More info about PHP Filter:
  * http://uk.php.net/manual/en/book.filter.php
  * 
  * @package		phpFrame
@@ -27,9 +27,14 @@ class filter {
 	/**
 	 * Validate data stored in variable
 	 * 
-	 * @param $variable
-	 * @param $type int, boolean, float, regexp, url, email, ip
-	 * @return unknown_type
+	 * <code>
+	 *  $validEmail = filter::validate($email, "email");
+	 *  //validEmail will contain either the filtered string or boolean FALSE if validation fails
+	 * </code>
+	 * 
+	 * @param	mixed	$variable
+	 * @param	string	$type int, boolean, float, regexp, url, email, ip
+	 * @return	mixed	Returns the filtered data, or FALSE if the filter fails
 	 */
 	static function validate($variable, $type='default') {
 		// Check that passed type is recognised
