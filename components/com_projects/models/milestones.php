@@ -30,6 +30,12 @@ class projectsModelMilestones extends model {
 		parent::__construct();
 	}
 	
+	/**
+	 * Gets milestones list info
+	 *
+	 * @param int $projectid
+	 * @return array
+	 */
 	function getMilestones($projectid) {
 		$filter_order = request::getVar('filter_order', 'm.due_date');
 		$filter_order_Dir = request::getVar('filter_order_Dir', 'DESC');
@@ -133,6 +139,13 @@ class projectsModelMilestones extends model {
 		return $return;
 	}
 	
+	/**
+	 * Gets detailed milestone information
+	 *
+	 * @param int $projectid
+	 * @param int $milestoneid
+	 * @return object table row containing milestone info
+	 */
 	function getMilestonesDetail($projectid, $milestoneid) {
 		$query = "SELECT m.*, u.username AS created_by_name ";
 		$query .= " FROM #__milestones AS m ";
@@ -166,6 +179,12 @@ class projectsModelMilestones extends model {
 		return $row;
 	}
 	
+	/**
+	 * Saves a milestone
+	 *
+	 * @param int $projectid
+	 * @return mixed return $row or FALSE on failure
+	 */
 	function saveMilestone($projectid) {
 		require_once COMPONENT_PATH.DS."tables".DS."milestones.table.php";
 		$row =& phpFrame::getInstance("projectsTableMilestones");
@@ -180,11 +199,13 @@ class projectsModelMilestones extends model {
 		}
 		
 		if (!$row->check()) {
-			error::raise(500, 'error', $row->error );
+			$this->error =& $row->error;
+			return false; 
 		}
 		
 		if (!$row->store()) {
-			error::raise(500, 'error', $row->error );
+			$this->error =& $row->error;
+			return false; 
 		}
 		
 		// Delete existing assignees before we store new ones if editing existing issue
@@ -209,6 +230,13 @@ class projectsModelMilestones extends model {
 		return $row;
 	}
 	
+	/**
+	 * Delete a milestone
+	 *
+	 * @param int $projectid
+	 * @param int $milestoneid
+	 * @return bool
+	 */
 	function deleteMilestone($projectid, $milestoneid) {
 		//TODO: This function should allow ids as either int or array of ints.
 		//TODO: This function should also check permissions before deleting
@@ -232,7 +260,7 @@ class projectsModelMilestones extends model {
 		
 		// Delete row from database
 		if (!$row->delete($milestoneid)) {
-			error::raise(500, ' error', $row->error );
+			$this->error = $row->error;
 			return false;
 		}
 		else {
@@ -240,6 +268,12 @@ class projectsModelMilestones extends model {
 		}
 	}
 	
+	/**
+	 * Retreives assignees as an array
+	 *
+	 * @param integer $milestoneid
+	 * @return array signees
+	 */
 	function getAssignees($milestoneid) {
 		$query = "SELECT userid FROM #__users_milestones WHERE milestoneid = ".$milestoneid;
 		$this->db->setQuery($query);
