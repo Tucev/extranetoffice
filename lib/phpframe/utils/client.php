@@ -11,7 +11,7 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 /**
- * Crypt Class
+ * Client Class
  * 
  * @package		phpFrame
  * @subpackage 	utils
