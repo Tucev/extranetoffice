@@ -254,8 +254,10 @@ class projectsHelperProjects {
 		$db -> setQuery($query);
 		$rows = $db->loadObjectList();
 		
-		foreach ($rows as $row) {
-			$options[] = html::_('select.option', $row->id, $row->name );
+		if (is_array($rows) && count($rows) > 0) {
+			foreach ($rows as $row) {
+				$options[] = html::_('select.option', $row->id, $row->name );
+			}
 		}
 		
 		$attribs .= ' class="inputbox"';

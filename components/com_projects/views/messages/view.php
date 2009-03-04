@@ -79,7 +79,7 @@ class projectsViewMessages extends view {
 	 */
 	function displayMessagesList() {
 		$this->page_title = _LANG_MESSAGES;
-		$this->page_heading = $this->project->name.' - '._LANG_MESSAGES;
+		$this->page_heading = $this->project->name;
 		$this->addPathwayItem($this->page_title);
 		
 		$document =& factory::getDocument('html');
@@ -106,6 +106,7 @@ class projectsViewMessages extends view {
 	
 	function displayMessagesForm() {
 		$this->page_title .= ' - '._LANG_MESSAGES_NEW;
+		$this->page_heading = $this->project->name;
 		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
 		$this->addPathwayItem(_LANG_MESSAGES_NEW);
 	}

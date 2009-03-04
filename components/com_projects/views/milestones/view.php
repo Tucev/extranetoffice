@@ -79,7 +79,7 @@ class projectsViewMilestones extends view {
 	 */
 	function displayMilestonesList() {
 		$this->page_title = _LANG_MILESTONES;
-		$this->page_heading = $this->project->name.' - '._LANG_MILESTONES;
+		$this->page_heading = $this->project->name;
 		$this->addPathwayItem($this->page_title);
 		
 		$modelMilestones =& $this->getModel('milestones');
@@ -93,19 +93,17 @@ class projectsViewMilestones extends view {
 		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));	
 	
 		$modelMilestones =& $this->getModel('milestones');
-		$milestone = $modelMilestones->getMilestonesDetail($this->projectid, $this->milestoneid);
-		$this->assignRef('row', $milestone);
+		$this->row = $modelMilestones->getMilestonesDetail($this->projectid, $this->milestoneid);
 		
-		$this->page_title .= ' - '.$milestone->title;
-		$this->addPathwayItem($milestone->title);
+		$this->page_title .= ' - '.$this->row->title;
+		$this->addPathwayItem($this->row->title);
 	}
 	
 	function displayMilestonesForm() {
 		if (!empty($this->milestoneid)) {
 			$action = _LANG_MILESTONES_EDIT;
 			$modelMilestones =& $this->getModel('milestones');
-			$milestone = $modelMilestones->getMilestonesDetail($this->projectid, $this->milestoneid);
-			$this->assignRef('row', $milestone);
+			$this->row = $modelMilestones->getMilestonesDetail($this->projectid, $this->milestoneid);
 		}
 		else {
 			$action = _LANG_MILESTONES_NEW;
@@ -113,6 +111,7 @@ class projectsViewMilestones extends view {
 		}
 		
 		$this->page_title .= ' - '.$action;
+		$this->page_heading = $this->project->name;
 		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
 		$this->addPathwayItem($action);
 	}

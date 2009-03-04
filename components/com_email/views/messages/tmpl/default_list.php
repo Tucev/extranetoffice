@@ -16,40 +16,6 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	SimpleContextMenu.setup({'preventDefault':false, 'preventForms':false});
 </script>
 
-<script type="text/javascript">
-	$(function() {
-		$("#dialog").dialog({
-			bgiframe: true,
-			height: 300,
-			modal: true,
-			buttons: {
-				'Create user account': function() {
-					$(this).dialog('close');
-				},
-				Cancel: function() {
-					$(this).dialog('close');
-				}
-			}
-		});
-	});
-</script>
-
-<div id="dialog" title="Create new user">
-	<p>All form fields are required.</p>
-
-	<form>
-	<fieldset>
-		<label for="name">Name</label>
-		<input type="text" name="name" id="name" class="text" />
-		<label for="email">Email</label>
-		<input type="text" name="email" id="email" value="" class="text" />
-		<label for="password">Password</label>
-		<input type="password" name="password" id="password" value="" class="text" />
-	</fieldset>
-	</form>
-</div>
-
-
 <script language="javascript" type="text/javascript">
 var selected_rows = new Array();
 

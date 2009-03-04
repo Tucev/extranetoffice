@@ -79,7 +79,7 @@ class projectsViewMeetings extends view {
 	 */
 	function displayMeetingsList() {
 		$this->page_title = _LANG_MEETINGS;
-		$this->page_heading = $this->project->name.' - '._LANG_MEETINGS;
+		$this->page_heading = $this->project->name;
 		$this->addPathwayItem($this->page_title);
 		
 		$modelMeetings =& $this->getModel('meetings');
@@ -118,6 +118,7 @@ class projectsViewMeetings extends view {
 		}
 		
 		$this->page_title .= ' - '.$action;
+		$this->page_heading = $this->project->name;
 		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view='.request::getVar('view').'&layout=".$this->current_tool."&projectid=".$this->projectid));
 		$this->addPathwayItem($action);
 	}

@@ -11,6 +11,73 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#dialog").css("visibility", "hidden" );
+	$("#dialog").css("position", "absolute" );
+
+	$("a#move_email").click(function() {
+		$("#dialog").css("visibility", "visible" );
+		
+		$("#dialog").dialog({
+			bgiframe: true,
+			height: 300,
+			modal: true,
+			buttons: {
+				'Create user account': function() {
+					$(this).dialog('close');
+				},
+				Cancel: function() {
+					$(this).dialog('close');
+				}
+			}
+		});
+		
+	});
+
+});
+</script>
+
+<div id="dialog" title="Move message to folder...">
+	
+	<form action="index.php" method="post" name="iofficemailform">
+
+	<fieldset>
+	
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+	<tr>
+	<td>Current folder:</td>
+	<td>
+	<?php echo $this->folder; ?>
+	</td>
+	</tr>
+	<tr>
+	<td>New folder:</td>
+	<td>
+	<select class="inputbox" name="mailbox">
+		<option value="">/</option>
+		<?php foreach ($this->boxes as $box) : ?>
+		<option value="<?php echo $box['nameX'] ?>"><?php echo $box['nameX'] ?></option>
+		<?php endforeach; ?>
+	</select>
+	</td>
+	</tr>
+	</table>
+	
+	</fieldset>
+	
+	<input type="hidden" name="option" value="com_intranetoffice" />
+	<input type="hidden" name="task" value="move_email" />
+	<input type="hidden" name="view" value="email" />
+	<input type="hidden" name="type" value="move_email" />
+	<input type="hidden" name="tmpl" value="component" />
+	<input type="hidden" name="folder" value="<?php echo $this->folder; ?>" />
+	<input type="hidden" name="uid" value="" />
+	<?php echo html::_( 'form.token' ); ?>
+	
+	</form>
+	
+</div>
 
 <script language="javascript" type="text/javascript">
 var selected_rows = new Array();
@@ -71,7 +138,7 @@ function confirm_delete(trash, uid, label) {
 		</a>
 	</div>
 	<div>
-		<a class="thickbox" href="index.php?option=com_email&amp;view=messages&amp;folder=<?php echo text::_($this->folder, true); ?>&amp;layout=move&tmpl=component&amp;height=160&amp;width=400" title="<?php echo _LANG_EMAIL_MOVE_TO_FOLDER; ?>">
+		<a id="move_email" title="<?php echo _LANG_EMAIL_MOVE_TO_FOLDER; ?>">
 		<img border="0" src="templates/<?php echo $this->config->get('template'); ?>/images/icons/email/32x32/move_email.png" alt="<?php echo _LANG_EMAIL_MOVE_TO_FOLDER; ?>" />
 		</a>
 	</div>
