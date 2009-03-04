@@ -209,7 +209,7 @@ class projectsModelMeetings extends model {
 		
 		// Delete row from database
 		if (!$row->delete($meetingid)) {
-			JError::raiseError(500, $row->error );
+			$this->error =& $row->error;
 			return false;
 		}
 		else {

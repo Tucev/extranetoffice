@@ -152,6 +152,12 @@ define("_LANG_FILES_FILENAME", "Filename");
 define("_LANG_MESSAGES", "Messages");
 define("_LANG_MESSAGE", "Message");
 define("_LANG_MESSAGES_NEW", "New message");
+define("_LANG_MESSAGES_SUBJECT", "Subject");
+define("_LANG_MESSAGES_SUBJECT_REQUIRED", "Subject is required");
+define("_LANG_MESSAGES_BODY_REQUIRED", "Message must contain some text");
+define("_LANG_MESSAGE_SAVED", "Message saved");
+define("_LANG_MESSAGE_DELETED", "Message deleted");
+define("_LANG_MESSAGES_ACTION_NEW", "New message");
 
 // Issues
 define("_LANG_ISSUES", "Issues");
@@ -194,6 +200,8 @@ define("_LANG_SLIDESHOWS_EDIT", "Edit slideshow");
 
 // Comments
 define("_LANG_COMMENTS", "Comments");
+define("_LANG_COMMENT_SAVED", "Comment saved");
+define("_LANG_COMMENTS_ACTION_NEW", "New comment");
 
 // People
 define("_LANG_PEOPLE", "People");

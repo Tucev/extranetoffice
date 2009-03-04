@@ -140,7 +140,7 @@ class projectsController extends controller {
 		
 		error::raise('', 'error', _LANG_PROJECT_MEMBER_DELETED);
 		
-		$this->setRedirect('index.php?option=com_projects&view=projects&layout=admin&projectid='.$projectid);
+		$this->setRedirect('index.php?option=com_projects&view=admin&projectid='.$projectid);
 	}
 	
 	function admin_change_member_role() {
@@ -172,13 +172,13 @@ class projectsController extends controller {
 		$action = empty($issueid) ? _LANG_ISSUES_ACTION_NEW : _LANG_ISSUES_ACTION_EDIT;
 		$title = $row->title;
 		$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-		$url = JRoute::_(JURI::Base()."index.php?option=com_projects&view=projects&layout=issues_detail&projectid=".$projectid."&issueid=".$row->id);
+		$url = JRoute::_(JURI::Base()."index.php?option=com_projects&view=issues&layout=detail&projectid=".$projectid."&issueid=".$row->id);
 		if ($notify == 'on') { $notify = true; }
 		$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, $notify);
 		
 		error::raise( '', 'error',  text::_( _LANG_ISSUE_SAVED ) );
 		
-		$this->setRedirect('index.php?option=com_projects&view=projects&layout=issues_detail&projectid='.$projectid."&issueid=".$row->id);
+		$this->setRedirect('index.php?option=com_projects&view=issues&layout=detail&projectid='.$projectid."&issueid=".$row->id);
 	}
 	
 	function remove_issue() {
@@ -190,7 +190,7 @@ class projectsController extends controller {
 		
 		error::raise('', 'error', _LANG_ISSUE_DELETED);
 		
-		$this->setRedirect('index.php?option=com_projects&view=projects&layout=issues&projectid='.$projectid);
+		$this->setRedirect('index.php?option=com_projects&view=issues&projectid='.$projectid);
 	}
 	
 	function close_issue() {
@@ -208,13 +208,13 @@ class projectsController extends controller {
 		$action = _LANG_ISSUE_CLOSED;
 		$title = $row->title;
 		$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-		$url = JRoute::_(JURI::Base()."index.php?option=com_projects&view=projects&layout=issues_detail&projectid=".$projectid."&issueid=".$row->id);
+		$url = JRoute::_(JURI::Base()."index.php?option=com_projects&view=issues&layout=detail&projectid=".$projectid."&issueid=".$row->id);
 		$notify = true;
 		$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, $notify);
 		
 		error::raise( '', 'error',  text::_( _LANG_ISSUE_CLOSED ) );
 		
-		$this->setRedirect('index.php?option=com_projects&view=projects&layout=issues_detail&projectid='.$projectid."&issueid=".$issueid);
+		$this->setRedirect('index.php?option=com_projects&view=issues&layout=detail&projectid='.$projectid."&issueid=".$issueid);
 	}
 	
 	function reopen_issue() {
@@ -232,13 +232,13 @@ class projectsController extends controller {
 		$action = _LANG_ISSUE_REOPENED;
 		$title = $row->title;
 		$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-		$url = JRoute::_(JURI::Base()."index.php?option=com_projects&view=projects&layout=issues_detail&projectid=".$projectid."&issueid=".$row->id);
+		$url = route::_(uri::getBase()."index.php?option=com_projects&view=issues&layout=detail&projectid=".$projectid."&issueid=".$row->id);
 		$notify = true;
 		$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, $notify);
 		
-		error::raise('', 'error', LANG_ISSUE_REOPENED);
+		error::raise('', 'message', LANG_ISSUE_REOPENED);
 		
-		$this->setRedirect('index.php?option=com_projects&view=projects&layout=issues_detail&projectid='.$projectid."&issueid=".$issueid);
+		$this->setRedirect('index.php?option=com_projects&view=issues&layout=detail&projectid='.$projectid."&issueid=".$issueid);
 	}
 	
 	function save_file() {
@@ -256,11 +256,11 @@ class projectsController extends controller {
 		$action = _LANG_FILES_ACTION_NEW;
 		$title = $row->title;
 		$description = sprintf(_LANG_FILES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->filename, $row->revision, $row->changelog);
-		$url = JRoute::_(JURI::Base()."index.php?option=com_projects&task=download_file&projectid=".$projectid."&fileid=".$row->id);
+		$url = route::_(uri::getBase()."index.php?option=com_projects&task=download_file&projectid=".$projectid."&fileid=".$row->id);
 		if ($notify == 'on') { $notify = true; }
 		$modelActivityLog->saveActivityLog($projectid, $row->userid, 'files', $action, $title, $description, $url, $assignees, $notify);
 		
-		error::raise('', 'error', _LANG_FILE_SAVED);
+		error::raise('', 'message', _LANG_FILE_SAVED);
 		
 		$this->setRedirect('index.php?option=com_projects&view=projects&layout=files&projectid='.$projectid);
 	}
@@ -272,10 +272,10 @@ class projectsController extends controller {
 		$modelFiles = &$this->getModel('files');
 		
 		if ($modelFiles->deleteFile($projectid, $fileid) === true) {
-			error::raise('', 'error', _LANG_FILE_DELETED);
+			error::raise('', 'message', _LANG_FILE_DELETED);
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=projects&layout=files&projectid='.$projectid);
+		$this->setRedirect('index.php?option=com_projects&view=files&projectid='.$projectid);
 	}
 	
 	function download_file() {
@@ -301,13 +301,13 @@ class projectsController extends controller {
 		$action = _LANG_MESSAGES_ACTION_NEW;
 		$title = $row->subject;
 		$description = sprintf(_LANG_MESSAGES_ACTIVITYLOG_DESCRIPTION, $row->subject, $row->body);
-		$url = JRoute::_(JURI::Base()."index.php?option=com_projects&view=projects&layout=messages_detail&projectid=".$projectid."&messageid=".$row->id);
+		$url = route::_(uri::getBase()."index.php?option=com_projects&view=messages&layout=detail&projectid=".$projectid."&messageid=".$row->id);
 		if ($notify == 'on') { $notify = true; }
 		$modelActivityLog->saveActivityLog($projectid, $row->userid, 'messages', $action, $title, $description, $url, $assignees, $notify);
 		
-		error::raise('', 'error', _LANG_MESSAGE_SAVED);
+		error::raise('', 'message', _LANG_MESSAGE_SAVED);
 		
-		$this->setRedirect('index.php?option=com_projects&view=projects&layout=messages&projectid='.$projectid);
+		$this->setRedirect('index.php?option=com_projects&view=messages&projectid='.$projectid);
 	}
 	
 	function remove_message() {
@@ -317,10 +317,10 @@ class projectsController extends controller {
 		$modelMessages = &$this->getModel('messages');
 		
 		if ($modelMessages->deleteMessage($projectid, $messageid) === true) {
-			error::raise('', 'error', _LANG_MESSAGE_DELETED);
+			error::raise('', 'message', _LANG_MESSAGE_DELETED);
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=projects&layout=messages&projectid='.$projectid);
+		$this->setRedirect('index.php?option=com_projects&view=messages&projectid='.$projectid);
 	}
 	
 	function save_comment() {
@@ -341,21 +341,21 @@ class projectsController extends controller {
 
 		switch ($row->type) {
 			case 'issues' : 
-				$url = "index.php?option=com_projects&view=projects&layout=issues_detail&projectid=".$projectid."&issueid=".$row->itemid;
+				$url = "index.php?option=com_projects&view=issues&layout=detail&projectid=".$projectid."&issueid=".$row->itemid;
 				break;
 			case 'messages' : 
-				$url = "index.php?option=com_projects&view=projects&layout=messages_detail&projectid=".$projectid."&messageid=".$row->itemid;
+				$url = "index.php?option=com_projects&view=messages&layout=detail&projectid=".$projectid."&messageid=".$row->itemid;
 				break;
 			case 'files' : 
-				$url = "index.php?option=com_projects&view=projects&layout=files_detail&projectid=".$projectid."&fileid=".$row->itemid;
+				$url = "index.php?option=com_projects&view=files&layout=detail&projectid=".$projectid."&fileid=".$row->itemid;
 				break;
 		}
-		$url = JRoute::_(JURI::Base().$url);
+		$url = route::_(uri::getBase().$url);
 		
 		if ($notify == 'on') { $notify = true; }
 		$modelActivityLog->saveActivityLog($projectid, $row->userid, 'comments', $action, $title, $description, $url, $assignees, $notify);
 		
-		error::raise('', 'error', _LANG_COMMENT_SAVED);
+		error::raise('', 'message', _LANG_COMMENT_SAVED);
 		
 		$close_issue = request::getVar('close_issue', NULL);
 		if ($row->type == 'issues' && $close_issue == 'on') {
@@ -403,7 +403,7 @@ class projectsController extends controller {
 		$modelMeetings = &$this->getModel('meetings');
 		
 		if ($modelMeetings->deleteMeeting($projectid, $meetingid) === true) {
-			error::raise('', 'error', _LANG_MEETING_DELETED);
+			error::raise('', 'message', _LANG_MEETING_DELETED);
 		}
 		
 		$this->setRedirect('index.php?option=com_projects&view=meetings&projectid='.$projectid);

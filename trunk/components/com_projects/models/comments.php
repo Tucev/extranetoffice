@@ -43,7 +43,8 @@ class projectsModelComments extends model {
 	}
 	
 	function saveComment($projectid) {
-		$row = new projectsTableComments();
+		require_once COMPONENT_PATH.DS."tables".DS."comments.table.php";
+		$row =& phpFrame::getInstance("projectsTableComments");
 		
 		$post = request::get('post');
 		$row->bind($post);
@@ -52,11 +53,13 @@ class projectsModelComments extends model {
 		$row->created = date("Y-m-d H:i:s");
 		
 		if (!$row->check()) {
-			JError::raiseError(500, $row->error );
+			$this->error =& $row->error;
+			return false;
 		}
 	
 		if (!$row->store()) {
-			JError::raiseError(500, $row->error );
+			$this->error =& $row->error;
+			return false;
 		}
 		
 		return $row;
@@ -67,11 +70,11 @@ class projectsModelComments extends model {
 		//TODO: This function should also check permissions before deleting
 		
 		// Instantiate table object
-		$row = new projectsTableComments();
+		$row =& phpFrame::getInstance("projectsTableComments");
 		
 		// Delete row from database
 		if (!$row->delete($commentid)) {
-			JError::raiseError(500, $row->error );
+			$this->error =& $row->error;
 			return false;
 		}
 		else {
