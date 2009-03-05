@@ -12,13 +12,16 @@
 div#login_wrapper {
 text-align: center;
 padding: 50px 0 0 0;
+width: 380px;
 }
 
-.table_login {
+.loginbox {
 text-align: left;
-padding: 3px;
 background-color: #FFFFFF;
+padding: 20px;
 }
-.table_login tr td {
-border: none;
+
+.input_openid {
+background: #FFFFFF url('../images/icons/user/openid-icon-small.gif') no-repeat scroll 0pt 50%;
+padding-left: 18px;
 }
