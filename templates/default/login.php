@@ -23,9 +23,9 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 </head>
 
 <body>
-
 <a name="up" id="up"></a>
- 
+<center>
+
 <!-- Content -->
 <div id="login_wrapper">
 
@@ -46,5 +46,6 @@ Extranet Office 1.0 Alpha<br />
 
 </div><!-- close #login_wrapper -->
 
+</center>
 </body>
 </html>
