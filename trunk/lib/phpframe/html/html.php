@@ -185,9 +185,10 @@ class html {
 	/**
 	 * Displays a hidden token field to reduce the risk of CSRF exploits.
 	 * 
-     * Use in conjuction with JRequest::checkToken
+     * Use in conjuction with crypt::checkToken
      * 
 	 * @return	string
+	 * @return 	void
 	 * @since 	1.0
 	 */
 	static function formToken() {
