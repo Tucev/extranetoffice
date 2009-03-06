@@ -60,11 +60,11 @@ class db extends singleton {
 	 */
 	var $rs=null;
 	/**
-	 * String containing latest error message if any
+	 * Array containing error messages if any
 	 * 
-	 * @var string
+	 * @var array
 	 */
-	var $error=null;
+	var $error=array();
     
 	/**
 	 * Connect to MySQL server and select database.
@@ -83,7 +83,7 @@ class db extends singleton {
 		
 		// Check if link is valid
 		if ($this->link === false) {
-			$this->error = 'phpFrame: db::connect(). Could not connect to database. MySQL Error: '.mysql_error();
+			$this->error[] = 'phpFrame: db::connect(). Could not connect to database. MySQL Error: '.mysql_error();
 			return false;
 		}
 		
@@ -91,7 +91,7 @@ class db extends singleton {
 		if (!mysql_select_db($db_name)) {
 			$this->close();
 			$this->link = false;
-			$this->error = 'phpFrame: db::connect(). Could not select database. MySQL Error: '.mysql_error();
+			$this->error[] = 'phpFrame: db::connect(). Could not select database. MySQL Error: '.mysql_error();
 			return false;
 		}
 		
@@ -129,7 +129,7 @@ class db extends singleton {
 		
 		// Check query result is valid
 		if ($this->rs === false) {
-			$this->error = 'phpFrame: db::query(). Query failed: '.$this->query.'. MySQL Error: '.mysql_error();
+			$this->error[] = 'phpFrame: db::query(). Query failed: '.$this->query.'. MySQL Error: '.mysql_error();
 			return false;
 		}
 		
@@ -316,7 +316,7 @@ class db extends singleton {
 		$num_rows = mysql_num_rows($this->rs);
 		// Check num_rows is valid
 		if ($num_rows === false) {
-			$this->error = 'phpFrame: db::getNumRows(). MySQL Error: '.mysql_error();
+			$this->error[] = 'phpFrame: db::getNumRows(). MySQL Error: '.mysql_error();
 			return false;
 		}
 		
@@ -333,7 +333,7 @@ class db extends singleton {
 		$affected_rows = mysql_affected_rows();
 		// Check affected rows is valid
 		if ($affected_rows == -1) {
-			$this->error = 'phpFrame: db::getAffectedRows(). MySQL Error: '.mysql_error();
+			$this->error[] = 'phpFrame: db::getAffectedRows(). MySQL Error: '.mysql_error();
 			return false;
 		}
 		return $affected_rows;
@@ -348,6 +348,22 @@ class db extends singleton {
 		//mysql_free_result();
 		// Closing connection
 		mysql_close($this->link);
+	}
+	
+	/**
+	 * Get last error in model
+	 * 
+	 * This method returns a string with the error message or FALSE if no errors.
+	 * 
+	 * @return mixed
+	 */
+	function getLastError() {
+		if (is_array($this->error) && count($this->error) > 0) {
+			return end($this->error);
+		}
+		else {
+			return false;
+		}
 	}
 	
 }
