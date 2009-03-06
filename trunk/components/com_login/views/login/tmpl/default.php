@@ -29,7 +29,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	</tr>
 	<tr>
 		<td>
-			<button>Log in</button> 
+			<button type="submit">Log in</button> 
 			<input type="checkbox" name="remember" /> Remember me
 		</td>
 	</tr>
