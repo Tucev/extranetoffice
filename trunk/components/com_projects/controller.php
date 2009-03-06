@@ -17,6 +17,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
+ * @todo 		check every call to model (saveActivityLog) for possible failure (see save issue) 
  */
 class projectsController extends controller {
 	var $projectid=null;
@@ -125,7 +126,7 @@ class projectsController extends controller {
 			$modelProjects =& $this->getModel('projects');
 			$modelProjects->saveMember($projectid, $userid, $roleid);
 
-			error::raise('', 'error',  _LANG_PROJECT_NEW_MEMBER_SAVED);	
+			error::raise('', 'message',  _LANG_PROJECT_NEW_MEMBER_SAVED);	
 		}
 		
 		$this->setRedirect('index.php?option=com_projects&view=projects&layout=admin&projectid='.$projectid);
@@ -138,7 +139,7 @@ class projectsController extends controller {
 		$modelProjects = &$this->getModel('projects');
 		$modelProjects->deleteMember($projectid, $userid);
 		
-		error::raise('', 'error', _LANG_PROJECT_MEMBER_DELETED);
+		error::raise('', 'message', _LANG_PROJECT_MEMBER_DELETED);
 		
 		$this->setRedirect('index.php?option=com_projects&view=admin&projectid='.$projectid);
 	}
@@ -151,7 +152,7 @@ class projectsController extends controller {
 		$modelProjects = &$this->getModel('projects');
 		$modelProjects->changeMemberRole($projectid, $userid, $roleid);
 		
-		error::raise('', 'error', _LANG_PROJECT_MEMBER_ROLE_SAVED);
+		error::raise('', 'message', _LANG_PROJECT_MEMBER_ROLE_SAVED);
 		
 		parent::display();
 	}
@@ -165,20 +166,34 @@ class projectsController extends controller {
 		
 		// Save issue using issues model
 		$modelIssues =& $this->getModel('issues');
+		
 		$row = $modelIssues->saveIssue($projectid, $issueid);
 		
-		// Add entry in activity log
-		$modelActivityLog =& $this->getModel('activitylog');
-		$action = empty($issueid) ? _LANG_ISSUES_ACTION_NEW : _LANG_ISSUES_ACTION_EDIT;
-		$title = $row->title;
-		$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-		$url = JRoute::_(JURI::Base()."index.php?option=com_projects&view=issues&layout=detail&projectid=".$projectid."&issueid=".$row->id);
-		if ($notify == 'on') { $notify = true; }
-		$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, $notify);
+		if ($row === false) {
+			html::alert($modelIssues->getLastError());
+			html::historyBack();
+			return;
+		}
+		else {
+			// Add entry in activity log
+			$modelActivityLog =& $this->getModel('activitylog');
+			$action = empty($issueid) ? _LANG_ISSUES_ACTION_NEW : _LANG_ISSUES_ACTION_EDIT;
+			$title = $row->title;
+			$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
+			$url = route::_(uri::getBase()."index.php?option=com_projects&view=issues&layout=detail&projectid=".$projectid."&issueid=".$row->id);
+			if ($notify == 'on') { $notify = true; }
+			$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, $notify);
+			
+			if (false) {
+				//raise error
+				return;
+			}
+			else {
+				error::raise( '', 'message',  text::_( _LANG_ISSUE_SAVED ) );
 		
-		error::raise( '', 'error',  text::_( _LANG_ISSUE_SAVED ) );
-		
-		$this->setRedirect('index.php?option=com_projects&view=issues&layout=detail&projectid='.$projectid."&issueid=".$row->id);
+				$this->setRedirect('index.php?option=com_projects&view=issues&layout=detail&projectid='.$projectid."&issueid=".$row->id);	
+			}	
+		}
 	}
 	
 	function remove_issue() {
@@ -188,7 +203,7 @@ class projectsController extends controller {
 		$modelIssues = &$this->getModel('issues');
 		$modelIssues->deleteIssue($projectid, $issueid);
 		
-		error::raise('', 'error', _LANG_ISSUE_DELETED);
+		error::raise('', 'message', _LANG_ISSUE_DELETED);
 		
 		$this->setRedirect('index.php?option=com_projects&view=issues&projectid='.$projectid);
 	}
@@ -208,11 +223,11 @@ class projectsController extends controller {
 		$action = _LANG_ISSUE_CLOSED;
 		$title = $row->title;
 		$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-		$url = JRoute::_(JURI::Base()."index.php?option=com_projects&view=issues&layout=detail&projectid=".$projectid."&issueid=".$row->id);
+		$url = route::_(uri::getBase()."index.php?option=com_projects&view=issues&layout=detail&projectid=".$projectid."&issueid=".$row->id);
 		$notify = true;
 		$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, $notify);
 		
-		error::raise( '', 'error',  text::_( _LANG_ISSUE_CLOSED ) );
+		error::raise( '', 'message',  text::_( _LANG_ISSUE_CLOSED ) );
 		
 		$this->setRedirect('index.php?option=com_projects&view=issues&layout=detail&projectid='.$projectid."&issueid=".$issueid);
 	}

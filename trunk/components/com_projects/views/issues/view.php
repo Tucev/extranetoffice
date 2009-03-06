@@ -44,6 +44,7 @@ class projectsViewIssues extends view {
 		
 		// Set reference to projectid
 		$this->projectid =& request::getVar('projectid', 0);
+		$this->issueid =& request::getVar('issueid', 0);
 		
 		// Set reference to project object loaded in controller
 		if (!empty($this->projectid)) {
@@ -95,7 +96,7 @@ class projectsViewIssues extends view {
 			$action = _LANG_ISSUES_EDIT;
 			$modelIssues = $this->getModel('issues');
 			$issue = $modelIssues->getIssuesDetail($this->projectid, $this->issueid);
-			$this->assignRef('row', $issue);
+			$this->row =& $issue;
 		}
 		else {
 			$action = _LANG_ISSUES_NEW;
@@ -114,7 +115,7 @@ class projectsViewIssues extends view {
 		
 		$modelIssues = $this->getModel('issues');
 		$issue = $modelIssues->getIssuesDetail($this->projectid, $this->issueid);
-		$this->assignRef('row', $issue);
+		$this->row =& $issue;
 		
 		$this->page_title .= ' - '.$issue->title;
 		$this->addPathwayItem($issue->title);

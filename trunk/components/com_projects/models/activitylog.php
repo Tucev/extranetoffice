@@ -78,17 +78,20 @@ class projectsModelActivitylog extends model {
 		$row->url = $url;
 		
 		if (!$row->check()) {
-			error::raise(500, 'error', $row->error );
+			$this->error[] =& $row->getLastError();
 			return false;
 		}
 		
-		$row->store();
+		if (!$row->store()) {
+			$this->error[] =& $row->getLastError();
+			return false;
+		}
 				
 		// Send notifications via email
 		if ($notify === true) {
 			// Test return from _notify method. Raise error if needed and return accordingly.
 			if ($this->_notify($row, $assignees) === false) {
-				error::raise( 500, 'error', text::_( _LANG_ACTIVITYLOG_NOTIFY_FAILED ) );
+				$this->error[] = _LANG_ACTIVITYLOG_NOTIFY_FAILED;
 				return false;
 			}	
 		}
@@ -101,7 +104,7 @@ class projectsModelActivitylog extends model {
 	 *
 	 * @param obj $row
 	 * @param array $assignees
-	 * @return boolean
+	 * @return bool
 	 * @todo sanatise address, subject & body
 	 */
 	function _notify($row, $assignees) {
@@ -129,8 +132,8 @@ class projectsModelActivitylog extends model {
 		if (is_array($recipients) && count($recipients) > 0) {
 			foreach ($recipients as $recipient) {
 				if (filter::validate($recipient->email, 'email') === false ){
-					$this->error = sprintf('EMAIL_INVALID', $recipient);
-					return $this->error;
+					$this->error[] = sprintf('EMAIL_INVALID', $recipient);
+					return false;
 				}
 				else {
 					$new_mail->AddAddress($recipient->email, text::fullname_format($firstname, $lastname));
@@ -144,8 +147,8 @@ class projectsModelActivitylog extends model {
 		$new_mail->Body = $body;
 								   
 		if ($new_mail->Send() !== true) {
-			$this->error = sprintf('_LANG_EMAIL_NOT_SENT', $recipient);
-			return $this->error;
+			$this->error[] = sprintf('_LANG_EMAIL_NOT_SENT', $recipient);
+			return false;
 		}
 		else {
 			return true;

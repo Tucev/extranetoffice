@@ -18,6 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  * @see 		model
+ * @todo		check for NULL values rather than 00-00-000 00:00
  */
 class projectsModelIssues extends model {
 	/**
@@ -156,6 +157,13 @@ class projectsModelIssues extends model {
 		return $return;
 	}
 	
+	/**
+	 * Get issues detail
+	 *
+	 * @param int $projectid
+	 * @param int $issueid
+	 * @return mixed returns $row on success and FALSE on failure
+	 */
 	function getIssuesDetail($projectid, $issueid) {
 		$query = "SELECT i.*, u.username AS created_by_name ";
 		$query .= " FROM #__issues AS i ";
@@ -175,8 +183,16 @@ class projectsModelIssues extends model {
 		return $row;
 	}
 	
+	/**
+	 * Save issue
+	 *
+	 * @param int $projectid
+	 * @param int $issueid
+	 * @return mixed returns $row on success and FALSE on failure
+	 */
 	function saveIssue($projectid, $issueid=0) {
-		$row = new projectsTableIssues();
+		require_once COMPONENT_PATH.DS."tables".DS."issues.table.php";		
+		$row =& phpFrame::getInstance("projectsTableIssues");
 		
 		if (empty($issueid)) {
 			$row->created_by = $this->user->id;
@@ -188,14 +204,17 @@ class projectsModelIssues extends model {
 		}
 		
 		$post = request::get('post');
+		
 		$row->bind($post);
 		
 		if (!$row->check()) {
-			JError::raiseError(500, $row->error );
+			$this->error[] =& $row->getLastError();
+			return false;
 		}
 	
 		if (!$row->store()) {
-			JError::raiseError(500, $row->error );
+			$this->error[] =& $row->getLastError();
+			return false;
 		}
 		
 		// Delete existing assignees before we store new ones if editing existing issue
@@ -220,9 +239,17 @@ class projectsModelIssues extends model {
 		return $row;
 	}
 	
+	/**
+	 * Delete issue
+	 *
+	 * @param int $projectid
+	 * @param int $issueid
+	 * @return bool
+	 */
 	function deleteIssue($projectid, $issueid) {
 		//TODO: This function should allow ids as either int or array of ints.
 		//TODO: This function should also check permissions before deleting
+		require_once COMPONENT_PATH.DS."tables".DS."issues.table.php";
 		
 		// Delete message's comments
 		$query = "DELETE FROM #__comments ";
@@ -237,11 +264,11 @@ class projectsModelIssues extends model {
 		$this->db->query();
 		
 		// Instantiate table object
-		$row = new projectsTableIssues();
+		$row =& phpFrame::getInstance("projectsTableIssues");
 		
 		// Delete row from database
 		if (!$row->delete($issueid)) {
-			JError::raiseError(500, $row->error );
+			$this->error[] =& $row->getLastError();
 			return false;
 		}
 		else {
@@ -249,6 +276,13 @@ class projectsModelIssues extends model {
 		}
 	}
 	
+	/**
+	 * Get list of assignees
+	 *
+	 * @param int $issueid
+	 * @param bool $asoc
+	 * @return array assignees or asociative array of id and name if asoc is true 
+	 */
 	function getAssignees($issueid, $asoc=true) {
 		$query = "SELECT userid FROM #__users_issues WHERE issueid = ".$issueid;
 		$this->db->setQuery($query);
@@ -267,28 +301,49 @@ class projectsModelIssues extends model {
 		return $asoc_assignees;
 	}
 	
+	/**
+	 * Close an issue
+	 *
+	 * @param int $projectid
+	 * @param int $issueid
+	 * @return mixed returns issues table, false on error
+	 */
 	function closeIssue($projectid, $issueid) {
 		$query = "UPDATE #__issues ";
 		$query .= " SET closed = '".date("Y-m-d H:i:s")."' WHERE id = ".$issueid;
 		$this->db->setQuery($query);
 		$this->db->query();
 		
-		$row = new projectsTableIssues();
+		$row =& phpFrame::getInstance("projectsTableIssues");
 		$row->load($issueid);
 		return $row;
 	}
 	
+	/**
+	 * Reopen an issue
+	 *
+	 * @param int $projectid
+	 * @param int $issueid
+	 * @return mixed returns issues table, false on error
+	 */
 	function reopenIssue($projectid, $issueid) {
 		$query = "UPDATE #__issues ";
 		$query .= " SET closed = '0000-00-00 00:00:00' WHERE id = ".$issueid;
 		$this->db->setQuery($query);
 		$this->db->query();
 		
-		$row = new projectsTableIssues();
+		$row =& phpFrame::getInstance("projectsTableIssues");
 		$row->load($issueid);
 		return $row;
 	}
 	
+	/**
+	 * Get issue count
+	 *
+	 * @param int $projectid
+	 * @param bool $overdue
+	 * @return mixed returns numeric resource or false on error
+	 */
 	function getTotalIssues($projectid, $overdue=false) {
 		$query = "SELECT COUNT(id) FROM #__issues ";
 		$query .= " WHERE projectid = ".$projectid;
