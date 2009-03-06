@@ -27,6 +27,11 @@ define("_LANG_CREATED_BY", "Created by");
 define("_LANG_CREATED", "Date created");
 define("_LANG_NAME", "Name");
 define("_LANG_USERNAME", "Username");
+define("_LANG_PASSWORD", "Password");
+define("_LANG_FIRSTNAME", "First name");
+define("_LANG_LASTNAME", "Last name");
+define("_LANG_BLOCK", "Block");
+define("_LANG_GROUP", "Group");
 define("_LANG_EMAIL", "Email");
 define("_LANG_ASSIGNEES", "Assignees");
 define("_LANG_NOTIFY_ASSIGNEES", "Notify assignees");
@@ -77,7 +82,8 @@ define("_LANG_CONFIG_SMTP_FROMNAME", "From name");
 define("_LANG_CONFIG_SAVE_SUCCESS", "Global configuration successfully saved");
 
 define("_LANG_ADMIN_USERS", "User management");
-
+define("_LANG_ADMIN_USERS_NEW", "New user");
+define("_LANG_ADMIN_USER_DETAILS", "User details");
 
 // com_dashboard
 define("_LANG_DASHBOARD", "Dashboard");

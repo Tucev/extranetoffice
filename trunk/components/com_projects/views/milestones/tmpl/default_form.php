@@ -52,7 +52,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="text" id="title" name="title" size="32" maxlength="50" value="<?php echo htmlentities($this->row->title); ?>" />
+		<input type="text" id="title" name="title" size="32" maxlength="50" value="<?php echo htmlentities($this->row->title); ?>" />
 	</td>
 </tr>
 <tr>
@@ -62,7 +62,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<?php echo html::_('calendar', 'due_date', 'due_date', $this->row->due_date, 'dd/mm/yy', array('class'=>'inputbox', 'size'=>'10',  'maxlength'=>'10')); ?>
+		<?php echo html::_('calendar', 'due_date', 'due_date', $this->row->due_date, 'dd/mm/yy', array('size'=>'10',  'maxlength'=>'10')); ?>
 	</td>
 </tr>
 

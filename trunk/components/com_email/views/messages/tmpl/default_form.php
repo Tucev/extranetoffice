@@ -118,19 +118,19 @@ function add_attachment(path, size, type) {
 </tr>
 <tr>
 <th><?php echo _LANG_EMAIL_TO; ?>: </th>
-<td><input class="inputbox" type="text" name="recipients" value="<?php echo $this->to; ?>" size="50" /></td>
+<td><input type="text" name="recipients" value="<?php echo $this->to; ?>" size="50" /></td>
 </tr>
 <tr>
 <th>CC: </th>
-<td><input class="inputbox" type="text" name="cc" value="" size="50" /></td>
+<td><input type="text" name="cc" value="" size="50" /></td>
 </tr>
 <tr>
 <th>BCC: </th>
-<td><input class="inputbox" type="text" name="bcc" value="" size="50" /></td>
+<td><input type="text" name="bcc" value="" size="50" /></td>
 </tr>
 <tr>
 <th><?php echo _LANG_EMAIL_SUBJECT; ?>: </th>
-<td><input class="inputbox" type="text" name="subject" value="<?php echo $this->subject; ?>" size="50" /></td>
+<td><input type="text" name="subject" value="<?php echo $this->subject; ?>" size="50" /></td>
 </tr>
 <tr>
 <th><?php echo _LANG_ATTACHMENTS; ?>: </th>
@@ -147,7 +147,7 @@ function add_attachment(path, size, type) {
 <br />
 
 <div class="email_detail_body">
-<textarea class="inputbox" name="body" rows="18" cols="100">
+<textarea name="body" rows="18" cols="100">
 
 <?php echo $this->account->email_signature; ?>
 

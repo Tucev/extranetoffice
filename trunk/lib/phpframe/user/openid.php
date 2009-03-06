@@ -11,14 +11,14 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 /**
- * Client Class
+ * userOpenID Class
  * 
  * @package		phpFrame
  * @subpackage 	user
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class openid {
+class userOpenID {
 	# GetUserId(openid_url)
 	//select user_id from user_openids where openid_url = openid_url
 	

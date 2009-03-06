@@ -146,7 +146,7 @@ function confirm_delete(projectid, fileid, label) {
 		<form method="post">
 		<a id="post-comment"></a>
 		<p><?php echo _LANG_COMMENTS_NEW; ?>:</p>
-		<textarea class="inputbox" name="body" rows="10" cols="60"></textarea>
+		<textarea name="body" rows="10" cols="60"></textarea>
 		<p>
 		<?php echo _LANG_NOTIFY_ASSIGNEES; ?>: <input type="checkbox" name="notify" checked />
 		</p>

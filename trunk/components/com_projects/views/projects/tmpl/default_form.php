@@ -49,7 +49,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="text" id="name" name="name" size="32" maxlength="128" value="<?php echo $this->project->name; ?>" />
+		<input type="text" id="name" name="name" size="32" maxlength="128" value="<?php echo $this->project->name; ?>" />
 	</td>
 </tr>
 <tr>
@@ -59,7 +59,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="text" id="description" name="description" size="80" maxlength="255" value="<?php echo $this->project->description; ?>" />
+		<input type="text" id="description" name="description" size="80" maxlength="255" value="<?php echo $this->project->description; ?>" />
 	</td>
 </tr>
 <tr>

@@ -56,7 +56,7 @@ $(document).ready(function() {
 	<table border="0" cellpadding="3" cellspacing="1">
 	<tr>
 		<td>Search:</td>
-		<td><input type="text" name="search" class="inputbox" value="<?php echo $this->lists['search']; ?>" /></td>
+		<td><input type="text" name="search" value="<?php echo $this->lists['search']; ?>" /></td>
 	</tr>
 	<tr>
 		<td>Filter:</td>

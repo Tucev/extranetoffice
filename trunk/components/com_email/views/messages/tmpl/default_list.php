@@ -356,7 +356,7 @@ function confirm_delete_folder(mailbox, label) {
 		?> 
 		
 		<form name="form1">
-		  Messages per page: <select class="inputbox" name="menu1" onChange="window.location = this.options[selectedIndex].value;">
+		  Messages per page: <select name="menu1" onChange="window.location = this.options[selectedIndex].value;">
 			<option value="<?php echo route::_('index.php?option=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=5'); ?>" <?php if ($this->messages['per_page'] == '5') { echo 'selected'; } ?>>5</option>
 			<option value="<?php echo route::_('index.php?option=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=10'); ?>" <?php if ($this->messages['per_page'] == '10') { echo 'selected'; } ?>>10</option>
 			<option value="<?php echo route::_('index.php?option=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=20'); ?>" <?php if ($this->messages['per_page'] == '20') { echo 'selected'; } ?>>20</option>

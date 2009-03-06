@@ -46,7 +46,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="text" id="title" name="title" size="32" maxlength="128" value="<?php echo htmlentities($this->row->title); ?>" />
+		<input type="text" id="title" name="title" size="32" maxlength="128" value="<?php echo htmlentities($this->row->title); ?>" />
 	</td>
 </tr>
 <tr>
@@ -56,7 +56,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<textarea class="inputbox" id="description" name="description" cols="80"><?php echo $this->row->description; ?></textarea> 
+		<textarea id="description" name="description" cols="80"><?php echo $this->row->description; ?></textarea> 
 	</td>
 </tr>
 <tr>
@@ -86,7 +86,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<?php echo html::_('calendar', 'dtstart', 'dtstart', $this->row->dtstart, 'dd/mm/yy', array('class'=>'inputbox', 'size'=>'10',  'maxlength'=>'10')); ?>
+		<?php echo html::_('calendar', 'dtstart', 'dtstart', $this->row->dtstart, 'dd/mm/yy', array('size'=>'10',  'maxlength'=>'10')); ?>
 	</td>
 </tr>
 <tr>
@@ -96,7 +96,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<?php echo html::_('calendar', 'dtend', 'dtend', $this->row->dtend, 'dd/mm/yy', array('class'=>'inputbox', 'size'=>'10',  'maxlength'=>'10')); ?>
+		<?php echo html::_('calendar', 'dtend', 'dtend', $this->row->dtend, 'dd/mm/yy', array('size'=>'10',  'maxlength'=>'10')); ?>
 	</td>
 </tr>
 <tr>
@@ -106,7 +106,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="text" id="expected_duration" name="expected_duration" size="9" maxlength="9" value="<?php echo $this->row->expected_duration; ?>" />
+		<input type="text" id="expected_duration" name="expected_duration" size="9" maxlength="9" value="<?php echo $this->row->expected_duration; ?>" />
 	</td>
 </tr>
 <tr>

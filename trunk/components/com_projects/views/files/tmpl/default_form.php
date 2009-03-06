@@ -66,7 +66,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="text" id="title" name="title" size="32" maxlength="64" value="<?php echo $this->parent_title; ?>" />
+		<input type="text" id="title" name="title" size="32" maxlength="64" value="<?php echo $this->parent_title; ?>" />
 	</td>
 </tr>
 <tr>
@@ -76,7 +76,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="file" id="filename" name="filename" size="32" maxlength="128" value="" />
+		<input type="file" id="filename" name="filename" size="32" maxlength="128" value="" />
 	</td>
 </tr>
 <tr>
@@ -86,7 +86,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<textarea class="inputbox" id="changelog" name="changelog" cols="80"></textarea> 
+		<textarea id="changelog" name="changelog" cols="80"></textarea> 
 	</td>
 </tr>
 

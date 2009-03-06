@@ -87,7 +87,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="text" id="name" name="name" value="<?php echo $this->user->get('name');?>" size="40" />
+		<input type="text" id="name" name="name" value="<?php echo $this->user->get('name');?>" size="40" />
 	</td>
 </tr>
 <tr>
@@ -97,7 +97,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="text" id="email" name="email" value="<?php echo $this->user->get('email');?>" size="40" />
+		<input type="text" id="email" name="email" value="<?php echo $this->user->get('email');?>" size="40" />
 	</td>
 </tr>
 <?php if ($this->user->get('password')) : ?>
@@ -108,7 +108,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="password" id="password" name="password" value="" size="40" />
+		<input type="password" id="password" name="password" value="" size="40" />
 	</td>
 </tr>
 <tr>
@@ -118,7 +118,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="password" id="password2" name="password2" size="40" />
+		<input type="password" id="password2" name="password2" size="40" />
 	</td>
 </tr>
 <?php endif; ?>
@@ -133,7 +133,7 @@ function submitbutton( pressbutton ) {
 			<img src="<?php echo $this->config->get('upload_dir').'/users/'.$this->settings->photo; ?>" alt="photo" vspace="5" />
 			<br />
 		<?php endif; ?>
-		<input class="inputbox" type="file" name="photo" id="photo" />
+		<input type="file" name="photo" id="photo" />
 	</td>
 </tr>
 <tr>
@@ -143,7 +143,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<select class="inputbox" id="email_notifications" name="email_notifications">
+		<select id="email_notifications" name="email_notifications">
 			<option value="0" <?php if ($this->settings->email_notifications == 0) echo 'selected'; ?>>No</option>
 			<option value="1" <?php if ($this->settings->email_notifications == 1) echo 'selected'; ?>>Yes</option>
 		</select>
@@ -156,7 +156,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<select class="inputbox" id="show_email" name="show_email">
+		<select id="show_email" name="show_email">
 			<option value="0" <?php if ($this->settings->show_email == 0) echo 'selected'; ?>>No</option>
 			<option value="1" <?php if ($this->settings->show_email == 1) echo 'selected'; ?>>Yes</option>
 		</select>
@@ -187,7 +187,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<select class="inputbox" id="enable_email_client" name="enable_email_client">
+		<select id="enable_email_client" name="enable_email_client">
 			<option value="0" <?php if ($this->settings->enable_email_client == 0) echo 'selected'; ?>>No</option>
 			<option value="1" <?php if ($this->settings->enable_email_client == 1) echo 'selected'; ?>>Yes</option>
 		</select>
@@ -200,7 +200,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<select class="inputbox" id="server_type" name="server_type">
+		<select id="server_type" name="server_type">
 			<option value="IMAP" <?php if ($this->settings->server_type == 'IMAP') echo 'selected'; ?>>IMAP</option>
 		</select>
 	</td>
@@ -212,7 +212,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<textarea class="inputbox" id="email_signature" name="email_signature" rows="4" cols="60"><?php echo $this->settings->email_signature; ?></textarea>
+		<textarea id="email_signature" name="email_signature" rows="4" cols="60"><?php echo $this->settings->email_signature; ?></textarea>
 	</td>
 </tr>
 <tr>
@@ -222,11 +222,11 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="text" id="incoming_server" name="incoming_server" size="32" maxlength="128" value="<?php echo $this->settings->incoming_server; ?>" />
+		<input type="text" id="incoming_server" name="incoming_server" size="32" maxlength="128" value="<?php echo $this->settings->incoming_server; ?>" />
 		<label id="incoming_server_portmsg" for="incoming_server_port">
 			<?php echo _LANG_PORT; ?>:
 		</label>
-		<input class="inputbox" type="text" id="incoming_server_port" name="incoming_server_port" size="6" maxlength="6" value="<?php echo $this->settings->incoming_server_port; ?>" />
+		<input type="text" id="incoming_server_port" name="incoming_server_port" size="6" maxlength="6" value="<?php echo $this->settings->incoming_server_port; ?>" />
 	</td>
 </tr>
 <tr>
@@ -236,7 +236,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="text" id="incoming_server_username" name="incoming_server_username" size="32" maxlength="128" value="<?php echo $this->settings->incoming_server_username; ?>" />
+		<input type="text" id="incoming_server_username" name="incoming_server_username" size="32" maxlength="128" value="<?php echo $this->settings->incoming_server_username; ?>" />
 	</td>
 </tr>
 <tr>
@@ -246,7 +246,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="password" id="incoming_server_password" name="incoming_server_password" size="32" maxlength="64" value="<?php echo $this->settings->incoming_server_password; ?>" />
+		<input type="password" id="incoming_server_password" name="incoming_server_password" size="32" maxlength="64" value="<?php echo $this->settings->incoming_server_password; ?>" />
 	</td>
 </tr>
 <tr>
@@ -256,7 +256,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="text" id="from_name" name="from_name" size="32" maxlength="64" value="<?php echo $this->settings->from_name; ?>" />
+		<input type="text" id="from_name" name="from_name" size="32" maxlength="64" value="<?php echo $this->settings->from_name; ?>" />
 	</td>
 </tr>
 <tr>
@@ -266,7 +266,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="text" id="email_address" name="email_address" size="32" maxlength="128" value="<?php echo $this->settings->email_address; ?>" />
+		<input type="text" id="email_address" name="email_address" size="32" maxlength="128" value="<?php echo $this->settings->email_address; ?>" />
 	</td>
 </tr>
 <tr>
@@ -276,11 +276,11 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="text" id="outgoing_server" name="outgoing_server" size="32" maxlength="128" value="<?php echo $this->settings->outgoing_server; ?>" />
+		<input type="text" id="outgoing_server" name="outgoing_server" size="32" maxlength="128" value="<?php echo $this->settings->outgoing_server; ?>" />
 		<label id="outgoing_server_portmsg" for="outgoing_server_port">
 			<?php echo _LANG_PORT; ?>:
 		</label>
-		<input class="inputbox" type="text" id="outgoing_server_port" name="outgoing_server_port" size="6" maxlength="6" value="<?php echo $this->settings->outgoing_server_port; ?>" />
+		<input type="text" id="outgoing_server_port" name="outgoing_server_port" size="6" maxlength="6" value="<?php echo $this->settings->outgoing_server_port; ?>" />
 	</td>
 </tr>
 <tr>
@@ -290,7 +290,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<select class="inputbox" id="outgoing_server_auth" name="outgoing_server_auth">
+		<select id="outgoing_server_auth" name="outgoing_server_auth">
 			<option value="0" <?php if ($this->settings->outgoing_server_auth == 0) echo 'selected'; ?>>No</option>
 			<option value="1" <?php if ($this->settings->outgoing_server_auth == 1) echo 'selected'; ?>>Yes</option>
 		</select>
@@ -303,7 +303,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="text" id="outgoing_server_username" name="outgoing_server_username" size="32" maxlength="128" value="<?php echo $this->settings->outgoing_server_username; ?>" />
+		<input type="text" id="outgoing_server_username" name="outgoing_server_username" size="32" maxlength="128" value="<?php echo $this->settings->outgoing_server_username; ?>" />
 	</td>
 </tr>
 <tr>
@@ -313,7 +313,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="password" id="outgoing_server_password" name="outgoing_server_password" size="32" maxlength="64" value="<?php echo $this->settings->outgoing_server_password; ?>" />
+		<input type="password" id="outgoing_server_password" name="outgoing_server_password" size="32" maxlength="64" value="<?php echo $this->settings->outgoing_server_password; ?>" />
 	</td>
 </tr>
 </table>
@@ -335,7 +335,7 @@ function submitbutton( pressbutton ) {
 		</label>
 	</td>
 	<td>
-		<select class="inputbox" id="enable_contacts" name="enable_contacts">
+		<select id="enable_contacts" name="enable_contacts">
 			<option value="0" <?php if ($this->settings->enable_contacts == 0) echo 'selected'; ?>>No</option>
 			<option value="1" <?php if ($this->settings->enable_contacts == 1) echo 'selected'; ?>>Yes</option>
 		</select>

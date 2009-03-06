@@ -51,7 +51,7 @@ function submitbutton() {
 		</label>
 	</td>
 	<td>
-		<input class="inputbox" type="text" id="subject" name="subject" size="32" maxlength="64" value="<?php echo $this->subject; ?>" />
+		<input type="text" id="subject" name="subject" size="32" maxlength="64" value="<?php echo $this->subject; ?>" />
 	</td>
 </tr>
 <tr>
@@ -61,7 +61,7 @@ function submitbutton() {
 		</label>
 	</td>
 	<td>
-		<textarea class="inputbox" id="body" name="body" cols="80" rows="10"><?php echo $this->body; ?></textarea>
+		<textarea id="body" name="body" cols="80" rows="10"><?php echo $this->body; ?></textarea>
 	</td>
 </tr>
 

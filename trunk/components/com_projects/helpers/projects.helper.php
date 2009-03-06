@@ -18,7 +18,7 @@ class projectsHelperProjects {
 	 */
 	function id2name($id=0) {
 		if (!empty($id)) { // No category has been selected
-			$db =& factory::getDB(); // Instantiate joomla database object
+			$db =& factory::getDB();
 			$query = "SELECT name FROM #__projects WHERE id = '".$id."'";
 			$db->setQuery($query);
 			return $db->loadResult();
@@ -40,7 +40,7 @@ class projectsHelperProjects {
 		$options[] = html::_('select.option', '0', text::_( '-- Select a Project --' ) );
 		
 		// get projects from db
-		$db =& factory::getDB(); // Instantiate joomla database object
+		$db =& factory::getDB();
 		$user =& factory::getUser();
 		$query = "SELECT p.id, p.name ";
 		$query .= "FROM #__projects AS p ";
@@ -54,14 +54,13 @@ class projectsHelperProjects {
 			$options[] = html::_('select.option', $row->id, $row->name );
 		}
 		
-		$attribs .= ' class="inputbox"';
 		$output = html::_('select.genericlist', $options, 'projectid', $attribs, $selected);
 		return $output;
 	}
 	
 	function project_typeid2name($id=0) {
 		if (!empty($id)) { // No category has been selected
-			$db =& factory::getDB(); // Instantiate joomla database object
+			$db =& factory::getDB();
 			$query = "SELECT name FROM #__project_types WHERE id = '".$id."'";
 			$db -> setQuery($query);
 			return $db->loadResult();
@@ -77,7 +76,7 @@ class projectsHelperProjects {
 		$options[] = html::_('select.option', '0', text::_( '-- Select a Project Type --' ) );
 		
 		// get project_types from db
-		$db =& factory::getDB(); // Instantiate joomla database object
+		$db =& factory::getDB();
 		$query = "SELECT id, name FROM #__project_types ";
 		$query .= " ORDER BY name";
 		$db -> setQuery($query);
@@ -87,7 +86,6 @@ class projectsHelperProjects {
 			$options[] = html::_('select.option', $row->id, $row->name );
 		}
 		
-		$attribs .= ' class="inputbox"';
 		$output = html::_('select.genericlist', $options, 'project_type', $attribs, $selected);
 		return $output;
 	}
@@ -110,8 +108,7 @@ class projectsHelperProjects {
 		$options[] = html::_('select.option', 0, _LANG_PROJECTS_PRIORITY_LOW );
 		$options[] = html::_('select.option', 1, _LANG_PROJECTS_PRIORITY_MEDIUM );
 		$options[] = html::_('select.option', 2, _LANG_PROJECTS_PRIORITY_HIGH );
-		
-		$attribs .= ' class="inputbox"';
+
 		$output = html::_('select.genericlist', $options, 'priority', $attribs, $selected);
 		return $output;
 	}
@@ -133,7 +130,6 @@ class projectsHelperProjects {
 		$options[] = html::_('select.option', 0, _LANG_PROJECTS_ACCESS_PUBLIC );
 		$options[] = html::_('select.option', 1, _LANG_PROJECTS_ACCESS_PRIVATE );
 		
-		$attribs .= ' class="inputbox"';
 		$output = html::_('select.genericlist', $options, $fieldname, $attribs, $selected);
 		return $output;
 	}
@@ -161,7 +157,6 @@ class projectsHelperProjects {
 		$options[] = html::_('select.option', 3, _LANG_PROJECTS_ACCESS_GUESTS );
 		$options[] = html::_('select.option', 4, _LANG_PROJECTS_ACCESS_PUBLIC );
 		
-		$attribs .= ' class="inputbox"';
 		$output = html::_('select.genericlist', $options, $fieldname, $attribs, $selected);
 		return $output;
 	}
@@ -192,14 +187,13 @@ class projectsHelperProjects {
 		$options[] = html::_('select.option', '3', _LANG_PROJECTS_STATUS_FINISHED );
 		$options[] = html::_('select.option', '-1', _LANG_PROJECTS_STATUS_ARCHIVED );
 		
-		$attribs .= ' class="inputbox"';
 		$output = html::_('select.genericlist', $options, 'status', $attribs, $selected);
 		return $output;
 	}
 	
 	function project_roleid2name($id=0) {
 		if (!empty($id)) { // No category has been selected
-			$db =& factory::getDB(); // Instantiate joomla database object
+			$db =& factory::getDB();
 			$query = "SELECT name FROM #__roles WHERE id = '".$id."'";
 			$db->setQuery($query);
 			return $db->loadResult();
@@ -215,7 +209,7 @@ class projectsHelperProjects {
 		$options[] = html::_('select.option', '0', text::_( '-- Select a Role --' ) );
 		
 		// get project_types from db
-		$db =& factory::getDB(); // Instantiate joomla database object
+		$db =& factory::getDB();
 		$query = "SELECT id, name FROM #__roles ";
 		$query .= " ORDER BY id ASC";
 		$db -> setQuery($query);
@@ -225,14 +219,13 @@ class projectsHelperProjects {
 			$options[] = html::_('select.option', $row->id, $row->name );
 		}
 		
-		$attribs .= ' class="inputbox"';
 		$output = html::_('select.genericlist', $options, 'roleid', $attribs, $selected);
 		return $output;
 	}
 	
 	function issue_typeid2name($id=0) {
 		if (!empty($id)) { // No category has been selected
-			$db =& factory::getDB(); // Instantiate joomla database object
+			$db =& factory::getDB();
 			$query = "SELECT name FROM #__issue_types WHERE id = '".$id."'";
 			$db -> setQuery($query);
 			return $db->loadResult();
@@ -248,7 +241,7 @@ class projectsHelperProjects {
 		$options[] = html::_('select.option', '0', text::_( '-- Select an issue type (optional) --' ) );
 		
 		// get project_types from db
-		$db =& factory::getDB(); // Instantiate joomla database object
+		$db =& factory::getDB();
 		$query = "SELECT id, name FROM #__issue_types ";
 		$query .= " ORDER BY id ASC";
 		$db -> setQuery($query);
@@ -260,14 +253,13 @@ class projectsHelperProjects {
 			}
 		}
 		
-		$attribs .= ' class="inputbox"';
 		$output = html::_('select.genericlist', $options, 'issue_type', $attribs, $selected);
 		return $output;
 	}
 	
 	function fileid2name($id=0) {
 		if (!empty($id)) { // No file has been selected
-			$db =& factory::getDB(); // Instantiate joomla database object
+			$db =& factory::getDB();
 			$query = "SELECT title FROM #__files WHERE id = '".$id."'";
 			$db -> setQuery($query);
 			return $db->loadResult();

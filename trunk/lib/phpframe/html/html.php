@@ -147,7 +147,7 @@ class html {
 	static function autocompleter($form_name, $field_name, $attribs, $tokens) {
 		?>
 		
-		<input class="inputbox" autocomplete="off" name="<?php echo $field_name; ?>" id="<?php echo $field_name; ?>" type="text" <?php echo $attribs; ?> />
+		<input autocomplete="off" name="<?php echo $field_name; ?>" id="<?php echo $field_name; ?>" type="text" <?php echo $attribs; ?> />
 
 		<script type="text/javascript">
 		window.addEvent('domready', function(){
