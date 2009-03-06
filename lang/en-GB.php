@@ -12,6 +12,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 // Generic
 define("_LANG_BACK", "Back");
+define("_LANG_SAVE", "Save");
+define("_LANG_APPLY", "Apply");
 define("_LANG_NEW", "New");
 define("_LANG_EDIT", "Edit");
 define("_LANG_DELETE", "Delete");
@@ -40,6 +42,40 @@ define("_LANG_COMMENTS_SEND", "Comment");
 define("_LANG_STATUS_OVERDUE", "Overdue");
 define("_LANG_STATUS_CLOSED", "Closed");
 define("_LANG_STATUS_UPCOMING", "Upcoming");
+
+// com_admin
+define("_LANG_GLOBAL_CONFIG", "Global configuration");
+define("_LANG_GENERAL_CONFIG", "General settings");
+define("_LANG_CONFIG_SITENAME", "Site name");
+define("_LANG_CONFIG_TEMPLATE", "template");
+define("_LANG_CONFIG_DEFAULT_LANG", "Default Language");
+define("_LANG_CONFIG_DEBUG", "Debug");
+define("_LANG_CONFIG_SECRET", "Secret");
+define("_LANG_DATABASE_CONFIG", "Database settings");
+define("_LANG_CONFIG_DB_HOST", "Database host");
+define("_LANG_CONFIG_DB_USER", "Database user");
+define("_LANG_CONFIG_DB_PASS", "Database password");
+define("_LANG_CONFIG_DB_NAME", "Database name");
+define("_LANG_CONFIG_DB_PREFIX", "Table prefix");
+define("_LANG_FILESYSTEM_CONFIG", "Filesystem settings");
+define("_LANG_CONFIG_UPLOAD_DIR", "Upload directory");
+define("_LANG_CONFIG_FILESYSTEM", "Absolute path to storage directory");
+define("_LANG_INCOMING_EMAIL_CONFIG", "Incoming email settings");
+define("_LANG_CONFIG_IMAP_HOST", "IMAP host");
+define("_LANG_CONFIG_IMAP_PORT", "IMAP port");
+define("_LANG_CONFIG_IMAP_USER", "IMAP user");
+define("_LANG_CONFIG_IMAP_PASS", "IMAP password");
+define("_LANG_OUGOING_EMAIL_CONFIG", "Outgoing email settings");
+define("_LANG_CONFIG_MAILER", "Mailer");
+define("_LANG_CONFIG_SMTP_HOST", "SMTP host");
+define("_LANG_CONFIG_SMTP_PORT", "SMTP port");
+define("_LANG_CONFIG_SMTP_AUTH", "SMTP auth");
+define("_LANG_CONFIG_SMTP_USER", "SMTP user");
+define("_LANG_CONFIG_SMTP_PASS", "SMTP password");
+define("_LANG_CONFIG_SMTP_FROMADDRESS", "From address");
+define("_LANG_CONFIG_SMTP_FROMNAME", "From name");
+define("_LANG_CONFIG_SAVE_SUCCESS", "Global configuration successfully saved");
+
 
 // com_dashboard
 define("_LANG_DASHBOARD", "Dashboard");

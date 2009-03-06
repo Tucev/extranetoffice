@@ -13,9 +13,9 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 require_once COMPONENT_PATH.DS.'controller.php';
 
 // Create the controller
-$controller =& billingController::getInstance('billingController');
+$controller =& phpFrame::getInstance('billingController');
 // Execute task
-$controller->execute(request::getVar('task', 'display'));	
+$controller->execute(request::getVar('task'));	
 // Redirect if set by the controller
-$controller->redirect();
+//$controller->redirect();
 ?>

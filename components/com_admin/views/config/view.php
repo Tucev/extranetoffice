@@ -2,7 +2,7 @@
 /**
  * @version 	$Id$
  * @package		ExtranetOffice
- * @subpackage	com_user
+ * @subpackage	com_admin
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  * @author 		Luis Montero [e-noise.com]
@@ -11,7 +11,7 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 /**
- * userViewSettings Class
+ * adminViewConfig Class
  * 
  * The methods in this class are invoked by its parent class. See display() 
  * method in 'view' class.
@@ -23,12 +23,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * </code>
  * 
  * @package		ExtranetOffice
- * @subpackage 	com_user
+ * @subpackage 	com_admin
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  * @see 		view, controller
  */
-class userViewSettings extends view {
+class adminViewConfig extends view {
 	var $page_title=null;
 	
 	/**
@@ -38,6 +38,9 @@ class userViewSettings extends view {
 	 * @since	1.0
 	 */
 	function __construct() {
+		// Set the view template to load (default value is set in controller)
+		$this->layout =& request::getVar('layout');
+		
 		parent::__construct();
 	}
 	
@@ -50,12 +53,24 @@ class userViewSettings extends view {
 	 * @since	1.0
 	 */
 	function display() {
-		$this->page_title = _LANG_ACCOUNT;
+		parent::display();
+		
 		// Append page title to document title
 		$document =& factory::getDocument('html');
 		$document->title .= ' - '.$this->page_title;
+	}
+	
+	/**
+	 * Custom display method triggered by list layout.
+	 * 
+	 * @return void
+	 */
+	function displayConfig() {
+		$this->page_title = _LANG_GLOBAL_CONFIG;
 		
-		parent::display();
+		// Push model into the view
+		//$model =& $this->getModel('projects');
+		//$this->members = $model->getMembers($this->projectid);
 	}
 }
 ?>

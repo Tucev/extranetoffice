@@ -11,6 +11,8 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
+<div class="loginbox"> 
+
 <form action="index.php" method="post">
 <table align="center" class="table_login">
 	<tr>
@@ -27,14 +29,33 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	</tr>
 	<tr>
 		<td>
+			<button>Log in</button> 
 			<input type="checkbox" name="remember" /> Remember me
-			<br />
-			<br />
-			<button>Log in</button>
-			
 		</td>
 	</tr>
 </table>
+
 <input type="hidden" name="option" value="com_user" />
 <input type="hidden" name="task" value="login" />
 </form>
+
+<br />
+<hr />
+<br />
+
+<table align="center" class="table_login">
+	<tr>
+		<td><strong>Have an OpenID?</strong> Sign in below:</td>
+	</tr>
+	<tr>
+		<td>
+			<input class="input_big input_openid" type="text" name="password" id="password" size="16" maxlength="50" /> 
+			<button>Log in</button>
+		</td>
+	</tr>
+	<tr>
+		<td>ie: http://username.myopenid.com</td>
+	</tr>
+</table>
+
+</div><!-- close .loginbox -->

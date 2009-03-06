@@ -41,8 +41,21 @@ define('_ABS_PATH', dirname(__FILE__) );
  */
 define( 'DS', DIRECTORY_SEPARATOR );
 
-// include config
-require_once _ABS_PATH.DS."inc".DS."config.php";
+/**
+ * @var string
+ */
+$config_file_path = _ABS_PATH.DS."inc".DS."config.php";
+/**
+ * If there is no config file or the installation directory is present we redirect to installation directory
+ * @todo	This needs to be changed once we are ready to start testing the installation process. See commented line below.
+ */
+//if (!file_exists($config_file_path) || is_dir(_ABS_PATH.DS."installation")) {
+if (!file_exists($config_file_path)) {
+	header("Location: installation/index.php");
+}
+else {
+	require_once $config_file_path;	
+}
 
 // check dependencies
 require_once _ABS_PATH.DS."inc".DS."dependencies.php";
