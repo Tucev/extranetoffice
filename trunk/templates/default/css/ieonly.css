@@ -8,3 +8,66 @@
 */
 
 @CHARSET "UTF-8";
+
+
+/* Structure */
+
+ul#menu {
+list-style-type:none;
+margin:0 0 0px 9px;
+padding:0;
+height:28px;
+}
+
+/*component structure*/
+
+div.main_col_module {
+background-color:#F6F6F6;
+border:1px dotted #CCCCCC;
+margin:0 10px 5px 0;
+height:60px;
+min-height:60px;
+padding:5px 8px 10px;
+}
+
+
+/*************** Projects component (com_project) ***************/
+
+/* png fix*/
+
+img, div, a { behavior: url(templates/default/images/iepngfix.htc) }
+
+h3.overdue_issues {
+	background-image: url(../images/icons/projects/32x32/overdue.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+h3.upcoming_milestones {
+	background-image: url(../images/icons/projects/32x32/milestones.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+h3.project_updates {
+	background-image: url(../images/icons/projects/32x32/project_updates.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+h3.recent_email {
+	background-image: url(../images/icons/email/32x32/email.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+h3.project_details {
+	background-image: url(../images/icons/projects/32x32/projects.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+h3.project_permissions {
+	background-image: url(../images/icons/projects/32x32/security.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+h3.people {
+	background-image: url(../images/icons/projects/32x32/people.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+
+
+.rss_top_right {
+	background-image:url(../images/icons/generic/16x16/rss.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
