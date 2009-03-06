@@ -70,6 +70,12 @@ abstract class model extends singleton {
 	 * @var object
 	 */
 	var $db=null;
+	/**
+	 * An array containing strings with internal error messages if any
+	 * 
+	 * @var array
+	 */
+	var $error=array();
 	
 	/**
 	 * Constructor
@@ -99,6 +105,22 @@ abstract class model extends singleton {
 		$model =& $controller->getModel($name);
 		
 		return $model;
+	}
+	
+	/**
+	 * Get last error in model
+	 * 
+	 * This method returns a string with the error message or FALSE if no errors.
+	 * 
+	 * @return mixed
+	 */
+	function getLastError() {
+		if (is_array($this->error) && count($this->error) > 0) {
+			return end($this->error);
+		}
+		else {
+			return false;
+		}
 	}
 }
 ?>
