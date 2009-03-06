@@ -44,7 +44,6 @@ class user extends table {
 	 * This method overrides the inherited load method in order to load the user group as well.
 	 * 
 	 * @return	The loaded user object
-	 * @see		lib/phpframe/database/table#load($id)
 	 * @since	1.0
 	 */
 	function load($id) {
@@ -58,7 +57,7 @@ class user extends table {
 		}
 		$this->groupid = $this->getGroup($id);
 		$this->name = $this->firstname.' '.$this->lastname;
-		$this->name_abbr = substr($this->firstname, 0, 1).'. '.$this->lastname;
+		$this->name_abbr = usersHelper::fullname_format($this->firstname, $this->lastname);
 		
 		return $this;
 	}

@@ -54,7 +54,7 @@ $(document).ready(function() {
 	<tr>
 	<td>New folder:</td>
 	<td>
-	<select class="inputbox" name="mailbox">
+	<select name="mailbox">
 		<option value="">/</option>
 		<?php foreach ($this->boxes as $box) : ?>
 		<option value="<?php echo $box['nameX'] ?>"><?php echo $box['nameX'] ?></option>

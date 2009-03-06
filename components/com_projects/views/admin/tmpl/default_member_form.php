@@ -67,7 +67,7 @@ function submitbutton() {
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" id="name" name="name" size="32" maxlength="64" value="" />
+				<input type="text" id="name" name="name" size="32" maxlength="64" value="" />
 			</td>
 		</tr>
 		<tr>
@@ -77,7 +77,7 @@ function submitbutton() {
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" id="new_username" name="new_username" size="32" maxlength="64" value="" />
+				<input type="text" id="new_username" name="new_username" size="32" maxlength="64" value="" />
 			</td>
 		</tr>
 		<tr>
@@ -87,7 +87,7 @@ function submitbutton() {
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" id="invite_member_email" name="invite_member_email" size="32" maxlength="128" value="" />
+				<input type="text" id="invite_member_email" name="invite_member_email" size="32" maxlength="128" value="" />
 			</td>
 		</tr>
 		</table>

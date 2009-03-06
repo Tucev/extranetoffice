@@ -70,8 +70,21 @@ class adminViewUsers extends view {
 		$this->page_title = _LANG_ADMIN_USERS;
 		
 		// Push model into the view
-		//$model =& $this->getModel('users');
-		//$this->users = $model->getUsers();
+		$model =& $this->getModel('users');
+		$users = $model->getUsers();
+		$this->rows =& $users['rows'];
+		$this->pageNav =& $users['pageNav'];
+		$this->lists =& $users['lists'];
+	}
+	
+	function displayUsersForm() {
+		$userid = request::getVar('userid', 0);
+		
+		$this->page_title = _LANG_ADMIN_USERS_NEW;
+		
+		// Push model into the view
+		$model =& $this->getModel('users');
+		$this->row = $model->getUsersDetail($userid);
 	}
 }
 ?>

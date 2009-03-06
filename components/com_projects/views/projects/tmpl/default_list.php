@@ -37,7 +37,7 @@ function submit_filter(reset) {
 </script>
 <div class="list_filter_container">
 <form action="index.php" id="listsearchform" name="listsearchform" method="post">
-<input class="inputbox" type="text" name="search" id="search" value="<?php echo $this->lists['search']; ?>">
+<input type="text" name="search" id="search" value="<?php echo $this->lists['search']; ?>">
 <button type="button" class="button" onclick="submit_filter(false);">Search</button>
 <button type="button" class="button" onclick="submit_filter(true);">Reset</button>
 <input type="hidden" name="option" value="com_projects" />
