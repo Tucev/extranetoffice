@@ -159,6 +159,15 @@ class usersHelper {
 		return $output;		
 	}
 	
+	/**
+	 * Build checkboxes with users to pick assignees.
+	 * 
+	 * @param mixed $selected Either a single userid or an array of ids.
+	 * @param string $attribs A string with attributes to be printed in the input tags.
+	 * @param string $fieldname String tu use for the input tags name attribute.
+	 * @param int $projectid This parameter is optional. If passed users will be filtered to the project members.
+	 * @return string A string with the html code containing the checkboxes.
+	 */
 	static function assignees($selected=0, $attribs='', $fieldname='assignees[]', $projectid=0) {
 		// get joomla users from #__users
 		$db =& factory::getDB(); // Instantiate joomla database object
@@ -181,6 +190,9 @@ class usersHelper {
 			foreach ($selected as $assignee) {
 				$assignees[] = $assignee['id'];
 			}
+		}
+		elseif (!empty($selected)) {
+			$assignees[] = $selected;
 		}
 		
 		$attribs .= ' class="inputbox"';
