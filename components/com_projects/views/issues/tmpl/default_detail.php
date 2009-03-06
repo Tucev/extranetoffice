@@ -13,12 +13,6 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
-<div id="right_col">
-	<?php require($this->template_path.DS.'menu.html.php'); ?>
-</div><!-- close .right_col -->
-
-<div id="main_col">
-
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
 	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&projectid='.$this->projectid); ?>">
 		<?php echo $this->current_tool; ?>
@@ -138,8 +132,6 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 		</form>
 	</div>
 </div>
-
-</div><!-- close #main_col -->
 
 <div style="clear: left;"></div>
 

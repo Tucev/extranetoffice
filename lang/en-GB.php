@@ -203,6 +203,13 @@ define("_LANG_ISSUE", "Issue");
 define("_LANG_ISSUES_NEW", "New issue");
 define("_LANG_ISSUES_TYPE", "Issue type");
 define("_LANG_ISSUES_EXPECTED_DURATION", "Expected duration");
+define("_LANG_ISSUE_SAVED", "Issue raised");
+define("_LANG_ISSUES_ACTION_EDIT", "Issue modified");
+define("_LANG_ISSUE_DELETED", "Issue deleted");
+define("_LANG_ISSUE_CLOSED", "Issue closed");
+define("_LANG_ISSUES_REOPEN", "Reopen issue");
+define("_LANG_ISSUES_CLOSE", "Mark issue as closed");
+define("_LANG_ISSUES_ACTION_NEW", "Issue raised");
 
 //  Milestones
 define("_LANG_MILESTONES", "Milestones");
