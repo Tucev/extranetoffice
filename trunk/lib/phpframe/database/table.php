@@ -54,11 +54,11 @@ abstract class table extends singleton {
 	 */
 	var $cols=array();
 	/**
-	 * String containing error message if any
+	 * Array containing error message strings if any
 	 * 
-	 * @var string
+	 * @var array
 	 */
-	var $error=null;
+	var $error=array();
 	
 	/**
 	 * Contructor
@@ -156,7 +156,7 @@ abstract class table extends singleton {
 			return true;
 		}
 		else {
-			$this->error = 'phpFrame: table::bind(). Could not bind array to row.';
+			$this->error[] = 'phpFrame: table::bind(). Could not bind array to row.';
 			return false;
 		}
 	}
@@ -178,7 +178,7 @@ abstract class table extends singleton {
 			}
 			else {
 				if ($this->checkDataType($this->$col_name, $col->Type) === false) {
-					$this->error = 'phpFrame: table::check() failed. Column '.$col->Field.' '.$this->$col_name.' is not type '.$col->Type;
+					$this->error[] = 'phpFrame: table::check() failed. Column '.$col->Field.' '.$this->$col_name.' is not type '.$col->Type;
 					return false;
 				}	
 			}
@@ -305,7 +305,7 @@ abstract class table extends singleton {
 		$insert_id = $this->db->query();
 		
 		if ($insert_id === false){
-			$this->error =& $this->db->error; 
+			$this->error[] =& $this->db->getLastError(); 
 			return false;
 		}
 		
@@ -331,7 +331,7 @@ abstract class table extends singleton {
 			return true;
 		}
 		else {
-			$this->error = 'phpFrame: table::delete() failed. Query: '.$query;
+			$this->error[] = 'phpFrame: table::delete() failed. Query: '.$query;
 			return false;
 		}
 	}
@@ -354,6 +354,22 @@ abstract class table extends singleton {
 			else {
 				return false;
 			}
+		}
+		else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Get last error in model
+	 * 
+	 * This method returns a string with the error message or FALSE if no errors.
+	 * 
+	 * @return mixed
+	 */
+	function getLastError() {
+		if (is_array($this->error) && count($this->error) > 0) {
+			return end($this->error);
 		}
 		else {
 			return false;
