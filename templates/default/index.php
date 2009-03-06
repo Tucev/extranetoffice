@@ -12,7 +12,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 // render module positions for output
 $module_positions = array();
-$module_positions['topmenu'] = $this->modules->display('topmenu');
+$module_positions['topmenu'] = $this->modules->display('topmenu', '_topmenu');
 $module_positions['right'] = $this->modules->display('right');
 ?>
 
