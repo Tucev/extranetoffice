@@ -54,7 +54,7 @@ function confirm_delete_member(projectid, userid, label) {
 	<?php echo text::_( _LANG_PROJECTS_PRIORITY ); ?>: <?php echo projectsHelperProjects::priorityid2name($this->project->priority); ?> <br />
 	<?php echo text::_( _LANG_PROJECTS_ACCESS ); ?>: <?php echo projectsHelperProjects::global_accessid2name($this->project->access); ?> <br />
 	<?php echo text::_( _LANG_PROJECTS_STATUS ); ?>: <?php echo projectsHelperProjects::statusid2name($this->project->status); ?> <br />
-	<?php echo text::_( _LANG_CREATED_BY ); ?>: <?php echo usersHelperUsers::id2name($this->project->created_by); ?> <br />
+	<?php echo text::_( _LANG_CREATED_BY ); ?>: <?php echo usersHelper::id2name($this->project->created_by); ?> <br />
 	<?php echo text::_( _LANG_CREATED ); ?>: <?php echo $this->project->created; ?>
 	
 </div><!-- close .main_col_module_half -->

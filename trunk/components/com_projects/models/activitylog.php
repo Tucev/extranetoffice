@@ -110,7 +110,7 @@ class projectsModelActivitylog extends model {
 	function _notify($row, $assignees) {
 		$new_mail = new mail();
 		
-		$user_name = usersHelperUsers::id2name($row->userid);
+		$user_name = usersHelper::id2name($row->userid);
 		
 		$new_mail->Sender = $this->config->fromaddress;
 		$new_mail->Subject = "[".$this->project->name."] ".$row->action." by ".$user_name;
@@ -136,7 +136,7 @@ class projectsModelActivitylog extends model {
 					return false;
 				}
 				else {
-					$new_mail->AddAddress($recipient->email, text::fullname_format($firstname, $lastname));
+					$new_mail->AddAddress($recipient->email, usersHelper::fullname_format($firstname, $lastname));
 				}
 			}				
 		}

@@ -88,7 +88,7 @@ function submitbutton() {
 		</label>
 	</td>
 	<td>
-		<?php echo usersHelperUsers::assignees($this->row->assignees, '', 'assignees[]', $this->projectid); ?>
+		<?php echo usersHelper::assignees($this->row->assignees, '', 'assignees[]', $this->projectid); ?>
 	</td>
 </tr>
 <tr>

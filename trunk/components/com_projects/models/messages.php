@@ -92,7 +92,7 @@ class projectsModelMessages extends model {
 					$assignees = explode(',', $row->assignees);
 					for ($i=0; $i<count($assignees); $i++) {
 						$new_assignees[$i]['id'] = $assignees[$i];
-						$new_assignees[$i]['name'] = usersHelperUsers::id2name($assignees[$i]);
+						$new_assignees[$i]['name'] = usersHelper::id2name($assignees[$i]);
 					}
 					$row->assignees = $new_assignees;
 					unset($new_assignees);
@@ -221,7 +221,7 @@ class projectsModelMessages extends model {
 		// Prepare assignee data
 		for ($i=0; $i<count($assignees); $i++) {
 			$new_assignees[$i]['id'] = $assignees[$i];
-			$new_assignees[$i]['name'] = usersHelperUsers::id2name($assignees[$i]);
+			$new_assignees[$i]['name'] = usersHelper::id2name($assignees[$i]);
 		}
 		return $new_assignees;
 	}

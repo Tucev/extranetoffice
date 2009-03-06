@@ -202,7 +202,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<?php echo usersHelperUsers::id2name($this->project->created_by); ?>
+		<?php echo usersHelper::id2name($this->project->created_by); ?>
 	</td>
 </tr>
 <tr>

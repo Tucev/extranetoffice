@@ -116,7 +116,7 @@ class projectsModelIssues extends model {
 					$assignees = explode(',', $row->assignees);
 					for ($i=0; $i<count($assignees); $i++) {
 						$new_assignees[$i]['id'] = $assignees[$i];
-						$new_assignees[$i]['name'] = usersHelperUsers::id2name($assignees[$i]);
+						$new_assignees[$i]['name'] = usersHelper::id2name($assignees[$i]);
 					}
 					$row->assignees = $new_assignees;
 					unset($new_assignees);
@@ -295,7 +295,7 @@ class projectsModelIssues extends model {
 		// Prepare assignee data
 		for ($i=0; $i<count($assignees); $i++) {
 			$asoc_assignees[$i]['id'] = $assignees[$i];
-			$asoc_assignees[$i]['name'] = usersHelperUsers::id2name($assignees[$i]);
+			$asoc_assignees[$i]['name'] = usersHelper::id2name($assignees[$i]);
 		}
 		
 		return $asoc_assignees;

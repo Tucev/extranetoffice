@@ -11,7 +11,6 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 require_once COMPONENT_PATH.DS.'controller.php';
-require_once COMPONENT_PATH.DS.'helpers'.DS.'users.helper.php';
 
 // Create the controller
 $controller =& phpFrame::getInstance('userController');
