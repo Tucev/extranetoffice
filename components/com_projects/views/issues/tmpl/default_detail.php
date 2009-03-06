@@ -84,7 +84,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	<?php foreach ($this->row->comments as $comment) : ?>
 		<div class="comment_row">
 			<div style="float:left; margin-right: 10px;">
-				<img src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo usersHelperUsers::id2photo($comment->userid); ?>" />
+				<img src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo usersHelper::id2photo($comment->userid); ?>" />
 			</div>
 			<div style="margin-left: 95px;">
 				<div class="comment_details">

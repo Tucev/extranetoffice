@@ -37,17 +37,19 @@ require_once _PHPFRAME_PATH.DS."application".DS."pathway.php";
 require_once _PHPFRAME_PATH.DS."application".DS."permissions.php";
 require_once _PHPFRAME_PATH.DS."application".DS."route.php";
 require_once _PHPFRAME_PATH.DS."application".DS."view.php";
-require_once _PHPFRAME_PATH.DS."application".DS."user.php";
 // Include HTML classes
 require_once _PHPFRAME_PATH.DS."html".DS."html.php";
 require_once _PHPFRAME_PATH.DS."html".DS."pagination.php";
 require_once _PHPFRAME_PATH.DS."html".DS."text.php";
+// Include users subpackage classes
+require_once _PHPFRAME_PATH.DS."user".DS."openid.php";
+require_once _PHPFRAME_PATH.DS."user".DS."user.php";
+require_once _PHPFRAME_PATH.DS."user".DS."users.helper.php";
 // Include utils classes
 require_once _PHPFRAME_PATH.DS."utils".DS."client.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."crypt.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."filter.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."mail.php";
-require_once _PHPFRAME_PATH.DS."utils".DS."openid.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."uri.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."utility.php";
 // include document class

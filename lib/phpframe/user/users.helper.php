@@ -1,8 +1,8 @@
 <?php
 /**
  * @version 	$Id$
- * @package		ExtranetOffice
- * @subpackage 	com_users
+ * @package		phpFrame
+ * @subpackage 	user
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  * @author 		Luis Montero [e-noise.com]
@@ -10,9 +10,32 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
-class usersHelperUsers {
+/**
+ * Users Helper Class
+ *
+ * @package		phpFrame
+ * @subpackage 	user
+ * @author 		Luis Montero [e-noise.com]
+ * @since 		1.0
+ */
+class usersHelper {
+	/**
+	 * Format full name to standard
+	 *
+	 * @param string $firstname
+	 * @param string $lastname
+	 * @return string full name in format: [Uppercase first initial]"." [Surname]  
+	 */
+	static function fullname_format($firstname, $lastname){
+		
+		$str = strtoupper(substr($firstname,0,1)).". ".ucwords($lastname);
+				
+		return $str;
+	}
+	
 	/**
 	 * Translate userid to username
+	 * 
 	 * @param 	int		The ID to be translated
 	 * @return 	string	If no id is passed returns false, otherwise returns the username as a string
 	 */
@@ -26,7 +49,7 @@ class usersHelperUsers {
 				return false;
 			}
 			
-			return strtoupper(substr($row->firstname, 0, 1)).'. '.$row->lastname;
+			return usersHelper::fullname_format($row->firstname, $row->lastname);
 		}
 		else {
 			return false;
@@ -35,6 +58,7 @@ class usersHelperUsers {
 	
 	/**
 	 * Translate username to userid
+	 * 
 	 * @param 	string	The username to be translated
 	 * @return 	int		If no username is passed returns false, otherwise returns the user ID
 	 */
@@ -109,7 +133,7 @@ class usersHelperUsers {
 	static function select($selected=0, $attribs='', $fieldname='userid', $projectid=0) {
 		// assemble users to the array
 		$options = array();
-		$options[] = html::_('select.option', '0', JText::_( '-- Select a User --' ) );
+		$options[] = html::_('select.option', '0', text::_( '-- Select a User --' ) );
 		
 		// get joomla users from #__users
 		$db =& factory::getDB(); // Instantiate joomla database object
@@ -166,7 +190,7 @@ class usersHelperUsers {
 			$output .= ' value="'.$rows[$i]->id.'" '.$attribs;
 			if (in_array($rows[$i]->id, $assignees)) { $output .= 'checked'; }
 			$output .= ' /> ';
-			$output .= strtoupper(substr($rows[$i]->firstname, 0, 1)).'. '.$rows[$i]->lastname.'&nbsp;&nbsp;';
+			$output .= usersHelper::fullname_format($rows[$i]->firstname, $rows[$i]->lastname).'&nbsp;&nbsp;';
 			// Add line break every three entries (test using modulus)
 			if ((($i+1) % 3) == 0) { $output .= '<br />'; }
 		}

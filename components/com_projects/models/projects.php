@@ -283,7 +283,7 @@ class projectsModelProjects extends model {
 								 $site_url)
 						  );
 						  
-		$new_mail->AddAddress(usersHelperUsers::id2email($userid), usersHelperUsers::id2name($userid));
+		$new_mail->AddAddress(usersHelper::id2email($userid), usersHelper::id2name($userid));
 		
 		//echo '<pre>'; var_dump($new_mail); exit;
 		

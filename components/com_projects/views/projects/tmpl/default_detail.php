@@ -74,7 +74,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			<?php echo $log->title; ?>
 			</a>
 		</td>
-		<td><?php echo $log->action." by ".usersHelperUsers::id2name($log->userid); ?></td>
+		<td><?php echo $log->action." by ".usersHelper::id2name($log->userid); ?></td>
 		<td><?php echo date("D, d M Y H:ia", strtotime($log->ts)); ?></td>
 	</tr>
 	<?php endforeach; ?>

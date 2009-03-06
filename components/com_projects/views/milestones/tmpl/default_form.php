@@ -73,7 +73,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<?php echo usersHelperUsers::assignees($this->row->assignees, '', 'assignees[]', $this->projectid); ?>
+		<?php echo usersHelper::assignees($this->row->assignees, '', 'assignees[]', $this->projectid); ?>
 	</td>
 </tr>
 <tr>
@@ -95,7 +95,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<?php echo usersHelperUsers::id2name($this->row->created_by); ?>
+		<?php echo usersHelper::id2name($this->row->created_by); ?>
 	</td>
 </tr>
 <tr>
