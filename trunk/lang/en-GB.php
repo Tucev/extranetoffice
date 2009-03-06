@@ -76,6 +76,8 @@ define("_LANG_CONFIG_SMTP_FROMADDRESS", "From address");
 define("_LANG_CONFIG_SMTP_FROMNAME", "From name");
 define("_LANG_CONFIG_SAVE_SUCCESS", "Global configuration successfully saved");
 
+define("_LANG_ADMIN_USERS", "User management");
+
 
 // com_dashboard
 define("_LANG_DASHBOARD", "Dashboard");
