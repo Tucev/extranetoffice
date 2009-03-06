@@ -83,10 +83,6 @@ class projectsViewMessages extends view {
 		$this->page_heading = $this->project->name;
 		$this->addPathwayItem($this->page_title);
 		
-		$document =& factory::getDocument('html');
-		$document->addScript('lib/thickbox/thickbox-compressed.js');
-		$document->addStyleSheet('lib/thickbox/thickbox.css');
-		
 		$modelMessages =& $this->getModel('messages');
 		$messages = $modelMessages->getMessages($this->projectid);
 		$this->rows =& $messages['rows'];

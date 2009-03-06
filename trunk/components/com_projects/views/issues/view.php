@@ -82,10 +82,6 @@ class projectsViewIssues extends view {
 		$this->page_heading = $this->project->name;
 		$this->addPathwayItem($this->page_title);
 		
-		$document =& factory::getDocument('html');
-		$document->addScript('lib/thickbox/thickbox-compressed.js');
-		$document->addStyleSheet('lib/thickbox/thickbox.css');
-		
 		// Push model into the view
 		$modelIssues = $this->getModel('issues');
 		$issues = $modelIssues->getIssues($this->projectid);
