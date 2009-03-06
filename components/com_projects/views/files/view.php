@@ -82,11 +82,7 @@ class projectsViewFiles extends view {
 		$this->page_title = _LANG_FILES;
 		$this->page_heading = $this->project->name;
 		$this->addPathwayItem($this->page_title);
-		
-		$document =& factory::getDocument('html');
-		$document->addScript('lib/thickbox/thickbox-compressed.js');
-		$document->addStyleSheet('lib/thickbox/thickbox.css');
-		
+				
 		$modelFiles =& $this->getModel('files');
 		$files = $modelFiles->getFiles($this->projectid);
 		$this->rows =& $files['rows'];
@@ -106,10 +102,6 @@ class projectsViewFiles extends view {
 	
 	function displayFilesDetail() {
 		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));	
-		
-		$document =& factory::getDocument('html');
-		$document->addScript('lib/thickbox/thickbox-compressed.js');
-		$document->addStyleSheet('lib/thickbox/thickbox.css');
 		
 		$modelFiles =& $this->getModel('files');
 		$this->row = $modelFiles->getFilesDetail($this->projectid, $this->fileid);

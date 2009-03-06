@@ -141,7 +141,7 @@ function confirm_delete_member(projectid, userid, label) {
     	<?php echo $row->email; ?>
     </td>
 	<td>
-	<a class="thickbox" href="index.php?option=com_projects&amp;view=admin&amp;layout=member_role&amp;projectid=<?php echo $this->projectid; ?>&amp;userid=<?php echo $row->userid; ?>&amp;tmpl=component&amp;height=160&amp;width=400" title="<?php echo _LANG_EDIT; ?>">
+	<a class="" href="index.php?option=com_projects&amp;view=admin&amp;layout=member_role&amp;projectid=<?php echo $this->projectid; ?>&amp;userid=<?php echo $row->userid; ?>&amp;tmpl=component" title="<?php echo _LANG_EDIT; ?>">
 		<img src="templates/<?php echo $this->config->get('template'); ?>/images/icons/generic/16x16/edit.png" alt="<?php echo text::_( _LANG_EDIT ); ?>" />
 	</a>
 	<a href="Javascript:confirm_delete_member(<?php echo $this->projectid; ?>, <?php echo $row->userid; ?>, '<?php echo text::_($row->name, true); ?>');" title="<?php echo text::_( _LANG_DELETE ); ?>">

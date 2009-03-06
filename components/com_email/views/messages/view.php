@@ -80,11 +80,6 @@ class emailViewMessages extends view {
 	function displayMessagesList() {
 		$this->page_title = _LANG_EMAIL;
 
-		// Attach scripts and stylesheets
-		$document =& factory::getDocument('html');
-		$document->addScript('lib/contextmenu/webtoolkit.contextmenu.js');
-		$document->addStyleSheet('lib/contextmenu/webtoolkit.contextmenu.css');
-	
 		$model =& $this->getModel('email');
 		if ($model->loadUserEmailAccount() === false) {
 			error::raise(0, 'warning', _LANG_EMAIL_NO_ACCOUNT );
@@ -125,11 +120,6 @@ class emailViewMessages extends view {
 	function displayMessagesDetail($uid=0) {
 		$this->page_title = _LANG_EMAIL_MESSAGE_DETAIL;
 		$this->addPathwayItem($this->page_title);
-		
-		// Include jQuery and thickbox
-		$document =& factory::getDocument('html');
-		$document->addScript('lib/thickbox/thickbox-compressed.js');
-		$document->addStyleSheet('lib/thickbox/thickbox.css');
 		
 		if (empty($uid)) {
 			$uid = request::getVar('uid', 0);
