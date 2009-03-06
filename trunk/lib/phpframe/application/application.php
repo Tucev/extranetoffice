@@ -162,9 +162,9 @@ class application extends singleton {
 		
 		// If client is default (pc web browser) we add the jQuery library + jQuery UI
 		if ($this->client == "default") {
-			$this->document->addScript('lib/jquery/jquery-1.3.1.min.js');
-			$this->document->addScript('lib/jquery/jquery-ui-personalized-1.5.3.min.js');
-			$this->document->addStyleSheet('lib/jquery/theme/ui.all.css');	
+			$this->document->addScript('lib/jquery/js/jquery-1.3.2.min.js');
+			$this->document->addScript('lib/jquery/js/jquery-ui-1.7.custom.min.js');
+			$this->document->addStyleSheet('lib/jquery/css/smoothness/jquery-ui-1.7.custom.css');	
 		}
 		
 		// instantiate db object and store in application
