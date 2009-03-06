@@ -79,6 +79,11 @@ class emailViewMessages extends view {
 	 */
 	function displayMessagesList() {
 		$this->page_title = _LANG_EMAIL;
+		
+		// Attach scripts and stylesheets
+		$document =& factory::getDocument('html');
+		$document->addScript('lib/contextmenu/webtoolkit.contextmenu.js');
+		$document->addStyleSheet('lib/contextmenu/webtoolkit.contextmenu.css');
 
 		$model =& $this->getModel('email');
 		if ($model->loadUserEmailAccount() === false) {
