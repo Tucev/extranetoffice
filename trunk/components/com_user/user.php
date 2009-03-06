@@ -1,21 +1,22 @@
 <?php
 /**
-* @package		ExtranetOffice
-* @subpackage	com_user
-* @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
-* @license		BSD revised. See LICENSE.
-* @author 		Luis Montero [e-noise.com]
-* @version 		1.0.0
-*/
+ * @version 	$Id$
+ * @package		ExtranetOffice
+ * @subpackage	com_user
+ * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+ * @license		BSD revised. See LICENSE.
+ * @author 		Luis Montero [e-noise.com]
+ */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 require_once COMPONENT_PATH.DS.'controller.php';
+require_once COMPONENT_PATH.DS.'helpers'.DS.'users.helper.php';
 
 // Create the controller
-$controller =& userController::getInstance('userController');
+$controller =& phpFrame::getInstance('userController');
 // Execute task
-$controller->execute(request::getVar('task', 'display'));	
+$controller->execute(request::getVar('task'));	
 // Redirect if set by the controller
 $controller->redirect();
 ?>
