@@ -196,6 +196,37 @@ class html {
 	}
 	
 	/**
+	 * Redirects to previous page
+	 * 
+	 * @return	void
+	 */
+	static function historyBack() {
+		?>
+		
+		<script type="text/javascript">
+			window.history.back();
+		</script>
+
+		<?php  
+	}
+	
+	/**
+	 * Outputs message in alert box
+	 *
+	 * @param	str $msg
+	 * @return	void
+	 */
+	static function alert($msg) {
+		?>
+		
+		<script type="text/javascript">
+			alert('<?php echo $msg; ?>');
+		</script>
+
+		<?php  
+	}
+	
+	/**
 	 * Loader method.
 	 * 
 	 * Use this method to create html elements by using keywords to invoke the methods.
