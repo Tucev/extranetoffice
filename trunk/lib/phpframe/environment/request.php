@@ -75,7 +75,7 @@ class request {
 		global $inputfilter;
 		
 		// Set default value if var is empty
-		if (!isset($_REQUEST[$key])) {
+		if (!isset($_REQUEST[$key]) || $_REQUEST[$key] == '') {
 			$_REQUEST[$key] = $inputfilter->process($default);
 		}
 		
