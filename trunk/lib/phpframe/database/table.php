@@ -63,18 +63,17 @@ abstract class table extends singleton {
 	/**
 	 * Contructor
 	 * 
-	 * @param	object	$db The database object (passed by reference).
 	 * @param	string	$table_name The table name in the database.
 	 * @param	string	$primary_key The column name of the table's primary key.
 	 * @return	void
 	 * @since 	1.0
 	 */
-	function __construct($table_name, $primary_key) {
+	public function __construct($table_name, $primary_key) {
 		$this->db =& factory::getDB();
 		$this->table_name = $table_name;
 		$this->primary_key = $primary_key;
 		
-		$this->getColumns();
+		$this->_getColumns();
 		
 		// If there are no columns it is probably because the table doesnt't exist.
 		if (count($this->cols) > 0) {
@@ -88,10 +87,11 @@ abstract class table extends singleton {
 	/**
 	 * Get columns for table in database and store column info in $this->cols.
 	 * 
+	 * @access	private
 	 * @return	void
 	 * @since 	1.0
 	 */
-	function getColumns() {
+	private function _getColumns() {
 		$query = "SHOW COLUMNS FROM `".$this->table_name."`";
 		$this->db->setQuery($query);
 		$this->cols = $this->db->loadObjectList();
@@ -105,23 +105,30 @@ abstract class table extends singleton {
 	/**
 	 * Load row by id and return row object.
 	 * 
-	 * @param	int	$id The row id.
-	 * @return	object
+	 * @access	public
+	 * @param	int		$id 	The row id.
+	 * @param	object	$row 	The table row object use for binding. This parameter is passed by reference.
+	 * 							This parameter is optional. If omitted the current instance is used ($this).
+	 * @return	mixed	The loaded row object of FALSE on failure.
 	 * @since 	1.0
 	 */
-	function load($id) {
+	public function load($id, &$row=null) {
+		if (is_null($row)) {
+			$row =& $this;
+		}
+		
 		$query = "SELECT * FROM `".$this->table_name."` WHERE `".$this->primary_key."` = '".$id."'";
 		$this->db->setQuery($query);
-		$row = $this->db->loadAssoc();
+		$array = $this->db->loadAssoc();
 		
-		if (is_array($row) && count($row) > 0) {
+		if (is_array($array) && count($array) > 0) {
 			foreach ($this->cols as $col) {
 				$col_name = $col->Field;
-				$col_value = $row[$col_name];
-				$this->$col_name = $col_value;
+				$col_value = $array[$col_name];
+				$row->$col_name = $col_value;
 			}
 			
-			return $this;	
+			return $row;	
 		}
 		else {
 			return false;
@@ -131,14 +138,15 @@ abstract class table extends singleton {
 	/**
 	 * Bind array to row object
 	 * 
+	 * @access	public
 	 * @param	array	$array
 	 * @param	string	$exclude 	A list of key names to exclude from binding process separated by commas.
-	 * @param	object	$row 		The table row object use for binding. This parameter is optional. 
-	 * 								If omitted the current instance is used ($this).
+	 * @param	object	$row 		The table row object use for binding. This parameter is passed by reference.
+	 * 								This parameter is optional. If omitted the current instance is used ($this).
 	 * @return	mixed	The processed row object or FALSE on failure.
 	 * @since 	1.0
 	 */
-	function bind($array, $exclude='', $row=null) {
+	public function bind($array, $exclude='', &$row=null) {
 		// Process exclude
 		if (!empty($exclude)) {
 			$exclude = explode(',', $exclude);
@@ -159,7 +167,7 @@ abstract class table extends singleton {
 				}
 			}
 			
-			return $row;
+			return true;
 		}
 		else {
 			$this->error[] = 'phpFrame: table::bind(). Could not bind array to row.';
@@ -170,12 +178,13 @@ abstract class table extends singleton {
 	/**
 	 * Check integrity of data before we write it to the database
 	 * 
-	 * @param	object	$row The table row object to check. This parameter is optional. 
-	 * 					If omitted the current instance is used ($this).
+	 * @access	public
+	 * @param	object	$row The table row object to check. This parameter is passed by reference.
+	 * 					This parameter is optional. If omitted the current instance is used ($this).
 	 * @return	bool	TRUE on success and FALSE on failure.
 	 * @since 	1.0
 	 */
-	function check($row=null) {
+	public function check(&$row=null) {
 		// Set row to $this if not passed in call.
 		if (is_null($row)) {
 			$row =& $this;
@@ -204,12 +213,13 @@ abstract class table extends singleton {
 	 * Check value is valid for a specific MySQL data type
 	 * 
 	 * @todo	This method is performing some basic checks but needs to check more specific data types.
+	 * @access	public
 	 * @param	string	$value The value to validate
 	 * @param	string	$type The MySQL data type (int(11), tinyint, varchar(16), ...)
 	 * @return	bool
 	 * @since 	1.0
 	 */
-	function checkDataType($value, $type) {
+	public function checkDataType($value, $type) {
 		// Explode MySQL data type into type and length
 		$type_array = explode('(', $type);
 		$type = strtolower($type_array[0]); // make string lower case
@@ -269,12 +279,13 @@ abstract class table extends singleton {
 	 * 
 	 * If new row inserts a new entry in db table, otherwise it updates existing row.
 	 * 
-	 * @param	object	$row The table row object to store. This parameter is optional. 
-	 * 					If omitted the current instance is used ($this).
+	 * @access	public
+	 * @param	object	$row 	The table row object to store. This parameter is passed by reference.
+	 * 							This parameter is optional. If omitted the current instance is used ($this).
 	 * @return	bool
 	 * @since 	1.0
 	 */
-	function store($row=null) {
+	public function store(&$row=null) {
 		// Set row to $this if not passed in call.
 		if (is_null($row)) {
 			$row =& $this;
@@ -342,11 +353,12 @@ abstract class table extends singleton {
 	/**
 	 * Delete a table row by id
 	 * 
+	 * @access	public
 	 * @param	mixed	$id The row id. Normally a string or an integer.
 	 * @return bool
 	 * @since 	1.0
 	 */
-	function delete($id) {
+	public function delete($id) {
 		$query = "DELETE FROM `".$this->table_name."` WHERE `".$this->primary_key."` = '".$id."'";
 		$this->db->setQuery($query);
 		if ($this->db->query() === true) {
@@ -361,11 +373,12 @@ abstract class table extends singleton {
 	/**
 	 * Check whether a row exists with the passed id.
 	 * 
+	 * @access	public
 	 * @param	int	$id The row id.
 	 * @return	bool
 	 * @since 	1.0
 	 */
-	function rowExists($id) {
+	public function rowExists($id) {
 		if (!empty($id)) {
 			$query = "SELECT `".$this->primary_key."` FROM `".$this->table_name."` WHERE `".$this->primary_key."` = '".$id."'";
 			$this->db->setQuery($query);
@@ -387,9 +400,10 @@ abstract class table extends singleton {
 	 * 
 	 * This method returns a string with the error message or FALSE if no errors.
 	 * 
+	 * @access	public
 	 * @return mixed
 	 */
-	function getLastError() {
+	public function getLastError() {
 		if (is_array($this->error) && count($this->error) > 0) {
 			return end($this->error);
 		}
