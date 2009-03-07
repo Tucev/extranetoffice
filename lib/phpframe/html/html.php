@@ -196,6 +196,57 @@ class html {
 	}
 	
 	/**
+	 * Build an html button tag and echo it.
+	 * 
+	 * @param string $type The button type. Possible values are 'button', 'submit', 'reset'
+	 * @param string $label A string to use as the button's label.
+	 * @param string $onclick A string to be printed in the onclick attribute of the button tag.
+	 * @return void
+	 */
+	static function button($type='button', $label='', $onclick='') {
+		?>
+		<button type="<?php echo $type; ?>" onclick="<?php echo $onclick; ?>"><?php echo text::_( $label ); ?></button> 
+		<?php
+	}
+	
+	/**
+	 * Build an html 'back' button tag and echo it.
+	 * 
+	 * @return void
+	 */
+	static function buttonBack() {
+		?>
+		<button type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button> 	
+		<?php
+	}
+	
+	/**
+	 * Build an html 'save' button tag and echo it.
+	 * 
+	 * This button will have an onclick attribute of 'submitbutton('save'); return false;'.
+	 * 
+	 * @return void
+	 */
+	static function buttonSave() {
+		?>
+		<button type="button" onclick="submitbutton('save'); return false;"><?php echo text::_( _LANG_SAVE ); ?></button>
+		<?php
+	}
+	
+	/**
+	 * Build an html 'apply' button tag and echo it.
+	 * 
+	 * This button will have an onclick attribute of 'submitbutton('apply'); return false;'.
+	 * 
+	 * @return void
+	 */
+	static function buttonApply() {
+		?>
+		<button type="button" onclick="submitbutton('apply'); return false;"><?php echo text::_( _LANG_APPLY ); ?></button>
+		<?php
+	}
+	
+	/**
 	 * Redirects to previous page
 	 * 
 	 * @return	void
