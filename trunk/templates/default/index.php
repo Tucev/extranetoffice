@@ -23,7 +23,10 @@ $module_positions['right'] = $this->modules->display('right');
 <?php $this->document->printHead(); ?>
 <link rel="stylesheet" href="templates/<?php echo $this->config->template ?>/css/styles.css" type="text/css" />
 <!--[if lte IE 6]>
-<link href="templates/<?php echo $this->config->template; ?>/css/ieonly.css" rel="stylesheet" type="text/css" />
+<link href="templates/<?php echo $this->config->template; ?>/css/ie6only.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+<!--[if lte IE 7]>
+<link href="templates/<?php echo $this->config->template; ?>/css/ie7only.css" rel="stylesheet" type="text/css" />
 <![endif]-->
 </head>
 
