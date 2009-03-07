@@ -17,10 +17,6 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * of the table class. The table class is an abstract class so it will be used to implement 
  * specific database tables and each of the child instances will need to be a singleton.
  * 
- * NOTE: Errors should not be raised using error:raise() as the error object uses the table 
- * class itself for storing data into the session. So we store errors internally instead in 
- * property $this->error.
- * 
  * @package		phpFrame
  * @subpackage 	database
  * @author 		Luis Montero [e-noise.com]
@@ -401,7 +397,8 @@ abstract class table extends singleton {
 	 * This method returns a string with the error message or FALSE if no errors.
 	 * 
 	 * @access	public
-	 * @return mixed
+	 * @return	mixed
+	 * @since 	1.0
 	 */
 	public function getLastError() {
 		if (is_array($this->error) && count($this->error) > 0) {
