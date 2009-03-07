@@ -132,11 +132,13 @@ abstract class table extends singleton {
 	 * Bind array to row object
 	 * 
 	 * @param	array	$array
-	 * @param	string	$exclude A list of key names to exclude from binding process separated by commas.
-	 * @return	bool
+	 * @param	string	$exclude 	A list of key names to exclude from binding process separated by commas.
+	 * @param	object	$row 		The table row object use for binding. This parameter is optional. 
+	 * 								If omitted the current instance is used ($this).
+	 * @return	mixed	The processed row object or FALSE on failure.
 	 * @since 	1.0
 	 */
-	function bind($array, $exclude='') {
+	function bind($array, $exclude='', $row=null) {
 		// Process exclude
 		if (!empty($exclude)) {
 			$exclude = explode(',', $exclude);
@@ -145,15 +147,19 @@ abstract class table extends singleton {
 			$exclude = array();
 		}
 		
+		if (is_null($row)) {
+			$row =& $this;
+		}
+		
 		if (is_array($array) && count($array) > 0) {
 			foreach ($this->cols as $col) {
 				if (array_key_exists($col->Field, $array) && !in_array($col->Field, $exclude)) {
 					$col_name = $col->Field;
-					$this->$col_name = $array[$col_name];
+					$row->$col_name = $array[$col_name];
 				}
 			}
 			
-			return true;
+			return $row;
 		}
 		else {
 			$this->error[] = 'phpFrame: table::bind(). Could not bind array to row.';
@@ -164,26 +170,33 @@ abstract class table extends singleton {
 	/**
 	 * Check integrity of data before we write it to the database
 	 * 
-	 * @todo	Have to raise errors where appropriate.
-	 * @return	bool
+	 * @param	object	$row The table row object to check. This parameter is optional. 
+	 * 					If omitted the current instance is used ($this).
+	 * @return	bool	TRUE on success and FALSE on failure.
 	 * @since 	1.0
 	 */
-	function check() {
+	function check($row=null) {
+		// Set row to $this if not passed in call.
+		if (is_null($row)) {
+			$row =& $this;
+		}
+		
+		// Loop through every column in table to check data types
 		foreach ($this->cols as $col) {
 			$col_name = $col->Field;
 			
 			// If value is empty and null is allowed or is auto_increment we don't check data type
-			if (empty($this->$col_name) && ($col->Null == 'YES' || $col->Extra == 'auto_increment')) {
+			if (empty($row->$col_name) && ($col->Null == 'YES' || $col->Extra == 'auto_increment')) {
 				continue;
 			}
 			else {
-				if ($this->checkDataType($this->$col_name, $col->Type) === false) {
-					$this->error[] = 'phpFrame: table::check() failed. Column '.$col->Field.' '.$this->$col_name.' is not type '.$col->Type;
+				if ($this->checkDataType($row->$col_name, $col->Type) === false) {
+					$this->error[] = 'phpFrame: table::check() failed. Column '.$col->Field.' '.$row->$col_name.' is not type '.$col->Type;
 					return false;
 				}	
 			}
 		}
-		//exit;
+		
 		return true;
 	}
 	
@@ -256,13 +269,22 @@ abstract class table extends singleton {
 	 * 
 	 * If new row inserts a new entry in db table, otherwise it updates existing row.
 	 * 
-	 * @todo	Have to raise errors where appropriate.
+	 * @param	object	$row The table row object to store. This parameter is optional. 
+	 * 					If omitted the current instance is used ($this).
 	 * @return	bool
 	 * @since 	1.0
 	 */
-	function store() {
+	function store($row=null) {
+		// Set row to $this if not passed in call.
+		if (is_null($row)) {
+			$row =& $this;
+		}
+		
+		// Get the name of the primary key column
 		$primary_key = $this->primary_key;
-		$row_exists = $this->rowExists($this->$primary_key);
+		
+		// Check whether row exists in table
+		$row_exists = $this->rowExists($row->$primary_key);
 		
 		// Build either INSERT or UPDATE query depending on whether row 
 		// with given id already exists.
@@ -278,7 +300,7 @@ abstract class table extends singleton {
 			
 			for ($i=0; $i<count($this->cols); $i++) {
 				$col_name = $this->cols[$i]->Field;
-				$col_value = $this->$col_name;
+				$col_value = $row->$col_name;
 				if ($i>0) $query .= ", ";
 				$query .= "'".$col_value."'";
 			}
@@ -290,7 +312,7 @@ abstract class table extends singleton {
 			foreach ($this->cols as $col) {
 				if ($col->Field != $this->primary_key) {
 					$col_name = $col->Field;
-					$col_value = $this->$col_name;
+					$col_value = $row->$col_name;
 					if (!empty($col_value)) {
 						if ($i>0) $query .= ", ";
 						$query .= "`".$col_name."` = '".$col_value."'";
@@ -298,7 +320,7 @@ abstract class table extends singleton {
 					}
 				}
 			}
-			$query .= " WHERE `".$this->primary_key."` = '".$this->$primary_key."'";
+			$query .= " WHERE `".$this->primary_key."` = '".$row->$primary_key."'";
 		}
 		
 		$this->db->setQuery($query);
@@ -311,7 +333,7 @@ abstract class table extends singleton {
 		
 		// Store new row id for new entries
 		if ($row_exists === false && !empty($insert_id)) {
-			$this->$primary_key = $insert_id;
+			$row->$primary_key = $insert_id;
 		}
 		
 		return true;
