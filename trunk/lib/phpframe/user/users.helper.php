@@ -157,8 +157,10 @@ class usersHelper {
 		  return false;
 		}
 		
-		foreach ($rows as $row) {
-			$options[] = html::_('select.option', $row->id, usersHelper::fullname_format($row->firstname, $row->lastname));
+		if (is_array($rows) && count($rows) > 0) {
+			foreach ($rows as $row) {
+				$options[] = html::_('select.option', $row->id, usersHelper::fullname_format($row->firstname, $row->lastname));
+			}
 		}
 		
 		$output = html::_('select.genericlist', $options, $fieldname, $attribs, $selected);
@@ -235,6 +237,37 @@ class usersHelper {
 		}
 		
 		html::autocompleter($form_name, 'username', '', $tokens);
+	}
+	
+	/**
+	 * Function to build HTML select of groups
+	 * 
+	 * @param	int		The selected value if any
+	 * @param 	string	Attributes for the <select> tag
+	 * @return 	string	A string with the HTML select
+	 */
+	static function selectGroup($selected=0, $attribs='', $fieldname='groupid') {
+		// assemble users to the array
+		$options = array();
+		$options[] = html::_('select.option', '0', text::_( '-- Select a Group --' ) );
+		
+		// get users from #__users
+		$db =& factory::getDB();
+		$query = "SELECT id, name FROM #__groups ORDER BY id";
+		//echo $query; exit;
+		$db -> setQuery($query);
+		if (!$rows = $db->loadObjectList()) {
+		  return false;
+		}
+		
+		if (is_array($rows) && count($rows) > 0) {
+			foreach ($rows as $row) {
+				$options[] = html::_('select.option', $row->id, ucwords($row->name));
+			}
+		}
+		
+		$output = html::_('select.genericlist', $options, $fieldname, $attribs, $selected);
+		return $output;		
 	}
 }
 ?>
