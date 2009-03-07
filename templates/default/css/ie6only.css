@@ -1,0 +1,146 @@
+/**
+* @version 		$Id: ieonly.css 30 2009-01-28 16:01:43Z luis.montero $
+* @package		ExtranetOffice
+* @subpackage 	tmpl_default
+* @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+* @license		BSD revised. See LICENSE.
+* @author 		Luis Montero [e-noise.com]
+*/
+
+@CHARSET "UTF-8";
+
+/* Structure */
+
+ul#menu {
+list-style-type:none;
+margin:0 0 0px 9px;
+padding:0;
+height:28px;
+}
+
+/*component structure*/
+
+div.main_col_module {
+background-color:#F6F6F6;
+border:1px dotted #CCCCCC;
+margin:0 10px 5px 0;
+height:60px;
+min-height:60px;
+padding:5px 8px 10px;
+}
+
+/* Data list thread style */
+div.thread_delete {
+	background-image: url(../images/icons/generic/16x16/remove.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+div.thread_download {
+	background-image: url(../images/icons/generic/16x16/down.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+div.thread_upload {
+	background-image: url(../images/icons/generic/16x16/up.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+div.thread_edit {
+	background-image: url(../images/icons/generic/16x16/edit.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+div.thread_close {
+	background-image: url(../images/icons/generic/16x16/ok.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+div.thread_reopen {
+	background-image: url(../images/icons/generic/16x16/reopen.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+
+
+/*************** Projects component (com_project) ***************/
+
+/* png fix*/
+
+h3.overdue_issues {
+	background-image: url(../images/icons/projects/32x32/overdue.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+h3.upcoming_milestones {
+	background-image: url(../images/icons/projects/32x32/milestones.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+h3.project_updates {
+	background-image: url(../images/icons/projects/32x32/project_updates.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+h3.recent_email {
+	background-image: url(../images/icons/email/32x32/email.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+h3.project_details {
+	background-image: url(../images/icons/projects/32x32/projects.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+h3.project_permissions {
+	background-image: url(../images/icons/projects/32x32/security.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+h3.people {
+	background-image: url(../images/icons/projects/32x32/people.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+
+
+.rss_top_right {
+	background-image:url(../images/icons/generic/16x16/rss.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+
+/* Activity log */
+
+div.activitylog_files,
+div.activitylog_messages,
+div.activitylog_issues,
+div.activitylog_meetings,
+div.activitylog_comments,
+div.activitylog_milestones {
+display: table-cell;
+min-height: 16px;
+min-width: 70px;
+padding:3px;
+text-align: right;
+vertical-align: middle;
+color: white;
+font-size: 0.9em;
+font-weight: bold;
+}
+
+/*system icons*/
+
+span.icons_16_outer {
+background-color: #CCCCCC;
+border: 1px dotted #999999;
+margin: 0 0 0 5px;
+padding: 8px;
+height:10px;
+min-height:10px;
+
+}
+span.icons_16 {
+background-position: center left;
+background-repeat: no-repeat;
+padding:6px 6px 6px 24px;
+}
+
+span.users_16 {
+	background-image: url(../images/icons/generic/16x16/people.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+span.sysadmin_16 {
+	background-image: url(../images/icons/generic/16x16/sysadmin.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+span.security_16 {
+	background-image: url(../images/icons/generic/16x16/security.png);
+	behavior: url(templates/default/images/iepngfix.htc);
+}
+
