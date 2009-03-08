@@ -50,7 +50,9 @@ require_once _PHPFRAME_PATH.DS."user".DS."users.helper.php";
 // Include utils classes
 require_once _PHPFRAME_PATH.DS."utils".DS."client.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."crypt.php";
+require_once _PHPFRAME_PATH.DS."utils".DS."filesystem.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."filter.php";
+require_once _PHPFRAME_PATH.DS."utils".DS."image.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."mail.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."uri.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."utility.php";
