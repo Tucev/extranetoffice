@@ -136,14 +136,15 @@ class html {
 	 * Function to build input with autocomplete and display it
 	 * 
 	 * @static
-	 * @param	string	$form_name	The name of the form where this input tag will appear
-	 * @param 	string	$field_name	The name attribute fot the input tag
-	 * @param	string	$attribs 	A string containing attributes for the input tag
-	 * @param	array	$tokens		An array with the key/value pairs used to build the list of options
+	 * @param 	string	$field_name		The name attribute fot the input tag
+	 * @param	string	$attribs 		A string containing attributes for the input tag
+	 * @param	array	$tokens			An array with the key/value pairs used to build the list of options
+	 * @param	bool	$matchContains	Optional parameter (defaul: TRUE). If TRUE search matches inside string, 
+	 * 									if FALSE only at the beginning.
 	 * @return 	void
 	 * @since	1.0
 	 */
-	static function autocomplete($form_name, $field_name, $attribs, $tokens) {
+	static function autocomplete($field_name, $attribs, $tokens, $matchContains=true) {
 		$document =& factory::getDocument('html');
 		$document->addScript('lib/jquery/plugins/autocomplete/jquery.autocomplete.pack.js');
 		$document->addStyleSheet('lib/jquery/plugins/autocomplete/jquery.autocomplete.css');
@@ -178,6 +179,7 @@ class html {
 				
 				$("#<?php echo $field_name; ?>_autocomplete").autocomplete(data, {
 					multiple: true,
+					matchContains: <?php echo $matchContains ? 'true' : 'false'; ?>,
 					formatItem: formatItem,
 					formatResult: formatResult
 				});
@@ -185,8 +187,7 @@ class html {
 				$("#<?php echo $field_name; ?>_autocomplete").result(function(event, data, formatted) {
 					var hidden = $("#<?php echo $field_name; ?>");
 					hidden.val( (hidden.val() ? hidden.val() + "," : hidden.val()) + data[0]);
-				});
-							
+				});		
 							
 			});
 		</script>

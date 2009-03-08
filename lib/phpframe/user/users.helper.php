@@ -219,12 +219,13 @@ class usersHelper {
 	/**
 	 * Build and display an input tag with username autocompleter
 	 * 
-	 * @param	string	$form_name The name of the form where the input tag will appear.
+	 * @param	array	$where		An array with conditions to include in SQL query.
 	 * @return	void
 	 */
-	static function autocompleteUsername($form_name) {
+	static function autocompleteUsername($where=array()) {
 		$db =& factory::getDB();
 		$query = "SELECT id, username, firstname, lastname FROM #__users ";
+		$query .= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
 		$query .= " ORDER BY username";
 		$db -> setQuery($query);
 		if (!$rows = $db->loadObjectList()) {
@@ -236,7 +237,7 @@ class usersHelper {
 			$tokens[] = array('id' => $row->id, 'name' => $row->firstname." ".$row->lastname." (".$row->username.")");
 		}
 		
-		html::autocomplete($form_name, 'userids', 'cols="60" rows="2"', $tokens);
+		html::autocomplete('userids', 'cols="60" rows="2"', $tokens);
 	}
 	
 	/**
