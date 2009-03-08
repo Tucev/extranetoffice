@@ -84,14 +84,14 @@ class filesystem {
 		// BEFORE WE MOVE THE FILE TO IT'S TARGET DIRECTORY 
 		// WE CHECK IF A FILE WITH THE SAME NAME EXISTS IN THE TARGET DIRECTORY
 		if ($overwrite === false) {
-		  $check_if_file_exists = file_exists($dir.$file_name);
+		  $check_if_file_exists = file_exists($dir.DS.$file_name);
 		  if ($check_if_file_exists === true) {
 			// split file name into name and extension
 			$split_point = strrpos($file_name, '.');
 			$file_n = substr($file_name, 0, $split_point);
 			$file_ext = substr($file_name, $split_point);
 			$i=0;
-			while (true === file_exists($dir.$file_n.$i.$file_ext)) {
+			while (true === file_exists($dir.DS.$file_n.$i.$file_ext)) {
 				$i++;
 			}
 			$file_name = $file_n.$i.$file_ext;
@@ -99,7 +99,7 @@ class filesystem {
 		}
 		
 		// put the file where we'd like it
-		$path = $dir.$file_name;
+		$path = $dir.DS.$file_name;
 		// is_uploaded_file and move_uploaded_file added at version 4.0.3
 		if (is_uploaded_file($file_tmp)) {
 			if (!move_uploaded_file($file_tmp, $path)) {
