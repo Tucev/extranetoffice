@@ -40,6 +40,8 @@ class mail extends PHPMailer {
 		$this->SMTPAuth = $config->smtp_auth;
 		$this->Username = $config->smtp_user;
 		$this->Password = $config->smtp_password;
+		$this->From = $config->fromaddress;
+		$this->FromName = $config->fromname;
 	}
 }
 ?>
