@@ -136,7 +136,7 @@ class user extends table {
 	 * @return	mixed	The loaded row object of FALSE on failure.
 	 * @since 	1.0
 	 */
-	public function load($id, $exclude='', &$row=null) {
+	public function load($id, $exclude='password', &$row=null) {
 		if (!parent::load($id, $exclude, $row)) {
 			return false;
 		}
@@ -166,7 +166,7 @@ class user extends table {
 		}
 		
 		// Encrypt password for storage
-		if (!empty($row->password)) {
+		if (!is_null($row->password)) {
 			$salt = crypt::genRandomPassword(32);
 			$crypt = crypt::getCryptedPassword($row->password, $salt);
 			$row->password = $crypt.':'.$salt;
