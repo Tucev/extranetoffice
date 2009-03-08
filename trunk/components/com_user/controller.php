@@ -31,5 +31,18 @@ class userController extends controller {
 		
 		parent::__construct();
 	}
+	
+	function save_user() {
+		$modelUser =& $this->getModel('user');
+		
+		if ($modelUser->saveUser() === false) {
+			error::raise('', 'error', $modelUser->getLastError());
+		}
+		else {
+			error::raise('', 'message', _LANG_USER_SAVE_SUCCESS);
+		}
+		
+		$this->setRedirect('index.php?option=com_user');
+	}
 }
 ?>
