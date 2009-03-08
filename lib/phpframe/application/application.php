@@ -200,6 +200,8 @@ class application extends singleton {
 		if (!$this->user->id) {
 			$this->auth = false;
 			request::setVar('option', 'com_login');
+			request::setVar('view', 'login');
+			request::setVar('layout', '');
 			return $this->auth;
 		}
 		
