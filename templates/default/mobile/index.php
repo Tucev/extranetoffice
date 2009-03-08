@@ -12,7 +12,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 // render module positions for output
 $module_positions = array();
-$module_positions['topmenu'] = $this->modules->display('topmenu');
+$module_positions['topmenu'] = $this->modules->display('topmenu', '_topmenu');
+$module_positions['mainmenu'] = $this->modules->display('mainmenu', '_mainmenu');
 $module_positions['right'] = $this->modules->display('right');
 ?>
 
@@ -21,34 +22,13 @@ $module_positions['right'] = $this->modules->display('right');
 <head>
 <title><?php echo $this->config->sitename; ?> - <?php echo $this->document->title; ?></title>
 <?php $this->document->printHead(); ?>
-<link rel="stylesheet" href="templates/<?php echo $this->config->template ?>/css/styles.css" type="text/css" />
-<!--[if lte IE 6]>
-<link href="templates/<?php echo $this->config->template; ?>/css/ieonly.css" rel="stylesheet" type="text/css" />
-<![endif]-->
+<link rel="stylesheet" href="templates/<?php echo $this->config->template ?>/mobile/css/styles.css" type="text/css" />
 </head>
 
 <body>
-<?php //echo '<pre>'; var_dump($this->document); exit; ?>
-
 <a name="up" id="up"></a>
 
-<div id="top">
-	<span class="icons_16_outer">
-	<span class="icons_16 users_16">
-		<a href="index.php?option=com_user">Account</a>
-	</span>
-	</span>
-	<span class="icons_16_outer">
-	<span class="icons_16 sysadmin_16">
-		<a href="index.php?option=com_admin">System Admin</a>
-	</span>
-	</span>
-	<span class="icons_16_outer">
-	<span class="icons_16 security_16">
-		<a href="index.php?option=com_login&amp;task=logout">Logout</a>
-	</span>
-	</span>
-</div>
+<?php echo $module_positions['topmenu']; ?>
 
 <div id="sitename">
 	<a href="index.php">
@@ -64,7 +44,7 @@ $module_positions['right'] = $this->modules->display('right');
 <!-- Content -->
 <div id="wrapper_outer">
 
-	<?php echo $module_positions['topmenu']; ?>
+	<?php echo $module_positions['mainmenu']; ?>
 	
 	<div id="wrapper">
 		<?php $column_count = 1; ?>
