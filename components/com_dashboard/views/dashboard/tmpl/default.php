@@ -43,7 +43,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	
 	<div class="ioffice_module">
 	
-	<?php if ($this->group->id == 1) : ?>
+	<?php if ($this->groupid == 1) : ?>
 	<div style="float:right;" class="new">
 		 <a style="float:right;" href="<?php echo JRoute::_("index.php?option=com_intranetoffice&view=projects&type=new"); ?>" title="<?php echo JText::_( _LANG_PROJECTS_NEW ); ?>">
 		<?php echo JText::_( _LANG_PROJECTS_NEW ); ?>
