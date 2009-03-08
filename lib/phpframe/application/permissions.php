@@ -19,14 +19,59 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  */
 class permissions {
+	/**
+	 * The userid.
+	 * 
+	 * @var int
+	 */
 	var $userid=null;
-	var $group=null; // object containing the intranet office group id and name
+	/**
+	 * The groupid.
+	 * 
+	 * @var int
+	 */
+	var $groupid=null;
+	/**
+	 * Access level list loaded from database.
+	 * 
+	 * @var array
+	 */
 	var $acl=null;
+	/**
+	 * Is super admin?
+	 * 
+	 * @var bool
+	 */
 	var $super_admin=null;
+	/**
+	 * Is user allowed to access task and/or view?
+	 *  
+	 * @var bool
+	 */
 	var $is_allowed=null;
+	/**
+	 * A string with the component's option value ie: (com_admin).
+	 * 
+	 * @var string
+	 */
 	var $option=null;
+	/**
+	 * The task to be executed.
+	 * 
+	 * @var string
+	 */
 	var $task=null;
+	/**
+	 * The view set to be displayed.
+	 * 
+	 * @var string
+	 */
 	var $view=null;
+	/**
+	 * The layout template to be loaded.
+	 * 
+	 * @var string
+	 */
 	var $layout=null;
 	
 	/**
@@ -56,8 +101,8 @@ class permissions {
 			$this->super_admin = false;
 		}
 		
-		// get intranetoffice group
-		$this->group = $this->getGroup($this->userid);
+		// get group
+		$this->groupid = $user->groupid;
 		
 		// decide if user is allowed to go ahead ased on group membership
 		if ($this->checkACL()) {
@@ -67,26 +112,6 @@ class permissions {
 			return true;
 		}
 		
-	}
-	
-	/**
-	 * Get group
-	 * 
-	 * This method gets the group object for the given user. 
-	 * 
-	 * The returned object has two properties, the group name and group id.
-	 * 
-	 * @param $userid
-	 * @return object
-	 * @since 1.0
-	 */
-	function getGroup($userid) {
-		$db =& factory::getDB();
-		$query = "SELECT ug.groupid AS id, g.name AS name ";
-		$query .= " FROM #__users_groups AS ug, #__groups AS g ";
-		$query .= " WHERE g.id = ug.groupid AND ug.userid = ".$userid;
-		$db->setQuery($query);
-		return $db->loadObject();
 	}
 	
 	/**
@@ -102,7 +127,7 @@ class permissions {
 		$db =& factory::getDB();
 		$query = "SELECT * ";
 		$query .= " FROM #__acl_groups ";
-		$query .= " WHERE groupid = ".$this->group->id." AND `option` = '".$this->option."' AND task = '".$this->task."'";
+		$query .= " WHERE groupid = ".$this->groupid." AND `option` = '".$this->option."' AND task = '".$this->task."'";
 		$db->setQuery($query);
 		$this->acl = $db->loadObjectList();
 		
