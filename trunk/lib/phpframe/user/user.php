@@ -19,13 +19,78 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  */
 class user extends table {
+	/**
+	 * The user id
+	 * 
+	 * @var int
+	 */
 	var $id=null;
+	/**
+	 * The primary groupid
+	 * 
+	 * @var int
+	 */
 	var $groupid=null;
+	/**
+	 * The login username
+	 * 
+	 * @var string
+	 */
 	var $username=null;
+	/**
+	 * Primary email address
+	 * 
+	 * @var string
+	 */
 	var $email=null;
+	/**
+	 * The user's first name
+	 * 
+	 * @var string
+	 */
 	var $firstname=null;
+	/**
+	 * The user's last name
+	 * 
+	 * @var string
+	 */
 	var $lastname=null;
+	/**
+	 * The date and time of creation
+	 * 
+	 * @var string
+	 */
+	var $created=null;
+	/**
+	 * The date and time of the last visit
+	 * 
+	 * @var string
+	 */
+	var $last_visit=null;
+	/**
+	 * Activation hash. This property will be used to store hash string to activate 
+	 * accounts once we integrate the email activation feature.
+	 * 
+	 * @var string
+	 */
+	var $activation=null;
+	/**
+	 * User parameters
+	 * 
+	 * @var object
+	 */
+	var $params=null;
+	/**
+	 * Full name. Combination of firstname + lastname
+	 * 
+	 * @var string
+	 */
 	var $name=null;
+	/**
+	 * Abbreviated full name
+	 * 
+	 * @var string
+	 */
 	var $name_abbr=null;
 	
 	/**
@@ -34,60 +99,61 @@ class user extends table {
 	 * @return	void
 	 * @since	1.0
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct('#__users', 'id');
 	}
 	
 	/**
 	 * Load user row by id
 	 * 
-	 * This method overrides the inherited load method in order to load the user group as well.
+	 * This method overrides the inherited load method.
 	 * 
-	 * @return	The loaded user object
-	 * @since	1.0
+	 * @access	public
+	 * @param	int		$id 		The row id.
+	 * @param	string	$exclude 	A list of key names to exclude from binding process separated by commas.
+	 * @param	object	$row 		The table row object use for binding. This parameter is passed by reference.
+	 * 								This parameter is optional. If omitted the current instance is used ($this).
+	 * @return	mixed	The loaded row object of FALSE on failure.
+	 * @since 	1.0
 	 */
-	function load($id) {
-		$query = "SELECT * FROM #__users WHERE id = '".$id."'";
-		$this->db->setQuery($query);
-		$user = $this->db->loadObject();
-		foreach ($this->cols as $col) {
-			$col_name = $col->Field;
-			$col_value = $user->$col_name;
-			$this->$col_name = $col_value;
+	public function load($id, $exclude='', &$row=null) {
+		if (!parent::load($id, $exclude, $row)) {
+			return false;
 		}
-		$this->groupid = $this->getGroup($id);
-		$this->name = $this->firstname.' '.$this->lastname;
-		$this->name_abbr = usersHelper::fullname_format($this->firstname, $this->lastname);
+		else {
+			$this->name = $this->firstname.' '.$this->lastname;
+			$this->name_abbr = usersHelper::fullname_format($this->firstname, $this->lastname);
+			
+			return $this;	
+		}
+	}
+	
+	/**
+	 * Store user
+	 * 
+	 * This method overrides the inherited store method in order to encrypt the password before storing.
+	 * 
+	 * @access	public
+	 * @param	object	$row 	The table row object to store. This parameter is passed by reference.
+	 * 							This parameter is optional. If omitted the current instance is used ($this).
+	 * @return	bool
+	 * @since 	1.0
+	 */
+	public function store(&$row=null) {
+		// Set row to $this if not passed in call.
+		if (is_null($row)) {
+			$row =& $this;
+		}
 		
-		return $this;
-	}
-	
-	/**
-	 * Save user to database (work in progress)
-	 * 
-	 * @todo	This method needs to be finished.
-	 * @return 	void
-	 * @since	1.0
-	 */
-	function save() {
-		// Encrypt password
-		$salt = crypt::genRandomPassword(32);
-		$crypt = crypt::getCryptedPassword($password, $salt);
-		$encrypted_password = $crypt.':'.$salt;
-	}
-	
-	/**
-	 * Get group for given user
-	 * 
-	 * @param	int	$userid
-	 * @return 	int
-	 * @since	1.0
-	 */
-	function getGroup($userid) {
-		$query = "SELECT * FROM #__users_groups WHERE userid = '".$userid."'";
-		$this->db->setQuery($query);
-		$users_groups = $this->db->loadObject();
-		return $users_groups->groupid;
+		// Encrypt password for storage
+		if (!empty($row->password)) {
+			$salt = crypt::genRandomPassword(32);
+			$crypt = crypt::getCryptedPassword($row->password, $salt);
+			$row->password = $crypt.':'.$salt;
+		}
+		
+		// Invoke parent store() method to store row in db
+		return parent::store($row);
 	}
 }
 ?>
