@@ -51,5 +51,18 @@ class adminController extends controller {
 		
 		$this->setRedirect('index.php?option=com_admin&view=config');
 	}
+	
+	function save_user() {
+		$modelUsers =& $this->getModel('users');
+		
+		if ($modelUsers->saveUser() === false) {
+			error::raise('', 'error', $modelUsers->getLastError());
+		}
+		else {
+			error::raise('', 'message', _LANG_USER_SAVE_SUCCESS);
+		}
+		
+		$this->setRedirect('index.php?option=com_admin&view=users');
+	}
 }
 ?>

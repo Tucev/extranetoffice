@@ -202,9 +202,9 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	
 <br style="clear: left;" />
 <br />
-	
-<button type="button" onclick="window.location = 'index.php?option=com_admin';"><?php echo text::_( _LANG_BACK ); ?></button>
-<button type="submit"><?php echo text::_( _LANG_SAVE ); ?></button>
+
+<?php html::button('button', _LANG_BACK, "window.location = 'index.php?option=com_admin';"); ?>
+<?php html::button('submit', _LANG_SAVE); ?>
 	
 <input type="hidden" name="option" value="com_admin" />
 <input type="hidden" name="task" value="save_config" />
