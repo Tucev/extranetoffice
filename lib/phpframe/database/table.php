@@ -102,13 +102,22 @@ abstract class table extends singleton {
 	 * Load row by id and return row object.
 	 * 
 	 * @access	public
-	 * @param	int		$id 	The row id.
-	 * @param	object	$row 	The table row object use for binding. This parameter is passed by reference.
-	 * 							This parameter is optional. If omitted the current instance is used ($this).
+	 * @param	int		$id 		The row id.
+	 * @param	string	$exclude 	A list of key names to exclude from binding process separated by commas.
+	 * @param	object	$row 		The table row object use for binding. This parameter is passed by reference.
+	 * 								This parameter is optional. If omitted the current instance is used ($this).
 	 * @return	mixed	The loaded row object of FALSE on failure.
 	 * @since 	1.0
 	 */
-	public function load($id, &$row=null) {
+	public function load($id, $exclude='', &$row=null) {
+		// Process exclude
+		if (!empty($exclude)) {
+			$exclude = explode(',', $exclude);
+		}
+		else {
+			$exclude = array();
+		}
+		
 		if (is_null($row)) {
 			$row =& $this;
 		}
@@ -119,9 +128,10 @@ abstract class table extends singleton {
 		
 		if (is_array($array) && count($array) > 0) {
 			foreach ($this->cols as $col) {
-				$col_name = $col->Field;
-				$col_value = $array[$col_name];
-				$row->$col_name = $col_value;
+				if (array_key_exists($col->Field, $array) && !in_array($col->Field, $exclude)) {
+					$col_name = $col->Field;
+					$row->$col_name = $array[$col_name];	
+				}
 			}
 			
 			return $row;	
@@ -135,7 +145,7 @@ abstract class table extends singleton {
 	 * Bind array to row object
 	 * 
 	 * @access	public
-	 * @param	array	$array
+	 * @param	array	$array		The array to bind to the object.
 	 * @param	string	$exclude 	A list of key names to exclude from binding process separated by commas.
 	 * @param	object	$row 		The table row object use for binding. This parameter is passed by reference.
 	 * 								This parameter is optional. If omitted the current instance is used ($this).
