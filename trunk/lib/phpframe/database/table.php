@@ -320,7 +320,7 @@ abstract class table extends singleton {
 				$col_value = $row->$col_name;
 				if ($i>0) $query .= ", ";
 				// If value is empty and there is a default value for the column we use that.
-				if (empty($col_value) && !is_null($this->cols[$i]->Default)) {
+				if (is_null($col_value) && !is_null($this->cols[$i]->Default)) {
 					if ($this->cols[$i]->Default == 'CURRENT_TIMESTAMP') {
 						$col_value = date("Y-m-d H:i:s");
 					}
@@ -339,7 +339,7 @@ abstract class table extends singleton {
 				if ($col->Field != $this->primary_key) {
 					$col_name = $col->Field;
 					$col_value = $row->$col_name;
-					if (!empty($col_value)) {
+					if (!is_null($col_value)) {
 						if ($i>0) $query .= ", ";
 						$query .= "`".$col_name."` = '".$col_value."'";
 						$i++;
