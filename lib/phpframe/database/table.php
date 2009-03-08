@@ -222,7 +222,7 @@ abstract class table extends singleton {
 	 * @access	public
 	 * @param	string	$value The value to validate
 	 * @param	string	$type The MySQL data type (int(11), tinyint, varchar(16), ...)
-	 * @return	bool
+	 * @return	bool	Returns TRUE on success or FALSE on failure.
 	 * @since 	1.0
 	 */
 	public function checkDataType($value, $type) {
@@ -288,7 +288,7 @@ abstract class table extends singleton {
 	 * @access	public
 	 * @param	object	&$row 	The table row object to store. This parameter is passed by reference.
 	 * 							This parameter is optional. If omitted the current instance is used ($this).
-	 * @return	bool
+	 * @return	bool	Returns TRUE on success or FALSE on failure.
 	 * @since 	1.0
 	 */
 	public function store(&$row=null) {
@@ -361,7 +361,7 @@ abstract class table extends singleton {
 	 * 
 	 * @access	public
 	 * @param	mixed	$id The row id. Normally a string or an integer.
-	 * @return bool
+	 * @return	bool	Returns TRUE on success or FALSE on failure.
 	 * @since 	1.0
 	 */
 	public function delete($id) {
@@ -380,8 +380,8 @@ abstract class table extends singleton {
 	 * Check whether a row exists with the passed id.
 	 * 
 	 * @access	public
-	 * @param	int	$id The row id.
-	 * @return	bool
+	 * @param	int		$id	The row id.
+	 * @return	bool	Returns TRUE on success or FALSE on failure.
 	 * @since 	1.0
 	 */
 	public function rowExists($id) {
@@ -402,12 +402,12 @@ abstract class table extends singleton {
 	}
 	
 	/**
-	 * Get last error in model
+	 * Get last error in current instance
 	 * 
 	 * This method returns a string with the error message or FALSE if no errors.
 	 * 
 	 * @access	public
-	 * @return	mixed
+	 * @return	mixed	Returns a string with the last error message or FALSE if no errors.
 	 * @since 	1.0
 	 */
 	public function getLastError() {

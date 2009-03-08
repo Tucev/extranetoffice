@@ -136,7 +136,7 @@ class user extends table {
 	 * @access	public
 	 * @param	object	&$row 	The table row object to store. This parameter is passed by reference.
 	 * 							This parameter is optional. If omitted the current instance is used ($this).
-	 * @return	bool
+	 * @return	bool	Returns TRUE on success or FALSE on failure.
 	 * @since 	1.0
 	 */
 	public function store(&$row=null) {

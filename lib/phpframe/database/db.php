@@ -310,7 +310,7 @@ class db extends singleton {
 	 * 
 	 * @access	public
 	 * @param	string	The string to be escaped.
-	 * @param	boolean	Optional parameter to provide extra escaping.
+	 * @param	bool	Optional parameter to provide extra escaping.
 	 * @return	string	Returns the escaped string.
 	 * @since	1.0
 	 */
