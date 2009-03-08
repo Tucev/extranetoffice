@@ -104,7 +104,7 @@ abstract class table extends singleton {
 	 * @access	public
 	 * @param	int		$id 		The row id.
 	 * @param	string	$exclude 	A list of key names to exclude from binding process separated by commas.
-	 * @param	object	$row 		The table row object use for binding. This parameter is passed by reference.
+	 * @param	object	&$row 		The table row object use for binding. This parameter is passed by reference.
 	 * 								This parameter is optional. If omitted the current instance is used ($this).
 	 * @return	mixed	The loaded row object of FALSE on failure.
 	 * @since 	1.0
@@ -147,7 +147,7 @@ abstract class table extends singleton {
 	 * @access	public
 	 * @param	array	$array		The array to bind to the object.
 	 * @param	string	$exclude 	A list of key names to exclude from binding process separated by commas.
-	 * @param	object	$row 		The table row object use for binding. This parameter is passed by reference.
+	 * @param	object	&$row 		The table row object use for binding. This parameter is passed by reference.
 	 * 								This parameter is optional. If omitted the current instance is used ($this).
 	 * @return	mixed	The processed row object or FALSE on failure.
 	 * @since 	1.0
@@ -185,7 +185,7 @@ abstract class table extends singleton {
 	 * Check integrity of data before we write it to the database
 	 * 
 	 * @access	public
-	 * @param	object	$row The table row object to check. This parameter is passed by reference.
+	 * @param	object	&$row The table row object to check. This parameter is passed by reference.
 	 * 					This parameter is optional. If omitted the current instance is used ($this).
 	 * @return	bool	TRUE on success and FALSE on failure.
 	 * @since 	1.0
@@ -286,7 +286,7 @@ abstract class table extends singleton {
 	 * If new row inserts a new entry in db table, otherwise it updates existing row.
 	 * 
 	 * @access	public
-	 * @param	object	$row 	The table row object to store. This parameter is passed by reference.
+	 * @param	object	&$row 	The table row object to store. This parameter is passed by reference.
 	 * 							This parameter is optional. If omitted the current instance is used ($this).
 	 * @return	bool
 	 * @since 	1.0
