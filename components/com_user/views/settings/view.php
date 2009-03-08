@@ -50,7 +50,7 @@ class userViewSettings extends view {
 	 * @since	1.0
 	 */
 	function display() {
-		$this->page_title = _LANG_ACCOUNT;
+		$this->page_title = _LANG_USER_ACCOUNT;
 		// Append page title to document title
 		$document =& factory::getDocument('html');
 		$document->title .= ' - '.$this->page_title;
