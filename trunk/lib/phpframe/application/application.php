@@ -132,8 +132,9 @@ class application extends singleton {
 	 * 
 	 * The application constructor loads the config, request and db objects.
 	 * 
-	 * @since	1.0
+	 * @access	protected
 	 * @return 	void
+	 * @since	1.0
 	 */
 	protected function __construct() {
 		// instantiate debbuger
@@ -176,14 +177,15 @@ class application extends singleton {
 	}
 	
 	/**
-	 * auth()
+	 * Authenticate
 	 * 
 	 * This method should be invoked after instantiating the application class.
 	 * It instantiates the session and user objects and returns a boolean depending 
 	 * on whether the current user has been authenticated.
 	 * 
-	 * @since	1.0
+	 * @access	public
 	 * @return	bool
+	 * @since	1.0
 	 */
 	public function auth() {
 		// get session object (singeton)
@@ -210,12 +212,13 @@ class application extends singleton {
 	}
 	
 	/**
-	 * exec()
+	 * Execute component
 	 * 
 	 * This method executes the request and stores the component's output buffer in $this->component_output.
 	 * 
-	 * @since	1.0
+	 * @access	public
 	 * @return	void
+	 * @since	1.0
 	 */
 	public function exec() {
 		// Set component option in application
@@ -275,12 +278,13 @@ class application extends singleton {
 	}
 	
 	/**
-	 * output()
+	 * Send output
 	 * 
 	 * Send the application output back to the client. This method should be invoked last, after all processing has been done.
 	 * 
-	 * @since	1.0
+	 * @access	public
 	 * @return	void
+	 * @since	1.0
 	 */
 	public function output() {
 		echo $this->output;
