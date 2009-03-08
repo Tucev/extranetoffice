@@ -17,6 +17,8 @@ $db =& factory::getDB();
 $query = "SELECT * FROM #__components WHERE system = '0' AND enabled = '1' ORDER BY ordering ASC";
 $db->setQuery($query);
 $components = $db->loadObjectList();
+
+$application =& factory::getApplication();
 ?>
 
 <ul id="menu">
@@ -24,8 +26,10 @@ $components = $db->loadObjectList();
 		<a href="index.php?option=com_dashboard">Dashboard</a>
 	</li>
 	<?php foreach ($components as $component) : ?>
+	<?php if ($application->permissions->checkACL('com_'.$component->name)) : ?>
 	<li <?php if ($active_component == $component->name) { echo ' class="selected"'; } ?>>
 		<a href="index.php?option=com_<?php echo $component->name; ?>"><?php echo $component->menu_name; ?></a>
 	</li>
+	<?php endif; ?>
 	<?php endforeach; ?>
 </ul>
