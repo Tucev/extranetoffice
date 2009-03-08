@@ -71,11 +71,14 @@ class db extends singleton {
 	 * 
 	 * This methid must be called before we can run any SQL queries.
 	 * It connects to the db server and selects the database.
-	 *
-	 * @param string $db_host The MySQL server hostname.
-	 * @param string $db_user The MySQL username.
-	 * @param string $db_pass The MySQL password.
-	 * @param string $db_name The MySQL database name.
+	 * 
+	 * @access	public
+	 * @param 	string 	$db_host 	The MySQL server hostname.
+	 * @param 	string 	$db_user 	The MySQL username.
+	 * @param 	string 	$db_pass 	The MySQL password.
+	 * @param 	string 	$db_name	The MySQL database name.
+	 * @return	bool	Returns TRUE on success or FALSE on failure.
+	 * @since	1.0
 	 */
 	public function connect($db_host, $db_user, $db_pass, $db_name) {
 		// Connect to database server
@@ -102,8 +105,11 @@ class db extends singleton {
 	 * Set the SQL query
 	 * 
 	 * Set a string as the query to be run.
-	 *
-	 * @param string $query The SQL query.
+	 * 
+	 * @access	public
+	 * @param 	string 	$query 	The SQL query.
+	 * @return	void
+	 * @since	1.0
 	 */
 	public function setQuery($query) {
 		$config =& factory::getConfig();
@@ -114,9 +120,11 @@ class db extends singleton {
 	 * Run SQL query and return mysql record set resource.
 	 * 
 	 * It returns a mysql result resource or if it is an INSERT query it 
-	 * returns the insert id or return false on fail.
-	 *
-	 * @return mixed
+	 * returns the insert id. It returns FALSE on failure.
+	 * 
+	 * @access	public
+	 * @return 	mixed	Returns a mysql result resource or int for INSERT queries or FALSE on failure.
+	 * @since	1.0
 	 */
 	public function query() {
 		// Only run query if active link is valid
@@ -147,8 +155,10 @@ class db extends singleton {
 	 * Run query as set by preceding setQuery() call and return single result.
 	 * This method is useful when we expect our query to return a single column
 	 * from a singlw row.
-	 *
-	 * @return string
+	 * 
+	 * @access	public
+	 * @return	mixed	Returns a string with the single result or FALSE on failure.
+	 * @since	1.0
 	 */
 	public function loadResult() {
 		// Run SQL query
@@ -171,8 +181,10 @@ class db extends singleton {
 	
 	/**
 	 * Run query and load single value for each row
-	 *
-	 * @return array an array containing single column for each row
+	 * 
+	 * @access	public
+	 * @return 	mixed	Returns an array containing single column for each row or FALSE on failure.
+	 * @since	1.0
 	 */
 	public function loadResultArray() {
 		// Run SQL query
@@ -199,8 +211,10 @@ class db extends singleton {
 	 * 
 	 * Run query as set by preceding setQuery() call and return single row as an
 	 * object. This method is useful when we expect our query to return a single row.
-	 *
-	 * @return object
+	 * 
+	 * @access	public
+	 * @return	mixed	Returns a row object or FALSE if query fails.
+	 * @since	1.0
 	 */
 	public function loadObject() {
 		// Run SQL query
@@ -237,7 +251,9 @@ class db extends singleton {
 	 * objects. This method is useful when we expect our query to return multiple 
 	 * rows.
 	 *
-	 * @return array
+	 * @access	public
+	 * @return	mixed	An array of row objects or FALSE if query fails.
+	 * @since	1.0
 	 */
 	public function loadObjectList() {
 		// Run SQL query
@@ -269,7 +285,9 @@ class db extends singleton {
 	 * Run query as set by preceding setQuery() call and return single row as an
 	 * associative array. This method is useful when we expect our query to return a single row.
 	 *
-	 * @return array
+	 * @access	public
+	 * @return	mixed	Returns an associative array with the row data or FALSE on failure.
+	 * @since	1.0
 	 */
 	public function loadAssoc() {
 		// Run SQL query
@@ -289,12 +307,12 @@ class db extends singleton {
 	
 	/**
 	 * Get db escaped string
-	 *
-	 * @param	string	The string to be escaped
-	 * @param	boolean	Optional parameter to provide extra escaping
-	 * @return	string
+	 * 
 	 * @access	public
-	 * @abstract
+	 * @param	string	The string to be escaped.
+	 * @param	boolean	Optional parameter to provide extra escaping.
+	 * @return	string	Returns the escaped string.
+	 * @since	1.0
 	 */
 	public function getEscaped($text, $extra = false) {
 		$result = mysql_real_escape_string($text, $this->link);
@@ -305,12 +323,15 @@ class db extends singleton {
 	}
 	
 	/**
-	 * Retrieves the number of rows from the latest result set. 
+	 * Get number of rows from the latest result set.
+	 *  
 	 * This method after having run a query with statements like SELECT or SHOW that return an actual result set.
 	 * To retrieve the number of rows affected by a INSERT, UPDATE, REPLACE or DELETE query, use getAffectedRows(). 
 	 * 
-	 * @return 	int
+	 * @access	public
+	 * @return 	mixed	Returns an int with the number of rows from the latest result set or FALSE on failure.
 	 * @see		getAffectedRows()
+	 * @since	1.0
 	 */
 	public function getNumRows() {
 		$num_rows = mysql_num_rows($this->rs);
@@ -326,8 +347,10 @@ class db extends singleton {
 	/**
 	 * Get the number of affected rows by the last INSERT, UPDATE, REPLACE or DELETE query.
 	 * 
-	 * @return 	int
+	 * @access	public
+	 * @return 	mixed	Returns an int with the number of affected rows or FALSE on failure.
 	 * @see		getNumRows()
+	 * @since	1.0
 	 */
 	public function getAffectedRows() {
 		$affected_rows = mysql_affected_rows();
@@ -341,23 +364,29 @@ class db extends singleton {
 	
 	/**
 	 * Close the current MySQL connection
-	 *
+	 * 
+	 * Using this method isn't usually necessary, as non-persistent open links are 
+	 * automatically closed at the end of the script's execution.
+	 * 
+	 * @access	public
+	 * @return 	bool	Returns TRUE on success or FALSE on failure.
+	 * @since	1.0
 	 */
 	public function close() {
 		// Free resultset
 		//mysql_free_result();
 		// Closing connection
-		mysql_close($this->link);
+		return mysql_close($this->link);
 	}
 	
 	/**
 	 * Get last error in model
 	 * 
-	 * This method returns a string with the error message or FALSE if no errors.
-	 * 
-	 * @return mixed
+	 * @access	public
+	 * @return	mixed	Returns a string with the last error message or FALSE if no errors.
+	 * @since	1.0
 	 */
-	function getLastError() {
+	public function getLastError() {
 		if (is_array($this->error) && count($this->error) > 0) {
 			return end($this->error);
 		}
