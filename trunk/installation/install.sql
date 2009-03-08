@@ -582,23 +582,27 @@ CREATE TABLE IF NOT EXISTS `eo_users` (
   `email` varchar(100) collate utf8_unicode_ci NOT NULL,
   `firstname` varchar(50) collate utf8_unicode_ci NOT NULL,
   `lastname` varchar(50) collate utf8_unicode_ci NOT NULL,
-  `block` enum('0','1') collate utf8_unicode_ci NOT NULL,
+  `photo` varchar(128) collate utf8_unicode_ci default 'default.png',
+  `notifications` enum('0','1') collate utf8_unicode_ci default '1',
+  `show_email` enum('0','1') collate utf8_unicode_ci default '1',
+  `block` enum('0','1') collate utf8_unicode_ci default '0',
   `created` datetime NOT NULL,
   `last_visit` datetime default NULL,
   `activation` varchar(100) collate utf8_unicode_ci default NULL,
   `params` text collate utf8_unicode_ci,
-  `ts` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  `ts` timestamp NULL default CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=86 ;
 
 --
 -- Dumping data for table `eo_users`
 --
 
-INSERT INTO `eo_users` (`id`, `groupid`, `username`, `password`, `email`, `firstname`, `lastname`, `block`, `created`, `last_visit`, `activation`, `params`, `ts`) VALUES
-(62, 1, 'luis.montero', '6dcee317242b8d094e0e56d7aa36e9b3:hNakpNF7iWLijc2Ww53TyfiWoHyB1Zor', 'luis.montero@e-noise.com', 'Luis', 'Montero', '0', '0000-00-00 00:00:00', NULL, NULL, NULL, '0000-00-00 00:00:00'),
-(63, 1, 'svenlito', '6dcee317242b8d094e0e56d7aa36e9b3:hNakpNF7iWLijc2Ww53TyfiWoHyB1Zor', 'sven.lito@e-noise.com', 'Sven', 'Lito', '0', '0000-00-00 00:00:00', NULL, NULL, NULL, '0000-00-00 00:00:00'),
-(64, 1, 'will.vdmerwe', '6dcee317242b8d094e0e56d7aa36e9b3:hNakpNF7iWLijc2Ww53TyfiWoHyB1Zor', 'will.vdmerwe@sliderstudio.co.uk', 'Will', 'Van der Merwe', '0', '0000-00-00 00:00:00', NULL, NULL, NULL, '0000-00-00 00:00:00');
+INSERT INTO `eo_users` (`id`, `groupid`, `username`, `password`, `email`, `firstname`, `lastname`, `photo`, `notifications`, `show_email`, `block`, `created`, `last_visit`, `activation`, `params`, `ts`) VALUES
+(62, 1, 'luis.montero', '6dcee317242b8d094e0e56d7aa36e9b3:hNakpNF7iWLijc2Ww53TyfiWoHyB1Zor', 'luis.montero@e-noise.com', 'Luis', 'Montero', 'default.png', '1', '1', '0', '0000-00-00 00:00:00', NULL, NULL, NULL, '0000-00-00 00:00:00'),
+(63, 1, 'svenlito', '6dcee317242b8d094e0e56d7aa36e9b3:hNakpNF7iWLijc2Ww53TyfiWoHyB1Zor', 'sven.lito@e-noise.com', 'Sven', 'Lito', 'default.png', '1', '1', '0', '0000-00-00 00:00:00', NULL, NULL, NULL, '0000-00-00 00:00:00'),
+(64, 1, 'will.vdmerwe', '6dcee317242b8d094e0e56d7aa36e9b3:hNakpNF7iWLijc2Ww53TyfiWoHyB1Zor', 'will.vdmerwe@sliderstudio.co.uk', 'Will', 'Van der Merwe', 'default.png', '1', '1', '0', '0000-00-00 00:00:00', NULL, NULL, NULL, '0000-00-00 00:00:00');
+
 
 -- --------------------------------------------------------
 

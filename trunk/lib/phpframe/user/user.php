@@ -56,6 +56,26 @@ class user extends table {
 	 */
 	var $lastname=null;
 	/**
+	 * A string containing the file name of the user's photo.
+	 * 
+	 * @var string
+	 */
+	var $photo=null;
+	/**
+	 * Boolean representing whether user wants to receive notifications via email.
+	 * Default is "1" (true). Use values '0' and '1' as this columns is of data type ENUM.
+	 * 
+	 * @var string
+	 */
+	var $notifications=null;
+	/**
+	 * Boolean representing whether user wants to make their email address visible to other users.
+	 * Default is "1" (true). Use values '0' and '1' as this columns is of data type ENUM.
+	 * 
+	 * @var string
+	 */
+	var $show_email=null;
+	/**
 	 * The date and time of creation
 	 * 
 	 * @var string
