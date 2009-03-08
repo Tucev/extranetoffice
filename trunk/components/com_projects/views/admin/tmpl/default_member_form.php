@@ -13,7 +13,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 <script language="javascript" type="text/javascript">
 function submitbutton() {
-	var form = document.iofficenewmemberform;	
+	var form = document.newmemberform;	
 	
 	// do field validation
 	if (form.roleid.value == '0') {
@@ -47,11 +47,22 @@ function submitbutton() {
 </h2>
 
 
-<form action="index.php" method="post" name="iofficenewmemberform">
+<form action="index.php" method="post" name="newmemberform">
 	
 	<fieldset>
 		<legend><?php echo text::_( _LANG_PROJECTS_ADD_EXISTING_MEMBER ); ?></legend>
-		Select existing users by username: <?php echo usersHelper::autocompleteUsername('iofficenewmemberform'); ?>
+		
+		<table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
+		<tr>
+			<td width="30%">
+				<label id="useridsmsg" for="userids">
+					Select existing users by username:
+				</label>
+			</td>
+			<td><?php echo usersHelper::autocompleteUsername('newmemberform'); ?></td>
+		</tr>
+		</table>
+		
 	</fieldset>
 	
 	<div style="padding:10px 5px 5px 5px; font-size: 1.4em;">or</div>
