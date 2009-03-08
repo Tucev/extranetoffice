@@ -41,6 +41,8 @@ require_once _PHPFRAME_PATH.DS."application".DS."view.php";
 require_once _PHPFRAME_PATH.DS."html".DS."html.php";
 require_once _PHPFRAME_PATH.DS."html".DS."pagination.php";
 require_once _PHPFRAME_PATH.DS."html".DS."text.php";
+// Include language file
+require_once _PHPFRAME_PATH.DS."lang".DS."en-GB.php";
 // Include users subpackage classes
 require_once _PHPFRAME_PATH.DS."user".DS."openid.php";
 require_once _PHPFRAME_PATH.DS."user".DS."user.php";
