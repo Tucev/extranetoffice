@@ -111,7 +111,7 @@ class user extends table {
 	 * @access	public
 	 * @param	int		$id 		The row id.
 	 * @param	string	$exclude 	A list of key names to exclude from binding process separated by commas.
-	 * @param	object	$row 		The table row object use for binding. This parameter is passed by reference.
+	 * @param	object	&$row 		The table row object use for binding. This parameter is passed by reference.
 	 * 								This parameter is optional. If omitted the current instance is used ($this).
 	 * @return	mixed	The loaded row object of FALSE on failure.
 	 * @since 	1.0
@@ -134,7 +134,7 @@ class user extends table {
 	 * This method overrides the inherited store method in order to encrypt the password before storing.
 	 * 
 	 * @access	public
-	 * @param	object	$row 	The table row object to store. This parameter is passed by reference.
+	 * @param	object	&$row 	The table row object to store. This parameter is passed by reference.
 	 * 							This parameter is optional. If omitted the current instance is used ($this).
 	 * @return	bool
 	 * @since 	1.0
