@@ -224,7 +224,7 @@ class usersHelper {
 	 */
 	static function autocompleteUsername($form_name) {
 		$db =& factory::getDB();
-		$query = "SELECT id, username FROM #__users ";
+		$query = "SELECT id, username, firstname, lastname FROM #__users ";
 		$query .= " ORDER BY username";
 		$db -> setQuery($query);
 		if (!$rows = $db->loadObjectList()) {
@@ -233,10 +233,10 @@ class usersHelper {
 		
 		// Organise rows into array of arrays instead of array of objects
 		foreach ($rows as $row) {
-			$tokens[] = array($row->username, $row->id);
+			$tokens[] = array('id' => $row->id, 'name' => $row->firstname." ".$row->lastname." (".$row->username.")");
 		}
 		
-		html::autocompleter($form_name, 'username', '', $tokens);
+		html::autocomplete($form_name, 'userids', 'cols="60" rows="2"', $tokens);
 	}
 	
 	/**

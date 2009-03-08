@@ -136,7 +136,6 @@ class html {
 	 * Function to build input with autocomplete and display it
 	 * 
 	 * @static
-	 * @todo	This method needs to be refactored using jQuery instead of mootools.
 	 * @param	string	$form_name	The name of the form where this input tag will appear
 	 * @param 	string	$field_name	The name attribute fot the input tag
 	 * @param	string	$attribs 	A string containing attributes for the input tag
@@ -144,39 +143,52 @@ class html {
 	 * @return 	void
 	 * @since	1.0
 	 */
-	static function autocompleter($form_name, $field_name, $attribs, $tokens) {
+	static function autocomplete($form_name, $field_name, $attribs, $tokens) {
+		$document =& factory::getDocument('html');
+		$document->addScript('lib/jquery/plugins/autocomplete/jquery.autocomplete.pack.js');
+		$document->addStyleSheet('lib/jquery/plugins/autocomplete/jquery.autocomplete.css');
+		
+		$users_string = '';
+		for ($i=0; $i<count($tokens); $i++) {
+			if ($i>0) $users_string .= ";";
+			$users_string .= $tokens[$i]['id']."|".$tokens[$i]['name'];
+		}
 		?>
 		
-		<input autocomplete="off" name="<?php echo $field_name; ?>" id="<?php echo $field_name; ?>" type="text" <?php echo $attribs; ?> />
+		<textarea name="<?php echo $field_name; ?>_autocomplete" id="<?php echo $field_name; ?>_autocomplete" <?php echo $attribs; ?>></textarea>
+		<input name="<?php echo $field_name; ?>" id="<?php echo $field_name; ?>" type="hidden" />
 
 		<script type="text/javascript">
-		window.addEvent('domready', function(){
-			var el = document.<?php echo $form_name; ?>.<?php echo $field_name; ?>;
-			
-			var tokens = [
-				<?php for($i=0; $i<count($tokens); $i++) : ?>
-				<?php if($i>0) { echo ', '; } ?>
-				['<?php echo $tokens[$i][0]; ?>','<?php echo $tokens[$i][1]; ?>']
-				<?php endfor; ?>
-			];
-			
-			var completer1 = new Autocompleter.Local(el, tokens, {
-				'delay': 100,
-				'filterTokens': function() {
-					var regex = new RegExp('^' + this.queryValue.escapeRegExp(), 'i');
-					return this.tokens.filter(function(token) {
-						return (regex.test(token[0]) || regex.test(token[1]));
-					});
-				},
-				'injectChoice': function(choice) {
-					var el = new Element('li', {'class': 'autocomplete'})
-					.setHTML(this.markQueryValue(choice[0]));
-					el.inputValue = choice[0];
-					this.addChoiceEvents(el).injectInside(this.choices);
+			$(document).ready(function() {
+				var data_string = "<?php echo $users_string; ?>".split(";");
+				var data = new Array();
+
+				for (count = 0; count < data_string.length; count++) {
+					data[count] = data_string[count].split("|");
 				}
+
+				function formatItem(row) {
+					return row[1];
+				}
+				
+				function formatResult(row) {
+					return row[1].replace(/(<.+?>)/gi, '');
+				}
+							
+				
+				$("#<?php echo $field_name; ?>_autocomplete").autocomplete(data, {
+					multiple: true,
+					formatItem: formatItem,
+					formatResult: formatResult
+				});
+
+				$("#<?php echo $field_name; ?>_autocomplete").result(function(event, data, formatted) {
+					var hidden = $("#<?php echo $field_name; ?>");
+					hidden.val( (hidden.val() ? hidden.val() + "," : hidden.val()) + data[0]);
+				});
+							
+							
 			});
-			
-		});
 		</script>
 		
 		<?php
