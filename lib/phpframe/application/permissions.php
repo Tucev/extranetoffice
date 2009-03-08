@@ -18,68 +18,68 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class permissions {
+class permissions extends singleton {
 	/**
 	 * The userid.
 	 * 
 	 * @var int
 	 */
-	var $userid=null;
+	private $userid=null;
 	/**
 	 * The groupid.
 	 * 
 	 * @var int
 	 */
-	var $groupid=null;
+	private $groupid=null;
 	/**
 	 * Access level list loaded from database.
 	 * 
 	 * @var array
 	 */
-	var $acl=null;
+	private $acl=null;
 	/**
 	 * Is super admin?
 	 * 
 	 * @var bool
 	 */
-	var $super_admin=null;
+	private $super_admin=null;
 	/**
 	 * Is user allowed to access task and/or view?
 	 *  
 	 * @var bool
 	 */
-	var $is_allowed=null;
+	public $is_allowed=null;
 	/**
 	 * A string with the component's option value ie: (com_admin).
 	 * 
 	 * @var string
 	 */
-	var $option=null;
+	private $option=null;
 	/**
 	 * The task to be executed.
 	 * 
 	 * @var string
 	 */
-	var $task=null;
+	private $task=null;
 	/**
 	 * The view set to be displayed.
 	 * 
 	 * @var string
 	 */
-	var $view=null;
+	private $view=null;
 	/**
 	 * The layout template to be loaded.
 	 * 
 	 * @var string
 	 */
-	var $layout=null;
+	private $layout=null;
 	
 	/**
 	 * Constructor
 	 *
 	 * @since 1.0
 	 */
-	function __construct() {
+	protected function __construct() {
 		// Get URL vars
 		$this->option = request::getVar('option');
 		$this->task = request::getVar('task', 'display');
@@ -90,7 +90,11 @@ class permissions {
 		$user =& factory::getUser();
 		$this->userid = $user->id;
 		if (empty($this->userid)) {
-			return false;
+			$this->userid = 0;
+			$this->groupid = 0;
+		}
+		else {
+			$this->groupid = $user->groupid;
 		}
 		
 		// is super admin?
@@ -101,11 +105,8 @@ class permissions {
 			$this->super_admin = false;
 		}
 		
-		// get group
-		$this->groupid = $user->groupid;
-		
 		// decide if user is allowed to go ahead ased on group membership
-		if ($this->checkACL()) {
+		if (!$this->checkACL($this->option, $this->task, $this->view, $this->layout)) {
 			return false;
 		}
 		else {
@@ -122,12 +123,12 @@ class permissions {
 	 * @return bool
 	 * @since 1.0
 	 */
-	function checkACL() {
+	public function checkACL($option, $task='display', $view='', $layout='') {
 		// Get group ACL
 		$db =& factory::getDB();
 		$query = "SELECT * ";
 		$query .= " FROM #__acl_groups ";
-		$query .= " WHERE groupid = ".$this->groupid." AND `option` = '".$this->option."' AND task = '".$this->task."'";
+		$query .= " WHERE groupid = ".$this->groupid." AND `option` = '".$option."'";
 		$db->setQuery($query);
 		$this->acl = $db->loadObjectList();
 		
@@ -137,9 +138,13 @@ class permissions {
 		}
 		elseif (is_array($this->acl) && count($this->acl) > 0) {
 			// Check if user is allowed to execute requested task
-			if (!empty($this->task)) {
+			if (!empty($task)) {
 				foreach ($this->acl as $acl) {
-					if ($acl->task == $this->task && !empty($acl->value)) {
+					if ($acl->task == '*') {
+						$task_allowed = true;
+						break;
+					}
+					elseif ($acl->task == $task && !empty($acl->value)) {
 						$task_allowed = true;
 						break;
 					}
@@ -153,11 +158,24 @@ class permissions {
 			}
 			
 			// Check if user is allowed to access requested view
-			if (!empty($this->view)) {
+			if (!empty($view)) {
 				foreach ($this->acl as $acl) {
-					if ($acl->view == $this->view && ($acl->layout == '*') || (!empty($acl->layout) && $acl->layout == $this->layout)) {
+					if ($acl->view == '*') {
 						$view_allowed = true;
 						break;
+					}
+					if ($acl->view == $view) {
+						if ($acl->layout == '*') {
+							$view_allowed = true;
+							break;
+						}
+						elseif (!empty($acl->layout) && $acl->layout == $layout) {
+							$view_allowed = true;
+							break;
+						}
+						else {
+							$view_allowed = false;
+						}
 					}
 					else {
 						$view_allowed = false;
@@ -177,6 +195,9 @@ class permissions {
 			}
 			
 			return $this->is_allowed;
+		}
+		else {
+			return false;
 		}
 	}
 }

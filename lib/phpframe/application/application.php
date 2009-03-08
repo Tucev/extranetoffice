@@ -223,6 +223,10 @@ class application extends singleton {
 	public function exec() {
 		// Set component option in application
 		$this->option =& request::getVar('option', 'com_dashboard');
+		
+		// Initialise permissions
+		$this->permissions = phpFrame::getInstance('permissions');
+		
 		// Get component info
 		$components =& phpFrame::getInstance('components');
 		$this->component_info = $components->loadByOption($this->option);

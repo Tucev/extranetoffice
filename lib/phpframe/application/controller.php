@@ -75,12 +75,6 @@ abstract class controller extends singleton {
 	 */
 	var $layout=null;
 	/**
-	 * Permissions object
-	 * 
-	 * @var object
-	 */
-	var $permissions=null;
-	/**
 	 * Array containing a list of with the available views
 	 * 
 	 * @var array
@@ -111,9 +105,6 @@ abstract class controller extends singleton {
 		$this->view = request::getVar('view');
 		$this->layout = request::getVar('layout');
 		
-		// Check permissions
-		$this->permissions = new permissions();
-		
 		// Get available views
 		$this->views_available = $this->getAvailableViews();
 		
@@ -138,7 +129,10 @@ abstract class controller extends singleton {
 	 * @since	1.0
      */
 	public function display() {
-		if ($this->permissions->is_allowed === true) {
+		// Get reference to application
+		$application =& factory::getApplication();
+		
+		if ($application->permissions->is_allowed === true) {
 			$this->view_obj = $this->getView(request::getVar('view'));
 			if (is_callable(array($this->view_obj, 'display'))) {
 				$this->view_obj->display();	
