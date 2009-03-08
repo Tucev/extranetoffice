@@ -102,8 +102,8 @@ function submitbutton() {
 	
 	<div style="clear:both; margin-top:30px;"></div>
 	
-	<button class="button" type="button" onclick="window.history.back();"><?php echo text::_('Cancel'); ?></button>
-	<button class="button" type="button" onclick="submitbutton(); return false;"><?php echo text::_('Save'); ?></button>
+	<?php html::buttonBack(); ?> 
+	<?php html::buttonSave(); ?> 
 	
 	<input type="hidden" name="option" value="com_projects" />
 	<input type="hidden" name="task" value="save_member" />

@@ -115,9 +115,9 @@ function submitbutton(action) {
 
 <div style="clear:both; margin-top:30px;"></div>
 
-<button class="button" type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button> 	
-<button class="button" type="button" onclick="submitbutton('save');return false;"><?php echo text::_('Save'); ?></button>
-<button class="button" type="button" onclick="submitbutton('apply');return false;"><?php echo text::_('Apply'); ?></button>
+<?php html::buttonBack(); ?> 
+<?php html::buttonSave(); ?> 
+<?php html::buttonApply(); ?>
 
 <input type="hidden" name="projectid" value="<?php echo $this->projectid;?>" />
 <input type="hidden" name="option" value="com_projects" />

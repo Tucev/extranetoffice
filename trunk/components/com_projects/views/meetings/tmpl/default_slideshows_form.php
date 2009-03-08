@@ -55,8 +55,8 @@ function submitbutton() {
 
 <div style="clear:both; margin-top:30px;"></div>
 
-<button class="button" type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button> 	
-<button class="button" type="button" onclick="submitbutton();return false;"><?php echo text::_('Save'); ?></button>
+<?php html::buttonBack(); ?> 
+<?php html::buttonSave(); ?> 
 
 <input type="hidden" name="projectid" value="<?php echo $this->projectid;?>" />
 <input type="hidden" name="id" value="<?php echo $this->row->id;?>" />
