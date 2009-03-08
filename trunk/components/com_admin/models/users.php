@@ -146,8 +146,14 @@ class adminModelUsers extends model {
 		
 		$post = request::get('post');
 		
+		// exlude password if not passed in request
+		$exclude = '';
+		if (empty($post['password'])) {
+			$exclude = 'password';
+		}
+		
 		// Bind the post data to the row array
-		if ($user->bind($post, '', $row) === false) {
+		if ($user->bind($post, $exclude, $row) === false) {
 			$this->error[] = $user->getLastError();
 			return false;
 		}
@@ -156,7 +162,7 @@ class adminModelUsers extends model {
 			$this->error[] = $user->getLastError();
 			return false;
 		}
-	
+		
 		if (!$user->store($row)) {
 			$this->error[] = $user->getLastError();
 			return false;
