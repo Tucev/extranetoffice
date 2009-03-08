@@ -28,6 +28,7 @@ define("_LANG_CREATED", "Date created");
 define("_LANG_NAME", "Name");
 define("_LANG_USERNAME", "Username");
 define("_LANG_PASSWORD", "Password");
+define("_LANG_PASSWORD_VERIFY", "Verify password");
 define("_LANG_FIRSTNAME", "First name");
 define("_LANG_LASTNAME", "Last name");
 define("_LANG_BLOCK", "Block");
@@ -42,13 +43,14 @@ define("_LANG_DTEND", "Date end");
 define("_LANG_START_DATE", "Start date");
 define("_LANG_END_DATE", "End date");
 define("_LANG_NAME_REQUIRED", "Name is required");
-define("_LANG_EMAIL_NOT_SENT", "Notification to %s not sent");
+define("_LANG_EMAIL_NOT_SENT", "Notification to %s could NOT be sent");
 define("_LANG_COMMENTS_SEND", "Comment");
 define("_LANG_STATUS_OVERDUE", "Overdue");
 define("_LANG_STATUS_CLOSED", "Closed");
 define("_LANG_STATUS_UPCOMING", "Upcoming");
 
 // com_admin
+// com_admin > Global configuration
 define("_LANG_GLOBAL_CONFIG", "Global configuration");
 define("_LANG_GENERAL_CONFIG", "General settings");
 define("_LANG_CONFIG_SITENAME", "Site name");
@@ -81,9 +83,21 @@ define("_LANG_CONFIG_SMTP_FROMADDRESS", "From address");
 define("_LANG_CONFIG_SMTP_FROMNAME", "From name");
 define("_LANG_CONFIG_SAVE_SUCCESS", "Global configuration successfully saved");
 
+// com_admin > User Management
 define("_LANG_ADMIN_USERS", "User management");
 define("_LANG_ADMIN_USERS_NEW", "New user");
 define("_LANG_ADMIN_USER_DETAILS", "User details");
+define("_LANG_PASSWORD_AUTOGEN_INFO", "A password will be automatically generated and sent via email to the new user.");
+define("_LANG_USER_SAVE_SUCCESS", "User successfully saved");
+define("_LANG_USER_NEW_NOTIFY_SUBJECT", "New user account");
+define("_LANG_USER_NEW_NOTIFY_BODY", "Hello %s,
+
+Your login details:
+URL: %s
+Login username: %s
+Password: %s
+
+This email has been automatically generated. Please do not reply to this message.");
 
 // com_dashboard
 define("_LANG_DASHBOARD", "Dashboard");
@@ -202,6 +216,7 @@ define("_LANG_MESSAGES_BODY_REQUIRED", "Message must contain some text");
 define("_LANG_MESSAGE_SAVED", "Message saved");
 define("_LANG_MESSAGE_DELETED", "Message deleted");
 define("_LANG_MESSAGES_ACTION_NEW", "New message");
+define("_LANG_MESSAGES_BODY", "Body");
 
 // Issues
 define("_LANG_ISSUES", "Issues");

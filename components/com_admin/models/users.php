@@ -55,8 +55,7 @@ class adminModelUsers extends model {
 		$query = "SELECT 
 				  u.id
 				  FROM #__users AS u 
-				  JOIN #__users_groups ug ON ug.userid = u.id 
-				  LEFT JOIN #__groups g ON ug.groupid = g.id "
+				  LEFT JOIN #__groups g ON u.groupid = g.id "
 				  . $where . 
 				  " GROUP BY u.id ";
 		
@@ -70,8 +69,7 @@ class adminModelUsers extends model {
 				  u.*, 
 				  g.id AS groupid, g.name AS group_name 
 				  FROM #__users AS u 
-				  JOIN #__users_groups ug ON ug.userid = u.id 
-				  LEFT JOIN #__groups g ON ug.groupid = g.id "
+				  LEFT JOIN #__groups g ON u.groupid = g.id "
 				  . $where . 
 				  " GROUP BY u.id ";
 
@@ -97,14 +95,19 @@ class adminModelUsers extends model {
 		return $return;
 	}
 	
+	/**
+	 * Get details for a single user
+	 * 
+	 * @param	int		$userid
+	 * @return 	mixed	An object containing the user data or FALSE on failure.
+	 */
 	function getUsersDetail($userid=0) {
 		if (!empty($userid)) {
 			$query = "SELECT 
 					  u.*, 
 					  g.id AS groupid, g.name AS group_name 
 					  FROM #__users AS u 
-					  JOIN #__users_groups ug ON ug.userid = u.id 
-					  LEFT JOIN #__groups g ON ug.groupid = g.id 
+					  LEFT JOIN #__groups g ON u.groupid = g.id 
 					  WHERE u.id = '".$userid."'";
 			$this->db->setQuery($query);
 			return $this->db->loadObject();
@@ -112,6 +115,74 @@ class adminModelUsers extends model {
 		else {
 			return false;
 		}
+	}
+	
+	function saveUser() {
+		$userid = request::getVar('id', null);
+		
+		// Get reference to user object
+		$user =& factory::getUser();
+		
+		// Create standard object to store user properties
+		// We do this because we dont want to overwrite the current user object.
+		// Remember the user object extends table, which in turn extends singleton.
+		$row = new standardObject();
+		
+		// if no userid passed in request we assume it is a new user
+		if (empty($userid)) {
+			$row->block = '0';
+			$row->created = date("Y-m-d H:i:s");
+			// Generate random password and store in local variable to be used when sending email to user.
+			$password = crypt::genRandomPassword();
+			// Assign newly generated password to row object (this password will be encrypted when stored).
+			$row->password = $password;
+			$new_user = true;
+		}
+		// if a userid is passed in the request we assume we are updating an existing user
+		else {
+			$user->load($userid, 'password', $row);
+			$new_user = false;
+		}
+		
+		$post = request::get('post');
+		
+		// Bind the post data to the row array
+		if ($user->bind($post, '', $row) === false) {
+			$this->error[] = $user->getLastError();
+			return false;
+		}
+		
+		if (!$user->check($row)) {
+			$this->error[] = $user->getLastError();
+			return false;
+		}
+	
+		if (!$user->store($row)) {
+			$this->error[] = $user->getLastError();
+			return false;
+		}
+		
+		// Send notification to new users
+		if ($new_user === true) {
+			$uri =& factory::getURI();
+		
+			$new_mail = new mail();
+			$new_mail->AddAddress($row->email, usersHelper::fullname_format($row->firstname, $row->lastname));
+			$new_mail->Subject = _LANG_USER_NEW_NOTIFY_SUBJECT;
+			$new_mail->Body = sprintf(_LANG_USER_NEW_NOTIFY_BODY, 
+									 $row->firstname, 
+									 $uri->getBase(), 
+									 $row->username, 
+									 $password
+							);
+									   
+			if ($new_mail->Send() !== true) {
+				$this->error[] = sprintf(_LANG_EMAIL_NOT_SENT, $row->email);
+				return false;
+			}
+		}
+		
+		return true;
 	}
 }
 ?>
