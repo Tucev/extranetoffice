@@ -163,6 +163,8 @@ define("_LANG_PROJECTS_NAME_REQUIRED", "Project name is required");
 
 define("_LANG_PROJECTS_HOME", "Project home");
 
+define("_LANG_PROJECTS_SWITCHER", "Switch to project");
+
 // admin
 define("_LANG_ADMIN", "Admin");
 define("_LANG_PROJECT_SAVED", "Project successfully saved");
