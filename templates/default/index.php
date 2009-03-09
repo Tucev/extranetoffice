@@ -14,6 +14,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 $module_positions = array();
 $module_positions['topmenu'] = $this->modules->display('topmenu', '_topmenu');
 $module_positions['mainmenu'] = $this->modules->display('mainmenu', '_mainmenu');
+$module_positions['topright'] = $this->modules->display('topright', '_topright');
 $module_positions['right'] = $this->modules->display('right');
 ?>
 
@@ -51,7 +52,8 @@ $module_positions['right'] = $this->modules->display('right');
  
 <!-- Content -->
 <div id="wrapper_outer">
-
+	
+	<?php echo $module_positions['topright']; ?>
 	<?php echo $module_positions['mainmenu']; ?>
 	
 	<div id="wrapper">

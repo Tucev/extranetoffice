@@ -50,6 +50,10 @@ color: #333333;
 	z-index:1000;
 }
 
+.module_topright {
+float: right;
+}
+
 ul#menu {
 height:21px;
 list-style-type:none;
