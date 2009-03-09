@@ -250,7 +250,7 @@ class usersHelper {
 	static function selectGroup($selected=0, $attribs='', $fieldname='groupid') {
 		// assemble users to the array
 		$options = array();
-		$options[] = html::_('select.option', '0', text::_( '-- Select a Group --' ) );
+		//$options[] = html::_('select.option', '0', text::_( '-- Select a Group --' ) );
 		
 		// get users from #__users
 		$db =& factory::getDB();

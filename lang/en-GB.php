@@ -110,6 +110,7 @@ define("_LANG_USER_GENERAL_SETTINGS", "General settings");
 define("_LANG_USER_PHOTO", "Photo");
 define("_LANG_USER_EMAIL_NOTIFICATIONS", "Email notifications");
 define("_LANG_USER_SHOW_EMAIL", "Show email address to other users");
+define("_LANG_USERS_NO_SELECTED", "No user has been selected");
 
 
 // com_projects
@@ -162,31 +163,33 @@ define("_LANG_PROJECTS_NAME_REQUIRED", "Project name is required");
 
 define("_LANG_PROJECTS_HOME", "Project home");
 
+// admin
 define("_LANG_ADMIN", "Admin");
 define("_LANG_PROJECT_SAVED", "Project successfully saved");
 define("_LANG_PROJECT_SAVE_ERROR", "An error occurred while saving the project.");
 define("_LANG_PROJECT_DELETED", "Project successfully deleted");
 define("_LANG_PROJECTS_ROLE", "Role");
 
+define("_LANG_PROJECTS_ADD_MEMBER", "Add project members");
 define("_LANG_PROJECTS_ADD_EXISTING_MEMBER", "Add existing user to this project");
 define("_LANG_PROJECTS_INVITE_NEW_MEMBER", "Invite a new user to this project");
 define("_LANG_PROJECTS_ROLE_REQUIRED", "Role is required");
-define("_LANG_ADMIN_USER_REQUIRED", "Please select an existing user or invite a new");
+define("_LANG_ADMIN_USER_REQUIRED", "Please select an existing user or invite a new one");
 define("_LANG_ADMIN_NAME_REQUIRED", "Name is required for new users");
 define("_LANG_ADMIN_NEW_USERNAME_REQUIRED", "Username is required for new users");
 define("_LANG_PROJECT_NEW_MEMBER_SAVED", "New project member has been added");
 define("_LANG_PROJECT_MEMBER_DELETED", "Member was removed from project");
 define("_LANG_PROJECTS_MEMBERS", "Project members");
 define("_LANG_ADMIN_NEW_MEMBER_INVITED", "Invitation has been sent to new member");
-define("_LANG_ADMIN_INVITATION_SUBJECT", "%s has invited you to join project \"%s\" at %s");
-define("_LANG_ADMIN_INVITATION_BODY", "%s has added you to the following project: 
+define("_LANG_PROJECTS_INVITATION_SUBJECT", "%s has invited you to join project \"%s\" at %s");
+define("_LANG_PROJECTS_INVITATION_BODY", "%s has added you to the following project: 
 
 Project name: %s
 Role: %s
 
 URL: %s
 ");
-define("_LANG_ADMIN_INVITATION_NEW_USER_BODY", "Invitation sent by: %s
+define("_LANG_PROJECTS_INVITATION_NEW_USER_BODY", "Invitation sent by: %s
 
 Project name: %s
 Role: %s

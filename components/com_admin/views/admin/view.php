@@ -67,10 +67,6 @@ class adminViewAdmin extends view {
 	 */
 	function displayAdmin() {
 		$this->page_title = _LANG_ADMIN;
-		
-		// Push model into the view
-		//$model =& $this->getModel('projects');
-		//$this->members = $model->getMembers($this->projectid);
 	}
 }
 ?>

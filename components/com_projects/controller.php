@@ -101,43 +101,55 @@ class projectsController extends controller {
 	
 	function save_member() {
 		// Check for request forgeries
-		request::checkToken() or jexit( 'Invalid Token' );
+		crypt::checkToken() or exit( 'Invalid Token' );
 		
 		$projectid = request::getVar('projectid', 0);
-		$userid = request::getVar('userid', 0);
 		$roleid = request::getVar('roleid', 0);
-		$invite_member_email = request::getVar('invite_member_email', '');
+		$email = request::getVar('email', '');
 		
-		if (!empty($invite_member_email)) {
-			$name = request::getVar('name', 0);
-			$new_username = request::getVar('new_username', 0);
-			
-			$modelUsers =& $this->getModel('users');
-			$modelUsers->inviteUser($name, $new_username, $invite_member_email, $projectid, $roleid);
+		// if an email address has been passed to invite a new member we do so
+		if (!empty($email)) {
+			$modelMembers =& $this->getModel('members');
+			// Add the user to the system and add as a member of this project
+			if ($modelMembers->inviteNewUser($projectid, $roleid) === false) {
+				error::raise('', 'error',  $modelMembers->getLastError());
+			}
+			else {
+				error::raise('', 'message',  _LANG_PROJECT_NEW_MEMBER_SAVED);
+			}
 		}
 		else {
-			// Check if the request was made from the new member form, this sends the username in the HTTP request
-			$username = request::getVar('username', '');
-			if (empty($userid) && !empty($username)) {
-				// Translate username to user id and set column
-				$userid = iOfficeHelperUsers::username2id($username);
+			// Add existing users to project
+			$userids = request::getVar('userids', '');
+			if (empty($userids)) {
+				error::raise('', 'error',  _LANG_USERS_NO_SELECTED);
 			}
-
-			$modelProjects =& $this->getModel('projects');
-			$modelProjects->saveMember($projectid, $userid, $roleid);
-
-			error::raise('', 'message',  _LANG_PROJECT_NEW_MEMBER_SAVED);	
+			else {
+				$userids_array = explode(',', $userids);
+				$modelMembers =& $this->getModel('members');
+				$error = false; // initialise var to flag model errors
+				foreach ($userids_array as $userid) {
+					if ($modelMembers->saveMember($projectid, $userid, $roleid) === false) {
+						$error = true;
+						error::raise('', 'warning',  $modelMembers->getLastError());
+					}
+				}
+				
+				if ($error === false) {
+					error::raise('', 'message',  _LANG_PROJECT_NEW_MEMBER_SAVED);	
+				}	
+			}
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=projects&layout=admin&projectid='.$projectid);
+		$this->setRedirect('index.php?option=com_projects&view=admin&projectid='.$projectid);
 	}
 	
 	function remove_member() {
 		$projectid = request::getVar('projectid', 0);
 		$userid = request::getVar('userid', 0);
 		
-		$modelProjects = &$this->getModel('projects');
-		$modelProjects->deleteMember($projectid, $userid);
+		$modelMembers = &$this->getModel('members');
+		$modelMembers->deleteMember($projectid, $userid);
 		
 		error::raise('', 'message', _LANG_PROJECT_MEMBER_DELETED);
 		
@@ -149,8 +161,8 @@ class projectsController extends controller {
 		$userid = request::getVar('userid', 0);
 		$roleid = request::getVar('roleid', 0);
 		
-		$modelProjects = &$this->getModel('projects');
-		$modelProjects->changeMemberRole($projectid, $userid, $roleid);
+		$modelMembers = &$this->getModel('members');
+		$modelMembers->changeMemberRole($projectid, $userid, $roleid);
 		
 		error::raise('', 'message', _LANG_PROJECT_MEMBER_ROLE_SAVED);
 		
