@@ -27,8 +27,10 @@ class crypt {
 	/**
 	 * Provides a secure hash based on a seed
 	 * 
-	 * @param string Seed string
-	 * @return string 
+	 * @access	public
+	 * @param	string	Seed string
+	 * @return	string
+	 * @since	1.0
 	 */
 	static function getHash($seed) {
 		$config =& factory::getConfig();
@@ -38,9 +40,11 @@ class crypt {
     /**
      * Method to determine a hash for anti-spoofing variable names
      * 
-     * @return    string    Hashed var name
-     * @since    1.5
-     * @static
+     * @access	public
+     * @param	$forceNew	Optional parameter. Default value is FALSE. 
+     * 						If set to TRUE it forces the session to generate a new token.
+     * @return	string		Hashed var name
+     * @since	1.0
      */
     static function getToken($forceNew = false) {
     	$user =& factory::getUser();
@@ -54,10 +58,12 @@ class crypt {
      * Checks for a form token in the request
      *
      * Use in conjuction with html::_( 'form.token' )
-     *
+     * 
+     * @access	public
      * @return	bool	True if found and valid, false otherwise
+     * @since	1.0
      */
-    function checkToken() {
+    static function checkToken() {
     	$token = crypt::getToken();
     	if (!request::getVar($token, '')) {
     		return false;
@@ -91,6 +97,7 @@ class crypt {
 	 *								etc). Defaults to false.
 	 *
 	 * @return string  The encrypted password.
+	 * @since	1.0
 	 */
 	static function getCryptedPassword($plaintext, $salt = '', $encryption = 'md5-hex', $show_encrypt = false) {
 		// Get the salt to use.
@@ -184,6 +191,7 @@ class crypt {
 	 *							a salt for. Defaults to none.
 	 *
 	 * @return string  The generated or extracted salt.
+	 * @since	1.0
 	 */
 	static function getSalt($encryption = 'md5-hex', $seed = '', $plaintext = '') {
 		// Encrypt the password.
@@ -259,10 +267,10 @@ class crypt {
 	/**
 	 * Generate a random password
 	 *
-	 * @static
+	 * @access	public
 	 * @param	int		$length	Length of the password to generate
 	 * @return	string			Random Password
-	 * @since	1.5
+	 * @since	1.0
 	 */
 	static function genRandomPassword($length = 8) {
 		$salt = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -284,11 +292,11 @@ class crypt {
 	/**
 	 * Converts to allowed 64 characters for APRMD5 passwords.
 	 *
-	 * @access private
-	 * @param string  $value
-	 * @param integer $count
-	 * @return string  $value converted to the 64 MD5 characters.
-	 * @since 1.5
+	 * @access	private
+	 * @param	string	$value
+	 * @param	integer	$count
+	 * @return	string  $value converted to the 64 MD5 characters.
+	 * @since	1.0
 	 */
 	private function _toAPRMD5($value, $count) {
 		/* 64 characters that are valid for APRMD5 passwords. */
@@ -306,10 +314,10 @@ class crypt {
 	/**
 	 * Converts hexadecimal string to binary data.
 	 *
-	 * @access private
-	 * @param string $hex  Hex data.
-	 * @return string  Binary data.
-	 * @since 1.5
+	 * @access	private
+	 * @param	string	$hex  Hex data.
+	 * @return	string  Binary data.
+	 * @since	1.0
 	 */
 	private function _bin($hex) {
 		$bin = '';
