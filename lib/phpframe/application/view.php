@@ -118,7 +118,12 @@ abstract class view extends singleton {
      */
     function display() {
 		// If there is a layout specific method we trigger it before including the tmpl file.
-		$tmpl_specific_method = "display".ucfirst(request::getVar('view')).ucfirst($this->layout);
+    	$layout_array = explode('_', $this->layout);
+    	$layout = '';
+    	for ($i=0; $i<count($layout_array); $i++) {
+    		$layout .= ucfirst($layout_array[$i]);
+    	}
+		$tmpl_specific_method = "display".ucfirst(request::getVar('view')).ucfirst($layout);
 		if (method_exists($this, $tmpl_specific_method)) {
 			// Invoke layout specific display method
 			$this->$tmpl_specific_method();
