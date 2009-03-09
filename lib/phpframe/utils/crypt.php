@@ -65,10 +65,6 @@ class crypt {
     		$session =& factory::getSession();
     		if ($session->isNew()) {
     			//Redirect to login screen
-    			global $mainframe;
-    			$return = JRoute::_('index.php');
-    			$mainframe->redirect($return, JText::_('SESSION_EXPIRED'));
-    			$mainframe->close();
     		}
     		else {
     			return false;
