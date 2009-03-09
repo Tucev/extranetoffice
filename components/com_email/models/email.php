@@ -97,11 +97,16 @@ class emailModelEmail extends model {
 	/**
 	 * Load current user's email account settings
 	 * 
+	 * @todo	See comments bellow for more info...
 	 * @return	void
 	 */
 	function loadUserEmailAccount() {
 		// Load settings
-		$accountModel =& $this->getModel('accounts');
+		// This is a very dirty hack to get instance of accounts model correctly 
+		// when accessing this model form the dashboard component.
+		// $accountModel =& $this->getModel('accounts');
+		require_once _ABS_PATH.DS.'components'.DS.'com_email'.DS.'models'.DS.'accounts.php';
+		$accountModel =& phpFrame::getInstance('emailModelAccounts');
 		$account = $accountModel->getAccounts($this->user->id, $this->accountid, true);
 		
 		// Set account details in model

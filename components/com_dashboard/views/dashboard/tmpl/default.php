@@ -17,12 +17,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	</a>
 </div>
 
-<h2><?php echo $this->page_title; ?></h2>
+<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 
 <div id="right_col">
 	
 	<div style="float:right;">
-		 <img style="float:right; margin: 5px 0 3px 3px;" src="<?php echo $this->config->upload_dir."/users/".$this->settings->photo; ?>" />
+		 <img style="float:right; margin: 5px 0 3px 3px;" src="<?php echo $this->config->upload_dir."/users/".$this->user->photo; ?>" />
 	</div>
 	
 	<h3>My profile</h3>
@@ -43,10 +43,10 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	
 	<div class="ioffice_module">
 	
-	<?php if ($this->groupid == 1) : ?>
+	<?php if ($this->user->groupid == 1) : ?>
 	<div style="float:right;" class="new">
-		 <a style="float:right;" href="<?php echo JRoute::_("index.php?option=com_intranetoffice&view=projects&type=new"); ?>" title="<?php echo JText::_( _LANG_PROJECTS_NEW ); ?>">
-		<?php echo JText::_( _LANG_PROJECTS_NEW ); ?>
+		 <a style="float:right;" href="<?php echo route::_("index.php?option=com_projects&view=projects&type=new"); ?>" title="<?php echo text::_( _LANG_PROJECTS_NEW ); ?>">
+		<?php echo text::_( _LANG_PROJECTS_NEW ); ?>
 		</a>
 	</div>
 	<?php endif; ?>
@@ -56,7 +56,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 		<?php if (is_array($this->projects) && count($this->projects) > 0) : ?>
 		<?php foreach ($this->projects as $project) : ?>
 		<li>
-			<a href="<?php echo JRoute::_("index.php?option=com_intranetoffice&view=projects&type=detail&projectid=".$project->id); ?>">
+			<a href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=detail&projectid=".$project->id); ?>">
 				<?php echo $project->name; ?>
 			</a>
 		</li>
@@ -70,7 +70,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	
 </div><!-- close .ioffice_right_col -->
 
-<div id="main_col">
+<div id="main_col_2">
 
 <?php //if ($this->iOfficeConfig->get('enable_email_client') && $this->settings->enable_email_client) : ?>
 
@@ -93,13 +93,13 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	<?php foreach ($this->emails as $email) : ?>
 	<?php 
   	if ($email->answered == 1) { 
-  		$status_icon = '<img src="administrator/components/com_intranetoffice/templates/'.$this->iOfficeConfig->get('template').'/icons/email/replied.png" alt="Unread" />';
+  		$status_icon = '<img src="templates/'.$this->config->get('template').'/images/icons/email/replied.png" alt="Unread" />';
   	}
   	elseif ($email->seen == 0) {
-  		$status_icon = '<img src="administrator/components/com_intranetoffice/templates/'.$this->iOfficeConfig->get('template').'/icons/email/new.png" alt="Unread" />';
+  		$status_icon = '<img src="templates/'.$this->config->get('template').'/images/icons/email/new.png" alt="Unread" />';
   	}
   	else { 
-  		$status_icon = '<img src="administrator/components/com_intranetoffice/templates/'.$this->iOfficeConfig->get('template').'/icons/email/read.png" alt="Read" />'; 
+  		$status_icon = '<img src="templates/'.$this->config->get('template').'/images/icons/email/read.png" alt="Read" />'; 
   	}
     ?>
 	<tr class="row<?php echo $k; ?> seen<?php echo $email->seen; ?> <?php if ($email->deleted == 1) echo 'deleted'; ?>">
@@ -108,12 +108,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
   	<?php echo $attachment_icon; ?>
   	</td>
 	<td>
-		<a class="bold" href="<?php echo JRoute::_("index.php?view=email&type=detail&folder=INBOX&uid=".$email->uid); ?>">
+		<a class="bold" href="<?php echo route::_("index.php?option=com_email&view=messages&layout=detail&folder=INBOX&uid=".$email->uid); ?>">
 		<?php echo substr($email->from, 0, 32); if (strlen($email->from) > 33) { echo '...'; } ?>
 		</a>
 	</td>
 	<td>
-		<a class="bold" href="<?php echo JRoute::_("index.php?view=email&type=detail&folder=INBOX&uid=".$email->uid); ?>">
+		<a class="bold" href="<?php echo route::_("index.php?option=com_email&view=messages&layout=detail&folder=INBOX&uid=".$email->uid); ?>">
 		<?php echo substr($email->subject, 0, 32); if (strlen($email->subject) > 33) { echo '...'; } ?>
 		</a>
 	</td>
@@ -126,7 +126,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	</tbody>
 	</table>
 	<?php elseif ($this->emails) : ?>
-	<?php echo JText::_( _LANG_NO_EMAIL ); ?>
+	<?php echo text::_( _LANG_NO_EMAIL ); ?>
 	<?php else : ?>
 	No e-mail account.
 	<?php endif; ?>
@@ -135,7 +135,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 <?php //endif; // enable email client? ?>
 
-<?php //if ($this->iOfficeConfig->get('enable_projects')) : ?>
+<?php //if ($this->config->get('enable_projects')) : ?>
 	
 <div class="main_col_module">
 	<h3 class="project_updates"><?php echo _LANG_PROJECTS_UPDATES; ?></h3>
@@ -145,18 +145,18 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	
 	<?php if (is_array($project->activitylog) && count($project->activitylog) > 0) : ?>
 	<h4>
-		<a href="<?php echo JRoute::_("index.php?option=com_intranetoffice&view=projects&type=detail&projectid=".$project->id); ?>">
+		<a href="<?php echo route::_("index.php?option=com_projects&view=projects&type=detail&projectid=".$project->id); ?>">
 		<?php echo $project->name; ?>
 		</a>
 	</h4>
 	
 	<div class="overdue_issues_16">
-		<a href="<?php echo JRoute::_("index.php?option=com_intranetoffice&view=projects&type=issues&projectid=".$project->id); ?>">
+		<a href="<?php echo route::_("index.php?option=com_projects&view=projects&type=issues&projectid=".$project->id); ?>">
 		<?php echo $project->overdue_issues." "._LANG_ISSUES_OVERDUE; ?>
 		</a>
 	</div>
 	<div class="upcoming_milestones_16">
-		<a href="<?php echo JRoute::_("index.php?option=com_intranetoffice&view=projects&type=milestones&projectid=".$project->id); ?>">
+		<a href="<?php echo route::_("index.php?option=com_projects&view=projects&type=milestones&projectid=".$project->id); ?>">
 		<?php echo _LANG_MILESTONES_UPCOMING; ?>
 		</a>
 	</div>
@@ -167,15 +167,15 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	<tr>
 		<td width="70">
 			<div class="activitylog_<?php echo $log->type; ?>">
-				<?php echo iOfficeHelperProjects::activitylog_type2printable($log->type); ?>
+				<?php echo projectsHelperProjects::activitylog_type2printable($log->type); ?>
 			</div>
 		</td>
 		<td>
-			<a href="<?php echo JRoute::_($log->url); ?>">
+			<a href="<?php echo route::_($log->url); ?>">
 			<?php echo $log->title; ?>
 			</a>
 		</td>
-		<td><?php echo $log->action." by ".iOfficeHelperUsers::id2name($log->userid); ?></td>
+		<td><?php echo $log->action." by ".usersHelper::id2name($log->userid); ?></td>
 		<td><?php echo date("D, d M Y H:ia", strtotime($log->ts)); ?></td>
 	</tr>
 	<?php endforeach; ?>
