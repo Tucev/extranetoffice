@@ -1,6 +1,6 @@
 jquery: MIT
 openid: LGPL
-pChart: GPL
+phpFrame: BSD style
 phpinputfilter: GPL
 phpmailer: LGPL
 phpxmlrpc: BSD style
