@@ -13,6 +13,11 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * Crypt Class
  * 
+ * This class provides a set of cryptographic tools used for password encryption 
+ * and request tokens.
+ * 
+ * All methods in this class are static.
+ * 
  * @package		phpFrame
  * @subpackage 	utils
  * @author 		Luis Montero [e-noise.com]
@@ -25,7 +30,7 @@ class crypt {
 	 * @param string Seed string
 	 * @return string 
 	 */
-	function getHash($seed) {
+	static function getHash($seed) {
 		$config =& factory::getConfig();
 		return md5($config->secret.$seed);
     }
@@ -37,12 +42,42 @@ class crypt {
      * @since    1.5
      * @static
      */
-    function getToken($forceNew = false) {
-    	$user = &factory::getUser();
+    static function getToken($forceNew = false) {
+    	$user =& factory::getUser();
     	$session =& factory::getSession();
     	$hash = crypt::getHash($user->id.$session->getToken( $forceNew ));
 
     	return $hash;
+    }
+    
+	/**
+     * Checks for a form token in the request
+     *
+     * Use in conjuction with html::_( 'form.token' )
+     *
+     * @return	bool	True if found and valid, false otherwise
+     */
+    function checkToken() {
+    	$token = crypt::getToken();
+    	if (!request::getVar($token, '')) {
+    		return false;
+    		/*
+    		$session =& factory::getSession();
+    		if ($session->isNew()) {
+    			//Redirect to login screen
+    			global $mainframe;
+    			$return = JRoute::_('index.php');
+    			$mainframe->redirect($return, JText::_('SESSION_EXPIRED'));
+    			$mainframe->close();
+    		}
+    		else {
+    			return false;
+    		}
+    		*/
+    	}
+    	else {
+    		return true;
+    	}
     }
     
 	/**
@@ -61,7 +96,7 @@ class crypt {
 	 *
 	 * @return string  The encrypted password.
 	 */
-	function getCryptedPassword($plaintext, $salt = '', $encryption = 'md5-hex', $show_encrypt = false) {
+	static function getCryptedPassword($plaintext, $salt = '', $encryption = 'md5-hex', $show_encrypt = false) {
 		// Get the salt to use.
 		$salt = crypt::getSalt($encryption, $salt, $plaintext);
 
@@ -154,7 +189,7 @@ class crypt {
 	 *
 	 * @return string  The generated or extracted salt.
 	 */
-	function getSalt($encryption = 'md5-hex', $seed = '', $plaintext = '') {
+	static function getSalt($encryption = 'md5-hex', $seed = '', $plaintext = '') {
 		// Encrypt the password.
 		switch ($encryption) {
 			case 'crypt' :
@@ -233,7 +268,7 @@ class crypt {
 	 * @return	string			Random Password
 	 * @since	1.5
 	 */
-	function genRandomPassword($length = 8) {
+	static function genRandomPassword($length = 8) {
 		$salt = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		$len = strlen($salt);
 		$makepass = '';
@@ -259,7 +294,7 @@ class crypt {
 	 * @return string  $value converted to the 64 MD5 characters.
 	 * @since 1.5
 	 */
-	function _toAPRMD5($value, $count) {
+	private function _toAPRMD5($value, $count) {
 		/* 64 characters that are valid for APRMD5 passwords. */
 		$APRMD5 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
@@ -280,7 +315,7 @@ class crypt {
 	 * @return string  Binary data.
 	 * @since 1.5
 	 */
-	function _bin($hex) {
+	private function _bin($hex) {
 		$bin = '';
 		$length = strlen($hex);
 		for ($i = 0; $i < $length; $i += 2) {
