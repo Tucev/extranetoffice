@@ -13,6 +13,11 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * HTML Class
  * 
+ * This class provides a number of static methods to be used for generating useful HTML elements and Javascript.
+ * This class is mostly used in the views tmpl layer for quickly building buttons, calendars, autocomleters, and so on.
+ * 
+ * All methods in this class are static.
+ * 
  * @package		phpFrame
  * @subpackage 	html
  * @author 		Luis Montero [e-noise.com]
@@ -24,7 +29,7 @@ class html {
 	 * 
 	 * @param	string	$value The option value
 	 * @param	string	$label The option label
-	 * @return 	object
+	 * @return 	object	A standard object with the passed label and value as properties.
 	 * @since 	1.0
 	 */
 	static function selectOption($value, $label) {
@@ -38,11 +43,11 @@ class html {
 	/**
 	 * Build a generic select tag.
 	 * 
-	 * @param	array	$options An array of option tags
-	 * @param	string	$name
-	 * @param	string	$attribs
-	 * @param 	string	$selected
-	 * @return	string
+	 * @param	array	$options	An array of option objects
+	 * @param	string	$name		A string to use in the name attribute of the select tag.
+	 * @param	string	$attribs	A string containing standard HTML attributes for the select tag. ie: 'class="myClass" multiple="multiple"'
+	 * @param 	string	$selected	The selected value. This parameter is optional.
+	 * @return	void
 	 * @since 	1.0
 	 */
 	static function selectGenericlist($options, $name, $attribs, $selected=NULL) {
@@ -77,6 +82,7 @@ class html {
 	 * @param 	array	$attribs	An array containing attributes for the input tag
 	 * @param	bool	$show_format_hint	Show/hide date format hint.
 	 * @return	void
+	 * @since 	1.0
 	 */
 	static function calendar($name, $id='', $selected='', $format='dd/mm/yy', $attribs=array(), $show_format_hint=false) {
 		//set $id to $name if empty
@@ -135,11 +141,10 @@ class html {
 	/**
 	 * Function to build input with autocomplete and display it
 	 * 
-	 * @static
 	 * @param 	string	$field_name		The name attribute fot the input tag
 	 * @param	string	$attribs 		A string containing attributes for the input tag
 	 * @param	array	$tokens			An array with the key/value pairs used to build the list of options
-	 * @param	bool	$matchContains	Optional parameter (defaul: TRUE). If TRUE search matches inside string, 
+	 * @param	bool	$matchContains	Optional parameter (default: TRUE). If TRUE search matches inside string, 
 	 * 									if FALSE only at the beginning.
 	 * @return 	void
 	 * @since	1.0
@@ -200,37 +205,34 @@ class html {
 	 * 
      * Use in conjuction with crypt::checkToken
      * 
-	 * @return	string
 	 * @return 	void
 	 * @since 	1.0
 	 */
 	static function formToken() {
-		return '<input type="hidden" name="'.crypt::getToken().'" value="1" />';
+		?><input type="hidden" name="<?php echo crypt::getToken(); ?>" value="1" /><?php
 	}
 	
 	/**
 	 * Build an html button tag and echo it.
 	 * 
-	 * @param string $type The button type. Possible values are 'button', 'submit', 'reset'
-	 * @param string $label A string to use as the button's label.
-	 * @param string $onclick A string to be printed in the onclick attribute of the button tag.
-	 * @return void
+	 * @param	string	$type		The button type. Possible values are 'button', 'submit', 'reset'
+	 * @param	string	$label		A string to use as the button's label.
+	 * @param 	string	$onclick	A string to be printed in the onclick attribute of the button tag.
+	 * @return	void
+	 * @since 	1.0
 	 */
 	static function button($type='button', $label='', $onclick='') {
-		?>
-		<button type="<?php echo $type; ?>" onclick="<?php echo $onclick; ?>"><?php echo text::_( $label ); ?></button> 
-		<?php
+		?><button type="<?php echo $type; ?>" onclick="<?php echo $onclick; ?>"><?php echo text::_( $label ); ?></button><?php
 	}
 	
 	/**
 	 * Build an html 'back' button tag and echo it.
 	 * 
-	 * @return void
+	 * @return	void
+	 * @since 	1.0
 	 */
 	static function buttonBack() {
-		?>
-		<button type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button> 	
-		<?php
+		?><button type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button> 	<?php
 	}
 	
 	/**
@@ -238,12 +240,11 @@ class html {
 	 * 
 	 * This button will have an onclick attribute of 'submitbutton('save'); return false;'.
 	 * 
-	 * @return void
+	 * @return	void
+	 * @since 	1.0
 	 */
 	static function buttonSave() {
-		?>
-		<button type="button" onclick="submitbutton('save'); return false;"><?php echo text::_( _LANG_SAVE ); ?></button>
-		<?php
+		?><button type="button" onclick="submitbutton('save'); return false;"><?php echo text::_( _LANG_SAVE ); ?></button><?php
 	}
 	
 	/**
@@ -251,42 +252,39 @@ class html {
 	 * 
 	 * This button will have an onclick attribute of 'submitbutton('apply'); return false;'.
 	 * 
-	 * @return void
+	 * @return	void
+	 * @since 	1.0
 	 */
 	static function buttonApply() {
-		?>
-		<button type="button" onclick="submitbutton('apply'); return false;"><?php echo text::_( _LANG_APPLY ); ?></button>
-		<?php
+		?><button type="button" onclick="submitbutton('apply'); return false;"><?php echo text::_( _LANG_APPLY ); ?></button><?php
 	}
 	
 	/**
-	 * Redirects to previous page
+	 * Redirects to previous page using Javascript window.history.back()
 	 * 
 	 * @return	void
+	 * @since 	1.0
 	 */
 	static function historyBack() {
 		?>
-		
 		<script type="text/javascript">
 			window.history.back();
 		</script>
-
 		<?php  
 	}
 	
 	/**
-	 * Outputs message in alert box
+	 * Outputs message in Javascript alert box
 	 *
-	 * @param	str $msg
+	 * @param	string	$msg	A string containing the message to show in the alert box.
 	 * @return	void
+	 * @since 	1.0
 	 */
 	static function alert($msg) {
 		?>
-		
 		<script type="text/javascript">
 			alert('<?php echo $msg; ?>');
 		</script>
-
 		<?php  
 	}
 	
