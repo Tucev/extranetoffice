@@ -78,7 +78,8 @@ class projectsViewAdmin extends view {
 	/**
 	 * Custom display method triggered by list layout.
 	 * 
-	 * @return void
+	 * @return	void
+	 * @since	1.0
 	 */
 	function displayAdminList() {
 		$this->page_title = _LANG_ADMIN;
@@ -86,7 +87,7 @@ class projectsViewAdmin extends view {
 		$this->addPathwayItem(_LANG_ADMIN);
 		
 		// Push model into the view
-		$model =& $this->getModel('projects');
+		$model =& $this->getModel('members');
 		$this->members = $model->getMembers($this->projectid);
 	}
 	
@@ -100,26 +101,23 @@ class projectsViewAdmin extends view {
 		$this->userid = request::getVar('userid', 0);
 		
 		// Push model into the view
-		$model =& $this->getModel();
+		$model =& $this->getModel('members');
 		if (!empty($this->userid)) {
 			$this->members = $model->getMembers($this->projectid, $this->userid);	
 		}
 	}
 	
 	/**
-	 * @todo This method needs to be ported to extranetoffice from intranetoffice
+	 * Set view properties for new project members form
+	 * 
+	 * @return	void
+	 * @since	1.0
 	 */
-	function displayMemberForm() {
-		$this->page_title = projectsHelperProjects::id2name($this->projectid).' - '. _LANG_PROJECTS_MEMBERS;
-		$this->addPathwayItem(_LANG_PROJECTS_MEMBERS);
-		
-		$userid = request::getVar('userid', 0);
-		
-		// Push model into the view
-		$model =& $this->getModel();
-		if (!empty($userid)) {
-			$this->members = $model->getMembers($this->projectid, $userid);	
-		}
+	function displayAdminMemberForm() {
+		$this->page_title = _LANG_ADMIN.' - '._LANG_PROJECTS_ADD_MEMBER;
+		$this->page_heading = $this->project->name.' - '._LANG_ADMIN;
+		$this->addPathwayItem(_LANG_ADMIN, 'index.php?option=com_projects&view=admin&projectid='.$this->projectid);
+		$this->addPathwayItem(_LANG_PROJECTS_ADD_MEMBER);
 	}
 }
 ?>

@@ -61,6 +61,10 @@ class projectsTableUsersRoles extends table {
 			return true;
 		}
 		else {
+			$this->id = null;
+			$this->userid = null;
+			$this->projectid = null;
+			$this->roleid = null;
 			return false;
 		}
 	}

@@ -17,20 +17,24 @@ function submitbutton() {
 	
 	// do field validation
 	if (form.roleid.value == '0') {
-		alert('<?php echo text::_("_LANG_PROJECTS_ROLE_REQUIRED", true); ?>');
+		alert('<?php echo text::_(_LANG_PROJECTS_ROLE_REQUIRED, true); ?>');
 		form.roleid.focus();
 	}
-	else if (form.username.value == '' && form.invite_member_email.value == '') {
-		alert('<?php echo text::_("_LANG_ADMIN_USER_REQUIRED", true); ?>');
+	else if (form.userids.value == '' && form.email.value == '') {
+		alert('<?php echo text::_(_LANG_ADMIN_USER_REQUIRED, true); ?>');
+		form.email.focus();
+	}
+	else if (form.email.value != '' && form.username.value == '') {
+		alert('<?php echo text::_(_LANG_ADMIN_NEW_USERNAME_REQUIRED, true); ?>');
 		form.username.focus();
 	}
-	else if (form.invite_member_email.value != '' && form.name.value == '') {
-		alert('<?php echo text::_("_LANG_ADMIN_NAME_REQUIRED", true); ?>');
-		form.name.focus();
+	else if (form.email.value != '' && form.firstname.value == '') {
+		alert('<?php echo text::_(_LANG_ADMIN_NAME_REQUIRED, true); ?>');
+		form.firstname.focus();
 	}
-	else if (form.invite_member_email.value != '' && form.new_username.value == '') {
-		alert('<?php echo text::_("_LANG_ADMIN_NEW_USERNAME_REQUIRED", true); ?>');
-		form.new_username.focus();
+	else if (form.email.value != '' && form.groupid.value == '') {
+		alert('<?php echo text::_(_LANG_ADMIN_NAME_REQUIRED, true); ?>');
+		form.groupid.focus();
 	}
 	else {
 		form.submit();
@@ -59,7 +63,15 @@ function submitbutton() {
 					Select existing users by username:
 				</label>
 			</td>
-			<td><?php echo usersHelper::autocompleteUsername('newmemberform'); ?></td>
+			<td>
+				<?php echo projectsHelperProjects::autocompleteMembers($this->projectid, false); ?> 
+				<!-- This should be added in a tooltip 
+				<div class="note">
+					Start typing usernames to display autocompleter. Note that the autocompleter will only
+					list users that are not yet members of this project.
+				</div>
+				-->
+			</td>
 		</tr>
 		</table>
 		
@@ -73,33 +85,47 @@ function submitbutton() {
 		<table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 		<tr>
 			<td width="30%">
-				<label id="namemsg" for="name">
-					<?php echo _LANG_NAME; ?>:
-				</label>
-			</td>
-			<td>
-				<input type="text" id="name" name="name" size="32" maxlength="64" value="" />
-			</td>
-		</tr>
-		<tr>
-			<td width="30%">
-				<label id="new_usernamemsg" for="new_username">
+				<label id="usernamemsg" for="username">
 					<?php echo _LANG_USERNAME; ?>:
 				</label>
 			</td>
 			<td>
-				<input type="text" id="new_username" name="new_username" size="32" maxlength="64" value="" />
+				<input type="text" id="username" name="username" size="32" maxlength="64" value="" />
 			</td>
 		</tr>
 		<tr>
 			<td width="30%">
-				<label id="invite_member_emailmsg" for="invite_member_email">
+				<label id="emailmsg" for="email">
 					<?php echo _LANG_EMAIL; ?>:
 				</label>
 			</td>
 			<td>
-				<input type="text" id="invite_member_email" name="invite_member_email" size="32" maxlength="128" value="" />
+				<input type="text" id="email" name="email" size="32" maxlength="128" value="" />
 			</td>
+		</tr>
+		<tr>
+			<td width="30%">
+				<label id="firstnamemsg" for="firstname">
+					<?php echo _LANG_FIRSTNAME; ?>:
+				</label>
+			</td>
+			<td>
+				<input type="text" id="firstname" name="firstname" size="32" maxlength="64" value="" />
+			</td>
+		</tr>
+		<tr>
+			<td width="30%">
+				<label id="lastnamemsg" for="lastname">
+					<?php echo _LANG_LASTNAME; ?>:
+				</label>
+			</td>
+			<td>
+				<input type="text" id="lastname" name="lastname" size="32" maxlength="64" value="" />
+			</td>
+		</tr>
+		<tr>
+			<td><?php echo text::_( _LANG_GROUP ); ?></td>
+			<td><?php echo usersHelper::selectGroup(); ?></td>
 		</tr>
 		</table>
 	</fieldset>
@@ -109,7 +135,7 @@ function submitbutton() {
 	<label id="roleidmsg" for="roleid">
 		<?php echo _LANG_PROJECTS_ROLE; ?>:
 	</label> 
-	<?php echo projectsHelperProjects::project_role_select($this->members[0]->roleid); ?>
+	<?php echo projectsHelperProjects::project_role_select(); ?>
 	
 	<div style="clear:both; margin-top:30px;"></div>
 	
@@ -118,10 +144,8 @@ function submitbutton() {
 	
 	<input type="hidden" name="option" value="com_projects" />
 	<input type="hidden" name="task" value="save_member" />
-	<input type="hidden" name="view" value="projects" />
-	<input type="hidden" name="type" value="admin" />
+	<input type="hidden" name="view" value="admin" />
 	<input type="hidden" name="projectid" value="<?php echo $this->projectid;?>" />
-	<input type="hidden" name="userid" value="<?php echo $this->members[0]->userid;?>" />
-	<?php echo html::_( 'form.token' ); ?>
+	<?php html::_( 'form.token' ); ?>
 	
 </form>

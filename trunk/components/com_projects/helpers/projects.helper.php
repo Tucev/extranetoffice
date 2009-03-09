@@ -191,6 +191,38 @@ class projectsHelperProjects {
 		return $output;
 	}
 	
+	/**
+	 * Build and display an input tag with project members autocompleter
+	 * 
+	 * @param	int		$projectid
+	 * @param	bool	$members	If TRUE it shows project members, if FALSE it shows non-project members
+	 * @return	void
+	 */
+	static function autocompleteMembers($projectid, $members=true) {
+		$db =& factory::getDB();
+		$query = "SELECT u.id, u.username, u.firstname, u.lastname ";
+		$query .= " FROM  #__users_roles AS ur, #__users AS u ";
+		$query .= " WHERE ur.projectid = '".$projectid."' ";
+		if ($members === false) {
+			$query .= " AND u.id <> ur.userid";
+		}
+		else {
+			$query .= " AND u.id = ur.userid";
+		}
+		$query .= " ORDER BY u.username";
+		$db -> setQuery($query);
+		if (!$rows = $db->loadObjectList()) {
+		  return false;
+		}
+		
+		// Organise rows into array of arrays instead of array of objects
+		foreach ($rows as $row) {
+			$tokens[] = array('id' => $row->id, 'name' => $row->firstname." ".$row->lastname." (".$row->username.")");
+		}
+		
+		html::autocomplete('userids', 'cols="60" rows="2"', $tokens);
+	}
+	
 	function project_roleid2name($id=0) {
 		if (!empty($id)) { // No category has been selected
 			$db =& factory::getDB();

@@ -82,9 +82,8 @@ class projectsViewPeople extends view {
 		$this->page_heading = $this->project->name;
 		$this->addPathwayItem($this->current_tool);
 		
-		$modelProjects =& $this->getModel('projects');
-		$members = $modelProjects->getmembers($this->projectid);
-		$this->rows =& $members;
+		$modelMembers =& $this->getModel('members');
+		$this->rows = $modelMembers->getmembers($this->projectid);
 	}
 
 }

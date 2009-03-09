@@ -67,10 +67,6 @@ class adminViewConfig extends view {
 	 */
 	function displayConfig() {
 		$this->page_title = _LANG_GLOBAL_CONFIG;
-		
-		// Push model into the view
-		//$model =& $this->getModel('projects');
-		//$this->members = $model->getMembers($this->projectid);
 	}
 }
 ?>
