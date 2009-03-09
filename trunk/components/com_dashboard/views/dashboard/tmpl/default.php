@@ -45,7 +45,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	
 	<?php if ($this->user->groupid == 1) : ?>
 	<div style="float:right;" class="new">
-		 <a style="float:right;" href="<?php echo route::_("index.php?option=com_projects&view=projects&type=new"); ?>" title="<?php echo text::_( _LANG_PROJECTS_NEW ); ?>">
+		 <a style="float:right;" href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=form"); ?>" title="<?php echo text::_( _LANG_PROJECTS_NEW ); ?>">
 		<?php echo text::_( _LANG_PROJECTS_NEW ); ?>
 		</a>
 	</div>
@@ -145,18 +145,18 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	
 	<?php if (is_array($project->activitylog) && count($project->activitylog) > 0) : ?>
 	<h4>
-		<a href="<?php echo route::_("index.php?option=com_projects&view=projects&type=detail&projectid=".$project->id); ?>">
+		<a href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=detail&projectid=".$project->id); ?>">
 		<?php echo $project->name; ?>
 		</a>
 	</h4>
 	
 	<div class="overdue_issues_16">
-		<a href="<?php echo route::_("index.php?option=com_projects&view=projects&type=issues&projectid=".$project->id); ?>">
+		<a href="<?php echo route::_("index.php?option=com_projects&view=issues&projectid=".$project->id); ?>">
 		<?php echo $project->overdue_issues." "._LANG_ISSUES_OVERDUE; ?>
 		</a>
 	</div>
 	<div class="upcoming_milestones_16">
-		<a href="<?php echo route::_("index.php?option=com_projects&view=projects&type=milestones&projectid=".$project->id); ?>">
+		<a href="<?php echo route::_("index.php?option=com_projects&view=milestones&projectid=".$project->id); ?>">
 		<?php echo _LANG_MILESTONES_UPCOMING; ?>
 		</a>
 	</div>
