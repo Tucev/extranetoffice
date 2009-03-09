@@ -187,15 +187,19 @@ class projectsModelProjects extends model {
 		}
 		
 		if (!$row->check()) {
-			error::raise('', 'error', $row->error);
+			error::raise('', 'error', $row->getLastError());
 			return false;
 		}
 		
-		$row->store();
+		if (!$row->store()) {
+			error::raise('', 'error', $row->getLastError());
+			return false;
+		}
 		
 		// Add role for user in the new project
 		if ($new_project === true) {
-			if (!$this->saveMember($row->id, $this->user->id, '1')) {
+			$modelMembers =& $this->getModel('members');
+			if (!$modelMembers->saveMember($row->id, $this->user->id, '1')) {
 				return false;
 			}
 		}
