@@ -111,6 +111,10 @@ class session extends table {
 		// Unserialize data
 		if (is_string($this->data)) {
 			$this->data = unserialize($this->data);	
+			// get session token from data array
+			if (!empty($this->data['token'])) {
+				$this->token = $this->data['token'];
+			}
 		}
 	}
 	
