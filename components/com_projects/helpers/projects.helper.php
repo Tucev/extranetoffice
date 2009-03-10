@@ -13,10 +13,11 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 class projectsHelperProjects {
 	/**
 	 * Translate projectid to name
+	 * 
 	 * @param 	int		The ID to be translated
 	 * @return 	string	If no id is passed returns false, otherwise returns the project name as a string
 	 */
-	function id2name($id=0) {
+	static function id2name($id=0) {
 		if (!empty($id)) { // No category has been selected
 			$db =& factory::getDB();
 			$query = "SELECT name FROM #__projects WHERE id = '".$id."'";
@@ -30,11 +31,12 @@ class projectsHelperProjects {
 	
 	/**
 	 * Function to build HTML select of projects
+	 * 
 	 * @param	int		The selected value if any
 	 * @param 	string	Attributes for the <select> tag
 	 * @return 	string	A string with the HTML select
 	 */
-	function select($selected=0, $attribs='') {
+	static function select($selected=0, $attribs='') {
 		// assemble projects into the array
 		$options = array();
 		$options[] = html::_('select.option', '0', text::_( '-- Select a Project --' ) );
@@ -58,7 +60,7 @@ class projectsHelperProjects {
 		return $output;
 	}
 	
-	function project_typeid2name($id=0) {
+	static function project_typeid2name($id=0) {
 		if (!empty($id)) { // No category has been selected
 			$db =& factory::getDB();
 			$query = "SELECT name FROM #__project_types WHERE id = '".$id."'";
@@ -70,7 +72,7 @@ class projectsHelperProjects {
 		}
 	}
 	
-	function project_type_select($selected=0, $attribs='') {
+	static function project_type_select($selected=0, $attribs='') {
 		// assemble project types into the array
 		$options = array();
 		$options[] = html::_('select.option', '0', text::_( '-- Select a Project Type --' ) );
@@ -90,7 +92,7 @@ class projectsHelperProjects {
 		return $output;
 	}
 	
-	function priorityid2name($priorityid) {
+	static function priorityid2name($priorityid) {
 		switch ($priorityid) {
 			case '0' :
 				return _LANG_PROJECTS_PRIORITY_LOW;
@@ -101,7 +103,7 @@ class projectsHelperProjects {
 		}
 	}
 	
-	function priority_select($selected=0, $attribs='') {
+	static function priority_select($selected=0, $attribs='') {
 		// assemble priorities into the array
 		$options = array();
 		
@@ -113,7 +115,7 @@ class projectsHelperProjects {
 		return $output;
 	}
 	
-	function global_accessid2name($accessid) {
+	static function global_accessid2name($accessid) {
 		switch ($accessid) {
 			case '0' :
 				return _LANG_PROJECTS_ACCESS_PUBLIC;
@@ -122,7 +124,7 @@ class projectsHelperProjects {
 		}
 	}
 	
-	function global_access_select($fieldname='access', $selected=1, $attribs='') {
+	static function global_access_select($fieldname='access', $selected=1, $attribs='') {
 		// assemble access into the array
 		$options = array();
 		//$options[] = html::_('select.option', '', text::_( '-- Select an Access Level --' ) );
@@ -134,7 +136,7 @@ class projectsHelperProjects {
 		return $output;
 	}
 	
-	function accessid2name($accessid) {
+	static function accessid2name($accessid) {
 		switch ($accessid) {
 			case '1' :
 				return _LANG_PROJECTS_ACCESS_ADMINS;
@@ -147,7 +149,7 @@ class projectsHelperProjects {
 		}
 	}
 	
-	function access_select($fieldname='access', $selected=0, $attribs='') {
+	static function access_select($fieldname='access', $selected=0, $attribs='') {
 		// assemble access into the array
 		$options = array();
 		$options[] = html::_('select.option', '0', text::_( '-- Select an Access Level --' ) );
@@ -161,7 +163,7 @@ class projectsHelperProjects {
 		return $output;
 	}
 	
-	function statusid2name($statusid) {
+	static function statusid2name($statusid) {
 		switch ($statusid) {
 			case '0' :
 				return _LANG_PROJECTS_STATUS_PLANNING;
@@ -176,7 +178,7 @@ class projectsHelperProjects {
 		}
 	}
 	
-	function status_select($selected=0, $attribs='') {
+	static function status_select($selected=0, $attribs='') {
 		// assemble access into the array
 		$options = array();
 		$options[] = html::_('select.option', '0', text::_( '-- Select an Status --' ) );
@@ -201,14 +203,10 @@ class projectsHelperProjects {
 	static function autocompleteMembers($projectid, $members=true) {
 		$db =& factory::getDB();
 		$query = "SELECT u.id, u.username, u.firstname, u.lastname ";
-		$query .= " FROM  #__users_roles AS ur, #__users AS u ";
-		$query .= " WHERE ur.projectid = '".$projectid."' ";
-		if ($members === false) {
-			$query .= " AND u.id <> ur.userid";
-		}
-		else {
-			$query .= " AND u.id = ur.userid";
-		}
+		$query .= "FROM #__users AS u ";
+		$query .= " WHERE u.id ";
+		if (!$members)  $query .= " NOT ";
+		$query .= " IN (SELECT u.id FROM #__users AS u LEFT JOIN #__users_roles ur ON ur.userid = u.id WHERE ur.projectid = 1)";
 		$query .= " ORDER BY u.username";
 		$db -> setQuery($query);
 		if (!$rows = $db->loadObjectList()) {
@@ -223,7 +221,7 @@ class projectsHelperProjects {
 		html::autocomplete('userids', 'cols="60" rows="2"', $tokens);
 	}
 	
-	function project_roleid2name($id=0) {
+	static function project_roleid2name($id=0) {
 		if (!empty($id)) { // No category has been selected
 			$db =& factory::getDB();
 			$query = "SELECT name FROM #__roles WHERE id = '".$id."'";
@@ -235,7 +233,7 @@ class projectsHelperProjects {
 		}
 	}
 	
-	function project_role_select($selected=0, $attribs='') {
+	static function project_role_select($selected=0, $attribs='') {
 		// assemble project types into the array
 		$options = array();
 		$options[] = html::_('select.option', '0', text::_( '-- Select a Role --' ) );
@@ -255,7 +253,7 @@ class projectsHelperProjects {
 		return $output;
 	}
 	
-	function issue_typeid2name($id=0) {
+	static function issue_typeid2name($id=0) {
 		if (!empty($id)) { // No category has been selected
 			$db =& factory::getDB();
 			$query = "SELECT name FROM #__issue_types WHERE id = '".$id."'";
@@ -267,7 +265,7 @@ class projectsHelperProjects {
 		}
 	}
 	
-	function issue_type_select($selected=0, $attribs='') {
+	static function issue_type_select($selected=0, $attribs='') {
 		// assemble project types into the array
 		$options = array();
 		$options[] = html::_('select.option', '0', text::_( '-- Select an issue type (optional) --' ) );
@@ -289,7 +287,7 @@ class projectsHelperProjects {
 		return $output;
 	}
 	
-	function fileid2name($id=0) {
+	static function fileid2name($id=0) {
 		if (!empty($id)) { // No file has been selected
 			$db =& factory::getDB();
 			$query = "SELECT title FROM #__files WHERE id = '".$id."'";
@@ -301,7 +299,7 @@ class projectsHelperProjects {
 		}
 	}
 	
-	function activitylog_type2printable($type) {
+	static function activitylog_type2printable($type) {
 		switch ($type) {
 			case 'issues' :
 				return _LANG_ISSUE;
@@ -318,7 +316,7 @@ class projectsHelperProjects {
 		}
 	}
 	
-	function mimetype2icon($mimetype) {
+	static function mimetype2icon($mimetype) {
 		switch ($mimetype) {
 			case 'image/jpg' :
 			case 'image/jpeg' :
