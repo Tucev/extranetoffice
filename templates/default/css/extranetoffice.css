@@ -169,3 +169,12 @@ background-image: url(../images/icons/generic/16x16/sysadmin.png);
 span.security_16 {
 background-image: url(../images/icons/generic/16x16/security.png);
 }
+
+
+/* AJAX Loading gif */
+div.loading {
+background-image: url(../images/activity.gif);
+background-repeat: no-repeat;
+width: 220px;
+height: 19px;
+}
