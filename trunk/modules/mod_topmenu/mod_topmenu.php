@@ -12,17 +12,18 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 $user =& factory::getUser();
 ?>
-
+		
 <div id="top">
 	<span class="icons_16_outer">
 	<span class="icons_16 users_16">
-		<a href="index.php?option=com_user">Account</a>
+		<?php html::dialog('Account', 'index.php?option=com_user&tmpl=component', 600, 560, true); ?>
 	</span>
 	</span>
+	
 	<?php if ($user->groupid == 1) : ?>
 	<span class="icons_16_outer">
 	<span class="icons_16 sysadmin_16">
-		<a href="index.php?option=com_admin">System Admin</a>
+		<?php html::dialog('System Admin', 'index.php?option=com_admin&tmpl=component', 600, 560, true); ?>
 	</span>
 	</span>
 	<?php endif; ?>

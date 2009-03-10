@@ -67,6 +67,67 @@ class html {
 	}
 	
 	/**
+	 * Build and display a dialog box with content loaded via AJAX.
+	 * 
+	 * @param	string	$label	A string to print inside de link tag.
+	 * @param	string	$target The target URL to load via AJAX.
+	 * @param	int		$width	The dialog box width
+	 * @param	int		$height	The dialog box height
+	 * @param	bool	$form	If TRUE it shows save button with standard 'save' button
+	 * @return	void
+	 * @since 	1.0
+	 */
+	static function dialog($label, $target, $width=600, $height=560, $form=false) {
+		$uid = uniqid();
+		?>
+		
+		<script type="text/javascript">
+		$(function() {
+			$("#dialog_<?php echo $uid; ?>").dialog({
+				autoOpen: false,
+				bgiframe: true,
+				width: <?php echo $width; ?>,
+				height: <?php echo $height; ?>,
+				modal: true,
+				resizable: false
+				<?php if ($form) : ?>
+				,buttons: {
+					"Save" : function() {
+						submitbutton();
+					},
+					"Close" : function() {
+						$(this).dialog('close');
+					}
+				}
+				<?php endif; ?>
+					
+			});
+
+			$(".loading").bind("ajaxSend", function() {
+				$(this).show();
+			})
+			.bind("ajaxComplete", function() {
+				   $(this).hide();
+			});
+			
+			$('#dialog_trigger_<?php echo $uid; ?>').click(function(e) {
+				e.preventDefault();
+				$("#dialog_<?php echo $uid; ?>").load("<?php echo $target; ?>");
+				$("#dialog_<?php echo $uid; ?>").dialog('open');
+			});
+		});
+		</script>
+		
+		<a id="dialog_trigger_<?php echo $uid; ?>" href="#"><?php echo $label; ?></a>
+		
+		<div id="dialog_<?php echo $uid; ?>">
+			<div class="loading"></div>
+		</div>
+		
+		<?php
+	}
+	
+	/**
 	 * Build a date picker using jQuery UI Calendar and display it
 	 * 
 	 * This method will generate two input tags, one is shown to the user and it triggers 
@@ -222,7 +283,7 @@ class html {
 	 * @since 	1.0
 	 */
 	static function button($type='button', $label='', $onclick='') {
-		?><button type="<?php echo $type; ?>" onclick="<?php echo $onclick; ?>"><?php echo text::_( $label ); ?></button><?php
+		?><button class="ui-corner-all" type="<?php echo $type; ?>" onclick="<?php echo $onclick; ?>"><?php echo text::_( $label ); ?></button><?php
 	}
 	
 	/**
@@ -232,7 +293,7 @@ class html {
 	 * @since 	1.0
 	 */
 	static function buttonBack() {
-		?><button type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button> 	<?php
+		?><button class="ui-corner-all" type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button> 	<?php
 	}
 	
 	/**
@@ -244,7 +305,7 @@ class html {
 	 * @since 	1.0
 	 */
 	static function buttonSave() {
-		?><button type="button" onclick="submitbutton('save'); return false;"><?php echo text::_( _LANG_SAVE ); ?></button><?php
+		?><button class="ui-corner-all" type="button" onclick="submitbutton('save'); return false;"><?php echo text::_( _LANG_SAVE ); ?></button><?php
 	}
 	
 	/**
@@ -256,7 +317,7 @@ class html {
 	 * @since 	1.0
 	 */
 	static function buttonApply() {
-		?><button type="button" onclick="submitbutton('apply'); return false;"><?php echo text::_( _LANG_APPLY ); ?></button><?php
+		?><button class="ui-corner-all" type="button" onclick="submitbutton('apply'); return false;"><?php echo text::_( _LANG_APPLY ); ?></button><?php
 	}
 	
 	/**

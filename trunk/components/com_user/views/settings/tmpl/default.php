@@ -12,7 +12,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
 <script language="javascript" type="text/javascript">
-function submitbutton(action) {
+function submitbutton() {
 	var form = document.userform;
 	var r = new RegExp("[\<|\>|\"|\'|\%|\;|\(|\)|\&|\+|\-]", "i");
 
@@ -154,8 +154,12 @@ function submitbutton(action) {
 
 <div style="clear:both; margin-top:30px;"></div>
 
-<?php html::buttonBack(); ?> 
-<?php html::buttonSave(); ?> 
+<?php 
+if (request::getVar('tmpl') != 'component') {
+	html::buttonBack();
+	html::buttonSave();
+}
+?>
 
 <input type="hidden" name="id" value="<?php echo $this->user->get('id'); ?>" />
 <input type="hidden" name="username" value="<?php echo $this->user->get('username');?>" />

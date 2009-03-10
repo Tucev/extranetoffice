@@ -42,7 +42,7 @@ class userController extends controller {
 			error::raise('', 'message', _LANG_USER_SAVE_SUCCESS);
 		}
 		
-		$this->setRedirect('index.php?option=com_user');
+		$this->setRedirect($_SERVER["HTTP_REFERER"]);
 	}
 }
 ?>
