@@ -248,7 +248,9 @@ class application extends singleton {
 			$template_filename = 'login.php';
 		}
 		elseif (request::getVar('tmpl') == 'component') {
-			$template_filename = 'component.php';
+			error::display();
+			$this->output = $this->component_output;
+			return;
 		}
 		else {
 			$template_filename = 'index.php';
