@@ -278,6 +278,11 @@ class projectsController extends controller {
 		$modelFiles =& $this->getModel('files');
 		$row = $modelFiles->saveFile($projectid);
 		
+		if ($row === false) {
+			error::raise('', 'error', $modelFiles->getLastError());
+			return false;
+		}
+		
 		// Add entry in activity log
 		$modelActivityLog =& $this->getModel('activitylog');
 		$action = _LANG_FILES_ACTION_NEW;
@@ -289,7 +294,7 @@ class projectsController extends controller {
 		
 		error::raise('', 'message', _LANG_FILE_SAVED);
 		
-		$this->setRedirect('index.php?option=com_projects&view=projects&layout=files&projectid='.$projectid);
+		$this->setRedirect('index.php?option=com_projects&view=files&projectid='.$projectid);
 	}
 	
 	function remove_file() {
