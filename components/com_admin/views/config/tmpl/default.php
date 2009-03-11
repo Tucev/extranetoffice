@@ -13,30 +13,34 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
-<!-- add jQuery tabs behaviour -->
+<!-- add jQuery accordion behaviour -->
 <script type="text/javascript">
 	$(function() {
-		$("#tabs").tabs();
+		$("#accordion").accordion({
+			autoHeight: false
+		});
 	});
 </script>
 
+
+<script language="javascript" type="text/javascript">
+function submitbutton() {
+	var form = document.configform;
+
+	// do field validation
+	
+	form.submit();
+}
+</script>
 
 <h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 
 <form action="index.php" method="post" name="configform">
 	
-<div id="tabs">
-	<ul>
-		<li><a href="#tabs-1"><?php echo text::_( _LANG_GENERAL_CONFIG ); ?></a></li>
-		<li><a href="#tabs-2"><?php echo text::_( _LANG_DATABASE_CONFIG ); ?></a></li>
-		<li><a href="#tabs-3"><?php echo text::_( _LANG_FILESYSTEM_CONFIG ); ?></a></li>
-		<li><a href="#tabs-4"><?php echo text::_( _LANG_INCOMING_EMAIL_CONFIG ); ?></a></li>
-		<li><a href="#tabs-5"><?php echo text::_( _LANG_OUGOING_EMAIL_CONFIG ); ?></a></li>
-	</ul>
+<div id="accordion">
 	
-	<div id="tabs-1">
-		<fieldset>
-		<legend><?php echo text::_( _LANG_GENERAL_CONFIG ); ?></legend>
+	<h3><a href="#"><?php echo text::_( _LANG_GENERAL_CONFIG ); ?></a></h3>
+	<div>
 		
 		<table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 		<tr>
@@ -73,12 +77,10 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			<td><input type="text" size="40" name="secret" value="<?php echo $this->config->secret; ?>" /></td>
 		</tr>
 		</table>
-		</fieldset>
 	</div>
 	
-	<div id="tabs-2">
-		<fieldset>
-		<legend><?php echo text::_( _LANG_DATABASE_CONFIG ); ?></legend>
+	<h3><a href="#"><?php echo text::_( _LANG_DATABASE_CONFIG ); ?></a></h3>
+	<div>
 		
 		<table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 		<tr>
@@ -102,12 +104,10 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			<td><input type="text" size="40" name="db_prefix" value="<?php echo $this->config->db_prefix; ?>" /></td>
 		</tr>
 		</table>
-		</fieldset>
 	</div>
 	
-	<div id="tabs-3">
-		<fieldset>
-		<legend><?php echo text::_( _LANG_FILESYSTEM_CONFIG ); ?></legend>
+	<h3><a href="#"><?php echo text::_( _LANG_FILESYSTEM_CONFIG ); ?></a></h3>
+	<div>
 		
 		<table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 		<tr>
@@ -119,12 +119,10 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			<td><input type="text" size="40" name="filesystem" value="<?php echo $this->config->filesystem; ?>" /></td>
 		</tr>
 		</table>
-		</fieldset>
 	</div>
 	
-	<div id="tabs-4">
-		<fieldset>
-		<legend><?php echo text::_( _LANG_INCOMING_EMAIL_CONFIG ); ?></legend>
+	<h3><a href="#"><?php echo text::_( _LANG_INCOMING_EMAIL_CONFIG ); ?></a></h3>
+	<div>
 		
 		<table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 		<tr>
@@ -144,12 +142,10 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			<td><input type="password" size="40" name="imap_password" value="<?php echo $this->config->imap_password; ?>" /></td>
 		</tr>
 		</table>
-		</fieldset>
 	</div>
 	
-	<div id="tabs-5">
-		<fieldset>
-		<legend><?php echo text::_( _LANG_OUGOING_EMAIL_CONFIG ); ?></legend>
+	<h3><a href="#"><?php echo text::_( _LANG_OUGOING_EMAIL_CONFIG ); ?></a></h3>
+	<div>
 		
 		<table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 		<tr>
@@ -196,15 +192,19 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			<td><input type="text" size="40" name="fromname" value="<?php echo $this->config->fromname; ?>" /></td>
 		</tr>
 		</table>
-		</fieldset>
 	</div>
-</div>
+	
+</div><!-- close #accordion -->
 	
 <br style="clear: left;" />
 <br />
 
-<?php html::button('button', _LANG_BACK, "window.location = 'index.php?option=com_admin';"); ?>
-<?php html::button('submit', _LANG_SAVE); ?>
+<?php 
+if (request::getVar('tmpl') != 'component') {
+	html::button('button', _LANG_BACK, "window.location = 'index.php?option=com_admin';");
+	html::button('submit', _LANG_SAVE);
+}
+?>
 	
 <input type="hidden" name="option" value="com_admin" />
 <input type="hidden" name="task" value="save_config" />

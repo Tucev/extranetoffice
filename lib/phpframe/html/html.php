@@ -85,7 +85,7 @@ class html {
 		$(function() {
 			$("#dialog_<?php echo $uid; ?>").dialog({
 				autoOpen: false,
-				bgiframe: true,
+				bgiframe: false,
 				width: <?php echo $width; ?>,
 				height: <?php echo $height; ?>,
 				modal: true,
@@ -112,7 +112,7 @@ class html {
 			
 			$('#dialog_trigger_<?php echo $uid; ?>').click(function(e) {
 				e.preventDefault();
-				$("#dialog_<?php echo $uid; ?>").load("<?php echo $target; ?>");
+				$("#dialog_<?php echo $uid; ?>").load("<?php echo $target; ?>&tmpl=component");
 				$("#dialog_<?php echo $uid; ?>").dialog('open');
 			});
 		});
@@ -120,7 +120,7 @@ class html {
 		
 		<a id="dialog_trigger_<?php echo $uid; ?>" href="#"><?php echo $label; ?></a>
 		
-		<div id="dialog_<?php echo $uid; ?>">
+		<div id="dialog_<?php echo $uid; ?>" title="<?php echo $label; ?>">
 			<div class="loading"></div>
 		</div>
 		

@@ -12,27 +12,20 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
 <script language="javascript" type="text/javascript">
-function submitbutton(action) {
+function submitbutton() {
 	var form = document.usersform;
 
 	// do field validation
 	if (form.username.value == "") {
 		alert( "<?php echo text::_( 'Please enter a username.', true ); ?>" );
+		return false;
 	} 
 	else if (form.email.value == "") {
 		alert( "<?php echo text::_( 'Please enter a valid e-mail address.', true ); ?>" );
+		return false;
 	} 
-	else {
-		// set view type depending on action
-		if (action == 'save') {
-			form.layout.value = 'list';
-		}
-		else if (action == 'apply') {
-			form.layout.value = 'form';
-		}
-		
-		form.submit();
-	}
+	
+	form.submit();
 }
 </script>
 
@@ -84,9 +77,13 @@ function submitbutton(action) {
 
 <div style="clear:both; margin-top:30px;"></div>
 
-<?php html::buttonBack(); ?> 
-<?php html::buttonSave(); ?> 
-<?php html::buttonApply(); ?>
+<?php 
+if (request::getVar('tmpl') != 'component') { 
+	html::buttonBack(); 
+	html::buttonSave();
+	html::buttonApply();
+}
+?>
 
 <input type="hidden" name="id" value="<?php echo $this->row->id;?>" />
 <input type="hidden" name="option" value="com_admin" />
