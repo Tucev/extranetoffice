@@ -48,6 +48,9 @@ define("_LANG_COMMENTS_SEND", "Comment");
 define("_LANG_STATUS_OVERDUE", "Overdue");
 define("_LANG_STATUS_CLOSED", "Closed");
 define("_LANG_STATUS_UPCOMING", "Upcoming");
+define("_LANG_HOURS", "Hours");
+define("_LANG_TITLE", "Title");
+
 
 // com_admin
 // com_admin > Global configuration
@@ -214,6 +217,10 @@ define("_LANG_FILES", "Files");
 define("_LANG_FILE", "File");
 define("_LANG_FILES_UPLOAD_NEW_VERSION", "Upload new version");
 define("_LANG_FILES_FILENAME", "Filename");
+define("_LANG_FILES_ACTION_NEW", "New file uploaded");
+define("_LANG_FILE_SAVED", "File uploaded successfully");
+define("_LANG_FILES_NEW", "Upload file");
+define("_LANG_FILES_CHANGELOG", "Log message");
 
 // Messages
 define("_LANG_MESSAGES", "Messages");

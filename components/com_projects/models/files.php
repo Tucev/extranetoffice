@@ -142,9 +142,11 @@ class projectsModelFiles extends model {
 	}
 	
 	function saveFile($projectid) {
-		$row = new projectsTableFiles();
+		require_once COMPONENT_PATH.DS."tables".DS."files.table.php";		
+		$row =& phpFrame::getInstance("projectsTableFiles");
 		
 		$post = request::get('post');
+		
 		$row->bind($post);
 		
 		// Generate revision
@@ -168,30 +170,36 @@ class projectsModelFiles extends model {
 		}
 		$accept = $this->config->get('upload_accept'); // mime types
 		$max_upload_size = $this->config->get('max_upload_size')*(1024*1024); // Mb
-		require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'lib'.DS.'enoise'.DS.'upload.php');
-		$file = enoiseUpload::uploadFile('filename', $upload_dir, $accept, $max_upload_size);
+		$file = filesystem::uploadFile('filename', $upload_dir, $accept, $max_upload_size);
 		
-		$row->filename = $file[0];
-		$row->filesize = $file[1];
-		$row->mimetype = $file[2];
+		if (!empty($file['error'])) {
+			$this->error[] = $file['error'];
+			return false;
+		}
+		
+		$row->filename = $file['file_name'];
+		$row->filesize = $file['file_size'];
+		$row->mimetype = $file['file_type'];
 		
 		$row->userid = $this->user->id;
 		
 		if (!$row->check()) {
-			JError::raiseError(500, $row->error );
+			$this->error[] = $row->getLastError();
+			return false;
 		}
 	
 		if (!$row->store()) {
-			JError::raiseError(500, $row->error );
+			$this->error[] = $row->getLastError();
+			return false;
 		}
 		
 		// Make parent files have their own id as their parentid
 		if (empty($row->parentid)) {
 			$row->parentid = $row->id;
-		}
-		
-		if (!$row->store()) {
-			JError::raiseError(500, $row->error );
+			if (!$row->store()) {
+				$this->error[] = $row->getLastError();
+				return false;
+			}
 		}
 		
 		return $row;
@@ -203,7 +211,8 @@ class projectsModelFiles extends model {
 		//TODO: This function should delete related items if any (comments, ...)
 		
 		// Instantiate table object
-		$row = new projectsTableFiles();
+		require_once COMPONENT_PATH.DS."tables".DS."files.table.php";		
+		$row =& phpFrame::getInstance("projectsTableFiles");
 		// Load row data
 		$row->load($fileid);
 		
@@ -212,7 +221,7 @@ class projectsModelFiles extends model {
 		
 		// Delete row from database
 		if (!$row->delete($fileid)) {
-			JError::raiseError(500, $row->error );
+			$this->error =& $row->error;
 			return false;
 		}
 		else {
@@ -222,7 +231,8 @@ class projectsModelFiles extends model {
 	
 	function downloadFile($projectid, $fileid) {
 		//TODO: This function should also check permissions
-		$row = new projectsTableFiles();
+		require_once COMPONENT_PATH.DS."tables".DS."files.table.php";		
+		$row =& phpFrame::getInstance("projectsTableFiles");
 		// Load row data
 		$row->load($fileid);
 		
