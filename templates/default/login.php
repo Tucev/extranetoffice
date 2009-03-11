@@ -16,6 +16,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <head>
 <title><?php echo $this->config->sitename; ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<?php $this->document->printHead(); ?>
 <link rel="stylesheet" href="templates/<?php echo $this->config->template ?>/css/styles.css" type="text/css" />
 <!--[if lte IE 6]>
 <link href="templates/<?php echo $this->config->template; ?>/css/ieonly.css" rel="stylesheet" type="text/css" />
