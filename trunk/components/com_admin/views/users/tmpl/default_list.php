@@ -11,14 +11,14 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
+
+
 <h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 
 
 <?php if ($this->user->groupid == 1) : ?>
 <div class="new">
-	<a href="<?php echo route::_('index.php?option=com_admin&amp;view=users&amp;layout=form'); ?>" title="<?php echo text::_( _LANG_NEW ); ?>">
-		<?php echo text::_( _LANG_NEW ); ?>
-	</a>
+	<?php html::dialog(_LANG_ADMIN_USERS_NEW, 'index.php?option=com_admin&view=users&layout=form', 460, 390, true); ?>
 </div>
 <?php endif; ?>
 

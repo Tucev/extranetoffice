@@ -49,7 +49,7 @@ class adminController extends controller {
 			error::raise('', 'message', _LANG_CONFIG_SAVE_SUCCESS);
 		}
 		
-		$this->setRedirect('index.php?option=com_admin&view=config');
+		$this->setRedirect($_SERVER["HTTP_REFERER"]);
 	}
 	
 	function save_user() {
@@ -62,7 +62,7 @@ class adminController extends controller {
 			error::raise('', 'message', _LANG_USER_SAVE_SUCCESS);
 		}
 		
-		$this->setRedirect('index.php?option=com_admin&view=users');
+		$this->setRedirect($_SERVER["HTTP_REFERER"]);
 	}
 }
 ?>
