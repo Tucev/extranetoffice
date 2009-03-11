@@ -10,21 +10,50 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
+<script type="text/javascript" src="lib/jquery/plugins/validate/jquery.validate.js"></script>
+
+<script>  
+	
+	$(document).ready(function() {
+		
+		//need to finis the regex bit beneath
+		
+		/*jQuery.validator.addMethod("letterswithbasicpunc", function(value, element) {
+			return this.optional(element) || /^[a-z-.,()'\"\s]+$/i.test(value);
+		}, "Letters or punctuation only please");
+		
+		$('#form_login').validate({
+			rules: {
+		  		username: { require : true, minlength : 6, maxlength : 50, letterswithbasicpunc : true }
+			}
+
+		});*/
+		
+		$('#form_login').validate({
+			rules: {
+		  		username: { require : true, minlength : 6, maxlength : 50 }
+			}
+
+		});
+	});
+		
+</script>
+
 
 <div class="loginbox"> 
 
-<form action="index.php" method="post">
+<form id="form_login" action="index.php" method="post">
 <table align="center" class="table_login">
 	<tr>
 		<td>
 			<label for="username" class="label_small">username:</label><br />
-			<input class="input_big" type="text" name="username" id="username" size="16" maxlength="50" />
+			<input class="input_big required" type="text" name="username" id="username" size="16" maxlength="50" />
 		</td>
 	</tr>
 	<tr>
 		<td>
 			<label for="password" class="label_small">password:</label><br />
-			<input class="input_big" type="password" name="password" id="password" size="16" maxlength="50" />
+			<input class="input_big required" type="password" name="password" id="password" size="16" maxlength="50" />
 		</td>
 	</tr>
 	<tr>
