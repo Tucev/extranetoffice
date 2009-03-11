@@ -46,7 +46,7 @@ class config {
 	 * 
 	 * @var string
 	 */
-	var $secret='MaHmncUHNyq2IAN7DoUlRcQo';
+	var $secret='ChangeMeToSometingRandomAndComplicated';
 	
 	/////////////////////////////////////////////////
     // DATABASE PROPERTIES
@@ -101,6 +101,12 @@ class config {
 	 * @var string
 	 */
 	var $filesystem="/path/to/filesystem";
+	/**
+	 * List of accepted mime types as CSV.
+	 *
+	 * @var string
+	 */
+	var $upload_accept="text/plain,image/jpeg,image/pjpeg,image/jpg,image/png,image/bmp,image/gif,application/pdf,application/octet-stream";
 	
 	/////////////////////////////////////////////////
     // MAIL RETRIEVAL PROPERTIES
