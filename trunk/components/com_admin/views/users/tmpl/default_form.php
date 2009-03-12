@@ -77,13 +77,10 @@ function submitbutton() {
 
 <div style="clear:both; margin-top:30px;"></div>
 
-<?php 
-if (request::getVar('tmpl') != 'component') { 
-	html::buttonBack(); 
-	html::buttonSave();
-	html::buttonApply();
-}
-?>
+<?php if (request::getVar('tmpl') != 'component') : ?>
+<button type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button>
+<button type="submit"><?php echo text::_(_LANG_SAVE); ?></button>
+<?php endif; ?>
 
 <input type="hidden" name="id" value="<?php echo $this->row->id;?>" />
 <input type="hidden" name="option" value="com_admin" />
