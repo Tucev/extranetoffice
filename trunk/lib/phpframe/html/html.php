@@ -66,6 +66,37 @@ class html {
 		echo $html;
 	}
 	
+	static function validate($formid) {
+		$document =& factory::getDocument('html');
+		$document->addScript('lib/jquery/plugins/validate/jquery.validate.pack.js');
+		?>
+		<script type="text/javascript">  
+		$(document).ready(function() {
+			//need to finis the regex bit beneath
+			//jQuery.validator.addMethod("letterswithbasicpunc", function(value, element) {
+				//return this.optional(element) || /^[a-z-.,()'\"\s]+$/i.test(value);
+			//}, "Letters or punctuation only please");
+			
+			$('#<?php echo $formid; ?>').validate({
+				//rules: {
+			  		//username: { require : true, minlength : 6, maxlength : 50, letterswithbasicpunc : true }
+				//}
+
+				highlight: function(element, errorClass) {
+					$(element).fadeOut(function() {
+						$(element).fadeIn()
+					})
+				}
+							
+		    
+			});
+			
+		});
+		</script>
+		
+		<?php
+	}
+	
 	/**
 	 * Build and display a dialog box with content loaded via AJAX.
 	 * 
@@ -284,7 +315,7 @@ class html {
 	 * @since 	1.0
 	 */
 	static function button($type='button', $label='', $onclick='') {
-		?><button class="ui-corner-all" type="<?php echo $type; ?>" onclick="<?php echo $onclick; ?>"><?php echo text::_( $label ); ?></button><?php
+		?><button type="<?php echo $type; ?>" onclick="<?php echo $onclick; ?>"><?php echo text::_( $label ); ?></button><?php
 	}
 	
 	/**
@@ -294,7 +325,7 @@ class html {
 	 * @since 	1.0
 	 */
 	static function buttonBack() {
-		?><button class="ui-corner-all" type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button> 	<?php
+		?><button type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button> 	<?php
 	}
 	
 	/**
@@ -306,7 +337,7 @@ class html {
 	 * @since 	1.0
 	 */
 	static function buttonSave() {
-		?><button class="ui-corner-all" type="button" onclick="submitbutton('save'); return false;"><?php echo text::_( _LANG_SAVE ); ?></button><?php
+		?><button type="button" onclick="submitbutton('save'); return false;"><?php echo text::_( _LANG_SAVE ); ?></button><?php
 	}
 	
 	/**
@@ -318,7 +349,7 @@ class html {
 	 * @since 	1.0
 	 */
 	static function buttonApply() {
-		?><button class="ui-corner-all" type="button" onclick="submitbutton('apply'); return false;"><?php echo text::_( _LANG_APPLY ); ?></button><?php
+		?><button type="button" onclick="submitbutton('apply'); return false;"><?php echo text::_( _LANG_APPLY ); ?></button><?php
 	}
 	
 	/**

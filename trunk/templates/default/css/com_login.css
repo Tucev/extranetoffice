@@ -10,18 +10,22 @@
 /*************** Login component (com_login) ***************/
 
 div#login_wrapper {
-text-align: center;
+text-align: left;
 padding: 50px 0 0 0;
-width: 380px;
+width: 540px;
 }
 
 .loginbox {
 text-align: left;
 background-color: #FFFFFF;
 padding: 20px;
+border: 1px solid #CCCCCC;
+-moz-border-radius: 4px;
+-webkit-border-radius: 4px;
 }
 
 .input_openid {
 background: #FFFFFF url('../images/icons/user/openid-icon-small.gif') no-repeat scroll 0pt 50%;
 padding-left: 18px;
+font-size: 1.6em;
 }
