@@ -97,7 +97,7 @@ class html {
 	}
 	
 	/**
-	 * Build and display a dialog box with content loaded via AJAX.
+	 * Build and display a jQuery UI dialog box with content loaded via AJAX.
 	 * 
 	 * @param	string	$label	A string to print inside de link tag.
 	 * @param	string	$target The target URL to load via AJAX.
@@ -114,12 +114,12 @@ class html {
 		<script type="text/javascript">
 		$(function() {
 
-			// Dinamically add an HTML element at the end of the body to show the dialog
+			// Dynamically add an HTML element at the end of the body to show the dialog
 			$("body").append('<div style="position: absolute" id="dialog_<?php echo $uid; ?>" title="<?php echo $label; ?>"></div>');
 			// Add the loading div inside the newly created dialog box
 			$("#dialog_<?php echo $uid; ?>").html('<div class="loading"></div>');
 
-			// Add dialog beaviour to new dialog_box
+			// Add dialog beaviour to new dialog box
 			$("#dialog_<?php echo $uid; ?>").dialog({
 				autoOpen: false,
 				bgiframe: false,
@@ -159,6 +159,95 @@ class html {
 		</script>
 		
 		<a id="dialog_trigger_<?php echo $uid; ?>" href="<?php echo $target; ?>"><?php echo $label; ?></a>
+		
+		<?php
+	}
+	
+	/**
+	 * Build and display a jQuery UI confirm box
+	 * 
+	 * To use the confirm behaviour you will need to create anchor tags and give them a class, title and href attributes.
+	 * 
+	 * For example:
+	 * 
+	 * <code>
+	 * <?php html::confirm('delete_entry', 'Delete entry', 'Are you sure you want to delete entry'); ?>
+	 * 
+	 * <a class="delete_entry" title="The name of the entry we are deleting" href="The URL to go if user confirms action">
+	 * </code>
+	 * 
+	 * @access	public
+	 * @param	string	$a_class		The class attribute used to select the delete links.
+	 * @param	string	$title			A string to use in the dialog box title bar.
+	 * @param	string	$msg			A string with the message to display in the confirm box.
+	 * @param	string	$ajax_container	A jQuery selector string to select the HTML element where to load 
+	 * 									the AJAX response. This parameter is optional, if omitted the browser 
+	 * 									window will be redirected to the link's href instead of using an AJAX request.
+	 * @return	void
+	 * @since	1.0
+	 */
+	static function confirm($a_class, $title, $msg, $ajax_container='') {
+		$uid = uniqid();
+		?>
+		
+		<script language="javascript" type="text/javascript">
+		// Declare confirm_href amd confirm_response_container_id variables used to identify the AJAX request href 
+		// and the element where to load the AJAX request.
+		// We declare this variables in global scope so that they are available to all functions below
+		var confirm_response_container_id_<?php echo $uid; ?>;
+		var confirm_href_<?php echo $uid; ?>;
+		var confirm_title_<?php echo $uid; ?>;
+		
+		$(function() {
+			//Dinamically add an HTML element to show the confirmation dialog at the end of the body
+			$("body").append('<div id="confirm_dialog_<?php echo $uid; ?>" title="<?php echo $title; ?>"></div>');
+			
+			// Add dialog behaviour to the confirm box
+			$("#confirm_dialog_<?php echo $uid; ?>").dialog({
+				autoOpen: false,
+				bgiframe: true,
+				resizable: false,
+				height:140,
+				modal: true,
+				overlay: {
+					backgroundColor: '#000',
+					opacity: 0.5
+				},
+				buttons: {
+					'Ok': function() {
+						<?php if (!empty($ajax_container)) : ?>
+						$("#"+confirm_response_container_id_<?php echo $uid; ?>).load(confirm_href_<?php echo $uid; ?>);
+						<?php else : ?>
+						window.location = confirm_href_<?php echo $uid; ?>;
+						<?php endif; ?>
+						$(this).dialog('close');
+					},
+					Cancel: function() {
+						$(this).dialog('close');
+					}
+				}
+			});
+			
+			// Override onclick trigger for delete links
+			$("a.<?php echo $a_class; ?>").click(function(e) {
+				// Prevent element's default onclick
+				e.preventDefault();
+		
+				// Get href from current link
+				confirm_href_<?php echo $uid; ?> = $(this).attr("href");
+				confirm_title_<?php echo $uid; ?> = $(this).attr("title");
+				
+				// Get row id from href
+				var pattern = /id=(.*)$/;
+				var id = confirm_href_<?php echo $uid; ?>.match(pattern)[1];
+				
+				// Find the element where we want to load the AJAX response
+				confirm_response_container_id_<?php echo $uid; ?> = $("<?php echo $ajax_container; ?>").attr('id');
+				$("#confirm_dialog_<?php echo $uid; ?>").html('<?php echo $msg; ?> "' + confirm_title_<?php echo $uid; ?> + '"?');
+				$("#confirm_dialog_<?php echo $uid; ?>").dialog('open');
+			});
+		});
+		</script>
 		
 		<?php
 	}
