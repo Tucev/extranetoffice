@@ -68,27 +68,27 @@ class debug {
 		// Get end time
 		$this->execution_end = $this->microtime_float();
 		
-		echo '<hr />';
+		echo '<div style="background-color: white; padding: 20px; font-size: 0.8em; overflow: hidden;">';
 		
-		echo '<h1>Debugger:</h1>';
+		echo '<h1 style="font-size: 2em;">Debugger:</h1>';
 		// Print execution time
 		echo 'Script Execution Time: ' . round($this->execution_end - $this->execution_start, 5) . ' seconds'; 
 		
 		$application = factory::getApplication();
 		
 		$properties = array();
+		$properties[] = array('option', 'Option');
+		$properties[] = array('auth', 'Auth');
+		$properties[] = array('client', 'Client');
 		$properties[] = array('config', 'Gloabl Configuration');
 		$properties[] = array('request', 'Request');
-		$properties[] = array('client', 'Client');
-		$properties[] = array('db', 'Database');
+		//$properties[] = array('db', 'Database');
 		$properties[] = array('session', 'Session');
-		$properties[] = array('auth', 'Auth');
 		$properties[] = array('user', 'User');
 		$properties[] = array('permissions', 'Permissions');
 		//$properties[] = array('modules', 'Modules');
 		$properties[] = array('pathway', 'Pathway');
 		//$properties[] = array('document', 'Document');
-		$properties[] = array('option', 'Option');
 		$properties[] = array('component_info', 'Component Info');
 		
 		foreach ($properties as $property) {
@@ -100,6 +100,8 @@ class debug {
 		global $dependencies;
 		echo '<h2>Dependencies:</h2>';
 		echo '<pre>'; var_dump($dependencies); echo '</pre>';
+		
+		echo '</div>';
 	}
 }
 ?>
