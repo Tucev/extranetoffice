@@ -9,9 +9,9 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
+
+html::confirm('delete_user', _LANG_ADMIN_USERS_DELETE, _LANG_ADMIN_USERS_DELETE_CONFIRM, "div[id^='ui-tabs']:has(a.delete_user)");
 ?>
-
-
 
 <h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 
@@ -60,6 +60,7 @@ function submit_filter(reset) {
     <th><?php echo _LANG_LASTNAME; ?></th>
     <th><?php echo _LANG_BLOCK; ?></th>
     <th><?php echo _LANG_GROUP; ?></th>
+    <th></th>
   </tr>
   </thead>
   <tbody>
@@ -70,9 +71,7 @@ function submit_filter(reset) {
   		<input type="checkbox" name="ids[]" value="<?php echo $row->id; ?>" />
   	</td>
     <td valign="top">
-    <a href="index.php?option=com_admin&amp;view=users&amp;layout=form&amp;userid=<?php echo $row->id; ?>">
-	<?php echo $row->username; ?>
-	</a>
+    <?php html::dialog($row->username, 'index.php?option=com_admin&view=users&layout=form&userid='.$row->id, 460, 390, true); ?>
     </td>
     <td>
     	<?php echo $row->email; ?>
@@ -88,6 +87,11 @@ function submit_filter(reset) {
     </td>
     <td>
     	<?php echo $row->group_name; ?>
+    </td>
+    <td>
+    	<a class="delete_user" title="<?php echo text::_($row->firstname.' '.$row->lastname, true); ?>" href="index.php?option=com_admin&task=remove_user&id=<?php echo $row->id; ?>">
+    		<?php echo _LANG_DELETE; ?>
+    	</a>
     </td>
   </tr>
   <?php $k = 1 - $k; ?>

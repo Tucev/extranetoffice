@@ -191,12 +191,14 @@ class html {
 		?>
 		
 		<script language="javascript" type="text/javascript">
-		// Declare confirm_href amd confirm_response_container_id variables used to identify the AJAX request href 
-		// and the element where to load the AJAX request.
-		// We declare this variables in global scope so that they are available to all functions below
-		var confirm_response_container_id_<?php echo $uid; ?>;
+		// Declare confirm_href and confirm_title.
+		// We declare this variables in global scope so that they are available to all functions below.
 		var confirm_href_<?php echo $uid; ?>;
 		var confirm_title_<?php echo $uid; ?>;
+		<?php if (!empty($ajax_container)) : ?>
+		// This variable is used to identify the element where to load the AJAX request.
+		var confirm_response_container_id_<?php echo $uid; ?>; 
+		<?php endif; ?>
 		
 		$(function() {
 			//Dinamically add an HTML element to show the confirmation dialog at the end of the body
@@ -240,9 +242,12 @@ class html {
 				// Get row id from href
 				var pattern = /id=(.*)$/;
 				var id = confirm_href_<?php echo $uid; ?>.match(pattern)[1];
-				
+
+				<?php if (!empty($ajax_container)) : ?>
 				// Find the element where we want to load the AJAX response
 				confirm_response_container_id_<?php echo $uid; ?> = $("<?php echo $ajax_container; ?>").attr('id');
+				<?php endif; ?>
+				
 				$("#confirm_dialog_<?php echo $uid; ?>").html('<?php echo $msg; ?> "' + confirm_title_<?php echo $uid; ?> + '"?');
 				$("#confirm_dialog_<?php echo $uid; ?>").dialog('open');
 			});

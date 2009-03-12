@@ -9,6 +9,11 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
+
+$tmpl = request::getVar('tmpl', '');
+if (!empty($tmpl)) {
+	$tmpl = '&tmpl='.$tmpl;
+}
 ?>
 
 <!-- add jQuery tabs behaviour -->
@@ -23,16 +28,16 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <div id="tabs">
 	<ul>
 		<li>
-			<a href="index.php?option=com_admin&amp;view=config&tmpl=component">Global Config</a>
+			<a href="index.php?option=com_admin&amp;view=config<?php echo $tmpl; ?>">Global Config</a>
 		</li>
 		<li>
-			<a href="index.php?option=com_admin&amp;view=users&tmpl=component">Users</a>
+			<a href="index.php?option=com_admin&amp;view=users<?php echo $tmpl; ?>">Users</a>
 		</li>
 		<li>
-			<a href="index.php?option=com_admin&amp;view=components&tmpl=component">Components</a>
+			<a href="index.php?option=com_admin&amp;view=components<?php echo $tmpl; ?>">Components</a>
 		</li>
 		<li>
-			<a href="index.php?option=com_admin&amp;view=modules&tmpl=component">Modules</a>
+			<a href="index.php?option=com_admin&amp;view=modules<?php echo $tmpl; ?>">Modules</a>
 		</li>
 	</ul>
 </div>

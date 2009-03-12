@@ -11,23 +11,6 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
-<script language="javascript" type="text/javascript">
-function submitbutton() {
-	var form = document.usersform;
-
-	// do field validation
-	if (form.username.value == "") {
-		alert( "<?php echo text::_( 'Please enter a username.', true ); ?>" );
-		return false;
-	} 
-	else if (form.email.value == "") {
-		alert( "<?php echo text::_( 'Please enter a valid e-mail address.', true ); ?>" );
-		return false;
-	} 
-	
-	form.submit();
-}
-</script>
 
 <h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 

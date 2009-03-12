@@ -9,22 +9,10 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
-?>
 
-<script language="javascript" type="text/javascript">
-function confirm_delete(projectid, label) {
-	var answer = confirm("Are you sure you want to delete project '"+label+"'?")
-	if (answer){
-		window.location = "index.php?option=com_projects&task=remove_project&projectid="+projectid;
-	}
-}
-function confirm_delete_member(projectid, userid, label) {
-	var answer = confirm("Are you sure you want to delete member '"+label+"' from this project?")
-	if (answer){
-		window.location = "index.php?option=com_projects&task=remove_member&projectid="+projectid+"&userid="+userid;
-	}
-}
-</script>
+html::confirm('delete_project', _LANG_PROJECTS_DELETE, _LANG_PROJECT_DELETE_CONFIRM);
+html::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJECT_MEMBER_DELETE_CONFIRM);
+?>
 
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
@@ -32,14 +20,14 @@ function confirm_delete_member(projectid, userid, label) {
 <div class="main_col_module_half">
 
 	<div style="float:right;" class="edit">
-		<a style="float:right;" href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=form&projectid=".$this->project->id); ?>" title="<?php echo text::_( _LANG_PROJECTS_NEW ); ?>">
+		<a style="float:right;" href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=form&projectid=".$this->project->id); ?>">
 		<?php echo text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
 	
 	<?php if ($this->project->created_by == $this->user->id) : ?>
 	<div style="float:right;" class="delete">
-		<a style="float:right;" href="Javascript:confirm_delete(<?php echo $this->projectid; ?>, '<?php echo text::_($this->project->name, true); ?>');" title="<?php echo text::_( _LANG_DELETE ); ?>">
+		<a class="delete_project" title="<?php echo $this->project->name; ?>" style="float:right;" href="index.php?option=com_projects&task=remove_project&projectid=<?php echo $this->projectid; ?>">
 			<?php echo text::_( _LANG_DELETE ); ?> &nbsp;&nbsp; 
 		</a>
 	</div>
@@ -144,7 +132,7 @@ function confirm_delete_member(projectid, userid, label) {
 	<a class="" href="index.php?option=com_projects&amp;view=admin&amp;layout=member_role&amp;projectid=<?php echo $this->projectid; ?>&amp;userid=<?php echo $row->userid; ?>&amp;tmpl=component" title="<?php echo _LANG_EDIT; ?>">
 		<img src="templates/<?php echo $this->config->get('template'); ?>/images/icons/generic/16x16/edit.png" alt="<?php echo text::_( _LANG_EDIT ); ?>" />
 	</a>
-	<a href="Javascript:confirm_delete_member(<?php echo $this->projectid; ?>, <?php echo $row->userid; ?>, '<?php echo text::_($row->name, true); ?>');" title="<?php echo text::_( _LANG_DELETE ); ?>">
+	<a class="delete_member" title="<?php echo text::_($row->name, true); ?>" href="index.php?option=com_projects&task=remove_member&projectid=<?php echo $this->projectid; ?>&userid=<?php echo $row->userid; ?>">
 		<img src="templates/<?php echo $this->config->get('template'); ?>/images/icons/generic/16x16/remove.png" alt="<?php echo text::_( _LANG_DELETE ); ?>" />
 	</a>
 	</td>
