@@ -23,16 +23,6 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 </script>
 
 
-<script language="javascript" type="text/javascript">
-function submitbutton() {
-	var form = document.configform;
-
-	// do field validation
-	
-	form.submit();
-}
-</script>
-
 <h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 
 <form action="index.php" method="post" name="configform">

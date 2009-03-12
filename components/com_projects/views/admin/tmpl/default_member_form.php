@@ -139,8 +139,8 @@ function submitbutton() {
 	
 	<div style="clear:both; margin-top:30px;"></div>
 	
-	<?php html::buttonBack(); ?> 
-	<?php html::buttonSave(); ?> 
+	<button type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button>
+	<button type="submit"><?php echo text::_(_LANG_SAVE); ?></button>
 	
 	<input type="hidden" name="option" value="com_projects" />
 	<input type="hidden" name="task" value="save_member" />

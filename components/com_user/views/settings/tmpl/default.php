@@ -9,42 +9,14 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
+
+html::validate('userform');
 ?>
 
-<script language="javascript" type="text/javascript">
-function submitbutton() {
-	var form = document.userform;
-	var r = new RegExp("[\<|\>|\"|\'|\%|\;|\(|\)|\&|\+|\-]", "i");
-
-	// do field validation
-	if (form.firstname.value == "") {
-		alert( "<?php echo text::_( 'Please enter your first name.', true ); ?>" );
-		form.firstname.focus();
-		return;
-	} 
-	else if (form.email.value == "") {
-		alert( "<?php echo text::_( 'Please enter a valid e-mail address.', true ); ?>" );
-		form.email.focus();
-		return;
-	} 
-	else if (((form.password.value != "") || (form.password2.value != "")) && (form.password.value != form.password2.value)){
-		alert( "<?php echo text::_( 'REGWARN_VPASS2', true ); ?>" );
-		form.password.focus();
-		return;
-	} 
-	else if (r.exec(form.password.value)) {
-		alert( "<?php printf( text::_( 'VALID_AZ09', true ), text::_( 'Password', true ), 4 ); ?>" );
-		form.password.focus();
-		return;
-	}
-	
-	form.submit();
-}
-</script>
 
 <h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 
-<form action="index.php" method="post" name="userform" enctype="multipart/form-data">
+<form action="index.php" method="post" name="userform" id="userform" enctype="multipart/form-data">
 	
 <fieldset>
 <legend><?php echo text::_( _LANG_USER_GENERAL_SETTINGS ); ?></legend>
@@ -61,7 +33,7 @@ function submitbutton() {
 </tr>
 <tr>
 	<td width="120">
-		<label for="name">
+		<label for="email">
 			<?php echo text::_( _LANG_EMAIL ); ?>:
 		</label>
 	</td>
@@ -71,7 +43,7 @@ function submitbutton() {
 </tr>
 <tr>
 	<td>
-		<label for="email">
+		<label for="firstname">
 			<?php echo text::_( _LANG_FIRSTNAME ); ?>:
 		</label>
 	</td>
@@ -81,7 +53,7 @@ function submitbutton() {
 </tr>
 <tr>
 	<td>
-		<label for="email">
+		<label for="lastname">
 			<?php echo text::_( _LANG_LASTNAME ); ?>:
 		</label>
 	</td>
@@ -154,12 +126,10 @@ function submitbutton() {
 
 <div style="clear:both; margin-top:30px;"></div>
 
-<?php 
-if (request::getVar('tmpl') != 'component') {
-	html::buttonBack();
-	html::buttonSave();
-}
-?>
+<?php if (request::getVar('tmpl') != 'component') : ?>
+<button type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button>
+<button type="submit"><?php echo text::_(_LANG_SAVE); ?></button>
+<?php endif; ?>
 
 <input type="hidden" name="id" value="<?php echo $this->user->get('id'); ?>" />
 <input type="hidden" name="username" value="<?php echo $this->user->get('username');?>" />

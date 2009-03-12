@@ -66,17 +66,19 @@ class html {
 		echo $html;
 	}
 	
+	/**
+	 * Add jQuery validation behaviour to a given form
+	 * 
+	 * @access	public
+	 * @param	string	$formid	The form's id attribute.
+	 * @return	void
+	 * @since	1.0
+	 */
 	static function validate($formid) {
-		$document =& factory::getDocument('html');
-		$document->addScript('lib/jquery/plugins/validate/jquery.validate.pack.js');
 		?>
+		
 		<script type="text/javascript">  
 		$(document).ready(function() {
-			//need to finis the regex bit beneath
-			//jQuery.validator.addMethod("letterswithbasicpunc", function(value, element) {
-				//return this.optional(element) || /^[a-z-.,()'\"\s]+$/i.test(value);
-			//}, "Letters or punctuation only please");
-			
 			$('#<?php echo $formid; ?>').validate({
 				//rules: {
 			  		//username: { require : true, minlength : 6, maxlength : 50, letterswithbasicpunc : true }
@@ -87,10 +89,7 @@ class html {
 						$(element).fadeIn()
 					})
 				}
-							
-		    
 			});
-			
 		});
 		</script>
 		
@@ -104,7 +103,7 @@ class html {
 	 * @param	string	$target The target URL to load via AJAX.
 	 * @param	int		$width	The dialog box width
 	 * @param	int		$height	The dialog box height
-	 * @param	bool	$form	If TRUE it shows save button with standard 'save' button
+	 * @param	bool	$form	
 	 * @return	void
 	 * @since 	1.0
 	 */
@@ -124,7 +123,7 @@ class html {
 				<?php if ($form) : ?>
 				,buttons: {
 					"Save" : function() {
-						submitbutton();
+						$(this).find("form").submit();
 					},
 					"Close" : function() {
 						$(this).dialog('close');
@@ -326,30 +325,6 @@ class html {
 	 */
 	static function buttonBack() {
 		?><button type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button> 	<?php
-	}
-	
-	/**
-	 * Build an html 'save' button tag and echo it.
-	 * 
-	 * This button will have an onclick attribute of 'submitbutton('save'); return false;'.
-	 * 
-	 * @return	void
-	 * @since 	1.0
-	 */
-	static function buttonSave() {
-		?><button type="button" onclick="submitbutton('save'); return false;"><?php echo text::_( _LANG_SAVE ); ?></button><?php
-	}
-	
-	/**
-	 * Build an html 'apply' button tag and echo it.
-	 * 
-	 * This button will have an onclick attribute of 'submitbutton('apply'); return false;'.
-	 * 
-	 * @return	void
-	 * @since 	1.0
-	 */
-	static function buttonApply() {
-		?><button type="button" onclick="submitbutton('apply'); return false;"><?php echo text::_( _LANG_APPLY ); ?></button><?php
 	}
 	
 	/**

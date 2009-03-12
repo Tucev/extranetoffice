@@ -165,6 +165,7 @@ class application extends singleton {
 		if ($this->client == "default") {
 			$this->document->addScript('lib/jquery/js/jquery-1.3.2.min.js');
 			$this->document->addScript('lib/jquery/js/jquery-ui-1.7.custom.min.js');
+			$this->document->addScript('lib/jquery/plugins/validate/jquery.validate.pack.js');
 			$this->document->addStyleSheet('lib/jquery/css/smoothness/jquery-ui-1.7.custom.css');	
 		}
 		
