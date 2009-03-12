@@ -89,6 +89,7 @@ define("_LANG_CONFIG_SAVE_SUCCESS", "Global configuration successfully saved");
 // com_admin > User Management
 define("_LANG_ADMIN_USERS", "User management");
 define("_LANG_ADMIN_USERS_NEW", "New user");
+define("_LANG_ADMIN_USERS_DELETE", "Delete user");
 define("_LANG_ADMIN_USER_DETAILS", "User details");
 define("_LANG_PASSWORD_AUTOGEN_INFO", "A password will be automatically generated and sent via email to the new user.");
 define("_LANG_USER_SAVE_SUCCESS", "User successfully saved");
@@ -101,6 +102,9 @@ Login username: %s
 Password: %s
 
 This email has been automatically generated. Please do not reply to this message.");
+define("_LANG_ADMIN_USERS_EDIT", "Edit user");
+define("_LANG_ADMIN_USERS_DELETE", "Delete user");
+define("_LANG_ADMIN_USERS_DELETE_CONFIRM", "Are you sure you want to delete user");
 
 // com_dashboard
 define("_LANG_DASHBOARD", "Dashboard");
@@ -120,6 +124,7 @@ define("_LANG_USERS_NO_SELECTED", "No user has been selected");
 define("_LANG_PROJECTS", "Projects");
 define("_LANG_PROJECTS_NEW", "New project");
 define("_LANG_PROJECTS_EDIT", "Edit project");
+define("_LANG_PROJECTS_DELETE", "Delete project");
 define("_LANG_PROJECTS_UPDATES", "Project updates");
 define("_LANG_DASHBOARD_MY_PROJECTS", "My projects");
 
@@ -172,12 +177,15 @@ define("_LANG_PROJECTS_SWITCHER", "Switch to project");
 define("_LANG_ADMIN", "Admin");
 define("_LANG_PROJECT_SAVED", "Project successfully saved");
 define("_LANG_PROJECT_SAVE_ERROR", "An error occurred while saving the project.");
+define("_LANG_PROJECT_DELETE_CONFIRM", "Are you sure you want to delete project");
 define("_LANG_PROJECT_DELETED", "Project successfully deleted");
 define("_LANG_PROJECTS_ROLE", "Role");
+define("_LANG_PROJECT_MEMBER_DELETE_CONFIRM", "Are you sure you want to revoke project membership for user");
 
 define("_LANG_PROJECTS_ADD_MEMBER", "Add project members");
 define("_LANG_PROJECTS_ADD_EXISTING_MEMBER", "Add existing user to this project");
 define("_LANG_PROJECTS_INVITE_NEW_MEMBER", "Invite a new user to this project");
+define("_LANG_PROJECTS_DELETE_MEMBER", "Delete project member");
 define("_LANG_PROJECTS_ROLE_REQUIRED", "Role is required");
 define("_LANG_ADMIN_USER_REQUIRED", "Please select an existing user or invite a new one");
 define("_LANG_ADMIN_NAME_REQUIRED", "Name is required for new users");

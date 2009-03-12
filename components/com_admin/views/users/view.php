@@ -80,11 +80,16 @@ class adminViewUsers extends view {
 	function displayUsersForm() {
 		$userid = request::getVar('userid', 0);
 		
-		$this->page_title = _LANG_ADMIN_USERS_NEW;
-		
-		// Push model into the view
-		$model =& $this->getModel('users');
-		$this->row = $model->getUsersDetail($userid);
+		if (empty($userid)) {
+			$this->page_title = _LANG_ADMIN_USERS_NEW;
+		}
+		else {
+			$this->page_title = _LANG_ADMIN_USERS_EDIT;
+			
+			// Push model into the view
+			$model =& $this->getModel('users');
+			$this->row = $model->getUsersDetail($userid);
+		}
 	}
 }
 ?>
