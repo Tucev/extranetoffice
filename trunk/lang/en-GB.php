@@ -70,6 +70,7 @@ define("_LANG_CONFIG_DB_PREFIX", "Table prefix");
 define("_LANG_FILESYSTEM_CONFIG", "Filesystem settings");
 define("_LANG_CONFIG_UPLOAD_DIR", "Upload directory");
 define("_LANG_CONFIG_FILESYSTEM", "Absolute path to storage directory");
+define("_LANG_CONFIG_UPLOAD_ACCEPT", "Mimetypes to accept for uploads");
 define("_LANG_INCOMING_EMAIL_CONFIG", "Incoming email settings");
 define("_LANG_CONFIG_IMAP_HOST", "IMAP host");
 define("_LANG_CONFIG_IMAP_PORT", "IMAP port");
