@@ -113,6 +113,13 @@ class html {
 		
 		<script type="text/javascript">
 		$(function() {
+
+			// Dinamically add an HTML element at the end of the body to show the dialog
+			$("body").append('<div style="position: absolute" id="dialog_<?php echo $uid; ?>" title="<?php echo $label; ?>"></div>');
+			// Add the loading div inside the newly created dialog box
+			$("#dialog_<?php echo $uid; ?>").html('<div class="loading"></div>');
+
+			// Add dialog beaviour to new dialog_box
 			$("#dialog_<?php echo $uid; ?>").dialog({
 				autoOpen: false,
 				bgiframe: false,
@@ -133,13 +140,15 @@ class html {
 					
 			});
 
+			// Bind AJAX events to loading div to show/hide animation
 			$(".loading").bind("ajaxSend", function() {
 				$(this).show();
 			})
 			.bind("ajaxComplete", function() {
 				   $(this).hide();
 			});
-			
+
+			// Set up the onclick trigger for the dialog box
 			$('#dialog_trigger_<?php echo $uid; ?>').click(function(e) {
 				e.preventDefault();
 				$("#dialog_<?php echo $uid; ?>").css({ "position" : "relative" });
@@ -149,11 +158,7 @@ class html {
 		});
 		</script>
 		
-		<a id="dialog_trigger_<?php echo $uid; ?>" href="#"><?php echo $label; ?></a>
-		
-		<div style="position: absolute" id="dialog_<?php echo $uid; ?>" title="<?php echo $label; ?>">
-			<div class="loading"></div>
-		</div>
+		<a id="dialog_trigger_<?php echo $uid; ?>" href="<?php echo $target; ?>"><?php echo $label; ?></a>
 		
 		<?php
 	}
