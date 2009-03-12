@@ -108,6 +108,10 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			<td><?php echo text::_( _LANG_CONFIG_FILESYSTEM ); ?></td>
 			<td><input type="text" size="40" name="filesystem" value="<?php echo $this->config->filesystem; ?>" /></td>
 		</tr>
+		<tr>
+			<td><?php echo text::_( _LANG_CONFIG_UPLOAD_ACCEPT ); ?></td>
+			<td><input type="text" size="40" name="upload_accept" value="<?php echo $this->config->upload_accept; ?>" /></td>
+		</tr>
 		</table>
 	</div>
 	
