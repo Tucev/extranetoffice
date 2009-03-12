@@ -9,41 +9,35 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
+
+// Load jQuery validation behaviour for forms
+html::validate('form_login');
+html::validate('form_openid');
+html::validate('form_forgot');
 ?>
-<script type="text/javascript" src="lib/jquery/plugins/validate/jquery.validate.js"></script>
 
-<script>  
-	
-	$(document).ready(function() {
-		
-		//need to finis the regex bit beneath
-		
-		/*jQuery.validator.addMethod("letterswithbasicpunc", function(value, element) {
-			return this.optional(element) || /^[a-z-.,()'\"\s]+$/i.test(value);
-		}, "Letters or punctuation only please");
-		
-		$('#form_login').validate({
-			rules: {
-		  		username: { require : true, minlength : 6, maxlength : 50, letterswithbasicpunc : true }
-			}
-
-		});*/
-		
-		$('#form_login').validate({
-			rules: {
-		  		username: { require : true, minlength : 6, maxlength : 50 }
-			}
-
-		});
+<script type="text/javascript">  
+$(document).ready(function() {
+	// toggles
+	$('a.toggle').parent().next().hide(); 
+	$('a.toggle').click(function(e) {
+		var toggle_id = $(this).attr('id');
+		$('#'+toggle_id).parent().next().slideToggle('normal');
+		return false;
 	});
-		
+
+	// clear openid url when we click on the input box
+	$('#openid_url').click(function() {
+		$(this).attr('value', '');
+	});
+});
 </script>
 
 
 <div class="loginbox"> 
 
 <form id="form_login" action="index.php" method="post">
-<table align="center" class="table_login">
+<table class="table_login">
 	<tr>
 		<td>
 			<label for="username" class="label_small">username:</label><br />
@@ -63,28 +57,57 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 		</td>
 	</tr>
 </table>
-
 <input type="hidden" name="option" value="com_user" />
 <input type="hidden" name="task" value="login" />
 </form>
 
 <br />
 <hr />
-<br />
 
-<table align="center" class="table_login">
+<h3><a class="toggle" id="openid" href="#">Have an OpenID?</a></h3>
+<div>
+
+<form id="form_openid" action="#" method="post">
+<table class="table_login">
 	<tr>
-		<td><strong>Have an OpenID?</strong> Sign in below:</td>
+		<td><strong></strong> Sign in below:</td>
 	</tr>
 	<tr>
 		<td>
-			<input class="input_big input_openid" type="text" name="password" id="password" size="16" maxlength="50" /> 
-			<button>Log in</button>
+			<input class="input_openid required" type="text" name="openid_url" id="openid_url" size="30" maxlength="50" value="ie: http://username.myopenid.com" /> 
+			
 		</td>
 	</tr>
 	<tr>
-		<td>ie: http://username.myopenid.com</td>
+		<td><button>Log in</button></td>
 	</tr>
 </table>
+</form>
+
+</div>
+
+
+<h3><a class="toggle" id="forgot" href="#">Forgot your password?</a></h3>
+<div>
+
+<form id="form_forgot" action="index.php" method="post">
+<table class="table_login">
+	<tr>
+		<td>
+			<label for="email_forgot" class="label_small">email:</label><br />
+			<input class="input_big required" type="text" name="email_forgot" id="email_forgot" size="16" maxlength="50" />
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<button type="submit">Send password to email address</button> 
+		</td>
+	</tr>
+</table>
+<input type="hidden" name="option" value="com_user" />
+<input type="hidden" name="task" value="reset_password" />
+</form>
+
+</div>
 
 </div><!-- close .loginbox -->
