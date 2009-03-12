@@ -75,8 +75,27 @@ class debug {
 		echo 'Script Execution Time: ' . round($this->execution_end - $this->execution_start, 5) . ' seconds'; 
 		
 		$application = factory::getApplication();
-		echo '<h2>Application:</h2>';
-		echo '<pre>'; var_dump($application); echo '</pre>';
+		
+		$properties = array();
+		$properties[] = array('config', 'Gloabl Configuration');
+		$properties[] = array('request', 'Request');
+		$properties[] = array('client', 'Client');
+		$properties[] = array('db', 'Database');
+		$properties[] = array('session', 'Session');
+		$properties[] = array('auth', 'Auth');
+		$properties[] = array('user', 'User');
+		$properties[] = array('permissions', 'Permissions');
+		//$properties[] = array('modules', 'Modules');
+		$properties[] = array('pathway', 'Pathway');
+		//$properties[] = array('document', 'Document');
+		$properties[] = array('option', 'Option');
+		$properties[] = array('component_info', 'Component Info');
+		
+		foreach ($properties as $property) {
+			echo '<h2>'.$property[1].':</h2>';
+			echo '<pre>'; var_dump($application->$property[0]); echo '</pre>';
+			echo '<hr />';
+		}
 		
 		global $dependencies;
 		echo '<h2>Dependencies:</h2>';
