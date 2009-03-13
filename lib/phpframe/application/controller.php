@@ -181,7 +181,7 @@ abstract class controller extends singleton {
 	 * @since	1.0
 	 */
 	public function setRedirect($url) {
-		$this->redirect_url = $url;
+		$this->redirect_url = route::_($url);
 	}
 	
 	/**
