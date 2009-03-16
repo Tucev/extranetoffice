@@ -198,6 +198,9 @@ if (request::getVar('tmpl') != 'component') {
 	html::button('button', _LANG_BACK, "window.location = 'index.php?option=com_admin';");
 	html::button('submit', _LANG_SAVE);
 }
+else {
+	?><input type="hidden" name="tmpl" value="component" /><?php
+}
 ?>
 	
 <input type="hidden" name="option" value="com_admin" />
