@@ -106,7 +106,7 @@ function confirm_delete(projectid, milestoneid, label) {
 		<input type="hidden" name="option" value="com_projects" />
 		<input type="hidden" name="task" value="save_comment" />
 		<input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
-		<input type="hidden" name="type" value="messages" />
+		<input type="hidden" name="type" value="milestones" />
 		<input type="hidden" name="itemid" value="<?php echo  $this->row->id; ?>" />
 		<?php if (is_array($this->row->assignees) && count($this->row->assignees) > 0) : ?>
 		<?php foreach ($this->row->assignees as $assignee) : ?>

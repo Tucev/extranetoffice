@@ -53,12 +53,12 @@ class projectsModelComments extends model {
 		$row->created = date("Y-m-d H:i:s");
 		
 		if (!$row->check()) {
-			$this->error =& $row->error;
+			$this->error[] =& $row->getLastError();
 			return false;
 		}
 	
 		if (!$row->store()) {
-			$this->error =& $row->error;
+			$this->error[] =& $row->getLastError();
 			return false;
 		}
 		

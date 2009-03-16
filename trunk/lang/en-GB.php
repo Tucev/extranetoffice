@@ -106,6 +106,7 @@ This email has been automatically generated. Please do not reply to this message
 define("_LANG_ADMIN_USERS_EDIT", "Edit user");
 define("_LANG_ADMIN_USERS_DELETE", "Delete user");
 define("_LANG_ADMIN_USERS_DELETE_CONFIRM", "Are you sure you want to delete user");
+define("_LANG_ADMIN_USERS_DELETE_SUCCESS", "User successfully deleted");
 
 // com_dashboard
 define("_LANG_DASHBOARD", "Dashboard");
@@ -293,10 +294,28 @@ define("_LANG_SLIDESHOWS_EDIT", "Edit slideshow");
 define("_LANG_COMMENTS", "Comments");
 define("_LANG_COMMENT_SAVED", "Comment saved");
 define("_LANG_COMMENTS_ACTION_NEW", "New comment");
+define("_LANG_COMMENTS_ACTIVITYLOG_DESCRIPTION", "Title: %s
+Body:
+%s");
 
 // People
 define("_LANG_PEOPLE", "People");
 
+// Activity log
+define("_LANG_ACTIVITYLOG_NOTIFY_FAILED", "Email notification failed");
+define("_LANG_ACTIVITYLOG_NOTIFY_BODY", "[Project: %s]
+
+%s
+
+Details
+-------
+%s
+
+URL: %s
+
+--
+To add a comment on this thread simply reply to this email.
+");
 
 // com_email
 define("_LANG_EMAIL_NO_ACCOUNT", "No email account");
