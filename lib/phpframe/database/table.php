@@ -339,7 +339,7 @@ abstract class table extends singleton {
 				if ($col->Field != $this->primary_key) {
 					$col_name = $col->Field;
 					$col_value = $row->$col_name;
-					if (!is_null($col_value)) {
+					if (property_exists($row, $col_name) && !is_null($col_value)) {
 						if ($i>0) $query .= ", ";
 						$query .= "`".$col_name."` = '".$col_value."'";
 						$i++;
