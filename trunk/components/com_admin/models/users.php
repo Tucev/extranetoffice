@@ -27,7 +27,7 @@ class adminModelUsers extends model {
 	 * 
 	 * @return array
 	 */
-	function getUsers() {
+	function getUsers($deleted=false) {
 		$filter_order = request::getVar('filter_order', 'u.lastname');
 		$filter_order_Dir = request::getVar('filter_order_Dir', '');
 		$search = request::getVar('search', '');
@@ -36,6 +36,14 @@ class adminModelUsers extends model {
 		$limit = request::getVar('limit', 20);
 
 		$where = array();
+		
+		if ($deleted === true) {
+			$where[] = "`deleted` <> '0000-00-00 00:00:00'";
+			$where[] = "`deleted` IS NOT NULL";
+		}
+		else {
+			$where[] = "(`deleted` = '0000-00-00 00:00:00' OR `deleted` IS NULL)";
+		}
 		
 		if ($search) {
 			$where[] = "(u.firstname LIKE '%".$this->db->getEscaped($search)."%' 
@@ -189,6 +197,18 @@ class adminModelUsers extends model {
 		}
 		
 		return true;
+	}
+	
+	function deleteUser($userid) {
+		$query = "UPDATE #__users SET `deleted` = '".date("Y-m-d H:i:s")."' WHERE id = ".$userid;
+		$this->db->setQuery($query);
+		if ($this->db->query() === false) {
+			$this->error[] = $this->db->getLastError();
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 }
 ?>

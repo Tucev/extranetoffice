@@ -101,6 +101,12 @@ class user extends table {
 	 */
 	var $params=null;
 	/**
+	 * This field is used to flag users as deleted by storing the delete date and time here.
+	 * 
+	 * @var string
+	 */
+	var $deleted=null;
+	/**
 	 * Full name. Combination of firstname + lastname
 	 * 
 	 * @var string

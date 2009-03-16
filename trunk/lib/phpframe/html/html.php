@@ -103,22 +103,26 @@ class html {
 	 * @param	string	$target The target URL to load via AJAX.
 	 * @param	int		$width	The dialog box width
 	 * @param	int		$height	The dialog box height
-	 * @param	bool	$form	
+	 * @param	bool	$form	A boolean to indicate whether the dialog contains a form in order to include
+	 * 							submit buton.
+	 * @param	string	$ajax_container	A jQuery selector string to select the HTML element where to load 
+	 * 									the AJAX response. This parameter is optional, if omitted the browser 
+	 * 									window will be redirected to the link's href instead of using an AJAX request.
 	 * @return	void
 	 * @since 	1.0
 	 */
-	static function dialog($label, $target, $width=600, $height=560, $form=false) {
+	static function dialog($label, $target, $width=600, $height=560, $form=false, $ajax_container='') {
 		$uid = uniqid();
 		?>
 		
 		<script type="text/javascript">
-		$(function() {
+		$(document).ready(function() {
 
 			// Dynamically add an HTML element at the end of the body to show the dialog
 			$("body").append('<div style="position: absolute" id="dialog_<?php echo $uid; ?>" title="<?php echo $label; ?>"></div>');
 			// Add the loading div inside the newly created dialog box
 			$("#dialog_<?php echo $uid; ?>").html('<div class="loading"></div>');
-
+			
 			// Add dialog beaviour to new dialog box
 			$("#dialog_<?php echo $uid; ?>").dialog({
 				autoOpen: false,
@@ -130,7 +134,17 @@ class html {
 				<?php if ($form) : ?>
 				,buttons: {
 					"Save" : function() {
-						$(this).find("form").submit();
+						var form = $(this).find("form");
+						<?php if (!empty($ajax_container)) : ?>
+						var ajax_container = $("<?php echo $ajax_container; ?>");
+						// Add the loading div inside the ajax container
+						ajax_container.html('<div class="loading"></div>');
+						// bind form using 'ajaxForm'
+					    form.ajaxForm({ target: ajax_container });
+						<?php endif; ?>
+						// Submit form and close the dialog
+						form.submit();
+						$(this).dialog('close');
 					},
 					"Close" : function() {
 						$(this).dialog('close');
@@ -140,6 +154,7 @@ class html {
 					
 			});
 
+			<?php if (!empty($ajax_container)) : ?>
 			// Bind AJAX events to loading div to show/hide animation
 			$(".loading").bind("ajaxSend", function() {
 				$(this).show();
@@ -147,6 +162,7 @@ class html {
 			.bind("ajaxComplete", function() {
 				   $(this).hide();
 			});
+			<?php endif; ?>
 
 			// Set up the onclick trigger for the dialog box
 			$('#dialog_trigger_<?php echo $uid; ?>').click(function(e) {
@@ -218,7 +234,9 @@ class html {
 				buttons: {
 					'Ok': function() {
 						<?php if (!empty($ajax_container)) : ?>
-						$("#"+confirm_response_container_id_<?php echo $uid; ?>).load(confirm_href_<?php echo $uid; ?>);
+						// Add the loading div inside the ajax container
+						$("#"+confirm_response_container_id_<?php echo $uid; ?>).html('<div class="loading"></div>');
+						$("#"+confirm_response_container_id_<?php echo $uid; ?>).load(confirm_href_<?php echo $uid; ?> + '&tmpl=component');
 						<?php else : ?>
 						window.location = confirm_href_<?php echo $uid; ?>;
 						<?php endif; ?>
@@ -229,13 +247,23 @@ class html {
 					}
 				}
 			});
+
+			<?php if (!empty($ajax_container)) : ?>
+			// Bind AJAX events to loading div to show/hide animation
+			$(".loading").bind("ajaxSend", function() {
+				$(this).show();
+			})
+			.bind("ajaxComplete", function() {
+				   $(this).hide();
+			});
+			<?php endif; ?>
 			
 			// Override onclick trigger for delete links
 			$("a.<?php echo $a_class; ?>").click(function(e) {
 				// Prevent element's default onclick
 				e.preventDefault();
 		
-				// Get href from current link
+				// Get href from current link and add tmpl var
 				confirm_href_<?php echo $uid; ?> = $(this).attr("href");
 				confirm_title_<?php echo $uid; ?> = $(this).attr("title");
 				

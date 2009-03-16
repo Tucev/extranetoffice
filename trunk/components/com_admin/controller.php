@@ -49,7 +49,7 @@ class adminController extends controller {
 			error::raise('', 'message', _LANG_CONFIG_SAVE_SUCCESS);
 		}
 		
-		$this->setRedirect($_SERVER["HTTP_REFERER"]);
+		$this->setRedirect('index.php?option=com_admin&view=config');
 	}
 	
 	function save_user() {
@@ -62,7 +62,22 @@ class adminController extends controller {
 			error::raise('', 'message', _LANG_USER_SAVE_SUCCESS);
 		}
 		
-		$this->setRedirect($_SERVER["HTTP_REFERER"]);
+		$this->setRedirect('index.php?option=com_admin&view=users');
+	}
+	
+	function remove_user() {
+		$userid = request::getVar('id', 0);
+		
+		$modelUsers =& $this->getModel('users');
+		
+		if ($modelUsers->deleteUser($userid) === false) {
+			error::raise('', 'error', $modelUsers->getLastError());
+		}
+		else {
+			error::raise('', 'message', _LANG_ADMIN_USERS_DELETE_SUCCESS);
+		}
+		
+		$this->setRedirect('index.php?option=com_admin&view=users');
 	}
 }
 ?>

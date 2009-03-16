@@ -69,5 +69,6 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <input type="hidden" name="option" value="com_admin" />
 <input type="hidden" name="task" value="save_user" />
 <input type="hidden" name="layout" value="" />
+<input type="hidden" name="tmpl" value="<?php echo request::getVar('tmpl', ''); ?>" />
 
 </form>
