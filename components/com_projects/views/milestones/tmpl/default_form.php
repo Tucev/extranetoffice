@@ -121,7 +121,7 @@ function submitbutton(action) {
 <input type="hidden" name="id" value="<?php echo $this->row->id;?>" />
 <input type="hidden" name="option" value="com_projects" />
 <input type="hidden" name="task" value="save_milestone" />
-<input type="hidden" name="type" value="" />
+<input type="hidden" name="layout" value="" />
 <?php echo html::_( 'form.token' ); ?>
 
 </form>

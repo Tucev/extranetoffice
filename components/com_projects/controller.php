@@ -381,6 +381,9 @@ class projectsController extends controller {
 			case 'files' : 
 				$url = "index.php?option=com_projects&view=files&layout=detail&projectid=".$projectid."&fileid=".$row->itemid;
 				break;
+			case 'milestones' : 
+				$url = "index.php?option=com_projects&view=milestones&layout=detail&projectid=".$projectid."&milestoneid=".$row->itemid;
+				break;
 		}
 		$url = route::_(uri::getBase().$url);
 		
