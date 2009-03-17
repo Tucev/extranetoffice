@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Mar 17, 2009 at 05:01 PM
+-- Generation Time: Mar 17, 2009 at 05:12 PM
 -- Server version: 5.0.51
 -- PHP Version: 5.2.8
 
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `eo_acl_groups` (
   `layout` varchar(32) NOT NULL,
   `value` varchar(4) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_acl_groups`
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `eo_activitylog` (
   `url` varchar(256) NOT NULL,
   `ts` timestamp NOT NULL default CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_activitylog`
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `eo_comments` (
   `body` text NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_comments`
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `eo_components` (
   `system` enum('0','1') collate utf8_unicode_ci NOT NULL COMMENT 'system components are required',
   `ordering` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `eo_components`
@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `eo_email_accounts` (
   `outgoing_server_password` varchar(64) NOT NULL,
   `default` enum('0','1') NOT NULL default '0' COMMENT 'Is default account for user?',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_email_accounts`
@@ -182,7 +182,7 @@ CREATE TABLE IF NOT EXISTS `eo_files` (
   `filesize` int(11) NOT NULL,
   `ts` timestamp NOT NULL default CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_files`
@@ -199,7 +199,7 @@ CREATE TABLE IF NOT EXISTS `eo_groups` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `eo_groups`
@@ -236,7 +236,7 @@ CREATE TABLE IF NOT EXISTS `eo_invoice` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `customerid` (`customerid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_invoice`
@@ -271,7 +271,7 @@ CREATE TABLE IF NOT EXISTS `eo_invoiceentry` (
   `taxable` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `invoiceid` (`invoiceid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maintain information of work completed for customer' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Maintain information of work completed for customer';
 
 --
 -- Dumping data for table `eo_invoiceentry`
@@ -295,7 +295,7 @@ CREATE TABLE IF NOT EXISTS `eo_invoicetransaction` (
   `last4` varchar(5) NOT NULL default '0000',
   `amount` float default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_invoicetransaction`
@@ -326,7 +326,7 @@ CREATE TABLE IF NOT EXISTS `eo_issues` (
   `closed` datetime default NULL,
   `ts` timestamp NOT NULL default CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_issues`
@@ -348,7 +348,7 @@ CREATE TABLE IF NOT EXISTS `eo_meetings` (
   `created_by` int(11) NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_meetings`
@@ -370,7 +370,7 @@ CREATE TABLE IF NOT EXISTS `eo_messages` (
   `body` text NOT NULL,
   `status` enum('0','1','2') NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_messages`
@@ -393,7 +393,7 @@ CREATE TABLE IF NOT EXISTS `eo_milestones` (
   `closed_by` int(11) default '0',
   `closed` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_milestones`
@@ -416,7 +416,7 @@ CREATE TABLE IF NOT EXISTS `eo_modules` (
   `position` varchar(20) collate utf8_unicode_ci NOT NULL,
   `ordering` tinyint(4) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `eo_modules`
@@ -439,7 +439,7 @@ CREATE TABLE IF NOT EXISTS `eo_modules_options` (
   `moduleid` int(11) NOT NULL,
   `option` varchar(50) collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `eo_modules_options`
@@ -478,7 +478,7 @@ CREATE TABLE IF NOT EXISTS `eo_projects` (
   `created_by` int(11) NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_projects`
@@ -495,7 +495,7 @@ CREATE TABLE IF NOT EXISTS `eo_project_types` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_project_types`
@@ -518,7 +518,7 @@ CREATE TABLE IF NOT EXISTS `eo_roles` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(32) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_roles`
@@ -574,7 +574,7 @@ CREATE TABLE IF NOT EXISTS `eo_users` (
   `ts` timestamp NULL default CURRENT_TIMESTAMP,
   `deleted` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=102 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `eo_users`
@@ -594,7 +594,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_files` (
   `userid` int(11) NOT NULL,
   `fileid` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_users_files`
@@ -612,7 +612,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_issues` (
   `userid` int(11) NOT NULL,
   `issueid` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_users_issues`
@@ -630,7 +630,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_meetings` (
   `userid` int(11) NOT NULL,
   `meetingid` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_users_meetings`
@@ -648,7 +648,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_messages` (
   `userid` int(11) NOT NULL,
   `messageid` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_users_messages`
@@ -666,7 +666,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_milestones` (
   `userid` int(11) NOT NULL,
   `milestoneid` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_users_milestones`
@@ -685,7 +685,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_roles` (
   `roleid` int(11) NOT NULL,
   `projectid` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_users_roles`
