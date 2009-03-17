@@ -9,22 +9,10 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
+
+// Load jQuery validation behaviour for form
+html::validate('issuesform');
 ?>
-
-<script language="javascript" type="text/javascript">
-function submitbutton(action) {
-	var form = document.iofficeform;
-
-	// do field validation
-	if (form.title.value == "") {
-		alert('<?php echo text::_( _LANG_NAME_REQUIRED , true); ?>');
-		form.title.focus();
-		return;
-	}
-	
-	form.submit();
-}
-</script>
 
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
@@ -34,7 +22,7 @@ function submitbutton(action) {
 	</a>
 </h2>
 
-<form action="index.php" method="post" name="iofficeform">
+<form action="index.php" method="post" id="issuesform" name="issuesform">
 
 <fieldset>
 <legend><?php echo empty($this->issueid) ? _LANG_ISSUES_NEW : _LANG_ISSUES_EDIT; ?></legend>
@@ -46,7 +34,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<input type="text" id="title" name="title" size="32" maxlength="128" value="<?php echo htmlentities($this->row->title); ?>" />
+		<input class="required" type="text" id="title" name="title" size="32" maxlength="128" value="<?php echo htmlentities($this->row->title); ?>" />
 	</td>
 </tr>
 <tr>
@@ -106,7 +94,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<input type="text" id="expected_duration" name="expected_duration" size="9" maxlength="9" value="<?php echo $this->row->expected_duration; ?>" />
+		<input class="number" type="text" id="expected_duration" name="expected_duration" size="9" maxlength="9" value="<?php echo $this->row->expected_duration; ?>" />
 	</td>
 </tr>
 <tr>
