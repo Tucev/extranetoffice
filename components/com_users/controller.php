@@ -28,6 +28,7 @@ class usersController extends controller {
 	function __construct() {
 		// set default request vars
 		$this->view = request::getVar('view', 'users');
+		$this->layout = request::getVar('layout', 'list');
 		
 		parent::__construct();
 	}

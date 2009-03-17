@@ -2,7 +2,7 @@
 /**
  * @version 	$Id$
  * @package		ExtranetOffice
- * @subpackage 	com_projects
+ * @subpackage 	com_users
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  * @author 		Luis Montero [e-noise.com]
@@ -11,15 +11,7 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
-<h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
-
-
-<h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&projectid='.$this->projectid); ?>">
-		<?php echo $this->current_tool; ?>
-	</a>
-</h2>
-
+<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 
 <?php if (is_array($this->rows) && count($this->rows) > 0) : ?>
 
@@ -32,7 +24,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	
 	<div class="row_icons_heading">
 	<a href="<?php echo route::_("index.php?option=com_users&view=users&layout=detail&userid=".$row->id); ?>">
-		<?php echo $row->name; ?>
+		<?php echo usersHelper::fullname_format($row->firstname, $row->lastname); ?>
 	</a>
 	</div>
 

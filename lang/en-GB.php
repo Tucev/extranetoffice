@@ -113,7 +113,8 @@ define("_LANG_DASHBOARD", "Dashboard");
 define("_LANG_DASHBOARD_RECENT_EMAILS", "Recent email");
 
 
-// com_user
+// com_users
+define("_LANG_USERS", "Users");
 define("_LANG_USER_ACCOUNT", "My Account");
 define("_LANG_USER_GENERAL_SETTINGS", "General settings");
 define("_LANG_USER_PHOTO", "Photo");
