@@ -31,7 +31,7 @@ class projectsModelMembers extends model {
 	}
 	
 	function getMembers($projectid, $userid=0) {
-		$query = "SELECT ur.userid, ur.roleid, r.name AS rolename, u.username, CONCAT(firstname, ' ', lastname) AS name, u.email ";
+		$query = "SELECT ur.userid, ur.roleid, r.name AS rolename, u.username, CONCAT(u.firstname, ' ', u.lastname) AS name, u.email, u.photo ";
 		$query .= " FROM #__users_roles AS ur, #__users AS u, #__roles AS r ";
 		$query .= " WHERE u.id = ur.userid AND r.id = ur.roleid AND ur.projectid = ".$projectid;
 		if (!empty($userid)) $query .= " AND ur.userid = ".$userid;

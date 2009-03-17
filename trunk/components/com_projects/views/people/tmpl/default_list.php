@@ -27,7 +27,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <div class="row_icons">
 	
 	<a href="<?php echo route::_("index.php?option=com_projects&view=users&layout=detail&userid=".$row->id); ?>">
-	<img border="0" src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo !empty($row->settings->photo) ? $row->settings->photo : 'default.png'; ?>" />
+	<img border="0" src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo !empty($row->photo) ? $row->photo : 'default.png'; ?>" />
 	</a>
 	
 	<div class="row_icons_heading">
