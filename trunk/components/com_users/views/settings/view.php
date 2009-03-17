@@ -2,7 +2,7 @@
 /**
  * @version 	$Id$
  * @package		ExtranetOffice
- * @subpackage	com_user
+ * @subpackage	com_users
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  * @author 		Luis Montero [e-noise.com]
@@ -11,7 +11,7 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 /**
- * userViewSettings Class
+ * usersViewSettings Class
  * 
  * The methods in this class are invoked by its parent class. See display() 
  * method in 'view' class.
@@ -23,12 +23,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * </code>
  * 
  * @package		ExtranetOffice
- * @subpackage 	com_user
+ * @subpackage 	com_users
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  * @see 		view, controller
  */
-class userViewSettings extends view {
+class usersViewSettings extends view {
 	var $page_title=null;
 	
 	/**

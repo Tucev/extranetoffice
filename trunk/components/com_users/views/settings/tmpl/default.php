@@ -2,7 +2,7 @@
 /**
  * @version 	$Id$
  * @package		ExtranetOffice
- * @subpackage	com_user
+ * @subpackage	com_users
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  * @author 		Luis Montero [e-noise.com]
@@ -134,7 +134,7 @@ html::validate('userform');
 <input type="hidden" name="id" value="<?php echo $this->user->get('id'); ?>" />
 <input type="hidden" name="username" value="<?php echo $this->user->get('username');?>" />
 <input type="hidden" name="groupid" value="<?php echo $this->user->get('groupid');?>" />
-<input type="hidden" name="option" value="com_user" />
+<input type="hidden" name="option" value="com_users" />
 <input type="hidden" name="task" value="save_user" />
 <input type="hidden" name="layout" value="" />
 <?php echo html::_( 'form.token' ); ?>
