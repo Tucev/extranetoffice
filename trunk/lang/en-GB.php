@@ -256,6 +256,7 @@ define("_LANG_ISSUES_ACTION_EDIT", "Issue modified");
 define("_LANG_ISSUE_DELETED", "Issue deleted");
 define("_LANG_ISSUE_CLOSED", "Issue closed");
 define("_LANG_ISSUES_REOPEN", "Reopen issue");
+define("_LANG_ISSUE_REOPENED", "Issue has been reopened");
 define("_LANG_ISSUES_CLOSE", "Mark issue as closed");
 define("_LANG_ISSUES_ACTION_NEW", "Issue raised");
 define("_LANG_PROJECTS_ISSUES_DELETE", "Delete issue");
