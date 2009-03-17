@@ -71,10 +71,12 @@ class projectsController extends controller {
 		$projectid = $modelProjects->saveProject();
 		
 		if ($projectid !== false) {
+			error::raise('', 'message', _LANG_PROJECT_SAVED);
 			// Redirect depending on "apply" or "save"
 			$view = request::getVar('layout', 'list') == 'list' ? 'admin' : 'projects';
 		}
 		else {
+			error::raise('', 'error', $modelProjects->getLastError());
 			// Redirect back to form if save failed
 			request::setVar('layout', 'form');
 			$view = 'projects';

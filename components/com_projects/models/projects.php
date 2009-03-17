@@ -178,21 +178,28 @@ class projectsModelProjects extends model {
 		$row =& phpFrame::getInstance('projectsTableProjects');
 		
 		$post = request::get('post');
-		$row->bind($post);
 		
+		// Bind the post data to the row array
+		if ($row->bind($post, 'created,created_by') === false) {
+			$this->error[] = $row->getLastError();
+			return false;
+		}
+	
 		if (empty($row->id)) {
 			$row->created = date("Y-m-d H:i:s");
 			$row->created_by = $this->user->id;
 			$new_project = true;
 		}
 		
+		//echo '<pre>'; var_dump($row); exit;
+		
 		if (!$row->check()) {
-			error::raise('', 'error', $row->getLastError());
+			$this->error[] = $row->getLastError();
 			return false;
 		}
 		
 		if (!$row->store()) {
-			error::raise('', 'error', $row->getLastError());
+			$this->error[] = $row->getLastError();
 			return false;
 		}
 		
@@ -200,18 +207,12 @@ class projectsModelProjects extends model {
 		if ($new_project === true) {
 			$modelMembers =& $this->getModel('members');
 			if (!$modelMembers->saveMember($row->id, $this->user->id, '1')) {
+				$this->error[] = $modelMembers->getLastError();
 				return false;
 			}
 		}
 		
-		if (!empty($row->id)) {
-			error::raise('', 'message', _LANG_PROJECT_SAVED);
-			return $row->id;
-		}
-		else {
-			error::raise('', 'error', _LANG_PROJECT_SAVE_ERROR);
-			return false;
-		}
+		return $row->id;
 	}
 	
 	/**
@@ -228,7 +229,7 @@ class projectsModelProjects extends model {
 		
 		// Delete row from database
 		if ($row->delete($projectid) === false) {
-			error::raise('', 'error', $row->error);
+			$this->error[] = $row->getLastError();
 			return false;
 		}
 		else {
