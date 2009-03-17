@@ -164,11 +164,14 @@ class projectsController extends controller {
 		$roleid = request::getVar('roleid', 0);
 		
 		$modelMembers = &$this->getModel('members');
-		$modelMembers->changeMemberRole($projectid, $userid, $roleid);
+		if (!$modelMembers->changeMemberRole($projectid, $userid, $roleid)) {
+			error::raise('', 'error', $modelMembers->getLastError());
+		}
+		else {
+			error::raise('', 'message', _LANG_PROJECT_MEMBER_ROLE_SAVED);
+		}
 		
-		error::raise('', 'message', _LANG_PROJECT_MEMBER_ROLE_SAVED);
-		
-		parent::display();
+		$this->setRedirect('index.php?option=com_projects&view=admin&projectid='.$projectid);
 	}
 	
 	function save_issue() {

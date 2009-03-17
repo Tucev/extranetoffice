@@ -179,7 +179,13 @@ class projectsModelMembers extends model {
 		$query .= " SET roleid = ".$roleid;
 		$query .= " WHERE projectid = ".$projectid." AND userid = ".$userid;
 		$this->db->setQuery($query);
-		$this->db->query();
+		if ($this->db->query() === false) {
+			$this->error[] = $this->db->getLastError();
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 }
 ?>

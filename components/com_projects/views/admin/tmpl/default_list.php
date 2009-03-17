@@ -129,9 +129,12 @@ html::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJECT_MEMBE
     	<?php echo $row->email; ?>
     </td>
 	<td>
-	<a class="" href="index.php?option=com_projects&amp;view=admin&amp;layout=member_role&amp;projectid=<?php echo $this->projectid; ?>&amp;userid=<?php echo $row->userid; ?>&amp;tmpl=component" title="<?php echo _LANG_EDIT; ?>">
+	<?php html::dialog(_LANG_PROJECTS_CHANGE_ROLE, 'index.php?option=com_projects&view=admin&layout=member_role&projectid='.$this->projectid.'&userid='.$row->userid, 300, 150, true); ?>
+	<!-- 
+	<a class="" href="">
 		<img src="templates/<?php echo $this->config->get('template'); ?>/images/icons/generic/16x16/edit.png" alt="<?php echo text::_( _LANG_EDIT ); ?>" />
 	</a>
+	-->
 	<a class="delete_member" title="<?php echo text::_($row->name, true); ?>" href="index.php?option=com_projects&task=remove_member&projectid=<?php echo $this->projectid; ?>&userid=<?php echo $row->userid; ?>">
 		<img src="templates/<?php echo $this->config->get('template'); ?>/images/icons/generic/16x16/remove.png" alt="<?php echo text::_( _LANG_DELETE ); ?>" />
 	</a>
