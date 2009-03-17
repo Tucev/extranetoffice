@@ -32,4 +32,7 @@ $application =& factory::getApplication();
 	</li>
 	<?php endif; ?>
 	<?php endforeach; ?>
+	<li <?php if ($active_component == 'users') { echo ' class="selected"'; } ?>>
+		<a href="index.php?option=com_users">Users</a>
+	</li>
 </ul>

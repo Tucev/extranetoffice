@@ -16,7 +16,7 @@ $user =& factory::getUser();
 <div id="top">
 	<span class="icons_16_outer">
 	<span class="icons_16 users_16">
-		<?php html::dialog('Account', 'index.php?option=com_user', 600, 560, true); ?>
+		<?php html::dialog('Account', 'index.php?option=com_users&view=settings', 600, 560, true); ?>
 	</span>
 	</span>
 	
