@@ -9,16 +9,9 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
-?>
 
-<script language="javascript" type="text/javascript">
-function confirm_delete(projectid, issueid, label) {
-	var answer = confirm("Are you sure you want to delete issue '"+label+"'?")
-	if (answer){
-		window.location = "index.php?option=com_projects&task=remove_issue&projectid="+projectid+"&issueid="+issueid;
-	}
-}
-</script>
+html::confirm('delete_issue', _LANG_PROJECTS_ISSUES_DELETE, _LANG_PROJECTS_ISSUES_DELETE_CONFIRM);
+?>
 
 <!-- jquery slider for filter panel -->
 <script language="javascript" type="text/javascript">
@@ -50,7 +43,7 @@ $(document).ready(function() {
 
 
 <a id="toggle_filterpannel" href="#">Refine search</a>
-
+<br />
 <div id="filterpanel" class="list_filter_container">
 	<form name="listsearchform" action="index.php" method="post">
 	<table border="0" cellpadding="3" cellspacing="1">
@@ -96,8 +89,7 @@ $(document).ready(function() {
 	</tr>
 	</table>
 	<input type="hidden" name="option" value="com_projects" />
-	<input type="hidden" name="view" value="projects" />
-	<input type="hidden" name="type" value="issues" />
+	<input type="hidden" name="view" value="issues" />
 	<input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
 	</form>
 </div>
@@ -111,14 +103,14 @@ $(document).ready(function() {
 
 	<?php if ($row->created_by == $this->user->id) : ?>
 	<div class="thread_delete">
-		<a href="Javascript:confirm_delete(<?php echo $row->projectid; ?>, <?php echo $row->id; ?>, '<?php echo text::_($row->subject, true); ?>');">
+		<a class="delete_issue" title="<?php echo text::_($row->title, true); ?>" href="index.php?option=com_projects&task=remove_issue&projectid=<?php echo $row->projectid; ?>&issueid=<?php echo $row->id; ?>">
 			<?php echo text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
 	<div class="thread_heading">
-	<a href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=issues_detail&projectid=".$row->projectid."&issueid=".$row->id); ?>">
+	<a href="<?php echo route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->id); ?>">
 		<?php echo $row->title; ?>
 	</a>
 	</div>
@@ -154,11 +146,11 @@ $(document).ready(function() {
 	<?php endif; ?>
 	
 	<div class="files_detail_comments">
-		<a href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=issues_detail&projectid=".$this->projectid."&issueid=".$row->id); ?>">
+		<a href="<?php echo route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$this->projectid."&issueid=".$row->id); ?>">
 			<?php echo $row->comments; ?> <?php echo _LANG_COMMENTS; ?>
 		</a>
 		 - 
-		<a href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=issues_detail&projectid=".$this->projectid."&issueid=".$row->id."#post-comment"); ?>">
+		<a href="<?php echo route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$this->projectid."&issueid=".$row->id."#post-comment"); ?>">
 			<?php echo _LANG_COMMENTS_NEW; ?>
 		</a>
 	</div>
