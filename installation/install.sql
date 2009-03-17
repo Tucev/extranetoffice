@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Mar 17, 2009 at 05:12 PM
+-- Generation Time: Mar 17, 2009 at 07:40 PM
 -- Server version: 5.0.51
 -- PHP Version: 5.2.8
 
@@ -129,7 +129,7 @@ INSERT INTO `eo_components` (`id`, `name`, `menu_name`, `author`, `version`, `en
 (3, 'admin', 'Admin', 'Luis Montero', '1.0.0', '1', '1', 99),
 (4, 'email', 'Email', 'Luis Montero', '1.0.0', '1', '0', 2),
 (5, 'projects', 'Projects', 'Luis Montero', '1.0.0', '1', '0', 3),
-(6, 'user', 'Account', 'Luis Montero', '1.0.0', '1', '1', 99),
+(6, 'users', 'Users', 'Luis Montero', '1.0.0', '1', '1', 99),
 (7, 'billing', 'Billing', 'Luis Montero', '1.0.0', '0', '0', 4);
 
 -- --------------------------------------------------------
