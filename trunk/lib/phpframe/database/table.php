@@ -200,8 +200,10 @@ abstract class table extends singleton {
 		foreach ($this->cols as $col) {
 			$col_name = $col->Field;
 			
-			// If value is empty and null is allowed or is auto_increment we don't check data type
-			if (empty($row->$col_name) && ($col->Null == 'YES' || $col->Extra == 'auto_increment')) {
+			// If row doesn't have property for this column and it is an existing record we continue
+			$primary_key_column = $this->primary_key;
+			// If value is empty and it is an existing record or null is allowed or is auto_increment we don't check data type
+			if (empty($row->$col_name) && (!empty($row->$primary_key_column) || ($col->Null == 'YES' || $col->Extra == 'auto_increment')) ) {
 				continue;
 			}
 			else {
