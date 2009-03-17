@@ -94,7 +94,8 @@ html::validate('issuesform');
 		</label>
 	</td>
 	<td>
-		<input class="number" type="text" id="expected_duration" name="expected_duration" size="9" maxlength="9" value="<?php echo $this->row->expected_duration; ?>" />
+		<input class="number" type="text" id="expected_duration" name="expected_duration" size="9" maxlength="9" value="<?php echo $this->row->expected_duration; ?>" /> 
+		<?php echo strtolower(_LANG_HOURS); ?>
 	</td>
 </tr>
 <tr>
