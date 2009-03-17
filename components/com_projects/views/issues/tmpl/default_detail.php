@@ -9,6 +9,9 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
+
+// Load jQuery validation behaviour for forms
+html::validate('commentsform');
 ?>
 
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
@@ -105,10 +108,10 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 		<img src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo !empty($this->settings->photo) ? $this->settings->photo : 'default.png'; ?>" />
 	</div>
 	<div style="margin-left: 95px;">
-		<form method="post">
+		<form method="post" id="commentsform">
 		<a id="post-comment"></a>
 		<p><?php echo _LANG_COMMENTS_NEW; ?>:</p>
-		<textarea name="body" rows="10" cols="60"></textarea>
+		<textarea class="required" name="body" rows="10" cols="60"></textarea>
 		<p>
 		<?php echo _LANG_NOTIFY_ASSIGNEES; ?>: <input type="checkbox" name="notify" checked />
 		</p>
