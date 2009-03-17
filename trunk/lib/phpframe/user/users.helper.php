@@ -119,7 +119,7 @@ class usersHelper {
 	static function id2photo($id) {
 		if (!empty($id)) { // No user has been selected
 			$db =& factory::getDB();
-			$query = "SELECT photo FROM #__settings WHERE userid = '".$id."'";
+			$query = "SELECT photo FROM #__users WHERE id = '".$id."'";
 			$db -> setQuery($query);
 			$photo = $db->loadResult();
 			if (empty($photo)) { $photo = 'default.png'; }
@@ -150,6 +150,10 @@ class usersHelper {
 			$query .= " LEFT JOIN #__users_roles ur ON ur.userid = u.id ";
 			$query .= " WHERE ur.projectid = ".$projectid;
 		}
+		else {
+			$query .= " WHERE 0=0";
+		}
+		$query .= " AND (u.deleted = '0000-00-00 00:00:00' OR u.deleted IS NULL)";
 		$query .= " ORDER BY u.lastname";
 		//echo $query; exit;
 		$db -> setQuery($query);
@@ -170,11 +174,11 @@ class usersHelper {
 	/**
 	 * Build checkboxes with users to pick assignees.
 	 * 
-	 * @param mixed $selected Either a single userid or an array of ids.
-	 * @param string $attribs A string with attributes to be printed in the input tags.
-	 * @param string $fieldname String tu use for the input tags name attribute.
-	 * @param int $projectid This parameter is optional. If passed users will be filtered to the project members.
-	 * @return string A string with the html code containing the checkboxes.
+	 * @param	mixed	$selected	Either a single userid or an array of ids.
+	 * @param	string	$attribs	A string with attributes to be printed in the input tags.
+	 * @param	string	$fieldname	String tu use for the input tags name attribute.
+	 * @param	int		$projectid	This parameter is optional. If passed users will be filtered to the project members.
+	 * @return	string	A string with the html code containing the checkboxes.
 	 */
 	static function assignees($selected=0, $attribs='', $fieldname='assignees[]', $projectid=0) {
 		$db =& factory::getDB();
@@ -184,6 +188,10 @@ class usersHelper {
 			$query .= " LEFT JOIN #__users_roles ur ON ur.userid = u.id ";
 			$query .= " WHERE ur.projectid = ".$projectid;
 		}
+		else {
+			$query .= " WHERE 0=0";
+		}
+		$query .= " AND (u.deleted = '0000-00-00 00:00:00' OR u.deleted IS NULL)";
 		$query .= " ORDER BY u.lastname";
 		//echo $query; exit;
 		$db -> setQuery($query);
@@ -224,6 +232,9 @@ class usersHelper {
 	 */
 	static function autocompleteUsername($where=array()) {
 		$db =& factory::getDB();
+		
+		$where[] = "(u.deleted = '0000-00-00 00:00:00' OR u.deleted IS NULL)";
+		
 		$query = "SELECT id, username, firstname, lastname FROM #__users ";
 		$query .= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
 		$query .= " ORDER BY username";

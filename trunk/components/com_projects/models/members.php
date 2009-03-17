@@ -34,6 +34,7 @@ class projectsModelMembers extends model {
 		$query = "SELECT ur.userid, ur.roleid, r.name AS rolename, u.username, CONCAT(u.firstname, ' ', u.lastname) AS name, u.email, u.photo ";
 		$query .= " FROM #__users_roles AS ur, #__users AS u, #__roles AS r ";
 		$query .= " WHERE u.id = ur.userid AND r.id = ur.roleid AND ur.projectid = ".$projectid;
+		$query .= " AND (u.deleted = '0000-00-00 00:00:00' OR u.deleted IS NULL)";
 		if (!empty($userid)) $query .= " AND ur.userid = ".$userid;
 		$query .= " ORDER BY ur.roleid ASC";
 		
