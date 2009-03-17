@@ -83,7 +83,7 @@ class projectsViewPeople extends view {
 		$this->addPathwayItem($this->current_tool);
 		
 		$modelMembers =& $this->getModel('members');
-		$this->rows = $modelMembers->getmembers($this->projectid);
+		$this->rows = $modelMembers->getMembers($this->projectid);
 	}
 
 }
