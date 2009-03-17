@@ -197,7 +197,7 @@ class projectsController extends controller {
 			$action = empty($issueid) ? _LANG_ISSUES_ACTION_NEW : _LANG_ISSUES_ACTION_EDIT;
 			$title = $row->title;
 			$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-			$url = route::_(uri::getBase()."index.php?option=com_projects&view=issues&layout=detail&projectid=".$projectid."&issueid=".$row->id);
+			$url = route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$projectid."&issueid=".$row->id);
 			if ($notify == 'on') { $notify = true; }
 			$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, $notify);
 			
@@ -240,7 +240,7 @@ class projectsController extends controller {
 		$action = _LANG_ISSUE_CLOSED;
 		$title = $row->title;
 		$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-		$url = route::_(uri::getBase()."index.php?option=com_projects&view=issues&layout=detail&projectid=".$projectid."&issueid=".$row->id);
+		$url = route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$projectid."&issueid=".$row->id);
 		$notify = true;
 		$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, $notify);
 		
@@ -264,7 +264,7 @@ class projectsController extends controller {
 		$action = _LANG_ISSUE_REOPENED;
 		$title = $row->title;
 		$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-		$url = route::_(uri::getBase()."index.php?option=com_projects&view=issues&layout=detail&projectid=".$projectid."&issueid=".$row->id);
+		$url = route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$projectid."&issueid=".$row->id);
 		$notify = true;
 		$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, $notify);
 		
@@ -293,7 +293,7 @@ class projectsController extends controller {
 		$action = _LANG_FILES_ACTION_NEW;
 		$title = $row->title;
 		$description = sprintf(_LANG_FILES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->filename, $row->revision, $row->changelog);
-		$url = route::_(uri::getBase()."index.php?option=com_projects&task=download_file&projectid=".$projectid."&fileid=".$row->id);
+		$url = route::_("index.php?option=com_projects&task=download_file&projectid=".$projectid."&fileid=".$row->id);
 		if ($notify == 'on') { $notify = true; }
 		$modelActivityLog->saveActivityLog($projectid, $row->userid, 'files', $action, $title, $description, $url, $assignees, $notify);
 		
@@ -338,7 +338,7 @@ class projectsController extends controller {
 		$action = _LANG_MESSAGES_ACTION_NEW;
 		$title = $row->subject;
 		$description = sprintf(_LANG_MESSAGES_ACTIVITYLOG_DESCRIPTION, $row->subject, $row->body);
-		$url = route::_(uri::getBase()."index.php?option=com_projects&view=messages&layout=detail&projectid=".$projectid."&messageid=".$row->id);
+		$url = route::_("index.php?option=com_projects&view=messages&layout=detail&projectid=".$projectid."&messageid=".$row->id);
 		if ($notify == 'on') { $notify = true; }
 		$modelActivityLog->saveActivityLog($projectid, $row->userid, 'messages', $action, $title, $description, $url, $assignees, $notify);
 		
@@ -390,7 +390,8 @@ class projectsController extends controller {
 				$url = "index.php?option=com_projects&view=milestones&layout=detail&projectid=".$projectid."&milestoneid=".$row->itemid;
 				break;
 		}
-		$url = route::_(uri::getBase().$url);
+		
+		$url = route::_($url);
 		
 		if ($notify == 'on') { $notify = true; }
 		$modelActivityLog->saveActivityLog($projectid, $row->userid, 'comments', $action, $title, $description, $url, $assignees, $notify);
@@ -417,8 +418,6 @@ class projectsController extends controller {
 		$modelMeetings =& $this->getModel('meetings');
 		$row = $modelMeetings->saveMeeting($projectid, $meetingid);
 		
-		
-		
 		if ($row===false){
 			$this->setRedirect('index.php?option=com_projects&view=meetings&layout=form&projectid='.$projectid);
 		}
@@ -428,7 +427,7 @@ class projectsController extends controller {
 			$action = _LANG_MEETINGS_ACTION_NEW;
 			$title = $row->name;
 			$description = sprintf(_LANG_MEETINGS_ACTIVITYLOG_DESCRIPTION, $row->name, $row->dtstart, $row->dtend);
-			$url = route::_(uri::getBase()."index.php?option=com_projects&view=meetings&layout=detail&projectid=".$projectid."&meetingid=".$row->id);
+			$url = route::_("index.php?option=com_projects&view=meetings&layout=detail&projectid=".$projectid."&meetingid=".$row->id);
 			if ($notify == 'on') { $notify = true; }
 			$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'meetings', $action, $title, $description, $url, $assignees, $notify);
 			
@@ -464,7 +463,7 @@ class projectsController extends controller {
 		$action = _LANG_MILESTONES_ACTION_NEW;
 		$title = $row->title;
 		$description = sprintf(_LANG_MILESTONES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->due_date);
-		$url = route::_(uri::getBase()."index.php?option=com_projects&view=milestones&layout=detail&projectid=".$projectid."&milestoneid=".$row->id);
+		$url = route::_("index.php?option=com_projects&view=milestones&layout=detail&projectid=".$projectid."&milestoneid=".$row->id);
 		if ($notify == 'on') { $notify = true; }
 		$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'milestones', $action, $title, $description, $url, $assignees, $notify);
 		

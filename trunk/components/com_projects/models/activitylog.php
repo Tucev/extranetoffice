@@ -111,6 +111,7 @@ class projectsModelActivitylog extends model {
 		$new_mail = new mail();
 		
 		$user_name = usersHelper::id2name($row->userid);
+		$uri =& factory::getURI();
 		
 		$new_mail->Sender = $this->config->fromaddress;
 		$new_mail->Subject = "[".$this->project->name."] ".$row->action." by ".$user_name;
@@ -118,7 +119,7 @@ class projectsModelActivitylog extends model {
 								 $this->project->name, 
 								 $row->action." by ".$user_name, 
 								 $row->description, 
-								 $row->url)
+								 $uri->getBase().$row->url)
 						);
 		
 		// Get assignees email addresses
@@ -141,8 +142,6 @@ class projectsModelActivitylog extends model {
 			}				
 		}
 		
-		$new_mail->AddReplyTo($sender, $this->config->get('notifications_fromname'));
-		$new_mail->Sender = $sender;
 		$new_mail->FromName = $this->config->get('notifications_fromname');
 		$new_mail->Body = $body;
 								   

@@ -44,7 +44,7 @@ function confirm_delete(projectid, fileid, label) {
 		</a> 
 	</div>
 	<div class="thread_upload">
-		<a href="<?php echo route::_('index.php?option=com_projects&view=projects&layout=files_form&projectid='.$this->projectid."&parentid=".$this->row->parentid); ?>">
+		<a href="<?php echo route::_('index.php?option=com_projects&view=files&layout=form&projectid='.$this->projectid."&parentid=".$this->row->parentid); ?>">
 			<?php echo text::_( _LANG_FILES_UPLOAD_NEW_VERSION ); ?>
 		</a> 
 	</div>
@@ -150,7 +150,7 @@ function confirm_delete(projectid, fileid, label) {
 		<input type="hidden" name="option" value="com_projects" />
 		<input type="hidden" name="task" value="save_comment" />
 		<input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
-		<input type="hidden" name="type" value="messages" />
+		<input type="hidden" name="type" value="files" />
 		<input type="hidden" name="itemid" value="<?php echo  $this->row->id; ?>" />
 		<?php if (is_array($this->row->assignees) && count($this->row->assignees) > 0) : ?>
 		<?php foreach ($this->row->assignees as $assignee) : ?>
