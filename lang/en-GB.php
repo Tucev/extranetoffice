@@ -258,6 +258,8 @@ define("_LANG_ISSUE_CLOSED", "Issue closed");
 define("_LANG_ISSUES_REOPEN", "Reopen issue");
 define("_LANG_ISSUES_CLOSE", "Mark issue as closed");
 define("_LANG_ISSUES_ACTION_NEW", "Issue raised");
+define("_LANG_PROJECTS_ISSUES_DELETE", "Delete issue");
+define("_LANG_PROJECTS_ISSUES_DELETE_CONFIRM", "Are you sure you want to delete issue");
 
 //  Milestones
 define("_LANG_MILESTONES", "Milestones");
