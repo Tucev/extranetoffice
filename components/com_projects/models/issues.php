@@ -45,7 +45,7 @@ class projectsModelIssues extends model {
 		$search = strtolower( $search );
 		$limitstart = request::getVar('limitstart', 0);
 		$limit = request::getVar('limit', 20);
-		$filter_status = request::getVar('filter_status', 'open');
+		$filter_status = request::getVar('filter_status', 'all');
 		$filter_assignees = request::getVar('filter_assignees', 'me');
 
 		$where = array();
@@ -314,6 +314,7 @@ class projectsModelIssues extends model {
 		$this->db->setQuery($query);
 		$this->db->query();
 		
+		require_once COMPONENT_PATH.DS.'tables'.DS.'issues.table.php';
 		$row =& phpFrame::getInstance("projectsTableIssues");
 		$row->load($issueid);
 		return $row;
@@ -332,6 +333,7 @@ class projectsModelIssues extends model {
 		$this->db->setQuery($query);
 		$this->db->query();
 		
+		require_once COMPONENT_PATH.DS.'tables'.DS.'issues.table.php';
 		$row =& phpFrame::getInstance("projectsTableIssues");
 		$row->load($issueid);
 		return $row;

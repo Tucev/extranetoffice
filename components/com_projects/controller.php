@@ -268,7 +268,7 @@ class projectsController extends controller {
 		$notify = true;
 		$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, $notify);
 		
-		error::raise('', 'message', LANG_ISSUE_REOPENED);
+		error::raise('', 'message', _LANG_ISSUE_REOPENED);
 		
 		$this->setRedirect('index.php?option=com_projects&view=issues&layout=detail&projectid='.$projectid."&issueid=".$issueid);
 	}
