@@ -232,6 +232,11 @@ define("_LANG_FILES_ACTION_NEW", "New file uploaded");
 define("_LANG_FILE_SAVED", "File uploaded successfully");
 define("_LANG_FILES_NEW", "Upload file");
 define("_LANG_FILES_CHANGELOG", "Log message");
+define("_LANG_FILES_NEW_VERSION_OF", "New version of file");
+define("_LANG_FILE_DELETED", "File has been successfully deleted");
+define("_LANG_FILES_ACTIVITYLOG_DESCRIPTION", "Title: %s
+Body:
+%s");
 
 // Messages
 define("_LANG_MESSAGES", "Messages");

@@ -128,6 +128,10 @@ class projectsModelFiles extends model {
 		$this->db->setQuery($query);
 		$row = $this->db->loadObject();
 		
+		if ($row === false) {
+			return false;
+		}
+		
 		// Get assignees
 		$row->assignees = $this->getAssignees($fileid);
 		

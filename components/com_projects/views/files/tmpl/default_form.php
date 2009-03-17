@@ -9,27 +9,10 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
+
+// Load jQuery validation behaviour for form
+html::validate('filesform');
 ?>
-
-<script language="javascript" type="text/javascript">
-function submitbutton(action) {
-	var form = document.iofficeform;
-
-	// do field validation
-	if (form.title.value == "") {
-		alert('<?php echo text::_( _LANG_FILES_TITLE_REQUIRED , true); ?>');
-		form.title.focus();
-		return;
-	}
-	else if (form.filename.value == "") {
-		alert('<?php echo text::_( _LANG_FILES_FILENAME_REQUIRED , true); ?>');
-		form.filename.focus();
-		return;
-	}
-	
-	form.submit();
-}
-</script>
 
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
@@ -40,7 +23,7 @@ function submitbutton(action) {
 </h2>
 
 
-<form action="index.php" method="post" name="iofficeform" enctype="multipart/form-data">
+<form action="index.php" method="post" id="filesform" name="filesform" enctype="multipart/form-data">
 
 <fieldset>
 <legend><?php echo text::_( _LANG_FILES_NEW ); ?></legend>
@@ -66,7 +49,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<input type="text" id="title" name="title" size="32" maxlength="64" value="<?php echo $this->parent_title; ?>" />
+		<input class="required" type="text" id="title" name="title" size="32" maxlength="64" value="<?php echo $this->parent_title; ?>" />
 	</td>
 </tr>
 <tr>
@@ -76,7 +59,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<input type="file" id="filename" name="filename" size="32" maxlength="128" value="" />
+		<input class="required" type="file" id="filename" name="filename" size="32" maxlength="128" value="" />
 	</td>
 </tr>
 <tr>
@@ -107,7 +90,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<input type="checkbox" name="notify" />
+		<input type="checkbox" name="notify" checked />
 	</td>
 </tr>
 </table>

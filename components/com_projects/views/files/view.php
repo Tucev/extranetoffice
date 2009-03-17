@@ -101,10 +101,13 @@ class projectsViewFiles extends view {
 	}
 	
 	function displayFilesDetail() {
+		$fileid = request::getVar('fileid', 0);
+		
+		$this->page_heading = $this->project->name;
 		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));	
 		
 		$modelFiles =& $this->getModel('files');
-		$this->row = $modelFiles->getFilesDetail($this->projectid, $this->fileid);
+		$this->row = $modelFiles->getFilesDetail($this->projectid, $fileid);
 		
 		$this->page_title .= ' - '.$this->row->title;
 		$this->addPathwayItem($this->row->title);
