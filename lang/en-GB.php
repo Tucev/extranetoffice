@@ -330,6 +330,7 @@ To add a comment on this thread simply reply to this email.
 define("_LANG_EMAIL_NO_ACCOUNT", "No email account");
 define("_LANG_NO_MAILBOXES", "No mailbox found");
 define("_LANG_NO_EMAIL", "No email messages found");
+define("_LANG_EMAIL_ERROR_GETTING_MESSAGES_NO_STREAM", "Error getting messages.");
 define("_LANG_EMAIL_NEW_FOLDER", "New mail folder");
 define("_LANG_EMAIL_MOVE_TO_FOLDER", "Move to folder");
 define("_LANG_EMAIL_MOVE_TO_TRASH", "Move to trash");
