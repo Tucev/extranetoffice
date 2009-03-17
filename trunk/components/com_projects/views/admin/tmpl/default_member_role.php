@@ -11,33 +11,18 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
-<?php if (request::getVar('task', '') == 'admin_change_member_role') : ?>
-<script language="javascript" type="text/javascript">
-window.parent.location = "index.php?option=com_projects&amp;view=projects&amp;layout=admin&projectid=<?php echo $this->projectid; ?>";
-window.top.setTimeout('window.parent.document.getElementById(\'sbox-window\').close()', 3000);
-</script>
+<?php if (request::getVar('tmpl') != 'component') : ?>
+<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 <?php endif; ?>
-
-<script language="javascript" type="text/javascript">
-function submitbutton() {
-	var form = document.iofficeform;
-	
-	// do field validation
-	
-	form.submit();
-}
-</script>
 
 <form action="index.php" method="post" name="iofficeform">
 
 <fieldset>
-<legend><?php echo $this->page_title; ?></legend>
-
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 <td>
 	<label id="namemsg" for="name">
-		<?php echo _LANG_USERS_NAME; ?>:
+		<?php echo _LANG_NAME; ?>:
 	</label>
 </td>
 <td>
@@ -56,24 +41,16 @@ function submitbutton() {
 </tr>
 </table>
 
-<button type="button" class="button" onclick="window.parent.document.getElementById('sbox-window').close();">
-	Cancel
-</button>
-
-<button type="button" class="button" onclick="submitbutton();">
-	Change role
-</button>
-
+<?php if (request::getVar('tmpl') != 'component') : ?>
+<button type="submit" class="button">Change role</button>
+<?php endif; ?>
 
 </fieldset>
 
 <input type="hidden" name="option" value="com_projects" />
 <input type="hidden" name="task" value="admin_change_member_role" />
-<input type="hidden" name="view" value="projects" />
-<input type="hidden" name="type" value="admin_member_role" />
-<input type="hidden" name="tmpl" value="component" />
 <input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
-<input type="hidden" name="userid" value="<?php echo $this->userid; ?>" />
+<input type="hidden" name="userid" value="<?php echo $this->members[0]->userid; ?>" />
 <?php echo html::_( 'form.token' ); ?>
 
 </form>

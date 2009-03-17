@@ -236,7 +236,7 @@ class projectsHelperProjects {
 	static function project_role_select($selected=0, $attribs='') {
 		// assemble project types into the array
 		$options = array();
-		$options[] = html::_('select.option', '0', text::_( '-- Select a Role --' ) );
+		//$options[] = html::_('select.option', '0', text::_( '-- Select a Role --' ) );
 		
 		// get project_types from db
 		$db =& factory::getDB();
