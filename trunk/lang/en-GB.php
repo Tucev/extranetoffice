@@ -139,6 +139,7 @@ define("_LANG_PROJECTS_STATUS", "Status");
 define("_LANG_PROJECTS_PROJECT_TYPE", "Type");
 define("_LANG_PROJECTS_PRIORITY", "Priority");
 define("_LANG_PROJECTS_ACCESS", "Access");
+define("_LANG_PROJECTS_ADVANCED_ACCESS_SETTINGS", "Advanced access settings");
 
 define("_LANG_PROJECTS_DETAILS", "Project details");
 define("_LANG_PROJECTS_ACCESS_ISSUES", "Issues access");
@@ -178,7 +179,6 @@ define("_LANG_PROJECTS_SWITCHER", "Switch to project");
 // admin
 define("_LANG_ADMIN", "Admin");
 define("_LANG_PROJECT_SAVED", "Project successfully saved");
-define("_LANG_PROJECT_SAVE_ERROR", "An error occurred while saving the project.");
 define("_LANG_PROJECT_DELETE_CONFIRM", "Are you sure you want to delete project");
 define("_LANG_PROJECT_DELETED", "Project successfully deleted");
 define("_LANG_PROJECTS_ROLE", "Role");
