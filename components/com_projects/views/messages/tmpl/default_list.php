@@ -9,16 +9,10 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
-?>
 
-<script language="javascript" type="text/javascript">
-function confirm_delete(projectid, messageid, label) {
-	var answer = confirm("Are you sure you want to delete message '"+label+"'?")
-	if (answer){
-		window.location = "index.php?option=com_projects&task=remove_message&projectid="+projectid+"&messageid="+messageid;
-	}
-}
-</script>
+// Add confirm behaviour to delete links
+html::confirm('delete_message', _LANG_PROJECTS_MESSAGES_DELETE, _LANG_PROJECTS_MESSAGES_DELETE_CONFIRM);
+?>
 
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
@@ -44,7 +38,7 @@ function confirm_delete(projectid, messageid, label) {
 
 	<?php if ($row->userid == $this->user->id) : ?>
 	<div class="thread_delete">
-		<a href="Javascript:confirm_delete(<?php echo $row->projectid; ?>, <?php echo $row->id; ?>, '<?php echo text::_($row->subject, true); ?>');">
+		<a class="delete_message" title="<?php echo text::_($row->subject, true); ?>" href="index.php?option=com_projects&task=remove_message&projectid=<?php echo $row->projectid; ?>&messageid=<?php echo $row->id; ?>">
 			<?php echo text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>

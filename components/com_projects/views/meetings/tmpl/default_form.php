@@ -9,11 +9,14 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
+
+// Load jQuery validation behaviour for form
+html::validate('meetingsform');
 ?>
 
 <script language="javascript" type="text/javascript">
 function submitbutton() {
-	var form = document.meetingform;
+	var form = document.meetingsform;
 
 	// do field validation
 	if (form.name.value == "") {
@@ -45,7 +48,7 @@ function submitbutton() {
 </h2>
 
 
-<form action="index.php" method="post" name="meetingform" enctype="multipart/form-data">
+<form action="index.php" method="post" id="meetingsform" name="meetingsform" enctype="multipart/form-data">
 
 <fieldset>
 <legend><?php echo text::_( _LANG_MEETINGS_NEW ); ?></legend>
@@ -57,7 +60,7 @@ function submitbutton() {
 		</label>
 	</td>
 	<td>
-		<input type="text" id="name" name="name" size="32" maxlength="64" value="<?php echo $this->row->name; ?>" />
+		<input class="required" type="text" id="name" name="name" size="32" maxlength="64" value="<?php echo $this->row->name; ?>" />
 	</td>
 </tr>
 <tr>
@@ -67,7 +70,7 @@ function submitbutton() {
 		</label>
 	</td>
 	<td>
-		<?php echo html::_('calendar', 'dtstart', 'dtstart', $this->row->dtstart, 'dd/mm/yy', array('size'=>'10',  'maxlength'=>'10')); ?>
+		<?php echo html::_('calendar', 'dtstart', 'dtstart', $this->row->dtstart, 'dd/mm/yy', array('class'=>'required', 'size'=>'10', 'maxlength'=>'10')); ?>
 	</td>
 </tr>
 <tr>
@@ -77,7 +80,17 @@ function submitbutton() {
 		</label>
 	</td>
 	<td>
-		<?php echo html::_('calendar', 'dtend', 'dtend', $this->row->dtend, 'dd/mm/yy', array('size'=>'10',  'maxlength'=>'10')); ?>
+		<?php echo html::_('calendar', 'dtend', 'dtend', $this->row->dtend, 'dd/mm/yy', array('class'=>'required', 'size'=>'10', 'maxlength'=>'10')); ?>
+	</td>
+</tr>
+<tr>
+	<td width="30%">
+		<label id="descriptionmsg" for="description">
+			<?php echo _LANG_DESCRIPTION; ?>:
+		</label>
+	</td>
+	<td>
+		<textarea name="description" id="description" cols="80"><?php echo $this->row->description; ?></textarea>
 	</td>
 </tr>
 

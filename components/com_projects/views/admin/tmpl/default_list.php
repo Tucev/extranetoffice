@@ -35,7 +35,7 @@ html::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJECT_MEMBE
 	
 	<h3 class="project_details">Project info</h3>
 
-	<?php echo text::_( _LANG_PROJECTS_DESCRIPTION ); ?>: <br />
+	<?php echo text::_( _LANG_DESCRIPTION ); ?>: <br />
 	<?php echo $this->project->description; ?> <br />
 	<br />
 	<?php echo text::_( _LANG_PROJECTS_PROJECT_TYPE ); ?>: <?php echo $this->project->project_type_name; ?> <br />

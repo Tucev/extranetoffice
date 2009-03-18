@@ -50,7 +50,7 @@ $views_available = $controller->views_available;
 <h3>Project details</h3>
 	
 <div class="project_details">
-	<?php echo text::_( _LANG_PROJECTS_DESCRIPTION ); ?>: <br />
+	<?php echo text::_( _LANG_DESCRIPTION ); ?>: <br />
 	<?php echo $controller->project->description; ?> <br />
 	<br />
 	<?php echo text::_( _LANG_PROJECTS_PROJECT_TYPE ); ?>: <?php echo $controller->project->project_type_name; ?> <br />

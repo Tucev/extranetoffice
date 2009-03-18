@@ -47,7 +47,7 @@ $(document).ready(function() {
 <tr>
 	<td width="30%">
 		<label id="descriptionmsg" for="description">
-			<?php echo _LANG_PROJECTS_DESCRIPTION; ?>:
+			<?php echo _LANG_DESCRIPTION; ?>:
 		</label>
 	</td>
 	<td>

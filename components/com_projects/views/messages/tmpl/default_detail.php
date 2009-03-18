@@ -10,12 +10,13 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
+// Add confirm behaviour to delete links
+html::confirm('delete_message', _LANG_PROJECTS_MESSAGES_DELETE, _LANG_PROJECTS_MESSAGES_DELETE_CONFIRM);
 // Load jQuery validation behaviour for forms
 html::validate('commentsform');
 ?>
 
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
-
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
 	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&projectid='.$this->projectid); ?>">
@@ -27,7 +28,7 @@ html::validate('commentsform');
 
 	<?php if ($this->row->userid == $this->user->id) : ?>
 	<div class="thread_delete">
-		<a href="Javascript:confirm_delete(<?php echo $this->row->projectid; ?>, <?php echo $this->row->id; ?>, '<?php echo text::_($this->row->subject, true); ?>');">
+		<a class="delete_message" title="<?php echo text::_($this->row->subject, true); ?>" href="index.php?option=com_projects&task=remove_message&projectid=<?php echo $this->row->projectid; ?>&messageid=<?php echo $this->row->id; ?>">
 			<?php echo text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>

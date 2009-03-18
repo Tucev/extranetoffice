@@ -24,6 +24,7 @@ class projectsTableMeetings extends table {
 	var $name=null; // varchar(64)
 	var $dtstart=null; // datetime
 	var $dtend=null; // datetime
+	var $description=null; // text
 	var $created_by=null; // int(11)
 	var $created=null; // datetime
 	
