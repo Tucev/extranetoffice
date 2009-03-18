@@ -28,7 +28,7 @@ html::validate('filesform');
 <fieldset>
 <legend><?php echo text::_( _LANG_FILES_NEW ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
-<?php if (!empty($this->parentid)) : ?>
+<?php if (!empty($this->row->id)) : ?>
 <tr>
 	<td width="30%">
 		<label id="parentidmsg" for="parentid">
@@ -36,8 +36,8 @@ html::validate('filesform');
 		</label>
 	</td>
 	<td>
-		<?php echo $this->parent_title; ?>
-		<input type="hidden" id="parentid" name="parentid" value="<?php echo $this->parentid; ?>" />
+		<?php echo $this->row->title; ?>
+		<input type="hidden" id="parentid" name="parentid" value="<?php echo $this->row->id; ?>" />
 	</td>
 </tr>
 <?php endif; ?>
@@ -49,7 +49,7 @@ html::validate('filesform');
 		</label>
 	</td>
 	<td>
-		<input class="required" type="text" id="title" name="title" size="32" maxlength="64" value="<?php echo $this->parent_title; ?>" />
+		<input class="required" type="text" id="title" name="title" size="32" maxlength="64" value="<?php echo $this->row->title; ?>" />
 	</td>
 </tr>
 <tr>
@@ -80,7 +80,7 @@ html::validate('filesform');
 		</label>
 	</td>
 	<td>
-		<?php echo usersHelper::assignees($this->tracker->assignees, '', 'assignees[]', $this->projectid); ?>
+		<?php echo usersHelper::assignees($this->row->assignees, '', 'assignees[]', $this->projectid); ?>
 	</td>
 </tr>
 <tr>
