@@ -248,8 +248,11 @@ define("_LANG_MESSAGES_SUBJECT_REQUIRED", "Subject is required");
 define("_LANG_MESSAGES_BODY_REQUIRED", "Message must contain some text");
 define("_LANG_MESSAGE_SAVED", "Message saved");
 define("_LANG_MESSAGE_DELETED", "Message deleted");
-define("_LANG_MESSAGES_ACTION_NEW", "New message");
+define("_LANG_MESSAGES_ACTION_NEW", "New message sent");
 define("_LANG_MESSAGES_BODY", "Body");
+define("_LANG_MESSAGES_ACTIVITYLOG_DESCRIPTION", "Subject: %s
+Body:
+%s");
 
 // Issues
 define("_LANG_ISSUES", "Issues");
