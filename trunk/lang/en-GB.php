@@ -311,13 +311,17 @@ define("_LANG_MEETINGS_NAME_REQUIRED", "Meeting name is required to set up a new
 define("_LANG_MEETINGS_DTSTART_REQUIRED", "Start date is required to set up a meeting");
 define("_LANG_MEETINGS_DTEND_REQUIRED", "End date is required to set up a meeting");
 define("_LANG_MEETING_SAVED", "Meeting successfully saved");
-define("_LANG_MEETINGS_ACTION_NEW", "Meeting successfully scheduled");
+define("_LANG_MEETINGS_SAVE_ERROR_NO_PROJECT_SELECTED", "Could not save meeting. No project was selected");
+define("_LANG_MEETINGS_ACTION_NEW", "Meeting scheduled");
+define("_LANG_MEETINGS_ACTION_EDIT", "Meeting modified");
 define("_LANG_MEETINGS_ACTIVITYLOG_DESCRIPTION", "Name: %s
 Date start: %s
-Date end: %s");
+Date end: %s
+Description: %s");
 define("_LANG_PROJECTS_MEETINGS_DELETE", "Delete meeting");
 define("_LANG_PROJECTS_MEETINGS_DELETE_CONFIRM", "Are you sure you want to delete meeting");
-define("_LANG_MEETING_DELETED", "Meeting successfully deleted");
+define("_LANG_MEETING_DELETE_SUCCESS", "Meeting successfully deleted");
+define("_LANG_MEETING_DELETE_ERROR", "An error occurred while saving meeting");
 
 // Slideshows
 define("_LANG_SLIDESHOWS_NEW", "New slideshow");
