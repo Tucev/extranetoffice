@@ -36,7 +36,7 @@ class projectsModelMilestones extends model {
 	 * @param int $projectid
 	 * @return array
 	 */
-	function getMilestones($projectid) {
+	public function getMilestones($projectid) {
 		$filter_order = request::getVar('filter_order', 'm.due_date');
 		$filter_order_Dir = request::getVar('filter_order_Dir', 'DESC');
 		$search = request::getVar('search', '');
@@ -69,11 +69,9 @@ class projectsModelMilestones extends model {
 		// This query groups the files by parentid so and retireves the latest revision for each file in current project
 		$query = "SELECT 
 				  m.*, 
-				  u.username AS created_by_name, 
-				  GROUP_CONCAT(um.userid) assignees
+				  u.username AS created_by_name 
 				  FROM #__milestones AS m 
-				  JOIN #__users u ON u.id = m.created_by  
-				  LEFT JOIN #__users_milestones um ON m.id = um.milestoneid "
+				  JOIN #__users u ON u.id = m.created_by "
 				  . $where . 
 				  " GROUP BY m.id ";
 		//echo $query; exit;	  
@@ -93,16 +91,8 @@ class projectsModelMilestones extends model {
 		// Prepare rows and add relevant data
 		if (is_array($rows) && count($rows) > 0) {
 			foreach ($rows as $row) {
-				// Prepare assignee data
-				if (!empty($row->assignees)) {
-					$assignees = explode(',', $row->assignees);
-					for ($i=0; $i<count($assignees); $i++) {
-						$new_assignees[$i]['id'] = $assignees[$i];
-						$new_assignees[$i]['name'] = usersHelper::id2name($assignees[$i]);
-					}
-					$row->assignees = $new_assignees;
-					unset($new_assignees);
-				}
+				// Get assignees
+				$row->assignees = $this->_getAssignees($row->id);
 				
 				// get total comments
 				$modelComments =& $this->getModel('comments');
@@ -146,7 +136,7 @@ class projectsModelMilestones extends model {
 	 * @param int $milestoneid
 	 * @return object table row containing milestone info
 	 */
-	function getMilestonesDetail($projectid, $milestoneid) {
+	public function getMilestonesDetail($projectid, $milestoneid) {
 		$query = "SELECT m.*, u.username AS created_by_name ";
 		$query .= " FROM #__milestones AS m ";
 		$query .= " JOIN #__users u ON u.id = m.created_by ";
@@ -170,7 +160,7 @@ class projectsModelMilestones extends model {
 		}
 		
 		// Get assignees
-		$row->assignees = $this->getAssignees($milestoneid);
+		$row->assignees = $this->_getAssignees($milestoneid);
 		
 		// Get comments
 		$modelComments =& $this->getModel('comments');
@@ -185,7 +175,7 @@ class projectsModelMilestones extends model {
 	 * @param int $projectid
 	 * @return mixed return $row or FALSE on failure
 	 */
-	function saveMilestone($projectid) {
+	public function saveMilestone($projectid) {
 		require_once COMPONENT_PATH.DS."tables".DS."milestones.table.php";
 		$row =& phpFrame::getInstance("projectsTableMilestones");
 		
@@ -237,7 +227,7 @@ class projectsModelMilestones extends model {
 	 * @param int $milestoneid
 	 * @return bool
 	 */
-	function deleteMilestone($projectid, $milestoneid) {
+	public function deleteMilestone($projectid, $milestoneid) {
 		//TODO: This function should allow ids as either int or array of ints.
 		//TODO: This function should also check permissions before deleting
 		
@@ -274,7 +264,7 @@ class projectsModelMilestones extends model {
 	 * @param integer $milestoneid
 	 * @return array signees
 	 */
-	function getAssignees($milestoneid) {
+	private function _getAssignees($milestoneid) {
 		$query = "SELECT userid FROM #__users_milestones WHERE milestoneid = ".$milestoneid;
 		$this->db->setQuery($query);
 		$assignees = $this->db->loadResultArray();

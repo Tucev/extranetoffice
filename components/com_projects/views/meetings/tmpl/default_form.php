@@ -97,8 +97,8 @@ html::validate('meetingsform');
 <button type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button>
 <button type="submit"><?php echo text::_(_LANG_SAVE); ?></button>
 
-<input type="hidden" name="projectid" value="<?php echo $this->projectid;?>" />
-<input type="hidden" name="id" value="<?php echo $this->row->id;?>" />
+<input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
+<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 <input type="hidden" name="option" value="com_projects" />
 <input type="hidden" name="task" value="save_meeting" />
 <input type="hidden" name="type" value="" />

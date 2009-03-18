@@ -30,7 +30,7 @@ class projectsModelFiles extends model {
 		parent::__construct();
 	}
 	
-	function getFiles($projectid) {
+	public function getFiles($projectid) {
 		$filter_order = request::getVar('filter_order', 'f.ts');
 		$filter_order_Dir = request::getVar('filter_order_Dir', 'DESC');
 		$search = request::getVar('search', '');
@@ -84,23 +84,15 @@ class projectsModelFiles extends model {
 		// Prepare rows and add relevant data
 		if (is_array($rows) && count($rows) > 0) {
 			foreach ($rows as $row) {
-				// Prepare assignee data
-				if (!empty($row->assignees)) {
-					$assignees = explode(',', $row->assignees);
-					for ($i=0; $i<count($assignees); $i++) {
-						$new_assignees[$i]['id'] = $assignees[$i];
-						$new_assignees[$i]['name'] = usersHelper::id2name($assignees[$i]);
-					}
-					$row->assignees = $new_assignees;
-					unset($new_assignees);
-				}
+				// Get assignees
+				$row->assignees = $this->_getAssignees($row->id);
 				
 				// get total comments
 				$modelComments =& $this->getModel('comments');
 				$row->comments = $modelComments->getTotalComments($row->id, 'files');
 					
 				// Get older revisions
-				$row->children = $this->getOlderRevisions($row->parentid, $row->id);
+				$row->children = $this->_getOlderRevisions($row->parentid, $row->id);
 			}
 		}
 		
@@ -119,7 +111,7 @@ class projectsModelFiles extends model {
 		return $return;
 	}
 	
-	function getFilesDetail($projectid, $fileid) {
+	public function getFilesDetail($projectid, $fileid) {
 		$query = "SELECT f.*, u.username AS created_by_name ";
 		$query .= " FROM #__files AS f ";
 		$query .= " JOIN #__users u ON u.id = f.userid ";
@@ -133,14 +125,14 @@ class projectsModelFiles extends model {
 		}
 		
 		// Get assignees
-		$row->assignees = $this->getAssignees($fileid);
+		$row->assignees = $this->_getAssignees($fileid);
 		
 		// Get comments
 		$modelComments =& $this->getModel('comments');
 		$row->comments = $modelComments->getComments($projectid, 'files', $fileid);
 		
 		// Get older revisions
-		$row->children = $this->getOlderRevisions($row->parentid, $row->id);
+		$row->children = $this->_getOlderRevisions($row->parentid, $row->id);
 				
 		return $row;
 	}
@@ -153,7 +145,7 @@ class projectsModelFiles extends model {
 	 * @param	$post	The array to be used for binding to the row before storing it. Normally the HTTP_POST array.
 	 * @return	mixed	Returns the stored table row object on success or FALSE on failure
 	 */
-	function saveFile($post) {
+	public function saveFile($post) {
 		// Check whether a project id is included in the post array
 		if (empty($post['projectid'])) {
 			$this->error[] = _LANG_FILES_SAVE_ERROR_NO_PROJECT_SELECTED;
@@ -245,7 +237,7 @@ class projectsModelFiles extends model {
 		return $row;
 	}
 	
-	function deleteFile($projectid, $fileid) {
+	public function deleteFile($projectid, $fileid) {
 		//TODO: This function should allow ids as either int or array of ints.
 		//TODO: This function should also check permissions before deleting
 		//TODO: This function should delete related items if any (comments, ...)
@@ -253,6 +245,7 @@ class projectsModelFiles extends model {
 		// Instantiate table object
 		require_once COMPONENT_PATH.DS."tables".DS."files.table.php";		
 		$row =& phpFrame::getInstance("projectsTableFiles");
+		
 		// Load row data
 		$row->load($fileid);
 		
@@ -261,7 +254,7 @@ class projectsModelFiles extends model {
 		
 		// Delete row from database
 		if (!$row->delete($fileid)) {
-			$this->error =& $row->error;
+			$this->error[] = $row->getLastError();
 			return false;
 		}
 		else {
@@ -269,10 +262,11 @@ class projectsModelFiles extends model {
 		}
 	}
 	
-	function downloadFile($projectid, $fileid) {
+	public function downloadFile($projectid, $fileid) {
 		//TODO: This function should also check permissions
 		require_once COMPONENT_PATH.DS."tables".DS."files.table.php";		
 		$row =& phpFrame::getInstance("projectsTableFiles");
+		
 		// Load row data
 		$row->load($fileid);
 		
@@ -291,7 +285,7 @@ class projectsModelFiles extends model {
 		exit;
 	}
 	
-	function _readfile_chunked($filename, $retbytes=true) {
+	private function _readfile_chunked($filename, $retbytes=true) {
 	   $chunksize = 1*(1024*1024); // how many bytes per chunk
 	   $buffer = '';
 	   $cnt =0;
@@ -315,7 +309,7 @@ class projectsModelFiles extends model {
 	   return $status;
 	}
 	
-	function getAssignees($fileid) {
+	private function _getAssignees($fileid) {
 		$query = "SELECT userid FROM #__users_files WHERE fileid = ".$fileid;
 		$this->db->setQuery($query);
 		$assignees = $this->db->loadResultArray();
@@ -327,7 +321,7 @@ class projectsModelFiles extends model {
 		return $new_assignees;
 	}
 	
-	function getOlderRevisions($parentid, $id) {
+	private function _getOlderRevisions($parentid, $id) {
 		// get children (older revisions)
 		$query = "SELECT f.*, u.username AS created_by_name ";
 		$query .= " FROM #__files AS f ";

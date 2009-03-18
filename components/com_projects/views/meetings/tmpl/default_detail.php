@@ -34,7 +34,7 @@ html::confirm('delete_meeting', _LANG_PROJECTS_MEETINGS_DELETE, _LANG_PROJECTS_M
 	<?php endif; ?>
 	
 	<div class="thread_edit">
-		<a href="<?php echo route::_("index.php?option=com_projects&view='.request::getVar('view').'&layout=form&projectid=".$this->project->id."&meetingid=".$this->row->id); ?>">
+		<a href="<?php echo route::_("index.php?option=com_projects&view=".request::getVar('view')."&layout=form&projectid=".$this->project->id."&meetingid=".$this->row->id); ?>">
 		<?php echo text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
@@ -57,6 +57,61 @@ html::confirm('delete_meeting', _LANG_PROJECTS_MEETINGS_DELETE, _LANG_PROJECTS_M
     	<br />
     	<?php echo _LANG_DTSTART; ?>: <?php echo date("d M Y", strtotime($this->row->dtstart)); ?><br /> 
     	<?php echo _LANG_DTEND; ?>: <?php echo date("d M Y", strtotime($this->row->dtend)); ?>
+	</div>
+	
+	<?php if (!empty($this->row->description)) : ?>
+	<div class="thread_body">
+		<?php echo nl2br($this->row->description); ?>
+	</div>
+	<?php endif; ?>
+	
+	<?php if (is_array($this->row->comments) && count($this->row->comments) > 0) : ?>
+	<h3><?php echo _LANG_COMMENTS; ?></h3>
+	<?php foreach ($this->row->comments as $comment) : ?>
+		<div class="comment_row">
+			<div style="float:left; margin-right: 10px;">
+				<img src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo usersHelper::id2photo($comment->userid); ?>" />
+			</div>
+			<div style="margin-left: 95px;">
+				<div class="comment_details">
+					<?php echo $comment->created_by_name; ?> &nbsp;&nbsp;
+					<?php echo date("D, d M Y H:ia", strtotime($comment->created)); ?>
+				</div>
+				<?php echo nl2br($comment->body); ?>
+			</div>
+		</div>
+		<div style="clear: left; margin-bottom: 10px;"></div>
+	<?php endforeach; ?>
+	<?php endif; ?>
+</div>
+
+<div>
+	<div style="float:left; margin-right: 10px;">
+		<img src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo !empty($this->settings->photo) ? $this->settings->photo : 'default.png'; ?>" />
+	</div>
+	<div style="margin-left: 95px;">
+		<form method="post" id="commentsform">
+		<a id="post-comment"></a>
+		<p><?php echo _LANG_COMMENTS_NEW; ?>:</p>
+		<textarea class="required" name="body" rows="10" cols="60"></textarea>
+		<p>
+		<?php echo _LANG_NOTIFY_ASSIGNEES; ?>: <input type="checkbox" name="notify" checked />
+		</p>
+		<p>
+		<button class="button"><?php echo _LANG_COMMENTS_SEND; ?></button>
+		</p>
+		<input type="hidden" name="option" value="com_projects" />
+		<input type="hidden" name="task" value="save_comment" />
+		<input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
+		<input type="hidden" name="type" value="meetings" />
+		<input type="hidden" name="itemid" value="<?php echo  $this->row->id; ?>" />
+		<input type="hidden" name="meetingid" value="<?php echo  $this->row->id; ?>" />
+		<?php if (is_array($this->row->assignees) && count($this->row->assignees) > 0) : ?>
+		<?php foreach ($this->row->assignees as $assignee) : ?>
+		<input type="hidden" name="assignees[]" value="<?php echo $assignee['id']; ?>" />
+		<?php endforeach; ?>
+		<?php endif; ?>
+		</form>
 	</div>
 </div>
 

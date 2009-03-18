@@ -30,7 +30,7 @@ class projectsModelMessages extends model {
 		parent::__construct();
 	}
 	
-	function getMessages($projectid) {
+	public function getMessages($projectid) {
 		$filter_order = request::getVar('filter_order', 'm.date_sent');
 		$filter_order_Dir = request::getVar('filter_order_Dir', 'DESC');
 		$search = request::getVar('search', '');
@@ -63,11 +63,9 @@ class projectsModelMessages extends model {
 		// This query groups the files by parentid so and retireves the latest revision for each file in current project
 		$query = "SELECT 
 				  m.*, 
-				  u.username AS created_by_name, 
-				  GROUP_CONCAT(um.userid) assignees
+				  u.username AS created_by_name 
 				  FROM #__messages AS m 
-				  JOIN #__users u ON u.id = m.userid 
-				  LEFT JOIN #__users_messages um ON m.id = um.messageid "
+				  JOIN #__users u ON u.id = m.userid "
 				  . $where . 
 				  " GROUP BY m.id ";
 		//echo $query; exit;	  
@@ -87,16 +85,8 @@ class projectsModelMessages extends model {
 		// Prepare rows and add relevant data
 		if (is_array($rows) && count($rows) > 0) {
 			foreach ($rows as $row) {
-				// Prepare assignee data
-				if (!empty($row->assignees)) {
-					$assignees = explode(',', $row->assignees);
-					for ($i=0; $i<count($assignees); $i++) {
-						$new_assignees[$i]['id'] = $assignees[$i];
-						$new_assignees[$i]['name'] = usersHelper::id2name($assignees[$i]);
-					}
-					$row->assignees = $new_assignees;
-					unset($new_assignees);
-				}
+				// Get assignees
+				$row->assignees = $this->_getAssignees($row->id);
 				
 				// get total comments
 				$modelComments =& $this->getModel('comments');
@@ -119,7 +109,7 @@ class projectsModelMessages extends model {
 		return $return;
 	}
 	
-	function getMessagesDetail($projectid, $messageid) {
+	public function getMessagesDetail($projectid, $messageid) {
 		$query = "SELECT m.*, u.username AS created_by_name ";
 		$query .= " FROM #__messages AS m ";
 		$query .= " JOIN #__users u ON u.id = m.userid ";
@@ -129,7 +119,7 @@ class projectsModelMessages extends model {
 		$row = $this->db->loadObject();
 		
 		// Get assignees
-		$row->assignees = $this->getAssignees($messageid);
+		$row->assignees = $this->_getAssignees($messageid);
 		
 		// Get comments
 		$modelComments =& $this->getModel('comments');
@@ -138,7 +128,7 @@ class projectsModelMessages extends model {
 		return $row;
 	}
 	
-	function saveMessage($projectid) {
+	public function saveMessage($projectid) {
 		require_once COMPONENT_PATH.DS."tables".DS."messages.table.php";		
 		$row =& phpFrame::getInstance("projectsTableMessages");
 				
@@ -184,7 +174,7 @@ class projectsModelMessages extends model {
 		return $row;
 	}
 	
-	function deleteMessage($projectid, $messageid) {
+	public function deleteMessage($projectid, $messageid) {
 		//TODO: This function should allow ids as either int or array of ints.
 		//TODO: This function should also check permissions before deleting
 		require_once COMPONENT_PATH.DS."tables".DS."messages.table.php";
@@ -214,7 +204,7 @@ class projectsModelMessages extends model {
 		}
 	}
 	
-	function getAssignees($messageid) {
+	private function _getAssignees($messageid) {
 		$query = "SELECT userid FROM #__users_messages WHERE messageid = ".$messageid;
 		$this->db->setQuery($query);
 		$assignees = $this->db->loadResultArray();
