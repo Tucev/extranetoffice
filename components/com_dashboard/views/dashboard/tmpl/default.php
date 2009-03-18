@@ -73,7 +73,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <div id="main_col_2">
 
 <?php //if ($this->iOfficeConfig->get('enable_email_client') && $this->settings->enable_email_client) : ?>
-
+<!-- 
 <div class="main_col_module">
 	
 	<h3 class="recent_email"><?php echo _LANG_DASHBOARD_RECENT_EMAILS; ?></h3>
@@ -132,7 +132,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	<?php endif; ?>
 	
 </div>
-
+ -->
 <?php //endif; // enable email client? ?>
 
 <?php //if ($this->config->get('enable_projects')) : ?>

@@ -78,6 +78,7 @@ class dashboardViewDashboard extends view {
 		// Get recent e-mails
 		//if ($this->iOfficeConfig->get('enable_email_client') && $this->settings->enable_email_client) {
 			// Limit the number of entries to 5
+			/* Temporarily commented out.
 			request::setVar('per_page', 5);
 			require_once _ABS_PATH.DS.'components'.DS.'com_email'.DS.'models'.DS.'email.php';
 			$modelEmail =& phpFrame::getInstance('emailModelEmail');
@@ -87,6 +88,7 @@ class dashboardViewDashboard extends view {
 			$modelEmail->closeStream();
 			
 			$this->emails =& $emails['res'];
+			*/
 		//}
 		
 		parent::display();
