@@ -77,6 +77,10 @@ class projectsController extends controller {
 		$projectid = $modelProjects->saveProject($post);
 		
 		if ($projectid !== false) {
+			error::raise('', 'message', _LANG_PROJECT_SAVED);
+			// Redirect depending on "apply" or "save"
+			$view = request::getVar('layout', 'list') == 'list' ? 'admin' : 'projects';	
+			
 			// If NEW project saved correctly we now make project creator a project member
 			if (empty($post['id'])) {
 				$modelMembers =& $this->getModel('members');
@@ -84,10 +88,6 @@ class projectsController extends controller {
 					error::raise('', 'error', $modelMembers->getLastError());
 				}
 			}
-			
-			error::raise('', 'message', _LANG_PROJECT_SAVED);
-			// Redirect depending on "apply" or "save"
-			$view = request::getVar('layout', 'list') == 'list' ? 'admin' : 'projects';	
 		}
 		else {
 			error::raise('', 'error', $modelProjects->getLastError());
@@ -304,21 +304,19 @@ class projectsController extends controller {
 			error::raise('', 'error', $modelFiles->getLastError());
 		}
 		else {
+			error::raise('', 'message', _LANG_FILE_SAVED);
+			
 			// Prepare data for activity log entry
 			$action = _LANG_FILES_ACTION_NEW;
 			$title = $row->title;
 			$description = sprintf(_LANG_FILES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->filename, $row->revision, $row->changelog);
 			$url = route::_("index.php?option=com_projects&task=download_file&projectid=".$row->projectid."&fileid=".$row->id);
-			//if ($post['notify'] == 'on') { $notify = true; }
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
 			$modelActivityLog =& $this->getModel('activitylog');
 			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->userid, 'files', $action, $title, $description, $url, $post['assignees'], $notify)) {
 				error::raise('', 'error', $modelActivityLog->getLastError());
-			}
-			else {
-				error::raise('', 'message', _LANG_FILE_SAVED);	
 			}
 		}
 		
@@ -400,14 +398,17 @@ class projectsController extends controller {
 		$description = sprintf(_LANG_COMMENTS_ACTIVITYLOG_DESCRIPTION, $title, $row->body);
 
 		switch ($row->type) {
+			case 'files' : 
+				$url = "index.php?option=com_projects&view=files&layout=detail&projectid=".$projectid."&fileid=".$row->itemid;
+				break;
 			case 'issues' : 
 				$url = "index.php?option=com_projects&view=issues&layout=detail&projectid=".$projectid."&issueid=".$row->itemid;
 				break;
+			case 'meetings' : 
+				$url = "index.php?option=com_projects&view=meetings&layout=detail&projectid=".$projectid."&meetingid=".$row->itemid;
+				break;
 			case 'messages' : 
 				$url = "index.php?option=com_projects&view=messages&layout=detail&projectid=".$projectid."&messageid=".$row->itemid;
-				break;
-			case 'files' : 
-				$url = "index.php?option=com_projects&view=files&layout=detail&projectid=".$projectid."&fileid=".$row->itemid;
 				break;
 			case 'milestones' : 
 				$url = "index.php?option=com_projects&view=milestones&layout=detail&projectid=".$projectid."&milestoneid=".$row->itemid;
@@ -431,41 +432,49 @@ class projectsController extends controller {
 	}
 	
 	function save_meeting() {
+		// Check for request forgeries
+		crypt::checkToken() or exit( 'Invalid Token' );
+		
 		// Get request vars
-		$projectid = request::getVar('projectid', 0);
-		$assignees = request::getVar('assignees', 0);
-		$notify = request::getVar('notify', false);
-		$meetingid = request::getVar('id', 0);
+		$post = request::get('post');
 		
 		// Save file using files model
 		$modelMeetings =& $this->getModel('meetings');
-		$row = $modelMeetings->saveMeeting($projectid, $meetingid);
-		
-		if ($row===false){
-			$this->setRedirect('index.php?option=com_projects&view=meetings&layout=form&projectid='.$projectid);
+		$row = $modelMeetings->saveMeeting($post);
+		if ($row === false){
+			error::raise('', 'error', $modelMeetings->getLastError());
 		}
 		else{
+			error::raise('', 'message', _LANG_MEETING_SAVED);
+			
+			// Prepare data for activity log entry
+			$action = empty($post['id']) ? _LANG_MEETINGS_ACTION_NEW : _LANG_MEETINGS_ACTION_EDIT;
+			$title = $row->name;
+			$description = sprintf(_LANG_MEETINGS_ACTIVITYLOG_DESCRIPTION, $row->name, $row->dtstart, $row->dtend, $row->description);
+			$url = route::_("index.php?option=com_projects&view=meetings&layout=detail&projectid=".$row->projectid."&meetingid=".$row->id);
+			$notify = $post['notify'] == 'on' ? true : false;
+			
 			// Add entry in activity log
 			$modelActivityLog =& $this->getModel('activitylog');
-			$action = _LANG_MEETINGS_ACTION_NEW;
-			$title = $row->name;
-			$description = sprintf(_LANG_MEETINGS_ACTIVITYLOG_DESCRIPTION, $row->name, $row->dtstart, $row->dtend);
-			$url = route::_("index.php?option=com_projects&view=meetings&layout=detail&projectid=".$projectid."&meetingid=".$row->id);
-			if ($notify == 'on') { $notify = true; }
-			$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'meetings', $action, $title, $description, $url, $assignees, $notify);
-			
-			$this->setRedirect('index.php?option=com_projects&view=meetings&layout=detail&projectid='.$projectid."&meetingid=".$row->id);	
+			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->created_by, 'meetings', $action, $title, $description, $url, $post['assignees'], $notify)) {
+				error::raise('', 'error', $modelActivityLog->getLastError());
+			}	
 		}
+		
+		$this->setRedirect('index.php?option=com_projects&view=meetings&layout=detail&projectid='.$post['projectid']."&meetingid=".$row->id);
 	}
 	
 	function remove_meeting() {
 		$projectid = request::getVar('projectid', 0);
 		$meetingid = request::getVar('meetingid', 0);
 		
-		$modelMeetings = &$this->getModel('meetings');
+		$modelMeetings =& $this->getModel('meetings');
 		
 		if ($modelMeetings->deleteMeeting($projectid, $meetingid) === true) {
-			error::raise('', 'message', _LANG_MEETING_DELETED);
+			error::raise('', 'message', _LANG_MEETING_DELETE_SUCCESS);
+		}
+		else {
+			error::raise('', 'error', _LANG_MEETING_DELETE_ERROR);
 		}
 		
 		$this->setRedirect('index.php?option=com_projects&view=meetings&projectid='.$projectid);

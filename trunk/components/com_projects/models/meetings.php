@@ -30,7 +30,7 @@ class projectsModelMeetings extends model {
 		parent::__construct();
 	}
 	
-	function getMeetings($projectid) {
+	public function getMeetings($projectid) {
 		$filter_order = request::getVar('filter_order', 'm.created');
 		$filter_order_Dir = request::getVar('filter_order_Dir', 'DESC');
 		$search = request::getVar('search', '');
@@ -63,11 +63,9 @@ class projectsModelMeetings extends model {
 		// This query groups the files by parentid so and retireves the latest revision for each file in current project
 		$query = "SELECT 
 				  m.*, 
-				  u.username AS created_by_name, 
-				  GROUP_CONCAT(um.userid) assignees
+				  u.username AS created_by_name 
 				  FROM #__meetings AS m 
-				  JOIN #__users u ON u.id = m.created_by 
-				  LEFT JOIN #__users_meetings um ON m.id = um.meetingid "
+				  JOIN #__users u ON u.id = m.created_by "
 				  . $where . 
 				  " GROUP BY m.id ";
 		//echo $query; exit;	  
@@ -84,18 +82,15 @@ class projectsModelMeetings extends model {
 		$this->db->setQuery($query);
 		$rows = $this->db->loadObjectList();
 		
-		// Prepare assignee data
+		// Prepare rows and add relevant data
 		if (is_array($rows) && count($rows) > 0) {
 			foreach ($rows as $row) {
-				if (!empty($row->assignees)) {
-					$assignees = explode(',', $row->assignees);
-					for ($i=0; $i<count($assignees); $i++) {
-						$new_assignees[$i]['id'] = $assignees[$i];
-						$new_assignees[$i]['name'] = usersHelper::id2name($assignees[$i]);
-					}
-					$row->assignees = $new_assignees;
-					unset($new_assignees);
-				}
+				// Get assignees
+				$row->assignees = $this->_getAssignees($row->id);
+				
+				// get total comments
+				$modelComments =& $this->getModel('comments');
+				$row->comments = $modelComments->getTotalComments($row->id, 'meetings');
 			}
 		}
 		
@@ -114,7 +109,7 @@ class projectsModelMeetings extends model {
 		return $return;
 	}
 	
-	function getMeetingsDetail($projectid, $meetingid) {
+	public function getMeetingsDetail($projectid, $meetingid) {
 		$query = "SELECT m.*, u.username AS created_by_name ";
 		$query .= " FROM #__meetings AS m ";
 		$query .= " JOIN #__users u ON u.id = m.created_by ";
@@ -124,7 +119,7 @@ class projectsModelMeetings extends model {
 		$row = $this->db->loadObject();
 		
 		// Get assignees
-		$row->assignees = $this->getAssignees($meetingid);
+		$row->assignees = $this->_getAssignees($meetingid);
 		
 		// get slideshows
 		$row->slideshows = $this->getSlideshows($projectid, $meetingid);
@@ -136,7 +131,19 @@ class projectsModelMeetings extends model {
 		return $row;
 	}
 	
-	function saveMeeting($projectid, $meetingid=0) {
+	/**
+	 * Save a project meeting
+	 * 
+	 * @param	$post	The array to be used for binding to the row before storing it. Normally the HTTP_POST array.
+	 * @return	mixed	Returns the stored table row object on success or FALSE on failure
+	 */
+	public function saveMeeting($post) {
+		// Check whether a project id is included in the post array
+		if (empty($post['projectid'])) {
+			$this->error[] = _LANG_MEETINGS_SAVE_ERROR_NO_PROJECT_SELECTED;
+			return false;
+		}
+		
 		require_once COMPONENT_PATH.DS."tables".DS."meetings.table.php";		
 		$row =& phpFrame::getInstance("projectsTableMeetings");
 		
@@ -149,17 +156,23 @@ class projectsModelMeetings extends model {
 			$row->load($meetingid);
 		}
 		
-		$post = request::get('post');
-		$row->bind($post);
-		
-		if (!$row->check()) {
-			error::raise(500, 'error', $row->error);
+		if (!$row->bind($post)) {
+			$this->error[] = $row->getLastError();
+			return false;
 		}
 		
-		$row->store();
+		if (!$row->check()) {
+			$this->error[] = $row->getLastError();
+			return false;
+		}
+		
+		if (!$row->store()) {
+			$this->error[] = $row->getLastError();
+			return false;
+		}
 		
 		// Delete existing assignees before we store new ones if editing existing issue
-		if ($new_meeting !== true) {
+		if (!empty($post['id'])) {
 			$query = "DELETE FROM #__users_meetings WHERE meetingid = ".$row->id;
 			$this->db->setQuery($query);
 			$this->db->query();
@@ -178,11 +191,9 @@ class projectsModelMeetings extends model {
 		}
 		
 		if (!empty($row->id)) {
-			error::raise('', 'message', _LANG_MEETING_SAVED);
 			return $row;
 		}
 		else {
-			error::raise('', 'error', _LANG_MEETING_SAVE_ERROR);
 			return false;
 		}
 	}
@@ -194,9 +205,9 @@ class projectsModelMeetings extends model {
 	 * 
 	 * @param	int		$projectid	The project id.
 	 * @param	int		$meetingid	The id of the meeting we want to delete.
-	 * @return	bool
+	 * @return	bool	Returns TRUE on success or FALSE on error.
 	 */
-	function deleteMeeting($projectid, $meetingid) {
+	public function deleteMeeting($projectid, $meetingid) {
 		//TODO: This function should allow ids as either int or array of ints.
 		//TODO: This function should also check permissions before deleting
 		
@@ -232,19 +243,7 @@ class projectsModelMeetings extends model {
 		}
 	}
 	
-	function getAssignees($meetingid) {
-		$query = "SELECT userid FROM #__users_meetings WHERE meetingid = ".$meetingid;
-		$this->db->setQuery($query);
-		$assignees = $this->db->loadResultArray();
-		// Prepare assignee data
-		for ($i=0; $i<count($assignees); $i++) {
-			$new_assignees[$i]['id'] = $assignees[$i];
-			$new_assignees[$i]['name'] = usersHelper::id2name($assignees[$i]);
-		}
-		return $new_assignees;
-	}
-	
-	function getSlideshows($projectid, $meetingid, $slideshowid=0) {
+	public function getSlideshows($projectid, $meetingid, $slideshowid=0) {
 		$query = "SELECT * ";
 		$query .= " FROM #__slideshows ";
 		$query .= " WHERE projectid = ".$projectid." AND meetingid = ".$meetingid;
@@ -262,6 +261,18 @@ class projectsModelMeetings extends model {
 		}
 		
 		return $slideshows;
+	}
+	
+	private function _getAssignees($meetingid) {
+		$query = "SELECT userid FROM #__users_meetings WHERE meetingid = ".$meetingid;
+		$this->db->setQuery($query);
+		$assignees = $this->db->loadResultArray();
+		// Prepare assignee data
+		for ($i=0; $i<count($assignees); $i++) {
+			$new_assignees[$i]['id'] = $assignees[$i];
+			$new_assignees[$i]['name'] = usersHelper::id2name($assignees[$i]);
+		}
+		return $new_assignees;
 	}
 }
 ?>

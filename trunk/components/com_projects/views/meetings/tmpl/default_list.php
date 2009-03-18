@@ -63,7 +63,7 @@ html::confirm('delete_meeting', _LANG_PROJECTS_MEETINGS_DELETE, _LANG_PROJECTS_M
 		<?php if (!empty($row->assignees)) : ?>
     	<?php for ($j=0; $j<count($row->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo route::_("index.php?option=com_projects&view=users&layout=detail&userid=".$row->assignees[$j]['id']); ?>">
+    		<a href="<?php echo route::_("index.php?option=com_users&view=users&layout=detail&userid=".$row->assignees[$j]['id']); ?>">
     		<?php echo $row->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>
@@ -72,9 +72,19 @@ html::confirm('delete_meeting', _LANG_PROJECTS_MEETINGS_DELETE, _LANG_PROJECTS_M
 	
 	<?php if (!empty($row->description)) : ?>
 	<div class="thread_body">
-		<?php echo nl2br($row->description); ?>
+		<?php echo nl2br(text::limit_words($row->description, 255)); ?>
 	</div>
 	<?php endif; ?>
+	
+	<div class="comments_info">
+		<a href="<?php echo route::_("index.php?option=com_projects&view=meetings&layout=detail&projectid=".$this->projectid."&meetingid=".$row->id); ?>">
+			<?php echo $row->comments; ?> <?php echo _LANG_COMMENTS; ?>
+		</a>
+		 - 
+		<a href="<?php echo route::_("index.php?option=com_projects&view=meetings&layout=detail&projectid=".$this->projectid."&meetingid=".$row->id."#post-comment"); ?>">
+			<?php echo _LANG_COMMENTS_NEW; ?>
+		</a>
+	</div>
 
 </div>
 <?php $k = 1 - $k; ?>

@@ -38,7 +38,7 @@ class projectsModelIssues extends model {
 	 * @param bool $overdue	If set to true it only returns overdue issues
 	 * @return array	An array containing the rows, pageNav and filter lists
 	 */
-	function getIssues($projectid, $overdue=false) {
+	public function getIssues($projectid, $overdue=false) {
 		$filter_order = request::getVar('filter_order', 'i.dtstart');
 		$filter_order_Dir = request::getVar('filter_order_Dir', 'DESC');
 		$search = request::getVar('search', '');
@@ -88,11 +88,9 @@ class projectsModelIssues extends model {
 		// This query groups the files by parentid so and retireves the latest revision for each file in current project
 		$query = "SELECT 
 				  i.*, 
-				  u.username AS created_by_name, 
-				  GROUP_CONCAT(ui.userid) assignees
+				  u.username AS created_by_name 
 				  FROM #__issues AS i 
-				  JOIN #__users u ON u.id = i.created_by 
-				  LEFT JOIN #__users_issues ui ON i.id = ui.issueid "
+				  JOIN #__users u ON u.id = i.created_by "
 				  . $where . 
 				  " GROUP BY i.id ";
 		//echo str_replace('#__', 'eo_', $query); exit;
@@ -111,16 +109,8 @@ class projectsModelIssues extends model {
 		// Prepare rows and add relevant data
 		if (is_array($rows) && count($rows) > 0) {
 			foreach ($rows as $row) {
-				// Prepare assignee data
-				if (!empty($row->assignees)) {
-					$assignees = explode(',', $row->assignees);
-					for ($i=0; $i<count($assignees); $i++) {
-						$new_assignees[$i]['id'] = $assignees[$i];
-						$new_assignees[$i]['name'] = usersHelper::id2name($assignees[$i]);
-					}
-					$row->assignees = $new_assignees;
-					unset($new_assignees);
-				}
+				// Get assignees
+				$row->assignees = $this->_getAssignees($row->id);
 				
 				// get total comments
 				$modelComments =& $this->getModel('comments');
@@ -164,7 +154,7 @@ class projectsModelIssues extends model {
 	 * @param int $issueid
 	 * @return mixed returns $row on success and FALSE on failure
 	 */
-	function getIssuesDetail($projectid, $issueid) {
+	public function getIssuesDetail($projectid, $issueid) {
 		$query = "SELECT i.*, u.username AS created_by_name ";
 		$query .= " FROM #__issues AS i ";
 		$query .= " JOIN #__users u ON u.id = i.created_by ";
@@ -174,7 +164,7 @@ class projectsModelIssues extends model {
 		$row = $this->db->loadObject();
 		
 		// Get assignees
-		$row->assignees = $this->getAssignees($issueid);
+		$row->assignees = $this->_getAssignees($issueid);
 		
 		// Get comments
 		$modelComments =& $this->getModel('comments');
@@ -190,7 +180,7 @@ class projectsModelIssues extends model {
 	 * @param int $issueid
 	 * @return mixed returns $row on success and FALSE on failure
 	 */
-	function saveIssue($projectid, $issueid=0) {
+	public function saveIssue($projectid, $issueid=0) {
 		require_once COMPONENT_PATH.DS."tables".DS."issues.table.php";		
 		$row =& phpFrame::getInstance("projectsTableIssues");
 		
@@ -246,7 +236,7 @@ class projectsModelIssues extends model {
 	 * @param int $issueid
 	 * @return bool
 	 */
-	function deleteIssue($projectid, $issueid) {
+	public function deleteIssue($projectid, $issueid) {
 		//TODO: This function should allow ids as either int or array of ints.
 		//TODO: This function should also check permissions before deleting
 		require_once COMPONENT_PATH.DS."tables".DS."issues.table.php";
@@ -277,38 +267,13 @@ class projectsModelIssues extends model {
 	}
 	
 	/**
-	 * Get list of assignees
-	 *
-	 * @param int $issueid
-	 * @param bool $asoc
-	 * @return array assignees or asociative array of id and name if asoc is true 
-	 */
-	function getAssignees($issueid, $asoc=true) {
-		$query = "SELECT userid FROM #__users_issues WHERE issueid = ".$issueid;
-		$this->db->setQuery($query);
-		$assignees = $this->db->loadResultArray();
-		// return plain array if asoc is false
-		if ($asoc === false) {
-			return $assignees;
-		}
-		
-		// Prepare assignee data
-		for ($i=0; $i<count($assignees); $i++) {
-			$asoc_assignees[$i]['id'] = $assignees[$i];
-			$asoc_assignees[$i]['name'] = usersHelper::id2name($assignees[$i]);
-		}
-		
-		return $asoc_assignees;
-	}
-	
-	/**
 	 * Close an issue
 	 *
 	 * @param int $projectid
 	 * @param int $issueid
 	 * @return mixed returns issues table, false on error
 	 */
-	function closeIssue($projectid, $issueid) {
+	public function closeIssue($projectid, $issueid) {
 		$query = "UPDATE #__issues ";
 		$query .= " SET closed = '".date("Y-m-d H:i:s")."' WHERE id = ".$issueid;
 		$this->db->setQuery($query);
@@ -327,7 +292,7 @@ class projectsModelIssues extends model {
 	 * @param int $issueid
 	 * @return mixed returns issues table, false on error
 	 */
-	function reopenIssue($projectid, $issueid) {
+	public function reopenIssue($projectid, $issueid) {
 		$query = "UPDATE #__issues ";
 		$query .= " SET closed = '0000-00-00 00:00:00' WHERE id = ".$issueid;
 		$this->db->setQuery($query);
@@ -344,9 +309,9 @@ class projectsModelIssues extends model {
 	 *
 	 * @param int $projectid
 	 * @param bool $overdue
-	 * @return mixed returns numeric resource or false on error
+	 * @return mixed returns numeric resource or FALSE on error
 	 */
-	function getTotalIssues($projectid, $overdue=false) {
+	public function getTotalIssues($projectid, $overdue=false) {
 		$query = "SELECT COUNT(id) FROM #__issues ";
 		$query .= " WHERE projectid = ".$projectid;
 		if ($overdue === true) { 
@@ -354,6 +319,31 @@ class projectsModelIssues extends model {
 		}
 		$this->db->setQuery($query);
 		return $this->db->loadResult();
+	}
+	
+	/**
+	 * Get list of assignees
+	 *
+	 * @param int $issueid
+	 * @param bool $asoc
+	 * @return array assignees or asociative array of id and name if asoc is true 
+	 */
+	private function _getAssignees($issueid, $asoc=true) {
+		$query = "SELECT userid FROM #__users_issues WHERE issueid = ".$issueid;
+		$this->db->setQuery($query);
+		$assignees = $this->db->loadResultArray();
+		// return plain array if asoc is false
+		if ($asoc === false) {
+			return $assignees;
+		}
+		
+		// Prepare assignee data
+		for ($i=0; $i<count($assignees); $i++) {
+			$asoc_assignees[$i]['id'] = $assignees[$i];
+			$asoc_assignees[$i]['name'] = usersHelper::id2name($assignees[$i]);
+		}
+		
+		return $asoc_assignees;
 	}
 }
 ?>
