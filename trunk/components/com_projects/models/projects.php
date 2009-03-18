@@ -33,7 +33,7 @@ class projectsModelProjects extends model {
 	function __construct() {
 		parent::__construct();
 		
-		$this->init();
+		$this->_init();
 	}
 	
 	/**
@@ -42,7 +42,7 @@ class projectsModelProjects extends model {
 	 * @return	void
 	 * @since	1.0
 	 */
-	function init() {
+	private function _init() {
 		$this->view = request::getVar('view', 'projects');
 		$this->layout = request::getVar('layout', 'list');
 		$this->projectid = request::getVar('projectid', 0);
@@ -78,7 +78,7 @@ class projectsModelProjects extends model {
 	 * @param $projectid
 	 * @return mixed
 	 */
-	function getProjects($projectid=0) {
+	public function getProjects($projectid=0) {
 		// Only apply filtering and ordering if browsing projects list
 		if (empty($projectid)) {
 			$filter_order = request::getVar('filter_order', 'p.name');
@@ -168,16 +168,13 @@ class projectsModelProjects extends model {
 	/**
 	 * Save a project sent in the request.
 	 * 
-	 * Returns the project id or FALSE if it fails
-	 * 
-	 * @return int
+	 * @param	$post	The array to be used for binding to the row before storing it. Normally the HTTP_POST array.
+	 * @return	mixed	Returns the project id or FALSE on failure.
 	 */
-	function saveProject() {
+	public function saveProject($post) {
 		// Instantiate table object
 		require_once COMPONENT_PATH.DS.'tables'.DS.'projects.table.php';
 		$row =& phpFrame::getInstance('projectsTableProjects');
-		
-		$post = request::get('post');
 		
 		// Bind the post data to the row array
 		if ($row->bind($post, 'created,created_by') === false) {
@@ -188,10 +185,7 @@ class projectsModelProjects extends model {
 		if (empty($row->id)) {
 			$row->created = date("Y-m-d H:i:s");
 			$row->created_by = $this->user->id;
-			$new_project = true;
 		}
-		
-		//echo '<pre>'; var_dump($row); exit;
 		
 		if (!$row->check()) {
 			$this->error[] = $row->getLastError();
@@ -201,15 +195,6 @@ class projectsModelProjects extends model {
 		if (!$row->store()) {
 			$this->error[] = $row->getLastError();
 			return false;
-		}
-		
-		// Add role for user in the new project
-		if ($new_project === true) {
-			$modelMembers =& $this->getModel('members');
-			if (!$modelMembers->saveMember($row->id, $this->user->id, '1')) {
-				$this->error[] = $modelMembers->getLastError();
-				return false;
-			}
 		}
 		
 		return $row->id;
@@ -222,7 +207,7 @@ class projectsModelProjects extends model {
 	 * @param	int	$projectid
 	 * @return	bool
 	 */
-	function deleteProject($projectid) {
+	public function deleteProject($projectid) {
 		// Instantiate table object
 		require_once COMPONENT_PATH.DS.'tables'.DS.'projects.table.php';
 		$row =& phpFrame::getInstance('projectsTableProjects');
