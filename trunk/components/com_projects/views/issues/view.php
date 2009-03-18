@@ -66,6 +66,9 @@ class projectsViewIssues extends view {
 	 * @since	1.0
 	 */
 	function display() {
+		$this->page_title = _LANG_ISSUES;
+		$this->page_heading = $this->project->name;
+		
 		parent::display();
 		
 		// Append page title to document title
@@ -79,16 +82,14 @@ class projectsViewIssues extends view {
 	 * @return void
 	 */
 	function displayIssuesList() {
-		$this->page_title = _LANG_ISSUES;
-		$this->page_heading = $this->project->name;
-		$this->addPathwayItem($this->page_title);
-		
 		// Push model into the view
 		$modelIssues = $this->getModel('issues');
 		$issues = $modelIssues->getIssues($this->projectid);
 		$this->rows =& $issues['rows'];
 		$this->pageNav =& $issues['pageNav'];
 		$this->lists =& $issues['lists'];
+		
+		$this->addPathwayItem($this->page_title);
 	}
 	
 	function displayIssuesForm() {
@@ -105,19 +106,17 @@ class projectsViewIssues extends view {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->page_heading = $this->project->name;
-		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=issues&projectid=".$this->projectid));
 		$this->addPathwayItem($action);
 	}
 	
 	function displayIssuesDetail() {
-		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
-		
 		$modelIssues = $this->getModel('issues');
 		$issue = $modelIssues->getIssuesDetail($this->projectid, $this->issueid);
 		$this->row =& $issue;
 		
 		$this->page_title .= ' - '.$issue->title;
+		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=issues&projectid=".$this->projectid));
 		$this->addPathwayItem($issue->title);
 	}
 }

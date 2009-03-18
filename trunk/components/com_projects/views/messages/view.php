@@ -66,6 +66,9 @@ class projectsViewMessages extends view {
 	 * @since	1.0
 	 */
 	function display() {
+		$this->page_title = _LANG_MESSAGES;
+		$this->page_heading = $this->project->name;
+		
 		parent::display();
 		
 		// Append page title to document title
@@ -79,32 +82,27 @@ class projectsViewMessages extends view {
 	 * @return void
 	 */
 	function displayMessagesList() {
-		$this->page_title = _LANG_MESSAGES;
-		$this->page_heading = $this->project->name;
-		$this->addPathwayItem($this->page_title);
-		
 		$modelMessages =& $this->getModel('messages');
 		$messages = $modelMessages->getMessages($this->projectid);
 		$this->rows =& $messages['rows'];
 		$this->pageNav =& $messages['pageNav'];
 		$this->lists =& $messages['lists'];
+		
+		$this->addPathwayItem($this->page_title);
 	}
 	
 	function displayMessagesDetail() {
-		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
-		
 		$modelMessages =& $this->getModel('messages');
-		$message = $modelMessages->getMessagesDetail($this->projectid, $this->messageid);
-		$this->row =& $message;
+		$this->row = $modelMessages->getMessagesDetail($this->projectid, $this->messageid);
 		
-		$this->page_title .= ' - '.$message->subject;
-		$this->addPathwayItem($message->subject);
+		$this->page_title .= ' - '.$this->row->subject;
+		$this->addPathwayItem($this->current_tool, "index.php?option=com_projects&view=messages&projectid=".$this->projectid);
+		$this->addPathwayItem($this->row->subject);
 	}
 	
 	function displayMessagesForm() {
 		$this->page_title .= ' - '._LANG_MESSAGES_NEW;
-		$this->page_heading = $this->project->name;
-		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, "index.php?option=com_projects&view=messages&projectid=".$this->projectid);
 		$this->addPathwayItem(_LANG_MESSAGES_NEW);
 	}
 }

@@ -72,8 +72,9 @@ html::validate('commentsform');
     	<?php endfor; ?>
     	<?php endif; ?>
     	<br />
-    	<?php echo _LANG_DTSTART; ?>: <?php echo date("d M Y", strtotime($this->row->dtstart)); ?> 
-    	<?php echo _LANG_DTEND; ?>: <?php echo date("d M Y", strtotime($this->row->dtend)); ?>
+    	<?php echo _LANG_DTSTART; ?>: <?php if ($this->row->dtstart != '0000-00-00') { echo date("d M Y", strtotime($this->row->dtstart)); } else { echo _LANG_NOT_SET; } ?> 
+    	- 
+    	<?php echo _LANG_DTEND; ?>: <?php if ($this->row->dtend != '0000-00-00') { echo date("d M Y", strtotime($this->row->dtend)); } else { echo _LANG_NOT_SET; } ?>
 	</div>
 	
 	<?php if (!empty($this->row->description)) : ?>

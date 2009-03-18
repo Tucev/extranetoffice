@@ -65,6 +65,9 @@ class projectsViewPeople extends view {
 	 * @since	1.0
 	 */
 	function display() {
+		$this->page_title = _LANG_PEOPLE;
+		$this->page_heading = $this->project->name;
+		
 		parent::display();
 		
 		// Append page title to document title
@@ -78,12 +81,10 @@ class projectsViewPeople extends view {
 	 * @return void
 	 */
 	function displayPeopleList() {
-		$this->page_title = _LANG_PEOPLE;
-		$this->page_heading = $this->project->name;
-		$this->addPathwayItem($this->current_tool);
-		
 		$modelMembers =& $this->getModel('members');
 		$this->rows = $modelMembers->getMembers($this->projectid);
+		
+		$this->addPathwayItem($this->current_tool);
 	}
 
 }
