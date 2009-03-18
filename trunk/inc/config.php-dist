@@ -40,13 +40,13 @@ class config {
 	 *
 	 * @var bool
 	 */
-	var $debug=false;
+	var $debug="false";
 	/**
 	 * Secret string used to generate secure hash
 	 * 
 	 * @var string
 	 */
-	var $secret='ChangeMeToSometingRandomAndComplicated';
+	var $secret="ChangeMeToSometingRandomAndComplicated";
 	
 	/////////////////////////////////////////////////
     // DATABASE PROPERTIES
@@ -106,7 +106,7 @@ class config {
 	 *
 	 * @var string
 	 */
-	var $upload_accept="text/plain,image/jpeg,image/pjpeg,image/jpg,image/png,image/bmp,image/gif,application/pdf,application/octet-stream";
+	var $upload_accept="text/plain,image/jpeg,image/pjpeg,image/jpg,image/png,image/bmp,image/gif,application/pdf,application/octet-stream,application/msword,application/excel,application/vnd.ms-excel,application/x-excel,application/x-msexcel,application/vnd.ms-powerpoint,application/mspowerpoint,application/powerpoint";
 	
 	/////////////////////////////////////////////////
     // MAIL RETRIEVAL PROPERTIES
@@ -117,25 +117,25 @@ class config {
 	 * 
 	 * @var string
 	 */
-	var $imap_host='';
+	var $imap_host="";
 	/**
 	 * The IMAP port number to use
 	 * 
 	 * @var int
 	 */
-	var $imap_port=143;
+	var $imap_port="143";
 	/**
 	 * The IMAP login username
 	 * 
 	 * @var string
 	 */
-	var $imap_user='';
+	var $imap_user="";
 	/**
 	 * The IMAP password
 	 * 
 	 * @var string
 	 */
-	var $imap_password='';
+	var $imap_password="";
 	
 	/////////////////////////////////////////////////
     // MAIL SENDING PROPERTIES
@@ -146,49 +146,49 @@ class config {
 	 * 
 	 * @var string
 	 */
-	var $mailer='mail';
+	var $mailer="mail";
 	/**
 	 * If using SMTP mailer enable smtp authentication
 	 * 
 	 * @var string
 	 */
-	var $smtp_auth=false;
+	var $smtp_auth="false";
 	/**
 	 * The SMTP host name or IP address.
 	 * 
 	 * @var string
 	 */
-	var $smtp_host='';
+	var $smtp_host="";
 	/**
 	 * The SMTP port to use
 	 * 
 	 * @var int
 	 */
-	var $smtp_port=25;
+	var $smtp_port="25";
 	/**
 	 * The SMTP login name
 	 * 
 	 * @var string
 	 */
-	var $smtp_user='';
+	var $smtp_user="";
 	/**
 	 * The SMTP password
 	 * 
 	 * @var string
 	 */
-	var $smtp_password='';
+	var $smtp_password="";
 	/**
 	 * The email address to use for notifications
 	 *  
 	 * @var string
 	 */
-	var $fromaddress='';
+	var $fromaddress="";
 	/**
 	 * The from name for notifications
 	 *  
 	 * @var string
 	 */
-	var $fromname='';
+	var $fromname="";
 	
 	
 	/**
