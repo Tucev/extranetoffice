@@ -67,6 +67,9 @@ class projectsController extends controller {
 	 * @since 	1.0
 	 */
 	function save_project() {
+		// Check for request forgeries
+		crypt::checkToken() or exit( 'Invalid Token' );
+		
 		$user =& factory::getUser();
 		$post = request::get('post');
 		
@@ -106,7 +109,10 @@ class projectsController extends controller {
 		$modelProjects =& $this->getModel('projects');
 		
 		if ($modelProjects->deleteProject($this->projectid) === true) {
-			error::raise('', 'message', _LANG_PROJECT_DELETED);	
+			error::raise('', 'message', _LANG_PROJECT_DELETE_SUCCESS);
+		}
+		else {
+			error::raise('', 'error', _LANG_PROJECT_DELETE_ERROR);
 		}
 		
 		$this->setRedirect('index.php?option=com_projects&view=projects&layout=list');
@@ -285,32 +291,38 @@ class projectsController extends controller {
 	}
 	
 	function save_file() {
+		// Check for request forgeries
+		crypt::checkToken() or exit( 'Invalid Token' );
+		
 		// Get request vars
-		$projectid = request::getVar('projectid', 0);
-		$assignees = request::getVar('assignees', 0);
-		$notify = request::getVar('notify', false);
+		$post = request::get('post');
 		
 		// Save file using files model
 		$modelFiles =& $this->getModel('files');
-		$row = $modelFiles->saveFile($projectid);
-		
+		$row = $modelFiles->saveFile($post);
 		if ($row === false) {
 			error::raise('', 'error', $modelFiles->getLastError());
-			return false;
+		}
+		else {
+			// Prepare data for activity log entry
+			$action = _LANG_FILES_ACTION_NEW;
+			$title = $row->title;
+			$description = sprintf(_LANG_FILES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->filename, $row->revision, $row->changelog);
+			$url = route::_("index.php?option=com_projects&task=download_file&projectid=".$row->projectid."&fileid=".$row->id);
+			//if ($post['notify'] == 'on') { $notify = true; }
+			$notify = $post['notify'] == 'on' ? true : false;
+			
+			// Add entry in activity log
+			$modelActivityLog =& $this->getModel('activitylog');
+			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->userid, 'files', $action, $title, $description, $url, $post['assignees'], $notify)) {
+				error::raise('', 'error', $modelActivityLog->getLastError());
+			}
+			else {
+				error::raise('', 'message', _LANG_FILE_SAVED);	
+			}
 		}
 		
-		// Add entry in activity log
-		$modelActivityLog =& $this->getModel('activitylog');
-		$action = _LANG_FILES_ACTION_NEW;
-		$title = $row->title;
-		$description = sprintf(_LANG_FILES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->filename, $row->revision, $row->changelog);
-		$url = route::_("index.php?option=com_projects&task=download_file&projectid=".$projectid."&fileid=".$row->id);
-		if ($notify == 'on') { $notify = true; }
-		$modelActivityLog->saveActivityLog($projectid, $row->userid, 'files', $action, $title, $description, $url, $assignees, $notify);
-		
-		error::raise('', 'message', _LANG_FILE_SAVED);
-		
-		$this->setRedirect('index.php?option=com_projects&view=files&projectid='.$projectid);
+		$this->setRedirect('index.php?option=com_projects&view=files&projectid='.$post['projectid']);
 	}
 	
 	function remove_file() {

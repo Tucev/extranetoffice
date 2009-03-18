@@ -181,7 +181,8 @@ define("_LANG_PROJECTS_SWITCHER", "Switch to project");
 define("_LANG_ADMIN", "Admin");
 define("_LANG_PROJECT_SAVED", "Project successfully saved");
 define("_LANG_PROJECT_DELETE_CONFIRM", "Are you sure you want to delete project");
-define("_LANG_PROJECT_DELETED", "Project successfully deleted");
+define("_LANG_PROJECT_DELETE_SUCCESS", "Project successfully deleted");
+define("_LANG_PROJECT_DELETE_ERROR", "An error occurred while deleting the project");
 define("_LANG_PROJECTS_ROLE", "Role");
 define("_LANG_PROJECT_MEMBER_DELETE_CONFIRM", "Are you sure you want to revoke project membership for user");
 
@@ -237,8 +238,11 @@ define("_LANG_FILES_CHANGELOG", "Log message");
 define("_LANG_FILES_NEW_VERSION_OF", "New version of file");
 define("_LANG_FILE_DELETED", "File has been successfully deleted");
 define("_LANG_FILES_ACTIVITYLOG_DESCRIPTION", "Title: %s
-Body:
+File name: %s
+Revision: %s
+Log message:
 %s");
+define("_LANG_FILES_SAVE_ERROR_NO_PROJECT_SELECTED", "Could not save file. No project was selected");
 
 // Messages
 define("_LANG_MESSAGES", "Messages");
@@ -336,6 +340,7 @@ URL: %s
 --
 To add a comment on this thread simply reply to this email.
 ");
+define("_LANG_ACTIVITYLOG_NO_RECIPIENTS", "Could NOT send email notifications. No recipients selected.");
 
 // com_email
 define("_LANG_EMAIL_NO_ACCOUNT", "No email account");

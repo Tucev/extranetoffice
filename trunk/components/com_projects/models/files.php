@@ -145,13 +145,28 @@ class projectsModelFiles extends model {
 		return $row;
 	}
 	
-	function saveFile($projectid) {
+	/**
+	 * Save a project file
+	 * 
+	 * This method uploads a project file and stores the relevant entry in the database.
+	 * 
+	 * @param	$post	The array to be used for binding to the row before storing it. Normally the HTTP_POST array.
+	 * @return	mixed	Returns the stored table row object on success or FALSE on failure
+	 */
+	function saveFile($post) {
+		// Check whether a project id is included in the post array
+		if (empty($post['projectid'])) {
+			$this->error[] = _LANG_FILES_SAVE_ERROR_NO_PROJECT_SELECTED;
+			return false;
+		}
+		
 		require_once COMPONENT_PATH.DS."tables".DS."files.table.php";		
 		$row =& phpFrame::getInstance("projectsTableFiles");
 		
-		$post = request::get('post');
-		
-		$row->bind($post);
+		if (!$row->bind($post)) {
+			$this->error[] = $row->getLastError();
+			return false;
+		}
 		
 		// Generate revision
 		if (empty($row->parentid)) {
@@ -168,7 +183,7 @@ class projectsModelFiles extends model {
 		
 		// upload the file
 		//TODO: Have to catch errors and look at file permissions
-		$upload_dir = $this->config->get('filesystem').DS."projects".DS.$projectid.DS."files".DS;
+		$upload_dir = $this->config->get('filesystem').DS."projects".DS.$post['projectid'].DS."files".DS;
 		if (!is_dir($upload_dir)) {
 			mkdir($upload_dir, 0711);
 		}
@@ -204,6 +219,27 @@ class projectsModelFiles extends model {
 				$this->error[] = $row->getLastError();
 				return false;
 			}
+		}
+		
+		// File assignees are stored with a reference to the parentid, 
+		// so they are assigned to the thread rather than individual files
+		// Delete existing assignees before we store new ones if editing existing issue
+		if ($row->revision > 0) {
+			$query = "DELETE FROM #__users_files WHERE fileid = ".$row->parentid;
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
+		
+		// Store assignees
+		if (is_array($post['assignees']) && count($post['assignees']) > 0) {
+			$query = "INSERT INTO #__users_files ";
+			$query .= " (id, userid, fileid) VALUES ";
+			for ($i=0; $i<count($post['assignees']); $i++) {
+				if ($i>0) { $query .= ","; }
+				$query .= " (NULL, '".$post['assignees'][$i]."', '".$row->parentid."') ";
+			}
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 		
 		return $row;
