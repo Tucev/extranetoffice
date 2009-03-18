@@ -89,7 +89,7 @@ Add new slideshow
 	<?php foreach ($this->row->slideshows[$k]->slides as $slide) : ?>
 	
 	<?php
-		$lightbox_comment_html = "<div class='files_detail_comments'>
+		$lightbox_comment_html = "<div class='comments_info'>
 									<a href=''>
 										0 Comments
 									</a>
