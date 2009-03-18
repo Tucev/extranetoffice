@@ -13,14 +13,26 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 <!-- add jQuery tabs behaviour -->
 <script type="text/javascript">
-	$(function() {
-		$("#tabs").tabs();
+var $sysadmin_tabs;
+var $sysadmin_selected_tab='ui-tabs-30';
+
+$(function() {
+	$sysadmin_tabs = $('#sysadmin_tabs');
+	$sysadmin_tabs.tabs();
+	$sysadmin_tabs.bind('tabsload', function(event, ui) {
+	    $sysadmin_selected_tab = ui.panel.id;
 	});
+	$sysadmin_tabs.bind('tabsselect', function(event, ui) {
+	    $sysadmin_selected_tab = ui.panel.id;
+	    $sysadmin_unselected_tabs = $(this).find("div[id^='ui-tabs']:not(div#"+$sysadmin_selected_tab+")");
+	    $sysadmin_unselected_tabs.html('');
+	});
+});
 </script>
 
 <h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 
-<div id="tabs">
+<div id="sysadmin_tabs">
 	<ul>
 		<li>
 			<a href="<?php echo route::_("index.php?option=com_admin&amp;view=config"); ?>">Global Config</a>

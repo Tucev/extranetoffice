@@ -28,7 +28,11 @@ font-size: 2.6em;
 }
 
 /* jQuery validation errors */
-.error {
+input.error,
+textarea.error {
+border: 1px solid #FF0000;
+}
+label.error {
 background-image: url(../images/icons/generic/16x16/error.png);
 padding: 2px 2px 2px 30px;
 background-repeat: no-repeat;

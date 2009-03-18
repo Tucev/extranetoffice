@@ -18,7 +18,7 @@ html::confirm('delete_user', _LANG_ADMIN_USERS_DELETE, _LANG_ADMIN_USERS_DELETE_
 
 <?php if ($this->user->groupid == 1) : ?>
 <div class="new">
-	<?php html::dialog(_LANG_ADMIN_USERS_NEW, 'index.php?option=com_admin&view=users&layout=form', 460, 390, true, "div[id^='ui-tabs']:has(a.delete_user)"); ?>
+	<?php html::dialog(_LANG_ADMIN_USERS_NEW, 'index.php?option=com_admin&view=users&layout=form', 550, 390, true, "div[id^='ui-tabs']:has(a.delete_user)"); ?>
 </div>
 <?php endif; ?>
 
@@ -71,7 +71,7 @@ function submit_filter(reset) {
   		<input type="checkbox" name="ids[]" value="<?php echo $row->id; ?>" />
   	</td>
     <td valign="top">
-    <?php html::dialog($row->username, 'index.php?option=com_admin&view=users&layout=form&userid='.$row->id, 460, 390, true); ?>
+    <?php html::dialog($row->username, 'index.php?option=com_admin&view=users&layout=form&userid='.$row->id, 550, 390, true, "div[id^='ui-tabs']:has(a.delete_user)"); ?>
     </td>
     <td>
     	<?php echo $row->email; ?>

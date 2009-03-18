@@ -19,13 +19,37 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 		$("#accordion").accordion({
 			autoHeight: false
 		});
+
+		<?php if (request::getVar('tmpl') == 'component') : ?>
+		$("#configform").submit(function() {
+			// bind form using 'ajaxForm'
+			var ajax_container = $("div#"+$sysadmin_selected_tab);
+			
+			// submit the form 
+			$(this).ajaxSubmit({ target: ajax_container });
+
+			// Add the loading div inside the ajax container
+			$("div#"+$sysadmin_selected_tab).html('<div class="loading"></div>');
+			
+			// return false to prevent normal browser submit and page navigation 
+			return false;
+		});
+		
+	 	// Bind AJAX events to loading div to show/hide animation
+		$(".loading").bind("ajaxSend", function() {
+			$(this).show();
+		})
+		.bind("ajaxComplete", function() {
+			   $(this).hide();
+		});
+	    <?php endif; ?>
 	});
 </script>
 
 
 <h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 
-<form action="index.php" method="post" name="configform">
+<form action="index.php" method="post" id="configform" name="configform">
 	
 <div id="accordion">
 	
@@ -196,11 +220,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <?php 
 if (request::getVar('tmpl') != 'component') {
 	html::button('button', _LANG_BACK, "window.location = 'index.php?option=com_admin';");
-	html::button('submit', _LANG_SAVE);
 }
 else {
 	?><input type="hidden" name="tmpl" value="component" /><?php
 }
+
+html::button('submit', _LANG_SAVE);
 ?>
 	
 <input type="hidden" name="option" value="com_admin" />
