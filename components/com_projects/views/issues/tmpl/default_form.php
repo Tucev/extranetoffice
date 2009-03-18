@@ -154,7 +154,7 @@ html::validate('issuesform');
 </table>
 </fieldset>
 
-<div style="clear:both; margin-top:30px;"></div>
+<div style="clear:left; margin-top:30px;"></div>
 
 <button type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button>
 <button type="submit"><?php echo text::_(_LANG_SAVE); ?></button>

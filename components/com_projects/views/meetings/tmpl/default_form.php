@@ -14,31 +14,6 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 html::validate('meetingsform');
 ?>
 
-<script language="javascript" type="text/javascript">
-function submitbutton() {
-	var form = document.meetingsform;
-
-	// do field validation
-	if (form.name.value == "") {
-		alert('<?php echo text::_( _LANG_MEETINGS_NAME_REQUIRED , true); ?>');
-		form.name.focus();
-		return;
-	}
-	else if (form.dtstart.value == "") {
-		alert('<?php echo text::_( _LANG_MEETINGS_DTSTART_REQUIRED , true); ?>');
-		form.dtstart.focus();
-		return;
-	}
-	else if (form.dtend.value == "") {
-		alert('<?php echo text::_( _LANG_MEETINGS_DTEND_REQUIRED , true); ?>');
-		form.dtend.focus();
-		return;
-	}
-	
-	form.submit();
-}
-</script>
-
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
@@ -70,7 +45,7 @@ function submitbutton() {
 		</label>
 	</td>
 	<td>
-		<?php echo html::_('calendar', 'dtstart', 'dtstart', $this->row->dtstart, 'dd/mm/yy', array('class'=>'required', 'size'=>'10', 'maxlength'=>'10')); ?>
+		<?php echo html::_('calendar', 'dtstart', 'dtstart', substr($this->row->dtstart, 0, 10), 'dd/mm/yy', array('class'=>'required', 'size'=>'10', 'maxlength'=>'10')); ?>
 	</td>
 </tr>
 <tr>
@@ -80,7 +55,7 @@ function submitbutton() {
 		</label>
 	</td>
 	<td>
-		<?php echo html::_('calendar', 'dtend', 'dtend', $this->row->dtend, 'dd/mm/yy', array('class'=>'required', 'size'=>'10', 'maxlength'=>'10')); ?>
+		<?php echo html::_('calendar', 'dtend', 'dtend', substr($this->row->dtend, 0, 10), 'dd/mm/yy', array('class'=>'required', 'size'=>'10', 'maxlength'=>'10')); ?>
 	</td>
 </tr>
 <tr>
@@ -117,7 +92,7 @@ function submitbutton() {
 </table>
 </fieldset>
 
-<div style="clear:both; margin-top:30px;"></div>
+<div style="clear:left; margin-top:30px;"></div>
 
 <button type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button>
 <button type="submit"><?php echo text::_(_LANG_SAVE); ?></button>
