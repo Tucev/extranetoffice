@@ -270,6 +270,9 @@ define("_LANG_ISSUES_CLOSE", "Mark issue as closed");
 define("_LANG_ISSUES_ACTION_NEW", "Issue raised");
 define("_LANG_PROJECTS_ISSUES_DELETE", "Delete issue");
 define("_LANG_PROJECTS_ISSUES_DELETE_CONFIRM", "Are you sure you want to delete issue");
+define("_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION", "Title: %s
+Description:
+%s");
 
 //  Milestones
 define("_LANG_MILESTONES", "Milestones");
@@ -298,6 +301,9 @@ define("_LANG_MEETINGS_DTEND_REQUIRED", "End date is required to set up a meetin
 define("_LANG_MEETING_SAVED", "Meeting successfully saved");
 define("_LANG_MEETING_DELETED", "Meeting successfully deleted");
 define("_LANG_MEETINGS_ACTION_NEW", "Meeting successfully scheduled");
+define("_LANG_MEETINGS_ACTIVITYLOG_DESCRIPTION", "Name: %s
+Date start: %s
+Date end: %s");
 
 // Slideshows
 define("_LANG_SLIDESHOWS_NEW", "New slideshow");
