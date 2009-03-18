@@ -23,7 +23,7 @@ $user =& factory::getUser();
 	<?php if ($user->groupid == 1) : ?>
 	<span class="icons_16_outer">
 	<span class="icons_16 sysadmin_16">
-		<?php html::dialog('System Admin', 'index.php?option=com_admin', 760, 650, true); ?>
+		<?php html::dialog('System Admin', 'index.php?option=com_admin', 760, 650); ?>
 	</span>
 	</span>
 	<?php endif; ?>
