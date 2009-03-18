@@ -78,16 +78,14 @@ class html {
 		?>
 		
 		<script type="text/javascript">  
-		$(document).ready(function() {
+		$(function() {
 			$('#<?php echo $formid; ?>').validate({
-				//rules: {
-			  		//username: { require : true, minlength : 6, maxlength : 50, letterswithbasicpunc : true }
-				//}
 
 				highlight: function(element, errorClass) {
 					$(element).fadeOut(function() {
 						$(element).fadeIn()
 					})
+					$(element).addClass('error');
 				}
 			});
 		});
@@ -130,27 +128,32 @@ class html {
 				width: <?php echo $width; ?>,
 				height: <?php echo $height; ?>,
 				modal: true,
-				resizable: false
-				<?php if ($form) : ?>
-				,buttons: {
+				resizable: false,
+				buttons: {
+					<?php if ($form) : ?>
 					"Save" : function() {
 						var form = $(this).find("form");
-						<?php if (!empty($ajax_container)) : ?>
-						var ajax_container = $("<?php echo $ajax_container; ?>");
-						// Add the loading div inside the ajax container
-						ajax_container.html('<div class="loading"></div>');
-						// bind form using 'ajaxForm'
-					    form.ajaxForm({ target: ajax_container });
-						<?php endif; ?>
-						// Submit form and close the dialog
-						form.submit();
-						$(this).dialog('close');
+						// Submit form and close the dialog if form is valid
+						if (form.valid()) {
+							<?php if (!empty($ajax_container)) : ?>
+							var ajax_container = $("<?php echo $ajax_container; ?>");
+							// Add the loading div inside the ajax container
+							ajax_container.html('<div class="loading"></div>');
+							// bind form using 'ajaxForm'
+						    form.ajaxForm({ target: ajax_container });
+							<?php endif; ?>
+							form.submit();
+							$(this).dialog('close');	
+						}
+						else {
+							return false;
+						}
 					},
+					<?php endif; ?>
 					"Close" : function() {
 						$(this).dialog('close');
 					}
 				}
-				<?php endif; ?>
 					
 			});
 

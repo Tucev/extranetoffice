@@ -28,7 +28,7 @@ html::validate('userform');
 		</label>
 	</td>
 	<td>
-		<span><?php echo $this->user->get('username');?></span>
+		<input class="required" type="text" id="username" name="username" value="<?php echo $this->user->get('username');?>" size="40" />
 	</td>
 </tr>
 <tr>
@@ -38,7 +38,7 @@ html::validate('userform');
 		</label>
 	</td>
 	<td>
-		<input type="text" id="email" name="email" value="<?php echo $this->user->get('email');?>" size="40" />
+		<input class="required" type="text" id="email" name="email" value="<?php echo $this->user->get('email');?>" size="40" />
 	</td>
 </tr>
 <tr>
@@ -132,7 +132,6 @@ html::validate('userform');
 <?php endif; ?>
 
 <input type="hidden" name="id" value="<?php echo $this->user->get('id'); ?>" />
-<input type="hidden" name="username" value="<?php echo $this->user->get('username');?>" />
 <input type="hidden" name="groupid" value="<?php echo $this->user->get('groupid');?>" />
 <input type="hidden" name="option" value="com_users" />
 <input type="hidden" name="task" value="save_user" />
