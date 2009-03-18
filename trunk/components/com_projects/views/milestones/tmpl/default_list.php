@@ -9,16 +9,10 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
-?>
 
-<script language="javascript" type="text/javascript">
-function confirm_delete(projectid, milestoneid, label) {
-	var answer = confirm("Are you sure you want to delete milestone '"+label+"'?")
-	if (answer){
-		window.location = "index.php?option=com_projects&task=remove_milestone&projectid="+projectid+"&milestoneid="+milestoneid;
-	}
-}
-</script>
+// Add confirm behaviour to delete links
+html::confirm('delete_milestone', _LANG_PROJECTS_MILESTONES_DELETE, _LANG_PROJECTS_MILESTONES_DELETE_CONFIRM);
+?>
 
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
@@ -44,7 +38,7 @@ function confirm_delete(projectid, milestoneid, label) {
 
 	<?php if ($row->created_by == $this->user->id) : ?>
 	<div class="thread_delete">
-		<a href="Javascript:confirm_delete(<?php echo $row->projectid; ?>, <?php echo $row->id; ?>, '<?php echo text::_($row->title, true); ?>');">
+		<a class="delete_milestone" title="<?php echo text::_($row->title, true); ?>" href="index.php?option=com_projects&task=remove_milestone&projectid=<?php echo $row->projectid; ?>&milestoneid=<?php echo $row->id; ?>">
 			<?php echo text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>

@@ -50,6 +50,7 @@ define("_LANG_STATUS_CLOSED", "Closed");
 define("_LANG_STATUS_UPCOMING", "Upcoming");
 define("_LANG_HOURS", "Hours");
 define("_LANG_TITLE", "Title");
+define("_LANG_DESCRIPTION", "Description");
 define("_LANG_NOT_SET", "Not set");
 
 
@@ -136,7 +137,6 @@ define("_LANG_ISSUES_OVERDUE", "Overdue issues");
 define("_LANG_MILESTONES_UPCOMING", "Upcoming milestones");
 
 define("_LANG_PROJECTS_NAME", "Project name");
-define("_LANG_PROJECTS_DESCRIPTION", "Description");
 define("_LANG_PROJECTS_STATUS", "Status");
 define("_LANG_PROJECTS_PROJECT_TYPE", "Type");
 define("_LANG_PROJECTS_PRIORITY", "Priority");
@@ -230,20 +230,22 @@ define("_LANG_ACTIVITYLOG_NOTIFY_FAILED", "An error occured while attemting to s
 // Files
 define("_LANG_FILES", "Files");
 define("_LANG_FILE", "File");
-define("_LANG_FILES_UPLOAD_NEW_VERSION", "Upload new version");
 define("_LANG_FILES_FILENAME", "Filename");
-define("_LANG_FILES_ACTION_NEW", "New file uploaded");
-define("_LANG_FILE_SAVED", "File uploaded successfully");
-define("_LANG_FILES_NEW", "Upload file");
 define("_LANG_FILES_CHANGELOG", "Log message");
+define("_LANG_FILES_NEW", "Upload file");
+define("_LANG_FILES_UPLOAD_NEW_VERSION", "Upload new version");
+define("_LANG_FILES_ACTION_NEW", "New file uploaded");
 define("_LANG_FILES_NEW_VERSION_OF", "New version of file");
-define("_LANG_FILE_DELETED", "File has been successfully deleted");
+define("_LANG_FILE_SAVED", "File uploaded successfully");
+define("_LANG_FILES_SAVE_ERROR_NO_PROJECT_SELECTED", "Could not save file. No project was selected");
 define("_LANG_FILES_ACTIVITYLOG_DESCRIPTION", "Title: %s
 File name: %s
 Revision: %s
 Log message:
 %s");
-define("_LANG_FILES_SAVE_ERROR_NO_PROJECT_SELECTED", "Could not save file. No project was selected");
+define("_LANG_PROJECTS_FILES_DELETE", "Delete file");
+define("_LANG_PROJECTS_FILES_DELETE_CONFIRM", "Are you sure you want to delete file");
+define("_LANG_FILE_DELETED", "File has been successfully deleted");
 
 // Messages
 define("_LANG_MESSAGES", "Messages");
@@ -253,12 +255,14 @@ define("_LANG_MESSAGES_SUBJECT", "Subject");
 define("_LANG_MESSAGES_SUBJECT_REQUIRED", "Subject is required");
 define("_LANG_MESSAGES_BODY_REQUIRED", "Message must contain some text");
 define("_LANG_MESSAGE_SAVED", "Message saved");
-define("_LANG_MESSAGE_DELETED", "Message deleted");
 define("_LANG_MESSAGES_ACTION_NEW", "New message sent");
 define("_LANG_MESSAGES_BODY", "Body");
 define("_LANG_MESSAGES_ACTIVITYLOG_DESCRIPTION", "Subject: %s
 Body:
 %s");
+define("_LANG_PROJECTS_MESSAGES_DELETE", "Delete message");
+define("_LANG_PROJECTS_MESSAGES_DELETE_CONFIRM", "Are you sure you want to delete message");
+define("_LANG_MESSAGE_DELETED", "Message deleted");
 
 // Issues
 define("_LANG_ISSUES", "Issues");
@@ -268,17 +272,17 @@ define("_LANG_ISSUES_TYPE", "Issue type");
 define("_LANG_ISSUES_EXPECTED_DURATION", "Expected duration");
 define("_LANG_ISSUE_SAVED", "Issue raised");
 define("_LANG_ISSUES_ACTION_EDIT", "Issue modified");
-define("_LANG_ISSUE_DELETED", "Issue deleted");
 define("_LANG_ISSUE_CLOSED", "Issue closed");
 define("_LANG_ISSUES_REOPEN", "Reopen issue");
 define("_LANG_ISSUE_REOPENED", "Issue has been reopened");
 define("_LANG_ISSUES_CLOSE", "Mark issue as closed");
 define("_LANG_ISSUES_ACTION_NEW", "Issue raised");
-define("_LANG_PROJECTS_ISSUES_DELETE", "Delete issue");
-define("_LANG_PROJECTS_ISSUES_DELETE_CONFIRM", "Are you sure you want to delete issue");
 define("_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION", "Title: %s
 Description:
 %s");
+define("_LANG_PROJECTS_ISSUES_DELETE", "Delete issue");
+define("_LANG_PROJECTS_ISSUES_DELETE_CONFIRM", "Are you sure you want to delete issue");
+define("_LANG_ISSUE_DELETED", "Issue deleted");
 
 //  Milestones
 define("_LANG_MILESTONES", "Milestones");
@@ -287,13 +291,15 @@ define("_LANG_MILESTONES_DUEDATE", "Due date");
 define("_LANG_MILESTONES_ACTION_NEW", "Set new milestone");
 define("_LANG_MILESTONES_NEW", "New milestone");
 define("_LANG_MILESTONES_EDIT", "Edit milestone");
+define("_LANG_MILESTONES_DUEDATE_REQUIRED", "Due date is required to set a milestone");
 define("_LANG_MILESTONES_ACTIVITYLOG_DESCRIPTION", "A milestone has been added for %s
 
 Due date: %s
 
 ");
 define("_LANG_MILESTONE_SAVED", "Milestone saved");
-define("_LANG_MILESTONES_DUEDATE_REQUIRED", "Due date is required to set a milestone");
+define("_LANG_PROJECTS_MILESTONES_DELETE", "Delete milestone");
+define("_LANG_PROJECTS_MILESTONES_DELETE_CONFIRM", "Are you sure you want to delete milestone");
 define("_LANG_MILESTONE_DELETED", "Milestone deleted"); 
 
 // Meetings
@@ -305,11 +311,13 @@ define("_LANG_MEETINGS_NAME_REQUIRED", "Meeting name is required to set up a new
 define("_LANG_MEETINGS_DTSTART_REQUIRED", "Start date is required to set up a meeting");
 define("_LANG_MEETINGS_DTEND_REQUIRED", "End date is required to set up a meeting");
 define("_LANG_MEETING_SAVED", "Meeting successfully saved");
-define("_LANG_MEETING_DELETED", "Meeting successfully deleted");
 define("_LANG_MEETINGS_ACTION_NEW", "Meeting successfully scheduled");
 define("_LANG_MEETINGS_ACTIVITYLOG_DESCRIPTION", "Name: %s
 Date start: %s
 Date end: %s");
+define("_LANG_PROJECTS_MEETINGS_DELETE", "Delete meeting");
+define("_LANG_PROJECTS_MEETINGS_DELETE_CONFIRM", "Are you sure you want to delete meeting");
+define("_LANG_MEETING_DELETED", "Meeting successfully deleted");
 
 // Slideshows
 define("_LANG_SLIDESHOWS_NEW", "New slideshow");

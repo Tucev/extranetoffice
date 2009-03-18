@@ -187,29 +187,44 @@ class projectsModelMeetings extends model {
 		}
 	}
 	
+	/**
+	 * Delete a project meeting
+	 * 
+	 * This method also deletes the entries from users_meetings and any comments associated with the meeting.
+	 * 
+	 * @param	int		$projectid	The project id.
+	 * @param	int		$meetingid	The id of the meeting we want to delete.
+	 * @return	bool
+	 */
 	function deleteMeeting($projectid, $meetingid) {
 		//TODO: This function should allow ids as either int or array of ints.
 		//TODO: This function should also check permissions before deleting
-		require_once COMPONENT_PATH.DS."tables".DS."meetings.table.php";
 		
-		// Delete message's comments
+		// Delete meetings comments
 		$query = "DELETE FROM #__comments ";
 		$query .= " WHERE projectid = ".$projectid." AND type = 'meetings' AND itemid = ".$meetingid;
 		$this->db->setQuery($query);
-		$this->db->query();
+		if (!$this->db->query()) {
+			$this->error[] = $this->db->getLastError();
+			return false;
+		}
 		
 		// Delete message's assignees
 		$query = "DELETE FROM #__users_meetings ";
 		$query .= " WHERE meetingid = ".$meetingid;
 		$this->db->setQuery($query);
-		$this->db->query();
+		if (!$this->db->query()) {
+			$this->error[] = $this->db->getLastError();
+			return false;
+		}
 		
 		// Instantiate table object
-		$row = new projectsTableMeetings();
+		require_once COMPONENT_PATH.DS."tables".DS."meetings.table.php";
+		$row =& phpFrame::getInstance("projectsTableMeetings");
 		
 		// Delete row from database
 		if (!$row->delete($meetingid)) {
-			$this->error =& $row->error;
+			$this->error[] = $row->getLastError();
 			return false;
 		}
 		else {
