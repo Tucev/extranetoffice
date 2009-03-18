@@ -211,7 +211,7 @@ class projectsHelperProjects {
 		$query .= " ORDER BY u.username";
 		$db -> setQuery($query);
 		if (!$rows = $db->loadObjectList()) {
-		  return false;
+		  return _LANG_PROJECTS_NO_EXISTING_MEMBERS;
 		}
 		
 		// Organise rows into array of arrays instead of array of objects
