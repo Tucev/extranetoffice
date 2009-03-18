@@ -33,4 +33,8 @@ $user =& factory::getUser();
 		<a href="index.php?option=com_login&amp;task=logout">Logout</a>
 	</span>
 	</span>
+	
+	<br />
+	
+	<div>You are logged on as: <?php echo $user->username; ?></div>
 </div>

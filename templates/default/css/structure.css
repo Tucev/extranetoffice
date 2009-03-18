@@ -12,6 +12,12 @@
 div#top {
 float: right;
 margin-top: 15px;
+text-align: right;
+}
+div#top div {
+font-size: 0.8em;
+color: #CCCCCC;
+margin: 20px 5px 0 0;
 }
 
 div#sitename {
