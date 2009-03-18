@@ -57,13 +57,13 @@ class projectsModelActivitylog extends model {
 	/**
 	 * This function stores a new activity log entry and notifies the assignees if necessary
 	 *
-	 * @param int $projectid
-	 * @param int $userid
-	 * @param string $type	Values = 'project', 'tracker', 'files', 'messages', 'meetings', 'polls', 'members'
-	 * @param string $description	The log message
-	 * @package string $url	The url to the item
-	 * @param array $assignees	An array containing the items assignees
-	 * @return bool	True in success otherwise False
+	 * @param	int		$projectid
+	 * @param	int		$userid
+	 * @param	string	$type			Values = 'issues', 'files', 'messages', 'meetings', 'milestones'
+	 * @param	string	$description	The log message
+	 * @package	string	$url			The url to the item
+	 * @param	array	$assignees		An array containing the items assignees.
+	 * @return	bool	Returns TRUE on success or FALSE on failure.
 	 */
 	function saveActivityLog($projectid, $userid, $type, $action, $title, $description, $url, $assignees, $notify) {
 		// Store notification in db
@@ -102,55 +102,63 @@ class projectsModelActivitylog extends model {
 	/**
 	 * This function is called when we save an activity log
 	 *
-	 * @param obj $row
-	 * @param array $assignees
-	 * @return bool
-	 * @todo sanatise address, subject & body
+	 * @param	object	$row
+	 * @param	array	$assignees
+	 * @return	bool	Returns TRUE on success or FALSE on failure
+	 * @todo	sanatise address, subject & body
 	 */
 	function _notify($row, $assignees) {
-		$new_mail = new mail();
-		
-		$user_name = usersHelper::id2name($row->userid);
 		$uri =& factory::getURI();
 		
-		$new_mail->Sender = $this->config->fromaddress;
-		$new_mail->Subject = "[".$this->project->name."] ".$row->action." by ".$user_name;
-		$body = text::_(sprintf(_LANG_ACTIVITYLOG_NOTIFY_BODY, 
+		$new_mail = new mail();
+		$new_mail->Subject = "[".$this->project->name."] ".$row->action." by ".$this->user->name_abbr;
+		$new_mail->Body = text::_(sprintf(_LANG_ACTIVITYLOG_NOTIFY_BODY, 
 								 $this->project->name, 
-								 $row->action." by ".$user_name, 
+								 $row->action." by ".$this->user->name_abbr, 
 								 $row->description, 
 								 $uri->getBase().$row->url)
 						);
 		
-		// Get assignees email addresses
+		// Mae sure assignees is an array
 		if (!is_array($assignees)) {
 			$assignees = array($assignees);
 		}
-		$query = "SELECT firstname, lastname, email FROM #__users WHERE id IN (".implode(',', $assignees).")";
+		
+		// Get assignees email addresses and exclude the user triggering the notification
+		$query = "SELECT firstname, lastname, email ";
+		$query .= " FROM #__users ";
+		$query .= " WHERE id IN (".implode(',', $assignees).") AND id <> ".$this->user->id;
 		$this->db->setQuery($query);
 		$recipients = $this->db->loadObjectList();
 		
 		if (is_array($recipients) && count($recipients) > 0) {
+			$failed_recipients = array();
 			foreach ($recipients as $recipient) {
 				if (filter::validate($recipient->email, 'email') === false ){
-					$this->error[] = sprintf('EMAIL_INVALID', $recipient);
-					return false;
+					$failed_recipients[] = $recipient->email;
+					continue;
 				}
 				else {
-					$new_mail->AddAddress($recipient->email, usersHelper::fullname_format($firstname, $lastname));
+					$new_mail->AddAddress($recipient->email, usersHelper::fullname_format($recipient->firstname, $recipient->lastname));
+					// Send email
+					if ($new_mail->Send() !== true) {
+						$failed_recipients[] = $recipient->email;
+					}
+					$new_mail->ClearAllRecipients();
 				}
-			}				
-		}
-		
-		$new_mail->FromName = $this->config->get('notifications_fromname');
-		$new_mail->Body = $body;
-								   
-		if ($new_mail->Send() !== true) {
-			$this->error[] = sprintf('_LANG_EMAIL_NOT_SENT', $recipient);
-			return false;
+			}
+			
+			if (count($failed_recipients) > 0) {
+				$this->error[] = sprintf(_LANG_EMAIL_NOT_SENT, implode(',', $failed_recipients));
+				return false;
+			}
+			else {
+				return true;
+			}
 		}
 		else {
-			return true;
+			$this->error[] = _LANG_ACTIVITYLOG_NO_RECIPIENTS;
+			return false;
 		}
 	}
 }
