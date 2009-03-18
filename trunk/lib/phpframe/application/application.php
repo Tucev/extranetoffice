@@ -233,6 +233,9 @@ class application extends singleton {
 		$components =& phpFrame::getInstance('components');
 		$this->component_info = $components->loadByOption($this->option);
 		
+		// load modules before we execute controller task to make modules available to components
+		$this->modules =& phpFrame::getInstance('modules');
+		
 		// set the component path
 		define("COMPONENT_PATH", _ABS_PATH.DS."components".DS.$this->option);
 		// Start buffering
@@ -256,9 +259,6 @@ class application extends singleton {
 		}
 		else {
 			$template_filename = 'index.php';
-			
-			// load modules
-			$this->modules =& phpFrame::getInstance('modules');
 			
 			// get pathway
 			$this->pathway =& factory::getPathway();
