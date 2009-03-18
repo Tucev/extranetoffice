@@ -66,6 +66,9 @@ class projectsViewMilestones extends view {
 	 * @since	1.0
 	 */
 	function display() {
+		$this->page_title = _LANG_MILESTONES;
+		$this->page_heading = $this->project->name;
+		
 		parent::display();
 		
 		// Append page title to document title
@@ -79,24 +82,21 @@ class projectsViewMilestones extends view {
 	 * @return void
 	 */
 	function displayMilestonesList() {
-		$this->page_title = _LANG_MILESTONES;
-		$this->page_heading = $this->project->name;
-		$this->addPathwayItem($this->page_title);
-		
 		$modelMilestones =& $this->getModel('milestones');
 		$milestones = $modelMilestones->getMilestones($this->projectid);
 		$this->rows =& $milestones['rows'];
 		$this->pageNav =& $milestones['pageNav'];
 		$this->lists =& $milestones['lists'];
+		
+		$this->addPathwayItem($this->page_title);
 	}
 	
 	function displayMilestonesDetail() {
-		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));	
-	
 		$modelMilestones =& $this->getModel('milestones');
 		$this->row = $modelMilestones->getMilestonesDetail($this->projectid, $this->milestoneid);
 		
 		$this->page_title .= ' - '.$this->row->title;
+		$this->addPathwayItem($this->current_tool, "index.php?option=com_projects&view=milestones&projectid=".$this->projectid);
 		$this->addPathwayItem($this->row->title);
 	}
 	
@@ -112,8 +112,7 @@ class projectsViewMilestones extends view {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->page_heading = $this->project->name;
-		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, "index.php?option=com_projects&view=milestones&projectid=".$this->projectid);
 		$this->addPathwayItem($action);
 	}
 }

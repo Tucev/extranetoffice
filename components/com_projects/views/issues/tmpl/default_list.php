@@ -131,8 +131,9 @@ $(document).ready(function() {
     	<?php endfor; ?>
     	<?php endif; ?>
     	<br />
-    	<?php echo _LANG_DTSTART; ?>: <?php echo date("d M Y", strtotime($row->dtstart)); ?> 
-    	<?php echo _LANG_DTEND; ?>: <?php echo date("d M Y", strtotime($row->dtend)); ?>
+    	<?php echo _LANG_DTSTART; ?>: <?php if ($row->dtstart != '0000-00-00') { echo date("d M Y", strtotime($row->dtstart)); } else { echo _LANG_NOT_SET; } ?> 
+    	- 
+    	<?php echo _LANG_DTEND; ?>: <?php if ($row->dtend != '0000-00-00') { echo date("d M Y", strtotime($row->dtend)); } else { echo _LANG_NOT_SET; } ?>
     	<br />
     	<div class="<?php echo $row->status; ?> status">
     		<span><?php echo $row->status; ?></span>

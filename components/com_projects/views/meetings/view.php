@@ -66,6 +66,9 @@ class projectsViewMeetings extends view {
 	 * @since	1.0
 	 */
 	function display() {
+		$this->page_title = _LANG_MEETINGS;
+		$this->page_heading = $this->project->name;
+		
 		parent::display();
 		
 		// Append page title to document title
@@ -79,26 +82,23 @@ class projectsViewMeetings extends view {
 	 * @return void
 	 */
 	function displayMeetingsList() {
-		$this->page_title = _LANG_MEETINGS;
-		$this->page_heading = $this->project->name;
-		$this->addPathwayItem($this->page_title);
-		
 		$modelMeetings =& $this->getModel('meetings');
 		$meetings = $modelMeetings->getMeetings($this->projectid);
 		$this->rows =& $meetings['rows'];
 		$this->pageNav =& $meetings['pageNav'];
 		$this->lists =& $meetings['lists'];
+		
+		$this->addPathwayItem($this->page_title);
 	}
 	
 	function displayMeetingsDetail() {
-		$this->addPathwayItem($this->current_tool, "index.php?option=com_projects&view='.request::getVar('view').'&layout=".$this->current_tool."&projectid=".$this->projectid);	
-		
 		$modelMeetings =& $this->getModel('meetings');
 		// Get meeting details
 		$meeting = $modelMeetings->getMeetingsDetail($this->projectid, $this->meetingid);
 		$this->row =& $meeting;
 		
 		$this->page_title .= ' - '.$meeting->name;
+		$this->addPathwayItem($this->current_tool, "index.php?option=com_projects&view=meetings&projectid=".$this->projectid);
 		$this->addPathwayItem($meeting->name);
 	}
 	
@@ -119,8 +119,7 @@ class projectsViewMeetings extends view {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->page_heading = $this->project->name;
-		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view='.request::getVar('view').'&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, "index.php?option=com_projects&view=meetings&projectid=".$this->projectid);
 		$this->addPathwayItem($action);
 	}
 	
@@ -137,7 +136,7 @@ class projectsViewMeetings extends view {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view='.request::getVar('view').'&layout=".$this->current_tool."&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, "index.php?option=com_projects&view=meetings&projectid=".$this->projectid);
 		$this->addPathwayItem($action);
 	}
 	

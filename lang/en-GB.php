@@ -50,6 +50,7 @@ define("_LANG_STATUS_CLOSED", "Closed");
 define("_LANG_STATUS_UPCOMING", "Upcoming");
 define("_LANG_HOURS", "Hours");
 define("_LANG_TITLE", "Title");
+define("_LANG_NOT_SET", "Not set");
 
 
 // com_admin

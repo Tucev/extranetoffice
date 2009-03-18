@@ -66,6 +66,9 @@ class projectsViewFiles extends view {
 	 * @since	1.0
 	 */
 	function display() {
+		$this->page_title = _LANG_FILES;
+		$this->page_heading = $this->project->name;
+		
 		parent::display();
 		
 		// Append page title to document title
@@ -79,39 +82,34 @@ class projectsViewFiles extends view {
 	 * @return void
 	 */
 	function displayFilesList() {
-		$this->page_title = _LANG_FILES;
-		$this->page_heading = $this->project->name;
-		$this->addPathwayItem($this->page_title);
-				
 		$modelFiles =& $this->getModel('files');
 		$files = $modelFiles->getFiles($this->projectid);
 		$this->rows =& $files['rows'];
 		$this->pageNav =& $files['pageNav'];
 		$this->lists =& $files['lists'];
+		
+		$this->addPathwayItem($this->page_title);
 	}
 	
 	function displayFilesForm() {
 		$parentid = request::getVar('parentid', 0);
 		
-		$this->page_title .= ' - '._LANG_FILES_NEW;
-		$this->page_heading = $this->project->name;
-		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));
-		$this->addPathwayItem(_LANG_FILES_NEW);
-		
 		$modelFiles =& $this->getModel('files');
 		$this->row = $modelFiles->getFilesDetail($this->projectid, $parentid);
+		
+		$this->page_title .= ' - '._LANG_FILES_NEW;
+		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=files&projectid=".$this->projectid));
+		$this->addPathwayItem(_LANG_FILES_NEW);
 	}
 	
 	function displayFilesDetail() {
 		$fileid = request::getVar('fileid', 0);
 		
-		$this->page_heading = $this->project->name;
-		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=projects&layout=".$this->current_tool."&projectid=".$this->projectid));	
-		
 		$modelFiles =& $this->getModel('files');
 		$this->row = $modelFiles->getFilesDetail($this->projectid, $fileid);
 		
 		$this->page_title .= ' - '.$this->row->title;
+		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=files&projectid=".$this->projectid));
 		$this->addPathwayItem($this->row->title);
 	}
 	
