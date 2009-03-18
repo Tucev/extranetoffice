@@ -187,6 +187,7 @@ define("_LANG_PROJECT_MEMBER_DELETE_CONFIRM", "Are you sure you want to revoke p
 
 define("_LANG_PROJECTS_ADD_MEMBER", "Add project members");
 define("_LANG_PROJECTS_ADD_EXISTING_MEMBER", "Add existing user to this project");
+define("_LANG_PROJECTS_NO_EXISTING_MEMBERS", "No existing users to choose from");
 define("_LANG_PROJECTS_INVITE_NEW_MEMBER", "Invite a new user to this project");
 define("_LANG_PROJECTS_DELETE_MEMBER", "Delete project member");
 define("_LANG_PROJECTS_ROLE_REQUIRED", "Role is required");

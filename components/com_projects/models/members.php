@@ -45,7 +45,7 @@ class projectsModelMembers extends model {
 		return $this->db->loadObjectList();
 	}
 	
-	function saveMember($projectid, $userid, $roleid) {
+	function saveMember($projectid, $userid, $roleid, $notify=true) {
 		// Instantiate table object
 		require_once COMPONENT_PATH.DS.'tables'.DS.'users_roles.table.php';
 		$row =& phpFrame::getInstance('projectsTableUsersRoles');
@@ -67,26 +67,28 @@ class projectsModelMembers extends model {
 			return false;
 		}
 		
-		// Send invitation via email
-		$project_name = projectsHelperProjects::id2name($projectid);
-		$role_name = projectsHelperProjects::project_roleid2name($roleid);
-		$site_name = $this->config->sitename;
-		$uri =& factory::getURI();
-		$new_member_email = usersHelper::id2email($userid);
-		
-		$new_mail = new mail();
-		$new_mail->AddAddress($new_member_email, usersHelper::id2name($userid));
-		$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, $this->user->get('name'), $project_name, $site_name);
-		$new_mail->Body = text::_(sprintf(_LANG_PROJECTS_INVITATION_BODY,
-								 $this->user->get('name'), 
-								 $project_name, 
-								 $role_name, 
-								 $uri->getBase())
-						  );
-						  		   
-		if ($new_mail->Send() !== true) {
-			$this->error[] = sprintf(_LANG_EMAIL_NOT_SENT, $new_member_email);
-			return false;
+		// Send notification via email
+		if ($notify) {
+			$project_name = projectsHelperProjects::id2name($projectid);
+			$role_name = projectsHelperProjects::project_roleid2name($roleid);
+			$site_name = $this->config->sitename;
+			$uri =& factory::getURI();
+			$new_member_email = usersHelper::id2email($userid);
+			
+			$new_mail = new mail();
+			$new_mail->AddAddress($new_member_email, usersHelper::id2name($userid));
+			$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, $this->user->get('name'), $project_name, $site_name);
+			$new_mail->Body = text::_(sprintf(_LANG_PROJECTS_INVITATION_BODY,
+									 $this->user->get('name'), 
+									 $project_name, 
+									 $role_name, 
+									 $uri->getBase())
+							  );
+							  		   
+			if ($new_mail->Send() !== true) {
+				$this->error[] = sprintf(_LANG_EMAIL_NOT_SENT, $new_member_email);
+				return false;
+			}	
 		}
 		
 		return true;

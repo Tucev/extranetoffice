@@ -67,13 +67,24 @@ class projectsController extends controller {
 	 * @since 	1.0
 	 */
 	function save_project() {
+		$user =& factory::getUser();
+		$post = request::get('post');
+		
 		$modelProjects =& $this->getModel('projects');
-		$projectid = $modelProjects->saveProject();
+		$projectid = $modelProjects->saveProject($post);
 		
 		if ($projectid !== false) {
+			// If NEW project saved correctly we now make project creator a project member
+			if (empty($post['id'])) {
+				$modelMembers =& $this->getModel('members');
+				if (!$modelMembers->saveMember($projectid, $user->id, '1', false)) {
+					error::raise('', 'error', $modelMembers->getLastError());
+				}
+			}
+			
 			error::raise('', 'message', _LANG_PROJECT_SAVED);
 			// Redirect depending on "apply" or "save"
-			$view = request::getVar('layout', 'list') == 'list' ? 'admin' : 'projects';
+			$view = request::getVar('layout', 'list') == 'list' ? 'admin' : 'projects';	
 		}
 		else {
 			error::raise('', 'error', $modelProjects->getLastError());
