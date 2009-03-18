@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Mar 17, 2009 at 07:40 PM
+-- Generation Time: Mar 17, 2009 at 09:40 PM
 -- Server version: 5.0.51
 -- PHP Version: 5.2.8
 
@@ -454,6 +454,23 @@ INSERT INTO `eo_modules_options` (`id`, `moduleid`, `option`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `eo_organisations`
+--
+
+CREATE TABLE IF NOT EXISTS `eo_organisations` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(100) collate utf8_unicode_ci NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `eo_organisations`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `eo_projects`
 --
 
@@ -670,6 +687,24 @@ CREATE TABLE IF NOT EXISTS `eo_users_milestones` (
 
 --
 -- Dumping data for table `eo_users_milestones`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eo_users_organisations`
+--
+
+CREATE TABLE IF NOT EXISTS `eo_users_organisations` (
+  `id` int(11) NOT NULL auto_increment,
+  `userid` int(11) NOT NULL,
+  `organisationid` int(11) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `eo_users_organisations`
 --
 
 
