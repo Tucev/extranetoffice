@@ -146,7 +146,7 @@ $(document).ready(function() {
 	</div>
 	<?php endif; ?>
 	
-	<div class="files_detail_comments">
+	<div class="comments_info">
 		<a href="<?php echo route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$this->projectid."&issueid=".$row->id); ?>">
 			<?php echo $row->comments; ?> <?php echo _LANG_COMMENTS; ?>
 		</a>

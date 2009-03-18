@@ -79,7 +79,7 @@ function confirm_delete(projectid, messageid, label) {
 	</div>
 	<?php endif; ?>
 	
-	<div class="files_detail_comments">
+	<div class="comments_info">
 		<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&layout=detail&projectid='.$this->projectid.'&messageid='.$row->id); ?>">
 			<?php echo $row->comments; ?> <?php echo _LANG_COMMENTS; ?>
 		</a>

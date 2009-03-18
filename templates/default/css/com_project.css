@@ -153,6 +153,13 @@ font-size: 0.9em;
 padding: 2px;
 margin-bottom: 7px;
 }
+div.comments_info {
+background-image: url(../images/icons/generic/16x16/comment.png);
+background-repeat: no-repeat;
+padding: 2px 2px 2px 20px;
+vertical-align: middle;
+min-height: 16px;
+}
 
 /* Activity log */
 
