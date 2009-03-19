@@ -61,6 +61,24 @@ class projectsController extends controller {
 	}
 	
 	/**
+	 * This method overrides the parent's Execute task method
+	 * 
+	 * This method executes a given task (runs a named member method).
+	 *
+	 * @param 	string $task The task to be executed (default is 'display').
+	 * @return 	void
+	 * @since	1.0
+	 */
+	public function execute($task) {
+		if ($this->project_permissions->is_allowed || empty($this->projectid)) {
+			parent::execute($task);
+		}
+		else {
+			error::raise('', 'error', $this->project_permissions->getLastError());
+		}
+	}
+	
+	/**
 	 * Save project using model and set redirect
 	 * 
 	 * @return void
