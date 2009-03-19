@@ -147,13 +147,12 @@ class projectsModelMeetings extends model {
 		require_once COMPONENT_PATH.DS."tables".DS."meetings.table.php";		
 		$row =& phpFrame::getInstance("projectsTableMeetings");
 		
-		if (empty($meetingid)) {
+		if (empty($post['id'])) {
 			$row->created_by = $this->user->id;
 			$row->created = date("Y-m-d H:i:s");
-			$new_meeting = true;
 		}
 		else {
-			$row->load($meetingid);
+			$row->load($post['id']);
 		}
 		
 		if (!$row->bind($post)) {
@@ -190,12 +189,7 @@ class projectsModelMeetings extends model {
 			$this->db->query();
 		}
 		
-		if (!empty($row->id)) {
-			return $row;
-		}
-		else {
-			return false;
-		}
+		return $row;
 	}
 	
 	/**
@@ -263,6 +257,12 @@ class projectsModelMeetings extends model {
 		return $slideshows;
 	}
 	
+	/**
+	 * Get list of assignees
+	 *
+	 * @param	int		$meetingid
+	 * @return	array	Asociative array with ids and names of assignees 
+	 */
 	private function _getAssignees($meetingid) {
 		$query = "SELECT userid FROM #__users_meetings WHERE meetingid = ".$meetingid;
 		$this->db->setQuery($query);

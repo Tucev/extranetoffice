@@ -146,16 +146,16 @@ class projectsModelMilestones extends model {
 		$row = $this->db->loadObject();
 		
 		// Sort out status according to due date
-		if ($row->due_date < date("Y-m-d H:i:s") && $row->closed == null) {
-			$row->due_date_class = 'overdue_milestone';
+		if ($row->due_date < date("Y-m-d H:i:s") && $row->closed == '0000-00-00 00:00:00') {
+			$row->due_date_class = 'overdue';
 			$row->status = _LANG_STATUS_OVERDUE;
 		}
-		elseif ($row->due_date > date("Y-m-d H:i:s") && $row->closed == null) {
-			$row->due_date_class = 'upcoming_milestone';
+		elseif ($row->due_date > date("Y-m-d H:i:s") && $row->closed == '0000-00-00 00:00:00') {
+			$row->due_date_class = 'open';
 			$row->status = _LANG_STATUS_UPCOMING;
 		}
-		elseif ($row->closed != null) {
-			$row->due_date_class = 'closed_milestone';
+		elseif ($row->closed != '0000-00-00 00:00:00') {
+			$row->due_date_class = 'closed';
 			$row->status = _LANG_STATUS_CLOSED;
 		}
 		
@@ -170,36 +170,43 @@ class projectsModelMilestones extends model {
 	}
 	
 	/**
-	 * Saves a milestone
-	 *
-	 * @param int $projectid
-	 * @return mixed return $row or FALSE on failure
+	 * Save a project milestone
+	 * 
+	 * @param	$post	The array to be used for binding to the row before storing it. Normally the HTTP_POST array.
+	 * @return	mixed	Returns the stored table row object on success or FALSE on failure
 	 */
-	public function saveMilestone($projectid) {
+	public function saveMilestone($post) {
+		// Check whether a project id is included in the post array
+		if (empty($post['projectid'])) {
+			$this->error[] = _LANG_MILESTONES_SAVE_ERROR_NO_PROJECT_SELECTED;
+			return false;
+		}
+		
 		require_once COMPONENT_PATH.DS."tables".DS."milestones.table.php";
 		$row =& phpFrame::getInstance("projectsTableMilestones");
 		
-		$post = request::get('post');
-		$row->bind($post);
+		if (!$row->bind($post)) {
+			$this->error[] = $row->getLastError();
+			return false;
+		}
 		
 		if (empty($row->id)) {
 			$row->created_by = $this->user->id;
 			$row->created = date("Y-m-d H:i:s");
-			$new_milestone = true;
 		}
 		
 		if (!$row->check()) {
-			$this->error =& $row->error;
+			$this->error[] = $row->getLastError();
 			return false; 
 		}
 		
 		if (!$row->store()) {
-			$this->error =& $row->error;
+			$this->error[] = $row->getLastError();
 			return false; 
 		}
 		
 		// Delete existing assignees before we store new ones if editing existing issue
-		if ($new_milestone !== true) {
+		if (!empty($post['id'])) {
 			$query = "DELETE FROM #__users_milestones WHERE milestoneid = ".$row->id;
 			$this->db->setQuery($query);
 			$this->db->query();

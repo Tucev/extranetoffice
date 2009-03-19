@@ -65,6 +65,16 @@ function submitbutton(action) {
 		<?php echo html::_('calendar', 'due_date', 'due_date', $this->row->due_date, 'dd/mm/yy', array('size'=>'10',  'maxlength'=>'10')); ?>
 	</td>
 </tr>
+<tr>
+	<td width="30%">
+		<label id="descriptionmsg" for="description">
+			<?php echo _LANG_DESCRIPTION; ?>:
+		</label>
+	</td>
+	<td>
+		<textarea name="description" id="description" cols="80"><?php echo $this->row->description; ?></textarea>
+	</td>
+</tr>
 
 <tr>
 	<td>

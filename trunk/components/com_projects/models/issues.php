@@ -174,28 +174,33 @@ class projectsModelIssues extends model {
 	}
 	
 	/**
-	 * Save issue
-	 *
-	 * @param int $projectid
-	 * @param int $issueid
-	 * @return mixed returns $row on success and FALSE on failure
+	 * Save a project issue
+	 * 
+	 * @param	$post	The array to be used for binding to the row before storing it. Normally the HTTP_POST array.
+	 * @return	mixed	Returns the stored table row object on success or FALSE on failure
 	 */
-	public function saveIssue($projectid, $issueid=0) {
+	public function saveIssue($post) {
+		// Check whether a project id is included in the post array
+		if (empty($post['projectid'])) {
+			$this->error[] = _LANG_ISSUES_SAVE_ERROR_NO_PROJECT_SELECTED;
+			return false;
+		}
+		
 		require_once COMPONENT_PATH.DS."tables".DS."issues.table.php";		
 		$row =& phpFrame::getInstance("projectsTableIssues");
 		
-		if (empty($issueid)) {
+		if (empty($post['id'])) {
 			$row->created_by = $this->user->id;
 			$row->created = date("Y-m-d H:i:s");
-			$new_issue = true;
 		}
 		else {
-			$row->load($issueid);
+			$row->load($post['id']);
 		}
 		
-		$post = request::get('post');
-		
-		$row->bind($post);
+		if (!$row->bind($post)) {
+			$this->error[] = $row->getLastError();
+			return false;
+		}
 		
 		if (!$row->check()) {
 			$this->error[] =& $row->getLastError();
@@ -208,7 +213,7 @@ class projectsModelIssues extends model {
 		}
 		
 		// Delete existing assignees before we store new ones if editing existing issue
-		if ($new_issue !== true) {
+		if (!empty($post['id'])) {
 			$query = "DELETE FROM #__users_issues WHERE issueid = ".$row->id;
 			$this->db->setQuery($query);
 			$this->db->query();
@@ -232,28 +237,34 @@ class projectsModelIssues extends model {
 	/**
 	 * Delete issue
 	 *
-	 * @param int $projectid
-	 * @param int $issueid
-	 * @return bool
+	 * @param	int		$projectid	The project id.
+	 * @param	int		$issueid	The id of the issue we want to delete.
+	 * @return	bool	Returns TRUE on success or FALSE on error
 	 */
 	public function deleteIssue($projectid, $issueid) {
 		//TODO: This function should allow ids as either int or array of ints.
 		//TODO: This function should also check permissions before deleting
-		require_once COMPONENT_PATH.DS."tables".DS."issues.table.php";
 		
 		// Delete message's comments
 		$query = "DELETE FROM #__comments ";
 		$query .= " WHERE projectid = ".$projectid." AND type = 'issues' AND itemid = ".$issueid;
 		$this->db->setQuery($query);
-		$this->db->query();
+		if (!$this->db->query()) {
+			$this->error[] = $this->db->getLastError();
+			return false;
+		}
 		
 		// Delete message's assignees
 		$query = "DELETE FROM #__users_issues ";
 		$query .= " WHERE issueid = ".$issueid;
 		$this->db->setQuery($query);
-		$this->db->query();
+		if (!$this->db->query()) {
+			$this->error[] = $this->db->getLastError();
+			return false;
+		}
 		
 		// Instantiate table object
+		require_once COMPONENT_PATH.DS."tables".DS."issues.table.php";
 		$row =& phpFrame::getInstance("projectsTableIssues");
 		
 		// Delete row from database
@@ -269,15 +280,18 @@ class projectsModelIssues extends model {
 	/**
 	 * Close an issue
 	 *
-	 * @param int $projectid
-	 * @param int $issueid
-	 * @return mixed returns issues table, false on error
+	 * @param	int		$projectid
+	 * @param	int		$issueid
+	 * @return	mixed	Returns issues row object or FALSE on failure.
 	 */
 	public function closeIssue($projectid, $issueid) {
 		$query = "UPDATE #__issues ";
 		$query .= " SET closed = '".date("Y-m-d H:i:s")."' WHERE id = ".$issueid;
 		$this->db->setQuery($query);
-		$this->db->query();
+		if (!$this->db->query()) {
+			$this->error[] = $this->db->getLastError();
+			return false;
+		}
 		
 		require_once COMPONENT_PATH.DS.'tables'.DS.'issues.table.php';
 		$row =& phpFrame::getInstance("projectsTableIssues");
@@ -288,15 +302,18 @@ class projectsModelIssues extends model {
 	/**
 	 * Reopen an issue
 	 *
-	 * @param int $projectid
-	 * @param int $issueid
-	 * @return mixed returns issues table, false on error
+	 * @param	int		$projectid
+	 * @param	int		$issueid
+	 * @return	mixed	Returns issues row object or FALSE on failure.
 	 */
 	public function reopenIssue($projectid, $issueid) {
 		$query = "UPDATE #__issues ";
 		$query .= " SET closed = '0000-00-00 00:00:00' WHERE id = ".$issueid;
 		$this->db->setQuery($query);
-		$this->db->query();
+		if (!$this->db->query()) {
+			$this->error[] = $this->db->getLastError();
+			return false;
+		}
 		
 		require_once COMPONENT_PATH.DS.'tables'.DS.'issues.table.php';
 		$row =& phpFrame::getInstance("projectsTableIssues");
@@ -307,9 +324,9 @@ class projectsModelIssues extends model {
 	/**
 	 * Get issue count
 	 *
-	 * @param int $projectid
-	 * @param bool $overdue
-	 * @return mixed returns numeric resource or FALSE on error
+	 * @param	int		$projectid
+	 * @param	bool	$overdue
+	 * @return	mixed	Returns numeric resource or FALSE on failure.
 	 */
 	public function getTotalIssues($projectid, $overdue=false) {
 		$query = "SELECT COUNT(id) FROM #__issues ";
@@ -324,9 +341,9 @@ class projectsModelIssues extends model {
 	/**
 	 * Get list of assignees
 	 *
-	 * @param int $issueid
-	 * @param bool $asoc
-	 * @return array assignees or asociative array of id and name if asoc is true 
+	 * @param	int		$issueid
+	 * @param	bool	$asoc
+	 * @return	array	Array containing assignees ids or asociative array with ids and names if asoc is true 
 	 */
 	private function _getAssignees($issueid, $asoc=true) {
 		$query = "SELECT userid FROM #__users_issues WHERE issueid = ".$issueid;
