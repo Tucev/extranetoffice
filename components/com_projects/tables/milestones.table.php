@@ -23,6 +23,7 @@ class projectsTableMilestones extends table {
 	var $projectid=null; // int(11)
 	var $title=null; // varchar(128) NOT NULL
 	var $due_date=null; // date
+	var $description=null; // text
 	var $created_by=null; // int(11)
 	var $created=null; // datetime
 	var $closed_by=null; // int(11)

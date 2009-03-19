@@ -197,7 +197,8 @@ define("_LANG_ADMIN_USER_REQUIRED", "Please select an existing user or invite a 
 define("_LANG_ADMIN_NAME_REQUIRED", "Name is required for new users");
 define("_LANG_ADMIN_NEW_USERNAME_REQUIRED", "Username is required for new users");
 define("_LANG_PROJECT_NEW_MEMBER_SAVED", "New project member has been added");
-define("_LANG_PROJECT_MEMBER_DELETED", "Member was removed from project");
+define("_LANG_PROJECT_MEMBER_DELETE_SUCCESS", "Member was removed from project");
+define("_LANG_PROJECT_MEMBER_DELETE_ERROR", "An error occurred while deleting project member");
 define("_LANG_PROJECTS_MEMBERS", "Project members");
 define("_LANG_ADMIN_NEW_MEMBER_INVITED", "Invitation has been sent to new member");
 define("_LANG_PROJECTS_INVITATION_SUBJECT", "%s has invited you to join project \"%s\" at %s");
@@ -245,32 +246,18 @@ Log message:
 %s");
 define("_LANG_PROJECTS_FILES_DELETE", "Delete file");
 define("_LANG_PROJECTS_FILES_DELETE_CONFIRM", "Are you sure you want to delete file");
-define("_LANG_FILE_DELETED", "File has been successfully deleted");
-
-// Messages
-define("_LANG_MESSAGES", "Messages");
-define("_LANG_MESSAGE", "Message");
-define("_LANG_MESSAGES_NEW", "New message");
-define("_LANG_MESSAGES_SUBJECT", "Subject");
-define("_LANG_MESSAGES_SUBJECT_REQUIRED", "Subject is required");
-define("_LANG_MESSAGES_BODY_REQUIRED", "Message must contain some text");
-define("_LANG_MESSAGE_SAVED", "Message saved");
-define("_LANG_MESSAGES_ACTION_NEW", "New message sent");
-define("_LANG_MESSAGES_BODY", "Body");
-define("_LANG_MESSAGES_ACTIVITYLOG_DESCRIPTION", "Subject: %s
-Body:
-%s");
-define("_LANG_PROJECTS_MESSAGES_DELETE", "Delete message");
-define("_LANG_PROJECTS_MESSAGES_DELETE_CONFIRM", "Are you sure you want to delete message");
-define("_LANG_MESSAGE_DELETED", "Message deleted");
+define("_LANG_FILE_DELETE_SUCCESS", "File has been successfully deleted");
+define("_LANG_FILE_DELETE_ERROR", "An error occurred while deleting issue");
 
 // Issues
 define("_LANG_ISSUES", "Issues");
 define("_LANG_ISSUE", "Issue");
 define("_LANG_ISSUES_NEW", "New issue");
+define("_LANG_ISSUES_EDIT", "Edit issue");
 define("_LANG_ISSUES_TYPE", "Issue type");
 define("_LANG_ISSUES_EXPECTED_DURATION", "Expected duration");
 define("_LANG_ISSUE_SAVED", "Issue raised");
+define("_LANG_ISSUES_SAVE_ERROR_NO_PROJECT_SELECTED", "Could not save issue. No project was selected");
 define("_LANG_ISSUES_ACTION_EDIT", "Issue modified");
 define("_LANG_ISSUE_CLOSED", "Issue closed");
 define("_LANG_ISSUES_REOPEN", "Reopen issue");
@@ -282,25 +269,8 @@ Description:
 %s");
 define("_LANG_PROJECTS_ISSUES_DELETE", "Delete issue");
 define("_LANG_PROJECTS_ISSUES_DELETE_CONFIRM", "Are you sure you want to delete issue");
-define("_LANG_ISSUE_DELETED", "Issue deleted");
-
-//  Milestones
-define("_LANG_MILESTONES", "Milestones");
-define("_LANG_MILESTONE", "Milestone");
-define("_LANG_MILESTONES_DUEDATE", "Due date");
-define("_LANG_MILESTONES_ACTION_NEW", "Set new milestone");
-define("_LANG_MILESTONES_NEW", "New milestone");
-define("_LANG_MILESTONES_EDIT", "Edit milestone");
-define("_LANG_MILESTONES_DUEDATE_REQUIRED", "Due date is required to set a milestone");
-define("_LANG_MILESTONES_ACTIVITYLOG_DESCRIPTION", "A milestone has been added for %s
-
-Due date: %s
-
-");
-define("_LANG_MILESTONE_SAVED", "Milestone saved");
-define("_LANG_PROJECTS_MILESTONES_DELETE", "Delete milestone");
-define("_LANG_PROJECTS_MILESTONES_DELETE_CONFIRM", "Are you sure you want to delete milestone");
-define("_LANG_MILESTONE_DELETED", "Milestone deleted"); 
+define("_LANG_ISSUE_DELETE_SUCCESS", "Issue deleted");
+define("_LANG_ISSUE_DELETE_ERROR", "An error occurred while deleting issue");
 
 // Meetings
 define("_LANG_MEETINGS", "Meetings");
@@ -322,10 +292,48 @@ define("_LANG_PROJECTS_MEETINGS_DELETE", "Delete meeting");
 define("_LANG_PROJECTS_MEETINGS_DELETE_CONFIRM", "Are you sure you want to delete meeting");
 define("_LANG_MEETING_DELETE_SUCCESS", "Meeting successfully deleted");
 define("_LANG_MEETING_DELETE_ERROR", "An error occurred while saving meeting");
-
 // Slideshows
 define("_LANG_SLIDESHOWS_NEW", "New slideshow");
 define("_LANG_SLIDESHOWS_EDIT", "Edit slideshow");
+
+// Messages
+define("_LANG_MESSAGES", "Messages");
+define("_LANG_MESSAGE", "Message");
+define("_LANG_MESSAGES_NEW", "New message");
+define("_LANG_MESSAGES_SUBJECT", "Subject");
+define("_LANG_MESSAGES_SUBJECT_REQUIRED", "Subject is required");
+define("_LANG_MESSAGES_BODY_REQUIRED", "Message must contain some text");
+define("_LANG_MESSAGE_SAVED", "Message saved");
+define("_LANG_MESSAGES_SAVE_ERROR_NO_PROJECT_SELECTED", "Could not save message. No project was selected");
+define("_LANG_MESSAGES_ACTION_NEW", "New message sent");
+define("_LANG_MESSAGES_BODY", "Body");
+define("_LANG_MESSAGES_ACTIVITYLOG_DESCRIPTION", "Subject: %s
+Body:
+%s");
+define("_LANG_PROJECTS_MESSAGES_DELETE", "Delete message");
+define("_LANG_PROJECTS_MESSAGES_DELETE_CONFIRM", "Are you sure you want to delete message");
+define("_LANG_MESSAGE_DELETE_SUCCESS", "Message deleted");
+define("_LANG_MESSAGE_DELETE_ERROR", "An error occurred while deleting message");
+
+//  Milestones
+define("_LANG_MILESTONES", "Milestones");
+define("_LANG_MILESTONE", "Milestone");
+define("_LANG_MILESTONES_DUEDATE", "Due date");
+define("_LANG_MILESTONES_ACTION_NEW", "New milestone set");
+define("_LANG_MILESTONES_ACTION_EDIT", "Milestone modified");
+define("_LANG_MILESTONES_NEW", "New milestone");
+define("_LANG_MILESTONES_EDIT", "Edit milestone");
+define("_LANG_MILESTONES_DUEDATE_REQUIRED", "Due date is required to set a milestone");
+define("_LANG_MILESTONES_ACTIVITYLOG_DESCRIPTION", "Title %s
+Due date: %s
+Description: %s
+");
+define("_LANG_MILESTONE_SAVED", "Milestone saved");
+define("_LANG_MILESTONES_SAVE_ERROR_NO_PROJECT_SELECTED", "Could not save milestone. No project was selected");
+define("_LANG_PROJECTS_MILESTONES_DELETE", "Delete milestone");
+define("_LANG_PROJECTS_MILESTONES_DELETE_CONFIRM", "Are you sure you want to delete milestone");
+define("_LANG_MILESTONE_DELETE_SUCCESS", "Milestone successfully deleted"); 
+define("_LANG_MILESTONE_DELETE_ERROR", "An error occurred while deleting milestone"); 
 
 // Comments
 define("_LANG_COMMENTS", "Comments");
@@ -334,6 +342,7 @@ define("_LANG_COMMENTS_ACTION_NEW", "New comment");
 define("_LANG_COMMENTS_ACTIVITYLOG_DESCRIPTION", "Title: %s
 Body:
 %s");
+define("_LANG_COMMENTS_SAVE_ERROR_NO_PROJECT_SELECTED", "Could not save comment. No project was selected");
 
 // People
 define("_LANG_PEOPLE", "People");

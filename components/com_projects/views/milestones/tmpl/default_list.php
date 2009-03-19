@@ -74,7 +74,15 @@ html::confirm('delete_milestone', _LANG_PROJECTS_MILESTONES_DELETE, _LANG_PROJEC
 			<?php echo date("l, d M Y", strtotime($row->due_date)); ?>
     	</span>
     </div>
+	
 	<br />
+	
+	<?php if (!empty($row->description)) : ?>
+	<div class="thread_body">
+		<?php echo nl2br(text::limit_words($row->description, 255)); ?>
+	</div>
+	<?php endif; ?>
+	
 	
 	<div class="comments_info">
 		<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&layout=detail&projectid='.$this->projectid.'&milestoneid='.$row->id); ?>">

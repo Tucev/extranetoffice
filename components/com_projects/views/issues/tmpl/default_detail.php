@@ -35,7 +35,7 @@ html::validate('commentsform');
 	<?php endif; ?>
 	
 	<div class="thread_edit">
-		<a href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=issues_form&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
+		<a href="<?php echo route::_("index.php?option=com_projects&view=issues&layout=form&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
 		<?php echo text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>

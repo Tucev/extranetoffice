@@ -128,18 +128,31 @@ class projectsModelMessages extends model {
 		return $row;
 	}
 	
-	public function saveMessage($projectid) {
+	/**
+	 * Save a project message
+	 * 
+	 * @param	$post	The array to be used for binding to the row before storing it. Normally the HTTP_POST array.
+	 * @return	mixed	Returns the stored table row object on success or FALSE on failure
+	 */
+	public function saveMessage($post) {
+		// Check whether a project id is included in the post array
+		if (empty($post['projectid'])) {
+			$this->error[] = _LANG_MESSAGES_SAVE_ERROR_NO_PROJECT_SELECTED;
+			return false;
+		}
+		
 		require_once COMPONENT_PATH.DS."tables".DS."messages.table.php";		
 		$row =& phpFrame::getInstance("projectsTableMessages");
-				
-		$post = request::get('post');
-		$row->bind($post);
+		
+		if (!$row->bind($post)) {
+			$this->error[] = $row->getLastError();
+			return false;
+		}
 		
 		if (empty($row->id)) {
 			$row->userid = $this->user->id;
 			$row->date_sent = date("Y-m-d H:i:s");
 			$row->status = '1';
-			$new_message = true;
 		}
 		
 		if (!$row->check()) {
@@ -153,7 +166,7 @@ class projectsModelMessages extends model {
 		}
 		
 		// Delete existing assignees before we store new ones if editing existing issue
-		if ($new_message !== true) {
+		if (!empty($post['id'])) {
 			$query = "DELETE FROM #__users_messages WHERE messageid = ".$row->id;
 			$this->db->setQuery($query);
 			$this->db->query();

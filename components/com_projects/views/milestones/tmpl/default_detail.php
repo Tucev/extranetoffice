@@ -36,6 +36,12 @@ html::validate('commentsform');
 	</div>
 	<?php endif; ?>
 	
+	<div class="thread_edit">
+		<a href="<?php echo route::_("index.php?option=com_projects&view=".request::getVar('view')."&layout=form&projectid=".$this->project->id."&milestoneid=".$this->row->id); ?>">
+		<?php echo text::_( _LANG_EDIT ); ?>
+		</a>
+	</div>
+	
 	<div class="thread_heading">
 		<?php echo $this->row->title; ?>
 	</div>
@@ -57,11 +63,21 @@ html::validate('commentsform');
     	<?php endif; ?>
 	</div>
 	
-	<div class="thread_due_date <?php echo $this->row->due_date_class; ?>">
-		<?php echo strtoupper($this->row->status); ?> &gt; 
-		<?php echo _LANG_MILESTONES_DUEDATE; ?>: 
-		<?php echo date("l, d M Y", strtotime($this->row->due_date)); ?>
+	<div class="<?php echo $this->row->due_date_class; ?> status">
+    	<span>
+    		<?php echo strtoupper($this->row->status); ?> &gt; 
+			<?php echo _LANG_MILESTONES_DUEDATE; ?>: 
+			<?php echo date("l, d M Y", strtotime($this->row->due_date)); ?>
+    	</span>
+    </div>
+    
+    <br />
+	
+	<?php if (!empty($this->row->description)) : ?>
+	<div class="thread_body">
+		<?php echo nl2br($this->row->description); ?>
 	</div>
+	<?php endif; ?>
 	
 	<?php if (is_array($this->row->comments) && count($this->row->comments) > 0) : ?>
 	<h3><?php echo _LANG_COMMENTS; ?></h3>

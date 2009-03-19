@@ -172,10 +172,22 @@ class projectsModelMembers extends model {
 		return true;
 	}
 	
+	/**
+	 * Delete project member
+	 * 
+	 * @param	int		$projectid
+	 * @param	int		$userid
+	 * @return	bool	Returns TRUE on success or FALSE on failure.
+	 */
 	function deleteMember($projectid, $userid) {
 		$query = "DELETE FROM #__users_roles WHERE projectid = ".$projectid." AND userid = ".$userid;
 		$this->db->setQuery($query);
-		$this->db->query();
+		if ($this->db->query() === false) {
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 	
 	function changeMemberRole($projectid, $userid, $roleid) {

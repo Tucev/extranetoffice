@@ -42,12 +42,26 @@ class projectsModelComments extends model {
 		return $rows;
 	}
 	
-	function saveComment($projectid) {
+	/**
+	 * Save a project comment
+	 * 
+	 * @param	$post	The array to be used for binding to the row before storing it. Normally the HTTP_POST array.
+	 * @return	mixed	Returns the stored table row object on success or FALSE on failure
+	 */
+	function saveComment($post) {
+		// Check whether a project id is included in the post array
+		if (empty($post['projectid'])) {
+			$this->error[] = _LANG_COMMENTS_SAVE_ERROR_NO_PROJECT_SELECTED;
+			return false;
+		}
+		
 		require_once COMPONENT_PATH.DS."tables".DS."comments.table.php";
 		$row =& phpFrame::getInstance("projectsTableComments");
 		
-		$post = request::get('post');
-		$row->bind($post);
+		if (!$row->bind($post)) {
+			$this->error[] = $row->getLastError();
+			return false;
+		}
 		
 		$row->userid = $this->user->id;
 		$row->created = date("Y-m-d H:i:s");
@@ -84,14 +98,20 @@ class projectsModelComments extends model {
 	
 	function itemid2title($itemid, $type) {
 		switch ($type) {
+			case 'files' :
+				$query = "SELECT title FROM #__files WHERE id = ".$itemid;
+				break;
 			case 'issues' :
 				$query = "SELECT title FROM #__issues WHERE id = ".$itemid;
+				break;
+			case 'meetings' :
+				$query = "SELECT title FROM #__meetings WHERE id = ".$itemid;
 				break;
 			case 'messages' :
 				$query = "SELECT subject FROM #__messages WHERE id = ".$itemid;
 				break;
-			case 'files' :
-				$query = "SELECT title FROM #__files WHERE id = ".$itemid;
+			case 'milestones' :
+				$query = "SELECT title FROM #__milestones WHERE id = ".$itemid;
 				break;
 		}
 		$this->db->setQuery($query);

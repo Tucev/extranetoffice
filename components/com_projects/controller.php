@@ -168,9 +168,12 @@ class projectsController extends controller {
 		$userid = request::getVar('userid', 0);
 		
 		$modelMembers = &$this->getModel('members');
-		$modelMembers->deleteMember($projectid, $userid);
-		
-		error::raise('', 'message', _LANG_PROJECT_MEMBER_DELETED);
+		if ($modelMembers->deleteMember($projectid, $userid) === true) {
+			error::raise('', 'message', _LANG_PROJECT_MEMBER_DELETE_SUCCESS);
+		}
+		else {
+			error::raise('', 'error', _LANG_PROJECT_MEMBER_DELETE_ERROR);	
+		}
 		
 		$this->setRedirect('index.php?option=com_projects&view=admin&projectid='.$projectid);
 	}
@@ -192,42 +195,36 @@ class projectsController extends controller {
 	}
 	
 	function save_issue() {
+		// Check for request forgeries
+		crypt::checkToken() or exit( 'Invalid Token' );
+		
 		// Get request vars
-		$projectid = request::getVar('projectid', 0);
-		$assignees = request::getVar('assignees', 0);
-		$notify = request::getVar('notify', false);
-		$issueid = request::getVar('id', 0);
+		$post = request::get('post');
 		
 		// Save issue using issues model
 		$modelIssues =& $this->getModel('issues');
-		
-		$row = $modelIssues->saveIssue($projectid, $issueid);
-		
+		$row = $modelIssues->saveIssue($post);
 		if ($row === false) {
-			html::alert($modelIssues->getLastError());
-			html::historyBack();
-			return;
+			error::raise('', 'error', $modelIssues->getLastError());
 		}
 		else {
-			// Add entry in activity log
-			$modelActivityLog =& $this->getModel('activitylog');
-			$action = empty($issueid) ? _LANG_ISSUES_ACTION_NEW : _LANG_ISSUES_ACTION_EDIT;
+			error::raise( '', 'message',  _LANG_ISSUE_SAVED);
+			
+			// Prepare data for activity log entry
+			$action = empty($post['id']) ? _LANG_ISSUES_ACTION_NEW : _LANG_ISSUES_ACTION_EDIT;
 			$title = $row->title;
 			$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-			$url = route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$projectid."&issueid=".$row->id);
-			if ($notify == 'on') { $notify = true; }
-			$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, $notify);
+			$url = route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->id);
+			$notify = $post['notify'] == 'on' ? true : false;
 			
-			if (false) {
-				//raise error
-				return;
+			// Add entry in activity log
+			$modelActivityLog =& $this->getModel('activitylog');
+			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->created_by, 'issues', $action, $title, $description, $url, $post['assignees'], $notify)) {
+				error::raise('', 'error', $modelActivityLog->getLastError());
 			}
-			else {
-				error::raise( '', 'message',  text::_( _LANG_ISSUE_SAVED ) );
-		
-				$this->setRedirect('index.php?option=com_projects&view=issues&layout=detail&projectid='.$projectid."&issueid=".$row->id);	
-			}	
 		}
+		
+		$this->setRedirect('index.php?option=com_projects&view=issues&projectid='.$post['projectid']);	
 	}
 	
 	function remove_issue() {
@@ -235,9 +232,12 @@ class projectsController extends controller {
 		$issueid = request::getVar('issueid', 0);
 		
 		$modelIssues = &$this->getModel('issues');
-		$modelIssues->deleteIssue($projectid, $issueid);
-		
-		error::raise('', 'message', _LANG_ISSUE_DELETED);
+		if ($modelIssues->deleteIssue($projectid, $issueid) === true) {
+			error::raise('', 'message', _LANG_ISSUE_DELETE_SUCCESS);
+		}
+		else {
+			error::raise('', 'error', _LANG_ISSUE_DELETE_ERROR);
+		}
 		
 		$this->setRedirect('index.php?option=com_projects&view=issues&projectid='.$projectid);
 	}
@@ -248,20 +248,25 @@ class projectsController extends controller {
 		
 		$modelIssues = &$this->getModel('issues');
 		$row = $modelIssues->closeIssue($projectid, $issueid);
-		
-		// Get assignees
-		$assignees = $modelIssues->getAssignees($issueid, false);
-		
-		// Add entry in activity log
-		$modelActivityLog =& $this->getModel('activitylog');
-		$action = _LANG_ISSUE_CLOSED;
-		$title = $row->title;
-		$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-		$url = route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$projectid."&issueid=".$row->id);
-		$notify = true;
-		$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, $notify);
-		
-		error::raise( '', 'message',  text::_( _LANG_ISSUE_CLOSED ) );
+		if ($row === false) {
+			error::raise('', 'error', $modelIssues->getLastError());
+		}
+		else {
+			error::raise( '', 'message',  _LANG_ISSUE_CLOSED);
+			
+			// Prepare data for activity log entry
+			$assignees = $modelIssues->_getAssignees($row->id, false);
+			$action = _LANG_ISSUE_CLOSED;
+			$title = $row->title;
+			$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
+			$url = route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->id);
+			
+			// Add entry in activity log
+			$modelActivityLog =& $this->getModel('activitylog');
+			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, true)) {
+				error::raise('', 'error', $modelActivityLog->getLastError());
+			}
+		}
 		
 		$this->setRedirect('index.php?option=com_projects&view=issues&layout=detail&projectid='.$projectid."&issueid=".$issueid);
 	}
@@ -272,20 +277,25 @@ class projectsController extends controller {
 		
 		$modelIssues = &$this->getModel('issues');
 		$row = $modelIssues->reopenIssue($projectid, $issueid);
-		
-		// Get assignees
-		$assignees = $modelIssues->getAssignees($issueid, false);
-		
-		// Add entry in activity log
-		$modelActivityLog =& $this->getModel('activitylog');
-		$action = _LANG_ISSUE_REOPENED;
-		$title = $row->title;
-		$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-		$url = route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$projectid."&issueid=".$row->id);
-		$notify = true;
-		$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, $notify);
-		
-		error::raise('', 'message', _LANG_ISSUE_REOPENED);
+		if ($row === false) {
+			error::raise('', 'error', $modelIssues->getLastError());
+		}
+		else {
+			error::raise('', 'message', _LANG_ISSUE_REOPENED);
+			
+			// Prepare data for activity log entry
+			$assignees = $modelIssues->_getAssignees($row->id, false);
+			$action = _LANG_ISSUE_REOPENED;
+			$title = $row->title;
+			$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
+			$url = route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->id);
+			
+			// Add entry in activity log
+			$modelActivityLog =& $this->getModel('activitylog');
+			if (!$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, true)) {
+				error::raise('', 'error', $modelActivityLog->getLastError());
+			}
+		}
 		
 		$this->setRedirect('index.php?option=com_projects&view=issues&layout=detail&projectid='.$projectid."&issueid=".$issueid);
 	}
@@ -330,7 +340,10 @@ class projectsController extends controller {
 		$modelFiles = &$this->getModel('files');
 		
 		if ($modelFiles->deleteFile($projectid, $fileid) === true) {
-			error::raise('', 'message', _LANG_FILE_DELETED);
+			error::raise('', 'message', _LANG_FILE_DELETE_SUCCESS);
+		}
+		else {
+			error::raise('', 'error', _LANG_FILE_DELETE_ERROR);
 		}
 		
 		$this->setRedirect('index.php?option=com_projects&view=files&projectid='.$projectid);
@@ -340,32 +353,41 @@ class projectsController extends controller {
 		$projectid = request::getVar('projectid', 0);
 		$fileid = request::getVar('fileid', 0);
 		
-		$modelProjects = &$this->getModel('files');
+		$modelProjects =& $this->getModel('files');
 		$modelProjects->downloadFile($projectid, $fileid);
 	}
 	
 	function save_message() {
+		// Check for request forgeries
+		crypt::checkToken() or exit( 'Invalid Token' );
+		
 		// Get request vars
-		$projectid = request::getVar('projectid', 0);
-		$assignees = request::getVar('assignees', 0);
-		$notify = request::getVar('notify', false);
+		$post = request::get('post');
 		
 		// Save message using messages model
 		$modelMessages =& $this->getModel('messages');
-		$row = $modelMessages->saveMessage($projectid);
+		$row = $modelMessages->saveMessage($post);
+		if ($row === false) {
+			error::raise('', 'error', $modelMessages->getLastError());
+		}
+		else {
+			error::raise('', 'message', _LANG_MESSAGE_SAVED);
+			
+			// Prepare data for activity log entry
+			$action = _LANG_MESSAGES_ACTION_NEW;
+			$title = $row->subject;
+			$description = sprintf(_LANG_MESSAGES_ACTIVITYLOG_DESCRIPTION, $row->subject, $row->body);
+			$url = route::_("index.php?option=com_projects&view=messages&layout=detail&projectid=".$row->projectid."&messageid=".$row->id);
+			$notify = $post['notify'] == 'on' ? true : false;
+			
+			// Add entry in activity log
+			$modelActivityLog =& $this->getModel('activitylog');
+			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->userid, 'messages', $action, $title, $description, $url, $post['assignees'], $notify)) {
+				error::raise('', 'error', $modelActivityLog->getLastError());
+			}
+		}
 		
-		// Add entry in activity log
-		$modelActivityLog =& $this->getModel('activitylog');
-		$action = _LANG_MESSAGES_ACTION_NEW;
-		$title = $row->subject;
-		$description = sprintf(_LANG_MESSAGES_ACTIVITYLOG_DESCRIPTION, $row->subject, $row->body);
-		$url = route::_("index.php?option=com_projects&view=messages&layout=detail&projectid=".$projectid."&messageid=".$row->id);
-		if ($notify == 'on') { $notify = true; }
-		$modelActivityLog->saveActivityLog($projectid, $row->userid, 'messages', $action, $title, $description, $url, $assignees, $notify);
-		
-		error::raise('', 'message', _LANG_MESSAGE_SAVED);
-		
-		$this->setRedirect('index.php?option=com_projects&view=messages&projectid='.$projectid);
+		$this->setRedirect('index.php?option=com_projects&view=messages&projectid='.$post['projectid']);
 	}
 	
 	function remove_message() {
@@ -375,60 +397,69 @@ class projectsController extends controller {
 		$modelMessages = &$this->getModel('messages');
 		
 		if ($modelMessages->deleteMessage($projectid, $messageid) === true) {
-			error::raise('', 'message', _LANG_MESSAGE_DELETED);
+			error::raise('', 'message', _LANG_MESSAGE_DELETE_SUCCESS);
+		}
+		else {
+			error::raise('', 'error', _LANG_MESSAGE_DELETE_ERROR);
 		}
 		
 		$this->setRedirect('index.php?option=com_projects&view=messages&projectid='.$projectid);
 	}
 	
 	function save_comment() {
+		// Check for request forgeries
+		crypt::checkToken() or exit( 'Invalid Token' );
+		
 		// Get request vars
-		$projectid = request::getVar('projectid', 0);
-		$assignees = request::getVar('assignees', 0);
-		$notify = request::getVar('notify', false);
+		$post = request::get('post');
 		
 		// Save file using files model
 		$modelComments =& $this->getModel('comments');
-		$row = $modelComments->saveComment($projectid);
-		
-		// Add entry in activity log
-		$modelActivityLog =& $this->getModel('activitylog');
-		$action = _LANG_COMMENTS_ACTION_NEW;
-		$title = 'RE: '.$modelComments->itemid2title($row->itemid, $row->type);
-		$description = sprintf(_LANG_COMMENTS_ACTIVITYLOG_DESCRIPTION, $title, $row->body);
-
-		switch ($row->type) {
-			case 'files' : 
-				$url = "index.php?option=com_projects&view=files&layout=detail&projectid=".$projectid."&fileid=".$row->itemid;
-				break;
-			case 'issues' : 
-				$url = "index.php?option=com_projects&view=issues&layout=detail&projectid=".$projectid."&issueid=".$row->itemid;
-				break;
-			case 'meetings' : 
-				$url = "index.php?option=com_projects&view=meetings&layout=detail&projectid=".$projectid."&meetingid=".$row->itemid;
-				break;
-			case 'messages' : 
-				$url = "index.php?option=com_projects&view=messages&layout=detail&projectid=".$projectid."&messageid=".$row->itemid;
-				break;
-			case 'milestones' : 
-				$url = "index.php?option=com_projects&view=milestones&layout=detail&projectid=".$projectid."&milestoneid=".$row->itemid;
-				break;
-		}
-		
-		$url = route::_($url);
-		
-		if ($notify == 'on') { $notify = true; }
-		$modelActivityLog->saveActivityLog($projectid, $row->userid, 'comments', $action, $title, $description, $url, $assignees, $notify);
-		
-		error::raise('', 'message', _LANG_COMMENT_SAVED);
-		
-		$close_issue = request::getVar('close_issue', NULL);
-		if ($row->type == 'issues' && $close_issue == 'on') {
-			$this->close_issue();
+		$row = $modelComments->saveComment($post);
+		if ($row === false) {
+			error::raise('', 'error', $modelComments->getLastError());
 		}
 		else {
-			$this->setRedirect($url);
+			error::raise('', 'message', _LANG_COMMENT_SAVED);
+			
+			// Prepare data for activity log entry
+			$action = _LANG_COMMENTS_ACTION_NEW;
+			$title = 'RE: '.$modelComments->itemid2title($row->itemid, $row->type);
+			$description = sprintf(_LANG_COMMENTS_ACTIVITYLOG_DESCRIPTION, $title, $row->body);
+			switch ($row->type) {
+				case 'files' : 
+					$url = "index.php?option=com_projects&view=files&layout=detail&projectid=".$row->projectid."&fileid=".$row->itemid;
+					break;
+				case 'issues' : 
+					$url = "index.php?option=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->itemid;
+					break;
+				case 'meetings' : 
+					$url = "index.php?option=com_projects&view=meetings&layout=detail&projectid=".$row->projectid."&meetingid=".$row->itemid;
+					break;
+				case 'messages' : 
+					$url = "index.php?option=com_projects&view=messages&layout=detail&projectid=".$row->projectid."&messageid=".$row->itemid;
+					break;
+				case 'milestones' : 
+					$url = "index.php?option=com_projects&view=milestones&layout=detail&projectid=".$row->projectid."&milestoneid=".$row->itemid;
+					break;
+			}
+			$url = route::_($url);
+			$notify = $post['notify'] == 'on' ? true : false;
+			
+			// Add entry in activity log
+			$modelActivityLog =& $this->getModel('activitylog');
+			$modelActivityLog->saveActivityLog($row->projectid, $row->userid, 'comments', $action, $title, $description, $url, $post['assignees'], $notify);
+			
+			$close_issue = request::getVar('close_issue', NULL);
+			if ($row->type == 'issues' && $close_issue == 'on') {
+				$modelIssues =& $this->getModel('issues');
+				if (!$modelIssues->closeIssue($row->projectid, $row->itemid)) {
+					error::raise('', 'error', $modelIssues->getLastError());
+				}
+			}	
 		}
+		
+		$this->setRedirect($_SERVER['HTTP_REFERER']);
 	}
 	
 	function save_meeting() {
@@ -481,27 +512,36 @@ class projectsController extends controller {
 	}
 	
 	function save_milestone() {
+		// Check for request forgeries
+		crypt::checkToken() or exit( 'Invalid Token' );
+		
 		// Get request vars
-		$projectid = request::getVar('projectid', 0);
-		$assignees = request::getVar('assignees', 0);
-		$notify = request::getVar('notify', false);
+		$post = request::get('post');
 		
 		// Save file using files model
 		$modelMilestones =& $this->getModel('milestones');
-		$row = $modelMilestones->saveMilestone($projectid);
+		$row = $modelMilestones->saveMilestone($post);
+		if ($row === false) {
+			error::raise('', 'error', $modelMilestones->getLastError());
+		}
+		else {
+			error::raise('', 'message', _LANG_MILESTONE_SAVED);
+			
+			// Prepare data for activity log entry
+			$action = empty($post['id']) ? _LANG_MILESTONES_ACTION_NEW : _LANG_MILESTONES_ACTION_EDIT;
+			$title = $row->title;
+			$description = sprintf(_LANG_MILESTONES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->due_date, $row->description);
+			$url = route::_("index.php?option=com_projects&view=milestones&layout=detail&projectid=".$row->projectid."&milestoneid=".$row->id);
+			$notify = $post['notify'] == 'on' ? true : false;
+			
+			// Add entry in activity log
+			$modelActivityLog =& $this->getModel('activitylog');
+			if (!$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'milestones', $action, $title, $description, $url, $assignees, $notify)) {
+				error::raise('', 'error', $modelActivityLog->getLastError());
+			}
+		}
 		
-		// Add entry in activity log
-		$modelActivityLog =& $this->getModel('activitylog');
-		$action = _LANG_MILESTONES_ACTION_NEW;
-		$title = $row->title;
-		$description = sprintf(_LANG_MILESTONES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->due_date);
-		$url = route::_("index.php?option=com_projects&view=milestones&layout=detail&projectid=".$projectid."&milestoneid=".$row->id);
-		if ($notify == 'on') { $notify = true; }
-		$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'milestones', $action, $title, $description, $url, $assignees, $notify);
-		
-		error::raise('', 'message', _LANG_MILESTONE_SAVED);
-		
-		$this->setRedirect('index.php?option=com_projects&view=milestones&layout=detail&projectid='.$projectid."&milestoneid=".$row->id);
+		$this->setRedirect('index.php?option=com_projects&view=milestones&layout=detail&projectid='.$post['projectid']."&milestoneid=".$row->id);
 	}
 	
 	function remove_milestone() {
@@ -511,7 +551,10 @@ class projectsController extends controller {
 		$modelMilestones = &$this->getModel('milestones');
 		
 		if ($modelMilestones->deleteMilestone($projectid, $milestoneid) === true) {
-			error::raise('', 'message', _LANG_MILESTONE_DELETED);
+			error::raise('', 'message', _LANG_MILESTONE_DELETE_SUCCESS);
+		}
+		else {
+			error::raise('', 'error', _LANG_MILESTONE_DELETE_ERROR);
 		}
 		
 		$this->setRedirect('index.php?option=com_projects&view=milestones&projectid='.$projectid);
