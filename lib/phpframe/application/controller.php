@@ -129,20 +129,12 @@ abstract class controller extends singleton {
 	 * @since	1.0
      */
 	public function display() {
-		// Get reference to application
-		$application =& factory::getApplication();
-		
-		if ($application->permissions->is_allowed === true) {
-			$this->view_obj = $this->getView(request::getVar('view'));
-			if (is_callable(array($this->view_obj, 'display'))) {
-				$this->view_obj->display();	
-			}
-			else {
-				error::raise('', 'error', 'display() method not found in view class.');
-			}
+		$this->view_obj = $this->getView(request::getVar('view'));
+		if (is_callable(array($this->view_obj, 'display'))) {
+			$this->view_obj->display();	
 		}
 		else {
-			error::raise('', 'error', 'Permission denied.');
+			error::raise('', 'error', 'display() method not found in view class.');
 		}
 	}
 	
@@ -156,7 +148,20 @@ abstract class controller extends singleton {
 	 * @since	1.0
 	 */
 	public function execute($task) {
-		eval('$this->'.$task.'();');
+		// Get reference to application to check permissions before we execute
+		$application =& factory::getApplication();
+		
+		if ($application->permissions->is_allowed === true) {
+			if (is_callable(array($this, $task))) {
+				$this->$task();	
+			}
+			else {
+				error::raise('', 'error', $task.'() method not found in controller class.');
+			}
+		}
+		else {
+			error::raise('', 'error', 'Permission denied.');
+		}
 	}
 	
 	/**

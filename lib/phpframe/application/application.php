@@ -227,7 +227,7 @@ class application extends singleton {
 		$this->option =& request::getVar('option', 'com_dashboard');
 		
 		// Initialise permissions
-		$this->permissions = phpFrame::getInstance('permissions');
+		$this->permissions =& phpFrame::getInstance('permissions');
 		
 		// Get component info
 		$components =& phpFrame::getInstance('components');
