@@ -15,7 +15,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 <?php if ($this->user->groupid == 1) : ?>
 <div class="new">
-	<a href="<?php echo route::_('index.php?option=com_projects&amp;view=projects&amp;layout=form'); ?>" title="<?php echo text::_( _LANG_PROJECTS_NEW ); ?>">
+	<a href="<?php echo route::_('index.php?option=com_projects&view=admin&layout=form'); ?>" title="<?php echo text::_( _LANG_PROJECTS_NEW ); ?>">
 		<?php echo text::_( _LANG_PROJECTS_NEW ); ?>
 	</a>
 </div>

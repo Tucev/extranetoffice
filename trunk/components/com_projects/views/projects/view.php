@@ -126,34 +126,5 @@ class projectsViewProjects extends view {
 		}
 		
 	}
-	
-	/**
-	 * Display project detail layout
-	 * 
-	 * This method is a custom display method triggered by detail layout.
-	 * 
-	 * @return void
-	 */
-	function displayProjectsForm() {
-		if (!empty($this->projectid)) {
-			$this->page_title = _LANG_PROJECTS_EDIT;
-		}
-		else {
-			$this->page_title = _LANG_PROJECTS_NEW;
-			// Set default values for tools
-			$this->project->access = '1';
-			$this->project->access_issues = '2';
-			$this->project->access_messages = '2';
-			$this->project->access_milestones = '2';
-			$this->project->access_files = '2';
-			$this->project->access_meetings = '3';
-			$this->project->access_polls = '3';
-			$this->project->access_reports = '1';
-			$this->project->access_people = '3';
-			$this->project->access_admin = '1';
-		}
-		
-		$this->addPathwayItem($this->page_title);
-	}
 }
 ?>
