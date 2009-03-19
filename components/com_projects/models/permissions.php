@@ -78,7 +78,7 @@ class projectsModelPermissions extends model {
 		
 		// Check project's global access level
 		if ($this->project->access > 0 && $this->roleid < 1) {
-			error::raise('', 'warning', "You do not have access to this project");
+			$this->error[] = "You do not have access to this project";
 			$this->is_allowed = false;
 			return false;
 		}
@@ -86,7 +86,7 @@ class projectsModelPermissions extends model {
 		// Check tool-specific (views) access
 		if (!empty($project->id)) {
 			if ($this->checkViewAccess() !== true) {
-				error::raise('', 'warning', "You do not have access to this tool in this project");
+				$this->error[] = "You do not have access to this tool in this project";
 				$this->is_allowed = false;
 				return false;
 			}	
