@@ -536,7 +536,7 @@ class projectsController extends controller {
 			
 			// Add entry in activity log
 			$modelActivityLog =& $this->getModel('activitylog');
-			if (!$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'milestones', $action, $title, $description, $url, $assignees, $notify)) {
+			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->created_by, 'milestones', $action, $title, $description, $url, $assignees, $notify)) {
 				error::raise('', 'error', $modelActivityLog->getLastError());
 			}
 		}
