@@ -105,7 +105,7 @@ class projectsModelComments extends model {
 				$query = "SELECT title FROM #__issues WHERE id = ".$itemid;
 				break;
 			case 'meetings' :
-				$query = "SELECT title FROM #__meetings WHERE id = ".$itemid;
+				$query = "SELECT name FROM #__meetings WHERE id = ".$itemid;
 				break;
 			case 'messages' :
 				$query = "SELECT subject FROM #__messages WHERE id = ".$itemid;
