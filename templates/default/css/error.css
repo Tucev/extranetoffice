@@ -10,19 +10,22 @@
 
 /* Framework.error */
 
+div#error_msg {
+margin: 0;
+padding: 0;
+}
+
 span.system_msg_outer {
 background-color: #ffff99;
 border: 1px dotted #999999;
-padding: 8px;
-display:table;
-margin-bottom: 5px;
+padding: 5px;
 }
 span.system_msg {
-padding: 2px 2px 2px 20px;
+padding-left: 20px;
 background-repeat: no-repeat;
 background-position: center left;
 font-style: italic;
-display:table-cell;
+font-size: 0.9em;
 }
 span.error {
 background-image: url(../images/icons/generic/16x16/error.png);

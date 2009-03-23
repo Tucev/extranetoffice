@@ -53,11 +53,14 @@ color: #333333;
 }
 
 .module_mainmenu {
-	z-index:1000;
+z-index:1000;
 }
 
 .module_topright {
 float: right;
+}
+.module_topright div {
+margin-left: 15px;
 }
 
 ul#menu {
