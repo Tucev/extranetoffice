@@ -124,6 +124,9 @@ class projectsModelMeetings extends model {
 		// get slideshows
 		$row->slideshows = $this->getSlideshows($projectid, $meetingid);
 		
+		// get files
+		$row->files = $this->getFiles($projectid, $meetingid);
+		
 		// Get comments
 		$modelComments =& $this->getModel('comments');
 		$row->comments = $modelComments->getComments($projectid, 'meetings', $meetingid);
@@ -140,7 +143,7 @@ class projectsModelMeetings extends model {
 	public function saveMeeting($post) {
 		// Check whether a project id is included in the post array
 		if (empty($post['projectid'])) {
-			$this->error[] = _LANG_MEETINGS_SAVE_ERROR_NO_PROJECT_SELECTED;
+			$this->error[] = _LANG_SAVE_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
 		
@@ -214,13 +217,25 @@ class projectsModelMeetings extends model {
 			return false;
 		}
 		
-		// Delete message's assignees
+		// Delete meetings assignees
 		$query = "DELETE FROM #__users_meetings ";
 		$query .= " WHERE meetingid = ".$meetingid;
 		$this->db->setQuery($query);
 		if (!$this->db->query()) {
 			$this->error[] = $this->db->getLastError();
 			return false;
+		}
+		
+		// Delete meeting slideshows
+		$query = "SELECT id FROM #__slideshows WHERE meetingid = ".$meetingid;
+		$this->db->setQuery($query);
+		$slideshows = $this->db->loadResultArray();
+		if (is_array($slideshows) && count($slideshows) > 0) {
+			foreach ($slideshows as $slideshowid) {
+				if (!$this->deleteSlideshow($projectid, $slideshowid)) {
+					return false;
+				}
+			}
 		}
 		
 		// Instantiate table object
@@ -255,6 +270,246 @@ class projectsModelMeetings extends model {
 		}
 		
 		return $slideshows;
+	}
+	
+	function saveSlideshow($post) {
+		// Check whether a project id is included in the post array
+		if (empty($post['projectid'])) {
+			$this->error[] = _LANG_SAVE_ERROR_NO_PROJECT_SELECTED;
+			return false;
+		}
+		
+		require_once COMPONENT_PATH.DS."tables".DS."slideshows.table.php";		
+		$row =& phpFrame::getInstance("projectsTableSlideshows");
+		
+		if (!empty($post['id'])) {
+			$row->load($post['id']);
+		}
+		else {
+			$row->created_by = $this->user->id;
+			$row->created = date("Y-m-d H:i:s");
+		}
+		
+		if (!$row->bind($post)) {
+			$this->error[] = $row->getLastError();
+			return false;
+		}
+		
+		if (!$row->check()) {
+			$this->error[] = $row->getLastError();
+			return false;
+		}
+	
+		if (!$row->store()) {
+			$this->error[] = $row->getLastError();
+			return false;
+		}
+		
+		return $row;
+	}
+	
+	function deleteSlideshow($projectid, $slideshowid) {
+		if (empty($projectid) || empty($slideshowid)) {
+			return false;
+		}
+		
+		// Get slidesw to delete them first
+		$query = "SELECT * ";
+		$query .= " FROM #__slideshows_slides ";
+		$query .= " WHERE slideshowid = ".$slideshowid;
+		$this->db->setQuery($query);
+		$slides = $this->db->loadObjectList();
+		
+		if (is_array($slides) && count($slides) > 0) {
+			foreach ($slides as $slide) {
+				$file = _ABS_PATH.DS.$this->config->get('upload_dir').DS."projects".DS.$projectid.DS."slideshows".DS.$slideshowid.DS.$slide->filename;
+				if (file_exists($file) && !unlink($file)) {
+					$this->error[] = _LANG_MEETINGS_SLIDE_FILE_DELETE_ERROR;
+					return false;
+				}
+				$thumb = _ABS_PATH.DS.$this->config->get('upload_dir').DS."projects".DS.$projectid.DS."slideshows".DS.$slideshowid.DS."thumb".DS.$slide->filename;
+				if (file_exists($thumb) && !unlink($thumb)) {
+					$this->error[] = _LANG_MEETINGS_SLIDE_FILE_DELETE_ERROR;
+					return false;
+				}
+				$query = "DELETE FROM #__slideshows_slides WHERE id = ".$slide->id;
+				$this->db->setQuery($query);
+				if (!$this->db->query()) {
+					$this->error[] = $this->db->getLastError();
+					return false;
+				}
+			}
+		}
+		
+		$slideshow_dir_thumb = _ABS_PATH.DS.$this->config->get('upload_dir').DS."projects".DS.$projectid.DS."slideshows".DS.$slideshowid.DS."thumb".DS;
+		if (is_dir($slideshow_dir_thumb) && !rmdir($slideshow_dir_thumb)) {
+			$this->error[] = _LANG_MEETINGS_SLIDE_FILE_DELETE_ERROR;
+			return false;
+		}
+		$slideshow_dir = _ABS_PATH.DS.$this->config->get('upload_dir').DS."projects".DS.$projectid.DS."slideshows".DS.$slideshowid.DS;
+		if (is_dir($slideshow_dir) && !rmdir($slideshow_dir)) {
+			$this->error[] = _LANG_MEETINGS_SLIDE_FILE_DELETE_ERROR;
+			return false;
+		}
+		
+		$query = "DELETE FROM #__slideshows ";
+		$query .= " WHERE id = ".$slideshowid;
+		$this->db->setQuery($query);
+		if (!$this->db->query()) {
+			$this->error[] = $this->db->getLastError();
+			return false;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Save a slide in a meeting slideshow
+	 * 
+	 * @param	$post	The array to be used for binding to the row before storing it. Normally the HTTP_POST array.
+	 * @return	mixed	Returns the stored table row object on success or FALSE on failure
+	 */
+	public function uploadSlide($post) {
+		// Check whether a project id is included in the post array
+		if (empty($post['projectid'])) {
+			$this->error[] = _LANG_SAVE_ERROR_NO_PROJECT_SELECTED;
+			return false;
+		}
+		
+		require_once COMPONENT_PATH.DS."tables".DS."slideshows_slides.table.php";		
+		$row =& phpFrame::getInstance("projectsTableSlideshowsSlides");
+		
+		if (!$row->bind($post)) {
+			$this->error[] = $row->getLastError();
+			return false;
+		}
+		
+		// upload the file
+		//TODO: Have to catch errors and look at file permissions
+		$upload_dir = $this->config->get('upload_dir').DS."projects".DS.$post['projectid'].DS."slideshows".DS;
+		if (!is_dir($upload_dir)) {
+			mkdir($upload_dir, 0711);
+		}
+		$upload_dir .= $post['slideshowid'].DS;
+		if (!is_dir($upload_dir)) {
+			mkdir($upload_dir, 0711);
+		}
+		if (!is_dir($upload_dir."thumb".DS)) {
+			mkdir($upload_dir."thumb".DS, 0711);
+		}
+		$accept = 'image/jpg,image/jpeg,image/png,image/gif'; // mime types
+		$max_upload_size = $this->config->get('max_upload_size')*(1024*1024); // Mb
+		$file = filesystem::uploadFile('filename', $upload_dir, $accept, $max_upload_size);
+		
+		if (!empty($file['error'])) {
+			$this->error[] = $file['error'];
+			return false;
+		}
+		
+		// Resize image
+		$image = new image();
+		if (!$image->resize_image($upload_dir.$file['file_name'], $upload_dir.$file['file_name'], 764, 573)) {
+			$this->error[] = _LANG_MEETINGS_SLIDE_RESIZE_ERROR;
+			return false;
+		}
+		// Create thumbnail
+		if (!$image->resize_image($upload_dir.$file['file_name'], $upload_dir."thumb".DS.$file['file_name'], 120, 90)) {
+			$this->error[] = _LANG_MEETINGS_SLIDE_THUMBNAIL_ERROR;
+			return false;
+		}
+		
+		$row->filename = $file['file_name'];
+		
+		if (!$row->check()) {
+			$this->error[] = $row->getLastError();
+			return false;
+		}
+	
+		if (!$row->store()) {
+			$this->error[] = $row->getLastError();
+			return false;
+		}
+		
+		return $row;
+	}
+	
+	public function deleteSlide($projectid, $slideid) {
+		// Check whether a project id is included in the post array
+		if (empty($projectid)) {
+			$this->error[] = _LANG_SAVE_ERROR_NO_PROJECT_SELECTED;
+			return false;
+		}
+		
+		require_once COMPONENT_PATH.DS."tables".DS."slideshows_slides.table.php";		
+		$row =& phpFrame::getInstance("projectsTableSlideshowsSlides");
+		
+		$row->load($slideid);
+		
+		$upload_dir = $this->config->get('upload_dir').DS."projects".DS.$projectid.DS."slideshows".DS.$row->slideshowid.DS;
+		if (!unlink($upload_dir.$row->filename) || !unlink($upload_dir."thumb".DS.$row->filename)) {
+			$this->error[] = _LANG_MEETINGS_SLIDE_DELETE_ERROR;
+			return false;
+		}
+		else {
+			$query = "DELETE FROM #__slideshows_slides WHERE id = ".$slideid;
+			$this->db->setQuery($query);
+			if ($this->db->query() === false) {
+				$this->error[] = $this->db->getLastError();
+				return false;
+			}
+			else {
+				return true;
+			}	
+		}
+	}
+	
+	public function getFiles($projectid, $meetingid) {
+		$query = "SELECT fileid ";
+		$query .= " FROM #__meetings_files ";
+		$query .= " WHERE meetingid = ".$meetingid;
+		$this->db->setQuery($query);
+		$fileids = $this->db->loadResultArray();
+		
+		// Get files data
+		$files = array();
+		for ($i=0; $i<count($fileids); $i++) {
+			$query = "SELECT * ";
+			$query .= " FROM #__files ";
+			$query .= " WHERE id = ".$fileids[$i];
+			$this->db->setQuery($query);
+			$files[$i] = $this->db->loadObject();
+		}
+		
+		return $files;
+	}
+	
+	public function saveFiles($meetingid, $fileids) {
+		if (empty($meetingid)) {
+			$this->error[] = _LANG_PROJECTS_MEETINGS_NO_MEETING_SELECTED;
+			return false;
+		}
+		
+		if (!is_array($fileids)) {
+			$fileids[] = $fileids;
+		}
+		
+		$query = "DELETE FROM #__meetings_files WHERE meetingid = ".$meetingid;
+		$this->db->setQuery($query);
+		if (!$this->db->query()) {
+			$this->error[] = $this->db->getLastError();
+			return false;
+		}
+		
+		foreach ($fileids as $fileid) {
+			$query = "INSERT INTO #__meetings_files (`id`, `meetingid`, `fileid`) VALUES (NULL, ".$meetingid.", ".$fileid.")";
+			$this->db->setQuery($query);
+			if (!$this->db->query()) {
+				$this->error[] = $this->db->getLastError();
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 	/**

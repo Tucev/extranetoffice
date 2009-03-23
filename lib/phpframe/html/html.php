@@ -422,6 +422,78 @@ class html {
 		<?php
 	}
 	
+	static function upload($data=array(), $name='userfile', $onComplete='', $action='index.php') {
+		$document =& factory::getDocument('html');
+		$document->addScript('lib/jquery/plugins/ajax-upload/jquery.ajax-upload-2.6.js');
+		
+		$token = crypt::getToken();
+		$data[$token] = '1';
+		$data['tmpl'] = 'component';
+		
+		$uid = uniqid();
+		?>
+		
+		<script type= "text/javascript">/*<![CDATA[*/
+		$(document).ready(function(){
+			var button = $('#upload_file_<?php echo $uid; ?>'), interval;
+			new Ajax_upload(button,{
+				action: '<?php echo $action; ?>', 
+				name: '<?php echo $name; ?>',
+				data: {
+					<?php 
+					$i=0;
+					foreach ($data as $key=>$value) {
+						if ($i>0) { echo ",\n"; } 
+						echo $key." : '".$value."'";
+						$i++;
+					}
+					?>
+					
+				},
+				onSubmit : function(file, ext){		
+					button.text('Uploading');
+
+					button.after('<div style="float:left;" class="loading"></div>');
+					
+					// Allow uploading only 1 file at time
+					this.disable();
+					
+					// Uploding -> Uploading. -> Uploading...
+					interval = window.setInterval(function(){
+						var text = button.text();
+						if (text.length < 13){
+							button.text(text + '.');					
+						} else {
+							button.text('Uploading');				
+						}
+					}, 200);
+				},
+				onComplete: function(file, response){
+					button.text('Upload');
+					button.next().remove();
+							
+					window.clearInterval(interval);
+								
+					// enable upload button
+					this.enable();
+
+					if (response == '0') {
+						alert('Error uploading file');
+						return false;
+					}
+					
+					// add file to the list
+					<?php echo $onComplete; ?>
+										
+				}
+			});	
+		});/*]]>*/</script>
+		
+		<div style="float:left;" class="button" id="upload_file_<?php echo $uid; ?>">Upload</div>
+		<br style="clear: left;" />
+		<?php
+	}
+	
 	/**
 	 * Displays a hidden token field to reduce the risk of CSRF exploits.
 	 * 
