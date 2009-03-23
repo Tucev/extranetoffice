@@ -136,6 +136,8 @@ html::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DELETE, _LA
 	No slideshows.
 	<?php endif; ?>
 	
+	<hr />
+	
 	<div style="float:left;" class="thread_heading">Files</div>
 	
 	<div style="float:left; margin-left: 10px;" class="edit">
