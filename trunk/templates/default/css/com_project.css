@@ -142,6 +142,20 @@ color: #333333;
 background-color: #ffff99;
 }
 
+/* Slideshows */
+div.thumbnail {
+float: left;
+margin: 0 5px 5px 0;
+padding: 5px 5px 4px 5px;
+border: 1px dotted #336699;
+}
+div.thumbnail:hover {
+background-color: #ffff99;
+}
+div.thumbnail a img {
+border: 0;
+}
+
 /* Comments */
 div.comment_row {
 border-top: 1px solid #CCCCCC;

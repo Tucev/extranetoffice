@@ -85,7 +85,8 @@ textarea {
 font-size: 0.9em;
 }
 
-button {
+button,
+.button {
 background-color: #333333;
 color: white;
 border: 1px solid #999999;

@@ -33,7 +33,11 @@ $module_positions['right'] = $this->modules->display('right');
 </head>
 
 <body>
-<?php //echo '<pre>'; var_dump($this->document); exit; ?>
+<script type="text/javascript">
+$(document).ready(function() {
+	window.setTimeout("$(\"#error_msg\").fadeOut(\"slow\")", 3000);
+});
+</script>
 
 <a name="up" id="up"></a>
 
@@ -68,7 +72,6 @@ $module_positions['right'] = $this->modules->display('right');
 		
 		<div id="main_col_<?php echo $column_count; ?>">
 			<div id="main_col_inner">
-			<?php error::display(); ?>
 			<?php echo $this->component_output; ?>
 			</div><!-- close #main_col_inner -->
 		</div><!-- close #main_col -->
