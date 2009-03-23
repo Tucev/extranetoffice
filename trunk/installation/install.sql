@@ -3,14 +3,14 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Mar 17, 2009 at 09:40 PM
+-- Generation Time: Mar 23, 2009 at 04:29 PM
 -- Server version: 5.0.51
 -- PHP Version: 5.2.8
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
--- Database: `extranetoffice_dist`
+-- Database: `extranetoffice`
 --
 
 -- --------------------------------------------------------
@@ -45,9 +45,9 @@ INSERT INTO `eo_acl_groups` (`id`, `groupid`, `option`, `task`, `view`, `layout`
 (8, 2, 'com_addressbook', '*', '*', '*', 'own'),
 (9, 1, 'com_projects', '*', '*', '*', 'all'),
 (10, 2, 'com_projects', '*', '*', '*', 'own'),
-(11, 2, 'com_user', '*', '*', '*', 'own'),
-(12, 3, 'com_user', '*', '*', '*', 'own'),
-(13, 4, 'com_user', '*', '*', '*', 'own'),
+(11, 2, 'com_users', '*', '*', '*', 'own'),
+(12, 3, 'com_users', '*', '*', '*', 'own'),
+(13, 4, 'com_users', '*', '*', '*', 'own'),
 (14, 0, 'com_login', '*', '*', '*', 'own'),
 (15, 3, 'com_login', '*', '*', '*', 'own'),
 (16, 4, 'com_login', '*', '*', '*', 'own'),
@@ -345,6 +345,7 @@ CREATE TABLE IF NOT EXISTS `eo_meetings` (
   `name` varchar(64) NOT NULL,
   `dtstart` datetime NOT NULL,
   `dtend` datetime NOT NULL,
+  `description` text,
   `created_by` int(11) NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY  (`id`)
@@ -352,6 +353,24 @@ CREATE TABLE IF NOT EXISTS `eo_meetings` (
 
 --
 -- Dumping data for table `eo_meetings`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eo_meetings_files`
+--
+
+CREATE TABLE IF NOT EXISTS `eo_meetings_files` (
+  `id` int(11) NOT NULL auto_increment,
+  `meetingid` int(11) NOT NULL,
+  `fileid` int(11) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `eo_meetings_files`
 --
 
 
@@ -388,6 +407,7 @@ CREATE TABLE IF NOT EXISTS `eo_milestones` (
   `projectid` int(11) NOT NULL,
   `title` varchar(50) NOT NULL,
   `due_date` date NOT NULL,
+  `description` text,
   `created_by` int(11) NOT NULL,
   `created` datetime NOT NULL,
   `closed_by` int(11) default '0',
@@ -426,7 +446,8 @@ INSERT INTO `eo_modules` (`id`, `name`, `author`, `version`, `enabled`, `system`
 (1, 'menu', 'Luis Montero [e-noise.com]', '1.0.0', '1', '1', 'mainmenu', 1),
 (2, 'projects', 'Luis Montero [e-noise.com]', '1.0.0', '1', '1', 'right', 1),
 (3, 'topmenu', 'Luis Montero [e-noise.com]', '1.0.0', '1', '1', 'topmenu', 1),
-(4, 'projectswitcher', 'Luis Montero [e-noise.com]', '1.0.0', '1', '1', 'topright', 1);
+(4, 'projectswitcher', 'Luis Montero [e-noise.com]', '1.0.0', '1', '1', 'topright', 1),
+(5, 'errormsg', 'Luis Montero [e-noise.com]', '1.0.0', '1', '1', 'topright', 1);
 
 -- --------------------------------------------------------
 
@@ -449,7 +470,8 @@ INSERT INTO `eo_modules_options` (`id`, `moduleid`, `option`) VALUES
 (1, 1, '*'),
 (2, 2, 'com_projects'),
 (3, 3, '*'),
-(4, 4, '*');
+(4, 4, '*'),
+(5, 5, '*');
 
 -- --------------------------------------------------------
 
@@ -495,7 +517,7 @@ CREATE TABLE IF NOT EXISTS `eo_projects` (
   `created_by` int(11) NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_projects`
@@ -569,6 +591,47 @@ CREATE TABLE IF NOT EXISTS `eo_session` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `eo_slideshows`
+--
+
+CREATE TABLE IF NOT EXISTS `eo_slideshows` (
+  `id` int(11) NOT NULL auto_increment,
+  `projectid` int(11) NOT NULL,
+  `meetingid` int(11) NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `description` text NOT NULL,
+  `created_by` int(11) NOT NULL,
+  `created` datetime NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `eo_slideshows`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eo_slideshows_slides`
+--
+
+CREATE TABLE IF NOT EXISTS `eo_slideshows_slides` (
+  `id` int(11) NOT NULL auto_increment,
+  `slideshowid` int(11) NOT NULL,
+  `title` varchar(128) NOT NULL,
+  `filename` varchar(128) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `eo_slideshows_slides`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `eo_users`
 --
 
@@ -598,7 +661,7 @@ CREATE TABLE IF NOT EXISTS `eo_users` (
 --
 
 INSERT INTO `eo_users` (`id`, `groupid`, `username`, `password`, `email`, `firstname`, `lastname`, `photo`, `notifications`, `show_email`, `block`, `created`, `last_visit`, `activation`, `params`, `ts`, `deleted`) VALUES
-(62, 1, 'admin', '6dcee317242b8d094e0e56d7aa36e9b3:hNakpNF7iWLijc2Ww53TyfiWoHyB1Zor', 'admin@example.com', 'Administrator', 'Change me', 'default.png', '1', '1', '0', '0000-00-00 00:00:00', NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(62, 1, 'admin', '59d0d3a4baecc0fe31a46fb5bd879cd1:kEuXamI4LBOIR405xh5tvq5vBmsr8mNp', 'admin@example.com', 'Administrator', 'ChangeMe', 'default.png', '1', '1', '0', '0000-00-00 00:00:00', NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
