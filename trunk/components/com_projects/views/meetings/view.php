@@ -44,7 +44,6 @@ class projectsViewMeetings extends view {
 		
 		// Set reference to projectid
 		$this->projectid =& request::getVar('projectid', 0);
-		$this->meetingid =& request::getVar('meetingid', 0);
 		
 		// Set reference to project object loaded in controller
 		if (!empty($this->projectid)) {
@@ -92,10 +91,14 @@ class projectsViewMeetings extends view {
 	}
 	
 	function displayMeetingsDetail() {
+		$meetingid =& request::getVar('meetingid', 0);
+		
 		$modelMeetings =& $this->getModel('meetings');
-		// Get meeting details
-		$meeting = $modelMeetings->getMeetingsDetail($this->projectid, $this->meetingid);
-		$this->row =& $meeting;
+		$this->row = $modelMeetings->getMeetingsDetail($this->projectid, $meetingid);
+		
+		$document =& factory::getDocument('html');
+		$document->addScript('lib/jquery/plugins/lightbox/jquery.lightbox-0.5.pack.js');
+		$document->addStyleSheet('lib/jquery/plugins/lightbox/css/jquery.lightbox-0.5.css');
 		
 		$this->page_title .= ' - '.$meeting->name;
 		$this->addPathwayItem($this->current_tool, "index.php?option=com_projects&view=meetings&projectid=".$this->projectid);
@@ -107,11 +110,12 @@ class projectsViewMeetings extends view {
 	 *
 	 */
 	function displayMeetingsForm() {
-		if (!empty($this->meetingid)) {
+		$meetingid =& request::getVar('meetingid', 0);
+		
+		if (!empty($meetingid)) {
 			$action = _LANG_MEETINGS_EDIT;
 			$modelMeetings =& $this->getModel('meetings');
-			$meeting = $modelMeetings->getMeetingsDetail($this->projectid, $this->meetingid);
-			$this->row =& $meeting;
+			$this->row = $modelMeetings->getMeetingsDetail($this->projectid, $meetingid);
 		}
 		else {
 			$action = _LANG_MEETINGS_NEW;
@@ -124,11 +128,14 @@ class projectsViewMeetings extends view {
 	}
 	
 	function displayMeetingsSlideshowsForm() {
-		if (!empty($this->slideshowid)) {
+		$this->meetingid =& request::getVar('meetingid', 0);
+		$slideshowid =& request::getVar('slideshowid', 0);
+		
+		if (!empty($slideshowid)) {
 			$action = _LANG_SLIDESHOWS_EDIT;
 			$modelSlideshows =& $this->getModel('meetings');
-			$slideshow = $modelSlideshows->getSlideshowsDetail($this->projectid, $this->slideshowid);
-			$this->row =& $slideshow;
+			$this->row = $modelSlideshows->getSlideshows($this->projectid, $this->meetingid, $slideshowid);
+			$this->row = $this->row[0];
 		}
 		else {
 			$action = _LANG_SLIDESHOWS_NEW;
@@ -138,6 +145,30 @@ class projectsViewMeetings extends view {
 		$this->page_title .= ' - '.$action;
 		$this->addPathwayItem($this->current_tool, "index.php?option=com_projects&view=meetings&projectid=".$this->projectid);
 		$this->addPathwayItem($action);
+		$this->action = $action;
+	}
+	
+	function displayMeetingsFilesForm() {
+		$this->meetingid =& request::getVar('meetingid', 0);
+		
+		if (!empty($this->meetingid)) {
+			$modelFiles =& $this->getModel('files');
+			$this->project_files = $modelFiles->getFiles($this->projectid);
+			$this->project_files = $this->project_files['rows'];
+			
+			$modelSlideshows =& $this->getModel('meetings');
+			$this->meeting_files = $modelSlideshows->getFiles($this->projectid, $this->meetingid);
+			$this->meeting_files_ids = array();
+			for ($i=0; $i<count($this->meeting_files); $i++) {
+				$this->meeting_files_ids[] = $this->meeting_files[$i]->id;
+			}
+		}
+		
+		$action = _LANG_PROJECTS_MEETINGS_FILES_ATTACH;
+		$this->page_title .= ' - '.$action;
+		$this->addPathwayItem($this->current_tool, "index.php?option=com_projects&view=meetings&projectid=".$this->projectid);
+		$this->addPathwayItem($action);
+		$this->action = $action;
 	}
 	
 }

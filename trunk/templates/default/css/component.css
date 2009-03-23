@@ -109,6 +109,7 @@ background-color: #FFFFFF;
 padding: 10px;
 margin: 5px 0;
 }
+div.thread_new,
 div.thread_delete,
 div.thread_download,
 div.thread_upload,
@@ -123,6 +124,9 @@ margin: 0 0 0 3px;
 border: 1px dotted #CCCCCC;
 vertical-align: middle;
 min-height: 16px;
+}
+div.thread_new {
+background-image: url(../images/icons/generic/16x16/new.png);
 }
 div.thread_delete {
 background-image: url(../images/icons/generic/16x16/remove.png);
@@ -142,6 +146,7 @@ background-image: url(../images/icons/generic/16x16/ok.png);
 div.thread_reopen {
 background-image: url(../images/icons/generic/16x16/reopen.png);
 }
+div.thread_new:hover,
 div.thread_delete:hover,
 div.thread_download:hover,
 div.thread_upload:hover,

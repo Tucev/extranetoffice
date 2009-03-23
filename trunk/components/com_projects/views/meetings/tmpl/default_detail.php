@@ -12,6 +12,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 // Add confirm behaviour to delete links
 html::confirm('delete_meeting', _LANG_PROJECTS_MEETINGS_DELETE, _LANG_PROJECTS_MEETINGS_DELETE_CONFIRM);
+html::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DELETE, _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DELETE_CONFIRM);
 ?>
 
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
@@ -65,6 +66,108 @@ html::confirm('delete_meeting', _LANG_PROJECTS_MEETINGS_DELETE, _LANG_PROJECTS_M
 	</div>
 	<?php endif; ?>
 	
+
+	<div class="thread_new">
+	<a href="<?php echo route::_("index.php?option=com_projects&view=meetings&layout=slideshows_form&projectid=".$this->project->id."&meetingid=".$this->row->id); ?>">
+	Add new slideshow
+	</a>
+	</div>
+	
+	<h3>Slideshows</h3>
+	 
+	<?php if (is_array($this->row->slideshows) && count($this->row->slideshows) > 0) : ?>
+	
+	<?php for ($k=0; $k<count($this->row->slideshows); $k++) : ?>
+	<div>
+		<div style="margin-bottom: 10px; border-bottom: 1px solid #CCCCCC;">
+		
+		<div style="float:left;" class="thread_heading"><?php echo $this->row->slideshows[$k]->name; ?></div>
+	
+		<div style="float:left; margin-left: 10px;" class="edit">
+		<a href="<?php echo route::_("index.php?option=com_projects&view=meetings&layout=slideshows_form&projectid=".$this->project->id."&meetingid=".$this->row->id."&slideshowid=".$this->row->slideshows[$k]->id); ?>"><?php echo _LANG_EDIT; ?></a>
+		</div>
+		
+		<div style="float:left;" class="delete">
+		<a class="delete_slideshow" title="<?php echo $this->row->slideshows[$k]->name; ?>" href="<?php echo route::_("index.php?option=com_projects&task=remove_slideshow&projectid=".$this->project->id."&meetingid=".$this->row->id."&slideshowid=".$this->row->slideshows[$k]->id); ?>"><?php echo _LANG_DELETE; ?></a>
+		</div>
+		
+		<div style="clear:left;"></div>
+		
+		</div>
+		
+		<?php if (is_array($this->row->slideshows[$k]->slides) && count($this->row->slideshows[$k]->slides) > 0) : ?>
+		<?php foreach ($this->row->slideshows[$k]->slides as $slide) : ?>
+		
+		<?php
+			$lightbox_comment_html = "<div class='comments_info'>
+										<a href=''>
+											0 Comments
+										</a>
+										 - 
+										<a href=''>
+											Post new comment
+										</a>
+									  </div>";
+		?>
+		<script>
+		$(function() {
+			$('.lightbox_<?php echo $this->row->slideshows[$k]->id; ?>').lightBox({fixedNavigation:true});
+		});
+		</script>
+	
+		<div class="thumbnail">
+		<a class="lightbox_<?php echo $this->row->slideshows[$k]->id; ?>" title="<?php echo $slide->title.$lightbox_comment_html; ?>" href="uploads/projects/<?php echo $this->projectid; ?>/slideshows/<?php echo $slide->slideshowid."/".$slide->filename; ?>">
+		<img src="uploads/projects/<?php echo $this->projectid; ?>/slideshows/<?php echo $slide->slideshowid."/thumb/".$slide->filename; ?>" alt="" />
+		</a>
+		</div>
+		
+		<?php endforeach; ?>
+		
+		<div style="clear: left;"></div>
+		
+		<div style="margin-bottom: 15px;">
+		Total slides: <?php echo count($this->row->slideshows[$k]->slides); ?>
+		</div>
+		<?php endif; ?>
+		
+	</div>
+	<?php endfor; ?>
+	<?php else : ?>
+	No slideshows.
+	<?php endif; ?>
+	
+	<div style="float:left;" class="thread_heading">Files</div>
+	
+	<div style="float:left; margin-left: 10px;" class="edit">
+	<a href="<?php echo route::_("index.php?option=com_projects&view=meetings&layout=files_form&projectid=".$this->project->id."&meetingid=".$this->row->id); ?>">
+	Manage files attached to this meeting
+	</a>
+	</div>
+	
+	<div style="clear: left;"></div>
+	
+	<?php if (is_array($this->row->files) && count($this->row->files) > 0) : ?>
+	<table>
+	<?php foreach ($this->row->files as $file) : ?>
+	<tr>
+		<td width="32">
+			<a href="<?php echo route::_("index.php?option=com_projects&task=download_file&fileid=".$file->id); ?>">
+			<img border="0" height="32" width="32" src="templates/<?php echo $this->config->template; ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($file->mimetype); ?>" />
+			</a>
+		</td>
+		<td>
+			<a href="<?php echo route::_("index.php?option=com_projects&task=download_file&fileid=".$file->id); ?>">
+			<?php echo $file->title; ?>
+			</a>
+		</td>
+	</tr>
+	<?php endforeach; ?>
+	</table>
+	<?php else : ?>
+	No files.
+	<?php endif; ?>
+	
+	
 	<?php if (is_array($this->row->comments) && count($this->row->comments) > 0) : ?>
 	<h3><?php echo _LANG_COMMENTS; ?></h3>
 	<?php foreach ($this->row->comments as $comment) : ?>
@@ -111,109 +214,10 @@ html::confirm('delete_meeting', _LANG_PROJECTS_MEETINGS_DELETE, _LANG_PROJECTS_M
 		<input type="hidden" name="assignees[]" value="<?php echo $assignee['id']; ?>" />
 		<?php endforeach; ?>
 		<?php endif; ?>
+		<?php echo html::_( 'form.token' ); ?>
 		</form>
 	</div>
 </div>
-
-<div style="clear: left;"></div>
-
-
-
-<h2>Slideshows</h2>
-
-<!-- 
-<div>
-<a href="<?php echo route::_("index.php?option=com_projects&view='.request::getVar('view').'&layout=slideshows_form&projectid=".$this->project->id."&meetingid=".$this->row->id); ?>">
-Add new slideshow
-</a>
-</div>
- -->
- 
-<?php if (is_array($this->row->slideshows) && count($this->row->slideshows) > 0) : ?>
-<?php for ($k=0; $k<count($this->row->slideshows); $k++) : ?>
-<div>
-	<h4><?php echo $this->row->slideshows[$k]->name; ?></h4>
-
-	<?php if (is_array($this->row->slideshows[$k]->slides) && count($this->row->slideshows[$k]->slides) > 0) : ?>
-	<?php foreach ($this->row->slideshows[$k]->slides as $slide) : ?>
-	
-	<?php
-		$lightbox_comment_html = "<div class='comments_info'>
-									<a href=''>
-										0 Comments
-									</a>
-									 - 
-									<a href=''>
-										Post new comment
-									</a>
-								  </div>";
-	?>
-	
-	<div class="thumbnail">
-	<a rel="lightbox[<?php echo $slide->slideshowid; ?>]" title="<?php echo $slide->title.$lightbox_comment_html; ?>" href="images/intranetoffice/projects/<?php echo $this->projectid; ?>/slideshows/<?php echo $slide->slideshowid."/".$slide->filename; ?>">
-	<img src="images/intranetoffice/projects/<?php echo $this->projectid; ?>/slideshows/<?php echo $slide->slideshowid."/thumb/".$slide->filename; ?>" alt="" />
-	</a>
-	</div>
-	
-	<?php endforeach; ?>
-	
-	<div style="clear: left;"></div>
-	
-	<br />
-	Total slides: <?php echo count($this->row->slideshows[$k]->slides); ?>
-	
-	<?php endif; ?>
-	
-</div>
-<?php endfor; ?>
-<?php else : ?>
-No slideshows.
-<?php endif; ?>
-
-<h2>Files</h2>
-
-<table>
-<tr>
-	<td width="32">
-		<a href="index.php?option=com_projects&amp;task=download_file&amp;fileid=26">
-		<img border="0" height="32" width="32" src="templates/<?php echo $this->config->template; ?>/images/icons/mimetypes/32x32/pdf.png" />
-		</a>
-	</td>
-	<td>
-		<a href="index.php?option=com_projects&amp;task=download_file&amp;fileid=26">
-		StickyWorld CRD 13.01.09 Agenda
-		</a>
-	</td>
-</tr>
-<tr>
-	<td width="32">
-		<a href="index.php?option=com_projects&amp;task=download_file&amp;fileid=25">
-		<img border="0" height="32" width="32" src="templates/<?php echo $this->config->template; ?>/images/icons/mimetypes/32x32/pdf.png" />
-		</a>
-	</td>
-	<td>
-		<a href="index.php?option=com_projects&amp;task=download_file&amp;fileid=25">
-		StickyWorld CRD masterprogramme rev2 
-		</a>
-	</td>
-</tr>
-<tr>
-	<td width="32">
-		<a href="index.php?option=com_projects&amp;task=download_file&amp;fileid=24">
-		<img border="0" height="32" width="32" src="templates/<?php echo $this->config->template; ?>/images/icons/mimetypes/32x32/pdf.png" />
-		</a>
-	</td>
-	<td>
-		<a href="index.php?option=com_projects&amp;task=download_file&amp;fileid=24">
-		Microsoft Word - StickyWorld CRD Quarter 1Progress report 
-		</a>
-	</td>
-</tr>
-</table>
-
-<!-- 
-<h2>Polls</h2>
- -->
 
 <div style="clear: left;"></div>
 

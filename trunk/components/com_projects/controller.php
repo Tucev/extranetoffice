@@ -529,6 +529,120 @@ class projectsController extends controller {
 		$this->setRedirect('index.php?option=com_projects&view=meetings&projectid='.$projectid);
 	}
 	
+	function save_slideshow() {
+		// Check for request forgeries
+		crypt::checkToken() or exit( 'Invalid Token' );
+		
+		// Get request vars
+		$post = request::get('post');
+		
+		$modelMeetings =& $this->getModel('meetings');
+		$row = $modelMeetings->saveSlideshow($post);
+		
+		$redirect_url = 'index.php?option=com_projects&view=meetings&layout=slideshows_form&projectid='.$post['projectid'].'&meetingid='.$post['meetingid'];
+		
+		if ($row === false) {
+			error::raise('', 'error', $modelMeetings->getLastError());
+		}
+		else {
+			error::raise('', 'message', _LANG_MEETINGS_SLIDESHOW_SAVE_SUCCESS);
+			$redirect_url .= '&slideshowid='.$row->id;
+		}
+		
+		$this->setRedirect($redirect_url);
+	}
+	
+	function remove_slideshow() {
+		$projectid = request::getVar('projectid', 0);
+		$meetingid = request::getVar('meetingid', 0);
+		$slideshowid = request::getVar('slideshowid', 0);
+		
+		$modelMeetings =& $this->getModel('meetings');
+		
+		if (!$modelMeetings->deleteSlideshow($projectid, $slideshowid)) {
+			error::raise('', 'error', $modelMeetings->getLastError());
+		}
+		else {
+			error::raise('', 'message', _LANG_MEETINGS_SLIDESHOW_DELETE_SUCCESS);
+		}
+		
+		$this->setRedirect('index.php?option=com_projects&view=meetings&layout=detail&projectid='.$projectid.'&meetingid='.$meetingid);
+	}
+	
+	function upload_slide() {
+		// Check for request forgeries
+		crypt::checkToken() or exit( 'Invalid Token' );
+		
+		// Get request vars
+		$post = request::get('post');
+		
+		$modelMeetings =& $this->getModel('meetings');
+		$row = $modelMeetings->uploadSlide($post);
+		
+		$tmpl = request::getVar('tmpl', '');
+		if ($row === false) {
+			if ($tmpl == 'component') {
+				echo '0';
+				exit;
+			}
+			else {
+				error::raise('', 'error', $modelMeetings->getLastError());
+			}
+		}
+		else {
+			if ($tmpl == 'component') {
+				echo $row->id;
+				exit;
+			}
+			else {
+				error::raise('', 'message', _LANG_MEETINGS_SLIDE_UPLOAD_SUCCESS);
+			}
+		}
+		
+		$this->setRedirect('index.php?option=com_projects&view=meetings&projectid='.$projectid);
+	}
+	
+	function remove_slide() {
+		$projectid = request::getVar('projectid', 0);
+		$slideid = request::getVar('slideid', 0);
+		$meetingid = request::getVar('meetingid', 0);
+		$slideshowid = request::getVar('slideshowid', 0);
+		
+		$modelMeetings =& $this->getModel('meetings');
+		
+		if (!$modelMeetings->deleteSlide($projectid, $slideid)) {
+			error::raise('', 'error', $modelMeetings->getLastError());
+		}
+		else {
+			error::raise('', 'message', _LANG_MEETINGS_SLIDE_DELETE_SUCCESS);
+		}
+		
+		$this->setRedirect('index.php?option=com_projects&view=meetings&layout=slideshows_form&projectid='.$projectid.'&meetingid='.$meetingid.'&slideshowid='.$slideshowid);
+	}
+	
+	function save_meetings_files() {
+		$projectid = request::getVar('projectid', 0);
+		$meetingid = request::getVar('meetingid', 0);
+		$fileids = request::getVar('fileids', 0);
+		
+		if (is_array($fileids)) {
+			foreach ($fileids as $key=>$value) {
+				$fileids_array[] = $key;
+			}
+		}
+		
+		$modelMeetings =& $this->getModel('meetings');
+		
+		if (!$modelMeetings->saveFiles($meetingid, $fileids_array)) {
+			error::raise('', 'error', $modelMeetings->getLastError());
+		}
+		else {
+			error::raise('', 'message', _LANG_MEETINGS_FILES_SAVE_SUCCESS);
+		}
+		
+		$this->setRedirect('index.php?option=com_projects&view=meetings&layout=detail&projectid='.$projectid.'&meetingid='.$meetingid);
+	}
+	
 	function save_milestone() {
 		// Check for request forgeries
 		crypt::checkToken() or exit( 'Invalid Token' );
@@ -566,7 +680,7 @@ class projectsController extends controller {
 		$projectid = request::getVar('projectid', 0);
 		$milestoneid = request::getVar('milestoneid', 0);
 		
-		$modelMilestones = &$this->getModel('milestones');
+		$modelMilestones =& $this->getModel('milestones');
 		
 		if ($modelMilestones->deleteMilestone($projectid, $milestoneid) === true) {
 			error::raise('', 'message', _LANG_MILESTONE_DELETE_SUCCESS);

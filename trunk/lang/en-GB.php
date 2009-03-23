@@ -178,6 +178,8 @@ define("_LANG_PROJECTS_HOME", "Project home");
 
 define("_LANG_PROJECTS_SWITCHER", "Switch to project");
 
+define("_LANG_SAVE_ERROR_NO_PROJECT_SELECTED", "Error. No project was selected");
+
 // admin
 define("_LANG_ADMIN", "Admin");
 define("_LANG_PROJECT_SAVED", "Project successfully saved");
@@ -238,7 +240,6 @@ define("_LANG_FILES_UPLOAD_NEW_VERSION", "Upload new version");
 define("_LANG_FILES_ACTION_NEW", "New file uploaded");
 define("_LANG_FILES_NEW_VERSION_OF", "New version of file");
 define("_LANG_FILE_SAVED", "File uploaded successfully");
-define("_LANG_FILES_SAVE_ERROR_NO_PROJECT_SELECTED", "Could not save file. No project was selected");
 define("_LANG_FILES_ACTIVITYLOG_DESCRIPTION", "Title: %s
 File name: %s
 Revision: %s
@@ -257,7 +258,6 @@ define("_LANG_ISSUES_EDIT", "Edit issue");
 define("_LANG_ISSUES_TYPE", "Issue type");
 define("_LANG_ISSUES_EXPECTED_DURATION", "Expected duration");
 define("_LANG_ISSUE_SAVED", "Issue raised");
-define("_LANG_ISSUES_SAVE_ERROR_NO_PROJECT_SELECTED", "Could not save issue. No project was selected");
 define("_LANG_ISSUES_ACTION_EDIT", "Issue modified");
 define("_LANG_ISSUE_CLOSED", "Issue closed");
 define("_LANG_ISSUES_REOPEN", "Reopen issue");
@@ -281,7 +281,6 @@ define("_LANG_MEETINGS_NAME_REQUIRED", "Meeting name is required to set up a new
 define("_LANG_MEETINGS_DTSTART_REQUIRED", "Start date is required to set up a meeting");
 define("_LANG_MEETINGS_DTEND_REQUIRED", "End date is required to set up a meeting");
 define("_LANG_MEETING_SAVED", "Meeting successfully saved");
-define("_LANG_MEETINGS_SAVE_ERROR_NO_PROJECT_SELECTED", "Could not save meeting. No project was selected");
 define("_LANG_MEETINGS_ACTION_NEW", "Meeting scheduled");
 define("_LANG_MEETINGS_ACTION_EDIT", "Meeting modified");
 define("_LANG_MEETINGS_ACTIVITYLOG_DESCRIPTION", "Name: %s
@@ -291,10 +290,20 @@ Description: %s");
 define("_LANG_PROJECTS_MEETINGS_DELETE", "Delete meeting");
 define("_LANG_PROJECTS_MEETINGS_DELETE_CONFIRM", "Are you sure you want to delete meeting");
 define("_LANG_MEETING_DELETE_SUCCESS", "Meeting successfully deleted");
-define("_LANG_MEETING_DELETE_ERROR", "An error occurred while saving meeting");
+define("_LANG_MEETING_DELETE_ERROR", "An error occurred while deleting meeting");
 // Slideshows
+define("_LANG_SLIDES", "Slides");
 define("_LANG_SLIDESHOWS_NEW", "New slideshow");
 define("_LANG_SLIDESHOWS_EDIT", "Edit slideshow");
+define("_LANG_MEETINGS_SLIDESHOW_SAVE_SUCCESS", "Slideshow successfully saved");
+define("_LANG_PROJECTS_MEETINGS_SLIDESHOWS_DELETE", "Delete slideshow");
+define("_LANG_PROJECTS_MEETINGS_SLIDESHOWS_DELETE_CONFIRM", "Are you sure you want to delete slideshow");
+define("_LANG_MEETINGS_SLIDESHOW_DELETE_SUCCESS", "Slideshow deleted successfully");
+define("_LANG_MEETINGS_SLIDE_UPLOAD_SUCCESS", "Slide uploaded successfully");
+define("_LANG_MEETINGS_SLIDE_DELETE_SUCCESS", "Slide deleted successfully");
+define("_LANG_PROJECTS_MEETINGS_FILES_ATTACH", "Attach files to meeting");
+define("_LANG_PROJECTS_MEETINGS_NO_MEETING_SELECTED", "Could not save meeting files. No meeting selected.");
+define("_LANG_MEETINGS_FILES_SAVE_SUCCESS", "Meeting files successfully saved");
 
 // Messages
 define("_LANG_MESSAGES", "Messages");
@@ -304,7 +313,6 @@ define("_LANG_MESSAGES_SUBJECT", "Subject");
 define("_LANG_MESSAGES_SUBJECT_REQUIRED", "Subject is required");
 define("_LANG_MESSAGES_BODY_REQUIRED", "Message must contain some text");
 define("_LANG_MESSAGE_SAVED", "Message saved");
-define("_LANG_MESSAGES_SAVE_ERROR_NO_PROJECT_SELECTED", "Could not save message. No project was selected");
 define("_LANG_MESSAGES_ACTION_NEW", "New message sent");
 define("_LANG_MESSAGES_BODY", "Body");
 define("_LANG_MESSAGES_ACTIVITYLOG_DESCRIPTION", "Subject: %s
@@ -329,7 +337,6 @@ Due date: %s
 Description: %s
 ");
 define("_LANG_MILESTONE_SAVED", "Milestone saved");
-define("_LANG_MILESTONES_SAVE_ERROR_NO_PROJECT_SELECTED", "Could not save milestone. No project was selected");
 define("_LANG_PROJECTS_MILESTONES_DELETE", "Delete milestone");
 define("_LANG_PROJECTS_MILESTONES_DELETE_CONFIRM", "Are you sure you want to delete milestone");
 define("_LANG_MILESTONE_DELETE_SUCCESS", "Milestone successfully deleted"); 
@@ -342,7 +349,6 @@ define("_LANG_COMMENTS_ACTION_NEW", "New comment");
 define("_LANG_COMMENTS_ACTIVITYLOG_DESCRIPTION", "Title: %s
 Body:
 %s");
-define("_LANG_COMMENTS_SAVE_ERROR_NO_PROJECT_SELECTED", "Could not save comment. No project was selected");
 
 // People
 define("_LANG_PEOPLE", "People");
