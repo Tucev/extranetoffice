@@ -444,7 +444,7 @@ class html {
 					$i=0;
 					foreach ($data as $key=>$value) {
 						if ($i>0) { echo ",\n"; } 
-						echo $key." : '".$value."'";
+						echo "'".$key."' : '".$value."'";
 						$i++;
 					}
 					?>
