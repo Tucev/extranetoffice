@@ -135,6 +135,7 @@ html::validate('commentsform');
 		<input type="hidden" name="assignees[]" value="<?php echo $assignee['id']; ?>" />
 		<?php endforeach; ?>
 		<?php endif; ?>
+		<?php echo html::_( 'form.token' ); ?>
 		</form>
 	</div>
 </div>
