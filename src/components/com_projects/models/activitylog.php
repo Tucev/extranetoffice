@@ -78,12 +78,12 @@ class projectsModelActivitylog extends model {
 		$row->url = $url;
 		
 		if (!$row->check()) {
-			$this->error[] =& $row->getLastError();
+			$this->error[] = $row->getLastError();
 			return false;
 		}
 		
 		if (!$row->store()) {
-			$this->error[] =& $row->getLastError();
+			$this->error[] = $row->getLastError();
 			return false;
 		}
 				

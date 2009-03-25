@@ -203,12 +203,12 @@ class projectsModelIssues extends model {
 		}
 		
 		if (!$row->check()) {
-			$this->error[] =& $row->getLastError();
+			$this->error[] = $row->getLastError();
 			return false;
 		}
 	
 		if (!$row->store()) {
-			$this->error[] =& $row->getLastError();
+			$this->error[] = $row->getLastError();
 			return false;
 		}
 		
@@ -269,7 +269,7 @@ class projectsModelIssues extends model {
 		
 		// Delete row from database
 		if (!$row->delete($issueid)) {
-			$this->error[] =& $row->getLastError();
+			$this->error[] = $row->getLastError();
 			return false;
 		}
 		else {

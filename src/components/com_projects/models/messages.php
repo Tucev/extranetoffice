@@ -156,12 +156,12 @@ class projectsModelMessages extends model {
 		}
 		
 		if (!$row->check()) {
-			$this->error =& $row->error;
+			$this->error[] = $row->getLastError();
 			return false;
 		}
 	
 		if (!$row->store()) {
-			$this->error =& $row->error;
+			$this->error[] = $row->getLastError();
 			return false;
 		}
 		
@@ -209,7 +209,7 @@ class projectsModelMessages extends model {
 		
 		// Delete row from database
 		if (!$row->delete($messageid)) {
-			$this->error =& $row->error;
+			$this->error[] = $row->getLastError();
 			return false;
 		}
 		else {
