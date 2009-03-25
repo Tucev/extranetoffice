@@ -67,12 +67,12 @@ class projectsModelComments extends model {
 		$row->created = date("Y-m-d H:i:s");
 		
 		if (!$row->check()) {
-			$this->error[] =& $row->getLastError();
+			$this->error[] = $row->getLastError();
 			return false;
 		}
 	
 		if (!$row->store()) {
-			$this->error[] =& $row->getLastError();
+			$this->error[] = $row->getLastError();
 			return false;
 		}
 		
@@ -88,7 +88,7 @@ class projectsModelComments extends model {
 		
 		// Delete row from database
 		if (!$row->delete($commentid)) {
-			$this->error =& $row->error;
+			$this->error[] = $row->getLastError();
 			return false;
 		}
 		else {
