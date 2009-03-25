@@ -50,7 +50,7 @@ html::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJECT_MEMBE
 <div class="main_col_module_half">
 	
 	<div style="float:right;" class="edit">
-		<a style="float:right;" href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=form&projectid=".$this->project->id); ?>" title="<?php echo text::_( _LANG_PROJECTS_NEW ); ?>">
+		<a style="float:right;" href="<?php echo route::_("index.php?option=com_projects&view=admin&layout=form&projectid=".$this->project->id); ?>" title="<?php echo text::_( _LANG_PROJECTS_NEW ); ?>">
 		<?php echo text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
