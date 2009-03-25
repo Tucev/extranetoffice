@@ -355,7 +355,7 @@ abstract class table extends singleton {
 		$insert_id = $this->db->query();
 		
 		if ($insert_id === false){
-			$this->error[] =& $this->db->getLastError(); 
+			$this->error[] = $this->db->getLastError(); 
 			return false;
 		}
 		
