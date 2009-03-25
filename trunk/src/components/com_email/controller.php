@@ -33,6 +33,26 @@ class emailController extends controller {
 		parent::__construct();
 	}
 	
+	function save_account() {
+		// Check for request forgeries
+		crypt::checkToken() or exit( 'Invalid Token' );
+		
+		$user =& factory::getUser();
+		$post = request::get('post');
+		
+		$modelAccounts =& $this->getModel('accounts');
+		$row = $modelAccounts->saveAccount($post);
+		
+		if ($row !== false) {
+			error::raise('', 'message', _LANG_EMAIL_ACCOUNT_SAVED);
+		}
+		else {
+			error::raise('', 'error', $modelAccounts->getLastError());
+		}
+		
+		$this->setRedirect('index.php?option=com_email&view=accounts');
+	}
+	
 	function download_attachment() {
 		$folder = request::getVar('folder', 'INBOX');
 		$msgno = request::getVar('msgno', 0);

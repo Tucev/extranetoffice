@@ -114,7 +114,7 @@ function add_attachment(path, size, type) {
 <table class="ioffice_email_detail" width="100%" cellpadding="0" cellspacing="0">
 <tr>
 <th><?php echo _LANG_EMAIL_FROM; ?>: </th>
-<td><?php echo $this->account->from_name.' &lt;'.$this->account->email_address.'&gt;'; ?></td>
+<td><?php echo $this->account->fromname.' &lt;'.$this->account->email_address.'&gt;'; ?></td>
 </tr>
 <tr>
 <th><?php echo _LANG_EMAIL_TO; ?>: </th>
@@ -158,7 +158,7 @@ function add_attachment(path, size, type) {
 </div>
 
 <input type="hidden" name="from_address" value="<?php echo $this->account->email_address; ?>" />
-<input type="hidden" name="from_name" value="<?php echo $this->account->from_name; ?>" />
+<input type="hidden" name="fromname" value="<?php echo $this->account->fromname; ?>" />
 <input type="hidden" name="attachments" value="" />
 <input type="hidden" name="flag" value="<?php echo $this->message['uid']."|".request::getVar('type', 'list'); ?>" />
 <input type="hidden" name="folder" value="<?php echo $this->folder; ?>" />
