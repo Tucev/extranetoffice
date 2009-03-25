@@ -79,19 +79,19 @@ class emailModelEmail extends model {
 	 * @return	void
 	 */
 	function setEmailAccount($account) {
-		$this->account->from_name = $account->from_name;
+		$this->account->fromname = $account->fromname;
 		$this->account->email_address = $account->email_address;
 		$this->account->email_signature = $account->email_signature;
 		$this->account->server_type = $account->server_type;
-		$this->account->incoming_server = $account->incoming_server;
-		$this->account->incoming_server_port = $account->incoming_server_port;
-		$this->account->incoming_server_username = $account->incoming_server_username;
-		$this->account->incoming_server_password = $account->incoming_server_password;
-		$this->account->outgoing_server = $account->outgoing_server;
-		$this->account->outgoing_server_port = $account->outgoing_server_port;
-		$this->account->outgoing_server_auth = $account->outgoing_server_auth;
-		$this->account->outgoing_server_username = $account->outgoing_server_username;
-		$this->account->outgoing_server_password = $account->outgoing_server_password;
+		$this->account->imap_host = $account->imap_host;
+		$this->account->imap_port = $account->imap_port;
+		$this->account->imap_user = $account->imap_user;
+		$this->account->imap_password = $account->imap_password;
+		$this->account->smtp_host = $account->smtp_host;
+		$this->account->smtp_port = $account->smtp_port;
+		$this->account->smtp_auth = $account->smtp_auth;
+		$this->account->smtp_user = $account->smtp_user;
+		$this->account->smtp_password = $account->smtp_password;
 	}
 	
 	/**
@@ -135,14 +135,14 @@ class emailModelEmail extends model {
 		
 	  	// Set mailbox name depending on server type
 	  	if ($this->account->server_type == 'POP3') {
-	    	$this->mbox_name = '{'.$this->account->incoming_server.':'.$this->account->incoming_server_port.'/pop3}'.$folder;
+	    	$this->mbox_name = '{'.$this->account->imap_host.':'.$this->account->imap_port.'/pop3}'.$folder;
 	  	}
 	  	if ($this->account->server_type == 'IMAP') {
-	    	$this->mbox_name = '{'.$this->account->incoming_server.':'.$this->account->incoming_server_port.'/novalidate-cert}'.$folder;
+	    	$this->mbox_name = '{'.$this->account->imap_host.':'.$this->account->imap_port.'/novalidate-cert}'.$folder;
 	  	}
 	  		
 	  	// Open mailbox stream
-	  	$this->stream = @imap_open($this->mbox_name, $this->account->incoming_server_username, $this->account->incoming_server_password);
+	  	$this->stream = @imap_open($this->mbox_name, $this->account->imap_user, $this->account->imap_password);
 	  	if (!$this->stream) {
 	  		$this->error = imap_last_error();
 	  		return $this->error;
@@ -364,7 +364,7 @@ class emailModelEmail extends model {
 		$return['to_name'] = $mailHeader->to[0]->personal;
 		$return['from'] = $this->mime_header_decode($mailHeader->fromaddress);
 		$return['from_address'] = $this->mime_header_decode($mailHeader->from[0]->mailbox."@".$mailHeader->from[0]->host);
-		$return['from_name'] = $this->mime_header_decode($mailHeader->from[0]->personal);
+		$return['fromname'] = $this->mime_header_decode($mailHeader->from[0]->personal);
 		$return['reply_toaddress'] = $mailHeader->reply_to[0]->mailbox."@".$mailHeader->reply_to[0]->host;
 		$return['body'] = $this->getBody($msgno, 'web');
 		$return['attachments'] = $this->getAttachments($msgno, "*");
@@ -443,10 +443,10 @@ class emailModelEmail extends model {
 			$new_mail->addReplyTo($replyto);
 		}
 		$new_mail->setSender($sender);
-		$new_mail->FromName = $this->account->from_name;
+		$new_mail->FromName = $this->account->fromname;
 		$new_mail->setSubject($subject);
 		$new_mail->setBody($body);
-		$new_mail->useSMTP(true, $this->account->outgoing_server, $this->account->outgoing_server_username, $this->account->outgoing_server_password);
+		$new_mail->useSMTP(true, $this->account->smtp_host, $this->account->smtp_user, $this->account->smtp_password);
 		//$new_mail->useSendmail();
 		
 		if ($new_mail->Send() !== true) {

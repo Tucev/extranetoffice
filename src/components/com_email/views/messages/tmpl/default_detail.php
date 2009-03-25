@@ -162,7 +162,7 @@ function confirm_delete(trash, uid, label) {
 <table class="ioffice_email_detail" width="100%" cellpadding="0" cellspacing="0">
 <tr>
 <th><?php echo _LANG_EMAIL_FROM; ?>:</th>
-<td><?php echo $this->message['from_name']." &lt;".$this->message['from_address']."&gt;"; ?></td>
+<td><?php echo $this->message['fromname']." &lt;".$this->message['from_address']."&gt;"; ?></td>
 </tr>
 <tr>
 <th><?php echo _LANG_EMAIL_SUBJECT; ?>:</th>

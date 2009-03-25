@@ -372,6 +372,10 @@ define("_LANG_ACTIVITYLOG_NO_RECIPIENTS", "Could NOT send email notifications. N
 
 // com_email
 define("_LANG_EMAIL_NO_ACCOUNT", "No email account");
+define("_LANG_EMAIL_ACCOUNTS", "Email accounts");
+define("_LANG_EMAIL_SERVER_TYPE", "Server type");
+define("_LANG_EMAIL_ADDRESS", "Email address");
+define("_LANG_EMAIL_ACCOUNT_SAVED", "Email account successfully saved");
 define("_LANG_NO_MAILBOXES", "No mailbox found");
 define("_LANG_NO_EMAIL", "No email messages found");
 define("_LANG_EMAIL_ERROR_GETTING_MESSAGES_NO_STREAM", "Error getting messages.");

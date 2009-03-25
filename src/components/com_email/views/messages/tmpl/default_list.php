@@ -96,10 +96,19 @@ function confirm_delete_folder(mailbox, label) {
 }
 </script>
 
+<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 
 <div id="right_col">
 	
 	<div class="module">
+	
+	<div>
+		<a href="<?php echo route::_("index.php?option=com_email&view=accounts"); ?>">
+		<?php echo text::_(_LANG_EMAIL_ACCOUNTS); ?>
+		</a>
+	</div>
+	
+	<hr />
 	
 	<div style="float:right;" class="new">
 		<a class="modal" href="index.php?option=com_email&amp;view=messages&amp;folder=<?php echo $this->folder; ?>&amp;layout=new_folder&tmpl=component" rel="{handler: 'iframe', size: {x: 400, y: 160}}">
@@ -157,8 +166,6 @@ function confirm_delete_folder(mailbox, label) {
 </div><!-- close .ioffice_right_col -->
 
 <div id="main_col_2">
-
-<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 
 <div id="email_detail_actions">
 	<div>

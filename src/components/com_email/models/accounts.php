@@ -30,7 +30,7 @@ class emailModelAccounts extends model {
 		parent::__construct();
 	}
 	
-	function getAccounts($userid=0, $accountid=0, $default=false) {
+	public function getAccounts($userid=0, $accountid=0, $default=false) {
 		if (!empty($userid)) {
 			$query = "SELECT * ";
 			$query .= " FROM #__email_accounts ";
@@ -47,6 +47,36 @@ class emailModelAccounts extends model {
 		else {
 			return false;
 		}
+	}
+	
+	/**
+	 * Save email account
+	 * 
+	 * @param	$post	The array to be used for binding to the row before storing it. Normally the HTTP_POST array.
+	 * @return	mixed	Returns the stored table row object on success or FALSE on failure
+	 */
+	public function saveAccount($post) {
+		require_once COMPONENT_PATH.DS."tables".DS."email_accounts.table.php";		
+		$row =& phpFrame::getInstance("emailTableAccounts");
+		
+		if (!$row->bind($post)) {
+			$this->error[] = $row->getLastError();
+			return false;
+		}
+		
+		$row->userid = $this->user->id;
+		
+		if (!$row->check()) {
+			$this->error[] = $row->getLastError();
+			return false;
+		}
+	
+		if (!$row->store()) {
+			$this->error[] = $row->getLastError();
+			return false;
+		}
+		
+		return $row;
 	}
 	
 }
