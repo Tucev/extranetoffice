@@ -59,7 +59,7 @@ class dashboardViewDashboard extends view {
 		require_once _ABS_PATH.DS.'components'.DS.'com_projects'.DS.'models'.DS.'issues.php';
 		require_once _ABS_PATH.DS.'components'.DS.'com_projects'.DS.'helpers'.DS.'projects.helper.php';
 		$modelProjects =& phpFrame::getInstance('projectsModelProjects');
-		$projects = $modelProjects->getProjects(0, $this->user->id);
+		$projects = $modelProjects->getProjects($this->user->id);
 		// Get project updates, overdue items and upcoming milestones
 		if (is_array($projects['rows']) && count($projects['rows']) > 0) {
 			foreach ($projects['rows'] as $row) {

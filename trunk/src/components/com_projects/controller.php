@@ -44,7 +44,7 @@ class projectsController extends controller {
 		if (!empty($this->projectid)) {
 			// Load the project data
 			$modelProjects =& $this->getModel('projects');
-			$this->project = $modelProjects->getProjects($this->projectid);
+			$this->project = $modelProjects->getProjectsDetail($this->projectid);
 					
 			// Do security check with custom permission model for projects
 			$this->project_permissions =& $this->getModel('permissions');
@@ -711,7 +711,7 @@ class projectsController extends controller {
 					
 					// Load the project data
 					$modelProjects =& $this->getModel('projects');
-					$this->project = $modelProjects->getProjects($this->projectid, $userid);
+					$this->project = $modelProjects->getProjectsDetail($this->projectid, $userid);
 					
 					$modelMembers =& $this->getModel('members');
 					$roleid = $modelMembers->isMember($message->data['p'], $userid);

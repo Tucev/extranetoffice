@@ -178,7 +178,7 @@ define("_LANG_PROJECTS_HOME", "Project home");
 
 define("_LANG_PROJECTS_SWITCHER", "Switch to project");
 
-define("_LANG_SAVE_ERROR_NO_PROJECT_SELECTED", "Error. No project was selected");
+define("_LANG_ERROR_NO_PROJECT_SELECTED", "Error. No project was selected");
 
 // admin
 define("_LANG_ADMIN", "Admin");
