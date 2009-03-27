@@ -104,7 +104,7 @@ $(document).ready(function() {
 		</td>
 	</tr>
 </table>
-<input type="hidden" name="option" value="com_user" />
+<input type="hidden" name="option" value="com_users" />
 <input type="hidden" name="task" value="reset_password" />
 </form>
 
