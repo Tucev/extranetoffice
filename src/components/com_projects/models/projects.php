@@ -169,7 +169,7 @@ class projectsModelProjects extends model {
 		$where[] = "p.id = ".$projectid;
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
 		
-		$query = "SELECT p.*  
+		$query = "SELECT p.*,
 				  u.username AS created_by_name, 
 				  pt.name AS project_type_name, 
 				  GROUP_CONCAT(ur.userid) members
@@ -177,10 +177,11 @@ class projectsModelProjects extends model {
 				  JOIN #__users u ON u.id = p.created_by 
 				  LEFT JOIN #__project_types pt ON pt.id = p.project_type  
 				  LEFT JOIN #__users_roles ur ON p.id = ur.projectid "
-				  .$where;
-						  
+				  .$where. 
+				  " GROUP BY p.id ";
+				  	  
 		$this->db->setQuery($query);
-		$row = $this->db->loadObject();
+		return $this->db->loadObject();
 	}
 	
 	
