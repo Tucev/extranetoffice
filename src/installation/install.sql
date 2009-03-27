@@ -3,14 +3,14 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Mar 23, 2009 at 04:29 PM
+-- Generation Time: Mar 27, 2009 at 09:03 PM
 -- Server version: 5.0.51
 -- PHP Version: 5.2.8
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
--- Database: `extranetoffice`
+-- Database: `extranetoffice_dist`
 --
 
 -- --------------------------------------------------------
@@ -53,7 +53,9 @@ INSERT INTO `eo_acl_groups` (`id`, `groupid`, `option`, `task`, `view`, `layout`
 (16, 4, 'com_login', '*', '*', '*', 'own'),
 (17, 3, 'com_dashboard', '*', '*', '*', 'own'),
 (18, 3, 'com_projects', '*', '*', '*', 'own'),
-(19, 4, 'com_dashboard', '*', '*', '*', 'own');
+(19, 4, 'com_dashboard', '*', '*', '*', 'own'),
+(20, 0, 'com_projects', 'process_incoming_email', '*', '*', 'all'),
+(21, 0, 'com_users', 'reset_password', '*', '*', 'all');
 
 -- --------------------------------------------------------
 
@@ -142,18 +144,18 @@ CREATE TABLE IF NOT EXISTS `eo_email_accounts` (
   `id` int(11) NOT NULL auto_increment,
   `userid` int(11) NOT NULL,
   `email_signature` tinytext NOT NULL,
-  `server_type` varchar(32) NOT NULL,
-  `incoming_server` varchar(128) NOT NULL,
-  `incoming_server_port` varchar(6) NOT NULL,
-  `incoming_server_username` varchar(128) NOT NULL,
-  `incoming_server_password` varchar(64) NOT NULL,
-  `from_name` varchar(64) NOT NULL,
+  `server_type` varchar(32) NOT NULL default 'IMAP',
+  `imap_host` varchar(128) NOT NULL,
+  `imap_port` varchar(6) NOT NULL,
+  `imap_user` varchar(128) NOT NULL,
+  `imap_password` varchar(64) NOT NULL,
+  `fromname` varchar(64) NOT NULL,
   `email_address` varchar(128) NOT NULL,
-  `outgoing_server` varchar(128) NOT NULL,
-  `outgoing_server_port` varchar(6) NOT NULL,
-  `outgoing_server_auth` enum('0','1') NOT NULL,
-  `outgoing_server_username` varchar(128) NOT NULL,
-  `outgoing_server_password` varchar(64) NOT NULL,
+  `smtp_host` varchar(128) NOT NULL,
+  `smtp_port` varchar(6) NOT NULL,
+  `smtp_auth` enum('0','1') NOT NULL,
+  `smtp_user` varchar(128) NOT NULL,
+  `smtp_password` varchar(64) NOT NULL,
   `default` enum('0','1') NOT NULL default '0' COMMENT 'Is default account for user?',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -517,7 +519,7 @@ CREATE TABLE IF NOT EXISTS `eo_projects` (
   `created_by` int(11) NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `eo_projects`
