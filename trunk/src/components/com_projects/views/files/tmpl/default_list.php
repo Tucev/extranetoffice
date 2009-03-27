@@ -70,6 +70,17 @@ html::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECTS_FILES_D
 	<div class="thread_details">
 	<?php echo _LANG_FILES_FILENAME.": ".$row->filename; ?> (Revision <?php echo $row->revision; ?>) 
 	Uploaded by: <?php echo $row->created_by_name; ?>
+	<?php if (!empty($row->assignees)) : ?>
+		<br />
+		<?php echo _LANG_ASSIGNEES; ?>: 
+    	<?php for ($j=0; $j<count($row->assignees); $j++) : ?>
+    		<?php if ($j>0) echo ', '; ?>
+    		<a href="<?php echo route::_("index.php?option=com_projects&view=users&layout=detail&userid=".$row->assignees[$j]['id']); ?>">
+    		<?php echo $row->assignees[$j]['name']; ?>
+    		</a>
+    	<?php endfor; ?>
+    <?php endif; ?>
+    	
 	</div>
 	
 	<?php if (!empty($row->changelog)) : ?>

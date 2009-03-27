@@ -63,7 +63,10 @@ class projectsModelComments extends model {
 			return false;
 		}
 		
-		$row->userid = $this->user->id;
+		if (empty($row->userid)) {
+			$row->userid = $this->user->id;	
+		}
+		
 		$row->created = date("Y-m-d H:i:s");
 		
 		if (!$row->check()) {
@@ -123,6 +126,31 @@ class projectsModelComments extends model {
 		$query .= " WHERE itemid = ".$itemid." AND type = '".$type."'";
 		$this->db->setQuery($query);
 		return $this->db->loadResult();
+	}
+	
+	function fetchCommentsFromEmail() {
+		$imap = new imap($this->config->imap_host, $this->config->imap_port, $this->config->imap_user, $this->config->imap_password);
+		$messages = $imap->getMessages();
+		$imap->close();
+		
+		foreach ($messages as $message) {
+			//var_dump($message);
+			// Get data appended to message id
+			preg_match("/\-(.*)@/i", $message->in_reply_to, $matches);
+			parse_str(base64_decode($matches[1]), $data);
+			// Get from address
+			preg_match("/<(.*)>/", $message->from, $matches);
+			$data['fromaddress'] = $matches[1];
+			
+			// Only process messages from com_projects
+			if ($data['o'] == 'com_projects') {
+				$message->data = $data;
+				$comments_messages[] = $message;
+			}
+			unset($data);
+		}
+		
+		return $comments_messages;
 	}
 }
 ?>

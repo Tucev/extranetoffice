@@ -273,7 +273,7 @@ class projectsController extends controller {
 			error::raise( '', 'message',  _LANG_ISSUE_CLOSED);
 			
 			// Prepare data for activity log entry
-			$assignees = $modelIssues->_getAssignees($row->id, false);
+			$assignees = $modelIssues->getAssignees($row->id, false);
 			$action = _LANG_ISSUE_CLOSED;
 			$title = $row->title;
 			$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
@@ -302,7 +302,7 @@ class projectsController extends controller {
 			error::raise('', 'message', _LANG_ISSUE_REOPENED);
 			
 			// Prepare data for activity log entry
-			$assignees = $modelIssues->_getAssignees($row->id, false);
+			$assignees = $modelIssues->getAssignees($row->id, false);
 			$action = _LANG_ISSUE_REOPENED;
 			$title = $row->title;
 			$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
@@ -431,7 +431,7 @@ class projectsController extends controller {
 		// Get request vars
 		$post = request::get('post');
 		
-		// Save file using files model
+		// Save comment using comments model
 		$modelComments =& $this->getModel('comments');
 		$row = $modelComments->saveComment($post);
 		if ($row === false) {
@@ -690,6 +690,97 @@ class projectsController extends controller {
 		}
 		
 		$this->setRedirect('index.php?option=com_projects&view=milestones&projectid='.$projectid);
+	}
+	
+	function process_incoming_email() {
+		// Get models
+		$modelComments =& $this->getModel('comments');
+		
+		// Get mail messages with project comments
+		$messages = $modelComments->fetchCommentsFromEmail();
+		
+		if (is_array($messages) && count($messages) > 0) {
+			foreach ($messages as $message) {
+				// Check whether the email address belongs to a project member
+				if (!empty($message->data['p']) && !empty($message->data['fromaddress'])) {
+					// Set the project id
+					request::setVar('projectid', $message->data['p']);
+					$this->projectid = $message->data['p'];
+					
+					// Load the project data
+					$modelProjects =& $this->getModel('projects');
+					$this->project = $modelProjects->getProjects($this->projectid);
+				
+					$userid = usersHelper::email2id($message->data['fromaddress']);
+					
+					$modelMembers =& $this->getModel('members');
+					$roleid = $modelMembers->isMember($message->data['p'], $userid);
+					if (!empty($roleid)) {
+						$post = array();
+						$post['projectid'] = $message->data['p'];
+						$post['userid'] = $userid;
+						$post['type'] = $message->data['t'];
+						$post['itemid'] = $message->data['i'];
+						$post['body'] = trim(substr($message->body['PLAIN'], 0, strpos($message->body['PLAIN'], '--- Reply ABOVE THIS LINE to post a comment to the project ---')), " >\n");
+						
+						$row = $modelComments->saveComment($post);
+						if ($row === false) {
+							error::raise('', 'error', $modelComments->getLastError());
+						}
+						else {
+							error::raise('', 'message', _LANG_COMMENT_SAVED);
+							
+							// Prepare data for activity log entry
+							$action = _LANG_COMMENTS_ACTION_NEW;
+							$title = 'RE: '.$modelComments->itemid2title($row->itemid, $row->type);
+							$description = sprintf(_LANG_COMMENTS_ACTIVITYLOG_DESCRIPTION, $title, $row->body);
+							switch ($row->type) {
+								case 'files' : 
+									$url = "index.php?option=com_projects&view=files&layout=detail&projectid=".$row->projectid."&fileid=".$row->itemid;
+									break;
+								case 'issues' : 
+									$url = "index.php?option=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->itemid;
+									break;
+								case 'meetings' : 
+									$url = "index.php?option=com_projects&view=meetings&layout=detail&projectid=".$row->projectid."&meetingid=".$row->itemid;
+									break;
+								case 'messages' : 
+									$url = "index.php?option=com_projects&view=messages&layout=detail&projectid=".$row->projectid."&messageid=".$row->itemid;
+									break;
+								case 'milestones' : 
+									$url = "index.php?option=com_projects&view=milestones&layout=detail&projectid=".$row->projectid."&milestoneid=".$row->itemid;
+									break;
+							}
+							$url = route::_($url);
+							
+							// Get assignees
+							$itemModel =& $this->getModel($row->type);
+							$assignees = $itemModel->getAssignees($row->itemid, false);
+							
+							// Add entry in activity log
+							$modelActivityLog =& $this->getModel('activitylog');
+							$modelActivityLog->project =& $this->project;
+							if (!$modelActivityLog->saveActivityLog($row->projectid, $row->userid, 'comments', $action, $title, $description, $url, $assignees, true)) {
+								error::raise('', 'error', $modelActivityLog->getLastError());
+							}
+							else {
+								$delete_uids[] = $message->uid;
+							}
+						}
+						
+						// Delete message from mailbox
+						$config =& factory::getConfig();
+						$imap = new imap($config->imap_host, $config->imap_port, $config->imap_user, $config->imap_password);
+						$imap->deleteMessage(implode(',', $delete_uids));
+						$imap->expunge();
+						$imap->close();
+								
+						unset($post);
+					}			
+				}
+			}
+			//exit;
+		}
 	}
 }
 ?>

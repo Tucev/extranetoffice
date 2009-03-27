@@ -62,6 +62,16 @@ html::validate('commentsform');
 	<div class="thread_details">
 	<?php echo _LANG_FILES_FILENAME.": ".$this->row->filename; ?> (Revision <?php echo $this->row->revision; ?>) 
 	Uploaded by: <?php echo $this->row->created_by_name; ?>
+	<?php if (!empty($this->row->assignees)) : ?>
+		<br />
+		<?php echo _LANG_ASSIGNEES; ?>: 
+    	<?php for ($j=0; $j<count($this->row->assignees); $j++) : ?>
+    		<?php if ($j>0) echo ', '; ?>
+    		<a href="<?php echo route::_("index.php?option=com_projects&view=users&layout=detail&userid=".$this->row->assignees[$j]['id']); ?>">
+    		<?php echo $this->row->assignees[$j]['name']; ?>
+    		</a>
+    	<?php endfor; ?>
+    <?php endif; ?>
 	</div>
 	
 	<?php if (!empty($this->row->changelog)) : ?>
