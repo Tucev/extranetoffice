@@ -355,18 +355,17 @@ define("_LANG_PEOPLE", "People");
 
 // Activity log
 define("_LANG_ACTIVITYLOG_NOTIFY_FAILED", "Email notification failed");
-define("_LANG_ACTIVITYLOG_NOTIFY_BODY", "[Project: %s]
+define("_LANG_ACTIVITYLOG_NOTIFY_BODY", "--- Reply ABOVE THIS LINE to post a comment to the project ---
+
+[Project: %s]
 
 %s
 
 Details
 -------
-%s
-
 URL: %s
 
---
-To add a comment on this thread simply reply to this email.
+%s
 ");
 define("_LANG_ACTIVITYLOG_NO_RECIPIENTS", "Could NOT send email notifications. No recipients selected.");
 
@@ -375,7 +374,9 @@ define("_LANG_EMAIL_NO_ACCOUNT", "No email account");
 define("_LANG_EMAIL_ACCOUNTS", "Email accounts");
 define("_LANG_EMAIL_SERVER_TYPE", "Server type");
 define("_LANG_EMAIL_ADDRESS", "Email address");
+define("_LANG_EMAIL_ACCOUNTS_MAKE_DEFAULT", "Make default");
 define("_LANG_EMAIL_ACCOUNT_SAVED", "Email account successfully saved");
+define("_LANG_EMAIL_ACCOUNT_DELETE_SUCCESS", "Account successfully deleted");
 define("_LANG_NO_MAILBOXES", "No mailbox found");
 define("_LANG_NO_EMAIL", "No email messages found");
 define("_LANG_EMAIL_ERROR_GETTING_MESSAGES_NO_STREAM", "Error getting messages.");

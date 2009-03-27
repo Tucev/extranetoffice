@@ -59,6 +59,16 @@ class emailModelAccounts extends model {
 		require_once COMPONENT_PATH.DS."tables".DS."email_accounts.table.php";		
 		$row =& phpFrame::getInstance("emailTableAccounts");
 		
+		if (!empty($post['id'])) {
+			$row->load($post['id']);
+		}
+		
+		// Check whether this is the first account to be set up so that we make it default
+		$accounts = $this->getAccounts($this->user->id);
+		if (!is_array($accounts) || count($accounts) == 0) {
+			$row->default = '1';	
+		}
+		
 		if (!$row->bind($post)) {
 			$this->error[] = $row->getLastError();
 			return false;
@@ -77,6 +87,45 @@ class emailModelAccounts extends model {
 		}
 		
 		return $row;
+	}
+	
+	public function deleteAccount($accountid) {
+		require_once COMPONENT_PATH.DS."tables".DS."email_accounts.table.php";		
+		$row =& phpFrame::getInstance("emailTableAccounts");
+		
+		if (!$row->delete($accountid)) {
+			$this->error[] = $row->getLastError();
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	
+	/**
+	 * Make an email account the default account for the current user
+	 * 
+	 * @param	int		$accountid
+	 * @return	boolean
+	 */
+	public function makeDefault($accountid) {
+		// First we make sure that all accounts are set not to be default (we do this to avoid duplicate default accounts)
+		$query = "UPDATE `#__email_accounts` SET `default` = '0' WHERE `userid` = ".$this->user->id;
+		$this->db->setQuery($query);
+		if (!$this->db->query()) {
+			$this->error[] = $this->db->getLastError();
+			return false;
+		}
+		
+		// Make the selected account the default account
+		$query = "UPDATE `#__email_accounts` SET `default` = '1' WHERE `userid` = ".$this->user->id." AND `id` = ".$accountid;
+		$this->db->setQuery($query);
+		if (!$this->db->query()) {
+			$this->error[] = $this->db->getLastError();
+			return false;
+		}
+		
+		return true;
 	}
 	
 }
