@@ -57,7 +57,7 @@ $(document).ready(function() {
 		</td>
 	</tr>
 </table>
-<input type="hidden" name="option" value="com_user" />
+<input type="hidden" name="option" value="com_login" />
 <input type="hidden" name="task" value="login" />
 </form>
 
