@@ -85,7 +85,7 @@ class projectsModelFiles extends model {
 		if (is_array($rows) && count($rows) > 0) {
 			foreach ($rows as $row) {
 				// Get assignees
-				$row->assignees = $this->_getAssignees($row->id);
+				$row->assignees = $this->getAssignees($row->id);
 				
 				// get total comments
 				$modelComments =& $this->getModel('comments');
@@ -125,7 +125,7 @@ class projectsModelFiles extends model {
 		}
 		
 		// Get assignees
-		$row->assignees = $this->_getAssignees($fileid);
+		$row->assignees = $this->getAssignees($fileid);
 		
 		// Get comments
 		$modelComments =& $this->getModel('comments');
@@ -285,6 +285,36 @@ class projectsModelFiles extends model {
 		exit;
 	}
 	
+	/**
+	 * Get list of assignees
+	 *
+	 * @param	int		$fileid
+	 * @param	bool	$asoc
+	 * @return	array	Asociative array with userid, name and email of assignees
+	 */
+	public function getAssignees($fileid, $asoc=true) {
+		$query = "SELECT uf.userid, u.firstname, u.lastname, u.email";
+		$query .= " FROM #__users_files AS uf ";
+		$query .= "LEFT JOIN #__users u ON u.id = uf.userid";
+		$query .= " WHERE uf.fileid = ".$fileid;
+		$this->db->setQuery($query);
+		$assignees = $this->db->loadObjectList();
+		
+		// Prepare assignee data
+		for ($i=0; $i<count($assignees); $i++) {
+			if ($asoc === false) {
+				$new_assignees[$i] = $assignees[$i]->userid;
+			}
+			else {
+				$new_assignees[$i]['id'] = $assignees[$i]->userid;
+				$new_assignees[$i]['name'] = usersHelper::fullname_format($assignees[$i]->firstname, $assignees[$i]->lastname);
+				$new_assignees[$i]['email'] = $assignees[$i]->email;
+			}
+		}
+		
+		return $new_assignees;
+	}
+	
 	private function _readfile_chunked($filename, $retbytes=true) {
 	   $chunksize = 1*(1024*1024); // how many bytes per chunk
 	   $buffer = '';
@@ -307,18 +337,6 @@ class projectsModelFiles extends model {
 	       return $cnt; // return num. bytes delivered like readfile() does.
 	   }
 	   return $status;
-	}
-	
-	private function _getAssignees($fileid) {
-		$query = "SELECT userid FROM #__users_files WHERE fileid = ".$fileid;
-		$this->db->setQuery($query);
-		$assignees = $this->db->loadResultArray();
-		// Prepare assignee data
-		for ($i=0; $i<count($assignees); $i++) {
-			$new_assignees[$i]['id'] = $assignees[$i];
-			$new_assignees[$i]['name'] = usersHelper::id2name($assignees[$i]);
-		}
-		return $new_assignees;
 	}
 	
 	private function _getOlderRevisions($parentid, $id) {

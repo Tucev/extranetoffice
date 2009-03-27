@@ -110,14 +110,20 @@ class projectsModelActivitylog extends model {
 	function _notify($row, $assignees) {
 		$uri =& factory::getURI();
 		
-		$new_mail = new mail();
+		$new_mail = new mailer();
 		$new_mail->Subject = "[".$this->project->name."] ".$row->action." by ".$this->user->name_abbr;
 		$new_mail->Body = text::_(sprintf(_LANG_ACTIVITYLOG_NOTIFY_BODY, 
 								 $this->project->name, 
-								 $row->action." by ".$this->user->name_abbr, 
-								 $row->description, 
-								 $uri->getBase().$row->url)
+								 $row->action." by ".$this->user->name_abbr,
+								 $uri->getBase().$row->url, 
+								 $row->description)
 						);
+		
+		// Append message id suffix with data to be used when processing replies
+		parse_str($row->url, $url_array);
+		$pattern = "/".substr($url_array['view'], 0, (strlen($url_array['view'])-1))."id=([0-9]+)/i";
+		preg_match($pattern, $row->url, $matches);
+		$new_mail->setMessageIdSuffix('o='.request::getVar('option').'&p='.$row->projectid.'&t='.$url_array['view'].'&i='.$matches[1]);
 		
 		// Mae sure assignees is an array
 		if (!is_array($assignees)) {
@@ -140,10 +146,13 @@ class projectsModelActivitylog extends model {
 				}
 				else {
 					$new_mail->AddAddress($recipient->email, usersHelper::fullname_format($recipient->firstname, $recipient->lastname));
+					
 					// Send email
 					if ($new_mail->Send() !== true) {
-						$failed_recipients[] = $recipient->email;
+						$this->error[] = sprintf(_LANG_EMAIL_NOT_SENT, implode(',', $recipients));
+						return false;
 					}
+					
 					$new_mail->ClearAllRecipients();
 				}
 			}
@@ -152,9 +161,8 @@ class projectsModelActivitylog extends model {
 				$this->error[] = sprintf(_LANG_EMAIL_NOT_SENT, implode(',', $failed_recipients));
 				return false;
 			}
-			else {
-				return true;
-			}
+			
+			return true;
 		}
 		else {
 			$this->error[] = _LANG_ACTIVITYLOG_NO_RECIPIENTS;

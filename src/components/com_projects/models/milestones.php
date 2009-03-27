@@ -92,7 +92,7 @@ class projectsModelMilestones extends model {
 		if (is_array($rows) && count($rows) > 0) {
 			foreach ($rows as $row) {
 				// Get assignees
-				$row->assignees = $this->_getAssignees($row->id);
+				$row->assignees = $this->getAssignees($row->id);
 				
 				// get total comments
 				$modelComments =& $this->getModel('comments');
@@ -160,7 +160,7 @@ class projectsModelMilestones extends model {
 		}
 		
 		// Get assignees
-		$row->assignees = $this->_getAssignees($milestoneid);
+		$row->assignees = $this->getAssignees($milestoneid);
 		
 		// Get comments
 		$modelComments =& $this->getModel('comments');
@@ -266,20 +266,32 @@ class projectsModelMilestones extends model {
 	}
 	
 	/**
-	 * Retreives assignees as an array
+	 * Get list of assignees
 	 *
-	 * @param integer $milestoneid
-	 * @return array signees
+	 * @param	int		$milestoneid
+	 * @param	bool	$asoc
+	 * @return	array	Array containing assignees ids or asociative array with id, name and email if asoc is true.
 	 */
-	private function _getAssignees($milestoneid) {
-		$query = "SELECT userid FROM #__users_milestones WHERE milestoneid = ".$milestoneid;
+	public function getAssignees($milestoneid, $asoc=true) {
+		$query = "SELECT um.userid, u.firstname, u.lastname, u.email";
+		$query .= " FROM #__users_milestones AS um ";
+		$query .= "LEFT JOIN #__users u ON u.id = um.userid";
+		$query .= " WHERE um.milestoneid = ".$milestoneid;
 		$this->db->setQuery($query);
-		$assignees = $this->db->loadResultArray();
+		$assignees = $this->db->loadObjectList();
+		
 		// Prepare assignee data
 		for ($i=0; $i<count($assignees); $i++) {
-			$new_assignees[$i]['id'] = $assignees[$i];
-			$new_assignees[$i]['name'] = usersHelper::id2name($assignees[$i]);
+			if ($asoc === false) {
+				$new_assignees[$i] = $assignees[$i]->userid;
+			}
+			else {
+				$new_assignees[$i]['id'] = $assignees[$i]->userid;
+				$new_assignees[$i]['name'] = usersHelper::fullname_format($assignees[$i]->firstname, $assignees[$i]->lastname);
+				$new_assignees[$i]['email'] = $assignees[$i]->email;
+			}
 		}
+		
 		return $new_assignees;
 	}
 }

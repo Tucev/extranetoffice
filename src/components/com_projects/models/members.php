@@ -75,7 +75,7 @@ class projectsModelMembers extends model {
 			$uri =& factory::getURI();
 			$new_member_email = usersHelper::id2email($userid);
 			
-			$new_mail = new mail();
+			$new_mail = new mailer();
 			$new_mail->AddAddress($new_member_email, usersHelper::id2name($userid));
 			$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, $this->user->get('name'), $project_name, $site_name);
 			$new_mail->Body = text::_(sprintf(_LANG_PROJECTS_INVITATION_BODY,
@@ -152,7 +152,7 @@ class projectsModelMembers extends model {
 		$site_name = $this->config->sitename;
 		$uri =& factory::getURI();
 		
-		$new_mail = new mail();
+		$new_mail = new mailer();
 		$new_mail->AddAddress($row->email, usersHelper::fullname_format($row->firstname, $row->lastname));
 		$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, $this->user->get('name'), $project_name, $site_name);
 		$new_mail->Body = sprintf(_LANG_PROJECTS_INVITATION_NEW_USER_BODY, 
@@ -201,6 +201,18 @@ class projectsModelMembers extends model {
 		}
 		else {
 			return true;
+		}
+	}
+	
+	function isMember($projectid, $userid) {
+		$query = "SELECT roleid FROM #__users_roles WHERE projectid = ".$projectid." AND userid = ".$userid;
+		$this->db->setQuery($query);
+		$roleid = $this->db->loadResult();
+		if (!empty($roleid)) {
+			return $roleid;
+		}
+		else {
+			return false;
 		}
 	}
 }
