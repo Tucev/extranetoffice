@@ -78,7 +78,7 @@ class projectsModelProjects extends model {
 	 * @param $projectid
 	 * @return mixed
 	 */
-	public function getProjects($projectid=0) {
+	public function getProjects($projectid=0, $userid=0) {
 		// Only apply filtering and ordering if browsing projects list
 		if (empty($projectid)) {
 			$filter_order = request::getVar('filter_order', 'p.name');
@@ -92,7 +92,10 @@ class projectsModelProjects extends model {
 		$where = array();
 		
 		// Show only public projects or projects where user has an assigned role
-		$where[] = "( p.access = '0' OR (".$this->user->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
+		if (empty($userid)) {
+			$userid = $this->user->id;
+		}
+		$where[] = "( p.access = '0' OR (".$userid." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 		
 		if ($search) {
 			$where[] = "p.name LIKE '%".$this->db->getEscaped($search)."%'";

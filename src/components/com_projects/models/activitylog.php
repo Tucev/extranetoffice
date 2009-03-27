@@ -109,12 +109,13 @@ class projectsModelActivitylog extends model {
 	 */
 	function _notify($row, $assignees) {
 		$uri =& factory::getURI();
+		$user_name = usersHelper::id2name($row->userid);
 		
 		$new_mail = new mailer();
-		$new_mail->Subject = "[".$this->project->name."] ".$row->action." by ".$this->user->name_abbr;
+		$new_mail->Subject = "[".$this->project->name."] ".$row->action." by ".$user_name;
 		$new_mail->Body = text::_(sprintf(_LANG_ACTIVITYLOG_NOTIFY_BODY, 
 								 $this->project->name, 
-								 $row->action." by ".$this->user->name_abbr,
+								 $row->action." by ".$user_name,
 								 $uri->getBase().$row->url, 
 								 $row->description)
 						);
@@ -133,7 +134,7 @@ class projectsModelActivitylog extends model {
 		// Get assignees email addresses and exclude the user triggering the notification
 		$query = "SELECT firstname, lastname, email ";
 		$query .= " FROM #__users ";
-		$query .= " WHERE id IN (".implode(',', $assignees).") AND id <> ".$this->user->id;
+		$query .= " WHERE id IN (".implode(',', $assignees).") AND id <> ".$row->userid;
 		$this->db->setQuery($query);
 		$recipients = $this->db->loadObjectList();
 		
@@ -149,7 +150,7 @@ class projectsModelActivitylog extends model {
 					
 					// Send email
 					if ($new_mail->Send() !== true) {
-						$this->error[] = sprintf(_LANG_EMAIL_NOT_SENT, implode(',', $recipients));
+						$failed_recipients[] = $recipient->email;
 						return false;
 					}
 					
