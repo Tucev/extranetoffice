@@ -143,7 +143,7 @@ class projectsModelMeetings extends model {
 	public function saveMeeting($post) {
 		// Check whether a project id is included in the post array
 		if (empty($post['projectid'])) {
-			$this->error[] = _LANG_SAVE_ERROR_NO_PROJECT_SELECTED;
+			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
 		
@@ -275,7 +275,7 @@ class projectsModelMeetings extends model {
 	function saveSlideshow($post) {
 		// Check whether a project id is included in the post array
 		if (empty($post['projectid'])) {
-			$this->error[] = _LANG_SAVE_ERROR_NO_PROJECT_SELECTED;
+			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
 		
@@ -372,7 +372,7 @@ class projectsModelMeetings extends model {
 	public function uploadSlide($post) {
 		// Check whether a project id is included in the post array
 		if (empty($post['projectid'])) {
-			$this->error[] = _LANG_SAVE_ERROR_NO_PROJECT_SELECTED;
+			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
 		
@@ -436,7 +436,7 @@ class projectsModelMeetings extends model {
 	public function deleteSlide($projectid, $slideid) {
 		// Check whether a project id is included in the post array
 		if (empty($projectid)) {
-			$this->error[] = _LANG_SAVE_ERROR_NO_PROJECT_SELECTED;
+			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
 		

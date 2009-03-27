@@ -182,7 +182,7 @@ class projectsModelIssues extends model {
 	public function saveIssue($post) {
 		// Check whether a project id is included in the post array
 		if (empty($post['projectid'])) {
-			$this->error[] = _LANG_SAVE_ERROR_NO_PROJECT_SELECTED;
+			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
 		

@@ -75,19 +75,16 @@ class projectsModelProjects extends model {
 	/**
 	 * Get projects.
 	 * 
-	 * @param $projectid
-	 * @return mixed
+	 * @param $userid
+	 * @return mixed	if no parameters returns array of objects if entries exist 
 	 */
-	public function getProjects($projectid=0, $userid=0) {
-		// Only apply filtering and ordering if browsing projects list
-		if (empty($projectid)) {
-			$filter_order = request::getVar('filter_order', 'p.name');
-			$filter_order_Dir = request::getVar('filter_order_Dir', '');
-			$search = request::getVar('search', '');
-			$search = strtolower( $search );
-			$limitstart = request::getVar('limitstart', 0);
-			$limit = request::getVar('limit', 20);
-		}
+	public function getProjects($userid=0) {
+		$filter_order = request::getVar('filter_order', 'p.name');
+		$filter_order_Dir = request::getVar('filter_order_Dir', '');
+		$search = request::getVar('search', '');
+		$search = strtolower( $search );
+		$limitstart = request::getVar('limitstart', 0);
+		$limit = request::getVar('limit', 20);
 
 		$where = array();
 		
@@ -99,10 +96,6 @@ class projectsModelProjects extends model {
 		
 		if ($search) {
 			$where[] = "p.name LIKE '%".$this->db->getEscaped($search)."%'";
-		}
-		
-		if (!empty($projectid)) {
-			$where[] = "p.id = ".$projectid;	
 		}
 
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
@@ -140,33 +133,56 @@ class projectsModelProjects extends model {
 				  . $where . 
 				  " GROUP BY p.id ";
 		
-		if (empty($projectid)) {
-			$pageNav = new pagination($total, $limitstart, $limit);
-			
-			$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
-			//echo str_replace('#__', 'eo_', $query); exit;
-			$this->db->setQuery($query);
-			$rows = $this->db->loadObjectList();
+		$pageNav = new pagination($total, $limitstart, $limit);
 		
-			// table ordering
-			$lists['order_Dir']	= $filter_order_Dir;
-			$lists['order']		= $filter_order;
+		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
+		//echo str_replace('#__', 'eo_', $query); exit;
+		$this->db->setQuery($query);
+		$rows = $this->db->loadObjectList();
 	
-			// search filter
-			$lists['search'] = $search;
-			
-			// pack data into an array to return
-			$return['rows'] = $rows;
-			$return['pageNav'] = $pageNav;
-			$return['lists'] = $lists;
-			
-			return $return;
-		}
-		else {
-			$this->db->setQuery($query);
-			return $this->db->loadObject();
-		}
+		// table ordering
+		$lists['order_Dir']	= $filter_order_Dir;
+		$lists['order']		= $filter_order;
+
+		// search filter
+		$lists['search'] = $search;
+		
+		// pack data into an array to return
+		$return['rows'] = $rows;
+		$return['pageNav'] = $pageNav;
+		$return['lists'] = $lists;
+		
+		return $return;
 	}
+	
+	public function getProjectsDetail($projectid, $userid=0) {
+		if (empty($projectid)) {
+			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
+			return false;
+		}
+		
+		if (empty($userid)) {
+			$userid = $this->user->id;
+		}
+		
+		$where[] = "( p.access = '0' OR (".$userid." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
+		$where[] = "p.id = ".$projectid;
+		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
+		
+		$query = "SELECT p.*  
+				  u.username AS created_by_name, 
+				  pt.name AS project_type_name, 
+				  GROUP_CONCAT(ur.userid) members
+				  FROM #__projects AS p 
+				  JOIN #__users u ON u.id = p.created_by 
+				  LEFT JOIN #__project_types pt ON pt.id = p.project_type  
+				  LEFT JOIN #__users_roles ur ON p.id = ur.projectid "
+				  .$where;
+						  
+		$this->db->setQuery($query);
+		$row = $this->db->loadObject();
+	}
+	
 	
 	/**
 	 * Save a project sent in the request.
