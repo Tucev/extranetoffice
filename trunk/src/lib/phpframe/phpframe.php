@@ -43,6 +43,9 @@ require_once _PHPFRAME_PATH.DS."html".DS."pagination.php";
 require_once _PHPFRAME_PATH.DS."html".DS."text.php";
 // Include language file
 require_once _PHPFRAME_PATH.DS."lang".DS."en-GB.php";
+// Include mail classes
+require_once _PHPFRAME_PATH.DS."mail".DS."imap.php";
+require_once _PHPFRAME_PATH.DS."mail".DS."mailer.php";
 // Include users subpackage classes
 require_once _PHPFRAME_PATH.DS."user".DS."openid.php";
 require_once _PHPFRAME_PATH.DS."user".DS."user.php";
@@ -53,7 +56,6 @@ require_once _PHPFRAME_PATH.DS."utils".DS."crypt.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."filesystem.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."filter.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."image.php";
-require_once _PHPFRAME_PATH.DS."utils".DS."mail.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."uri.php";
 require_once _PHPFRAME_PATH.DS."utils".DS."utility.php";
 // include document class
