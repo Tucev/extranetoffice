@@ -160,7 +160,12 @@ abstract class controller extends singleton {
 			}
 		}
 		else {
-			error::raise('', 'error', 'Permission denied.');
+			if ($application->auth == false) {
+				$this->setRedirect('index.php?option=com_login');
+			}
+			else {
+				error::raise('', 'error', 'Permission denied.');
+			}
 		}
 	}
 	

@@ -203,13 +203,11 @@ class application extends singleton {
 		// If user user is not logged on we set auth to false and option to login
 		if (!$this->user->id) {
 			$this->auth = false;
-			request::setVar('option', 'com_login');
-			request::setVar('view', 'login');
-			request::setVar('layout', '');
-			return $this->auth;
+		}
+		else {
+			$this->auth = true;
 		}
 		
-		$this->auth = true;
 		return $this->auth;
 	}
 	
