@@ -43,6 +43,19 @@ class request {
 		$_REQUEST = $inputfilter->process($_REQUEST);
 		$_GET = $inputfilter->process($_GET);
 		$_POST = $inputfilter->process($_POST);
+		
+		// Get arguments passed via command line and parse them as request vars
+		global $argv;
+		if (is_array($argv) && count($argv) > 0) {
+			foreach ($argv as $pair) {
+				$pair_array = explode('=', $pair);
+				$_REQUEST[$pair_array[0]] = $pair_array[1];
+			}
+			define('CLI', true);
+		} 
+		else {
+		    define('CLI', false); 
+		}
 	}
 	
 	/**

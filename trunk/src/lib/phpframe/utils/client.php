@@ -20,12 +20,27 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 class client {
 	/**
+	 * Check whether current client is PHP "Command Line Client" (CLI)
+	 * 
+	 * @return	boolean
+	 */
+	public static function isCLI() {
+		// The CLI constant is set in bootstrap index.php file
+		if (CLI) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	/**
 	 * Check whether current client is mobile
 	 * 
-	 * @return	bool
+	 * @return	boolean
 	 * @since 	1.0
 	 */
-	function checkMobile() {
+	public static function isMobile() {
 
 		if (isset($_SERVER["HTTP_X_WAP_PROFILE"])) {
 			return true;
