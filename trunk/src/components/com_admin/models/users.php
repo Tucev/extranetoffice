@@ -180,7 +180,7 @@ class adminModelUsers extends model {
 		if ($new_user === true) {
 			$uri =& factory::getURI();
 		
-			$new_mail = new mail();
+			$new_mail = new mailer();
 			$new_mail->AddAddress($row->email, usersHelper::fullname_format($row->firstname, $row->lastname));
 			$new_mail->Subject = _LANG_USER_NEW_NOTIFY_SUBJECT;
 			$new_mail->Body = sprintf(_LANG_USER_NEW_NOTIFY_BODY, 
