@@ -338,7 +338,7 @@ class projectsController extends controller {
 			$action = _LANG_FILES_ACTION_NEW;
 			$title = $row->title;
 			$description = sprintf(_LANG_FILES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->filename, $row->revision, $row->changelog);
-			$url = route::_("index.php?option=com_projects&task=download_file&projectid=".$row->projectid."&fileid=".$row->id);
+			$url = route::_("index.php?option=com_projects&view=files&projectid=".$row->projectid."&fileid=".$row->id);
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
@@ -668,7 +668,7 @@ class projectsController extends controller {
 			
 			// Add entry in activity log
 			$modelActivityLog =& $this->getModel('activitylog');
-			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->created_by, 'milestones', $action, $title, $description, $url, $assignees, $notify)) {
+			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->created_by, 'milestones', $action, $title, $description, $url, $post['assignees'], $notify)) {
 				error::raise('', 'error', $modelActivityLog->getLastError());
 			}
 		}
@@ -707,11 +707,11 @@ class projectsController extends controller {
 					request::setVar('projectid', $message->data['p']);
 					$this->projectid = $message->data['p'];
 					
+					$userid = usersHelper::email2id($message->data['fromaddress']);
+					
 					// Load the project data
 					$modelProjects =& $this->getModel('projects');
-					$this->project = $modelProjects->getProjects($this->projectid);
-				
-					$userid = usersHelper::email2id($message->data['fromaddress']);
+					$this->project = $modelProjects->getProjects($this->projectid, $userid);
 					
 					$modelMembers =& $this->getModel('members');
 					$roleid = $modelMembers->isMember($message->data['p'], $userid);
@@ -760,6 +760,7 @@ class projectsController extends controller {
 							// Add entry in activity log
 							$modelActivityLog =& $this->getModel('activitylog');
 							$modelActivityLog->project =& $this->project;
+							$delete_uids = array();
 							if (!$modelActivityLog->saveActivityLog($row->projectid, $row->userid, 'comments', $action, $title, $description, $url, $assignees, true)) {
 								error::raise('', 'error', $modelActivityLog->getLastError());
 							}
