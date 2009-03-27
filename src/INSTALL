@@ -95,5 +95,18 @@ Command line installation
 
 	rm -rf installation
 
-Now you should be able to browse the site with your web browser.
+7. Log in to web interface and change the default admin details
+
+	Now you should be able to browse the site with your web browser. If you installed it locally 
+	in your web root you should be able to access your site at http://localhost.
+	
+	The install.sql script creates a default admin user that you will use the first time you log 
+	in. The credentials for this user are:
+	
+	username: admin
+	password: Passw0rd
+	
+If you have any questions or problems regarding the installation process please feel free to ask 
+in the developers discussion group at http://groups.google.com/group/extranetoffice-dev or 
+directly via email at extranetoffice-dev@googlegroups.com.
 	
