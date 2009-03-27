@@ -108,6 +108,12 @@ function confirm_delete_folder(mailbox, label) {
 		</a>
 	</div>
 	
+	<div>
+		<select>
+			<option value=""></option>
+		</select>
+	</div>
+	
 	<hr />
 	
 	<div style="float:right;" class="new">

@@ -85,9 +85,17 @@ class emailViewAccounts extends view {
 	function displayAccountsForm() {
 		$accountid = request::getVar('accountid', 0);
 		
-		$modelAccounts =& $this->getModel('accounts');
-		$rows = $modelAccounts->getAccounts($this->user->id, $accountid);
-		$this->row = $rows[0];
+		if (!empty($accountid)) {
+			$modelAccounts =& $this->getModel('accounts');
+			$rows = $modelAccounts->getAccounts($this->user->id, $accountid);
+			$this->row = $rows[0];
+		}
+		else {
+			$this->row->fromname = $this->user->firstname." ".$this->user->lastname;
+			$this->row->imap_port = 143;
+			$this->row->smtp_auth = 1;
+			$this->row->smtp_port = 25;
+		}
 		
 		$this->page_title = _LANG_EMAIL_ACCOUNTS;
 		$this->addPathwayItem(_LANG_EMAIL_ACCOUNTS);

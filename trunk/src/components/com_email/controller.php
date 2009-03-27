@@ -37,7 +37,6 @@ class emailController extends controller {
 		// Check for request forgeries
 		crypt::checkToken() or exit( 'Invalid Token' );
 		
-		$user =& factory::getUser();
 		$post = request::get('post');
 		
 		$modelAccounts =& $this->getModel('accounts');
@@ -48,6 +47,34 @@ class emailController extends controller {
 		}
 		else {
 			error::raise('', 'error', $modelAccounts->getLastError());
+		}
+		
+		$this->setRedirect('index.php?option=com_email&view=accounts');
+	}
+	
+	function remove_account() {
+		$accountid = request::getVar('accountid', 0);
+		
+		$modelAccounts =& $this->getModel('accounts');
+		if (!$modelAccounts->deleteAccount($accountid)) {
+			error::raise('', 'error', $modelAccounts->getLastError());
+		}
+		else {
+			error::raise('', 'message', _LANG_EMAIL_ACCOUNT_DELETE_SUCCESS);
+		}
+		
+		$this->setRedirect('index.php?option=com_email&view=accounts');
+	}
+	
+	function make_default_account() {
+		$accountid = request::getVar('accountid', 0);
+		
+		$modelAccounts =& $this->getModel('accounts');
+		if (!$modelAccounts->makeDefault($accountid)) {
+			error::raise('', 'error', $modelAccounts->getLastError());
+		}
+		else {
+			error::raise('', 'message', _LANG_EMAIL_ACCOUNT_SAVED);
 		}
 		
 		$this->setRedirect('index.php?option=com_email&view=accounts');
