@@ -151,11 +151,16 @@ class application extends singleton {
 		require_once _ABS_PATH.DS."lang".DS.$this->config->default_lang.".php";
 		
 		// load request into the application
+		// when initialising the request we also detect whether this is a command line request
 		$this->request = request::init();
 		
 		// Get client from request
-		if (client::checkMobile() == true) {
-			$this->client = 'mobile';	
+		// This has to be done after we have initialised the request
+		if (client::isMobile()) {
+			$this->client = 'mobile';
+		}
+		elseif (client::isCLI()) {
+			$this->client = 'CLI';
 		}
 		
 		// get document object
@@ -198,6 +203,13 @@ class application extends singleton {
 		
 		if (!empty($this->session->userid)) {
 			$this->user->load($this->session->userid);
+		}
+		elseif ($this->client == 'CLI') {
+			$this->user->id = 1;
+			$this->user->groupid = 1;
+			$this->user->username = 'system';
+			$this->user->firstname = 'System';
+			$this->user->lastname = 'User';
 		}
 		
 		// If user user is not logged on we set auth to false and option to login
@@ -250,7 +262,7 @@ class application extends singleton {
 		if (!$this->auth) {
 			$template_filename = 'login.php';
 		}
-		elseif (request::getVar('tmpl') == 'component') {
+		elseif (request::getVar('tmpl') == 'component' || $this->client == 'CLI') {
 			error::display();
 			$this->output = $this->component_output;
 			return;

@@ -39,12 +39,17 @@ class error {
 		}
 		
 		if (is_array($error) && count($error) > 0) {
+			$application =& factory::getApplication();
 			foreach ($error as $error_msg) {
-				echo '<span class="system_msg_outer">';
-				echo '<span class="system_msg '.$error_msg->level.'">'.$error_msg->msg.'</span>';
-				echo '</span>';
+				if ($application->client == 'CLI') {
+					echo $error_msg->msg."\n";
+				}
+				else {
+					echo '<span class="system_msg_outer">';
+					echo '<span class="system_msg '.$error_msg->level.'">'.$error_msg->msg.'</span>';
+					echo '</span>';
+				}
 			}
-			echo '<br />';
 		}
 	}
 	
