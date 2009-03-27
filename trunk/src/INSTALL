@@ -41,7 +41,7 @@ Command line installation
 	Use this command to anonymously check out the latest project source code to the current 
 	working directory:
 	
-	svn checkout http://extranetoffice.googlecode.com/svn/trunk/ ./
+	svn checkout http://extranetoffice.googlecode.com/svn/trunk/src/ ./
 	
 	* Developers with commit access remember to checkout using HTTPS and authentication to be 
 	able to make changes. 
