@@ -28,6 +28,9 @@
 		<tar destfile="${project.basedir}/release-${xinc.buildlabel}.tar.gz" compression="gzip">
 			<fileset refid="codefiles" />
 		</tar>
+		<tar destfile="${project.basedir}/release-${xinc.buildlabel}.tar.gz" compression="bzip2">
+			<fileset refid="codefiles" />
+		</tar>
 	</target>
 	
 	<target name="generate-report">
