@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<project name="Extranet0ffice-1.0" basedir="." default="build">
+	
+	<target name="prepare">
+		<mkdir dir="${project.basedir}/builds"/>
+	</target>
+	
+	<target name="build" depends="prepare">
+		
+		<move file="${project.basedir}/release-${xinc.buildlabel}.tar.gz" todir="${project.basedir}/builds"/>
+	</target>
+	
+</project>
