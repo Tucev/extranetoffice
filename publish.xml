@@ -7,7 +7,6 @@
 	
 	<target name="build" depends="prepare">
 		<move file="${project.basedir}/${xinc.project.name}-${xinc.build.label}.tar.gz" todir="${project.basedir}/builds"/>
-		<move file="${project.basedir}/${xinc.project.name}-${xinc.build.label}.tar.bz2" todir="${project.basedir}/builds"/>
 	</target>
 	
 </project>
