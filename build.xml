@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Extranet0ffice-1.0" basedir="." default="build">
+	
+	<fileset dir="./src" id="codefiles">
+		<include name="**" />
+	</fileset>
+	
+	<fileset dir="./test" id="testfiles">
+		<include name="*Test.php"/>
+	</fileset>
+	
+	<property name="report.dir" value="${project.basedir}/report"/>
+	
+	<target name="prepare">
+		<mkdir dir="${report.dir}"/>
+	</target>
+	
+	<target name="test">
+		<phpunit haltonfailure="true" printsummary="true">
+			<batchtest>
+				<fileset refid="testfiles" />
+			</batchtest>
+			<formatter type="xml" todir="${report.dir}" outfile="logfile.xml"/>
+		</phpunit>
+	</target>
+	
+	<target name="tar">
+		<tar destfile="${project.basedir}/release-${xinc.buildlabel}.tar.gz" compression="gzip">
+			<fileset refid="codefiles" />
+		</tar>
+	</target>
+	
+	<target name="generate-report">
+		<phpunit2report infile="${report.dir}/logfile.xml" styledir="resources/xsl" todir="report" format="noframes"/>
+	</target>
+
+	<target name="build" depends="prepare, test, tar, generate-report">
+			
+	</target>
+	
+</project>
