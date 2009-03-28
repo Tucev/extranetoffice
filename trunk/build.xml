@@ -25,7 +25,7 @@
 	</target>
 	
 	<target name="tar">
-		<tar destfile="${project.basedir}/release-${build.label}.tar.gz" compression="gzip">
+		<tar destfile="${project.basedir}/release-${xinc.build.label}.tar.gz" compression="gzip">
 			<fileset refid="codefiles" />
 		</tar>
 	</target>
