@@ -59,5 +59,20 @@ class loginController extends controller {
 		$this->setRedirect('index.php');
 	}
 	
+	function reset_password() {
+		$email = request::getVar('email_forgot', '');
+		
+		// Push model into controller
+		$model = $this->getModel('login');
+		if (!$model->resetPassword($email)) {
+			error::raise('', 'warning', $model->getLastError());
+		}
+		else {
+			error::raise('', 'message', _LANG_RESET_PASS_SUCCESS);
+		}
+		
+		$this->setRedirect('index.php');
+	}
+	
 }
 ?>
