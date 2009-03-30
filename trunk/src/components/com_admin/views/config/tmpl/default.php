@@ -230,5 +230,5 @@ html::button('submit', _LANG_SAVE);
 	
 <input type="hidden" name="option" value="com_admin" />
 <input type="hidden" name="task" value="save_config" />
-	
+<?php echo html::_( 'form.token' ); ?>
 </form>
