@@ -40,20 +40,20 @@ $(document).ready(function() {
 <table class="table_login">
 	<tr>
 		<td>
-			<label for="username" class="label_small">username:</label><br />
+			<label for="username" class="label_small"><?php echo text::_(_LANG_USERNAME); ?>:</label><br />
 			<input class="input_big required" type="text" name="username" id="username" size="16" maxlength="50" />
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<label for="password" class="label_small">password:</label><br />
+			<label for="password" class="label_small"><?php echo text::_(_LANG_PASSWORD); ?>:</label><br />
 			<input class="input_big required" type="password" name="password" id="password" size="16" maxlength="50" />
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<button type="submit">Log in</button> 
-			<input type="checkbox" name="remember" /> Remember me
+			<button type="submit"><?php echo text::_(_LANG_LOGIN); ?></button> 
+			<input type="checkbox" name="remember" /> <?php echo text::_(_LANG_REMEMBER_ME); ?>
 		</td>
 	</tr>
 </table>
@@ -64,13 +64,13 @@ $(document).ready(function() {
 <br />
 <hr />
 
-<h3><a class="toggle" id="openid" href="#">Have an OpenID?</a></h3>
+<h3><a class="toggle" id="openid" href="#"><?php echo text::_(_LANG_HAVE_AN_OPENID); ?></a></h3>
 <div>
 
 <form id="form_openid" action="#" method="post">
 <table class="table_login">
 	<tr>
-		<td><strong></strong> Sign in below:</td>
+		<td><?php echo text::_(_LANG_SIGN_IN_BELOW); ?>:</td>
 	</tr>
 	<tr>
 		<td>
@@ -79,7 +79,7 @@ $(document).ready(function() {
 		</td>
 	</tr>
 	<tr>
-		<td><button>Log in</button></td>
+		<td><button><?php echo text::_(_LANG_LOGIN); ?></button></td>
 	</tr>
 </table>
 </form>
@@ -87,7 +87,7 @@ $(document).ready(function() {
 </div>
 
 
-<h3><a class="toggle" id="forgot" href="#">Forgot your password?</a></h3>
+<h3><a class="toggle" id="forgot" href="#"><?php echo text::_(_LANG_FORGOT_PASS); ?></a></h3>
 <div>
 
 <form id="form_forgot" action="index.php" method="post">
@@ -100,11 +100,11 @@ $(document).ready(function() {
 	</tr>
 	<tr>
 		<td>
-			<button type="submit">Send password to email address</button> 
+			<button type="submit"><?php echo text::_(_LANG_SEND_PASS_TO_EMAIL); ?></button> 
 		</td>
 	</tr>
 </table>
-<input type="hidden" name="option" value="com_users" />
+<input type="hidden" name="option" value="com_login" />
 <input type="hidden" name="task" value="reset_password" />
 </form>
 

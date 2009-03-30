@@ -110,6 +110,26 @@ define("_LANG_ADMIN_USERS_DELETE", "Delete user");
 define("_LANG_ADMIN_USERS_DELETE_CONFIRM", "Are you sure you want to delete user");
 define("_LANG_ADMIN_USERS_DELETE_SUCCESS", "User successfully deleted");
 
+
+// com_login
+define("_LANG_LOGIN", "Log in");
+define("_LANG_REMEMBER_ME", "Remember me");
+define("_LANG_HAVE_AN_OPENID", "Have an OpenID?");
+define("_LANG_SIGN_IN_BELOW", "Sign in below");
+define("_LANG_FORGOT_PASS", "Forgot your password?");
+define("_LANG_SEND_PASS_TO_EMAIL", "Send password to email address");
+define("_LANG_RESET_PASS_EMAIL_NOT_FOUND", "Email not found");
+define("_LANG_RESET_PASS_SUCCESS", "Your new password has been sent via email");
+define("_LANG_USER_RESET_PASS_NOTIFY_SUBJECT", "Password reset");
+define("_LANG_USER_RESET_PASS_NOTIFY_BODY", "Hello %s,
+
+Your login details:
+URL: %s
+Login username: %s
+Password: %s
+
+This email has been automatically generated. Please do not reply to this message.");
+
 // com_dashboard
 define("_LANG_DASHBOARD", "Dashboard");
 define("_LANG_DASHBOARD_RECENT_EMAILS", "Recent email");
