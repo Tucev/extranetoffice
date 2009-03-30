@@ -80,6 +80,11 @@ class html {
 		<script type="text/javascript">  
 		$(function() {
 			$('#<?php echo $formid; ?>').validate({
+				rules: {
+				    password2: {
+				    	equalTo: "#password"
+				    }
+				},
 
 				highlight: function(element, errorClass) {
 					$(element).fadeOut(function() {

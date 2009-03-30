@@ -45,11 +45,11 @@ html::validate('usersform');
 		<?php if (!empty($this->row->id)) :?>
 		<tr>
 			<td><?php echo text::_( _LANG_PASSWORD ); ?></td>
-			<td><input type="password" size="30" name="password" value="" /></td>
+			<td><input type="password" size="30" name="password" id="password" value="" /></td>
 		</tr>
 		<tr>
 			<td><?php echo text::_( _LANG_PASSWORD_VERIFY ); ?></td>
-			<td><input type="password" size="30" name="password2" value="" /></td>
+			<td><input type="password" size="30" name="password2" id="password2" value="" /></td>
 		</tr>
 		<?php else : ?>
 		<tr>
