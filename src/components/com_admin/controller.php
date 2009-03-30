@@ -40,6 +40,9 @@ class adminController extends controller {
 	 * @return void
 	 */
 	function save_config() {
+		// Check for request forgeries
+		crypt::checkToken() or exit( 'Invalid Token' );
+		
 		$modelConfig =& $this->getModel('config');
 		
 		if ($modelConfig->saveConfig() === false) {
@@ -53,6 +56,9 @@ class adminController extends controller {
 	}
 	
 	function save_user() {
+		// Check for request forgeries
+		crypt::checkToken() or exit( 'Invalid Token' );
+		
 		$modelUsers =& $this->getModel('users');
 		
 		if ($modelUsers->saveUser() === false) {

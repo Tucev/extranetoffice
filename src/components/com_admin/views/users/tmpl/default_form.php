@@ -72,5 +72,5 @@ html::validate('usersform');
 <input type="hidden" name="task" value="save_user" />
 <input type="hidden" name="layout" value="" />
 <input type="hidden" name="tmpl" value="<?php echo request::getVar('tmpl', ''); ?>" />
-
+<?php echo html::_( 'form.token' ); ?>
 </form>
