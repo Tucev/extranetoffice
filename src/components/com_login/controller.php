@@ -39,6 +39,9 @@ class loginController extends controller {
 	}
 	
 	function login() {
+		// Check for request forgeries
+		crypt::checkToken() or exit( 'Invalid Token' );
+		
 		// Push model into controller
 		$model = $this->getModel('login');
 		
@@ -60,6 +63,9 @@ class loginController extends controller {
 	}
 	
 	function reset_password() {
+		// Check for request forgeries
+		crypt::checkToken() or exit( 'Invalid Token' );
+		
 		$email = request::getVar('email_forgot', '');
 		
 		// Push model into controller
