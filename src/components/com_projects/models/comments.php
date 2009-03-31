@@ -35,6 +35,7 @@ class projectsModelComments extends model {
 		$query .= " FROM #__comments AS c ";
 		$query .= " JOIN #__users u ON u.id = c.userid ";
 		$query .= " WHERE c.projectid = ".$projectid." AND c.type = '".$type."' AND c.itemid = ".$itemid;
+		$query .= " ORDER BY c.created DESC";
 		//echo $query; exit;	  
 		$this->db->setQuery($query);
 		$rows = $this->db->loadObjectList();
