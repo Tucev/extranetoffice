@@ -141,7 +141,7 @@ class application extends singleton {
 		$this->debug = new debug();
 
 		// load config
-		$this->config = new config;
+		$this->config = new config();
 		
 		// load the language file
 		// set default distro language if the one set in config doesnt exist
@@ -179,7 +179,7 @@ class application extends singleton {
 		$this->db =& phpFrame::getInstance('db');
 		// connect to MySQL server
 		if ($this->db->connect($this->config->db_host, $this->config->db_user, $this->config->db_pass, $this->config->db_name) !== true) {
-			error::raiseFatalError($this->db->error);
+			error::raiseFatalError($this->db->getLastError());
 		}
 	}
 	

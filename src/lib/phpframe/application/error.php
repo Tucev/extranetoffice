@@ -39,9 +39,9 @@ class error {
 		}
 		
 		if (is_array($error) && count($error) > 0) {
-			$application =& factory::getApplication();
 			foreach ($error as $error_msg) {
-				if ($application->client == 'CLI') {
+				// If we are running from the command line we don't include HTML in the output
+				if (client::isCLI()) {
 					echo $error_msg->msg."\n";
 				}
 				else {
