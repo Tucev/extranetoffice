@@ -20,7 +20,7 @@ class config {
 	 *
 	 * @var string
 	 */
-	var $sitename="Extranet Office 1.0";
+	var $sitename="Extranet Office 1.0 - Test installation";
 	
 	/**
 	 * Site template
@@ -40,7 +40,7 @@ class config {
 	 *
 	 * @var bool
 	 */
-	var $debug=false;
+	var $debug="0";
 	/**
 	 * Secret string used to generate secure hash
 	 * 
@@ -63,19 +63,19 @@ class config {
 	 *
 	 * @var string
 	 */
-	var $db_user="extranetoffice";
+	var $db_user="xoffice_test";
 	/**
 	 * MySQL password
 	 *
 	 * @var string
 	 */
-	var $db_pass="DC2YBBbnGGQzmJRR";
+	var $db_pass="";
 	/**
 	 * MySQL database name
 	 *
 	 * @var string
 	 */
-	var $db_name="extranetoffice";
+	var $db_name="xoffice_test";
 	/**
 	 * The prefix for database tables
 	 *
@@ -100,7 +100,7 @@ class config {
 	 *
 	 * @var string
 	 */
-	var $filesystem="/var/extranetoffice_fs";
+	var $filesystem="/path/to/filesystem";
 	/**
 	 * List of accepted mime types as CSV.
 	 *
@@ -117,7 +117,7 @@ class config {
 	 * 
 	 * @var string
 	 */
-	var $imap_host="mail.extranetoffice.org";
+	var $imap_host="";
 	/**
 	 * The IMAP port number to use
 	 * 
@@ -129,13 +129,13 @@ class config {
 	 * 
 	 * @var string
 	 */
-	var $imap_user="notifications.will@extranetoffice.org";
+	var $imap_user="";
 	/**
 	 * The IMAP password
 	 * 
 	 * @var string
 	 */
-	var $imap_password="ockCBPZ9nJDoAp9EbwmnGZiY";
+	var $imap_password="";
 	
 	/////////////////////////////////////////////////
     // MAIL SENDING PROPERTIES
@@ -146,19 +146,19 @@ class config {
 	 * 
 	 * @var string
 	 */
-	var $mailer="mail";
+	var $mailer="smtp";
 	/**
 	 * If using SMTP mailer enable smtp authentication
 	 * 
 	 * @var string
 	 */
-	var $smtp_auth="false";
+	var $smtp_auth="1";
 	/**
 	 * The SMTP host name or IP address.
 	 * 
 	 * @var string
 	 */
-	var $smtp_host="mail.extranetoffice.org";
+	var $smtp_host="";
 	/**
 	 * The SMTP port to use
 	 * 
@@ -170,25 +170,25 @@ class config {
 	 * 
 	 * @var string
 	 */
-	var $smtp_user="notifications.will@extranetoffice.org";
+	var $smtp_user="";
 	/**
 	 * The SMTP password
 	 * 
 	 * @var string
 	 */
-	var $smtp_password="ockCBPZ9nJDoAp9EbwmnGZiY";
+	var $smtp_password="";
 	/**
 	 * The email address to use for notifications
 	 *  
 	 * @var string
 	 */
-	var $fromaddress="notifications.will@extranetoffice.org";
+	var $fromaddress="";
 	/**
 	 * The from name for notifications
 	 *  
 	 * @var string
 	 */
-	var $fromname="notifications.will@extranetoffice.org";
+	var $fromname="";
 	
 	
 	/**

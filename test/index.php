@@ -63,7 +63,7 @@ require_once "PHPUnit/TextUI/TestRunner.php";
 // Unit tests
 require_once _ABS_PATH_TEST.DS."components".DS."com_projects".DS."models".DS."testProjects.php";
 
-$suite  = new PHPUnit_Framework_TestSuite('something random');
+$suite = new PHPUnit_Framework_TestSuite('com_projects');
 $suite->addTestSuite('testProjects');
 
 PHPUnit_TextUI_TestRunner::run($suite)
