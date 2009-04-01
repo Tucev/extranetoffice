@@ -82,7 +82,7 @@ class db extends singleton {
 	 */
 	public function connect($db_host, $db_user, $db_pass, $db_name) {
 		// Connect to database server
-		$this->link = mysql_connect($db_host, $db_user, $db_pass);
+		$this->link = @mysql_connect($db_host, $db_user, $db_pass);
 		
 		// Check if link is valid
 		if ($this->link === false) {
