@@ -92,6 +92,12 @@ abstract class controller extends singleton {
 	 * @var string
 	 */
 	var $redirect_url=null;
+	/**
+	 * This is a flag we use to indicate whether the controller's executed task was successful or not.
+	 * 
+	 * @var boolean
+	 */
+	private $success=false;
 	
 	/**
 	 * Constructor
@@ -308,6 +314,10 @@ abstract class controller extends singleton {
 		$pathway =& factory::getPathway();
 		// add item
 		$pathway->addItem($title, $url);
+	}
+	
+	public function getSuccess() {
+		return $this->success;
 	}
 }
 ?>
