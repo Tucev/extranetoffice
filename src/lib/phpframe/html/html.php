@@ -148,7 +148,8 @@ class html {
 						    form.ajaxForm({ target: ajax_container });
 							<?php endif; ?>
 							form.submit();
-							$(this).dialog('close');	
+							$(this).dialog('close');
+							$(this).empty();
 						}
 						else {
 							return false;
@@ -157,6 +158,7 @@ class html {
 					<?php endif; ?>
 					"Close" : function() {
 						$(this).dialog('close');
+						$(this).empty();
 					}
 				}
 					
