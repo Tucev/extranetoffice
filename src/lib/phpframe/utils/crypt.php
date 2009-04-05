@@ -23,7 +23,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class crypt {
+class phpFrame_Utils_Crypt {
 	/**
 	 * Provides a secure hash based on a seed
 	 * 
@@ -33,7 +33,7 @@ class crypt {
 	 * @since	1.0
 	 */
 	static function getHash($seed) {
-		$config =& factory::getConfig();
+		$config =& phpFrame_Application_Factory::getConfig();
 		return md5($config->secret.$seed);
     }
 
@@ -47,9 +47,9 @@ class crypt {
      * @since	1.0
      */
     static function getToken($forceNew = false) {
-    	$user =& factory::getUser();
-    	$session =& factory::getSession();
-    	$hash = crypt::getHash($user->id.$session->getToken( $forceNew ));
+    	$user =& phpFrame_Application_Factory::getUser();
+    	$session =& phpFrame_Application_Factory::getSession();
+    	$hash = phpFrame_Utils_Crypt::getHash($user->id.$session->getToken( $forceNew ));
 
     	return $hash;
     }
@@ -57,18 +57,18 @@ class crypt {
 	/**
      * Checks for a form token in the request
      *
-     * Use in conjuction with html::_( 'form.token' )
+     * Use in conjuction with phpFrame_HTML::_( 'form.token' )
      * 
      * @access	public
      * @return	bool	True if found and valid, false otherwise
      * @since	1.0
      */
     static function checkToken() {
-    	$token = crypt::getToken();
-    	if (!request::getVar($token, '')) {
+    	$token = phpFrame_Utils_Crypt::getToken();
+    	if (!phpFrame_Environment_Request::getVar($token, '')) {
     		return false;
     		/*
-    		$session =& factory::getSession();
+    		$session =& phpFrame_Application_Factory::getSession();
     		if ($session->isNew()) {
     			//Redirect to login screen
     		}
@@ -101,7 +101,7 @@ class crypt {
 	 */
 	static function getCryptedPassword($plaintext, $salt = '', $encryption = 'md5-hex', $show_encrypt = false) {
 		// Get the salt to use.
-		$salt = crypt::getSalt($encryption, $salt, $plaintext);
+		$salt = phpFrame_Utils_Crypt::getSalt($encryption, $salt, $plaintext);
 
 		// Encrypt the password.
 		switch ($encryption) {
@@ -133,7 +133,7 @@ class crypt {
 			case 'aprmd5' :
 				$length = strlen($plaintext);
 				$context = $plaintext.'$apr1$'.$salt;
-				$binary = crypt::_bin(md5($plaintext.$salt.$plaintext));
+				$binary = phpFrame_Utils_Crypt::_bin(md5($plaintext.$salt.$plaintext));
 
 				for ($i = $length; $i > 0; $i -= 16) {
 					$context .= substr($binary, 0, ($i > 16 ? 16 : $i));
@@ -142,7 +142,7 @@ class crypt {
 					$context .= ($i & 1) ? chr(0) : $plaintext[0];
 				}
 
-				$binary = crypt::_bin(md5($context));
+				$binary = phpFrame_Utils_Crypt::_bin(md5($context));
 
 				for ($i = 0; $i < 1000; $i ++) {
 					$new = ($i & 1) ? $plaintext : substr($binary, 0, 16);
@@ -153,7 +153,7 @@ class crypt {
 						$new .= $plaintext;
 					}
 					$new .= ($i & 1) ? substr($binary, 0, 16) : $plaintext;
-					$binary = crypt::_bin(md5($new));
+					$binary = phpFrame_Utils_Crypt::_bin(md5($new));
 				}
 
 				$p = array ();
@@ -163,10 +163,10 @@ class crypt {
 					if ($j == 16) {
 						$j = 5;
 					}
-					$p[] = crypt::_toAPRMD5((ord($binary[$i]) << 16) | (ord($binary[$k]) << 8) | (ord($binary[$j])), 5);
+					$p[] = phpFrame_Utils_Crypt::_toAPRMD5((ord($binary[$i]) << 16) | (ord($binary[$k]) << 8) | (ord($binary[$j])), 5);
 				}
 
-				return '$apr1$'.$salt.'$'.implode('', $p).crypt::_toAPRMD5(ord($binary[11]), 3);
+				return '$apr1$'.$salt.'$'.implode('', $p).phpFrame_Utils_Crypt::_toAPRMD5(ord($binary[11]), 3);
 
 			case 'md5-hex' :
 			default :

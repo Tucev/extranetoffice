@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		view, controller
  */
-class loginViewLogin extends view {
+class loginViewLogin extends phpFrame_Application_View {
 	
 	function display() {
 		parent::display();

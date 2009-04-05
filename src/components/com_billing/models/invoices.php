@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		model
  */
-class billingModelInvoices extends model {
+class billingModelInvoices extends phpFrame_Application_Model {
 	var $filter=null;
 	
 	function __construct() {

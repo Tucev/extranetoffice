@@ -21,7 +21,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class session extends table {
+class phpFrame_Environment_Session extends phpFrame_Database_Table {
 	/**
 	 * The session id
 	 * 
@@ -71,7 +71,7 @@ class session extends table {
 			$this->start();	
 		}
 		else {
-			error::raiseFatalError('phpFrame: session::__construct(). Fatal error: Session table (#__session) could not be initialised. '.$this->getLastError());
+			phpFrame_Application_Error::raiseFatalError('phpFrame: session::__construct(). Fatal error: Session table (#__session) could not be initialised. '.$this->getLastError());
 		}
 	}
 	
@@ -131,7 +131,7 @@ class session extends table {
 		$this->modified = date("Y-m-d H:i:s");
 		
 		if (!$this->check()) {
-			error::raiseFatalError($this->error);
+			phpFrame_Application_Error::raiseFatalError($this->error);
 		}
 		
 		$this->store();

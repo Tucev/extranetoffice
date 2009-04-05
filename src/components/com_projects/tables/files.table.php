@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class projectsTableFiles extends table {
+class projectsTableFiles extends phpFrame_Database_Table {
 	/**
 	 * The row id
 	 * 

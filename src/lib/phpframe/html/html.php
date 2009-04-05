@@ -23,7 +23,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class html {
+class phpFrame_HTML {
 	/**
 	 * Build an select option object
 	 * 
@@ -33,7 +33,7 @@ class html {
 	 * @since 	1.0
 	 */
 	static function selectOption($value, $label) {
-		$option = new standardObject();
+		$option = new phpFrame_Base_StdObject();
 		$option->value = $value;
 		$option->label = $label;
 		
@@ -197,7 +197,7 @@ class html {
 	 * For example:
 	 * 
 	 * <code>
-	 * <?php html::confirm('delete_entry', 'Delete entry', 'Are you sure you want to delete entry'); ?>
+	 * <?php phpFrame_HTML::confirm('delete_entry', 'Delete entry', 'Are you sure you want to delete entry'); ?>
 	 * 
 	 * <a class="delete_entry" title="The name of the entry we are deleting" href="The URL to go if user confirms action">
 	 * </code>
@@ -379,7 +379,7 @@ class html {
 	 * @since	1.0
 	 */
 	static function autocomplete($field_name, $attribs, $tokens, $matchContains=true) {
-		$document =& factory::getDocument('html');
+		$document =& phpFrame_Application_Factory::getDocument('html');
 		$document->addScript('lib/jquery/plugins/autocomplete/jquery.autocomplete.pack.js');
 		$document->addStyleSheet('lib/jquery/plugins/autocomplete/jquery.autocomplete.css');
 		
@@ -430,10 +430,10 @@ class html {
 	}
 	
 	static function upload($data=array(), $name='userfile', $onComplete='', $action='index.php') {
-		$document =& factory::getDocument('html');
+		$document =& phpFrame_Application_Factory::getDocument('html');
 		$document->addScript('lib/jquery/plugins/ajax-upload/jquery.ajax-upload-2.6.js');
 		
-		$token = crypt::getToken();
+		$token = phpFrame_Utils_Crypt::getToken();
 		$data[$token] = '1';
 		$data['tmpl'] = 'component';
 		
@@ -504,13 +504,13 @@ class html {
 	/**
 	 * Displays a hidden token field to reduce the risk of CSRF exploits.
 	 * 
-     * Use in conjuction with crypt::checkToken
+     * Use in conjuction with phpFrame_Utils_Crypt::checkToken
      * 
 	 * @return 	void
 	 * @since 	1.0
 	 */
 	static function formToken() {
-		?><input type="hidden" name="<?php echo crypt::getToken(); ?>" value="1" /><?php
+		?><input type="hidden" name="<?php echo phpFrame_Utils_Crypt::getToken(); ?>" value="1" /><?php
 	}
 	
 	/**
@@ -523,7 +523,7 @@ class html {
 	 * @since 	1.0
 	 */
 	static function button($type='button', $label='', $onclick='') {
-		?><button type="<?php echo $type; ?>" onclick="<?php echo $onclick; ?>"><?php echo text::_( $label ); ?></button><?php
+		?><button type="<?php echo $type; ?>" onclick="<?php echo $onclick; ?>"><?php echo phpFrame_HTML_Text::_( $label ); ?></button><?php
 	}
 	
 	/**
@@ -533,7 +533,7 @@ class html {
 	 * @since 	1.0
 	 */
 	static function buttonBack() {
-		?><button type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button> 	<?php
+		?><button type="button" onclick="Javascript:window.history.back();"><?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?></button> 	<?php
 	}
 	
 	/**
@@ -573,8 +573,8 @@ class html {
 	 * For example: 
 	 * 
 	 * <code>
-	 * $options[] = html::_('select.option', $row->id, $row->name );
-	 * $output = html::_('select.genericlist', $options, 'projectid', $attribs, $selected);
+	 * $options[] = phpFrame_HTML::_('select.option', $row->id, $row->name );
+	 * $output = phpFrame_HTML::_('select.genericlist', $options, 'projectid', $attribs, $selected);
 	 * </code>
 	 * 
 	 * @param	string	$str
@@ -586,13 +586,13 @@ class html {
 		$array = explode('.', $str);
 		$function_name = $array[0].ucfirst($array[1]);
 		
-		if (is_callable( array( 'html', $function_name) )) {
+		if (is_callable( array( 'phpFrame_HTML', $function_name) )) {
 			$args = func_get_args();
 			array_shift( $args );
-			return call_user_func_array( array( 'html', $function_name ), $args );
+			return call_user_func_array( array( 'phpFrame_HTML', $function_name ), $args );
 		}
 		else {
-			error::raise('', 'warning', 'html::'.$function_name.' not supported.' );
+			phpFrame_Application_Error::raise('', 'warning', 'phpFrame_HTML::'.$function_name.' not supported.' );
 			return false;
 		}
 		

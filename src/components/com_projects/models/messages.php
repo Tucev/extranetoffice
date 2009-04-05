@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		model
  */
-class projectsModelMessages extends model {
+class projectsModelMessages extends phpFrame_Application_Model {
 	/**
 	 * Constructor
 	 *
@@ -31,12 +31,12 @@ class projectsModelMessages extends model {
 	}
 	
 	public function getMessages($projectid) {
-		$filter_order = request::getVar('filter_order', 'm.date_sent');
-		$filter_order_Dir = request::getVar('filter_order_Dir', 'DESC');
-		$search = request::getVar('search', '');
+		$filter_order = phpFrame_Environment_Request::getVar('filter_order', 'm.date_sent');
+		$filter_order_Dir = phpFrame_Environment_Request::getVar('filter_order_Dir', 'DESC');
+		$search = phpFrame_Environment_Request::getVar('search', '');
 		$search = strtolower( $search );
-		$limitstart = request::getVar('limitstart', 0);
-		$limit = request::getVar('limit', 20);
+		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
+		$limit = phpFrame_Environment_Request::getVar('limit', 20);
 
 		$where = array();
 		
@@ -74,7 +74,7 @@ class projectsModelMessages extends model {
 		$total = $this->db->getNumRows();
 
 		
-		$pageNav = new pagination( $total, $limitstart, $limit );
+		$pageNav = new phpFrame_HTML_Pagination( $total, $limitstart, $limit );
 
 		// get the subset (based on limits) of required records
 		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
@@ -239,7 +239,7 @@ class projectsModelMessages extends model {
 			}
 			else {
 				$new_assignees[$i]['id'] = $assignees[$i]->userid;
-				$new_assignees[$i]['name'] = usersHelper::fullname_format($assignees[$i]->firstname, $assignees[$i]->lastname);
+				$new_assignees[$i]['name'] = phpFrame_User_Helper::fullname_format($assignees[$i]->firstname, $assignees[$i]->lastname);
 				$new_assignees[$i]['email'] = $assignees[$i]->email;
 			}
 		}

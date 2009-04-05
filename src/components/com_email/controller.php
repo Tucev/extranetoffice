@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class emailController extends controller {
+class emailController extends phpFrame_Application_Controller {
 	/**
 	 * Constructor
 	 * 
@@ -27,64 +27,64 @@ class emailController extends controller {
 	 */
 	function __construct() {
 		// set default request vars
-		$this->view = request::getVar('view', 'messages');
-		$this->layout = request::getVar('layout', 'list');
+		$this->view = phpFrame_Environment_Request::getVar('view', 'messages');
+		$this->layout = phpFrame_Environment_Request::getVar('layout', 'list');
 		
 		parent::__construct();
 	}
 	
 	function save_account() {
 		// Check for request forgeries
-		crypt::checkToken() or exit( 'Invalid Token' );
+		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
-		$post = request::get('post');
+		$post = phpFrame_Environment_Request::get('post');
 		
 		$modelAccounts =& $this->getModel('accounts');
 		$row = $modelAccounts->saveAccount($post);
 		
 		if ($row !== false) {
-			error::raise('', 'message', _LANG_EMAIL_ACCOUNT_SAVED);
+			phpFrame_Application_Error::raise('', 'message', _LANG_EMAIL_ACCOUNT_SAVED);
 		}
 		else {
-			error::raise('', 'error', $modelAccounts->getLastError());
+			phpFrame_Application_Error::raise('', 'error', $modelAccounts->getLastError());
 		}
 		
 		$this->setRedirect('index.php?option=com_email&view=accounts');
 	}
 	
 	function remove_account() {
-		$accountid = request::getVar('accountid', 0);
+		$accountid = phpFrame_Environment_Request::getVar('accountid', 0);
 		
 		$modelAccounts =& $this->getModel('accounts');
 		if (!$modelAccounts->deleteAccount($accountid)) {
-			error::raise('', 'error', $modelAccounts->getLastError());
+			phpFrame_Application_Error::raise('', 'error', $modelAccounts->getLastError());
 		}
 		else {
-			error::raise('', 'message', _LANG_EMAIL_ACCOUNT_DELETE_SUCCESS);
+			phpFrame_Application_Error::raise('', 'message', _LANG_EMAIL_ACCOUNT_DELETE_SUCCESS);
 		}
 		
 		$this->setRedirect('index.php?option=com_email&view=accounts');
 	}
 	
 	function make_default_account() {
-		$accountid = request::getVar('accountid', 0);
+		$accountid = phpFrame_Environment_Request::getVar('accountid', 0);
 		
 		$modelAccounts =& $this->getModel('accounts');
 		if (!$modelAccounts->makeDefault($accountid)) {
-			error::raise('', 'error', $modelAccounts->getLastError());
+			phpFrame_Application_Error::raise('', 'error', $modelAccounts->getLastError());
 		}
 		else {
-			error::raise('', 'message', _LANG_EMAIL_ACCOUNT_SAVED);
+			phpFrame_Application_Error::raise('', 'message', _LANG_EMAIL_ACCOUNT_SAVED);
 		}
 		
 		$this->setRedirect('index.php?option=com_email&view=accounts');
 	}
 	
 	function download_attachment() {
-		$folder = request::getVar('folder', 'INBOX');
-		$msgno = request::getVar('msgno', 0);
-		$strFileName = request::getVar('file_name', '');
-		$file = request::getVar('file', 0);
+		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
+		$msgno = phpFrame_Environment_Request::getVar('msgno', 0);
+		$strFileName = phpFrame_Environment_Request::getVar('file_name', '');
+		$file = phpFrame_Environment_Request::getVar('file', 0);
 		
 		$modelEmail = &$this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
@@ -99,22 +99,22 @@ class emailController extends controller {
 		$attachment = $modelEmail->addAttachment();
 		
 		// Save the attachment data in request array so that the view can access it
-		request::setVar('attachment', $attachment);
+		phpFrame_Environment_Request::setVar('attachment', $attachment);
 		
 		parent::display();
 	}
 	
 	function send_email() {
-		$recipients = request::getVar('recipients', '');
-		$cc = request::getVar('cc', '');
-		$bcc = request::getVar('bcc', '');
-		$replyto = request::getVar('replyto', '');
-		$subject = request::getVar('subject', '');
-		$body = request::getVar('body', '');
-		$attachments = request::getVar('attachments');
-		$flag = request::getVar('flag', '');
-		$folder = request::getVar('folder', 'INBOX');
-		$save_in_sent = request::getVar('save_in_sent', 0);
+		$recipients = phpFrame_Environment_Request::getVar('recipients', '');
+		$cc = phpFrame_Environment_Request::getVar('cc', '');
+		$bcc = phpFrame_Environment_Request::getVar('bcc', '');
+		$replyto = phpFrame_Environment_Request::getVar('replyto', '');
+		$subject = phpFrame_Environment_Request::getVar('subject', '');
+		$body = phpFrame_Environment_Request::getVar('body', '');
+		$attachments = phpFrame_Environment_Request::getVar('attachments');
+		$flag = phpFrame_Environment_Request::getVar('flag', '');
+		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
+		$save_in_sent = phpFrame_Environment_Request::getVar('save_in_sent', 0);
 		
 		$modelEmail = &$this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
@@ -154,9 +154,9 @@ class emailController extends controller {
 	}
 	
 	function move_email() {
-		$folder = request::getVar('folder', '');
-		$mailbox = request::getVar('mailbox', '');
-		$uid = request::getVar('uid', 0); // can contain a list of ids
+		$folder = phpFrame_Environment_Request::getVar('folder', '');
+		$mailbox = phpFrame_Environment_Request::getVar('mailbox', '');
+		$uid = phpFrame_Environment_Request::getVar('uid', 0); // can contain a list of ids
 		
 		if (empty($mailbox) || empty($uid)) {
 			JError::raiseNotice( '', JText::_( _INTRANETOFFICE_EMAIL_DELETED ) );
@@ -177,9 +177,9 @@ class emailController extends controller {
 	}
 	
 	function remove_email() {
-		$folder = request::getVar('folder', 'INBOX');
-		$uid = request::getVar('uid', 0); // can contain a list of ids
-		$trash = request::getVar('trash', 0);
+		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
+		$uid = phpFrame_Environment_Request::getVar('uid', 0); // can contain a list of ids
+		$trash = phpFrame_Environment_Request::getVar('trash', 0);
 		
 		$modelEmail = &$this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
@@ -206,8 +206,8 @@ class emailController extends controller {
 	}
 	
 	function restore_email() {
-		$folder = request::getVar('folder', 'INBOX');
-		$uid = request::getInt('uid');
+		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
+		$uid = phpFrame_Environment_Request::getInt('uid');
 		
 		$modelEmail = &$this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
@@ -219,7 +219,7 @@ class emailController extends controller {
 	}
 	
 	function empty_deleted_items() {
-		$folder = request::getVar('folder', 'INBOX');
+		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
 		
 		$modelEmail = &$this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
@@ -237,7 +237,7 @@ class emailController extends controller {
 	* It is different from empty_deleted_items() which only flags selected messages in any folder as deleted
 	*/
 	function empty_email_trash() {
-		$folder = request::getVar('folder', 'INBOX');
+		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
 		
 		$modelEmail = &$this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
@@ -252,9 +252,9 @@ class emailController extends controller {
 	}
 	
 	function set_flags() {
-		$folder = request::getVar('folder', 'INBOX');
-		$uid = request::getInt('uid');
-		$flag = request::getVar('flag', '');
+		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
+		$uid = phpFrame_Environment_Request::getInt('uid');
+		$flag = phpFrame_Environment_Request::getVar('flag', '');
 		
 		$modelEmail = &$this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
@@ -266,9 +266,9 @@ class emailController extends controller {
 	}
 	
 	function clear_flags() {
-		$folder = request::getVar('folder', 'INBOX');
-		$uid = request::getInt('uid');
-		$flag = request::getVar('flag', '');
+		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
+		$uid = phpFrame_Environment_Request::getInt('uid');
+		$flag = phpFrame_Environment_Request::getVar('flag', '');
 		
 		$modelEmail = &$this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
@@ -280,8 +280,8 @@ class emailController extends controller {
 	}
 	
 	function create_mailbox() {
-		$new_folder_path = request::getVar('new_folder_path', '');
-		$new_folder_name = request::getVar('new_folder_name', '');
+		$new_folder_path = phpFrame_Environment_Request::getVar('new_folder_path', '');
+		$new_folder_name = phpFrame_Environment_Request::getVar('new_folder_name', '');
 		
 		if (!empty($new_folder_path)) {
 			$new_folder_name = $new_folder_path.".".$new_folder_name;
@@ -297,8 +297,8 @@ class emailController extends controller {
 	}
 	
 	function rename_mailbox() {
-		$old_box = request::getVar('old_box', '');
-		$new_box = request::getVar('new_box', '');
+		$old_box = phpFrame_Environment_Request::getVar('old_box', '');
+		$new_box = phpFrame_Environment_Request::getVar('new_box', '');
 		
 		$modelEmail = &$this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
@@ -316,8 +316,8 @@ class emailController extends controller {
 	}
 	
 	function delete_mailbox() {
-		$mailbox = request::getVar('mailbox', '');
-		$folder = request::getVar('folder', '');
+		$mailbox = phpFrame_Environment_Request::getVar('mailbox', '');
+		$folder = phpFrame_Environment_Request::getVar('folder', '');
 		
 		$modelEmail = &$this->getModel('email');
 		$modelEmail->loadUserEmailAccount();

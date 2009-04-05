@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		model
  */
-class projectsModelProjects extends model {
+class projectsModelProjects extends phpFrame_Application_Model {
 	var $view=null;
 	var $layout=null;
 	var $projectid=null;
@@ -43,9 +43,9 @@ class projectsModelProjects extends model {
 	 * @since	1.0
 	 */
 	private function _init() {
-		$this->view = request::getVar('view', 'projects');
-		$this->layout = request::getVar('layout', 'list');
-		$this->projectid = request::getVar('projectid', 0);
+		$this->view = phpFrame_Environment_Request::getVar('view', 'projects');
+		$this->layout = phpFrame_Environment_Request::getVar('layout', 'list');
+		$this->projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		
 		// Check whether project directories exists and are writable
 		$projects_upload_dir = _ABS_PATH.DS.$this->config->upload_dir.DS."projects";
@@ -79,12 +79,12 @@ class projectsModelProjects extends model {
 	 * @return mixed	if no parameters returns array of objects if entries exist 
 	 */
 	public function getProjects($userid=0) {
-		$filter_order = request::getVar('filter_order', 'p.name');
-		$filter_order_Dir = request::getVar('filter_order_Dir', '');
-		$search = request::getVar('search', '');
+		$filter_order = phpFrame_Environment_Request::getVar('filter_order', 'p.name');
+		$filter_order_Dir = phpFrame_Environment_Request::getVar('filter_order_Dir', '');
+		$search = phpFrame_Environment_Request::getVar('search', '');
 		$search = strtolower( $search );
-		$limitstart = request::getVar('limitstart', 0);
-		$limit = request::getVar('limit', 20);
+		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
+		$limit = phpFrame_Environment_Request::getVar('limit', 20);
 
 		$where = array();
 		
@@ -133,7 +133,7 @@ class projectsModelProjects extends model {
 				  . $where . 
 				  " GROUP BY p.id ";
 		
-		$pageNav = new pagination($total, $limitstart, $limit);
+		$pageNav = new phpFrame_HTML_Pagination($total, $limitstart, $limit);
 		
 		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
 		//echo str_replace('#__', 'eo_', $query); exit;

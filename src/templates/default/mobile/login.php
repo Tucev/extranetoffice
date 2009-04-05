@@ -32,7 +32,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	</a>
 </div>
 
-<?php error::display(); ?>
+<?php phpFrame_Application_Error::display(); ?>
 
 <?php echo $this->component_output; ?>
 

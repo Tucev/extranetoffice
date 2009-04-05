@@ -16,7 +16,7 @@ require_once COMPONENT_PATH.DS.'helpers'.DS.'projects.helper.php';
 // Create the controller
 $controller =& phpFrame::getInstance('projectsController');
 // Execute task
-$controller->execute(request::getVar('task'));	
+$controller->execute(phpFrame_Environment_Request::getVar('task'));	
 // Redirect if set by the controller
 $controller->redirect();
 ?>

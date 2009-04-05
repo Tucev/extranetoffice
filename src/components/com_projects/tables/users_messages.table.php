@@ -18,13 +18,13 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class projectsTableUsersMessages extends table {
+class projectsTableUsersMessages extends phpFrame_Database_Table {
 	var $id=null; // int(11) auto_increment
 	var $userid=null;
 	var $messageid=null; // int(11)
   
 	function __construct() {
-		$db =& factory::getDB();
+		$db =& phpFrame_Application_Factory::getDB();
 		parent::__construct( '#__users_messages', 'id' );
 	}
 }

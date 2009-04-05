@@ -20,7 +20,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		model
  * @todo		check for NULL values rather than 00-00-000 00:00
  */
-class projectsModelIssues extends model {
+class projectsModelIssues extends phpFrame_Application_Model {
 	/**
 	 * Constructor
 	 *
@@ -39,14 +39,14 @@ class projectsModelIssues extends model {
 	 * @return array	An array containing the rows, pageNav and filter lists
 	 */
 	public function getIssues($projectid, $overdue=false) {
-		$filter_order = request::getVar('filter_order', 'i.dtstart');
-		$filter_order_Dir = request::getVar('filter_order_Dir', 'DESC');
-		$search = request::getVar('search', '');
+		$filter_order = phpFrame_Environment_Request::getVar('filter_order', 'i.dtstart');
+		$filter_order_Dir = phpFrame_Environment_Request::getVar('filter_order_Dir', 'DESC');
+		$search = phpFrame_Environment_Request::getVar('search', '');
 		$search = strtolower( $search );
-		$limitstart = request::getVar('limitstart', 0);
-		$limit = request::getVar('limit', 20);
-		$filter_status = request::getVar('filter_status', 'all');
-		$filter_assignees = request::getVar('filter_assignees', 'me');
+		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
+		$limit = phpFrame_Environment_Request::getVar('limit', 20);
+		$filter_status = phpFrame_Environment_Request::getVar('filter_status', 'all');
+		$filter_assignees = phpFrame_Environment_Request::getVar('filter_assignees', 'me');
 
 		$where = array();
 		
@@ -98,7 +98,7 @@ class projectsModelIssues extends model {
 		$this->db->query();
 		$total = $this->db->getNumRows();
 		
-		$pageNav = new pagination($total, $limitstart, $limit);
+		$pageNav = new phpFrame_HTML_Pagination($total, $limitstart, $limit);
 
 		// get the subset (based on limits) of required records
 		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
@@ -360,7 +360,7 @@ class projectsModelIssues extends model {
 			}
 			else {
 				$new_assignees[$i]['id'] = $assignees[$i]->userid;
-				$new_assignees[$i]['name'] = usersHelper::fullname_format($assignees[$i]->firstname, $assignees[$i]->lastname);
+				$new_assignees[$i]['name'] = phpFrame_User_Helper::fullname_format($assignees[$i]->firstname, $assignees[$i]->lastname);
 				$new_assignees[$i]['email'] = $assignees[$i]->email;
 			}
 		}

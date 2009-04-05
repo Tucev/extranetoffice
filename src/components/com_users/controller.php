@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class usersController extends controller {
+class usersController extends phpFrame_Application_Controller {
 	/**
 	 * Constructor
 	 * 
@@ -27,8 +27,8 @@ class usersController extends controller {
 	 */
 	function __construct() {
 		// set default request vars
-		$this->view = request::getVar('view', 'users');
-		$this->layout = request::getVar('layout', 'list');
+		$this->view = phpFrame_Environment_Request::getVar('view', 'users');
+		$this->layout = phpFrame_Environment_Request::getVar('layout', 'list');
 		
 		parent::__construct();
 	}
@@ -37,10 +37,10 @@ class usersController extends controller {
 		$modelUser =& $this->getModel('users');
 		
 		if ($modelUser->saveUser() === false) {
-			error::raise('', 'error', $modelUser->getLastError());
+			phpFrame_Application_Error::raise('', 'error', $modelUser->getLastError());
 		}
 		else {
-			error::raise('', 'message', _LANG_USER_SAVE_SUCCESS);
+			phpFrame_Application_Error::raise('', 'message', _LANG_USER_SAVE_SUCCESS);
 		}
 		
 		$this->setRedirect($_SERVER["HTTP_REFERER"]);

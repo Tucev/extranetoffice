@@ -11,13 +11,13 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 // Load jQuery validation behaviour for form
-html::validate('filesform');
+phpFrame_HTML::validate('filesform');
 ?>
 
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&projectid='.$this->projectid); ?>">
 		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
@@ -26,7 +26,7 @@ html::validate('filesform');
 <form action="index.php" method="post" id="filesform" name="filesform" enctype="multipart/form-data">
 
 <fieldset>
-<legend><?php echo text::_( _LANG_FILES_NEW ); ?></legend>
+<legend><?php echo phpFrame_HTML_Text::_( _LANG_FILES_NEW ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <?php if (!empty($this->row->id)) : ?>
 <tr>
@@ -80,7 +80,7 @@ html::validate('filesform');
 		</label>
 	</td>
 	<td>
-		<?php echo usersHelper::assignees($this->row->assignees, '', 'assignees[]', $this->projectid); ?>
+		<?php echo phpFrame_User_Helper::assignees($this->row->assignees, '', 'assignees[]', $this->projectid); ?>
 	</td>
 </tr>
 <tr>
@@ -98,13 +98,13 @@ html::validate('filesform');
 
 <div style="clear:left; margin-top:30px;"></div>
 
-<button type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button>
-<button type="submit"><?php echo text::_(_LANG_SAVE); ?></button>
+<button type="button" onclick="Javascript:window.history.back();"><?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?></button>
+<button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 
 <input type="hidden" name="projectid" value="<?php echo $this->projectid;?>" />
 <input type="hidden" name="option" value="com_projects" />
 <input type="hidden" name="task" value="save_file" />
 <input type="hidden" name="type" value="" />
-<?php echo html::_( 'form.token' ); ?>
+<?php echo phpFrame_HTML::_( 'form.token' ); ?>
 
 </form>

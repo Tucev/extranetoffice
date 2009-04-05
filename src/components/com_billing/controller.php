@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class billingController extends controller {
+class billingController extends phpFrame_Application_Controller {
 	/**
 	 * Constructor
 	 * 
@@ -27,7 +27,7 @@ class billingController extends controller {
 	 */
 	function __construct() {
 		// set default request vars
-		$this->view = request::getVar('view', 'invoices');
+		$this->view = phpFrame_Environment_Request::getVar('view', 'invoices');
 		
 		// It is important we invoke the parent's constructor before 
 		// running permission check as we need the available views loaded first.

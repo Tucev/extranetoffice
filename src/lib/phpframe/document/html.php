@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class documentHTML extends document {
+class phpFrame_Document_HTML extends phpFrame_Document {
 	/**
 	 * Array of linked scripts
 	 *

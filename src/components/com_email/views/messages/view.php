@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * Method name to be triggered will be formed as follows:
  * 
  * <code>
- * $tmpl_specific_method = "display".ucfirst(request::getVar('view')).ucfirst($this->tmpl);
+ * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getVar('view')).ucfirst($this->tmpl);
  * </code>
  * 
  * @package		ExtranetOffice
@@ -28,7 +28,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		view, controller
  */
-class emailViewMessages extends view {
+class emailViewMessages extends phpFrame_Application_View {
 	var $page_title=null;
 	var $accountid=null;
 	var $folder=null;
@@ -41,13 +41,13 @@ class emailViewMessages extends view {
 	 */
 	function __construct() {
 		// Set the view template to load (default value is set in controller)
-		$this->layout =& request::getVar('layout');
+		$this->layout =& phpFrame_Environment_Request::getVar('layout');
 		
 		// Set reference to account id if passed in request
-		$this->accountid =& request::getVar('accountid', 0);
+		$this->accountid =& phpFrame_Environment_Request::getVar('accountid', 0);
 		
 		// Set reference to current mail folder if passed in request
-		$this->folder =& request::getVar('folder', 'INBOX');
+		$this->folder =& phpFrame_Environment_Request::getVar('folder', 'INBOX');
 		
 		parent::__construct();
 	}
@@ -64,8 +64,8 @@ class emailViewMessages extends view {
 		parent::display();
 		
 		// Append page title to document title
-		if (request::getVar('layout') != 'list') {
-			$document =& factory::getDocument('html');
+		if (phpFrame_Environment_Request::getVar('layout') != 'list') {
+			$document =& phpFrame_Application_Factory::getDocument('html');
 			$document->title .= ' - '.$this->page_title;
 		}
 	}
@@ -81,19 +81,19 @@ class emailViewMessages extends view {
 		$this->page_title = _LANG_EMAIL;
 		
 		// Attach scripts and stylesheets
-		$document =& factory::getDocument('html');
+		$document =& phpFrame_Application_Factory::getDocument('html');
 		$document->addScript('lib/contextmenu/webtoolkit.contextmenu.js');
 		$document->addStyleSheet('lib/contextmenu/webtoolkit.contextmenu.css');
 
 		$model =& $this->getModel('email');
 		if ($model->loadUserEmailAccount() === false) {
-			error::raise(0, 'warning', _LANG_EMAIL_NO_ACCOUNT );
+			phpFrame_Application_Error::raise(0, 'warning', _LANG_EMAIL_NO_ACCOUNT );
 			return;
 		}
 		
 		// Connect to incoming mail server
 		if ($model->openStream($this->folder) !== true) {
-			error::raise(0, 'warning', $model->error );
+			phpFrame_Application_Error::raise(0, 'warning', $model->error );
 			return;
 		}
 		
@@ -104,14 +104,14 @@ class emailViewMessages extends view {
 			
 		// Get mailboxes outside of inbox
 		if ($model->openStream('') !== true) {
-			error::raise(0, 'warning', $model->error );
+			phpFrame_Application_Error::raise(0, 'warning', $model->error );
 			return;
 		}	
 		$this->boxes = $model->getMailboxList();
 		$model->closeStream();
 			
 		// Set the page to auto refresh every set amount of time (in seconds)
-		//$document =& factory::getDocument('html');
+		//$document =& phpFrame_Application_Factory::getDocument('html');
 		//$document->setMetaData('refresh', '120', true);
 	}
 	
@@ -127,11 +127,11 @@ class emailViewMessages extends view {
 		$this->addPathwayItem($this->page_title);
 		
 		if (empty($uid)) {
-			$uid = request::getVar('uid', 0);
+			$uid = phpFrame_Environment_Request::getVar('uid', 0);
 		}
 		
 		if (empty($uid)) {
-			error::raise('', 'error', 'No message was selected');
+			phpFrame_Application_Error::raise('', 'error', 'No message was selected');
 			return false;
 		}
 		else {

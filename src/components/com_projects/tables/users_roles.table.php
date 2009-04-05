@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class projectsTableUsersRoles extends table {
+class projectsTableUsersRoles extends phpFrame_Database_Table {
 	/**
 	 * Id
 	 * 
@@ -45,12 +45,12 @@ class projectsTableUsersRoles extends table {
 	var $roleid=null;
   
 	function __construct() {
-		$db =& factory::getDB();
+		$db =& phpFrame_Application_Factory::getDB();
 		parent::__construct( '#__users_roles', 'id' );
 	}
 	
 	function load($userid, $projectid) {
-		$db =& factory::getDB();
+		$db =& phpFrame_Application_Factory::getDB();
 		$query = "SELECT * FROM #__users_roles WHERE userid = ".$userid." AND projectid = ".$projectid;
 		$db->setQuery($query);	
 		$row = $db->loadAssoc();

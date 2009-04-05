@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * Method name to be triggered will be formed as follows:
  * 
  * <code>
- * $tmpl_specific_method = "display".ucfirst(request::getVar('view')).ucfirst($this->tmpl);
+ * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getVar('view')).ucfirst($this->tmpl);
  * </code>
  * 
  * @package		ExtranetOffice
@@ -28,7 +28,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		view, controller
  */
-class projectsViewIssues extends view {
+class projectsViewIssues extends phpFrame_Application_View {
 	var $page_title=null;
 	var $projectid=null;
 	
@@ -40,11 +40,11 @@ class projectsViewIssues extends view {
 	 */
 	function __construct() {
 		// Set the view template to load (default value is set in controller)
-		$this->layout =& request::getVar('layout');
+		$this->layout =& phpFrame_Environment_Request::getVar('layout');
 		
 		// Set reference to projectid
-		$this->projectid =& request::getVar('projectid', 0);
-		$this->issueid =& request::getVar('issueid', 0);
+		$this->projectid =& phpFrame_Environment_Request::getVar('projectid', 0);
+		$this->issueid =& phpFrame_Environment_Request::getVar('issueid', 0);
 		
 		// Set reference to project object loaded in controller
 		if (!empty($this->projectid)) {
@@ -72,7 +72,7 @@ class projectsViewIssues extends view {
 		parent::display();
 		
 		// Append page title to document title
-		$document =& factory::getDocument('html');
+		$document =& phpFrame_Application_Factory::getDocument('html');
 		$document->title .= ' - '.$this->page_title;
 	}
 	
@@ -106,7 +106,7 @@ class projectsViewIssues extends view {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=issues&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, phpFrame_Application_Route::_("index.php?option=com_projects&view=issues&projectid=".$this->projectid));
 		$this->addPathwayItem($action);
 	}
 	
@@ -116,7 +116,7 @@ class projectsViewIssues extends view {
 		$this->row =& $issue;
 		
 		$this->page_title .= ' - '.$issue->title;
-		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=issues&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, phpFrame_Application_Route::_("index.php?option=com_projects&view=issues&projectid=".$this->projectid));
 		$this->addPathwayItem($issue->title);
 	}
 }

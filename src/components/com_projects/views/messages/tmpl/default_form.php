@@ -17,12 +17,12 @@ function submitbutton() {
 
 	// do field validation
 	if (form.subject.value == "") {
-		alert('<?php echo text::_( _LANG_MESSAGES_SUBJECT_REQUIRED , true); ?>');
+		alert('<?php echo phpFrame_HTML_Text::_( _LANG_MESSAGES_SUBJECT_REQUIRED , true); ?>');
 		form.subject.focus();
 		return;
 	}
 	else if (form.body.value == "") {
-		alert('<?php echo text::_( _LANG_MESSAGES_BODY_REQUIRED , true); ?>');
+		alert('<?php echo phpFrame_HTML_Text::_( _LANG_MESSAGES_BODY_REQUIRED , true); ?>');
 		form.body.focus();
 		return;
 	}
@@ -34,7 +34,7 @@ function submitbutton() {
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&projectid='.$this->projectid); ?>">
 		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
@@ -42,7 +42,7 @@ function submitbutton() {
 <form action="index.php" method="post" name="iofficeform" enctype="multipart/form-data">
 
 <fieldset>
-<legend><?php echo text::_( _LANG_MESSAGES_NEW ); ?></legend>
+<legend><?php echo phpFrame_HTML_Text::_( _LANG_MESSAGES_NEW ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td width="30%">
@@ -72,7 +72,7 @@ function submitbutton() {
 		</label>
 	</td>
 	<td>
-		<?php echo usersHelper::assignees($this->tracker->assignees, '', 'assignees[]', $this->projectid); ?>
+		<?php echo phpFrame_User_Helper::assignees($this->tracker->assignees, '', 'assignees[]', $this->projectid); ?>
 	</td>
 </tr>
 <tr>
@@ -90,13 +90,13 @@ function submitbutton() {
 
 <div style="clear:left; margin-top:30px;"></div>
 
-<button type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button>
-<button type="submit"><?php echo text::_(_LANG_SAVE); ?></button> 
+<button type="button" onclick="Javascript:window.history.back();"><?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?></button>
+<button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button> 
 
 <input type="hidden" name="projectid" value="<?php echo $this->projectid;?>" />
 <input type="hidden" name="option" value="com_projects" />
 <input type="hidden" name="task" value="save_message" />
 <input type="hidden" name="type" value="" />
-<?php echo html::_( 'form.token' ); ?>
+<?php echo phpFrame_HTML::_( 'form.token' ); ?>
 
 </form>

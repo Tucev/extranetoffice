@@ -21,7 +21,7 @@ require_once _ABS_PATH.DS.'lib'.DS.'phpinputfilter'.DS.'inputfilter.php';
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class request {
+class phpFrame_Environment_Request {
 	/**
 	 * Constructor
 	 * 

@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class image {
+class phpFrame_Utils_Image {
 	function resize_image($sourcefile, $destfile, $forcedwidth=85, $forcedheight=60, $imgcomp=0)  {
 		// $imgcomp es la compresion que le damos. 0 best quality | 100 worst quality
 		$g_imgcomp = 100-$imgcomp;

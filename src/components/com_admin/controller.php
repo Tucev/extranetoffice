@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class adminController extends controller {
+class adminController extends phpFrame_Application_Controller {
 	/**
 	 * Constructor
 	 * 
@@ -27,7 +27,7 @@ class adminController extends controller {
 	 */
 	function __construct() {
 		// set default request vars
-		$this->view = request::getVar('view', 'admin');
+		$this->view = phpFrame_Environment_Request::getVar('view', 'admin');
 		
 		// It is important we invoke the parent's constructor before 
 		// running permission check as we need the available views loaded first.
@@ -41,15 +41,15 @@ class adminController extends controller {
 	 */
 	function save_config() {
 		// Check for request forgeries
-		crypt::checkToken() or exit( 'Invalid Token' );
+		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		$modelConfig =& $this->getModel('config');
 		
 		if ($modelConfig->saveConfig() === false) {
-			error::raise('', 'error', $modelConfig->getLastError());
+			phpFrame_Application_Error::raise('', 'error', $modelConfig->getLastError());
 		}
 		else {
-			error::raise('', 'message', _LANG_CONFIG_SAVE_SUCCESS);
+			phpFrame_Application_Error::raise('', 'message', _LANG_CONFIG_SAVE_SUCCESS);
 		}
 		
 		$this->setRedirect('index.php?option=com_admin&view=config');
@@ -57,30 +57,30 @@ class adminController extends controller {
 	
 	function save_user() {
 		// Check for request forgeries
-		crypt::checkToken() or exit( 'Invalid Token' );
+		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		$modelUsers =& $this->getModel('users');
 		
 		if ($modelUsers->saveUser() === false) {
-			error::raise('', 'error', $modelUsers->getLastError());
+			phpFrame_Application_Error::raise('', 'error', $modelUsers->getLastError());
 		}
 		else {
-			error::raise('', 'message', _LANG_USER_SAVE_SUCCESS);
+			phpFrame_Application_Error::raise('', 'message', _LANG_USER_SAVE_SUCCESS);
 		}
 		
 		$this->setRedirect('index.php?option=com_admin&view=users');
 	}
 	
 	function remove_user() {
-		$userid = request::getVar('id', 0);
+		$userid = phpFrame_Environment_Request::getVar('id', 0);
 		
 		$modelUsers =& $this->getModel('users');
 		
 		if ($modelUsers->deleteUser($userid) === false) {
-			error::raise('', 'error', $modelUsers->getLastError());
+			phpFrame_Application_Error::raise('', 'error', $modelUsers->getLastError());
 		}
 		else {
-			error::raise('', 'message', _LANG_ADMIN_USERS_DELETE_SUCCESS);
+			phpFrame_Application_Error::raise('', 'message', _LANG_ADMIN_USERS_DELETE_SUCCESS);
 		}
 		
 		$this->setRedirect('index.php?option=com_admin&view=users');

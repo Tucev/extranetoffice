@@ -25,15 +25,15 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * developing components. See the built in components (dashboard, user, admin, ...) 
  * for examples.
  * 
- * This class extends the singleton class, and it is therefore instantiated using 
- * the getInstance() method inherited from singleton.
+ * This class extends the phpFrame_Base_Singleton class, and it is therefore instantiated using 
+ * the getInstance() method inherited from phpFrame_Base_Singleton.
  * 
  * To make sure that the child view is instantiated using the correct run time
  * class name we pass the class name when invoking the getInstance() method.
  * 
  * For example:
  * <code>
- * class myView extends view {
+ * class myView extends phpFrame_Application_View {
  * 		function doSomething() {
  * 			return 'something';
  * 		}
@@ -51,7 +51,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see			controller, model
  * @abstract 
  */
-abstract class view extends singleton {
+abstract class phpFrame_Application_View extends phpFrame_Base_Singleton {
 	/**
 	 * A reference to the global config
 	 *
@@ -91,13 +91,13 @@ abstract class view extends singleton {
 	 */
 	function __construct() {
 		// Assign reference to config object
-		$this->config =& factory::getConfig();
+		$this->config =& phpFrame_Application_Factory::getConfig();
 		
 		// set view name in view object
-    	$this->view =& request::getVar('view');
+    	$this->view =& phpFrame_Environment_Request::getVar('view');
     	
     	// Assign references to user object for quick access in tmpl
-		$this->user =& factory::getUser();
+		$this->user =& phpFrame_Application_Factory::getUser();
 	}
 	
     /**
@@ -111,7 +111,7 @@ abstract class view extends singleton {
      * 
      * Method name to be triggered will be formed as follows:
      * <code>
-     * $tmpl_specific_method = "display".ucfirst(request::getVar('view')).ucfirst($this->tmpl);
+     * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getVar('view')).ucfirst($this->tmpl);
      * </code>
      *
      * @since	1.0
@@ -123,7 +123,7 @@ abstract class view extends singleton {
     	for ($i=0; $i<count($layout_array); $i++) {
     		$layout .= ucfirst($layout_array[$i]);
     	}
-		$tmpl_specific_method = "display".ucfirst(request::getVar('view')).ucfirst($layout);
+		$tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getVar('view')).ucfirst($layout);
 		if (method_exists($this, $tmpl_specific_method)) {
 			// Invoke layout specific display method
 			$this->$tmpl_specific_method();
@@ -153,7 +153,7 @@ abstract class view extends singleton {
     			return true;
     		}
     		else {
-    			error::raise(500, "error", "Layout template file ".$tmpl_path." not found.");
+    			phpFrame_Application_Error::raise(500, "error", "Layout template file ".$tmpl_path." not found.");
     			return false;
     		}
     	}
@@ -174,12 +174,12 @@ abstract class view extends singleton {
 		$model_path = COMPONENT_PATH.DS."models".DS.$name.".php";
 		if (file_exists($model_path)) {
 			require_once $model_path;
-			$model_class_name = substr(request::getVar('option'), 4).'Model'.ucfirst($name);
+			$model_class_name = substr(phpFrame_Environment_Request::getVar('option'), 4).'Model'.ucfirst($name);
 			$model =& phpFrame::getInstance($model_class_name);
 			return $model;
 		}
 		else {
-			error::raise(500, "error", "Model file ".$model_path." not found.");
+			phpFrame_Application_Error::raise(500, "error", "Model file ".$model_path." not found.");
 			return false;
 		}
 		
@@ -194,7 +194,7 @@ abstract class view extends singleton {
 	 * @since	1.0
 	 */
 	function addPathwayItem($title, $url='') {
-		$pathway =& factory::getPathway();
+		$pathway =& phpFrame_Application_Factory::getPathway();
 		// add item
 		$pathway->addItem($title, $url);
 	}

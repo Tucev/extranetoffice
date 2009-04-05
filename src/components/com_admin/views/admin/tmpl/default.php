@@ -35,16 +35,16 @@ $(function() {
 <div id="sysadmin_tabs">
 	<ul>
 		<li>
-			<a href="<?php echo route::_("index.php?option=com_admin&amp;view=config"); ?>">Global Config</a>
+			<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_admin&amp;view=config"); ?>">Global Config</a>
 		</li>
 		<li>
-			<a href="<?php echo route::_("index.php?option=com_admin&amp;view=users"); ?>">Users</a>
+			<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_admin&amp;view=users"); ?>">Users</a>
 		</li>
 		<li>
-			<a href="<?php echo route::_("index.php?option=com_admin&amp;view=components"); ?>">Components</a>
+			<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_admin&amp;view=components"); ?>">Components</a>
 		</li>
 		<li>
-			<a href="<?php echo route::_("index.php?option=com_admin&amp;view=modules"); ?>">Modules</a>
+			<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_admin&amp;view=modules"); ?>">Modules</a>
 		</li>
 	</ul>
 </div>

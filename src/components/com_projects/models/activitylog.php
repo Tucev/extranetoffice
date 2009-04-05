@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		model
  */
-class projectsModelActivitylog extends model {
+class projectsModelActivitylog extends phpFrame_Application_Model {
 	/**
 	 * Project object
 	 *
@@ -32,7 +32,7 @@ class projectsModelActivitylog extends model {
 	 * @since 1.0.1
 	 */
 	function __construct() {
-		$this->projectid =& request::getVar('projectid', 0);
+		$this->projectid =& phpFrame_Environment_Request::getVar('projectid', 0);
 		
 		if (!empty($this->projectid)) {
 			// get project data from controller
@@ -108,12 +108,12 @@ class projectsModelActivitylog extends model {
 	 * @todo	sanatise address, subject & body
 	 */
 	function _notify($row, $assignees) {
-		$uri =& factory::getURI();
-		$user_name = usersHelper::id2name($row->userid);
+		$uri =& phpFrame_Application_Factory::getURI();
+		$user_name = phpFrame_User_Helper::id2name($row->userid);
 		
-		$new_mail = new mailer();
+		$new_mail = new phpFrame_Mail_Mailer();
 		$new_mail->Subject = "[".$this->project->name."] ".$row->action." by ".$user_name;
-		$new_mail->Body = text::_(sprintf(_LANG_ACTIVITYLOG_NOTIFY_BODY, 
+		$new_mail->Body = phpFrame_HTML_Text::_(sprintf(_LANG_ACTIVITYLOG_NOTIFY_BODY, 
 								 $this->project->name, 
 								 $row->action." by ".$user_name,
 								 $uri->getBase().$row->url, 
@@ -124,7 +124,7 @@ class projectsModelActivitylog extends model {
 		parse_str($row->url, $url_array);
 		$pattern = "/".substr($url_array['view'], 0, (strlen($url_array['view'])-1))."id=([0-9]+)/i";
 		preg_match($pattern, $row->url, $matches);
-		$new_mail->setMessageIdSuffix('o='.request::getVar('option').'&p='.$row->projectid.'&t='.$url_array['view'].'&i='.$matches[1]);
+		$new_mail->setMessageIdSuffix('o='.phpFrame_Environment_Request::getVar('option').'&p='.$row->projectid.'&t='.$url_array['view'].'&i='.$matches[1]);
 		
 		// Mae sure assignees is an array
 		if (!is_array($assignees)) {
@@ -141,12 +141,12 @@ class projectsModelActivitylog extends model {
 		if (is_array($recipients) && count($recipients) > 0) {
 			$failed_recipients = array();
 			foreach ($recipients as $recipient) {
-				if (filter::validate($recipient->email, 'email') === false ){
+				if (phpFrame_Utils_Filter::validate($recipient->email, 'email') === false ){
 					$failed_recipients[] = $recipient->email;
 					continue;
 				}
 				else {
-					$new_mail->AddAddress($recipient->email, usersHelper::fullname_format($recipient->firstname, $recipient->lastname));
+					$new_mail->AddAddress($recipient->email, phpFrame_User_Helper::fullname_format($recipient->firstname, $recipient->lastname));
 					
 					// Send email
 					if ($new_mail->Send() !== true) {

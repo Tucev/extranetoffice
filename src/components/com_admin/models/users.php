@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		model
  */
-class adminModelUsers extends model {
+class adminModelUsers extends phpFrame_Application_Model {
 	/**
 	 * Get users
 	 * 
@@ -28,12 +28,12 @@ class adminModelUsers extends model {
 	 * @return array
 	 */
 	function getUsers($deleted=false) {
-		$filter_order = request::getVar('filter_order', 'u.lastname');
-		$filter_order_Dir = request::getVar('filter_order_Dir', '');
-		$search = request::getVar('search', '');
+		$filter_order = phpFrame_Environment_Request::getVar('filter_order', 'u.lastname');
+		$filter_order_Dir = phpFrame_Environment_Request::getVar('filter_order_Dir', '');
+		$search = phpFrame_Environment_Request::getVar('search', '');
 		$search = strtolower( $search );
-		$limitstart = request::getVar('limitstart', 0);
-		$limit = request::getVar('limit', 20);
+		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
+		$limit = phpFrame_Environment_Request::getVar('limit', 20);
 
 		$where = array();
 		
@@ -81,7 +81,7 @@ class adminModelUsers extends model {
 				  . $where . 
 				  " GROUP BY u.id ";
 
-		$pageNav = new pagination($total, $limitstart, $limit);
+		$pageNav = new phpFrame_HTML_Pagination($total, $limitstart, $limit);
 			
 		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
 		//echo str_replace('#__', 'eo_', $query); exit;
@@ -126,22 +126,22 @@ class adminModelUsers extends model {
 	}
 	
 	function saveUser() {
-		$userid = request::getVar('id', null);
+		$userid = phpFrame_Environment_Request::getVar('id', null);
 		
 		// Get reference to user object
-		$user =& factory::getUser();
+		$user =& phpFrame_Application_Factory::getUser();
 		
 		// Create standard object to store user properties
 		// We do this because we dont want to overwrite the current user object.
-		// Remember the user object extends table, which in turn extends singleton.
-		$row = new standardObject();
+		// Remember the user object extends phpFrame_Database_Table, which in turn extends phpFrame_Base_Singleton.
+		$row = new phpFrame_Base_StdObject();
 		
 		// if no userid passed in request we assume it is a new user
 		if (empty($userid)) {
 			$row->block = '0';
 			$row->created = date("Y-m-d H:i:s");
 			// Generate random password and store in local variable to be used when sending email to user.
-			$password = crypt::genRandomPassword();
+			$password = phpFrame_Utils_Crypt::genRandomPassword();
 			// Assign newly generated password to row object (this password will be encrypted when stored).
 			$row->password = $password;
 			$new_user = true;
@@ -152,7 +152,7 @@ class adminModelUsers extends model {
 			$new_user = false;
 		}
 		
-		$post = request::get('post');
+		$post = phpFrame_Environment_Request::get('post');
 		
 		// exlude password if not passed in request
 		$exclude = '';
@@ -178,10 +178,10 @@ class adminModelUsers extends model {
 		
 		// Send notification to new users
 		if ($new_user === true) {
-			$uri =& factory::getURI();
+			$uri =& phpFrame_Application_Factory::getURI();
 		
-			$new_mail = new mailer();
-			$new_mail->AddAddress($row->email, usersHelper::fullname_format($row->firstname, $row->lastname));
+			$new_mail = new phpFrame_Mail_Mailer();
+			$new_mail->AddAddress($row->email, phpFrame_User_Helper::fullname_format($row->firstname, $row->lastname));
 			$new_mail->Subject = _LANG_USER_NEW_NOTIFY_SUBJECT;
 			$new_mail->Body = sprintf(_LANG_USER_NEW_NOTIFY_BODY, 
 									 $row->firstname, 

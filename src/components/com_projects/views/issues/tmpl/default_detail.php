@@ -11,15 +11,15 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 // Add confirm behaviour to delete links
-html::confirm('delete_issue', _LANG_PROJECTS_ISSUES_DELETE, _LANG_PROJECTS_ISSUES_DELETE_CONFIRM);
+phpFrame_HTML::confirm('delete_issue', _LANG_PROJECTS_ISSUES_DELETE, _LANG_PROJECTS_ISSUES_DELETE_CONFIRM);
 // Load jQuery validation behaviour for forms
-html::validate('commentsform');
+phpFrame_HTML::validate('commentsform');
 ?>
 
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&projectid='.$this->projectid); ?>">
 		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
@@ -28,28 +28,28 @@ html::validate('commentsform');
 	
 	<?php if ($this->row->created_by == $this->user->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_issue" title="<?php echo text::_($this->row->title, true); ?>" href="index.php?option=com_projects&task=remove_issue&projectid=<?php echo $this->row->projectid; ?>&issueid=<?php echo $this->row->id; ?>">
-			<?php echo text::_( _LANG_DELETE ); ?>
+		<a class="delete_issue" title="<?php echo phpFrame_HTML_Text::_($this->row->title, true); ?>" href="index.php?option=com_projects&task=remove_issue&projectid=<?php echo $this->row->projectid; ?>&issueid=<?php echo $this->row->id; ?>">
+			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
 	<div class="thread_edit">
-		<a href="<?php echo route::_("index.php?option=com_projects&view=issues&layout=form&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
-		<?php echo text::_( _LANG_EDIT ); ?>
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=issues&layout=form&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
+		<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
 	
 	<?php if ($this->row->closed == "0000-00-00 00:00:00") : ?>
 	<div class="thread_close">
-		<a href="<?php echo route::_("index.php?option=com_projects&task=close_issue&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
-		<?php echo text::_( _LANG_ISSUES_CLOSE ); ?>
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&task=close_issue&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
+		<?php echo phpFrame_HTML_Text::_( _LANG_ISSUES_CLOSE ); ?>
 		</a>
 	</div>
 	<?php else : ?>
 	<div class="thread_reopen">
-		<a href="<?php echo route::_("index.php?option=com_projects&task=reopen_issue&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
-		<?php echo text::_( _LANG_ISSUES_REOPEN ); ?>
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&task=reopen_issue&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
+		<?php echo phpFrame_HTML_Text::_( _LANG_ISSUES_REOPEN ); ?>
 		</a>
 	</div>
 	<?php endif; ?>
@@ -68,7 +68,7 @@ html::validate('commentsform');
 		<?php if (!empty($this->row->assignees)) : ?>
     	<?php for ($j=0; $j<count($this->row->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo route::_("index.php?option=com_projects&view=users&layout=detail&userid=".$this->row->assignees[$j]['id']); ?>">
+    		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=users&layout=detail&userid=".$this->row->assignees[$j]['id']); ?>">
     		<?php echo $this->row->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>
@@ -90,7 +90,7 @@ html::validate('commentsform');
 	<?php foreach ($this->row->comments as $comment) : ?>
 		<div class="comment_row">
 			<div style="float:left; margin-right: 10px;">
-				<img src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo usersHelper::id2photo($comment->userid); ?>" />
+				<img src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo phpFrame_User_Helper::id2photo($comment->userid); ?>" />
 			</div>
 			<div style="margin-left: 95px;">
 				<div class="comment_details">
@@ -135,7 +135,7 @@ html::validate('commentsform');
 		<input type="hidden" name="assignees[]" value="<?php echo $assignee['id']; ?>" />
 		<?php endforeach; ?>
 		<?php endif; ?>
-		<?php echo html::_( 'form.token' ); ?>
+		<?php echo phpFrame_HTML::_( 'form.token' ); ?>
 		</form>
 	</div>
 </div>

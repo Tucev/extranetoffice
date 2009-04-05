@@ -10,5 +10,5 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
-$projectid = request::getVar('projectid', 0);
+$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 ?>

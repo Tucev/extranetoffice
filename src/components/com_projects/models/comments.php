@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		model
  */
-class projectsModelComments extends model {
+class projectsModelComments extends phpFrame_Application_Model {
 	/**
 	 * Constructor
 	 *
@@ -130,7 +130,7 @@ class projectsModelComments extends model {
 	}
 	
 	function fetchCommentsFromEmail() {
-		$imap = new imap($this->config->imap_host, $this->config->imap_port, $this->config->imap_user, $this->config->imap_password);
+		$imap = new phpFrame_Mail_IMAP($this->config->imap_host, $this->config->imap_port, $this->config->imap_user, $this->config->imap_password);
 		$messages = $imap->getMessages();
 		$imap->close();
 		

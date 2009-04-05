@@ -10,5 +10,5 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
-$this->loadTemplate(request::getVar('layout', 'list'));
+$this->loadTemplate(phpFrame_Environment_Request::getVar('layout', 'list'));
 ?>

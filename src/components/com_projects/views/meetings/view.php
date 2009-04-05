@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * Method name to be triggered will be formed as follows:
  * 
  * <code>
- * $tmpl_specific_method = "display".ucfirst(request::getVar('view')).ucfirst($this->tmpl);
+ * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getVar('view')).ucfirst($this->tmpl);
  * </code>
  * 
  * @package		ExtranetOffice
@@ -28,7 +28,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		view, controller
  */
-class projectsViewMeetings extends view {
+class projectsViewMeetings extends phpFrame_Application_View {
 	var $page_title=null;
 	var $projectid=null;
 	
@@ -40,10 +40,10 @@ class projectsViewMeetings extends view {
 	 */
 	function __construct() {
 		// Set the view template to load (default value is set in controller)
-		$this->layout =& request::getVar('layout');
+		$this->layout =& phpFrame_Environment_Request::getVar('layout');
 		
 		// Set reference to projectid
-		$this->projectid =& request::getVar('projectid', 0);
+		$this->projectid =& phpFrame_Environment_Request::getVar('projectid', 0);
 		
 		// Set reference to project object loaded in controller
 		if (!empty($this->projectid)) {
@@ -71,7 +71,7 @@ class projectsViewMeetings extends view {
 		parent::display();
 		
 		// Append page title to document title
-		$document =& factory::getDocument('html');
+		$document =& phpFrame_Application_Factory::getDocument('html');
 		$document->title .= ' - '.$this->page_title;
 	}
 	
@@ -91,12 +91,12 @@ class projectsViewMeetings extends view {
 	}
 	
 	function displayMeetingsDetail() {
-		$meetingid =& request::getVar('meetingid', 0);
+		$meetingid =& phpFrame_Environment_Request::getVar('meetingid', 0);
 		
 		$modelMeetings =& $this->getModel('meetings');
 		$this->row = $modelMeetings->getMeetingsDetail($this->projectid, $meetingid);
 		
-		$document =& factory::getDocument('html');
+		$document =& phpFrame_Application_Factory::getDocument('html');
 		$document->addScript('lib/jquery/plugins/lightbox/jquery.lightbox-0.5.pack.js');
 		$document->addStyleSheet('lib/jquery/plugins/lightbox/css/jquery.lightbox-0.5.css');
 		
@@ -110,7 +110,7 @@ class projectsViewMeetings extends view {
 	 *
 	 */
 	function displayMeetingsForm() {
-		$meetingid =& request::getVar('meetingid', 0);
+		$meetingid =& phpFrame_Environment_Request::getVar('meetingid', 0);
 		
 		if (!empty($meetingid)) {
 			$action = _LANG_MEETINGS_EDIT;
@@ -128,8 +128,8 @@ class projectsViewMeetings extends view {
 	}
 	
 	function displayMeetingsSlideshowsForm() {
-		$this->meetingid =& request::getVar('meetingid', 0);
-		$slideshowid =& request::getVar('slideshowid', 0);
+		$this->meetingid =& phpFrame_Environment_Request::getVar('meetingid', 0);
+		$slideshowid =& phpFrame_Environment_Request::getVar('slideshowid', 0);
 		
 		if (!empty($slideshowid)) {
 			$action = _LANG_SLIDESHOWS_EDIT;
@@ -149,7 +149,7 @@ class projectsViewMeetings extends view {
 	}
 	
 	function displayMeetingsFilesForm() {
-		$this->meetingid =& request::getVar('meetingid', 0);
+		$this->meetingid =& phpFrame_Environment_Request::getVar('meetingid', 0);
 		
 		if (!empty($this->meetingid)) {
 			$modelFiles =& $this->getModel('files');

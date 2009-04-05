@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class projectsTableActivitylog extends table {
+class projectsTableActivitylog extends phpFrame_Database_Table {
 	/**
 	 * The activitylog row id (int(11) auto_increment)
 	 * 

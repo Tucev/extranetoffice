@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		model
  */
-class emailModelEmail extends model {
+class emailModelEmail extends phpFrame_Application_Model {
 	/**
 	 * The id of the account to use. If not specified the default account for user is used.
 	 * 
@@ -60,7 +60,7 @@ class emailModelEmail extends model {
 		//TODO: Check permissions
 		parent::__construct();
 		
-		$this->accountid = request::getVar('accountid', 0);
+		$this->accountid = phpFrame_Environment_Request::getVar('accountid', 0);
 	}
 	
 	function checkDependencies() {
@@ -179,7 +179,7 @@ class emailModelEmail extends model {
 	        }
 	    }
 	    else {
-	    	error::raise(0, 'warning', imap_last_error() );
+	    	phpFrame_Application_Error::raise(0, 'warning', imap_last_error() );
 	  		return false;
 	    }
 	    
@@ -199,7 +199,7 @@ class emailModelEmail extends model {
 	 */
 	function createMailbox($new_folder_name) {
 		if (!imap_createmailbox($this->stream, imap_utf7_encode($this->mbox_name.$new_folder_name))) {
-			error::raise(0, 'warning', imap_last_error() );
+			phpFrame_Application_Error::raise(0, 'warning', imap_last_error() );
 	  		return false;
 		}
 		else {
@@ -216,7 +216,7 @@ class emailModelEmail extends model {
 	 */
 	function renameMailbox($old_box, $new_box) {
 		if (!imap_renamemailbox($this->stream, imap_utf7_encode($this->mbox_name.$old_box), imap_utf7_encode($this->mbox_name.$new_box))) {
-			error::raise(0, 'warning', imap_last_error() );
+			phpFrame_Application_Error::raise(0, 'warning', imap_last_error() );
 	  		return false;
 		}
 		else {
@@ -231,7 +231,7 @@ class emailModelEmail extends model {
 	 */
 	function deleteMailbox() {
 		if (!imap_deletemailbox($this->stream, imap_utf7_encode($this->mbox_name))) {
-			error::raise(0, 'warning', imap_last_error() );
+			phpFrame_Application_Error::raise(0, 'warning', imap_last_error() );
 	  		return false;
 		}
 		else {
@@ -264,15 +264,15 @@ class emailModelEmail extends model {
 	
 	function getMessageList() {
 		if (!$this->stream) {
-			error::raise('', 'warning', _LANG_EMAIL_ERROR_GETTING_MESSAGES_NO_STREAM);
+			phpFrame_Application_Error::raise('', 'warning', _LANG_EMAIL_ERROR_GETTING_MESSAGES_NO_STREAM);
 			return false;
 		} 
 		
 	  	// Get request vars
-	  	$page = request::getVar('page', 1);
-	  	$per_page = request::getVar('per_page', 20);
-	  	$order_by = request::getVar('order_by', 'date');
-	  	$order_dir = request::getVar('order_dir', 'desc');
+	  	$page = phpFrame_Environment_Request::getVar('page', 1);
+	  	$per_page = phpFrame_Environment_Request::getVar('per_page', 20);
+	  	$order_by = phpFrame_Environment_Request::getVar('order_by', 'date');
+	  	$order_dir = phpFrame_Environment_Request::getVar('order_dir', 'desc');
 	  	
 	  	// Check messages 
 	  	$check = imap_mailboxmsginfo($this->stream);
@@ -397,7 +397,7 @@ class emailModelEmail extends model {
 				$recipient = trim($recipient);
 				if (!JMailHelper::isEmailAddress($recipient)) {
 					$error	= JText::sprintf('EMAIL_INVALID', $recipient);
-					error::raise(0, 'warning', $error );
+					phpFrame_Application_Error::raise(0, 'warning', $error );
 				}
 				else {
 					$new_mail->addRecipient($recipient);	
@@ -408,7 +408,7 @@ class emailModelEmail extends model {
 		// Check sender email address
 		if ( !$sender || !JMailHelper::isEmailAddress($sender) ) {
 			$error	= JText::sprintf('EMAIL_INVALID', $sender);
-			error::raise(0, 'warning', $error );
+			phpFrame_Application_Error::raise(0, 'warning', $error );
 		}
 
 		if ($error)	{
@@ -450,7 +450,7 @@ class emailModelEmail extends model {
 		//$new_mail->useSendmail();
 		
 		if ($new_mail->Send() !== true) {
-			error::raise( '', 'warning', 'EMAIL_NOT_SENT' );
+			phpFrame_Application_Error::raise( '', 'warning', 'EMAIL_NOT_SENT' );
 			return false;
 		}
 		
@@ -485,11 +485,11 @@ class emailModelEmail extends model {
                  . $body."\r\n";
         
 		if (imap_append($this->stream, $this->mbox_name, $message, $options)) {
-			error::raiseNotice( '', _LANG_EMAIL_MESSAGE_SAVED );
+			phpFrame_Application_Error::raiseNotice( '', _LANG_EMAIL_MESSAGE_SAVED );
 			return true;
 		}
 		else {
-			error::raise( '', 'warning', _LANG_EMAIL_MESSAGE_NOT_SAVED );
+			phpFrame_Application_Error::raise( '', 'warning', _LANG_EMAIL_MESSAGE_NOT_SAVED );
 			return false;
 		}
 	}

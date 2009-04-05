@@ -11,20 +11,20 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 // Add confirm behaviour to delete links
-html::confirm('delete_milestone', _LANG_PROJECTS_MILESTONES_DELETE, _LANG_PROJECTS_MILESTONES_DELETE_CONFIRM);
+phpFrame_HTML::confirm('delete_milestone', _LANG_PROJECTS_MILESTONES_DELETE, _LANG_PROJECTS_MILESTONES_DELETE_CONFIRM);
 ?>
 
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
 
 <div class="new">
-	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&layout=form&projectid='.$this->projectid); ?>">
-		<?php echo text::_( _LANG_NEW ); ?>
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&layout=form&projectid='.$this->projectid); ?>">
+		<?php echo phpFrame_HTML_Text::_( _LANG_NEW ); ?>
 	</a>
 </div>
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&projectid='.$this->projectid); ?>">
 		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
@@ -38,14 +38,14 @@ html::confirm('delete_milestone', _LANG_PROJECTS_MILESTONES_DELETE, _LANG_PROJEC
 
 	<?php if ($row->created_by == $this->user->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_milestone" title="<?php echo text::_($row->title, true); ?>" href="index.php?option=com_projects&task=remove_milestone&projectid=<?php echo $row->projectid; ?>&milestoneid=<?php echo $row->id; ?>">
-			<?php echo text::_( _LANG_DELETE ); ?>
+		<a class="delete_milestone" title="<?php echo phpFrame_HTML_Text::_($row->title, true); ?>" href="index.php?option=com_projects&task=remove_milestone&projectid=<?php echo $row->projectid; ?>&milestoneid=<?php echo $row->id; ?>">
+			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
 	<div class="thread_heading">
-	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&layout=detail&projectid='.$row->projectid.'&milestoneid='.$row->id); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&layout=detail&projectid='.$row->projectid.'&milestoneid='.$row->id); ?>">
 		<?php echo $row->title; ?>
 	</a>
 	</div>
@@ -60,7 +60,7 @@ html::confirm('delete_milestone', _LANG_PROJECTS_MILESTONES_DELETE, _LANG_PROJEC
 		<?php if (!empty($row->assignees)) : ?>
     	<?php for ($j=0; $j<count($row->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo route::_("index.php?option=com_projects&view=users&layout=detail&userid=".$row->assignees[$j]['id']); ?>">
+    		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=users&layout=detail&userid=".$row->assignees[$j]['id']); ?>">
     		<?php echo $row->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>
@@ -79,17 +79,17 @@ html::confirm('delete_milestone', _LANG_PROJECTS_MILESTONES_DELETE, _LANG_PROJEC
 	
 	<?php if (!empty($row->description)) : ?>
 	<div class="thread_body">
-		<?php echo nl2br(text::limit_words($row->description, 255)); ?>
+		<?php echo nl2br(phpFrame_HTML_Text::limit_words($row->description, 255)); ?>
 	</div>
 	<?php endif; ?>
 	
 	
 	<div class="comments_info">
-		<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&layout=detail&projectid='.$this->projectid.'&milestoneid='.$row->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&layout=detail&projectid='.$this->projectid.'&milestoneid='.$row->id); ?>">
 			<?php echo $row->comments; ?> <?php echo _LANG_COMMENTS; ?>
 		</a>
 		 - 
-		<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&layout=detail&projectid='.$this->projectid.'&milestoneid='.$row->id."#post-comment"); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&layout=detail&projectid='.$this->projectid.'&milestoneid='.$row->id."#post-comment"); ?>">
 			<?php echo _LANG_COMMENTS_NEW; ?>
 		</a>
 	</div>
@@ -99,5 +99,5 @@ html::confirm('delete_milestone', _LANG_PROJECTS_MILESTONES_DELETE, _LANG_PROJEC
 <?php endforeach; ?>
 
 <?php else : ?>
-<?php echo text::_( _LANG_NO_ENTRIES ); ?>
+<?php echo phpFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>

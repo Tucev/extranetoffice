@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		model
  */
-class projectsModelMembers extends model {
+class projectsModelMembers extends phpFrame_Application_Model {
 	/**
 	 * Constructor
 	 *
@@ -72,13 +72,13 @@ class projectsModelMembers extends model {
 			$project_name = projectsHelperProjects::id2name($projectid);
 			$role_name = projectsHelperProjects::project_roleid2name($roleid);
 			$site_name = $this->config->sitename;
-			$uri =& factory::getURI();
-			$new_member_email = usersHelper::id2email($userid);
+			$uri =& phpFrame_Application_Factory::getURI();
+			$new_member_email = phpFrame_User_Helper::id2email($userid);
 			
-			$new_mail = new mailer();
-			$new_mail->AddAddress($new_member_email, usersHelper::id2name($userid));
+			$new_mail = new phpFrame_Mail_Mailer();
+			$new_mail->AddAddress($new_member_email, phpFrame_User_Helper::id2name($userid));
 			$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, $this->user->get('name'), $project_name, $site_name);
-			$new_mail->Body = text::_(sprintf(_LANG_PROJECTS_INVITATION_BODY,
+			$new_mail->Body = phpFrame_HTML_Text::_(sprintf(_LANG_PROJECTS_INVITATION_BODY,
 									 $this->user->get('name'), 
 									 $project_name, 
 									 $role_name, 
@@ -96,21 +96,21 @@ class projectsModelMembers extends model {
 	
 	function inviteNewUser($projectid, $roleid) {
 		// Get reference to user object
-		$user =& factory::getUser();
+		$user =& phpFrame_Application_Factory::getUser();
 		
 		// Create standard object to store user properties
 		// We do this because we dont want to overwrite the current user object.
-		// Remember the user object extends table, which in turn extends singleton.
-		$row = new standardObject();
+		// Remember the user object extends phpFrame_Database_Table, which in turn extends phpFrame_Base_Singleton.
+		$row = new phpFrame_Base_StdObject();
 		
 		$row->block = '0';
 		$row->created = date("Y-m-d H:i:s");
 		// Generate random password and store in local variable to be used when sending email to user.
-		$password = crypt::genRandomPassword();
+		$password = phpFrame_Utils_Crypt::genRandomPassword();
 		// Assign newly generated password to row object (this password will be encrypted when stored).
 		$row->password = $password;
 		
-		$post = request::get('post');
+		$post = phpFrame_Environment_Request::get('post');
 		
 		// Bind the post data to the row array
 		if ($user->bind($post, 'password', $row) === false) {
@@ -150,10 +150,10 @@ class projectsModelMembers extends model {
 		$project_name = projectsHelperProjects::id2name($projectid);
 		$role_name = projectsHelperProjects::project_roleid2name($roleid);
 		$site_name = $this->config->sitename;
-		$uri =& factory::getURI();
+		$uri =& phpFrame_Application_Factory::getURI();
 		
-		$new_mail = new mailer();
-		$new_mail->AddAddress($row->email, usersHelper::fullname_format($row->firstname, $row->lastname));
+		$new_mail = new phpFrame_Mail_Mailer();
+		$new_mail->AddAddress($row->email, phpFrame_User_Helper::fullname_format($row->firstname, $row->lastname));
 		$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, $this->user->get('name'), $project_name, $site_name);
 		$new_mail->Body = sprintf(_LANG_PROJECTS_INVITATION_NEW_USER_BODY, 
 								 $this->user->get('name'),

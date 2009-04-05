@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class components extends table {
+class phpFrame_Application_Components extends phpFrame_Database_Table {
 	var $name=null;
 	var $menu_name=null;
 	var $author=null;

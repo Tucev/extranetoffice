@@ -58,7 +58,7 @@ $module_positions['right'] = $this->modules->display('right');
 		
 		<div id="main_col_<?php echo $column_count; ?>">
 			<div id="main_col_inner">
-			<?php error::display(); ?>
+			<?php phpFrame_Application_Error::display(); ?>
 			<?php echo $this->component_output; ?>
 			</div><!-- close #main_col_inner -->
 		</div><!-- close #main_col -->

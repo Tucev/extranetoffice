@@ -23,12 +23,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class filter {
+class phpFrame_Utils_Filter {
 	/**
 	 * Validate data stored in variable
 	 * 
 	 * <code>
-	 *  $validEmail = filter::validate($email, 'email');
+	 *  $validEmail = phpFrame_Utils_Filter::validate($email, 'email');
 	 *  //validEmail will contain either the filtered string or boolean FALSE if validation fails
 	 * </code>
 	 * 
@@ -40,7 +40,7 @@ class filter {
 		// Check that passed type is recognised
 		$allowed_types = array("default", "int", "boolean", "float", "regexp", "url", "email", "ip");
 		if (!in_array($type, $allowed_types)) {
-			error::raise('', 'warning', 'phpFrame Filter error: Data type not recognised by filter.');
+			phpFrame_Application_Error::raise('', 'warning', 'phpFrame Filter error: Data type not recognised by filter.');
 			return false;
 		}
 		

@@ -18,13 +18,13 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <?php foreach($this->rows as $row) : ?>
 <div class="row_icons">
 	
-	<a href="<?php echo route::_("index.php?option=com_users&view=users&layout=detail&userid=".$row->id); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_users&view=users&layout=detail&userid=".$row->id); ?>">
 	<img border="0" src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo !empty($row->photo) ? $row->photo : 'default.png'; ?>" />
 	</a>
 	
 	<div class="row_icons_heading">
-	<a href="<?php echo route::_("index.php?option=com_users&view=users&layout=detail&userid=".$row->id); ?>">
-		<?php echo usersHelper::fullname_format($row->firstname, $row->lastname); ?>
+	<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_users&view=users&layout=detail&userid=".$row->id); ?>">
+		<?php echo phpFrame_User_Helper::fullname_format($row->firstname, $row->lastname); ?>
 	</a>
 	</div>
 
@@ -32,5 +32,5 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <?php endforeach; ?>
 
 <?php else : ?>
-<?php echo text::_( _LANG_NO_ENTRIES ); ?>
+<?php echo phpFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>

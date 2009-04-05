@@ -15,7 +15,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <script type="text/javascript">
 window.addEvent('domready', function() {
 	
-	/* Lighbox iframe for new imap folders form */
+	/* Lighbox iframe for new phpFrame_Mail_IMAP folders form */
 	SqueezeBox.initialize({});
 
 	$$('a.modal').each(function(el) {
@@ -36,7 +36,7 @@ function submitbutton() {
 
 	// do field validation
 	if (form.recipients.value == "") {
-		alert('<?php echo text::_( _LANG_EMAIL_TO_REQUIRED , true); ?>');
+		alert('<?php echo phpFrame_HTML_Text::_( _LANG_EMAIL_TO_REQUIRED , true); ?>');
 		return;
 	}
 	
@@ -85,23 +85,23 @@ function add_attachment(path, size, type) {
 
 <div id="email_detail_actions">
 	<div>
-		<a href="Javascript:window.history.back();" title="<?php echo text::_( _LANG_BACK ); ?>">
-		<img border="0" src="templates/<?php echo $this->config->get('template'); ?>/images/icons/generic/32x32/back.png" alt="<?php echo text::_( _LANG_BACK ); ?>" />
+		<a href="Javascript:window.history.back();" title="<?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?>">
+		<img border="0" src="templates/<?php echo $this->config->get('template'); ?>/images/icons/generic/32x32/back.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?>" />
 		</a>
 	</div>
 	<div>
-		<a href="Javascript:submitbutton();" title="<?php echo text::_( _LANG_SEND ); ?>">
-		<img border="0" src="templates/<?php echo $this->config->get('template'); ?>/images/icons/email/32x32/mail_send-32x32.png" alt="<?php echo text::_( _LANG_SEND ); ?>" />
+		<a href="Javascript:submitbutton();" title="<?php echo phpFrame_HTML_Text::_( _LANG_SEND ); ?>">
+		<img border="0" src="templates/<?php echo $this->config->get('template'); ?>/images/icons/email/32x32/mail_send-32x32.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_SEND ); ?>" />
 		</a>
 	</div>
 	<div>
 		<a class="modal" href="index.php?option=com_intranetoffice&amp;view=email&amp;folder=<?php echo $this->folder; ?>&amp;type=new_attachment&tmpl=component" rel="{handler: 'iframe', size: {x: 340, y: 160}}">
-		<img border="0" src="templates/<?php echo $this->config->get('template'); ?>/images/icons/email/32x32/attach.png" alt="<?php echo text::_( _LANG_ATTACH ); ?>" />
+		<img border="0" src="templates/<?php echo $this->config->get('template'); ?>/images/icons/email/32x32/attach.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_ATTACH ); ?>" />
 		</a>
 	</div>
 	<div>
-		<a href="#" title="<?php echo text::_( _LANG_SAVE_DRAFT ); ?>">
-		<img border="0" src="templates/<?php echo $this->config->get('template'); ?>/images/icons/generic/32x32/save.png" alt="<?php echo text::_( _LANG_SAVE_DRAFT ); ?>" />
+		<a href="#" title="<?php echo phpFrame_HTML_Text::_( _LANG_SAVE_DRAFT ); ?>">
+		<img border="0" src="templates/<?php echo $this->config->get('template'); ?>/images/icons/generic/32x32/save.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_SAVE_DRAFT ); ?>" />
 		</a>
 	</div>
 </div>
@@ -160,7 +160,7 @@ function add_attachment(path, size, type) {
 <input type="hidden" name="from_address" value="<?php echo $this->account->email_address; ?>" />
 <input type="hidden" name="fromname" value="<?php echo $this->account->fromname; ?>" />
 <input type="hidden" name="attachments" value="" />
-<input type="hidden" name="flag" value="<?php echo $this->message['uid']."|".request::getVar('type', 'list'); ?>" />
+<input type="hidden" name="flag" value="<?php echo $this->message['uid']."|".phpFrame_Environment_Request::getVar('type', 'list'); ?>" />
 <input type="hidden" name="folder" value="<?php echo $this->folder; ?>" />
 <input type="hidden" name="option" value="com_intranetoffice" />
 <input type="hidden" name="task" value="send_email" />

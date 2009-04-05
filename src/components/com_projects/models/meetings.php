@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		model
  */
-class projectsModelMeetings extends model {
+class projectsModelMeetings extends phpFrame_Application_Model {
 	/**
 	 * Constructor
 	 *
@@ -31,12 +31,12 @@ class projectsModelMeetings extends model {
 	}
 	
 	public function getMeetings($projectid) {
-		$filter_order = request::getVar('filter_order', 'm.created');
-		$filter_order_Dir = request::getVar('filter_order_Dir', 'DESC');
-		$search = request::getVar('search', '');
+		$filter_order = phpFrame_Environment_Request::getVar('filter_order', 'm.created');
+		$filter_order_Dir = phpFrame_Environment_Request::getVar('filter_order_Dir', 'DESC');
+		$search = phpFrame_Environment_Request::getVar('search', '');
 		$search = strtolower( $search );
-		$limitstart = request::getVar('limitstart', 0);
-		$limit = request::getVar('limit', 20);
+		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
+		$limit = phpFrame_Environment_Request::getVar('limit', 20);
 
 		$where = array();
 		
@@ -74,7 +74,7 @@ class projectsModelMeetings extends model {
 		$total = $this->db->getNumRows();
 
 		
-		$pageNav = new pagination( $total, $limitstart, $limit );
+		$pageNav = new phpFrame_HTML_Pagination( $total, $limitstart, $limit );
 
 		// get the subset (based on limits) of required records
 		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
@@ -399,7 +399,7 @@ class projectsModelMeetings extends model {
 		}
 		$accept = 'image/jpg,image/jpeg,image/png,image/gif'; // mime types
 		$max_upload_size = $this->config->get('max_upload_size')*(1024*1024); // Mb
-		$file = phpFrameFilesystem::uploadFile('filename', $upload_dir, $accept, $max_upload_size);
+		$file = phpFrame_Utils_Filesystem::uploadFile('filename', $upload_dir, $accept, $max_upload_size);
 		
 		if (!empty($file['error'])) {
 			$this->error[] = $file['error'];
@@ -407,7 +407,7 @@ class projectsModelMeetings extends model {
 		}
 		
 		// Resize image
-		$image = new image();
+		$image = new phpFrame_Utils_Image();
 		if (!$image->resize_image($upload_dir.$file['file_name'], $upload_dir.$file['file_name'], 764, 573)) {
 			$this->error[] = _LANG_MEETINGS_SLIDE_RESIZE_ERROR;
 			return false;
@@ -534,7 +534,7 @@ class projectsModelMeetings extends model {
 			}
 			else {
 				$new_assignees[$i]['id'] = $assignees[$i]->userid;
-				$new_assignees[$i]['name'] = usersHelper::fullname_format($assignees[$i]->firstname, $assignees[$i]->lastname);
+				$new_assignees[$i]['name'] = phpFrame_User_Helper::fullname_format($assignees[$i]->firstname, $assignees[$i]->lastname);
 				$new_assignees[$i]['email'] = $assignees[$i]->email;
 			}
 		}

@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class usersHelper {
+class phpFrame_User_Helper {
 	/**
 	 * Format full name to standard
 	 *
@@ -41,7 +41,7 @@ class usersHelper {
 	 */
 	static function id2name($id=0) {
 		if (!empty($id)) { // No user has been selected
-			$db =& factory::getDB();
+			$db =& phpFrame_Application_Factory::getDB();
 			$query = "SELECT firstname, lastname FROM #__users WHERE id = '".$id."'";
 			$db->setQuery($query);
 			$row = $db->loadObject();
@@ -49,7 +49,7 @@ class usersHelper {
 				return false;
 			}
 			
-			return usersHelper::fullname_format($row->firstname, $row->lastname);
+			return phpFrame_User_Helper::fullname_format($row->firstname, $row->lastname);
 		}
 		else {
 			return false;
@@ -64,7 +64,7 @@ class usersHelper {
 	 */
 	static function username2id($username='') {
 		if (!empty($username)) { // No user has been selected
-			$db =& factory::getDB();
+			$db =& phpFrame_Application_Factory::getDB();
 			$query = "SELECT id FROM #__users WHERE username = '".$username."'";
 			$db -> setQuery($query);
 			return $db->loadResult();
@@ -82,7 +82,7 @@ class usersHelper {
 	 */
 	static function email2id($email='') {
 		if (!empty($email)) { // No user has been selected
-			$db =& factory::getDB();
+			$db =& phpFrame_Application_Factory::getDB();
 			$query = "SELECT id FROM #__users WHERE email = '".$email."'";
 			$db -> setQuery($query);
 			return $db->loadResult();
@@ -100,7 +100,7 @@ class usersHelper {
 	 */
 	static function id2email($id) {
 		if (!empty($id)) { // No user has been selected
-			$db =& factory::getDB();
+			$db =& phpFrame_Application_Factory::getDB();
 			$query = "SELECT email FROM #__users WHERE id = '".$id."'";
 			$db -> setQuery($query);
 			return $db->loadResult();
@@ -118,7 +118,7 @@ class usersHelper {
 	 */
 	static function id2photo($id) {
 		if (!empty($id)) { // No user has been selected
-			$db =& factory::getDB();
+			$db =& phpFrame_Application_Factory::getDB();
 			$query = "SELECT photo FROM #__users WHERE id = '".$id."'";
 			$db -> setQuery($query);
 			$photo = $db->loadResult();
@@ -140,10 +140,10 @@ class usersHelper {
 	static function select($selected=0, $attribs='', $fieldname='userid', $projectid=0) {
 		// assemble users to the array
 		$options = array();
-		$options[] = html::_('select.option', '0', text::_( '-- Select a User --' ) );
+		$options[] = phpFrame_HTML::_('select.option', '0', phpFrame_HTML_Text::_( '-- Select a User --' ) );
 		
 		// get users from #__users
-		$db =& factory::getDB();
+		$db =& phpFrame_Application_Factory::getDB();
 		$query = "SELECT u.id, u.firstname, u.lastname ";
 		$query .= " FROM #__users AS u ";
 		if (!empty($projectid)) {
@@ -163,11 +163,11 @@ class usersHelper {
 		
 		if (is_array($rows) && count($rows) > 0) {
 			foreach ($rows as $row) {
-				$options[] = html::_('select.option', $row->id, usersHelper::fullname_format($row->firstname, $row->lastname));
+				$options[] = phpFrame_HTML::_('select.option', $row->id, phpFrame_User_Helper::fullname_format($row->firstname, $row->lastname));
 			}
 		}
 		
-		$output = html::_('select.genericlist', $options, $fieldname, $attribs, $selected);
+		$output = phpFrame_HTML::_('select.genericlist', $options, $fieldname, $attribs, $selected);
 		return $output;		
 	}
 	
@@ -181,7 +181,7 @@ class usersHelper {
 	 * @return	string	A string with the html code containing the checkboxes.
 	 */
 	static function assignees($selected=0, $attribs='', $fieldname='assignees[]', $projectid=0) {
-		$db =& factory::getDB();
+		$db =& phpFrame_Application_Factory::getDB();
 		$query = "SELECT u.id, u.firstname, u.lastname ";
 		$query .= " FROM #__users AS u ";
 		if (!empty($projectid)) {
@@ -216,7 +216,7 @@ class usersHelper {
 			$output .= ' value="'.$rows[$i]->id.'" '.$attribs;
 			if (in_array($rows[$i]->id, $assignees)) { $output .= 'checked'; }
 			$output .= ' /> ';
-			$output .= usersHelper::fullname_format($rows[$i]->firstname, $rows[$i]->lastname).'&nbsp;&nbsp;';
+			$output .= phpFrame_User_Helper::fullname_format($rows[$i]->firstname, $rows[$i]->lastname).'&nbsp;&nbsp;';
 			// Add line break every three entries (test using modulus)
 			if ((($i+1) % 3) == 0) { $output .= '<br />'; }
 		}
@@ -231,7 +231,7 @@ class usersHelper {
 	 * @return	void
 	 */
 	static function autocompleteUsername($where=array()) {
-		$db =& factory::getDB();
+		$db =& phpFrame_Application_Factory::getDB();
 		
 		$where[] = "(u.deleted = '0000-00-00 00:00:00' OR u.deleted IS NULL)";
 		
@@ -248,7 +248,7 @@ class usersHelper {
 			$tokens[] = array('id' => $row->id, 'name' => $row->firstname." ".$row->lastname." (".$row->username.")");
 		}
 		
-		html::autocomplete('userids', 'cols="60" rows="2"', $tokens);
+		phpFrame_HTML::autocomplete('userids', 'cols="60" rows="2"', $tokens);
 	}
 	
 	/**
@@ -261,10 +261,10 @@ class usersHelper {
 	static function selectGroup($selected=0, $attribs='', $fieldname='groupid') {
 		// assemble users to the array
 		$options = array();
-		//$options[] = html::_('select.option', '0', text::_( '-- Select a Group --' ) );
+		//$options[] = phpFrame_HTML::_('select.option', '0', phpFrame_HTML_Text::_( '-- Select a Group --' ) );
 		
 		// get users from #__users
-		$db =& factory::getDB();
+		$db =& phpFrame_Application_Factory::getDB();
 		$query = "SELECT id, name FROM #__groups ORDER BY id";
 		//echo $query; exit;
 		$db -> setQuery($query);
@@ -274,11 +274,11 @@ class usersHelper {
 		
 		if (is_array($rows) && count($rows) > 0) {
 			foreach ($rows as $row) {
-				$options[] = html::_('select.option', $row->id, ucwords($row->name));
+				$options[] = phpFrame_HTML::_('select.option', $row->id, ucwords($row->name));
 			}
 		}
 		
-		$output = html::_('select.genericlist', $options, $fieldname, $attribs, $selected);
+		$output = phpFrame_HTML::_('select.genericlist', $options, $fieldname, $attribs, $selected);
 		return $output;		
 	}
 }

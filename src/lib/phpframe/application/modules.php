@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class modules extends table {
+class phpFrame_Application_Modules extends phpFrame_Database_Table {
 	var $name=null;
 	var $author=null;
 	var $version=null;
@@ -45,10 +45,10 @@ class modules extends table {
 	 * @since 	1.0
 	 */
 	function countModules($position) {
-		$db = factory::getDB();
+		$db = phpFrame_Application_Factory::getDB();
 		$query = "SELECT m.name AS name, mo.option AS `option` FROM #__modules AS m ";
 		$query .= " LEFT JOIN #__modules_options mo ON mo.moduleid = m.id ";
-		$query .= " WHERE m.position = '".$position."' AND m.enabled = '1' AND (mo.option ='".request::getVar('option')."' OR mo.option = '*') ";
+		$query .= " WHERE m.position = '".$position."' AND m.enabled = '1' AND (mo.option ='".phpFrame_Environment_Request::getVar('option')."' OR mo.option = '*') ";
 		$query .= " ORDER BY m.ordering ASC";
 		$db->setQuery($query);
 		$db->query();
@@ -74,10 +74,10 @@ class modules extends table {
 	 * @since 	1.0
 	 */
 	function display($position, $class_suffix='') {
-		$db = factory::getDB();
+		$db = phpFrame_Application_Factory::getDB();
 		$query = "SELECT m.name AS name, mo.option AS `option` FROM #__modules AS m ";
 		$query .= " LEFT JOIN #__modules_options mo ON mo.moduleid = m.id ";
-		$query .= " WHERE m.position = '".$position."' AND m.enabled = '1' AND (mo.option ='".request::getVar('option')."' OR mo.option = '*') ";
+		$query .= " WHERE m.position = '".$position."' AND m.enabled = '1' AND (mo.option ='".phpFrame_Environment_Request::getVar('option')."' OR mo.option = '*') ";
 		$query .= " ORDER BY m.ordering ASC";
 		$db->setQuery($query);
 		$modules = $db->loadObjectList();
@@ -95,7 +95,7 @@ class modules extends table {
 					ob_end_clean();
 				}
 				else {
-					error::raise('', 'error', 'Module file '.$module_file_path.' not found.');
+					phpFrame_Application_Error::raise('', 'error', 'Module file '.$module_file_path.' not found.');
 				}
 			}
 			

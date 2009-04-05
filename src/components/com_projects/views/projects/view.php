@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * Method name to be triggered will be formed as follows:
  * 
  * <code>
- * $tmpl_specific_method = "display".ucfirst(request::getVar('view')).ucfirst($this->tmpl);
+ * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getVar('view')).ucfirst($this->tmpl);
  * </code>
  * 
  * @package		ExtranetOffice
@@ -28,7 +28,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		view, controller
  */
-class projectsViewProjects extends view {
+class projectsViewProjects extends phpFrame_Application_View {
 	var $page_title=null;
 	var $projectid=null;
 	
@@ -40,10 +40,10 @@ class projectsViewProjects extends view {
 	 */
 	function __construct() {
 		// Set the view template to load (default value is set in controller)
-		$this->layout =& request::getVar('layout');
+		$this->layout =& phpFrame_Environment_Request::getVar('layout');
 		
 		// Set reference to projectid
-		$this->projectid =& request::getVar('projectid', 0);
+		$this->projectid =& phpFrame_Environment_Request::getVar('projectid', 0);
 		
 		if (!empty($this->projectid)) {
 			// get project data from controller
@@ -66,8 +66,8 @@ class projectsViewProjects extends view {
 		parent::display();
 		
 		// Append page title to document title
-		if (request::getVar('layout') != 'list') {
-			$document =& factory::getDocument('html');
+		if (phpFrame_Environment_Request::getVar('layout') != 'list') {
+			$document =& phpFrame_Application_Factory::getDocument('html');
 			$document->title .= ' - '.$this->page_title;
 		}
 	}
@@ -101,11 +101,11 @@ class projectsViewProjects extends view {
 	 */
 	function displayProjectsDetail($projectid=0) {
 		if (empty($projectid)) {
-			$projectid = request::getVar('projectid', 0);
+			$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		}
 		
 		if (empty($projectid)) {
-			error::raise('', 'error', 'No project was selected');
+			phpFrame_Application_Error::raise('', 'error', 'No project was selected');
 			return false;
 		}
 		else {

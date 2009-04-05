@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * Method name to be triggered will be formed as follows:
  * 
  * <code>
- * $tmpl_specific_method = "display".ucfirst(request::getVar('view')).ucfirst($this->tmpl);
+ * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getVar('view')).ucfirst($this->tmpl);
  * </code>
  * 
  * @package		ExtranetOffice
@@ -28,7 +28,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		view, controller
  */
-class adminViewUsers extends view {
+class adminViewUsers extends phpFrame_Application_View {
 	var $page_title=null;
 	
 	/**
@@ -39,7 +39,7 @@ class adminViewUsers extends view {
 	 */
 	function __construct() {
 		// Set the view template to load
-		$this->layout =& request::getVar('layout', 'list');
+		$this->layout =& phpFrame_Environment_Request::getVar('layout', 'list');
 		
 		parent::__construct();
 	}
@@ -57,7 +57,7 @@ class adminViewUsers extends view {
 		parent::display();
 		
 		// Append page title to document title
-		$document =& factory::getDocument('html');
+		$document =& phpFrame_Application_Factory::getDocument('html');
 		$document->title .= ' - '.$this->page_title;
 	}
 	
@@ -78,7 +78,7 @@ class adminViewUsers extends view {
 	}
 	
 	function displayUsersForm() {
-		$userid = request::getVar('userid', 0);
+		$userid = phpFrame_Environment_Request::getVar('userid', 0);
 		
 		if (empty($userid)) {
 			$this->page_title = _LANG_ADMIN_USERS_NEW;

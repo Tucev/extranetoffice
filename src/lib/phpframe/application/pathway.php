@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class pathway extends singleton {
+class phpFrame_Application_Pathway extends phpFrame_Base_Singleton {
 	/**
 	 * Array containing the pathway item objects
 	 * 
@@ -41,7 +41,7 @@ class pathway extends singleton {
 	function __construct() {
 		$this->pathway = array();
 		
-		$item = new standardObject();
+		$item = new phpFrame_Base_StdObject();
 		$item->set('title', 'Home');
 		$item->set('url', 'index.php');
 		
@@ -57,7 +57,7 @@ class pathway extends singleton {
 	 * @since	1.0
 	 */
 	function addItem($title, $url) {
-		$item = new standardObject();
+		$item = new phpFrame_Base_StdObject();
 		$item->set('title', $title);
 		$item->set('url', $url);
 		

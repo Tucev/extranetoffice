@@ -10,7 +10,7 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
-html::validate('userform');
+phpFrame_HTML::validate('userform');
 ?>
 
 
@@ -19,12 +19,12 @@ html::validate('userform');
 <form action="index.php" method="post" name="userform" id="userform" enctype="multipart/form-data">
 	
 <fieldset>
-<legend><?php echo text::_( _LANG_USER_GENERAL_SETTINGS ); ?></legend>
+<legend><?php echo phpFrame_HTML_Text::_( _LANG_USER_GENERAL_SETTINGS ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td>
 		<label for="username">
-			<?php echo text::_( _LANG_USERNAME ); ?>:
+			<?php echo phpFrame_HTML_Text::_( _LANG_USERNAME ); ?>:
 		</label>
 	</td>
 	<td>
@@ -34,7 +34,7 @@ html::validate('userform');
 <tr>
 	<td width="120">
 		<label for="email">
-			<?php echo text::_( _LANG_EMAIL ); ?>:
+			<?php echo phpFrame_HTML_Text::_( _LANG_EMAIL ); ?>:
 		</label>
 	</td>
 	<td>
@@ -44,7 +44,7 @@ html::validate('userform');
 <tr>
 	<td>
 		<label for="firstname">
-			<?php echo text::_( _LANG_FIRSTNAME ); ?>:
+			<?php echo phpFrame_HTML_Text::_( _LANG_FIRSTNAME ); ?>:
 		</label>
 	</td>
 	<td>
@@ -54,7 +54,7 @@ html::validate('userform');
 <tr>
 	<td>
 		<label for="lastname">
-			<?php echo text::_( _LANG_LASTNAME ); ?>:
+			<?php echo phpFrame_HTML_Text::_( _LANG_LASTNAME ); ?>:
 		</label>
 	</td>
 	<td>
@@ -64,7 +64,7 @@ html::validate('userform');
 <tr>
 	<td>
 		<label for="password">
-			<?php echo text::_( _LANG_PASSWORD ); ?>:
+			<?php echo phpFrame_HTML_Text::_( _LANG_PASSWORD ); ?>:
 		</label>
 	</td>
 	<td>
@@ -74,7 +74,7 @@ html::validate('userform');
 <tr>
 	<td>
 		<label for="password2">
-			<?php echo text::_( _LANG_PASSWORD_VERIFY ); ?>:
+			<?php echo phpFrame_HTML_Text::_( _LANG_PASSWORD_VERIFY ); ?>:
 		</label>
 	</td>
 	<td>
@@ -126,9 +126,9 @@ html::validate('userform');
 
 <div style="clear:both; margin-top:30px;"></div>
 
-<?php if (request::getVar('tmpl') != 'component') : ?>
-<button type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button>
-<button type="submit"><?php echo text::_(_LANG_SAVE); ?></button>
+<?php if (phpFrame_Environment_Request::getVar('tmpl') != 'component') : ?>
+<button type="button" onclick="Javascript:window.history.back();"><?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?></button>
+<button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 <?php endif; ?>
 
 <input type="hidden" name="id" value="<?php echo $this->user->get('id'); ?>" />
@@ -136,6 +136,6 @@ html::validate('userform');
 <input type="hidden" name="option" value="com_users" />
 <input type="hidden" name="task" value="save_user" />
 <input type="hidden" name="layout" value="" />
-<?php echo html::_( 'form.token' ); ?>
+<?php echo phpFrame_HTML::_( 'form.token' ); ?>
 
 </form>

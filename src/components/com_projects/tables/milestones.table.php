@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class projectsTableMilestones extends table {
+class projectsTableMilestones extends phpFrame_Database_Table {
 	var $id=null; // int(11) auto_increment
 	var $projectid=null; // int(11)
 	var $title=null; // varchar(128) NOT NULL

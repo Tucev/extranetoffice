@@ -15,7 +15,7 @@ require_once COMPONENT_PATH.DS.'controller.php';
 // Create the controller
 $controller =& phpFrame::getInstance('usersController');
 // Execute task
-$controller->execute(request::getVar('task'));	
+$controller->execute(phpFrame_Environment_Request::getVar('task'));	
 // Redirect if set by the controller
 $controller->redirect();
 ?>

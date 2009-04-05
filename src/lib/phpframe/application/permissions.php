@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class permissions extends singleton {
+class phpFrame_Application_Permissions extends phpFrame_Base_Singleton {
 	/**
 	 * The userid.
 	 * 
@@ -81,13 +81,13 @@ class permissions extends singleton {
 	 */
 	protected function __construct() {
 		// Get URL vars
-		$this->option = request::getVar('option');
-		$this->task = request::getVar('task', 'display');
-		$this->view = request::getVar('view');
-		$this->layout = request::getVar('layout');
+		$this->option = phpFrame_Environment_Request::getVar('option');
+		$this->task = phpFrame_Environment_Request::getVar('task', 'display');
+		$this->view = phpFrame_Environment_Request::getVar('view');
+		$this->layout = phpFrame_Environment_Request::getVar('layout');
 		
 		// Check login
-		$user =& factory::getUser();
+		$user =& phpFrame_Application_Factory::getUser();
 		$this->userid = $user->id;
 		if (empty($this->userid)) {
 			$this->userid = 0;
@@ -125,7 +125,7 @@ class permissions extends singleton {
 	 */
 	public function checkACL($option, $task='display', $view='', $layout='') {
 		// Get group ACL
-		$db =& factory::getDB();
+		$db =& phpFrame_Application_Factory::getDB();
 		$query = "SELECT * ";
 		$query .= " FROM #__acl_groups ";
 		$query .= " WHERE groupid = ".$this->groupid." AND `option` = '".$option."'";

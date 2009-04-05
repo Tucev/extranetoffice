@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * Method name to be triggered will be formed as follows:
  * 
  * <code>
- * $tmpl_specific_method = "display".ucfirst(request::getVar('view')).ucfirst($this->tmpl);
+ * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getVar('view')).ucfirst($this->tmpl);
  * </code>
  * 
  * @package		ExtranetOffice
@@ -28,7 +28,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		view, controller
  */
-class usersViewUsers extends view {
+class usersViewUsers extends phpFrame_Application_View {
 	var $page_title=null;
 	
 	/**
@@ -39,7 +39,7 @@ class usersViewUsers extends view {
 	 */
 	function __construct() {
 		// Set the view template to load (default value is set in controller)
-		$this->layout =& request::getVar('layout');
+		$this->layout =& phpFrame_Environment_Request::getVar('layout');
 		
 		parent::__construct();
 	}
@@ -56,8 +56,8 @@ class usersViewUsers extends view {
 		parent::display();
 		
 		// Append page title to document title
-		if (request::getVar('layout') != 'list') {
-			$document =& factory::getDocument('html');
+		if (phpFrame_Environment_Request::getVar('layout') != 'list') {
+			$document =& phpFrame_Application_Factory::getDocument('html');
 			$document->title .= ' - '.$this->page_title;
 		}
 	}
@@ -83,7 +83,7 @@ class usersViewUsers extends view {
 	 * @return void
 	 */
 	function displayUsersDetail() {
-		$userid = request::getVar('userid', 0);
+		$userid = phpFrame_Environment_Request::getVar('userid', 0);
 		
 		$modelUsers =& $this->getModel('users');
 		$this->row = $modelUsers->getUsersDetail($userid);

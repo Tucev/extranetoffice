@@ -15,7 +15,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * 
  * This class deals with the connection to the MySQL database.
  * 
- * This class uses the singleton design pattern, and it is therefore intantiated 
+ * This class uses the phpFrame_Base_Singleton design pattern, and it is therefore intantiated 
  * using the getInstance() method.
  * 
  * To make sure that the child model is instantiated using the correct run time
@@ -23,7 +23,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * 
  * Usage example:
  * <code>
- * $db =& phpFrame::getInstance('db');
+ * $db =& phpFrame::getInstance('phpFrame_Database');
  * $query = "SELECT * FROM #__components";
  * $db->setQuery($query);
  * $array = $db->loadObjectList();
@@ -40,7 +40,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class db extends singleton {
+class phpFrame_Database extends phpFrame_Base_Singleton {
 	/**
 	 * The MySQL link identifier on success, or FALSE on failure. 
 	 *
@@ -112,7 +112,7 @@ class db extends singleton {
 	 * @since	1.0
 	 */
 	public function setQuery($query) {
-		$config =& factory::getConfig();
+		$config =& phpFrame_Application_Factory::getConfig();
 		$this->query = str_replace('#__', $config->db_prefix, $query);
 	}
 	
@@ -228,7 +228,7 @@ class db extends singleton {
 		$row = mysql_fetch_assoc($this->rs);
 		// Check row is valid and return
 		if ($row !== false) {
-			$row_obj = new standardObject();
+			$row_obj = new phpFrame_Base_StdObject();
 			if (is_array($row) && count($row) > 0) {
 				foreach ($row as $key=>$value) {
 					$row_obj->$key = $value;
@@ -267,7 +267,7 @@ class db extends singleton {
 		
 		// Fetch associative array
 		while ($row = mysql_fetch_assoc($this->rs)) {
-			$row_obj = new standardObject();
+			$row_obj = new phpFrame_Base_StdObject();
 			if (is_array($row) && count($row) > 0) {
 				foreach ($row as $key=>$value) {
 					$row_obj->$key = $value;

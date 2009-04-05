@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class error {
+class phpFrame_Application_Error {
 	/**
 	 * Display error messges.
 	 * 
@@ -32,7 +32,7 @@ class error {
 	 */
 	static function display($error=null) {
 		if (!$error) {
-			$session =& factory::getSession();
+			$session =& phpFrame_Application_Factory::getSession();
 			if ($session->id) {
 				$error = $session->getVar('error');	
 			}
@@ -41,7 +41,7 @@ class error {
 		if (is_array($error) && count($error) > 0) {
 			foreach ($error as $error_msg) {
 				// If we are running from the command line we don't include HTML in the output
-				if (client::isCLI()) {
+				if (phpFrame_Utils_Client::isCLI()) {
 					echo $error_msg->msg."\n";
 				}
 				else {
@@ -63,15 +63,15 @@ class error {
 	 */
 	static function raise($code='', $level='error', $msg) {
 		// create standard object holding error
-		$error = new standardObject();
+		$error = new phpFrame_Base_StdObject();
 		$error->code = $code;
 		$error->level = $level;
 		$error->msg = $msg;
 		
 		// Store error in session
-		$session =& factory::getSession();
+		$session =& phpFrame_Application_Factory::getSession();
 		if (!$session->id) {
-			error::display(array($error));
+			phpFrame_Application_Error::display(array($error));
 		}
 		else {
 			$array = $session->getVar('error', array());
@@ -89,11 +89,11 @@ class error {
 	 * @since 	1.0
 	 */
 	function raiseFatalError($msg) {
-		$error = new standardObject();
+		$error = new phpFrame_Base_StdObject();
 		$error->code = 500;
 		$error->level = 'error';
 		$error->msg = $msg;
-		error::display(array($error));
+		phpFrame_Application_Error::display(array($error));
 		exit;
 	}
 }
