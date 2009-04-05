@@ -5,8 +5,8 @@
 		<include name="**" />
 	</fileset>
 	
-	<fileset dir="./test" id="testfiles">
-		<include name="index.php"/>
+	<fileset dir="./test/components/com_projects" id="testfiles">
+		<include name="controllerTest.php"/>
 	</fileset>
 	
 	<property name="report.dir" value="${project.basedir}/report"/>
