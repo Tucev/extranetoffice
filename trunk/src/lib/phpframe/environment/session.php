@@ -71,7 +71,7 @@ class session extends table {
 			$this->start();	
 		}
 		else {
-			error::raiseFatalError('phpFrame: session::__construct(). Fatal error: Session table (#__session) could not be initialised.');
+			error::raiseFatalError('phpFrame: session::__construct(). Fatal error: Session table (#__session) could not be initialised. '.$this->getLastError());
 		}
 	}
 	
