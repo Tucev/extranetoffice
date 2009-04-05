@@ -181,7 +181,7 @@ class projectsModelFiles extends model {
 		}
 		$accept = $this->config->get('upload_accept'); // mime types
 		$max_upload_size = $this->config->get('max_upload_size')*(1024*1024); // Mb
-		$file = filesystem::uploadFile('filename', $upload_dir, $accept, $max_upload_size);
+		$file = phpFrameFilesystem::uploadFile('filename', $upload_dir, $accept, $max_upload_size);
 		
 		if (!empty($file['error'])) {
 			$this->error[] = $file['error'];
