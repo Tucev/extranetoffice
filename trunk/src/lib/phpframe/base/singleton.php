@@ -24,37 +24,50 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 abstract class singleton extends standardObject {
 	/**
+	 * Variable holding an array of "single" instances of this classes children.
+	 * 
+	 * @var array
+	 */
+	private static $instances=array();
+	
+	/**
 	 * Get the single instance of this sigleton class.
 	 * 
 	 * The $classname parameter is used in order to create the instance 
 	 * using the class name from where the method is called at run level.
 	 * If $classname is empty this method returns an instance of its own,
 	 * not the child class that inherited this method.
-	 *
+	 * 
+	 * @static
 	 * @param string $classname The class name.
 	 * @return object
 	 */
 	public static function &getInstance($classname) {
-		/**
-		 * Variable holding an array of "single" instances of this classes children.
-		 *
-		 * @var array
-		 */
-		static $instances = array();
-		
-		if (!array_key_exists($classname, $instances)) {
+		// Check whether the requested class has alreay been instantiated
+		if (!array_key_exists($classname, self::$instances)) {
             // instance does not exist, so create it
             if (class_exists($classname)) {
-            	$instances[$classname] = new $classname;
+            	self::$instances[$classname] = new $classname;
             }
             else {
-            	error::raise('', 'error', 'Class '.$classname.' not found.');
+            	throw new Exception('Class '.$classname.' not found.');
             }
         }
         
-        $instance =& $instances[$classname];
+        $instance =& self::$instances[$classname];
         
         return $instance;
     }
+    
+    public static function destroyInstance($classname) {
+   		// Check whether the requested class has alreay been instantiated
+		if (array_key_exists($classname, self::$instances)) {
+            // unset instance
+            unset(self::$instances[$classname]);
+        }
+        else {
+        	throw new Exception('No instance of '.$classname.' found.');
+        }
+    } 
 }
 ?>
