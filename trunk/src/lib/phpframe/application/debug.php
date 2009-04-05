@@ -25,25 +25,34 @@ class phpFrame_Application_Debug {
 	 * 
 	 * @var float
 	 */
-	var $execution_start=null;
+	private static $_execution_start=null;
 	/**
 	 * Execution end microtime
 	 * 
 	 * @var float
 	 */
-	var $execution_end=null;
+	private static $_execution_end=null;
 	
 	/**
 	 * Constructor
 	 * 
-	 * Theis method sets the  execution start time.
+	 * The private constructor ensures this class is not instantiated and is alwas used statically
+	 * 
+	 * @return void
+	 */
+	private function __construct() {}
+	
+	/**
+	 * Initialise debugger
+	 * 
+	 * Theis method sets the execution start time.
 	 * 
 	 * @return 	void
 	 * @since	1.0
 	 */
-	function __construct() {
+	static function init() {
 		// Get starting time.
-		$this->execution_start = $this->microtime_float(); 
+		self::$_execution_start = self::_microtime_float(); 
 	}
 
 	/**
@@ -52,7 +61,7 @@ class phpFrame_Application_Debug {
 	 * @return	float
 	 * @since	1.0
 	 */
-	function microtime_float() {
+	private static function _microtime_float() {
 	    list ($msec, $sec) = explode(' ', microtime());
 	    $microtime = (float)$msec + (float)$sec;
 	    return $microtime;
@@ -64,15 +73,15 @@ class phpFrame_Application_Debug {
 	 * @return	void
 	 * @since	1.0
 	 */
-	function display() {
+	public static function display() {
 		// Get end time
-		$this->execution_end = $this->microtime_float();
+		self::$_execution_end = self::_microtime_float();
 		
 		echo '<div style="background-color: white; padding: 20px; font-size: 0.8em; overflow: hidden;">';
 		
 		echo '<h1 style="font-size: 2em;">Debugger:</h1>';
 		// Print execution time
-		echo 'Script Execution Time: ' . round($this->execution_end - $this->execution_start, 5) . ' seconds'; 
+		echo 'Script Execution Time: ' . round(self::$_execution_end - self::$_execution_start, 5) . ' seconds'; 
 		
 		$application = phpFrame_Application_Factory::getApplication();
 		
@@ -81,7 +90,6 @@ class phpFrame_Application_Debug {
 		$properties[] = array('auth', 'Auth');
 		$properties[] = array('client', 'Client');
 		$properties[] = array('config', 'Gloabl Configuration');
-		$properties[] = array('request', 'Request');
 		//$properties[] = array('db', 'Database');
 		$properties[] = array('session', 'Session');
 		$properties[] = array('user', 'User');
@@ -96,6 +104,9 @@ class phpFrame_Application_Debug {
 			echo '<pre>'; var_dump($application->$property[0]); echo '</pre>';
 			echo '<hr />';
 		}
+		
+		echo '<h2>Request:</h2>';
+		echo '<pre>'; var_dump(phpFrame_Environment_Request::get('request')); echo '</pre>';
 		
 		global $dependencies;
 		echo '<h2>Dependencies:</h2>';
