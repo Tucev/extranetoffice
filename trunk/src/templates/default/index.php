@@ -81,7 +81,7 @@ $(document).ready(function() {
 <!-- End Content -->
 
 <div id="footer">
-Powered by Extranet Office 1.0 Alpha $Id$<br />
+Powered by Extranet Office 1.0 Alpha $LastChangedRevision$<br />
 &copy; 2009 E-noise.com Limited
 </div>
 

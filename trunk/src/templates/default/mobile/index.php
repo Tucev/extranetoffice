@@ -69,7 +69,7 @@ $module_positions['right'] = $this->modules->display('right');
 <!-- End Content -->
 
 <div id="footer">
-Powered by Extranet Office 1.0 Alpha<br />
+Powered by Extranet Office 1.0 Alpha $LastChangedRevision$<br />
 &copy; 2009 E-noise.com Limited
 </div>
 
