@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class document extends singleton {
+class phpFrame_Document extends phpFrame_Base_Singleton {
 	/**
 	 * Document title
 	 *
@@ -115,7 +115,7 @@ class document extends singleton {
 	 * @since	1.0
 	 */
 	public function __construct() {
-		$uri =& factory::getURI();
+		$uri =& phpFrame_Application_Factory::getURI();
 		$this->base =& $uri->getBase();
 		$this->uri =& $uri->uri;
 	}

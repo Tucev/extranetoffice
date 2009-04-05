@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class loginController extends controller {
+class loginController extends phpFrame_Application_Controller {
 	/**
 	 * Constructor
 	 * 
@@ -29,10 +29,10 @@ class loginController extends controller {
 	 */
 	function __construct() {
 		// set default request vars
-		$this->option = request::getVar('option');
-		$this->task = request::getVar('task', 'display');
-		$this->view = request::getVar('view', 'login');
-		$this->layout = request::getVar('layout');
+		$this->option = phpFrame_Environment_Request::getVar('option');
+		$this->task = phpFrame_Environment_Request::getVar('task', 'display');
+		$this->view = phpFrame_Environment_Request::getVar('view', 'login');
+		$this->layout = phpFrame_Environment_Request::getVar('layout');
 		
 		// Override the permission check
 		$this->permissions->is_allowed = true;
@@ -40,16 +40,16 @@ class loginController extends controller {
 	
 	function login() {
 		// Check for request forgeries
-		crypt::checkToken() or exit( 'Invalid Token' );
+		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Push model into controller
 		$model = $this->getModel('login');
 		
 		// if user is not logged on we attemp to login
-		$session =& factory::getSession();
+		$session =& phpFrame_Application_Factory::getSession();
 		if (empty($session->userid)) {
-			$username = request::getVar('username', '');
-			$password = request::getVar('password', '');
+			$username = phpFrame_Environment_Request::getVar('username', '');
+			$password = phpFrame_Environment_Request::getVar('password', '');
 			$model->login($username, $password);
 			$this->setRedirect('index.php');
 		}	
@@ -64,17 +64,17 @@ class loginController extends controller {
 	
 	function reset_password() {
 		// Check for request forgeries
-		crypt::checkToken() or exit( 'Invalid Token' );
+		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
-		$email = request::getVar('email_forgot', '');
+		$email = phpFrame_Environment_Request::getVar('email_forgot', '');
 		
 		// Push model into controller
 		$model = $this->getModel('login');
 		if (!$model->resetPassword($email)) {
-			error::raise('', 'warning', $model->getLastError());
+			phpFrame_Application_Error::raise('', 'warning', $model->getLastError());
 		}
 		else {
-			error::raise('', 'message', _LANG_RESET_PASS_SUCCESS);
+			phpFrame_Application_Error::raise('', 'message', _LANG_RESET_PASS_SUCCESS);
 		}
 		
 		$this->setRedirect('index.php');

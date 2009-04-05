@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class user extends table {
+class phpFrame_User extends phpFrame_Database_Table {
 	/**
 	 * The user id
 	 * 
@@ -148,7 +148,7 @@ class user extends table {
 		}
 		else {
 			$this->name = $this->firstname.' '.$this->lastname;
-			$this->name_abbr = usersHelper::fullname_format($this->firstname, $this->lastname);
+			$this->name_abbr = phpFrame_User_Helper::fullname_format($this->firstname, $this->lastname);
 			
 			return $this;	
 		}
@@ -173,8 +173,8 @@ class user extends table {
 		
 		// Encrypt password for storage
 		if (!is_null($row->password)) {
-			$salt = crypt::genRandomPassword(32);
-			$crypt = crypt::getCryptedPassword($row->password, $salt);
+			$salt = phpFrame_Utils_Crypt::genRandomPassword(32);
+			$crypt = phpFrame_Utils_Crypt::getCryptedPassword($row->password, $salt);
 			$row->password = $crypt.':'.$salt;
 		}
 		

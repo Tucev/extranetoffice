@@ -11,68 +11,56 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 define("_PHPFRAME_PATH", dirname(__FILE__));
 
-// path to phpMailer
-define("_PHPMAILER_PATH", str_replace(DS.'phpframe', '', _PHPFRAME_PATH).DS."phpmailer");
-
-// Include base object classes
-require_once _PHPFRAME_PATH.DS."base".DS."standard.php";
-require_once _PHPFRAME_PATH.DS."base".DS."singleton.php";
-// include database classes
-require_once _PHPFRAME_PATH.DS."database".DS."db.php";
-require_once _PHPFRAME_PATH.DS."database".DS."table.php";
-// include environment classes
-require_once _PHPFRAME_PATH.DS."environment".DS."request.php";
-require_once _PHPFRAME_PATH.DS."environment".DS."response.php";
-require_once _PHPFRAME_PATH.DS."environment".DS."session.php";
-// Include application classes
-require_once _PHPFRAME_PATH.DS."application".DS."application.php";
-require_once _PHPFRAME_PATH.DS."application".DS."components.php";
-require_once _PHPFRAME_PATH.DS."application".DS."controller.php";
-require_once _PHPFRAME_PATH.DS."application".DS."debug.php";
-require_once _PHPFRAME_PATH.DS."application".DS."error.php";
-require_once _PHPFRAME_PATH.DS."application".DS."factory.php";
-require_once _PHPFRAME_PATH.DS."application".DS."model.php";
-require_once _PHPFRAME_PATH.DS."application".DS."modules.php";
-require_once _PHPFRAME_PATH.DS."application".DS."pathway.php";
-require_once _PHPFRAME_PATH.DS."application".DS."permissions.php";
-require_once _PHPFRAME_PATH.DS."application".DS."route.php";
-require_once _PHPFRAME_PATH.DS."application".DS."view.php";
-// Include HTML classes
-require_once _PHPFRAME_PATH.DS."html".DS."html.php";
-require_once _PHPFRAME_PATH.DS."html".DS."pagination.php";
-require_once _PHPFRAME_PATH.DS."html".DS."text.php";
-// Include language file
-require_once _PHPFRAME_PATH.DS."lang".DS."en-GB.php";
-// Include mail classes
-require_once _PHPFRAME_PATH.DS."mail".DS."imap.php";
-require_once _PHPFRAME_PATH.DS."mail".DS."mailer.php";
-// Include users subpackage classes
-require_once _PHPFRAME_PATH.DS."user".DS."openid.php";
-require_once _PHPFRAME_PATH.DS."user".DS."user.php";
-require_once _PHPFRAME_PATH.DS."user".DS."users.helper.php";
-// Include utils classes
-require_once _PHPFRAME_PATH.DS."utils".DS."client.php";
-require_once _PHPFRAME_PATH.DS."utils".DS."crypt.php";
-require_once _PHPFRAME_PATH.DS."utils".DS."filesystem.php";
-require_once _PHPFRAME_PATH.DS."utils".DS."filter.php";
-require_once _PHPFRAME_PATH.DS."utils".DS."image.php";
-require_once _PHPFRAME_PATH.DS."utils".DS."uri.php";
-require_once _PHPFRAME_PATH.DS."utils".DS."utility.php";
-// include document class
-require_once _PHPFRAME_PATH.DS."document".DS."document.php";
-require_once _PHPFRAME_PATH.DS."document".DS."html.php";
+/**
+ * Autoload magic method
+ * 
+ * This method is automatically called in case you are trying to use a class/interface which 
+ * hasn't been defined yet. By calling this function the scripting engine is given a last 
+ * chance to load the class before PHP fails with an error. 
+ * 
+ * @param	string	$className
+ * @return	void
+ */
+function __autoload($className) {
+	if (strpos($className, 'phpFrame') !== false) {
+		$array = explode('_', $className);
+		if (sizeof($array) == 3) {
+			$file_path = _PHPFRAME_PATH.DS.strtolower($array[1]).DS.strtolower($array[2]).".php";
+		}
+		elseif (sizeof($array) == 2) {
+			$file_path = _PHPFRAME_PATH.DS.strtolower($array[1]).DS.strtolower($array[1]).".php";	
+		}
+		
+		if (file_exists($file_path)) {
+			require $file_path;
+		}
+		else {
+			die('Could not autoload class '.$className);
+		}
+	}
+	elseif (strpos($className, 'PHPMailer') !== false) {
+		$file_path = str_replace(DS.'phpframe', '', _PHPFRAME_PATH).DS."phpmailer".DS."phpmailer.php"; 
+		
+		if (file_exists($file_path)) {
+			require $file_path;
+		}
+		else {
+			die('Could not autoload class '.$className);
+		}
+	}
+}
 
 /**
  * phpFrame Class
  * 
  * This is the framework class.
  * 
- * This class extends the "singleton" class in order to implement the singleton design pattern.
+ * This class extends the "phpFrame_Base_Singleton" class in order to implement the phpFrame_Base_Singleton design pattern.
  * 
  * The class is used to access the framework. For example:
  * 
  * <code>
- * $application =& phpFrame::getInstance('application');
+ * $application =& phpFrame::getInstance('phpFrame_Application');
  * </code>
  * 
  * Before we instantiate the application we first need to set a few useful constants,
@@ -90,7 +78,7 @@ require_once _PHPFRAME_PATH.DS."document".DS."html.php";
  * // Include phpFrame
  * require_once _ABS_PATH.DS."lib".DS."phpframe".DS."phpframe.php";
  * 
- * $application =& phpFrame::getInstance('application');
+ * $application =& phpFrame::getInstance('phpFrame_Application');
  * $application->auth();
  * $application->exec();
  * $application->render();
@@ -100,14 +88,40 @@ require_once _PHPFRAME_PATH.DS."document".DS."html.php";
  * @package		phpFrame
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @todo		phpFrame should be able to include whatever files i needed when getting "singleton" classes
+ * @todo		phpFrame should be able to include whatever files i needed when getting "phpFrame_Base_Singleton" classes
  */
-class phpFrame extends singleton {
+class phpFrame extends phpFrame_Base_Singleton {
 	/**
 	 * The phpFrame version
 	 * 
 	 * @var string
 	 */
-	var $version='1.0 Alpha';
+	private $_version='1.0 Alpha';
+	/**
+	 * phpFrame language
+	 * 
+	 * @var string
+	 */
+	private $_lang="en-GB";
+	
+	protected function __construct() {
+		// Include language file
+		$lang_file = _PHPFRAME_PATH.DS."lang".DS.$_lang.".php";
+		
+		if (file_exists($lang_file)) {
+			require_once $lang_file;
+		}
+		else {
+			die('phpFrame could not find its language file');
+		}
+	}
+	
+	public function getVersion() {
+		return $this->_version;
+	}
+	
+	public function getLang() {
+		return $this->_lang;
+	}
 }
 ?>

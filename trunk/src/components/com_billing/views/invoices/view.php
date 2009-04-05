@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * Method name to be triggered will be formed as follows:
  * 
  * <code>
- * $tmpl_specific_method = "display".ucfirst(request::getVar('view')).ucfirst($this->tmpl);
+ * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getVar('view')).ucfirst($this->tmpl);
  * </code>
  * 
  * @package		ExtranetOffice
@@ -28,12 +28,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		view, controller
  */
-class billingViewInvoices extends view {
+class billingViewInvoices extends phpFrame_Application_View {
 	var $page_title=null;
 	
 	function __construct() {
 		// Set the view template to load
-		$this->tmpl =& request::getVar('tmpl', 'list');
+		$this->tmpl =& phpFrame_Environment_Request::getVar('tmpl', 'list');
 		
 		parent::__construct();
 	}
@@ -47,15 +47,15 @@ class billingViewInvoices extends view {
 		$this->filter['type'] = "";
 		$this->filter['pluginused'] = "";
 		
-		if (!empty(request::getVar('dtstart_yyyy', ''))) {
-			$this->filter['date_range'] = "'".request::getVar('dtstart_yyyy')."-".request::getVar('dtstart_mm')."-".request::getVar('dtstart_dd')."'";
+		if (!empty(phpFrame_Environment_Request::getVar('dtstart_yyyy', ''))) {
+			$this->filter['date_range'] = "'".phpFrame_Environment_Request::getVar('dtstart_yyyy')."-".phpFrame_Environment_Request::getVar('dtstart_mm')."-".phpFrame_Environment_Request::getVar('dtstart_dd')."'";
 			$this->filter['date_range'] .= " AND ";
-			$this->filter['date_range'] .= "'".request::getVar('dtend_yyyy')."-".request::getVar('dtend_mm')."-".request::getVar('dtend_dd')."'";
+			$this->filter['date_range'] .= "'".phpFrame_Environment_Request::getVar('dtend_yyyy')."-".phpFrame_Environment_Request::getVar('dtend_mm')."-".phpFrame_Environment_Request::getVar('dtend_dd')."'";
 		}
 		
-		$this->filter['basis'] = request::getVar('basis', '');
-		$this->filter['billingtype'] = request::getVar('billingtype', '');
-		$this->filter['pluginused'] = request::getVar('pluginused', '');
+		$this->filter['basis'] = phpFrame_Environment_Request::getVar('basis', '');
+		$this->filter['billingtype'] = phpFrame_Environment_Request::getVar('billingtype', '');
+		$this->filter['pluginused'] = phpFrame_Environment_Request::getVar('pluginused', '');
 		
 		// get invoices
 		$model =& $this->getModel();

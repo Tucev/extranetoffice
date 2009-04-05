@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * Method name to be triggered will be formed as follows:
  * 
  * <code>
- * $tmpl_specific_method = "display".ucfirst(request::getVar('view')).ucfirst($this->tmpl);
+ * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getVar('view')).ucfirst($this->tmpl);
  * </code>
  * 
  * @package		ExtranetOffice
@@ -28,7 +28,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		view, controller
  */
-class emailViewAccounts extends view {
+class emailViewAccounts extends phpFrame_Application_View {
 	var $page_title=null;
 	
 	/**
@@ -39,7 +39,7 @@ class emailViewAccounts extends view {
 	 */
 	function __construct() {
 		// Set the view template to load (default value is set in controller)
-		$this->layout =& request::getVar('layout');
+		$this->layout =& phpFrame_Environment_Request::getVar('layout');
 		
 		parent::__construct();
 	}
@@ -56,7 +56,7 @@ class emailViewAccounts extends view {
 		parent::display();
 		
 		// Append page title to document title
-		$document =& factory::getDocument('html');
+		$document =& phpFrame_Application_Factory::getDocument('html');
 		$document->title .= ' - '.$this->page_title;
 	}
 	
@@ -83,7 +83,7 @@ class emailViewAccounts extends view {
 	 * @return void
 	 */
 	function displayAccountsForm() {
-		$accountid = request::getVar('accountid', 0);
+		$accountid = phpFrame_Environment_Request::getVar('accountid', 0);
 		
 		if (!empty($accountid)) {
 			$modelAccounts =& $this->getModel('accounts');

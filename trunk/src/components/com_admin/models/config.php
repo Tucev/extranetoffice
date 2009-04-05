@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		model
  */
-class adminModelConfig extends model {
+class adminModelConfig extends phpFrame_Application_Model {
 	/**
 	 * Update configuration file using data passed in request
 	 * 
@@ -44,7 +44,7 @@ class adminModelConfig extends model {
 		// Loop through all config properties and build arrays with patterns and replacements for regex
 		foreach ($this->config as $key=>$value) {
 			$patterns[] = '/var \$'.$key.'=(.*);/';
-			$replacements[] = 'var $'.$key.'="'.request::getVar($key, $value).'";';
+			$replacements[] = 'var $'.$key.'="'.phpFrame_Environment_Request::getVar($key, $value).'";';
 		}
 		
 		// Replace config vars in config file contents

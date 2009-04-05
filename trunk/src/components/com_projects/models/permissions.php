@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		model
  */
-class projectsModelPermissions extends model {
+class projectsModelPermissions extends phpFrame_Application_Model {
 	/**
 	 * The current project object
 	 * 
@@ -109,8 +109,8 @@ class projectsModelPermissions extends model {
 	}
 	
 	function checkViewAccess() {
-		$view = request::getVar('view');
-		$task = request::getVar('task');
+		$view = phpFrame_Environment_Request::getVar('view');
+		$task = phpFrame_Environment_Request::getVar('task');
 		
 		// if a task has been requested we get the tool keyword from the task
 		if (!empty($task)) {

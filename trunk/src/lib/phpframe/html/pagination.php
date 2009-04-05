@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class pagination {
+class phpFrame_HTML_Pagination {
 	/**
 	 * The total number of rows
 	 * 
@@ -147,9 +147,9 @@ class pagination {
 	 * @since	1.0
 	 */
 	public function getPageNav() {
-		$href = 'index.php?option='.request::getVar('option');
-		$href .= '&amp;view='.request::getVar('view');
-		$href .= '&amp;layout='.request::getVar('layout');
+		$href = 'index.php?option='.phpFrame_Environment_Request::getVar('option');
+		$href .= '&amp;view='.phpFrame_Environment_Request::getVar('view');
+		$href .= '&amp;layout='.phpFrame_Environment_Request::getVar('layout');
 		$href .= '&amp;limit='.$this->limit;
 		
 		$html = '<ul>';

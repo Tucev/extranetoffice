@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see			phpFrame
  */
-class debug {
+class phpFrame_Application_Debug {
 	/**
 	 * Execution start microtime
 	 * 
@@ -74,7 +74,7 @@ class debug {
 		// Print execution time
 		echo 'Script Execution Time: ' . round($this->execution_end - $this->execution_start, 5) . ' seconds'; 
 		
-		$application = factory::getApplication();
+		$application = phpFrame_Application_Factory::getApplication();
 		
 		$properties = array();
 		$properties[] = array('option', 'Option');

@@ -25,15 +25,15 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * developing components. See the built in components (dashboard, user, admin, ...) 
  * for examples.
  * 
- * This class extends the singleton class, and it is therefore instantiated using 
- * the getInstance() method inherited from singleton.
+ * This class extends the phpFrame_Base_Singleton class, and it is therefore instantiated using 
+ * the getInstance() method inherited from phpFrame_Base_Singleton.
  * 
  * To make sure that the child model is instantiated using the correct run time
  * class name we pass the class name when invoking the getInstance() method.
  * 
  * For example:
  * <code>
- * class myModel extends model {
+ * class myModel phpFrame_Application_Model {
  * 		function doSomething() {
  * 			return 'something';
  * 		}
@@ -51,7 +51,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		controller, view
  * @abstract 
  */
-abstract class model extends singleton {
+abstract class phpFrame_Application_Model extends phpFrame_Base_Singleton {
 	/**
 	 * A reference to the config object
 	 * 
@@ -83,9 +83,9 @@ abstract class model extends singleton {
 	 * @return void
 	 */
 	function __construct() {
-		$this->config =& factory::getConfig();
-		$this->user =& factory::getUser();
-		$this->db =& factory::getDB();
+		$this->config =& phpFrame_Application_Factory::getConfig();
+		$this->user =& phpFrame_Application_Factory::getUser();
+		$this->db =& phpFrame_Application_Factory::getDB();
 	}
 	
 	/**
@@ -96,7 +96,7 @@ abstract class model extends singleton {
 	 */
 	function getModel($name) {
 		// Get current component option from request
-		$option =& request::getVar('option');
+		$option =& phpFrame_Environment_Request::getVar('option');
 		// Figure out controller instance name
 		$controller_class_name = substr($option, 4).'Controller';
 		// Assign reference to controller

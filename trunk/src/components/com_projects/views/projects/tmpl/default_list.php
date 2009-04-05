@@ -15,8 +15,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 <?php if ($this->user->groupid == 1) : ?>
 <div class="new">
-	<a href="<?php echo route::_('index.php?option=com_projects&view=admin&layout=form'); ?>" title="<?php echo text::_( _LANG_PROJECTS_NEW ); ?>">
-		<?php echo text::_( _LANG_PROJECTS_NEW ); ?>
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view=admin&layout=form'); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
+		<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>
 	</a>
 </div>
 <?php endif; ?>
@@ -91,5 +91,5 @@ function submit_filter(reset) {
 <?php echo $this->pageNav->getListFooter(); ?>
 
 <?php else : ?>
-<?php echo text::_( _LANG_NO_ENTRIES ); ?>
+<?php echo phpFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>

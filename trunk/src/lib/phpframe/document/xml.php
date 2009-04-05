@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class documentXML extends document {
+class phpFrame_Document_XML extends phpFrame_Document {
 
 }
 ?>

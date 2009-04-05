@@ -10,20 +10,20 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
-$user =& factory::getUser();
+$user =& phpFrame_Application_Factory::getUser();
 ?>
 		
 <div id="top">
 	<span class="icons_16_outer">
 	<span class="icons_16 users_16">
-		<?php html::dialog('Account', 'index.php?option=com_users&view=settings', 600, 560, true); ?>
+		<?php phpFrame_HTML::dialog('Account', 'index.php?option=com_users&view=settings', 600, 560, true); ?>
 	</span>
 	</span>
 	
 	<?php if ($user->groupid == 1) : ?>
 	<span class="icons_16_outer">
 	<span class="icons_16 sysadmin_16">
-		<?php html::dialog('System Admin', 'index.php?option=com_admin', 760, 650); ?>
+		<?php phpFrame_HTML::dialog('System Admin', 'index.php?option=com_admin', 760, 650); ?>
 	</span>
 	</span>
 	<?php endif; ?>

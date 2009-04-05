@@ -17,12 +17,12 @@ function submitbutton(action) {
 
 	// do field validation
 	if (form.title.value == "") {
-		alert('<?php echo text::_( _LANG_NAME_REQUIRED , true); ?>');
+		alert('<?php echo phpFrame_HTML_Text::_( _LANG_NAME_REQUIRED , true); ?>');
 		form.title.focus();
 		return;
 	}
 	else if (form.due_date.value == "") {
-		alert('<?php echo text::_( _LANG_MILESTONES_DUEDATE_REQUIRED , true); ?>');
+		alert('<?php echo phpFrame_HTML_Text::_( _LANG_MILESTONES_DUEDATE_REQUIRED , true); ?>');
 		form.due_date.focus();
 		return;
 	}
@@ -34,7 +34,7 @@ function submitbutton(action) {
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&projectid='.$this->projectid); ?>">
 		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
@@ -43,7 +43,7 @@ function submitbutton(action) {
 <form action="index.php" method="post" name="iofficeform">
 
 <fieldset>
-<legend><?php echo text::_( _LANG_MILESTONES_NEW ); ?></legend>
+<legend><?php echo phpFrame_HTML_Text::_( _LANG_MILESTONES_NEW ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td width="30%">
@@ -62,7 +62,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<?php echo html::_('calendar', 'due_date', 'due_date', $this->row->due_date, 'dd/mm/yy', array('size'=>'10',  'maxlength'=>'10')); ?>
+		<?php echo phpFrame_HTML::_('calendar', 'due_date', 'due_date', $this->row->due_date, 'dd/mm/yy', array('size'=>'10',  'maxlength'=>'10')); ?>
 	</td>
 </tr>
 <tr>
@@ -83,7 +83,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<?php echo usersHelper::assignees($this->row->assignees, '', 'assignees[]', $this->projectid); ?>
+		<?php echo phpFrame_User_Helper::assignees($this->row->assignees, '', 'assignees[]', $this->projectid); ?>
 	</td>
 </tr>
 <tr>
@@ -105,7 +105,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<?php echo usersHelper::id2name($this->row->created_by); ?>
+		<?php echo phpFrame_User_Helper::id2name($this->row->created_by); ?>
 	</td>
 </tr>
 <tr>
@@ -124,14 +124,14 @@ function submitbutton(action) {
 
 <div style="clear:left; margin-top:30px;"></div>
 
-<button type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button>
-<button type="submit"><?php echo text::_(_LANG_SAVE); ?></button>
+<button type="button" onclick="Javascript:window.history.back();"><?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?></button>
+<button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 
 <input type="hidden" name="projectid" value="<?php echo $this->projectid;?>" />
 <input type="hidden" name="id" value="<?php echo $this->row->id;?>" />
 <input type="hidden" name="option" value="com_projects" />
 <input type="hidden" name="task" value="save_milestone" />
 <input type="hidden" name="layout" value="" />
-<?php echo html::_( 'form.token' ); ?>
+<?php echo phpFrame_HTML::_( 'form.token' ); ?>
 
 </form>

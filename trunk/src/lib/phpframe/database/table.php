@@ -13,9 +13,9 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * Table Class
  * 
- * This class implements the singleton design pattern. There will be many implementations 
+ * This class implements the phpFrame_Base_Singleton design pattern. There will be many implementations 
  * of the table class. The table class is an abstract class so it will be used to implement 
- * specific database tables and each of the child instances will need to be a singleton.
+ * specific database tables and each of the child instances will need to be a phpFrame_Base_Singleton.
  * 
  * @package		phpFrame
  * @subpackage 	database
@@ -23,7 +23,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @abstract 
  */
-abstract class table extends singleton {
+abstract class phpFrame_Database_Table extends phpFrame_Base_Singleton {
 	/**
 	 * Reference to the database object
 	 * 
@@ -65,7 +65,7 @@ abstract class table extends singleton {
 	 * @since 	1.0
 	 */
 	public function __construct($table_name, $primary_key) {
-		$this->db =& factory::getDB();
+		$this->db =& phpFrame_Application_Factory::getDB();
 		$this->table_name = $table_name;
 		$this->primary_key = $primary_key;
 		
@@ -245,19 +245,19 @@ abstract class table extends singleton {
 		// Perform validation depending on data type
 		switch ($type) {
 			case 'int' : 
-				$isValid = filter::validate($value, 'int');
+				$isValid = phpFrame_Utils_Filter::validate($value, 'int');
 				break;
 				
 			case 'float' :
 			case 'double' :
 			case 'decimal' :
-				$isValid = filter::validate($value, 'float');
+				$isValid = phpFrame_Utils_Filter::validate($value, 'float');
 				break;
 				
 			case 'char' :
 			case 'varchar' :
 				if (strlen($value) <= $length) {
-					$isValid = filter::validate($value);	
+					$isValid = phpFrame_Utils_Filter::validate($value);	
 				}
 				else {
 					$isValid = false;
@@ -275,7 +275,7 @@ abstract class table extends singleton {
 			case 'binary' :
 			case 'bool' :
 			default : 
-				$isValid = filter::validate($value);
+				$isValid = phpFrame_Utils_Filter::validate($value);
 				break;
 		}
 		

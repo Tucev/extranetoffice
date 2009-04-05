@@ -11,7 +11,7 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
-<?php if (request::getVar('tmpl') != 'component') : ?>
+<?php if (phpFrame_Environment_Request::getVar('tmpl') != 'component') : ?>
 <h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 <?php endif; ?>
 
@@ -41,7 +41,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 </tr>
 </table>
 
-<?php if (request::getVar('tmpl') != 'component') : ?>
+<?php if (phpFrame_Environment_Request::getVar('tmpl') != 'component') : ?>
 <button type="submit" class="button">Change role</button>
 <?php endif; ?>
 
@@ -51,6 +51,6 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <input type="hidden" name="task" value="admin_change_member_role" />
 <input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
 <input type="hidden" name="userid" value="<?php echo $this->members[0]->userid; ?>" />
-<?php echo html::_( 'form.token' ); ?>
+<?php echo phpFrame_HTML::_( 'form.token' ); ?>
 
 </form>

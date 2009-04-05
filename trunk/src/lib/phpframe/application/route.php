@@ -10,10 +10,10 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
-class route {
+class phpFrame_Application_Route {
 	static function _($str, $javascript_safe=false) {
 		// For now the only thing we do is adding the tmpl var to the query string if needed
-		$tmpl = request::getVar('tmpl', '');
+		$tmpl = phpFrame_Environment_Request::getVar('tmpl', '');
 		if (!empty($tmpl) && strpos($str, '&tmpl=') === false) {
 			$str .= '&tmpl='.$tmpl;
 		}

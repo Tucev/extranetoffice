@@ -8,7 +8,7 @@
 * @version 		1.0.0
 */
 
-class billingViewReports extends view {
+class billingViewReports extends phpFrame_Application_View {
 	function display() {
 		parent::display();
 	}

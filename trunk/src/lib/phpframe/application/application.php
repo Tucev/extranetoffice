@@ -15,12 +15,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * 
  * This is the mainframe application class.
  * 
- * This class extends the "singleton" class in order to implement the singleton design pattern.
+ * This class extends the "phpFrame_Base_Singleton" class in order to implement the phpFrame_Base_Singleton design pattern.
  * 
  * The class should be instantiated as:
  * 
  * <code>
- * $application =& phpFrame::getInstance('application');
+ * $application =& phpFrame::getInstance('phpFrame_Application');
  * </code>
  * 
  * @package		phpFrame
@@ -29,7 +29,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see			phpFrame
  */
-class application extends singleton {
+class phpFrame_Application extends phpFrame_Base_Singleton {
 	/**
 	 * Debugger object
 	 * 
@@ -138,7 +138,7 @@ class application extends singleton {
 	 */
 	protected function __construct() {
 		// instantiate debbuger
-		$this->debug = new debug();
+		$this->debug = new phpFrame_Application_Debug();
 
 		// load config
 		$this->config = new config();
@@ -152,19 +152,19 @@ class application extends singleton {
 		
 		// load request into the application
 		// when initialising the request we also detect whether this is a command line request
-		$this->request = request::init();
+		$this->request = phpFrame_Environment_Request::init();
 		
 		// Get client from request
 		// This has to be done after we have initialised the request
-		if (client::isMobile()) {
+		if (phpFrame_Utils_Client::isMobile()) {
 			$this->client = 'mobile';
 		}
-		elseif (client::isCLI()) {
+		elseif (phpFrame_Utils_Client::isCLI()) {
 			$this->client = 'CLI';
 		}
 		
 		// get document object
-		$this->document =& factory::getDocument('html');
+		$this->document =& phpFrame_Application_Factory::getDocument('html');
 		
 		// If client is default (pc web browser) we add the jQuery library + jQuery UI
 		if ($this->client == "default") {
@@ -176,10 +176,10 @@ class application extends singleton {
 		}
 		
 		// instantiate db object and store in application
-		$this->db =& phpFrame::getInstance('db');
+		$this->db =& phpFrame::getInstance('phpFrame_Database');
 		// connect to MySQL server
 		if ($this->db->connect($this->config->db_host, $this->config->db_user, $this->config->db_pass, $this->config->db_name) !== true) {
-			error::raiseFatalError($this->db->getLastError());
+			phpFrame_Application_Error::raiseFatalError($this->db->getLastError());
 		}
 	}
 	
@@ -196,10 +196,10 @@ class application extends singleton {
 	 */
 	public function auth() {
 		// get session object (singeton)
-		$this->session =& phpFrame::getInstance('session');
+		$this->session =& phpFrame::getInstance('phpFrame_Environment_Session');
 		
 		// get user object
-		$this->user =& phpFrame::getInstance('user');
+		$this->user =& phpFrame::getInstance('phpFrame_User');
 		
 		if (!empty($this->session->userid)) {
 			$this->user->load($this->session->userid);
@@ -238,17 +238,17 @@ class application extends singleton {
 	 */
 	public function exec() {
 		// Set component option in application
-		$this->option =& request::getVar('option', 'com_dashboard');
+		$this->option =& phpFrame_Environment_Request::getVar('option', 'com_dashboard');
 		
 		// Initialise permissions
-		$this->permissions =& phpFrame::getInstance('permissions');
+		$this->permissions =& phpFrame::getInstance('phpFrame_Application_Permissions');
 		
 		// Get component info
-		$components =& phpFrame::getInstance('components');
+		$components =& phpFrame::getInstance('phpFrame_Application_Components');
 		$this->component_info = $components->loadByOption($this->option);
 		
 		// load modules before we execute controller task to make modules available to components
-		$this->modules =& phpFrame::getInstance('modules');
+		$this->modules =& phpFrame::getInstance('phpFrame_Application_Modules');
 		
 		// set the component path
 		define("COMPONENT_PATH", _ABS_PATH.DS."components".DS.$this->option);
@@ -266,8 +266,8 @@ class application extends singleton {
 		if (!$this->auth) {
 			$template_filename = 'login.php';
 		}
-		elseif (request::getVar('tmpl') == 'component' || $this->client == 'CLI') {
-			error::display();
+		elseif (phpFrame_Environment_Request::getVar('tmpl') == 'component' || $this->client == 'CLI') {
+			phpFrame_Application_Error::display();
 			$this->output = $this->component_output;
 			return;
 		}
@@ -275,7 +275,7 @@ class application extends singleton {
 			$template_filename = 'index.php';
 			
 			// get pathway
-			$this->pathway =& factory::getPathway();
+			$this->pathway =& phpFrame_Application_Factory::getPathway();
 		}
 		
 		switch ($this->client) {

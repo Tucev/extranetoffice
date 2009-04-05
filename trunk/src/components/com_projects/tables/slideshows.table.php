@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class projectsTableSlideshows extends table {
+class projectsTableSlideshows extends phpFrame_Database_Table {
 	var $id=null; // int(11) auto_increment
 	var $projectid=null; // int(11)
 	var $meetingid=null; // int(11)
@@ -28,7 +28,7 @@ class projectsTableSlideshows extends table {
 	var $created=null; // datetime
   
 	function __construct() {
-		$db =& factory::getDB();
+		$db =& phpFrame_Application_Factory::getDB();
 		parent::__construct( '#__slideshows', 'id' );
 	}
 }

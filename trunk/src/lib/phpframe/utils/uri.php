@@ -27,7 +27,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class uri extends standardObject {
+class phpFrame_Utils_URI extends phpFrame_Base_StdObject {
 	/**
 	 * The URI string
 	 * 

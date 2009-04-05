@@ -11,13 +11,13 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 // Load jQuery validation behaviour for form
-html::validate('issuesform');
+phpFrame_HTML::validate('issuesform');
 ?>
 
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&projectid='.$this->projectid); ?>">
 		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
@@ -74,7 +74,7 @@ html::validate('issuesform');
 		</label>
 	</td>
 	<td>
-		<?php echo html::_('calendar', 'dtstart', 'dtstart', $this->row->dtstart, 'dd/mm/yy', array('size'=>'10',  'maxlength'=>'10')); ?>
+		<?php echo phpFrame_HTML::_('calendar', 'dtstart', 'dtstart', $this->row->dtstart, 'dd/mm/yy', array('size'=>'10',  'maxlength'=>'10')); ?>
 	</td>
 </tr>
 <tr>
@@ -84,7 +84,7 @@ html::validate('issuesform');
 		</label>
 	</td>
 	<td>
-		<?php echo html::_('calendar', 'dtend', 'dtend', $this->row->dtend, 'dd/mm/yy', array('size'=>'10',  'maxlength'=>'10')); ?>
+		<?php echo phpFrame_HTML::_('calendar', 'dtend', 'dtend', $this->row->dtend, 'dd/mm/yy', array('size'=>'10',  'maxlength'=>'10')); ?>
 	</td>
 </tr>
 <tr>
@@ -115,7 +115,7 @@ html::validate('issuesform');
 		</label>
 	</td>
 	<td>
-		<?php echo usersHelper::assignees($this->row->assignees, '', 'assignees[]', $this->projectid); ?>
+		<?php echo phpFrame_User_Helper::assignees($this->row->assignees, '', 'assignees[]', $this->projectid); ?>
 	</td>
 </tr>
 <tr>
@@ -137,7 +137,7 @@ html::validate('issuesform');
 		</label>
 	</td>
 	<td>
-		<?php echo usersHelper::id2name($this->row->created_by); ?>
+		<?php echo phpFrame_User_Helper::id2name($this->row->created_by); ?>
 	</td>
 </tr>
 <tr>
@@ -156,14 +156,14 @@ html::validate('issuesform');
 
 <div style="clear:left; margin-top:30px;"></div>
 
-<button type="button" onclick="Javascript:window.history.back();"><?php echo text::_( _LANG_BACK ); ?></button>
-<button type="submit"><?php echo text::_(_LANG_SAVE); ?></button>
+<button type="button" onclick="Javascript:window.history.back();"><?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?></button>
+<button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 
 <input type="hidden" name="projectid" value="<?php echo $this->projectid;?>" />
 <input type="hidden" name="id" value="<?php echo $this->row->id;?>" />
 <input type="hidden" name="option" value="com_projects" />
 <input type="hidden" name="task" value="save_issue" />
 <input type="hidden" name="type" value="" />
-<?php echo html::_( 'form.token' ); ?>
+<?php echo phpFrame_HTML::_( 'form.token' ); ?>
 
 </form>

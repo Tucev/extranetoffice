@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class emailTableAccounts extends table {
+class emailTableAccounts extends phpFrame_Database_Table {
 	/**
 	 * The account id (int(11) auto_increment)
 	 * 

@@ -8,40 +8,40 @@
 * @version 		1.0.0
 */
 
-class loginModelLogin extends model {
+class loginModelLogin extends phpFrame_Application_Model {
 	
 	public function login($username, $password) {
-		$db =& factory::getDB();
+		$db =& phpFrame_Application_Factory::getDB();
 		$query = "SELECT id, password FROM #__users WHERE username = '".$username."'";
 		$db->setQuery($query);
 		$credentials = $db->loadObject();
 		
 		// User exists
 		if ($credentials->id) {
-			$user =& factory::getUser();
+			$user =& phpFrame_Application_Factory::getUser();
 			$user->load($credentials->id);
 			
 			// check password
 			$parts	= explode( ':', $credentials->password );
 			$crypt	= $parts[0];
 			$salt	= @$parts[1];
-			$testcrypt = crypt::getCryptedPassword($password, $salt);
+			$testcrypt = phpFrame_Utils_Crypt::getCryptedPassword($password, $salt);
 			if ($crypt == $testcrypt) {
 				// Store user data in session
-				$session =& factory::getSession();
+				$session =& phpFrame_Application_Factory::getSession();
 				$session->userid = $user->id;
 				$session->groupid = $user->groupid;
 				$session->write();
 				return true;
 			} else {
 				// Wrong password
-				error::raise('401', 'error', "Authorisation failed: Wrong password");
+				phpFrame_Application_Error::raise('401', 'error', "Authorisation failed: Wrong password");
 				return false;
 			}
 		}
 		else {
 			// Username not found
-			error::raise('401', 'error', "Authorisation failed: Username not found");
+			phpFrame_Application_Error::raise('401', 'error', "Authorisation failed: Username not found");
 			return false;
 		}
 	}
@@ -67,10 +67,10 @@ class loginModelLogin extends model {
 		if (!empty($userid)) {
 			// Create standard object to store user properties
 			// We do this because we dont want to overwrite the current user object.
-			$row = new standardObject();
+			$row = new phpFrame_Base_StdObject();
 			$this->user->load($userid, 'password', $row);
 			// Generate random password and store in local variable to be used when sending email to user.
-			$password = crypt::genRandomPassword();
+			$password = phpFrame_Utils_Crypt::genRandomPassword();
 			// Assign newly generated password to row object (this password will be encrypted when stored).
 			$row->password = $password;
 			
@@ -85,10 +85,10 @@ class loginModelLogin extends model {
 			}
 			
 			// Send notification to new users
-			$uri =& factory::getURI();
+			$uri =& phpFrame_Application_Factory::getURI();
 			
-			$new_mail = new mailer();
-			$new_mail->AddAddress($row->email, usersHelper::fullname_format($row->firstname, $row->lastname));
+			$new_mail = new phpFrame_Mail_Mailer();
+			$new_mail->AddAddress($row->email, phpFrame_User_Helper::fullname_format($row->firstname, $row->lastname));
 			$new_mail->Subject = _LANG_USER_RESET_PASS_NOTIFY_SUBJECT;
 			$new_mail->Body = sprintf(_LANG_USER_RESET_PASS_NOTIFY_BODY, 
 										 $row->firstname, 

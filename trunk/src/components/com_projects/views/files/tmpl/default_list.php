@@ -11,19 +11,19 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 // Add confirm behaviour to delete links
-html::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECTS_FILES_DELETE_CONFIRM);
+phpFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECTS_FILES_DELETE_CONFIRM);
 ?>
 
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
 <div class="new">
-	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&layout=form&projectid='.$this->projectid); ?>">
-		<?php echo text::_( _LANG_NEW ); ?>
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&layout=form&projectid='.$this->projectid); ?>">
+		<?php echo phpFrame_HTML_Text::_( _LANG_NEW ); ?>
 	</a>
 </div>
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&projectid='.$this->projectid); ?>">
 		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
@@ -37,19 +37,19 @@ html::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECTS_FILES_D
 
 	<?php if ($row->userid == $this->user->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_file" title="<?php echo text::_($row->title, true); ?>" href="index.php?option=com_projects&task=remove_file&projectid=<?php echo $row->projectid; ?>&fileid=<?php echo $row->id; ?>">
-			<?php echo text::_( _LANG_DELETE ); ?>
+		<a class="delete_file" title="<?php echo phpFrame_HTML_Text::_($row->title, true); ?>" href="index.php?option=com_projects&task=remove_file&projectid=<?php echo $row->projectid; ?>&fileid=<?php echo $row->id; ?>">
+			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	<div class="thread_download">
-		<a href="<?php echo route::_("index.php?option=com_projects&task=download_file&fileid=".$row->id); ?>">
-			<?php echo text::_( _LANG_DOWNLOAD ); ?>
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&task=download_file&fileid=".$row->id); ?>">
+			<?php echo phpFrame_HTML_Text::_( _LANG_DOWNLOAD ); ?>
 		</a> 
 	</div>
 	<div class="thread_upload">
-		<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&layout=form&projectid='.$this->projectid."&parentid=".$row->parentid); ?>">
-			<?php echo text::_( _LANG_FILES_UPLOAD_NEW_VERSION ); ?>
+		<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&layout=form&projectid='.$this->projectid."&parentid=".$row->parentid); ?>">
+			<?php echo phpFrame_HTML_Text::_( _LANG_FILES_UPLOAD_NEW_VERSION ); ?>
 		</a> 
 	</div>
 	
@@ -58,7 +58,7 @@ html::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECTS_FILES_D
 	</div>
 	
 	<div class="thread_heading">
-	<a href="<?php echo route::_("index.php?option=com_projects&task=download_file&fileid=".$row->id); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&task=download_file&fileid=".$row->id); ?>">
 		<?php echo $row->title; ?>
 	</a>
 	</div>
@@ -75,7 +75,7 @@ html::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECTS_FILES_D
 		<?php echo _LANG_ASSIGNEES; ?>: 
     	<?php for ($j=0; $j<count($row->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo route::_("index.php?option=com_projects&view=users&layout=detail&userid=".$row->assignees[$j]['id']); ?>">
+    		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=users&layout=detail&userid=".$row->assignees[$j]['id']); ?>">
     		<?php echo $row->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>
@@ -85,7 +85,7 @@ html::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECTS_FILES_D
 	
 	<?php if (!empty($row->changelog)) : ?>
 	<div class="thread_body">
-		<?php echo nl2br(text::limit_words($row->changelog, 255)); ?>
+		<?php echo nl2br(phpFrame_HTML_Text::limit_words($row->changelog, 255)); ?>
 	</div>
 	<?php endif; ?>
 	
@@ -111,29 +111,29 @@ html::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECTS_FILES_D
 			<div class="thread_oldrevision_entry">
 				<?php if ($row->userid == $this->user->id) : ?>
 				<div class="thread_delete">
-					<a href="Javascript:confirm_delete(<?php echo $row->projectid; ?>, <?php echo $child->id; ?>, '<?php echo text::_($child->title." r".$child->revision, true); ?>');">
-						<?php echo text::_( _LANG_DELETE ); ?>
+					<a href="Javascript:confirm_delete(<?php echo $row->projectid; ?>, <?php echo $child->id; ?>, '<?php echo phpFrame_HTML_Text::_($child->title." r".$child->revision, true); ?>');">
+						<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 					</a> 
 				</div>
 				<?php endif; ?>
-				<a href="<?php echo route::_("index.php?option=com_projects&task=download_file&fileid=".$child->id); ?>">
+				<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&task=download_file&fileid=".$child->id); ?>">
 					<?php echo $child->title; ?>
 				</a> 
 				(Revision <?php echo $child->revision; ?> - <?php echo date("D, d M Y H:ia", strtotime($child->ts)); ?>) 
 				Uploaded by: <?php echo $child->created_by_name; ?>
 				<br />
-				<?php echo nl2br(text::limit_words($child->changelog, 255)); ?>
+				<?php echo nl2br(phpFrame_HTML_Text::limit_words($child->changelog, 255)); ?>
 			</div>
 		<?php endforeach; ?>
 	</div>
 	<?php endif; ?>
 	
 	<div class="comments_info">
-		<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&layout=detail&projectid='.$this->projectid.'&fileid='.$row->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&layout=detail&projectid='.$this->projectid.'&fileid='.$row->id); ?>">
 			<?php echo $row->comments; ?> <?php echo _LANG_COMMENTS; ?>
 		</a>
 		 - 
-		<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&layout=detail&projectid='.$this->projectid.'&fileid='.$row->id.'#post-comment'); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&layout=detail&projectid='.$this->projectid.'&fileid='.$row->id.'#post-comment'); ?>">
 			<?php echo _LANG_COMMENTS_NEW; ?>
 		</a>
 	</div>
@@ -142,7 +142,7 @@ html::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECTS_FILES_D
 <?php endforeach; ?>
 
 <?php else : ?>
-<?php echo text::_( _LANG_NO_ENTRIES ); ?>
+<?php echo phpFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>
 
 <pre><?php //var_dump($this->rows); ?></pre>

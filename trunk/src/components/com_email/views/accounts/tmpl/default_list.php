@@ -14,8 +14,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 
 <div class="new">
-	<a href="<?php echo route::_('index.php?option=com_email&view=accounts&layout=form'); ?>">
-		<?php echo text::_( _LANG_NEW ); ?>
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_email&view=accounts&layout=form'); ?>">
+		<?php echo phpFrame_HTML_Text::_( _LANG_NEW ); ?>
 	</a>
 </div>
 
@@ -37,7 +37,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	<tr>
 		<td><?php echo $row->fromname; ?></td>
 		<td>
-		<a href="<?php echo route::_("index.php?option=com_email&view=accounts&layout=form&accountid=".$row->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_email&view=accounts&layout=form&accountid=".$row->id); ?>">
 			<?php echo $row->email_address; ?>
 		</a>
 		</td>
@@ -48,14 +48,14 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			<?php if ($row->default == '1') : ?>
 				Default
 			<?php else : ?>
-			<a href="<?php echo route::_("index.php?option=com_email&task=make_default_account&accountid=".$row->id); ?>">
-				<?php echo text::_(_LANG_EMAIL_ACCOUNTS_MAKE_DEFAULT); ?>
+			<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_email&task=make_default_account&accountid=".$row->id); ?>">
+				<?php echo phpFrame_HTML_Text::_(_LANG_EMAIL_ACCOUNTS_MAKE_DEFAULT); ?>
 			</a>
 			<?php endif; ?>
 		</td>
 		<td>
-			<a href="<?php echo route::_("index.php?option=com_email&task=remove_account&accountid=".$row->id); ?>">
-				<?php echo text::_(_LANG_DELETE); ?>
+			<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_email&task=remove_account&accountid=".$row->id); ?>">
+				<?php echo phpFrame_HTML_Text::_(_LANG_DELETE); ?>
 			</a>
 		</td>
 	</tr>
@@ -63,5 +63,5 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	<?php endforeach; ?>
 </table>
 <?php else : ?>
-<?php echo text::_( _LANG_NO_ENTRIES ); ?>
+<?php echo phpFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>

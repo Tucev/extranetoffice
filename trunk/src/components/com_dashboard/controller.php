@@ -18,11 +18,11 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class dashboardController extends controller {
+class dashboardController extends phpFrame_Application_Controller {
 	function __construct() {
 		// set default view and layout if none has been set
-		$this->view = request::getVar('view', 'dashboard');
-		$this->layout = request::getVar('layout', '');
+		$this->view = phpFrame_Environment_Request::getVar('view', 'dashboard');
+		$this->layout = phpFrame_Environment_Request::getVar('layout', '');
 		
 		parent::__construct();
 	}

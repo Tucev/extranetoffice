@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * Method name to be triggered will be formed as follows:
  * 
  * <code>
- * $tmpl_specific_method = "display".ucfirst(request::getVar('view')).ucfirst($this->tmpl);
+ * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getVar('view')).ucfirst($this->tmpl);
  * </code>
  * 
  * @package		ExtranetOffice
@@ -28,7 +28,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		view, controller
  */
-class dashboardViewDashboard extends view {
+class dashboardViewDashboard extends phpFrame_Application_View {
 	var $page_title=null;
 	
 	/**
@@ -79,7 +79,7 @@ class dashboardViewDashboard extends view {
 		//if ($this->iOfficeConfig->get('enable_email_client') && $this->settings->enable_email_client) {
 			// Limit the number of entries to 5
 			/* Temporarily commented out.
-			request::setVar('per_page', 5);
+			phpFrame_Environment_Request::setVar('per_page', 5);
 			require_once _ABS_PATH.DS.'components'.DS.'com_email'.DS.'models'.DS.'email.php';
 			$modelEmail =& phpFrame::getInstance('emailModelEmail');
 			$modelEmail->loadUserEmailAccount();

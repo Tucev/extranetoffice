@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * Method name to be triggered will be formed as follows:
  * 
  * <code>
- * $tmpl_specific_method = "display".ucfirst(request::getVar('view')).ucfirst($this->tmpl);
+ * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getVar('view')).ucfirst($this->tmpl);
  * </code>
  * 
  * @package		ExtranetOffice
@@ -28,7 +28,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see 		view, controller
  */
-class projectsViewFiles extends view {
+class projectsViewFiles extends phpFrame_Application_View {
 	var $page_title=null;
 	var $projectid=null;
 	var $project=null;
@@ -41,10 +41,10 @@ class projectsViewFiles extends view {
 	 */
 	function __construct() {
 		// Set the view template to load (default value is set in controller)
-		$this->layout =& request::getVar('layout');
+		$this->layout =& phpFrame_Environment_Request::getVar('layout');
 		
 		// Set reference to projectid
-		$this->projectid =& request::getVar('projectid', 0);
+		$this->projectid =& phpFrame_Environment_Request::getVar('projectid', 0);
 		
 		// Set reference to project object loaded in controller
 		if (!empty($this->projectid)) {
@@ -72,7 +72,7 @@ class projectsViewFiles extends view {
 		parent::display();
 		
 		// Append page title to document title
-		$document =& factory::getDocument('html');
+		$document =& phpFrame_Application_Factory::getDocument('html');
 		$document->title .= ' - '.$this->page_title;
 	}
 	
@@ -92,24 +92,24 @@ class projectsViewFiles extends view {
 	}
 	
 	function displayFilesForm() {
-		$parentid = request::getVar('parentid', 0);
+		$parentid = phpFrame_Environment_Request::getVar('parentid', 0);
 		
 		$modelFiles =& $this->getModel('files');
 		$this->row = $modelFiles->getFilesDetail($this->projectid, $parentid);
 		
 		$this->page_title .= ' - '._LANG_FILES_NEW;
-		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=files&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, phpFrame_Application_Route::_("index.php?option=com_projects&view=files&projectid=".$this->projectid));
 		$this->addPathwayItem(_LANG_FILES_NEW);
 	}
 	
 	function displayFilesDetail() {
-		$fileid = request::getVar('fileid', 0);
+		$fileid = phpFrame_Environment_Request::getVar('fileid', 0);
 		
 		$modelFiles =& $this->getModel('files');
 		$this->row = $modelFiles->getFilesDetail($this->projectid, $fileid);
 		
 		$this->page_title .= ' - '.$this->row->title;
-		$this->addPathwayItem($this->current_tool, route::_("index.php?option=com_projects&view=files&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, phpFrame_Application_Route::_("index.php?option=com_projects&view=files&projectid=".$this->projectid));
 		$this->addPathwayItem($this->row->title);
 	}
 	

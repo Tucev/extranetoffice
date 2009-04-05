@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class projectsTableComments extends table {
+class projectsTableComments extends phpFrame_Database_Table {
 	var $id=null; // int(11) auto_increment
 	var $projectid=null; // int(11) NOT NULL
 	var $userid=null; // int(11) NOT NULL

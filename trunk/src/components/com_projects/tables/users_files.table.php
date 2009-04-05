@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class projectsTableUsersFiles extends table {
+class projectsTableUsersFiles extends phpFrame_Database_Table {
 	/**
 	 * The row id
 	 * 
@@ -51,7 +51,7 @@ class projectsTableUsersFiles extends table {
 	 * @since	1.0
 	 */
 	function __construct() {
-		$db =& factory::getDB();
+		$db =& phpFrame_Application_Factory::getDB();
 		parent::__construct( '#__users_files', 'id' );
 	}
 }

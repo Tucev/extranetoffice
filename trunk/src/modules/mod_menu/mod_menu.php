@@ -10,15 +10,15 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
-$option = request::getVar('option', 'com_dashboard');
+$option = phpFrame_Environment_Request::getVar('option', 'com_dashboard');
 $active_component = substr($option, 4);
-$db =& factory::getDB();
+$db =& phpFrame_Application_Factory::getDB();
 
 $query = "SELECT * FROM #__components WHERE system = '0' AND enabled = '1' ORDER BY ordering ASC";
 $db->setQuery($query);
 $components = $db->loadObjectList();
 
-$application =& factory::getApplication();
+$application =& phpFrame_Application_Factory::getApplication();
 ?>
 
 <ul id="menu">

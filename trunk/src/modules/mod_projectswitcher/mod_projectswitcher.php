@@ -10,7 +10,7 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
-$projectid = request::getVar('projectid', 0);
+$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 require_once _ABS_PATH.DS.'components'.DS.'com_projects'.DS.'helpers'.DS.'projects.helper.php';
 ?>
 

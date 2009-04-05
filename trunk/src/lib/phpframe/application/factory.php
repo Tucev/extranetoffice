@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see			phpFrame
  */
-class factory {
+class phpFrame_Application_Factory {
 	/**
 	 * Get application object
 	 * 
@@ -27,7 +27,7 @@ class factory {
 	 * @since 	1.0
 	 */
 	function getApplication() {
-		return phpFrame::getInstance('application');
+		return phpFrame::getInstance('phpFrame_Application');
 	}
 	
 	/**
@@ -37,7 +37,7 @@ class factory {
 	 * @since 	1.0
 	 */
 	function getConfig() {
-		$application =& phpFrame::getInstance('application');
+		$application =& phpFrame::getInstance('phpFrame_Application');
 		return $application->config;
 	}
 	
@@ -48,7 +48,7 @@ class factory {
 	 * @since 	1.0
 	 */
 	function getDB() {
-		return phpFrame::getInstance('db');
+		return phpFrame::getInstance('phpFrame_Database');
 	}
 	
 	/**
@@ -58,7 +58,7 @@ class factory {
 	 * @since 	1.0
 	 */
 	function getUser() {
-		return phpFrame::getInstance('user');
+		return phpFrame::getInstance('phpFrame_User');
 	}
 	
 	/**
@@ -68,7 +68,7 @@ class factory {
 	 * @since 	1.0
 	 */
 	function getSession() {
-		return phpFrame::getInstance('session');
+		return phpFrame::getInstance('phpFrame_Environment_Session');
 	}
 	
 	/**
@@ -78,7 +78,7 @@ class factory {
 	 * @since 	1.0
 	 */
 	function getPathway() {
-		return phpFrame::getInstance('pathway');
+		return phpFrame::getInstance('phpFrame_Application_Pathway');
 	}
 	
 	/**
@@ -89,7 +89,7 @@ class factory {
 	 * @since 	1.0
 	 */
 	function getDocument($type) {
-		return phpFrame::getInstance('document'.strtoupper($type));
+		return phpFrame::getInstance('phpFrame_Document_'.strtoupper($type));
 	}
 	
 	/**
@@ -99,7 +99,7 @@ class factory {
 	 * @since 	1.0
 	 */
 	function getURI() {
-		return phpFrame::getInstance('uri');
+		return phpFrame::getInstance('phpFrame_Utils_URI');
 	}
 }
 ?>

@@ -11,15 +11,15 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 // Add confirm behaviour to delete links
-html::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECTS_FILES_DELETE_CONFIRM);
+phpFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECTS_FILES_DELETE_CONFIRM);
 // Load jQuery validation behaviour for forms
-html::validate('commentsform');
+phpFrame_HTML::validate('commentsform');
 ?>
 
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo route::_('index.php?option=com_projects&view='.request::getVar('view').'&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&projectid='.$this->projectid); ?>">
 		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
@@ -29,19 +29,19 @@ html::validate('commentsform');
 
 	<?php if ($this->row->userid == $this->user->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_file" title="<?php echo text::_($this->row->title, true); ?>" href="index.php?option=com_projects&task=remove_file&projectid=<?php echo $this->row->projectid; ?>&fileid=<?php echo $this->row->id; ?>">
-			<?php echo text::_( _LANG_DELETE ); ?>
+		<a class="delete_file" title="<?php echo phpFrame_HTML_Text::_($this->row->title, true); ?>" href="index.php?option=com_projects&task=remove_file&projectid=<?php echo $this->row->projectid; ?>&fileid=<?php echo $this->row->id; ?>">
+			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	<div class="thread_download">
-		<a href="<?php echo route::_("index.php?option=com_projects&task=download_file&fileid=".$this->row->id); ?>">
-			<?php echo text::_( _LANG_DOWNLOAD ); ?>
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&task=download_file&fileid=".$this->row->id); ?>">
+			<?php echo phpFrame_HTML_Text::_( _LANG_DOWNLOAD ); ?>
 		</a> 
 	</div>
 	<div class="thread_upload">
-		<a href="<?php echo route::_('index.php?option=com_projects&view=files&layout=form&projectid='.$this->projectid."&parentid=".$this->row->parentid); ?>">
-			<?php echo text::_( _LANG_FILES_UPLOAD_NEW_VERSION ); ?>
+		<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view=files&layout=form&projectid='.$this->projectid."&parentid=".$this->row->parentid); ?>">
+			<?php echo phpFrame_HTML_Text::_( _LANG_FILES_UPLOAD_NEW_VERSION ); ?>
 		</a> 
 	</div>
 	
@@ -50,7 +50,7 @@ html::validate('commentsform');
 	</div>
 	
 	<div class="thread_heading">
-	<a href="<?php echo route::_("index.php?option=com_projects&task=download_file&fileid=".$this->row->id); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&task=download_file&fileid=".$this->row->id); ?>">
 		<?php echo $this->row->title; ?>
 	</a>
 	</div>
@@ -67,7 +67,7 @@ html::validate('commentsform');
 		<?php echo _LANG_ASSIGNEES; ?>: 
     	<?php for ($j=0; $j<count($this->row->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo route::_("index.php?option=com_projects&view=users&layout=detail&userid=".$this->row->assignees[$j]['id']); ?>">
+    		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=users&layout=detail&userid=".$this->row->assignees[$j]['id']); ?>">
     		<?php echo $this->row->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>
@@ -102,12 +102,12 @@ html::validate('commentsform');
 			<div class="thread_oldrevision_entry">
 				<?php if ($this->row->userid == $this->user->id) : ?>
 				<div class="thread_delete">
-					<a href="Javascript:confirm_delete(<?php echo $this->row->projectid; ?>, <?php echo $child->id; ?>, '<?php echo text::_($child->title." r".$child->revision, true); ?>');">
-						<?php echo text::_( _LANG_DELETE ); ?>
+					<a href="Javascript:confirm_delete(<?php echo $this->row->projectid; ?>, <?php echo $child->id; ?>, '<?php echo phpFrame_HTML_Text::_($child->title." r".$child->revision, true); ?>');">
+						<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 					</a> 
 				</div>
 				<?php endif; ?>
-				<a href="<?php echo route::_("index.php?option=com_projects&task=download_file&fileid=".$child->id); ?>">
+				<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&task=download_file&fileid=".$child->id); ?>">
 					<?php echo $child->title; ?>
 				</a> 
 				(Revision <?php echo $child->revision; ?> - <?php echo date("D, d M Y H:ia", strtotime($child->ts)); ?>) 
@@ -124,7 +124,7 @@ html::validate('commentsform');
 	<?php foreach ($this->row->comments as $comment) : ?>
 		<div class="comment_row">
 			<div style="float:left; margin-right: 10px;">
-				<img src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo usersHelper::id2photo($comment->userid); ?>" />
+				<img src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo phpFrame_User_Helper::id2photo($comment->userid); ?>" />
 			</div>
 			<div style="margin-left: 95px;">
 				<div class="comment_details">
@@ -165,7 +165,7 @@ html::validate('commentsform');
 		<input type="hidden" name="assignees[]" value="<?php echo $assignee['id']; ?>" />
 		<?php endforeach; ?>
 		<?php endif; ?>
-		<?php echo html::_( 'form.token' ); ?>
+		<?php echo phpFrame_HTML::_( 'form.token' ); ?>
 		</form>
 	</div>
 </div>

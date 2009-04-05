@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class imap {
+class phpFrame_Mail_IMAP {
 	private $_stream=null;
 	private $_host=null;
 	private $_port=null;

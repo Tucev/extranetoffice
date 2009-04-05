@@ -11,11 +11,6 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 /**
- * Include phpmailer
- */
-require_once _PHPMAILER_PATH.DS.'phpmailer.php';
-
-/**
  * Mail Class
  * 
  * @package		phpFrame
@@ -23,7 +18,7 @@ require_once _PHPMAILER_PATH.DS.'phpmailer.php';
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class mailer extends PHPMailer {
+class phpFrame_Mail_Mailer extends PHPMailer {
 	private $_messageid_sfx=null;
 	private $_error=array();
 	
@@ -36,7 +31,7 @@ class mailer extends PHPMailer {
 	 * @since	1.0
 	 */
 	public function __construct() {
-		$config =& factory::getConfig();
+		$config =& phpFrame_Application_Factory::getConfig();
 		$this->Mailer = $config->mailer;
 		$this->Host = $config->smtp_host;
 		$this->Port = $config->smtp_port;

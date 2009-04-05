@@ -23,7 +23,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * Controllers processes requests and respond to events, typically user actions, 
  * and may invoke changes on using the available models.
  * 
- * This class uses the singleton design pattern, and it is therefore instantiated 
+ * This class uses the phpFrame_Base_Singleton design pattern, and it is therefore instantiated 
  * using the getInstance() method.
  * 
  * To make sure that the child model is instantiated using the correct run time
@@ -31,7 +31,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * 
  * For example:
  * <code>
- * class myController extends controller {
+ * class myController extends phpFrame_Application_Controller {
  * 		function doSomething() {
  * 			return 'something';
  * 		}
@@ -49,7 +49,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		model, view
  * @abstract 
  */
-abstract class controller extends singleton {
+abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
 	/**
 	 * The component (ie: com_projects)
 	 * 
@@ -106,22 +106,22 @@ abstract class controller extends singleton {
 	 * @since	1.0
 	 */
 	public function __construct() {
-		$this->option = request::getVar('option');
-		$this->task = request::getVar('task', 'display');
-		$this->view = request::getVar('view');
-		$this->layout = request::getVar('layout');
+		$this->option = phpFrame_Environment_Request::getVar('option');
+		$this->task = phpFrame_Environment_Request::getVar('task', 'display');
+		$this->view = phpFrame_Environment_Request::getVar('view');
+		$this->layout = phpFrame_Environment_Request::getVar('layout');
 		
 		// Get available views
 		$this->views_available = $this->getAvailableViews();
 		
 		// Get reference to application
-		$application =& factory::getApplication();
+		$application =& phpFrame_Application_Factory::getApplication();
 		
 		// Add pathway item
 		$this->addPathwayItem(ucwords($application->component_info->name), 'index.php?option='.$this->option);
 		
 		// Append component name in ducument title
-		$document =& factory::getDocument('html');
+		$document =& phpFrame_Application_Factory::getDocument('html');
 		if (!empty($document->title)) $document->title .= ' - ';
 		$document->title .= ucwords($application->component_info->name);
 	}
@@ -135,12 +135,12 @@ abstract class controller extends singleton {
 	 * @since	1.0
      */
 	public function display() {
-		$this->view_obj = $this->getView(request::getVar('view'));
+		$this->view_obj = $this->getView(phpFrame_Environment_Request::getVar('view'));
 		if (is_callable(array($this->view_obj, 'display'))) {
 			$this->view_obj->display();	
 		}
 		else {
-			error::raise('', 'error', 'display() method not found in view class.');
+			phpFrame_Application_Error::raise('', 'error', 'display() method not found in view class.');
 		}
 	}
 	
@@ -155,14 +155,14 @@ abstract class controller extends singleton {
 	 */
 	public function execute($task) {
 		// Get reference to application to check permissions before we execute
-		$application =& factory::getApplication();
+		$application =& phpFrame_Application_Factory::getApplication();
 		
 		if ($application->permissions->is_allowed === true) {
 			if (is_callable(array($this, $task))) {
 				$this->$task();	
 			}
 			else {
-				error::raise('', 'error', $task.'() method not found in controller class.');
+				phpFrame_Application_Error::raise('', 'error', $task.'() method not found in controller class.');
 			}
 		}
 		else {
@@ -170,7 +170,7 @@ abstract class controller extends singleton {
 				$this->setRedirect('index.php?option=com_login');
 			}
 			else {
-				error::raise('', 'error', 'Permission denied.');
+				phpFrame_Application_Error::raise('', 'error', 'Permission denied.');
 			}
 		}
 	}
@@ -197,7 +197,7 @@ abstract class controller extends singleton {
 	 * @since	1.0
 	 */
 	public function setRedirect($url) {
-		$this->redirect_url = route::_($url);
+		$this->redirect_url = phpFrame_Application_Route::_($url);
 	}
 	
 	/**
@@ -208,7 +208,7 @@ abstract class controller extends singleton {
 	 * @since	1.0
 	 */
 	public function redirect() {
-		if ($this->redirect_url && !client::isCLI()) {
+		if ($this->redirect_url && !phpFrame_Utils_Client::isCLI()) {
 			header("Location: ".$this->redirect_url);
 			exit;
 		}
@@ -225,18 +225,18 @@ abstract class controller extends singleton {
 	 */
 	public function getModel($name='') {
 		if (empty($name)) {
-			$name = request::getVar('view');
+			$name = phpFrame_Environment_Request::getVar('view');
 		}
 		
 		$model_path = COMPONENT_PATH.DS."models".DS.$name.".php";
 		if (file_exists($model_path)) {
 			require_once $model_path;
-			$model_class_name = substr(request::getVar('option'), 4).'Model'.ucfirst($name);
+			$model_class_name = substr(phpFrame_Environment_Request::getVar('option'), 4).'Model'.ucfirst($name);
 			$model =& phpFrame::getInstance($model_class_name);
 			return $model;
 		}
 		else {
-			error::raise(500, "error", "Model file ".$model_path." not found.");
+			phpFrame_Application_Error::raise(500, "error", "Model file ".$model_path." not found.");
 			return false;
 		}
 	}
@@ -252,18 +252,18 @@ abstract class controller extends singleton {
 	 */
 	public function getView($name='') {
 		if (empty($name)) {
-			$name = request::getVar('view');
+			$name = phpFrame_Environment_Request::getVar('view');
 		}
 		
 		$view_path = COMPONENT_PATH.DS."views".DS.$name.DS."view.php";
 		if (file_exists($view_path)) {
 			require_once $view_path;
-			$view_class_name = substr(request::getVar('option'), 4).'View'.ucfirst($name);
+			$view_class_name = substr(phpFrame_Environment_Request::getVar('option'), 4).'View'.ucfirst($name);
 			$view =& phpFrame::getInstance($view_class_name);
 			return $view;
 		}
 		else {
-			error::raise(500, "error", "View file ".$model_path." not found.");
+			phpFrame_Application_Error::raise(500, "error", "View file ".$model_path." not found.");
 			return false;
 		}
 	}
@@ -311,7 +311,7 @@ abstract class controller extends singleton {
 	 * @since	1.0
 	 */
 	function addPathwayItem($title, $url='') {
-		$pathway =& factory::getPathway();
+		$pathway =& phpFrame_Application_Factory::getPathway();
 		// add item
 		$pathway->addItem($title, $url);
 	}

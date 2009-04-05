@@ -12,5 +12,5 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
 <div id="error_msg">
-	<?php error::display(); ?>
+	<?php phpFrame_Application_Error::display(); ?>
 </div>

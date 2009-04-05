@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class text {
+class phpFrame_HTML_Text {
 	/**
 	 * Format a string for html output.
 	 * 

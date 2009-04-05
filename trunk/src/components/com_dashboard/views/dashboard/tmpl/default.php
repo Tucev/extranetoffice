@@ -45,8 +45,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	
 	<?php if ($this->user->groupid == 1) : ?>
 	<div style="float:right;" class="new">
-		 <a style="float:right;" href="<?php echo route::_("index.php?option=com_projects&view=admin&layout=form"); ?>" title="<?php echo text::_( _LANG_PROJECTS_NEW ); ?>">
-		<?php echo text::_( _LANG_PROJECTS_NEW ); ?>
+		 <a style="float:right;" href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=admin&layout=form"); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
+		<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>
 		</a>
 	</div>
 	<?php endif; ?>
@@ -56,7 +56,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 		<?php if (is_array($this->projects) && count($this->projects) > 0) : ?>
 		<?php foreach ($this->projects as $project) : ?>
 		<li>
-			<a href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=detail&projectid=".$project->id); ?>">
+			<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=projects&layout=detail&projectid=".$project->id); ?>">
 				<?php echo $project->name; ?>
 			</a>
 		</li>
@@ -108,12 +108,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
   	<?php echo $attachment_icon; ?>
   	</td>
 	<td>
-		<a class="bold" href="<?php echo route::_("index.php?option=com_email&view=messages&layout=detail&folder=INBOX&uid=".$email->uid); ?>">
+		<a class="bold" href="<?php echo phpFrame_Application_Route::_("index.php?option=com_email&view=messages&layout=detail&folder=INBOX&uid=".$email->uid); ?>">
 		<?php echo substr($email->from, 0, 32); if (strlen($email->from) > 33) { echo '...'; } ?>
 		</a>
 	</td>
 	<td>
-		<a class="bold" href="<?php echo route::_("index.php?option=com_email&view=messages&layout=detail&folder=INBOX&uid=".$email->uid); ?>">
+		<a class="bold" href="<?php echo phpFrame_Application_Route::_("index.php?option=com_email&view=messages&layout=detail&folder=INBOX&uid=".$email->uid); ?>">
 		<?php echo substr($email->subject, 0, 32); if (strlen($email->subject) > 33) { echo '...'; } ?>
 		</a>
 	</td>
@@ -126,7 +126,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	</tbody>
 	</table>
 	<?php elseif ($this->emails) : ?>
-	<?php echo text::_( _LANG_NO_EMAIL ); ?>
+	<?php echo phpFrame_HTML_Text::_( _LANG_NO_EMAIL ); ?>
 	<?php else : ?>
 	No e-mail account.
 	<?php endif; ?>
@@ -145,18 +145,18 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	
 	<?php if (is_array($project->activitylog) && count($project->activitylog) > 0) : ?>
 	<h4>
-		<a href="<?php echo route::_("index.php?option=com_projects&view=projects&layout=detail&projectid=".$project->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=projects&layout=detail&projectid=".$project->id); ?>">
 		<?php echo $project->name; ?>
 		</a>
 	</h4>
 	
 	<div class="overdue_issues_16">
-		<a href="<?php echo route::_("index.php?option=com_projects&view=issues&projectid=".$project->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=issues&projectid=".$project->id); ?>">
 		<?php echo $project->overdue_issues." "._LANG_ISSUES_OVERDUE; ?>
 		</a>
 	</div>
 	<div class="upcoming_milestones_16">
-		<a href="<?php echo route::_("index.php?option=com_projects&view=milestones&projectid=".$project->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=milestones&projectid=".$project->id); ?>">
 		<?php echo _LANG_MILESTONES_UPCOMING; ?>
 		</a>
 	</div>
@@ -171,11 +171,11 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			</div>
 		</td>
 		<td>
-			<a href="<?php echo route::_($log->url); ?>">
+			<a href="<?php echo phpFrame_Application_Route::_($log->url); ?>">
 			<?php echo $log->title; ?>
 			</a>
 		</td>
-		<td><?php echo $log->action." by ".usersHelper::id2name($log->userid); ?></td>
+		<td><?php echo $log->action." by ".phpFrame_User_Helper::id2name($log->userid); ?></td>
 		<td><?php echo date("D, d M Y H:ia", strtotime($log->ts)); ?></td>
 	</tr>
 	<?php endforeach; ?>

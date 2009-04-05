@@ -13,7 +13,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * Singleton Class
  * 
- * This class is used to implement the singleton design pattern.
+ * This class is used to implement the phpFrame_Base_Singleton design pattern.
  * It restricts instantiation of a class to one object.
  * 
  * @package		phpFrame
@@ -22,7 +22,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @abstract 
  */
-abstract class singleton extends standardObject {
+abstract class phpFrame_Base_Singleton extends phpFrame_Base_StdObject {
 	/**
 	 * Variable holding an array of "single" instances of this classes children.
 	 * 
