@@ -7,8 +7,23 @@
  * @license		BSD revised. See LICENSE.
  */
 
+// Set constants
+define("_EXEC", true);
+define( 'DS', DIRECTORY_SEPARATOR );
+define('_ABS_PATH_TEST', str_replace("components/com_projects", "", dirname(__FILE__)) );
+define('_ABS_PATH', str_replace(DS."test",DS."src",_ABS_PATH_TEST) );
 define("COMPONENT_PATH", _ABS_PATH.DS.'components'.DS.'com_projects');
+
+// Include test config
+require_once _ABS_PATH_TEST.DS."inc".DS."config.php";
+// Include phpFrame
+require_once _ABS_PATH.DS."lib".DS."phpframe".DS."phpframe.php";
+// Include controller to test
 require_once COMPONENT_PATH.DS.'controller.php';
+
+// Instantiate application
+$application =& phpFrame::getInstance('application');
+$application->auth();
 
 class testProjectsController extends PHPUnit_Framework_TestCase {
 	
