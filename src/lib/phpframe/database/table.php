@@ -91,6 +91,11 @@ abstract class table extends singleton {
 		$query = "SHOW COLUMNS FROM `".$this->table_name."`";
 		$this->db->setQuery($query);
 		$this->cols = $this->db->loadObjectList();
+		if ($this->cols === false) {
+			$this->error[] = $this->db->getLastError();
+			return false;
+		}
+		
 		// If no cols found set $this->cols to empty array to avoid problems with 
 		// foreach loops in other methods that use this property.
 		if (!is_array($this->cols)) {
