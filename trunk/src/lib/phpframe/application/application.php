@@ -210,6 +210,10 @@ class application extends singleton {
 			$this->user->username = 'system';
 			$this->user->firstname = 'System';
 			$this->user->lastname = 'User';
+			// Store user detailt in session
+			$this->session->userid = 1;
+			$this->session->groupid = 1;
+			$this->session->write();
 		}
 		
 		// If user user is not logged on we set auth to false and option to login
