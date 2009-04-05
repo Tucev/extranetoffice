@@ -2,6 +2,7 @@
 /**
  * @version 	$Id$
  * @package		ExtranetOffice
+ * @subpackage 	com_projects test suite
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  */
