@@ -11,12 +11,6 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 require_once _ABS_PATH.DS.'lib'.DS.'phpinputfilter'.DS.'inputfilter.php';
-/**
- * PHP input filter object
- * 
- * @var object
- */
-$inputfilter = new InputFilter();
 	
 /**
  * Request Class
@@ -37,7 +31,12 @@ class request {
 	 * @since	1.0
 	 */
 	static function init() {
-		global $inputfilter;
+		/**
+		 * PHP input filter object
+		 * 
+		 * @var object
+		 */
+		$inputfilter = new InputFilter();
 		
 		// Process incoming request arrays and store filtered data in class
 		$_REQUEST = $inputfilter->process($_REQUEST);
@@ -85,7 +84,12 @@ class request {
 	 * @since	1.0
 	 */
 	static function getVar($key, $default='') {
-		global $inputfilter;
+		/**
+		 * PHP input filter object
+		 * 
+		 * @var object
+		 */
+		$inputfilter = new InputFilter();
 		
 		// Set default value if var is empty
 		if (!isset($_REQUEST[$key]) || $_REQUEST[$key] == '') {
@@ -104,7 +108,12 @@ class request {
 	 * @since	1.0
 	 */
 	static function setVar($key, $value) {
-		global $inputfilter;
+		/**
+		 * PHP input filter object
+		 * 
+		 * @var object
+		 */
+		$inputfilter = new InputFilter();
 		
 		$_REQUEST[$key] = $inputfilter->process($value);
 	}
