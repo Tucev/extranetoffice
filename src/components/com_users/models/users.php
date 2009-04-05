@@ -106,7 +106,7 @@ class usersModelUsers extends model {
 		if (!empty($_FILES['photo']['name'])) {
 			$dir = _ABS_PATH.DS.$this->config->upload_dir.DS."users";
 			$accept = 'image/jpeg,image/jpg,image/png,image/gif';
-			$upload = filesystem::uploadFile('photo', $dir, $accept);
+			$upload = phpFrameFilesystem::uploadFile('photo', $dir, $accept);
 			if (!empty($upload['error'])) {
 				$this->error[] = $upload['error'];
 				return false;
