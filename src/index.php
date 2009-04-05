@@ -68,8 +68,8 @@ if ($dependencies->status === false) {
 	exit;
 }
 
-// Include phpFrame
-require_once _ABS_PATH.DS."lib".DS."phpframe".DS."phpframe.php";
+// Include libraries autoloader
+require_once _ABS_PATH.DS."lib".DS."autoload.php";
 
 // Instantiate application
 $application =& phpFrame::getInstance('phpFrame_Application');

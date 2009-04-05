@@ -9,8 +9,6 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
-
-require_once _ABS_PATH.DS.'lib'.DS.'phpinputfilter'.DS.'inputfilter.php';
 	
 /**
  * Request Class

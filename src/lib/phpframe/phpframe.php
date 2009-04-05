@@ -9,47 +9,6 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
-define("_PHPFRAME_PATH", dirname(__FILE__));
-
-/**
- * Autoload magic method
- * 
- * This method is automatically called in case you are trying to use a class/interface which 
- * hasn't been defined yet. By calling this function the scripting engine is given a last 
- * chance to load the class before PHP fails with an error. 
- * 
- * @param	string	$className
- * @return	void
- */
-function __autoload($className) {
-	if (strpos($className, 'phpFrame') !== false) {
-		$array = explode('_', $className);
-		if (sizeof($array) == 3) {
-			$file_path = _PHPFRAME_PATH.DS.strtolower($array[1]).DS.strtolower($array[2]).".php";
-		}
-		elseif (sizeof($array) == 2) {
-			$file_path = _PHPFRAME_PATH.DS.strtolower($array[1]).DS.strtolower($array[1]).".php";	
-		}
-		
-		if (file_exists($file_path)) {
-			require $file_path;
-		}
-		else {
-			die('Could not autoload class '.$className);
-		}
-	}
-	elseif (strpos($className, 'PHPMailer') !== false) {
-		$file_path = str_replace(DS.'phpframe', '', _PHPFRAME_PATH).DS."phpmailer".DS."phpmailer.php"; 
-		
-		if (file_exists($file_path)) {
-			require $file_path;
-		}
-		else {
-			die('Could not autoload class '.$className);
-		}
-	}
-}
-
 /**
  * phpFrame Class
  * 
