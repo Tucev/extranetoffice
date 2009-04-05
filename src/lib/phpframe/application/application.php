@@ -36,23 +36,11 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 	 */
 	var $client="default";
 	/**
-	 * The session object
-	 *
-	 * @var object
-	 */
-	var $session=null;
-	/**
 	 * A boolean representing whether a session is authenticated
 	 *
 	 * @var bool
 	 */
 	var $auth=null;
-	/**
-	 * The user object
-	 *
-	 * @var object
-	 */
-	var $user=null;
 	/**
 	 * Global application permissions object
 	 * 
@@ -71,12 +59,6 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 	 * @var object
 	 */
 	var $pathway=null;
-	/**
-	 * Document object
-	 * 
-	 * @var object
-	 */
-	var $document=null;
 	/**
 	 * The component option (ie: com_dashboard)
 	 * 
@@ -135,20 +117,8 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 			$this->client = 'CLI';
 		}
 		
-		// get document object
-		$this->document =& phpFrame_Application_Factory::getDocument('html');
-		
-		// If client is default (pc web browser) we add the jQuery library + jQuery UI
-		if ($this->client == "default") {
-			$this->document->addScript('lib/jquery/js/jquery-1.3.2.min.js');
-			$this->document->addScript('lib/jquery/js/jquery-ui-1.7.custom.min.js');
-			$this->document->addScript('lib/jquery/plugins/validate/jquery.validate.pack.js');
-			$this->document->addScript('lib/jquery/plugins/form/jquery.form.pack.js');
-			$this->document->addStyleSheet('lib/jquery/css/smoothness/jquery-ui-1.7.custom.css');	
-		}
-		
 		// instantiate db object and store in application
-		$db =& phpFrame::getInstance('phpFrame_Database');
+		$db =& phpFrame_Application_Factory::getDB();
 		// connect to MySQL server
 		if ($db->connect(config::DB_HOST, config::DB_USER, config::DB_PASS, config::DB_NAME) !== true) {
 			phpFrame_Application_Error::raiseFatalError($db->getLastError());
@@ -168,28 +138,27 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 	 */
 	public function auth() {
 		// get session object (singeton)
-		$this->session =& phpFrame::getInstance('phpFrame_Environment_Session');
-		
+		$session = phpFrame_Application_Factory::getSession();
 		// get user object
-		$this->user =& phpFrame::getInstance('phpFrame_User');
+		$user = phpFrame_Application_Factory::getUser();
 		
-		if (!empty($this->session->userid)) {
-			$this->user->load($this->session->userid);
+		if (!empty($session->userid)) {
+			$user->load($session->userid);
 		}
 		elseif ($this->client == 'CLI') {
-			$this->user->id = 1;
-			$this->user->groupid = 1;
-			$this->user->username = 'system';
-			$this->user->firstname = 'System';
-			$this->user->lastname = 'User';
+			$user->id = 1;
+			$user->groupid = 1;
+			$user->username = 'system';
+			$user->firstname = 'System';
+			$user->lastname = 'User';
 			// Store user detailt in session
-			$this->session->userid = 1;
-			$this->session->groupid = 1;
-			$this->session->write();
+			$session->userid = 1;
+			$session->groupid = 1;
+			$session->write();
 		}
 		
 		// If user user is not logged on we set auth to false and option to login
-		if (!$this->user->id) {
+		if (!$user->id) {
 			$this->auth = false;
 		}
 		else {
@@ -213,7 +182,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		$this->option =& phpFrame_Environment_Request::getVar('option', 'com_dashboard');
 		
 		// Initialise permissions
-		$this->permissions =& phpFrame::getInstance('phpFrame_Application_Permissions');
+		$this->permissions =& phpFrame_Application_Factory::getPermissions();
 		
 		// Get component info
 		$components =& phpFrame::getInstance('phpFrame_Application_Components');
@@ -235,6 +204,16 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 	}
 	
 	public function render() {
+		// If client is default (pc web browser) we add the jQuery library + jQuery UI
+		if ($this->client == "default") {
+			$document =& phpFrame_Application_Factory::getDocument('html');
+			$document->addScript('lib/jquery/js/jquery-1.3.2.min.js');
+			$document->addScript('lib/jquery/js/jquery-ui-1.7.custom.min.js');
+			$document->addScript('lib/jquery/plugins/validate/jquery.validate.pack.js');
+			$document->addScript('lib/jquery/plugins/form/jquery.form.pack.js');
+			$document->addStyleSheet('lib/jquery/css/smoothness/jquery-ui-1.7.custom.css');	
+		}
+		
 		if (!$this->auth) {
 			$template_filename = 'login.php';
 		}
@@ -289,7 +268,8 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		}
 		
 		// clear errors after displaying
-		$this->session->setVar('error', null);
+		$session = phpFrame_Application_Factory::getSession();
+		$session->setVar('error', null);
 	}
 }
 ?>
