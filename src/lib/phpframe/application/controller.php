@@ -97,7 +97,7 @@ abstract class controller extends singleton {
 	 * 
 	 * @var boolean
 	 */
-	private $success=false;
+	protected $success=false;
 	
 	/**
 	 * Constructor
