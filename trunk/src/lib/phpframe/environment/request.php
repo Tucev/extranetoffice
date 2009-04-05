@@ -20,6 +20,10 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  */
 class phpFrame_Environment_Request {
+	private static $_request=array();
+	private static $_get=array();
+	private static $_post=array();
+	
 	/**
 	 * Constructor
 	 * 
@@ -28,25 +32,21 @@ class phpFrame_Environment_Request {
 	 * @return	array
 	 * @since	1.0
 	 */
-	static function init() {
-		/**
-		 * PHP input filter object
-		 * 
-		 * @var object
-		 */
+	public static function init() {
 		$inputfilter = new InputFilter();
 		
 		// Process incoming request arrays and store filtered data in class
-		$_REQUEST = $inputfilter->process($_REQUEST);
-		$_GET = $inputfilter->process($_GET);
-		$_POST = $inputfilter->process($_POST);
+		self::$_request = $inputfilter->process($_REQUEST);
+		self::$_get = $inputfilter->process($_GET);
+		self::$_post = $inputfilter->process($_POST);
 		
 		// Get arguments passed via command line and parse them as request vars
 		global $argv;
 		if (is_array($argv) && count($argv) > 0) {
 			foreach ($argv as $pair) {
 				$pair_array = explode('=', $pair);
-				$_REQUEST[$pair_array[0]] = $pair_array[1];
+				self::$_request[$pair_array[0]] = $pair_array[1];
+				self::$_post[$pair_array[0]] = $pair_array[1];
 			}
 			define('CLI', true);
 		} 
@@ -58,12 +58,21 @@ class phpFrame_Environment_Request {
 	/**
 	 * Get get or post global array
 	 * 
-	 * @param	string	$global_key "get" or "post"
+	 * @param	string	$global_key "get", "post" or "request"
 	 * @return	array
 	 */
-	static function get($global_key) {
-		$array_name = "\$_".strtoupper($global_key);
-		eval("\$array =& ".$array_name.";");
+	public static function get($global_key) {
+		switch ($global_key) {
+			case 'get' : 
+				$array = self::$_get;
+				break;
+			case 'post' : 
+				$array = self::$_post;
+				break;
+			case 'request' : 
+				$array = self::$_request;
+				break;
+		}
 		
 		if ($array) {
 			return $array;
@@ -81,20 +90,15 @@ class phpFrame_Environment_Request {
 	 * @return	mixed
 	 * @since	1.0
 	 */
-	static function getVar($key, $default='') {
-		/**
-		 * PHP input filter object
-		 * 
-		 * @var object
-		 */
+	public static function getVar($key, $default='') {
 		$inputfilter = new InputFilter();
 		
 		// Set default value if var is empty
-		if (!isset($_REQUEST[$key]) || $_REQUEST[$key] == '') {
-			$_REQUEST[$key] = $inputfilter->process($default);
+		if (!isset(self::$_request[$key]) || self::$_request[$key] == '') {
+			self::$_request[$key] = $inputfilter->process($default);
 		}
 		
-		return $_REQUEST[$key];
+		return self::$_request[$key];
 	}
 	
 	/**
@@ -105,15 +109,14 @@ class phpFrame_Environment_Request {
 	 * @return	void
 	 * @since	1.0
 	 */
-	static function setVar($key, $value) {
-		/**
-		 * PHP input filter object
-		 * 
-		 * @var object
-		 */
+	public static function setVar($key, $value) {
 		$inputfilter = new InputFilter();
+		$value = $inputfilter->process($value);
 		
-		$_REQUEST[$key] = $inputfilter->process($value);
+		self::$_request[$key] = $value;
+		self::$_post[$key] = $value;
+		
+		return $value;
 	}
 	
 }
