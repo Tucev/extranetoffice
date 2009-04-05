@@ -93,6 +93,7 @@ class session extends table {
 			$this->id = session_id();
 			$this->userid = 0;
 			$this->groupid = 0;
+			$this->token = $this->getToken(true);
 		}
 		// Write session data to db
 		$this->write();
