@@ -37,7 +37,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <?php echo $this->component_output; ?>
 
 <div id="footer">
-Extranet Office 1.0 Alpha<br />
+Extranet Office 1.0 Alpha $Id$<br />
 &copy; 2009 E-noise.com Limited
 </div>
 

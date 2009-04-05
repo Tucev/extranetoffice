@@ -16,7 +16,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <head>
 <title><?php echo config::SITENAME; ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<?php $this->document->printHead(); ?>
+<?php $document->printHead(); ?>
 <link rel="stylesheet" href="templates/<?php echo config::TEMPLATE ?>/css/styles.css" type="text/css" />
 <!--[if lte IE 6]>
 <link href="templates/<?php echo config::TEMPLATE; ?>/css/ieonly.css" rel="stylesheet" type="text/css" />
@@ -41,7 +41,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <?php echo $this->component_output; ?>
 
 <div id="footer">
-Extranet Office 1.0 Alpha<br />
+Extranet Office 1.0 Alpha $Id$<br />
 &copy; 2009 E-noise.com Limited
 </div>
 

@@ -25,8 +25,18 @@ class phpFrame_Application_Factory {
 	 * @return	object
 	 * @since 	1.0
 	 */
-	function getApplication() {
+	public static function getApplication() {
 		return phpFrame::getInstance('phpFrame_Application');
+	}
+	
+	/**
+	 * Get permissions object
+	 * 
+	 * @return	object
+	 * @since 	1.0
+	 */
+	public static function getPermissions() {
+		return phpFrame::getInstance('phpFrame_Application_Permissions');
 	}
 	
 	/**
@@ -35,7 +45,7 @@ class phpFrame_Application_Factory {
 	 * @return	object
 	 * @since 	1.0
 	 */
-	function getPathway() {
+	public static function getPathway() {
 		return phpFrame::getInstance('phpFrame_Application_Pathway');
 	}
 	
@@ -45,7 +55,7 @@ class phpFrame_Application_Factory {
 	 * @return	object
 	 * @since 	1.0
 	 */
-	function getDB() {
+	public static function getDB() {
 		return phpFrame::getInstance('phpFrame_Database');
 	}
 	
@@ -55,7 +65,7 @@ class phpFrame_Application_Factory {
 	 * @return 	object
 	 * @since 	1.0
 	 */
-	function getUser() {
+	public static function getUser() {
 		return phpFrame::getInstance('phpFrame_User');
 	}
 	
@@ -65,7 +75,7 @@ class phpFrame_Application_Factory {
 	 * @return	object
 	 * @since 	1.0
 	 */
-	function getSession() {
+	public static function getSession() {
 		return phpFrame::getInstance('phpFrame_Environment_Session');
 	}
 	
@@ -76,7 +86,7 @@ class phpFrame_Application_Factory {
 	 * @return	object
 	 * @since 	1.0
 	 */
-	function getDocument($type) {
+	public static function getDocument($type) {
 		return phpFrame::getInstance('phpFrame_Document_'.strtoupper($type));
 	}
 	
@@ -86,7 +96,7 @@ class phpFrame_Application_Factory {
 	 * @return	object
 	 * @since 	1.0
 	 */
-	function getURI() {
+	public static function getURI() {
 		return phpFrame::getInstance('phpFrame_Utils_URI');
 	}
 }
