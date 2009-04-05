@@ -37,7 +37,8 @@ class factory {
 	 * @since 	1.0
 	 */
 	function getConfig() {
-		return $GLOBALS['application']->config;
+		$application =& phpFrame::getInstance('application');
+		return $application->config;
 	}
 	
 	/**
