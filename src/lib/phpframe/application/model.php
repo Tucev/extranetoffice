@@ -5,7 +5,6 @@
  * @subpackage 	application
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
- * @author 		Luis Montero [e-noise.com]
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
@@ -53,12 +52,6 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 abstract class phpFrame_Application_Model extends phpFrame_Base_Singleton {
 	/**
-	 * A reference to the config object
-	 * 
-	 * @var object
-	 */
-	var $config=null;
-	/**
 	 * A reference to the user object
 	 * 
 	 * @var object
@@ -83,7 +76,6 @@ abstract class phpFrame_Application_Model extends phpFrame_Base_Singleton {
 	 * @return void
 	 */
 	function __construct() {
-		$this->config =& phpFrame_Application_Factory::getConfig();
 		$this->user =& phpFrame_Application_Factory::getUser();
 		$this->db =& phpFrame_Application_Factory::getDB();
 	}

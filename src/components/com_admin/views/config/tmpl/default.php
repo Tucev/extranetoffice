@@ -59,13 +59,13 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 		<table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_SITENAME ); ?></td>
-			<td><input type="text" size="40" name="sitename" value="<?php echo $this->config->sitename; ?>" /></td>
+			<td><input type="text" size="40" name="sitename" value="<?php echo config::SITENAME; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_TEMPLATE ); ?></td>
 			<td>
 				<select name="template">
-					<option value="default" <?php if ($this->config->template == 'default') { echo 'selected'; } ?>>Default</option>
+					<option value="default" <?php if (config::TEMPLATE == 'default') { echo 'selected'; } ?>>Default</option>
 				</select>
 			</td>
 		</tr>
@@ -73,7 +73,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_DEFAULT_LANG ); ?></td>
 			<td>
 				<select name="default_lang">
-					<option value="en-GB" <?php if ($this->config->default_lang == 'en-GB') { echo 'selected'; } ?>>en-GB</option>
+					<option value="en-GB" <?php if (config::DEFAULT_LANG == 'en-GB') { echo 'selected'; } ?>>en-GB</option>
 				</select>
 			</td>
 		</tr>
@@ -81,14 +81,14 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_DEBUG ); ?></td>
 			<td>
 				<select name="debug">
-					<option value="0" <?php if ($this->config->debug == "0") { echo 'selected'; } ?>>No</option>
-					<option value="1" <?php if ($this->config->debug == "1") { echo 'selected'; } ?>>Yes</option>
+					<option value="0" <?php if (config::DEBUG == "0") { echo 'selected'; } ?>>No</option>
+					<option value="1" <?php if (config::DEBUG == "1") { echo 'selected'; } ?>>Yes</option>
 				</select>
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_SECRET ); ?></td>
-			<td><input type="text" size="40" name="secret" value="<?php echo $this->config->secret; ?>" /></td>
+			<td><input type="text" size="40" name="secret" value="<?php echo config::SECRET; ?>" /></td>
 		</tr>
 		</table>
 	</div>
@@ -99,23 +99,23 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 		<table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_DB_HOST ); ?></td>
-			<td><input type="text" size="40" name="db_host" value="<?php echo $this->config->db_host; ?>" /></td>
+			<td><input type="text" size="40" name="db_host" value="<?php echo config::DB_HOST; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_DB_USER ); ?></td>
-			<td><input type="text" size="40" name="db_user" value="<?php echo $this->config->db_user; ?>" /></td>
+			<td><input type="text" size="40" name="db_user" value="<?php echo config::DB_USER; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_DB_PASS ); ?></td>
-			<td><input type="password" size="40" name="db_pass" value="<?php echo $this->config->db_pass; ?>" /></td>
+			<td><input type="password" size="40" name="db_pass" value="<?php echo config::DB_PASS; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_DB_NAME ); ?></td>
-			<td><input type="text" size="40" name="db_name" value="<?php echo $this->config->db_name; ?>" /></td>
+			<td><input type="text" size="40" name="db_name" value="<?php echo config::DB_NAME; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_DB_PREFIX ); ?></td>
-			<td><input type="text" size="40" name="db_prefix" value="<?php echo $this->config->db_prefix; ?>" /></td>
+			<td><input type="text" size="40" name="db_prefix" value="<?php echo config::DB_PREFIX; ?>" /></td>
 		</tr>
 		</table>
 	</div>
@@ -126,15 +126,15 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 		<table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_UPLOAD_DIR ); ?></td>
-			<td><input type="text" size="40" name="upload_dir" value="<?php echo $this->config->upload_dir; ?>" /></td>
+			<td><input type="text" size="40" name="upload_dir" value="<?php echo config::UPLOAD_DIR; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_FILESYSTEM ); ?></td>
-			<td><input type="text" size="40" name="filesystem" value="<?php echo $this->config->filesystem; ?>" /></td>
+			<td><input type="text" size="40" name="filesystem" value="<?php echo config::FILESYSTEM; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_UPLOAD_ACCEPT ); ?></td>
-			<td><input type="text" size="40" name="upload_accept" value="<?php echo $this->config->upload_accept; ?>" /></td>
+			<td><input type="text" size="40" name="upload_accept" value="<?php echo config::UPLOAD_ACCEPT; ?>" /></td>
 		</tr>
 		</table>
 	</div>
@@ -145,19 +145,19 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 		<table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_IMAP_HOST ); ?></td>
-			<td><input type="text" size="40" name="imap_host" value="<?php echo $this->config->imap_host; ?>" /></td>
+			<td><input type="text" size="40" name="imap_host" value="<?php echo config::IMAP_HOST; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_IMAP_PORT ); ?></td>
-			<td><input type="text" size="5" name="imap_port" value="<?php echo $this->config->imap_port; ?>" /></td>
+			<td><input type="text" size="5" name="imap_port" value="<?php echo config::IMAP_PORT; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_IMAP_USER ); ?></td>
-			<td><input type="text" size="40" name="imap_user" value="<?php echo $this->config->imap_user; ?>" /></td>
+			<td><input type="text" size="40" name="imap_user" value="<?php echo config::IMAP_USER; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_IMAP_PASS ); ?></td>
-			<td><input type="password" size="40" name="imap_password" value="<?php echo $this->config->imap_password; ?>" /></td>
+			<td><input type="password" size="40" name="imap_password" value="<?php echo config::IMAP_PASSWORD; ?>" /></td>
 		</tr>
 		</table>
 	</div>
@@ -170,44 +170,44 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_MAILER ); ?></td>
 			<td>
 				<select name="mailer">
-					<option value="mail" <?php if ($this->config->mailer == 'mail') { echo 'selected'; } ?>>mail</option>
-					<option value="sendmail" <?php if ($this->config->mailer == 'sendmail') { echo 'selected'; } ?>>sendmail</option>
-					<option value="smtp" <?php if ($this->config->mailer == 'smtp') { echo 'selected'; } ?>>smtp</option>
+					<option value="mail" <?php if (config::MAILER == 'mail') { echo 'selected'; } ?>>mail</option>
+					<option value="sendmail" <?php if (config::MAILER == 'sendmail') { echo 'selected'; } ?>>sendmail</option>
+					<option value="smtp" <?php if (config::MAILER == 'smtp') { echo 'selected'; } ?>>smtp</option>
 				</select>
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_SMTP_HOST ); ?></td>
-			<td><input type="text" size="40" name="smtp_host" value="<?php echo $this->config->smtp_host; ?>" /></td>
+			<td><input type="text" size="40" name="smtp_host" value="<?php echo config::SMTP_HOST; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_SMTP_PORT ); ?></td>
-			<td><input type="text" size="5" name="smtp_port" value="<?php echo $this->config->smtp_port; ?>" /></td>
+			<td><input type="text" size="5" name="smtp_port" value="<?php echo config::SMTP_PORT; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_SMTP_AUTH ); ?></td>
 			<td>
 				<select name="smtp_auth">
-					<option value="0" <?php if ($this->config->smtp_auth == "0") { echo 'selected'; } ?>>No</option>
-					<option value="1" <?php if ($this->config->smtp_auth == "1") { echo 'selected'; } ?>>Yes</option>
+					<option value="0" <?php if (config::SMTP_AUTH == "0") { echo 'selected'; } ?>>No</option>
+					<option value="1" <?php if (config::SMTP_AUTH == "1") { echo 'selected'; } ?>>Yes</option>
 				</select>
 			</td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_SMTP_USER ); ?></td>
-			<td><input type="text" size="40" name="smtp_user" value="<?php echo $this->config->smtp_user; ?>" /></td>
+			<td><input type="text" size="40" name="smtp_user" value="<?php echo config::SMTP_USER; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_SMTP_PASS ); ?></td>
-			<td><input type="password" size="40" name="smtp_password" value="<?php echo $this->config->smtp_password; ?>" /></td>
+			<td><input type="password" size="40" name="smtp_password" value="<?php echo config::SMTP_PASSWORD; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_SMTP_FROMADDRESS ); ?></td>
-			<td><input type="text" size="40" name="fromaddress" value="<?php echo $this->config->fromaddress; ?>" /></td>
+			<td><input type="text" size="40" name="fromaddress" value="<?php echo config::FROMADDRESS; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_SMTP_FROMNAME ); ?></td>
-			<td><input type="text" size="40" name="fromname" value="<?php echo $this->config->fromname; ?>" /></td>
+			<td><input type="text" size="40" name="fromname" value="<?php echo config::FROMNAME; ?>" /></td>
 		</tr>
 		</table>
 	</div>

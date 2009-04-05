@@ -14,12 +14,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->lang; ?>" lang="<?php echo $this->lang; ?>" >
 <head>
-<title><?php echo $this->config->sitename; ?></title>
+<title><?php echo config::SITENAME; ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <?php $this->document->printHead(); ?>
-<link rel="stylesheet" href="templates/<?php echo $this->config->template ?>/css/styles.css" type="text/css" />
+<link rel="stylesheet" href="templates/<?php echo config::TEMPLATE ?>/css/styles.css" type="text/css" />
 <!--[if lte IE 6]>
-<link href="templates/<?php echo $this->config->template; ?>/css/ieonly.css" rel="stylesheet" type="text/css" />
+<link href="templates/<?php echo config::TEMPLATE; ?>/css/ieonly.css" rel="stylesheet" type="text/css" />
 <![endif]-->
 </head>
 
@@ -32,7 +32,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 <div id="sitename">
 	<a href="index.php">
-	<?php echo $this->config->sitename; ?>
+	<?php echo config::SITENAME; ?>
 	</a>
 </div>
 

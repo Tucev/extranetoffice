@@ -175,12 +175,12 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		
 		// upload the file
 		//TODO: Have to catch errors and look at file permissions
-		$upload_dir = $this->config->get('filesystem').DS."projects".DS.$post['projectid'].DS."files".DS;
+		$upload_dir = config::FILESYSTEM.DS."projects".DS.$post['projectid'].DS."files".DS;
 		if (!is_dir($upload_dir)) {
 			mkdir($upload_dir, 0711);
 		}
-		$accept = $this->config->get('upload_accept'); // mime types
-		$max_upload_size = $this->config->get('max_upload_size')*(1024*1024); // Mb
+		$accept = config::UPLOAD_ACCEPT; // mime types
+		$max_upload_size = config::MAX_UPLOAD_SIZE*(1024*1024); // Mb
 		$file = phpFrame_Utils_Filesystem::uploadFile('filename', $upload_dir, $accept, $max_upload_size);
 		
 		if (!empty($file['error'])) {
@@ -250,7 +250,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		$row->load($fileid);
 		
 		// Delete file from filesystem
-		unlink($this->config->get('filesystem').DS."projects".DS.$row->projectid.DS."files".DS.$row->filename);
+		unlink(config::FILESYSTEM.DS."projects".DS.$row->projectid.DS."files".DS.$row->filename);
 		
 		// Delete row from database
 		if (!$row->delete($fileid)) {
@@ -280,7 +280,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		flush();
 		
 		# begin download
-		$path_to_file = $this->config->get('filesystem').DS."projects".DS.$row->projectid.DS."files".DS.$row->filename;
+		$path_to_file = config::FILESYSTEM.DS."projects".DS.$row->projectid.DS."files".DS.$row->filename;
 		$this->_readfile_chunked($path_to_file);
 		exit;
 	}

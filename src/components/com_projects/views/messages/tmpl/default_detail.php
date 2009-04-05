@@ -66,7 +66,7 @@ phpFrame_HTML::validate('commentsform');
 	<?php foreach ($this->row->comments as $comment) : ?>
 		<div class="comment_row">
 			<div style="float:left; margin-right: 10px;">
-				<img src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo phpFrame_User_Helper::id2photo($comment->userid); ?>" />
+				<img src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo phpFrame_User_Helper::id2photo($comment->userid); ?>" />
 			</div>
 			<div style="margin-left: 95px;">
 				<div class="comment_details">
@@ -84,7 +84,7 @@ phpFrame_HTML::validate('commentsform');
 
 <div>
 	<div style="float:left; margin-right: 10px;">
-		<img src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo !empty($this->settings->photo) ? $this->settings->photo : 'default.png'; ?>" />
+		<img src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo !empty($this->settings->photo) ? $this->settings->photo : 'default.png'; ?>" />
 	</div>
 	<div style="margin-left: 95px;">
 		<form method="post" id="commentsform">

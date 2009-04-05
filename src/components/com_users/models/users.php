@@ -104,7 +104,7 @@ class usersModelUsers extends phpFrame_Application_Model {
 		
 		// Upload image if photo sent in request
 		if (!empty($_FILES['photo']['name'])) {
-			$dir = _ABS_PATH.DS.$this->config->upload_dir.DS."users";
+			$dir = _ABS_PATH.DS.config::UPLOAD_DIR.DS."users";
 			$accept = 'image/jpeg,image/jpg,image/png,image/gif';
 			$upload = phpFrame_Utils_Filesystem::uploadFile('photo', $dir, $accept);
 			if (!empty($upload['error'])) {

@@ -5,7 +5,6 @@
  * @subpackage 	database
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
- * @author 		Luis Montero [e-noise.com]
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
@@ -112,8 +111,7 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 	 * @since	1.0
 	 */
 	public function setQuery($query) {
-		$config =& phpFrame_Application_Factory::getConfig();
-		$this->query = str_replace('#__', $config->db_prefix, $query);
+		$this->query = str_replace('#__', config::DB_PREFIX, $query);
 	}
 	
 	/**

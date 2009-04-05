@@ -5,7 +5,6 @@
  * @subpackage 	application
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
- * @author 		Luis Montero [e-noise.com]
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
@@ -31,35 +30,11 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 class phpFrame_Application extends phpFrame_Base_Singleton {
 	/**
-	 * Debugger object
-	 * 
-	 * @var object
-	 */
-	var $debug=null;
-	/**
-	 * The configuration object
-	 *
-	 * @var object
-	 */
-	var $config=null;
-	/**
-	 * The request array
-	 *
-	 * @var array
-	 */
-	var $request=null;
-	/**
 	 * The client program accessing the the application (default, mobile, rss or api)
 	 * 
 	 * @var string
 	 */
 	var $client="default";
-	/**
-	 * The database object
-	 *
-	 * @var object
-	 */
-	var $db=null;
 	/**
 	 * The session object
 	 *
@@ -130,29 +105,26 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 	/**
 	 * Constructor
 	 * 
-	 * The application constructor loads the config, request and db objects.
-	 * 
 	 * @access	protected
 	 * @return 	void
 	 * @since	1.0
 	 */
 	protected function __construct() {
-		// instantiate debbuger
-		$this->debug = new phpFrame_Application_Debug();
-
-		// load config
-		$this->config = new config();
+		// Initialise debbuger
+		phpFrame_Application_Debug::init();
 		
 		// load the language file
-		// set default distro language if the one set in config doesnt exist
-		if (!file_exists(_ABS_PATH.DS."lang".DS.$this->config->default_lang.".php")) {
-			$this->config->default_lang = "en-GB";
+		$lang_file = _ABS_PATH.DS."lang".DS.config::DEFAULT_LANG.".php";
+		if (file_exists($lang_file)) {
+			require_once $lang_file;
 		}
-		require_once _ABS_PATH.DS."lang".DS.$this->config->default_lang.".php";
+		else {
+			phpFrame_Application_Error::raiseFatalError('phpFrame_Application::__construct(): Could not find language file ('.$lang_file.')');
+		}
 		
-		// load request into the application
+		// Initialise request
 		// when initialising the request we also detect whether this is a command line request
-		$this->request = phpFrame_Environment_Request::init();
+		phpFrame_Environment_Request::init();
 		
 		// Get client from request
 		// This has to be done after we have initialised the request
@@ -176,10 +148,10 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		}
 		
 		// instantiate db object and store in application
-		$this->db =& phpFrame::getInstance('phpFrame_Database');
+		$db =& phpFrame::getInstance('phpFrame_Database');
 		// connect to MySQL server
-		if ($this->db->connect($this->config->db_host, $this->config->db_user, $this->config->db_pass, $this->config->db_name) !== true) {
-			phpFrame_Application_Error::raiseFatalError($this->db->getLastError());
+		if ($db->connect(config::DB_HOST, config::DB_USER, config::DB_PASS, config::DB_NAME) !== true) {
+			phpFrame_Application_Error::raiseFatalError($db->getLastError());
 		}
 	}
 	
@@ -283,10 +255,10 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 				$template_path = _ABS_PATH.DS."api";
 				break;
 			case 'mobile' :
-				$template_path = _ABS_PATH.DS.'templates'.DS.$this->config->template.DS.'mobile';
+				$template_path = _ABS_PATH.DS.'templates'.DS.config::TEMPLATE.DS.'mobile';
 				break;
 			default :
-				$template_path = _ABS_PATH.DS.'templates'.DS.$this->config->template;
+				$template_path = _ABS_PATH.DS.'templates'.DS.config::TEMPLATE;
 				break;
 		}
 		
@@ -312,8 +284,8 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		echo $this->output;
 		
 		// Display debug output
-		if ($this->config->debug) {
-			$this->debug->display();	
+		if (config::DEBUG) {
+			phpFrame_Application_Debug::display();	
 		}
 		
 		// clear errors after displaying
