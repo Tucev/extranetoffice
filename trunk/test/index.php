@@ -4,6 +4,7 @@
  * 
  * @version 	$Id$
  * @package		ExtranetOffice
+ * @subpackage 	com_projects test suite
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  */
@@ -61,10 +62,10 @@ require_once "PHPUnit/Framework.php";
 require_once "PHPUnit/TextUI/TestRunner.php";
 
 // Unit tests
-require_once _ABS_PATH_TEST.DS."components".DS."com_projects".DS."models".DS."testProjects.php";
+require_once _ABS_PATH_TEST.DS."components".DS."com_projects".DS."controllerTest.php";
 
 $suite = new PHPUnit_Framework_TestSuite('com_projects');
-$suite->addTestSuite('testProjects');
+$suite->addTestSuite('testProjectsController');
 
 PHPUnit_TextUI_TestRunner::run($suite)
 ?>

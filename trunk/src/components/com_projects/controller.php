@@ -106,6 +106,8 @@ class projectsController extends controller {
 					error::raise('', 'error', $modelMembers->getLastError());
 				}
 			}
+			
+			$this->success = true;
 		}
 		else {
 			error::raise('', 'error', $modelProjects->getLastError());
@@ -128,6 +130,7 @@ class projectsController extends controller {
 		
 		if ($modelProjects->deleteProject($this->projectid) === true) {
 			error::raise('', 'message', _LANG_PROJECT_DELETE_SUCCESS);
+			$this->success = true;
 		}
 		else {
 			error::raise('', 'error', _LANG_PROJECT_DELETE_ERROR);
