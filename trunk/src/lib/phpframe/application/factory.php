@@ -5,7 +5,6 @@
  * @subpackage 	application
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
- * @author 		Luis Montero [e-noise.com]
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
@@ -31,14 +30,13 @@ class phpFrame_Application_Factory {
 	}
 	
 	/**
-	 * Get configuration object
+	 * Get pathway object
 	 * 
 	 * @return	object
 	 * @since 	1.0
 	 */
-	function getConfig() {
-		$application =& phpFrame::getInstance('phpFrame_Application');
-		return $application->config;
+	function getPathway() {
+		return phpFrame::getInstance('phpFrame_Application_Pathway');
 	}
 	
 	/**
@@ -69,16 +67,6 @@ class phpFrame_Application_Factory {
 	 */
 	function getSession() {
 		return phpFrame::getInstance('phpFrame_Environment_Session');
-	}
-	
-	/**
-	 * Get pathway object
-	 * 
-	 * @return	object
-	 * @since 	1.0
-	 */
-	function getPathway() {
-		return phpFrame::getInstance('phpFrame_Application_Pathway');
 	}
 	
 	/**

@@ -43,8 +43,8 @@ class adminModelConfig extends phpFrame_Application_Model {
 		
 		// Loop through all config properties and build arrays with patterns and replacements for regex
 		foreach ($this->config as $key=>$value) {
-			$patterns[] = '/var \$'.$key.'=(.*);/';
-			$replacements[] = 'var $'.$key.'="'.phpFrame_Environment_Request::getVar($key, $value).'";';
+			$patterns[] = '/const '.$key.'=(.*);/';
+			$replacements[] = 'const $'.$key.'="'.phpFrame_Environment_Request::getVar($key, $value).'";';
 		}
 		
 		// Replace config vars in config file contents

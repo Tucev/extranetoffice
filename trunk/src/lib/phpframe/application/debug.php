@@ -5,7 +5,6 @@
  * @subpackage 	application
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
- * @author 		Luis Montero [e-noise.com]
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
@@ -89,7 +88,6 @@ class phpFrame_Application_Debug {
 		$properties[] = array('option', 'Option');
 		$properties[] = array('auth', 'Auth');
 		$properties[] = array('client', 'Client');
-		$properties[] = array('config', 'Gloabl Configuration');
 		//$properties[] = array('db', 'Database');
 		$properties[] = array('session', 'Session');
 		$properties[] = array('user', 'User');
@@ -107,6 +105,9 @@ class phpFrame_Application_Debug {
 		
 		echo '<h2>Request:</h2>';
 		echo '<pre>'; var_dump(phpFrame_Environment_Request::get('request')); echo '</pre>';
+		
+		echo '<h2>Config:</h2>';
+		echo '<pre>'; var_dump(new config); echo '</pre>';
 		
 		global $dependencies;
 		echo '<h2>Dependencies:</h2>';

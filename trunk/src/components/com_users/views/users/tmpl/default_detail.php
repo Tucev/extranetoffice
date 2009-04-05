@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <div class="row_icons">
 	
 	<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_users&view=users&layout=detail&userid=".$this->row->id); ?>">
-	<img border="0" src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo !empty($this->row->photo) ? $this->row->photo : 'default.png'; ?>" />
+	<img border="0" src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo !empty($this->row->photo) ? $this->row->photo : 'default.png'; ?>" />
 	</a>
 	
 	<div class="row_icons_heading">

@@ -71,7 +71,7 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		if ($notify) {
 			$project_name = projectsHelperProjects::id2name($projectid);
 			$role_name = projectsHelperProjects::project_roleid2name($roleid);
-			$site_name = $this->config->sitename;
+			$site_name = config::SITENAME;
 			$uri =& phpFrame_Application_Factory::getURI();
 			$new_member_email = phpFrame_User_Helper::id2email($userid);
 			
@@ -149,7 +149,7 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		// Send notification to new users
 		$project_name = projectsHelperProjects::id2name($projectid);
 		$role_name = projectsHelperProjects::project_roleid2name($roleid);
-		$site_name = $this->config->sitename;
+		$site_name = config::SITENAME;
 		$uri =& phpFrame_Application_Factory::getURI();
 		
 		$new_mail = new phpFrame_Mail_Mailer();

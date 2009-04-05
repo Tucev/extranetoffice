@@ -48,12 +48,12 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		$this->projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		
 		// Check whether project directories exists and are writable
-		$projects_upload_dir = _ABS_PATH.DS.$this->config->upload_dir.DS."projects";
+		$projects_upload_dir = _ABS_PATH.DS.config::UPLOAD_DIR.DS."projects";
 		//TODO: Have to catch errors here and look at file permissions
 		if (!is_dir($projects_upload_dir)) {
 			mkdir($projects_upload_dir, 0771);
 		}
-		$projects_filesystem = $this->config->filesystem.DS."projects";
+		$projects_filesystem = config::FILESYSTEM.DS."projects";
 		if (!is_dir($projects_filesystem)) {
 			mkdir($projects_filesystem, 0771);
 		}
@@ -61,11 +61,11 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		// Check whether project specific directories exists and are writable
 		if (!empty($this->projectid)) {
 			//TODO: Have to catch errors here and look at file permissions
-			$project_specific_upload_dir = _ABS_PATH.DS.$this->config->upload_dir.DS."projects".DS.$this->projectid;
+			$project_specific_upload_dir = _ABS_PATH.DS.config::UPLOAD_DIR.DS."projects".DS.$this->projectid;
 			if (!is_dir($project_specific_upload_dir)) {
 				mkdir($project_specific_upload_dir, 0771);
 			}
-			$project_specific_filesystem = $this->config->filesystem.DS."projects".DS.$this->projectid;
+			$project_specific_filesystem = config::FILESYSTEM.DS."projects".DS.$this->projectid;
 			if (!is_dir($project_specific_filesystem)) {
 				mkdir($project_specific_filesystem, 0771);
 			}

@@ -773,8 +773,7 @@ class projectsController extends phpFrame_Application_Controller {
 						}
 						
 						// Delete message from mailbox
-						$config =& phpFrame_Application_Factory::getConfig();
-						$imap = new phpFrame_Mail_IMAP($config->imap_host, $config->imap_port, $config->imap_user, $config->imap_password);
+						$imap = new phpFrame_Mail_IMAP(config::IMAP_HOST, config::IMAP_PORT, config::IMAP_USER, config::IMAP_PASSWORD);
 						$imap->deleteMessage(implode(',', $delete_uids));
 						$imap->expunge();
 						$imap->close();

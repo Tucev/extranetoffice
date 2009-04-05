@@ -132,11 +132,11 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 	<?php phpFrame_HTML::dialog(_LANG_PROJECTS_CHANGE_ROLE, 'index.php?option=com_projects&view=admin&layout=member_role&projectid='.$this->projectid.'&userid='.$row->userid, 300, 150, true); ?>
 	<!-- 
 	<a class="" href="">
-		<img src="templates/<?php echo $this->config->get('template'); ?>/images/icons/generic/16x16/edit.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>" />
+		<img src="templates/<?php echo config::TEMPLATE; ?>/images/icons/generic/16x16/edit.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>" />
 	</a>
 	-->
 	<a class="delete_member" title="<?php echo phpFrame_HTML_Text::_($row->name, true); ?>" href="index.php?option=com_projects&task=remove_member&projectid=<?php echo $this->projectid; ?>&userid=<?php echo $row->userid; ?>">
-		<img src="templates/<?php echo $this->config->get('template'); ?>/images/icons/generic/16x16/remove.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>" />
+		<img src="templates/<?php echo config::TEMPLATE; ?>/images/icons/generic/16x16/remove.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>" />
 	</a>
 	</td>
   </tr>

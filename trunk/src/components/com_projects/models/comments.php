@@ -130,7 +130,7 @@ class projectsModelComments extends phpFrame_Application_Model {
 	}
 	
 	function fetchCommentsFromEmail() {
-		$imap = new phpFrame_Mail_IMAP($this->config->imap_host, $this->config->imap_port, $this->config->imap_user, $this->config->imap_password);
+		$imap = new phpFrame_Mail_IMAP(config::IMAP_HOST, config::IMAP_PORT, config::IMAP_USER, config::IMAP_PASSWORD);
 		$messages = $imap->getMessages();
 		$imap->close();
 		

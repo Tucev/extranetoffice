@@ -154,7 +154,7 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 	<tr>
 		<td width="32">
 			<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&task=download_file&fileid=".$file->id); ?>">
-			<img border="0" height="32" width="32" src="templates/<?php echo $this->config->template; ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($file->mimetype); ?>" />
+			<img border="0" height="32" width="32" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($file->mimetype); ?>" />
 			</a>
 		</td>
 		<td>
@@ -175,7 +175,7 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 	<?php foreach ($this->row->comments as $comment) : ?>
 		<div class="comment_row">
 			<div style="float:left; margin-right: 10px;">
-				<img src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo phpFrame_User_Helper::id2photo($comment->userid); ?>" />
+				<img src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo phpFrame_User_Helper::id2photo($comment->userid); ?>" />
 			</div>
 			<div style="margin-left: 95px;">
 				<div class="comment_details">
@@ -192,7 +192,7 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 
 <div>
 	<div style="float:left; margin-right: 10px;">
-		<img src="<?php echo $this->config->get('upload_dir').'/users/'; ?><?php echo !empty($this->settings->photo) ? $this->settings->photo : 'default.png'; ?>" />
+		<img src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo !empty($this->settings->photo) ? $this->settings->photo : 'default.png'; ?>" />
 	</div>
 	<div style="margin-left: 95px;">
 		<form method="post" id="commentsform">

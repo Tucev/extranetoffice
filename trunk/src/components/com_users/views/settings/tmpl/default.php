@@ -89,7 +89,7 @@ phpFrame_HTML::validate('userform');
 	</td>
 	<td>
 		<?php if (!empty($this->user->photo)) : ?>
-			<img src="<?php echo $this->config->get('upload_dir').'/users/'.$this->user->photo; ?>" alt="photo" vspace="5" />
+			<img src="<?php echo config::UPLOAD_DIR.'/users/'.$this->user->photo; ?>" alt="photo" vspace="5" />
 			<br />
 		<?php endif; ?>
 		<input type="file" name="photo" id="photo" />

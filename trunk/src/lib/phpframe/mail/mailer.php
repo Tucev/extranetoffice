@@ -5,7 +5,6 @@
  * @subpackage 	utils
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
- * @author 		Luis Montero [e-noise.com]
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
@@ -31,19 +30,18 @@ class phpFrame_Mail_Mailer extends PHPMailer {
 	 * @since	1.0
 	 */
 	public function __construct() {
-		$config =& phpFrame_Application_Factory::getConfig();
-		$this->Mailer = $config->mailer;
-		$this->Host = $config->smtp_host;
-		$this->Port = $config->smtp_port;
-		$this->SMTPAuth = $config->smtp_auth;
-		$this->Username = $config->smtp_user;
-		$this->Password = $config->smtp_password;
-		$this->From = $config->fromaddress;
-		$this->FromName = $config->fromname;
+		$this->Mailer = config::MAILER;
+		$this->Host = config::SMTP_HOST;
+		$this->Port = config::SMTP_PORT;
+		$this->SMTPAuth = config::SMTP_AUTH;
+		$this->Username = config::SMTP_USER;
+		$this->Password = config::SMTP_PASSWORD;
+		$this->From = config::FROMADDRESS;
+		$this->FromName = config::FROMNAME;
 		
 		// Sets the hostname to use in Message-Id and Received headers and as default HELO string. 
 		// If empty, the value returned by SERVER_NAME is used or 'localhost.localdomain'.
-		$this->Hostname = $config->smtp_host;
+		$this->Hostname = config::SMTP_HOST;
 	}
 	
 	/**

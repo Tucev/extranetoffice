@@ -22,7 +22,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <div id="right_col">
 	
 	<div style="float:right;">
-		 <img style="float:right; margin: 5px 0 3px 3px;" src="<?php echo $this->config->upload_dir."/users/".$this->user->photo; ?>" />
+		 <img style="float:right; margin: 5px 0 3px 3px;" src="<?php echo config::UPLOAD_DIR."/users/".$this->user->photo; ?>" />
 	</div>
 	
 	<h3>My profile</h3>
@@ -93,13 +93,13 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	<?php foreach ($this->emails as $email) : ?>
 	<?php 
   	if ($email->answered == 1) { 
-  		$status_icon = '<img src="templates/'.$this->config->get('template').'/images/icons/email/replied.png" alt="Unread" />';
+  		$status_icon = '<img src="templates/'.config::TEMPLATE.'/images/icons/email/replied.png" alt="Unread" />';
   	}
   	elseif ($email->seen == 0) {
-  		$status_icon = '<img src="templates/'.$this->config->get('template').'/images/icons/email/new.png" alt="Unread" />';
+  		$status_icon = '<img src="templates/'.config::TEMPLATE.'/images/icons/email/new.png" alt="Unread" />';
   	}
   	else { 
-  		$status_icon = '<img src="templates/'.$this->config->get('template').'/images/icons/email/read.png" alt="Read" />'; 
+  		$status_icon = '<img src="templates/'.config::TEMPLATE.'/images/icons/email/read.png" alt="Read" />'; 
   	}
     ?>
 	<tr class="row<?php echo $k; ?> seen<?php echo $email->seen; ?> <?php if ($email->deleted == 1) echo 'deleted'; ?>">
