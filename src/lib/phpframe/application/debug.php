@@ -88,9 +88,6 @@ class phpFrame_Application_Debug {
 		$properties[] = array('option', 'Option');
 		$properties[] = array('auth', 'Auth');
 		$properties[] = array('client', 'Client');
-		//$properties[] = array('db', 'Database');
-		$properties[] = array('session', 'Session');
-		$properties[] = array('user', 'User');
 		$properties[] = array('permissions', 'Permissions');
 		//$properties[] = array('modules', 'Modules');
 		$properties[] = array('pathway', 'Pathway');
@@ -108,6 +105,12 @@ class phpFrame_Application_Debug {
 		
 		echo '<h2>Config:</h2>';
 		echo '<pre>'; var_dump(new config); echo '</pre>';
+		
+		echo '<h2>Session:</h2>';
+		echo '<pre>'; var_dump(phpFrame_Application_Factory::getSession()); echo '</pre>';
+		
+		echo '<h2>User:</h2>';
+		echo '<pre>'; var_dump(phpFrame_Application_Factory::getUser()); echo '</pre>';
 		
 		global $dependencies;
 		echo '<h2>Dependencies:</h2>';
