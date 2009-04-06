@@ -2,7 +2,7 @@
 /**
  * @version		$Id$
  * @package		phpFrame
- * @subpackage 	utils
+ * @subpackage 	mail
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  */
@@ -13,7 +13,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * Mail Class
  * 
  * @package		phpFrame
- * @subpackage 	utils
+ * @subpackage 	mail
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
