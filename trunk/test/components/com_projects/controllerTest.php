@@ -58,14 +58,14 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     }
     
     function testRemove_project () {
-    	//phpFrame_Environment_Request::setVar('projectid', '1');
-    	//phpFrame_Environment_Request::setVar('task', 'remove_project');
+    	phpFrame_Environment_Request::setVar('projectid', '1');
+    	phpFrame_Environment_Request::setVar('task', 'remove_project');
     	
-    	//$application = phpFrame_Application_Factory::getApplication();
-    	//$application->exec();
+    	$application = phpFrame_Application_Factory::getApplication();
+    	$application->exec();
     	
     	$controller = phpFrame_Application_Factory::getController('com_projects');
-    	//$this->assertTrue($controller->getSuccess());
+    	$this->assertTrue($controller->getSuccess());
     }
     
 }
