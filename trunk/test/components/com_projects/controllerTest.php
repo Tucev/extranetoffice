@@ -2,7 +2,7 @@
 /**
  * @version 	$Id$
  * @package		ExtranetOffice
- * @subpackage 	com_projects test suite
+ * @subpackage 	PHPUnit test suite
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  */
@@ -18,21 +18,15 @@ require_once _ABS_PATH_TEST.DS."inc".DS."config.php";
 // Include autoloader
 require_once _ABS_PATH.DS."inc".DS."autoload.php";
 
+
+// Reset installation before running tests. This will reset database and filesystem.
+require_once _ABS_PATH_TEST.DS."installationmanager.php";
+try { installationManager::freshInstall(); } 
+catch (Exception $e) { throw $e; }
+
 // Initialise application
 $application = phpFrame_Application_Factory::getApplication();
 $application->auth();
-
-// We empty projects tables before running tests
-$db = phpFrame_Application_Factory::getDB();
-$query = "DELETE FROM #__users WHERE id > 62";
-$db->setQuery($query);
-$db->query();
-$query = "TRUNCATE TABLE #__projects";
-$db->setQuery($query);
-$db->query();
-$query = "TRUNCATE TABLE #__users_roles";
-$db->setQuery($query);
-$db->query();
 
 require_once 'PHPUnit/Framework.php';
 
@@ -152,10 +146,27 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     
     function test_admin_change_member_role() {
     	// Fake posted form data
-    	phpFrame_Environment_Request::setVar('task', 'remove_member');
+    	phpFrame_Environment_Request::setVar('task', 'admin_change_member_role');
     	phpFrame_Environment_Request::setVar('projectid', '1');
     	phpFrame_Environment_Request::setVar('userid', '63');
     	phpFrame_Environment_Request::setVar('roleid', '3');
+    	
+    	$application = phpFrame_Application_Factory::getApplication();
+    	$application->exec();
+    	
+    	$controller = phpFrame_Application_Factory::getController('com_projects');
+    	$this->assertTrue($controller->getSuccess());
+    }
+    
+    function test_save_issue() {
+    	// Fake posted form data
+    	phpFrame_Environment_Request::setVar('task', 'save_issue');
+    	phpFrame_Environment_Request::setVar('projectid', '1');
+    	phpFrame_Environment_Request::setVar('title', 'Test issue');
+    	phpFrame_Environment_Request::setVar('issue_type', '0');
+    	phpFrame_Environment_Request::setVar('priority', '1');
+    	phpFrame_Environment_Request::setVar('access', '1');
+    	phpFrame_Environment_Request::setVar(phpFrame_Utils_Crypt::getToken(), '1');
     	
     	$application = phpFrame_Application_Factory::getApplication();
     	$application->exec();

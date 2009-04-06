@@ -86,12 +86,8 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 		}
 				
 		// Send notifications via email
-		if ($notify === true) {
-			// Test return from _notify method. Raise error if needed and return accordingly.
-			if ($this->_notify($row, $assignees) === false) {
-				$this->error[] = _LANG_ACTIVITYLOG_NOTIFY_FAILED;
-				return false;
-			}	
+		if ($notify === true && sizeof($assignees) > 0 && $assignees != $userid) {
+			return $this->_notify($row, $assignees);
 		}
 		
 		return true;
@@ -106,7 +102,7 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 	 * @todo	sanatise address, subject & body
 	 */
 	function _notify($row, $assignees) {
-		$uri =& phpFrame_Application_Factory::getURI();
+		$uri = phpFrame_Application_Factory::getURI();
 		$user_name = phpFrame_User_Helper::id2name($row->userid);
 		
 		$new_mail = new phpFrame_Mail_Mailer();
@@ -124,7 +120,7 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 		preg_match($pattern, $row->url, $matches);
 		$new_mail->setMessageIdSuffix('o='.phpFrame_Environment_Request::getVar('option').'&p='.$row->projectid.'&t='.$url_array['view'].'&i='.$matches[1]);
 		
-		// Mae sure assignees is an array
+		// Make sure assignees is an array
 		if (!is_array($assignees)) {
 			$assignees = array($assignees);
 		}

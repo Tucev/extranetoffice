@@ -101,8 +101,8 @@ class phpFrame_Application_Factory {
 	 * @return	object
 	 * @since 	1.0
 	 */
-	public static function getURI() {
-		return phpFrame::getInstance('phpFrame_Utils_URI');
+	public static function getURI($uri='') {
+		return new phpFrame_Utils_URI($uri);
 	}
 }
 ?>

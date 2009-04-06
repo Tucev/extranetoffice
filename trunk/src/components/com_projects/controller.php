@@ -53,7 +53,7 @@ class projectsController extends phpFrame_Application_Controller {
 			$this->addPathwayItem($this->project->name, 'index.php?option=com_projects&view=projects&layout=detail&projectid='.$this->project->id);
 			
 			// Append page component name to document title
-			$document =& phpFrame_Application_Factory::getDocument('html');
+			$document = phpFrame_Application_Factory::getDocument('html');
 			if (!empty($document->title)) $document->title .= ' - ';
 			$document->title .= $this->project->name;
 		}
@@ -87,7 +87,7 @@ class projectsController extends phpFrame_Application_Controller {
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
-		$user =& phpFrame_Application_Factory::getUser();
+		$user = phpFrame_Application_Factory::getUser();
 		$post = phpFrame_Environment_Request::get('post');
 		
 		$modelProjects = $this->getModel('projects');
@@ -206,7 +206,7 @@ class projectsController extends phpFrame_Application_Controller {
 		$userid = phpFrame_Environment_Request::getVar('userid', 0);
 		$roleid = phpFrame_Environment_Request::getVar('roleid', 0);
 		
-		$modelMembers = &$this->getModel('members');
+		$modelMembers = $this->getModel('members');
 		if (!$modelMembers->changeMemberRole($projectid, $userid, $roleid)) {
 			phpFrame_Application_Error::raise('', 'error', $modelMembers->getLastError());
 		}
@@ -245,6 +245,9 @@ class projectsController extends phpFrame_Application_Controller {
 			$modelActivityLog = $this->getModel('activitylog');
 			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->created_by, 'issues', $action, $title, $description, $url, $post['assignees'], $notify)) {
 				phpFrame_Application_Error::raise('', 'error', $modelActivityLog->getLastError());
+			}
+			else {
+				$this->success = true;
 			}
 		}
 		
