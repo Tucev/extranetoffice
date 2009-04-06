@@ -7,21 +7,15 @@
  * @license		BSD revised. See LICENSE.
  */
 
-// Set constants
-define("_EXEC", true);
 define( 'DS', DIRECTORY_SEPARATOR );
 define('_ABS_PATH_TEST', str_replace(DS."components".DS."com_projects", "", dirname(__FILE__)) );
-define('_ABS_PATH', str_replace(DS."test", DS."src",_ABS_PATH_TEST) );
 
-// Include test config
-require_once _ABS_PATH_TEST.DS."inc".DS."config.php";
-// Include autoloader
-require_once _ABS_PATH.DS."inc".DS."autoload.php";
-
-
+// Require test helper class
+require_once _ABS_PATH_TEST.DS."test.helper.php";
+// Prepare application for tests. This sets constants and include config and autoloader
+testHelper::prepareApplication();
 // Reset installation before running tests. This will reset database and filesystem.
-require_once _ABS_PATH_TEST.DS."installationmanager.php";
-try { installationManager::freshInstall(); } 
+try { testHelper::freshInstall(); } 
 catch (Exception $e) { throw $e; }
 
 // Initialise application
