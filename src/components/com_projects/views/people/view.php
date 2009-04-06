@@ -80,7 +80,7 @@ class projectsViewPeople extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayPeopleList() {
-		$modelMembers =& $this->getModel('members');
+		$modelMembers = $this->getModel('members');
 		$this->rows = $modelMembers->getMembers($this->projectid);
 		
 		$this->addPathwayItem($this->current_tool);

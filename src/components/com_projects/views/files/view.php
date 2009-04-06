@@ -81,7 +81,7 @@ class projectsViewFiles extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayFilesList() {
-		$modelFiles =& $this->getModel('files');
+		$modelFiles = $this->getModel('files');
 		$files = $modelFiles->getFiles($this->projectid);
 		$this->rows =& $files['rows'];
 		$this->pageNav =& $files['pageNav'];
@@ -93,7 +93,7 @@ class projectsViewFiles extends phpFrame_Application_View {
 	function displayFilesForm() {
 		$parentid = phpFrame_Environment_Request::getVar('parentid', 0);
 		
-		$modelFiles =& $this->getModel('files');
+		$modelFiles = $this->getModel('files');
 		$this->row = $modelFiles->getFilesDetail($this->projectid, $parentid);
 		
 		$this->page_title .= ' - '._LANG_FILES_NEW;
@@ -104,7 +104,7 @@ class projectsViewFiles extends phpFrame_Application_View {
 	function displayFilesDetail() {
 		$fileid = phpFrame_Environment_Request::getVar('fileid', 0);
 		
-		$modelFiles =& $this->getModel('files');
+		$modelFiles = $this->getModel('files');
 		$this->row = $modelFiles->getFilesDetail($this->projectid, $fileid);
 		
 		$this->page_title .= ' - '.$this->row->title;

@@ -82,7 +82,7 @@ class projectsViewProjects extends phpFrame_Application_View {
 		$this->page_title = _LANG_PROJECTS;
 		
 		// Push model into the view
-		$model =& $this->getModel('projects');
+		$model = $this->getModel('projects');
 		
 		// Get projects and store data in view
 		$projects = $model->getProjects();
@@ -113,14 +113,14 @@ class projectsViewProjects extends phpFrame_Application_View {
 			$this->addPathwayItem(_LANG_PROJECTS_HOME);
 			
 			// Get overdue issues
-			$modelIssues =& $this->getModel('issues');
+			$modelIssues = $this->getModel('issues');
 			$overdue_issues = $modelIssues->getIssues($projectid, true);
 			$this->overdue_issues =& $overdue_issues['rows'];
 			
 			// Get upcoming milestones
 			
 			// Get project updates
-			$modelActivitylog =& $this->getModel('activitylog');
+			$modelActivitylog = $this->getModel('activitylog');
 			$this->activitylog = $modelActivitylog->getActivityLog($projectid);
 		}
 		

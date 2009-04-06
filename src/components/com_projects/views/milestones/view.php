@@ -81,7 +81,7 @@ class projectsViewMilestones extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayMilestonesList() {
-		$modelMilestones =& $this->getModel('milestones');
+		$modelMilestones = $this->getModel('milestones');
 		$milestones = $modelMilestones->getMilestones($this->projectid);
 		$this->rows =& $milestones['rows'];
 		$this->pageNav =& $milestones['pageNav'];
@@ -91,7 +91,7 @@ class projectsViewMilestones extends phpFrame_Application_View {
 	}
 	
 	function displayMilestonesDetail() {
-		$modelMilestones =& $this->getModel('milestones');
+		$modelMilestones = $this->getModel('milestones');
 		$this->row = $modelMilestones->getMilestonesDetail($this->projectid, $this->milestoneid);
 		
 		$this->page_title .= ' - '.$this->row->title;
@@ -102,7 +102,7 @@ class projectsViewMilestones extends phpFrame_Application_View {
 	function displayMilestonesForm() {
 		if (!empty($this->milestoneid)) {
 			$action = _LANG_MILESTONES_EDIT;
-			$modelMilestones =& $this->getModel('milestones');
+			$modelMilestones = $this->getModel('milestones');
 			$this->row = $modelMilestones->getMilestonesDetail($this->projectid, $this->milestoneid);
 		}
 		else {

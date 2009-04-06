@@ -112,7 +112,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 				$row->assignees = $this->getAssignees($row->id);
 				
 				// get total comments
-				$modelComments =& $this->getModel('comments');
+				$modelComments = $this->getModel('comments');
 				$row->comments = $modelComments->getTotalComments($row->id, 'issues');
 				
 				// set status
@@ -166,7 +166,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		$row->assignees = $this->getAssignees($issueid);
 		
 		// Get comments
-		$modelComments =& $this->getModel('comments');
+		$modelComments = $this->getModel('comments');
 		$row->comments = $modelComments->getComments($projectid, 'issues', $issueid);
 		
 		return $row;

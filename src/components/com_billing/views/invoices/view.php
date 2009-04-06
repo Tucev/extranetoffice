@@ -57,7 +57,7 @@ class billingViewInvoices extends phpFrame_Application_View {
 		$this->filter['pluginused'] = phpFrame_Environment_Request::getVar('pluginused', '');
 		
 		// get invoices
-		$model =& $this->getModel();
+		$model = $this->getModel();
 		
 		$date_range = $filter['date_range'];
 		$date_range_array = explode(' AND ', $date_range);

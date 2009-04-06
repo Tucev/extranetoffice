@@ -84,7 +84,7 @@ class emailViewMessages extends phpFrame_Application_View {
 		$document->addScript('lib/contextmenu/webtoolkit.contextmenu.js');
 		$document->addStyleSheet('lib/contextmenu/webtoolkit.contextmenu.css');
 
-		$model =& $this->getModel('email');
+		$model = $this->getModel('email');
 		if ($model->loadUserEmailAccount() === false) {
 			phpFrame_Application_Error::raise(0, 'warning', _LANG_EMAIL_NO_ACCOUNT );
 			return;
@@ -135,7 +135,7 @@ class emailViewMessages extends phpFrame_Application_View {
 		}
 		else {
 			// Get message details
-			$model =& $this->getModel('email');
+			$model = $this->getModel('email');
 			$model->loadUserEmailAccount();
 		
 			$model->openStream($this->folder);
@@ -156,7 +156,7 @@ class emailViewMessages extends phpFrame_Application_View {
 	function displayMessagesForm() {
 		$this->page_title = _LANG_EMAIL_NEW;
 		
-		$model =& $this->getModel('email');
+		$model = $this->getModel('email');
 		$model->loadUserEmailAccount();
 		$this->account =& $model->account;
 		

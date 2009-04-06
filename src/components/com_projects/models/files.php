@@ -87,7 +87,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 				$row->assignees = $this->getAssignees($row->id);
 				
 				// get total comments
-				$modelComments =& $this->getModel('comments');
+				$modelComments = $this->getModel('comments');
 				$row->comments = $modelComments->getTotalComments($row->id, 'files');
 					
 				// Get older revisions
@@ -127,7 +127,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		$row->assignees = $this->getAssignees($fileid);
 		
 		// Get comments
-		$modelComments =& $this->getModel('comments');
+		$modelComments = $this->getModel('comments');
 		$row->comments = $modelComments->getComments($projectid, 'files', $fileid);
 		
 		// Get older revisions

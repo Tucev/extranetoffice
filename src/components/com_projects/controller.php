@@ -42,11 +42,11 @@ class projectsController extends phpFrame_Application_Controller {
 		
 		if (!empty($this->projectid)) {
 			// Load the project data
-			$modelProjects =& $this->getModel('projects');
+			$modelProjects = $this->getModel('projects');
 			$this->project = $modelProjects->getProjectsDetail($this->projectid);
 					
 			// Do security check with custom permission model for projects
-			$this->project_permissions =& $this->getModel('permissions');
+			$this->project_permissions = $this->getModel('permissions');
 			$this->project_permissions->checkProjectAccess($this->project, $this->views_available);
 			
 			// Add pathway item
@@ -90,7 +90,7 @@ class projectsController extends phpFrame_Application_Controller {
 		$user =& phpFrame_Application_Factory::getUser();
 		$post = phpFrame_Environment_Request::get('post');
 		
-		$modelProjects =& $this->getModel('projects');
+		$modelProjects = $this->getModel('projects');
 		$projectid = $modelProjects->saveProject($post);
 		
 		if ($projectid !== false) {
@@ -100,7 +100,7 @@ class projectsController extends phpFrame_Application_Controller {
 			
 			// If NEW project saved correctly we now make project creator a project member
 			if (empty($post['id'])) {
-				$modelMembers =& $this->getModel('members');
+				$modelMembers = $this->getModel('members');
 				if (!$modelMembers->saveMember($projectid, $user->id, '1', false)) {
 					phpFrame_Application_Error::raise('', 'error', $modelMembers->getLastError());
 				}
@@ -125,7 +125,7 @@ class projectsController extends phpFrame_Application_Controller {
 	 */
 	function remove_project() {
 		// get model
-		$modelProjects =& $this->getModel('projects');
+		$modelProjects = $this->getModel('projects');
 		
 		if ($modelProjects->deleteProject($this->projectid) === true) {
 			phpFrame_Application_Error::raise('', 'message', _LANG_PROJECT_DELETE_SUCCESS);
@@ -148,7 +148,7 @@ class projectsController extends phpFrame_Application_Controller {
 		
 		// if an email address has been passed to invite a new member we do so
 		if (!empty($email)) {
-			$modelMembers =& $this->getModel('members');
+			$modelMembers = $this->getModel('members');
 			// Add the user to the system and add as a member of this project
 			if ($modelMembers->inviteNewUser($projectid, $roleid) === false) {
 				phpFrame_Application_Error::raise('', 'error',  $modelMembers->getLastError());
@@ -166,7 +166,7 @@ class projectsController extends phpFrame_Application_Controller {
 			}
 			else {
 				$userids_array = explode(',', $userids);
-				$modelMembers =& $this->getModel('members');
+				$modelMembers = $this->getModel('members');
 				$error = false; // initialise var to flag model errors
 				foreach ($userids_array as $userid) {
 					if ($modelMembers->saveMember($projectid, $userid, $roleid) === false) {
@@ -189,7 +189,7 @@ class projectsController extends phpFrame_Application_Controller {
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$userid = phpFrame_Environment_Request::getVar('userid', 0);
 		
-		$modelMembers = &$this->getModel('members');
+		$modelMembers = $this->getModel('members');
 		if ($modelMembers->deleteMember($projectid, $userid) === true) {
 			phpFrame_Application_Error::raise('', 'message', _LANG_PROJECT_MEMBER_DELETE_SUCCESS);
 		}
@@ -224,7 +224,7 @@ class projectsController extends phpFrame_Application_Controller {
 		$post = phpFrame_Environment_Request::get('post');
 		
 		// Save issue using issues model
-		$modelIssues =& $this->getModel('issues');
+		$modelIssues = $this->getModel('issues');
 		$row = $modelIssues->saveIssue($post);
 		if ($row === false) {
 			phpFrame_Application_Error::raise('', 'error', $modelIssues->getLastError());
@@ -240,7 +240,7 @@ class projectsController extends phpFrame_Application_Controller {
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
-			$modelActivityLog =& $this->getModel('activitylog');
+			$modelActivityLog = $this->getModel('activitylog');
 			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->created_by, 'issues', $action, $title, $description, $url, $post['assignees'], $notify)) {
 				phpFrame_Application_Error::raise('', 'error', $modelActivityLog->getLastError());
 			}
@@ -284,7 +284,7 @@ class projectsController extends phpFrame_Application_Controller {
 			$url = phpFrame_Application_Route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->id);
 			
 			// Add entry in activity log
-			$modelActivityLog =& $this->getModel('activitylog');
+			$modelActivityLog = $this->getModel('activitylog');
 			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, true)) {
 				phpFrame_Application_Error::raise('', 'error', $modelActivityLog->getLastError());
 			}
@@ -313,7 +313,7 @@ class projectsController extends phpFrame_Application_Controller {
 			$url = phpFrame_Application_Route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->id);
 			
 			// Add entry in activity log
-			$modelActivityLog =& $this->getModel('activitylog');
+			$modelActivityLog = $this->getModel('activitylog');
 			if (!$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, true)) {
 				phpFrame_Application_Error::raise('', 'error', $modelActivityLog->getLastError());
 			}
@@ -330,7 +330,7 @@ class projectsController extends phpFrame_Application_Controller {
 		$post = phpFrame_Environment_Request::get('post');
 		
 		// Save file using files model
-		$modelFiles =& $this->getModel('files');
+		$modelFiles = $this->getModel('files');
 		$row = $modelFiles->saveFile($post);
 		if ($row === false) {
 			phpFrame_Application_Error::raise('', 'error', $modelFiles->getLastError());
@@ -346,7 +346,7 @@ class projectsController extends phpFrame_Application_Controller {
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
-			$modelActivityLog =& $this->getModel('activitylog');
+			$modelActivityLog = $this->getModel('activitylog');
 			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->userid, 'files', $action, $title, $description, $url, $post['assignees'], $notify)) {
 				phpFrame_Application_Error::raise('', 'error', $modelActivityLog->getLastError());
 			}
@@ -375,7 +375,7 @@ class projectsController extends phpFrame_Application_Controller {
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$fileid = phpFrame_Environment_Request::getVar('fileid', 0);
 		
-		$modelProjects =& $this->getModel('files');
+		$modelProjects = $this->getModel('files');
 		$modelProjects->downloadFile($projectid, $fileid);
 	}
 	
@@ -387,7 +387,7 @@ class projectsController extends phpFrame_Application_Controller {
 		$post = phpFrame_Environment_Request::get('post');
 		
 		// Save message using messages model
-		$modelMessages =& $this->getModel('messages');
+		$modelMessages = $this->getModel('messages');
 		$row = $modelMessages->saveMessage($post);
 		if ($row === false) {
 			phpFrame_Application_Error::raise('', 'error', $modelMessages->getLastError());
@@ -403,7 +403,7 @@ class projectsController extends phpFrame_Application_Controller {
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
-			$modelActivityLog =& $this->getModel('activitylog');
+			$modelActivityLog = $this->getModel('activitylog');
 			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->userid, 'messages', $action, $title, $description, $url, $post['assignees'], $notify)) {
 				phpFrame_Application_Error::raise('', 'error', $modelActivityLog->getLastError());
 			}
@@ -436,7 +436,7 @@ class projectsController extends phpFrame_Application_Controller {
 		$post = phpFrame_Environment_Request::get('post');
 		
 		// Save comment using comments model
-		$modelComments =& $this->getModel('comments');
+		$modelComments = $this->getModel('comments');
 		$row = $modelComments->saveComment($post);
 		if ($row === false) {
 			phpFrame_Application_Error::raise('', 'error', $modelComments->getLastError());
@@ -469,12 +469,12 @@ class projectsController extends phpFrame_Application_Controller {
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
-			$modelActivityLog =& $this->getModel('activitylog');
+			$modelActivityLog = $this->getModel('activitylog');
 			$modelActivityLog->saveActivityLog($row->projectid, $row->userid, 'comments', $action, $title, $description, $url, $post['assignees'], $notify);
 			
 			$close_issue = phpFrame_Environment_Request::getVar('close_issue', NULL);
 			if ($row->type == 'issues' && $close_issue == 'on') {
-				$modelIssues =& $this->getModel('issues');
+				$modelIssues = $this->getModel('issues');
 				if (!$modelIssues->closeIssue($row->projectid, $row->itemid)) {
 					phpFrame_Application_Error::raise('', 'error', $modelIssues->getLastError());
 				}
@@ -492,7 +492,7 @@ class projectsController extends phpFrame_Application_Controller {
 		$post = phpFrame_Environment_Request::get('post');
 		
 		// Save file using files model
-		$modelMeetings =& $this->getModel('meetings');
+		$modelMeetings = $this->getModel('meetings');
 		$row = $modelMeetings->saveMeeting($post);
 		if ($row === false){
 			phpFrame_Application_Error::raise('', 'error', $modelMeetings->getLastError());
@@ -508,7 +508,7 @@ class projectsController extends phpFrame_Application_Controller {
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
-			$modelActivityLog =& $this->getModel('activitylog');
+			$modelActivityLog = $this->getModel('activitylog');
 			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->created_by, 'meetings', $action, $title, $description, $url, $post['assignees'], $notify)) {
 				phpFrame_Application_Error::raise('', 'error', $modelActivityLog->getLastError());
 			}	
@@ -521,7 +521,7 @@ class projectsController extends phpFrame_Application_Controller {
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
 		
-		$modelMeetings =& $this->getModel('meetings');
+		$modelMeetings = $this->getModel('meetings');
 		
 		if ($modelMeetings->deleteMeeting($projectid, $meetingid) === true) {
 			phpFrame_Application_Error::raise('', 'message', _LANG_MEETING_DELETE_SUCCESS);
@@ -540,7 +540,7 @@ class projectsController extends phpFrame_Application_Controller {
 		// Get request vars
 		$post = phpFrame_Environment_Request::get('post');
 		
-		$modelMeetings =& $this->getModel('meetings');
+		$modelMeetings = $this->getModel('meetings');
 		$row = $modelMeetings->saveSlideshow($post);
 		
 		$redirect_url = 'index.php?option=com_projects&view=meetings&layout=slideshows_form&projectid='.$post['projectid'].'&meetingid='.$post['meetingid'];
@@ -561,7 +561,7 @@ class projectsController extends phpFrame_Application_Controller {
 		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
 		$slideshowid = phpFrame_Environment_Request::getVar('slideshowid', 0);
 		
-		$modelMeetings =& $this->getModel('meetings');
+		$modelMeetings = $this->getModel('meetings');
 		
 		if (!$modelMeetings->deleteSlideshow($projectid, $slideshowid)) {
 			phpFrame_Application_Error::raise('', 'error', $modelMeetings->getLastError());
@@ -580,7 +580,7 @@ class projectsController extends phpFrame_Application_Controller {
 		// Get request vars
 		$post = phpFrame_Environment_Request::get('post');
 		
-		$modelMeetings =& $this->getModel('meetings');
+		$modelMeetings = $this->getModel('meetings');
 		$row = $modelMeetings->uploadSlide($post);
 		
 		$tmpl = phpFrame_Environment_Request::getVar('tmpl', '');
@@ -612,7 +612,7 @@ class projectsController extends phpFrame_Application_Controller {
 		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
 		$slideshowid = phpFrame_Environment_Request::getVar('slideshowid', 0);
 		
-		$modelMeetings =& $this->getModel('meetings');
+		$modelMeetings = $this->getModel('meetings');
 		
 		if (!$modelMeetings->deleteSlide($projectid, $slideid)) {
 			phpFrame_Application_Error::raise('', 'error', $modelMeetings->getLastError());
@@ -635,7 +635,7 @@ class projectsController extends phpFrame_Application_Controller {
 			}
 		}
 		
-		$modelMeetings =& $this->getModel('meetings');
+		$modelMeetings = $this->getModel('meetings');
 		
 		if (!$modelMeetings->saveFiles($meetingid, $fileids_array)) {
 			phpFrame_Application_Error::raise('', 'error', $modelMeetings->getLastError());
@@ -655,7 +655,7 @@ class projectsController extends phpFrame_Application_Controller {
 		$post = phpFrame_Environment_Request::get('post');
 		
 		// Save file using files model
-		$modelMilestones =& $this->getModel('milestones');
+		$modelMilestones = $this->getModel('milestones');
 		$row = $modelMilestones->saveMilestone($post);
 		if ($row === false) {
 			phpFrame_Application_Error::raise('', 'error', $modelMilestones->getLastError());
@@ -671,7 +671,7 @@ class projectsController extends phpFrame_Application_Controller {
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
-			$modelActivityLog =& $this->getModel('activitylog');
+			$modelActivityLog = $this->getModel('activitylog');
 			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->created_by, 'milestones', $action, $title, $description, $url, $post['assignees'], $notify)) {
 				phpFrame_Application_Error::raise('', 'error', $modelActivityLog->getLastError());
 			}
@@ -684,7 +684,7 @@ class projectsController extends phpFrame_Application_Controller {
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$milestoneid = phpFrame_Environment_Request::getVar('milestoneid', 0);
 		
-		$modelMilestones =& $this->getModel('milestones');
+		$modelMilestones = $this->getModel('milestones');
 		
 		if ($modelMilestones->deleteMilestone($projectid, $milestoneid) === true) {
 			phpFrame_Application_Error::raise('', 'message', _LANG_MILESTONE_DELETE_SUCCESS);
@@ -698,7 +698,7 @@ class projectsController extends phpFrame_Application_Controller {
 	
 	function process_incoming_email() {
 		// Get models
-		$modelComments =& $this->getModel('comments');
+		$modelComments = $this->getModel('comments');
 		
 		// Get mail messages with project comments
 		$messages = $modelComments->fetchCommentsFromEmail();
@@ -714,10 +714,10 @@ class projectsController extends phpFrame_Application_Controller {
 					$userid = phpFrame_User_Helper::email2id($message->data['fromaddress']);
 					
 					// Load the project data
-					$modelProjects =& $this->getModel('projects');
+					$modelProjects = $this->getModel('projects');
 					$this->project = $modelProjects->getProjectsDetail($this->projectid, $userid);
 					
-					$modelMembers =& $this->getModel('members');
+					$modelMembers = $this->getModel('members');
 					$roleid = $modelMembers->isMember($message->data['p'], $userid);
 					if (!empty($roleid)) {
 						$post = array();
@@ -758,11 +758,11 @@ class projectsController extends phpFrame_Application_Controller {
 							$url = phpFrame_Application_Route::_($url);
 							
 							// Get assignees
-							$itemModel =& $this->getModel($row->type);
+							$itemModel = $this->getModel($row->type);
 							$assignees = $itemModel->getAssignees($row->itemid, false);
 							
 							// Add entry in activity log
-							$modelActivityLog =& $this->getModel('activitylog');
+							$modelActivityLog = $this->getModel('activitylog');
 							$modelActivityLog->project =& $this->project;
 							$delete_uids = array();
 							if (!$modelActivityLog->saveActivityLog($row->projectid, $row->userid, 'comments', $action, $title, $description, $url, $assignees, true)) {

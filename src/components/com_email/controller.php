@@ -38,7 +38,7 @@ class emailController extends phpFrame_Application_Controller {
 		
 		$post = phpFrame_Environment_Request::get('post');
 		
-		$modelAccounts =& $this->getModel('accounts');
+		$modelAccounts = $this->getModel('accounts');
 		$row = $modelAccounts->saveAccount($post);
 		
 		if ($row !== false) {
@@ -54,7 +54,7 @@ class emailController extends phpFrame_Application_Controller {
 	function remove_account() {
 		$accountid = phpFrame_Environment_Request::getVar('accountid', 0);
 		
-		$modelAccounts =& $this->getModel('accounts');
+		$modelAccounts = $this->getModel('accounts');
 		if (!$modelAccounts->deleteAccount($accountid)) {
 			phpFrame_Application_Error::raise('', 'error', $modelAccounts->getLastError());
 		}
@@ -68,7 +68,7 @@ class emailController extends phpFrame_Application_Controller {
 	function make_default_account() {
 		$accountid = phpFrame_Environment_Request::getVar('accountid', 0);
 		
-		$modelAccounts =& $this->getModel('accounts');
+		$modelAccounts = $this->getModel('accounts');
 		if (!$modelAccounts->makeDefault($accountid)) {
 			phpFrame_Application_Error::raise('', 'error', $modelAccounts->getLastError());
 		}
