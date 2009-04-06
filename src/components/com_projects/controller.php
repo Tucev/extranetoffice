@@ -126,7 +126,7 @@ class projectsController extends phpFrame_Application_Controller {
 	function remove_project() {
 		// get model
 		$modelProjects =& $this->getModel('projects');
-		var_dump($this->projectid); exit;
+		
 		if ($modelProjects->deleteProject($this->projectid) === true) {
 			phpFrame_Application_Error::raise('', 'message', _LANG_PROJECT_DELETE_SUCCESS);
 			$this->success = true;
