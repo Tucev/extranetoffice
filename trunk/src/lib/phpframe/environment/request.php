@@ -36,8 +36,8 @@ class phpFrame_Environment_Request {
 		
 		// Process incoming request arrays and store filtered data in class
 		self::$_request = $inputfilter->process($_REQUEST);
-		self::$_get = $inputfilter->process($_GET);
 		self::$_post = $inputfilter->process($_POST);
+		self::$_get = $inputfilter->process($_GET);
 		
 		// Get arguments passed via command line and parse them as request vars
 		global $argv;
@@ -114,9 +114,19 @@ class phpFrame_Environment_Request {
 		
 		self::$_request[$key] = $value;
 		self::$_post[$key] = $value;
+		$_REQUEST[$key] = $value;
+		$_POST[$key] = $value;
 		
 		return $value;
 	}
 	
+	public static function destroy() {
+		self::$_request = array();
+		self::$_post = array();
+		self::$_get = array();
+		$_REQUEST = array();
+		$_POST = array();
+		$_GET = array();
+	}
 }
 ?>

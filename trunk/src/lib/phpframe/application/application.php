@@ -60,12 +60,6 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 	 */
 	var $pathway=null;
 	/**
-	 * The component option (ie: com_dashboard)
-	 * 
-	 * @var string
-	 */
-	var $option=null;
-	/**
 	 * The component info (data stored in components table)
 	 * 
 	 * @var object
@@ -178,25 +172,25 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 	 * @since	1.0
 	 */
 	public function exec() {
-		// Set component option in application
-		$this->option =& phpFrame_Environment_Request::getVar('option', 'com_dashboard');
+		// Get component option from request
+		$option = phpFrame_Environment_Request::getVar('option', 'com_dashboard');
 		
 		// Initialise permissions
-		$this->permissions =& phpFrame_Application_Factory::getPermissions();
+		$this->permissions = phpFrame_Application_Factory::getPermissions();
 		
 		// Get component info
-		$components =& phpFrame::getInstance('phpFrame_Application_Components');
-		$this->component_info = $components->loadByOption($this->option);
+		$components = phpFrame::getInstance('phpFrame_Application_Components');
+		$this->component_info = $components->loadByOption($option);
 		
 		// load modules before we execute controller task to make modules available to components
-		$this->modules =& phpFrame::getInstance('phpFrame_Application_Modules');
+		$this->modules = phpFrame::getInstance('phpFrame_Application_Modules');
 		
 		// set the component path
-		define("COMPONENT_PATH", _ABS_PATH.DS."components".DS.$this->option);
+		define("COMPONENT_PATH", _ABS_PATH.DS."components".DS.$option);
 		// Start buffering
 		ob_start();
 		// Create the controller
-		$controller =& phpFrame_Application_Factory::getController($this->option);
+		$controller = phpFrame_Application_Factory::getController($option);
 		// Execute task
 		$controller->execute(phpFrame_Environment_Request::getVar('task'));	
 		// Redirect if set by the controller
@@ -210,7 +204,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 	public function render() {
 		// If client is default (pc web browser) we add the jQuery library + jQuery UI
 		if ($this->client == "default") {
-			$document =& phpFrame_Application_Factory::getDocument('html');
+			$document = phpFrame_Application_Factory::getDocument('html');
 			$document->addScript('lib/jquery/js/jquery-1.3.2.min.js');
 			$document->addScript('lib/jquery/js/jquery-ui-1.7.custom.min.js');
 			$document->addScript('lib/jquery/plugins/validate/jquery.validate.pack.js');
@@ -230,7 +224,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 			$template_filename = 'index.php';
 			
 			// get pathway
-			$this->pathway =& phpFrame_Application_Factory::getPathway();
+			$this->pathway = phpFrame_Application_Factory::getPathway();
 		}
 		
 		switch ($this->client) {

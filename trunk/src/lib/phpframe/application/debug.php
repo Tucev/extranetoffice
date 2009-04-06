@@ -82,35 +82,25 @@ class phpFrame_Application_Debug {
 		// Print execution time
 		echo 'Script Execution Time: ' . round(self::$_execution_end - self::$_execution_start, 5) . ' seconds'; 
 		
-		$application = phpFrame_Application_Factory::getApplication();
-		
-		$properties = array();
-		$properties[] = array('option', 'Option');
-		$properties[] = array('auth', 'Auth');
-		$properties[] = array('client', 'Client');
-		$properties[] = array('permissions', 'Permissions');
-		//$properties[] = array('modules', 'Modules');
-		$properties[] = array('pathway', 'Pathway');
-		//$properties[] = array('document', 'Document');
-		$properties[] = array('component_info', 'Component Info');
-		
-		foreach ($properties as $property) {
-			echo '<h2>'.$property[1].':</h2>';
-			echo '<pre>'; var_dump($application->$property[0]); echo '</pre>';
-			echo '<hr />';
-		}
+		echo '<h2>Application:</h2>';
+		echo '<pre>'; var_dump(phpFrame_Application_Factory::getApplication()); echo '</pre>';
+		echo '<hr />';
 		
 		echo '<h2>Request:</h2>';
 		echo '<pre>'; var_dump(phpFrame_Environment_Request::get('request')); echo '</pre>';
+		echo '<hr />';
 		
 		echo '<h2>Config:</h2>';
 		echo '<pre>'; var_dump(new config); echo '</pre>';
+		echo '<hr />';
 		
 		echo '<h2>Session:</h2>';
 		echo '<pre>'; var_dump(phpFrame_Application_Factory::getSession()); echo '</pre>';
+		echo '<hr />';
 		
 		echo '<h2>User:</h2>';
 		echo '<pre>'; var_dump(phpFrame_Application_Factory::getUser()); echo '</pre>';
+		echo '<hr />';
 		
 		global $dependencies;
 		echo '<h2>Dependencies:</h2>';

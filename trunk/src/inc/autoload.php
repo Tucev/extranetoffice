@@ -62,6 +62,11 @@ function __autoload($className) {
 	elseif (strpos($className, 'Table') !== false) {
 		$array = explode('Table', $className);
 		if (sizeof($array) == 2) {
+			
+			if (preg_match('/^[A-Z]{1}[a-z]+([A-Z]{1})/', $array[1], $matches)) {
+				$array[1] = substr($array[1], 0, strpos($array[1], $matches[1]))."_".substr($array[1], strpos($array[1], $matches[1]));
+			}
+			
 			$file_path = _ABS_PATH.DS."components".DS.phpFrame_Environment_Request::getVar('option').DS;
 			$file_path .= "tables".DS.strtolower($array[1]).".table.php";
 		}
@@ -79,7 +84,7 @@ function __autoload($className) {
 		require $file_path;
 	}
 	else {
-		phpFrame_Application_Error::raiseFatalError('Could not autoload class '.$className.'. File '.$file_path.' not found.');
+		//phpFrame_Application_Error::raiseFatalError('Could not autoload class '.$className.'. File '.$file_path.' not found.');
 	}
 }
 ?>
