@@ -155,6 +155,7 @@ class projectsController extends phpFrame_Application_Controller {
 			}
 			else {
 				phpFrame_Application_Error::raise('', 'message',  _LANG_PROJECT_NEW_MEMBER_SAVED);
+				$this->success = true;
 			}
 		}
 		else {
@@ -175,7 +176,8 @@ class projectsController extends phpFrame_Application_Controller {
 				}
 				
 				if ($error === false) {
-					phpFrame_Application_Error::raise('', 'message',  _LANG_PROJECT_NEW_MEMBER_SAVED);	
+					phpFrame_Application_Error::raise('', 'message',  _LANG_PROJECT_NEW_MEMBER_SAVED);
+					$this->success = true;
 				}	
 			}
 		}
