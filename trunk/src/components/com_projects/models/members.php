@@ -93,8 +93,8 @@ class projectsModelMembers extends phpFrame_Application_Model {
 	}
 	
 	function inviteNewUser($projectid, $roleid) {
-		// Get reference to user object
-		$user =& phpFrame_Application_Factory::getUser();
+		// Get user object
+		$user = phpFrame_Application_Factory::getUser();
 		
 		// Create standard object to store user properties
 		// We do this because we dont want to overwrite the current user object.
@@ -127,7 +127,7 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		}
 		
 		// add user to project
-		$row_users_roles =& phpFrame::getInstance('projectsTableUsersRoles');
+		$row_users_roles = phpFrame::getInstance('projectsTableUsersRoles');
 		
 		$row_users_roles->userid = $row->id;
 		$row_users_roles->projectid = $projectid;
