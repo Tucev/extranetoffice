@@ -19,7 +19,29 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * The class should be instantiated as:
  * 
  * <code>
- * $application =& phpFrame::getInstance('phpFrame_Application');
+ * $application = phpFrame_Application_Factory::getApplication();
+ * </code>
+ * 
+ * Before we instantiate the application we first need to set a few useful constants,
+ * check for dependencies, include required framework files and then finally 
+ * instantiate the application and run the apps methods in the following order:
+ * 
+ * <code>
+ * define("_EXEC", true);
+ * define('_ABS_PATH', dirname(__FILE__) );
+ * define( 'DS', DIRECTORY_SEPARATOR );
+ * 
+ * // include config
+ * require_once _ABS_PATH.DS."inc".DS."config.php";
+ * 
+ * // Include autoloader
+ * require_once _ABS_PATH.DS."inc".DS."autoload.php";
+ * 
+ * $application = phpFrame_Application_Factory::getApplication();
+ * $application->auth();
+ * $application->exec();
+ * $application->render();
+ * $application->output();
  * </code>
  * 
  * @package		phpFrame
@@ -89,17 +111,10 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		// Initialise debbuger
 		phpFrame_Application_Debug::init();
 		
-		// load the language file
-		$lang_file = _ABS_PATH.DS."lang".DS.config::DEFAULT_LANG.".php";
-		if (file_exists($lang_file)) {
-			require_once $lang_file;
-		}
-		else {
-			phpFrame_Application_Error::raiseFatalError('phpFrame_Application::__construct(): Could not find language file ('.$lang_file.')');
-		}
+		// Load language files
+		$this->_loadLanguage();
 		
 		// Initialise request
-		// when initialising the request we also detect whether this is a command line request
 		phpFrame_Environment_Request::init();
 		
 		// Get client from request
@@ -112,7 +127,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		}
 		
 		// instantiate db object and store in application
-		$db =& phpFrame_Application_Factory::getDB();
+		$db = phpFrame_Application_Factory::getDB();
 		// connect to MySQL server
 		if ($db->connect(config::DB_HOST, config::DB_USER, config::DB_PASS, config::DB_NAME) !== true) {
 			phpFrame_Application_Error::raiseFatalError($db->getLastError());
@@ -179,11 +194,11 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		$this->permissions = phpFrame_Application_Factory::getPermissions();
 		
 		// Get component info
-		$components = phpFrame::getInstance('phpFrame_Application_Components');
+		$components = phpFrame_Base_Singleton::getInstance('phpFrame_Application_Components');
 		$this->component_info = $components->loadByOption($option);
 		
 		// load modules before we execute controller task to make modules available to components
-		$this->modules = phpFrame::getInstance('phpFrame_Application_Modules');
+		$this->modules = phpFrame_Base_Singleton::getInstance('phpFrame_Application_Modules');
 		
 		// set the component path
 		define("COMPONENT_PATH", _ABS_PATH.DS."components".DS.$option);
@@ -201,6 +216,13 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		ob_end_clean();
 	}
 	
+	/**
+	 * Render output in template
+	 * 
+	 * @access	public
+	 * @return	void
+	 * @since	1.0
+	 */
 	public function render() {
 		// If client is default (pc web browser) we add the jQuery library + jQuery UI
 		if ($this->client == "default") {
@@ -268,6 +290,33 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		// clear errors after displaying
 		$session = phpFrame_Application_Factory::getSession();
 		$session->setVar('error', null);
+	}
+	
+	/**
+	 * Load language files
+	 * 
+	 * @access	private
+	 * @return	void
+	 * @since	1.0
+	 */
+	private function _loadLanguage() {
+		// load the application language file
+		$lang_file = _ABS_PATH.DS."lang".DS.config::DEFAULT_LANG.".php";
+		if (file_exists($lang_file)) {
+			require_once $lang_file;
+		}
+		else {
+			phpFrame_Application_Error::raiseFatalError('phpFrame_Application::_loadLanguage(): Could not find language file ('.$lang_file.')');
+		}
+		
+		// Include the phpFrame lib language file
+		$lang_file = _ABS_PATH.DS."lib".DS."phpframe".DS."lang".DS.config::DEFAULT_LANG.".php";
+		if (file_exists($lang_file)) {
+			require_once $lang_file;
+		}
+		else {
+			phpFrame_Application_Error::raiseFatalError('phpFrame_Application::_loadLanguage(): Could not find language file ('.$lang_file.')');
+		}
 	}
 }
 ?>

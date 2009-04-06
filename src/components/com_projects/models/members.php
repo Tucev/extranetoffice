@@ -46,7 +46,7 @@ class projectsModelMembers extends phpFrame_Application_Model {
 	
 	function saveMember($projectid, $userid, $roleid, $notify=true) {
 		// Instantiate table object
-		$row =& phpFrame::getInstance('projectsTableUsersRoles');
+		$row =& phpFrame_Base_Singleton::getInstance('projectsTableUsersRoles');
 		
 		// Load existing entry before we overwrite with new values
 		$row->load($userid, $projectid);
@@ -127,7 +127,7 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		}
 		
 		// add user to project
-		$row_users_roles = phpFrame::getInstance('projectsTableUsersRoles');
+		$row_users_roles = phpFrame_Base_Singleton::getInstance('projectsTableUsersRoles');
 		
 		$row_users_roles->userid = $row->id;
 		$row_users_roles->projectid = $projectid;

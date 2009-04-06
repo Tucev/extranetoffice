@@ -57,17 +57,17 @@ class dashboardViewDashboard extends phpFrame_Application_View {
 		require_once _ABS_PATH.DS.'components'.DS.'com_projects'.DS.'models'.DS.'activitylog.php';
 		require_once _ABS_PATH.DS.'components'.DS.'com_projects'.DS.'models'.DS.'issues.php';
 		require_once _ABS_PATH.DS.'components'.DS.'com_projects'.DS.'helpers'.DS.'projects.helper.php';
-		$modelProjects =& phpFrame::getInstance('projectsModelProjects');
+		$modelProjects =& phpFrame_Base_Singleton::getInstance('projectsModelProjects');
 		$projects = $modelProjects->getProjects($this->user->id);
 		// Get project updates, overdue items and upcoming milestones
 		if (is_array($projects['rows']) && count($projects['rows']) > 0) {
 			foreach ($projects['rows'] as $row) {
 				// Get project updates
-				$modelActivitylog =& phpFrame::getInstance('projectsModelActivitylog');
+				$modelActivitylog =& phpFrame_Base_Singleton::getInstance('projectsModelActivitylog');
 				$row->activitylog = $modelActivitylog->getActivityLog($row->id);
 				
 				// Get overdue issues
-				$modelIssues =& phpFrame::getInstance('projectsModelIssues');
+				$modelIssues =& phpFrame_Base_Singleton::getInstance('projectsModelIssues');
 				$row->overdue_issues = $modelIssues->getTotalIssues($row->id, true);
 			}
 		}
@@ -80,7 +80,7 @@ class dashboardViewDashboard extends phpFrame_Application_View {
 			/* Temporarily commented out.
 			phpFrame_Environment_Request::setVar('per_page', 5);
 			require_once _ABS_PATH.DS.'components'.DS.'com_email'.DS.'models'.DS.'email.php';
-			$modelEmail =& phpFrame::getInstance('emailModelEmail');
+			$modelEmail =& phpFrame_Base_Singleton::getInstance('emailModelEmail');
 			$modelEmail->loadUserEmailAccount();
 			$modelEmail->openStream('INBOX');
 			$emails = $modelEmail->getMessageList();

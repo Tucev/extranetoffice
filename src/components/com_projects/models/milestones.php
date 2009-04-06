@@ -181,7 +181,7 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 			return false;
 		}
 		
-		$row =& phpFrame::getInstance("projectsTableMilestones");
+		$row =& phpFrame_Base_Singleton::getInstance("projectsTableMilestones");
 		
 		if (!$row->bind($post)) {
 			$this->error[] = $row->getLastError();
@@ -249,7 +249,7 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 		$this->db->query();
 		
 		// Instantiate table object
-		$row =& phpFrame::getInstance("projectsTableMilestones");
+		$row =& phpFrame_Base_Singleton::getInstance("projectsTableMilestones");
 		
 		// Delete row from database
 		if (!$row->delete($milestoneid)) {

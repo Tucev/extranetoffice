@@ -84,7 +84,7 @@ function __autoload($className) {
 		require $file_path;
 	}
 	else {
-		//phpFrame_Application_Error::raiseFatalError('Could not autoload class '.$className.'. File '.$file_path.' not found.');
+		phpFrame_Application_Error::raiseFatalError('Could not autoload class '.$className.'. File '.$file_path.' not found.');
 	}
 }
 ?>

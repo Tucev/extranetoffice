@@ -146,7 +146,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			return false;
 		}
 				
-		$row =& phpFrame::getInstance("projectsTableMeetings");
+		$row =& phpFrame_Base_Singleton::getInstance("projectsTableMeetings");
 		
 		if (empty($post['id'])) {
 			$row->created_by = $this->user->id;
@@ -237,7 +237,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		}
 		
 		// Instantiate table object
-		$row =& phpFrame::getInstance("projectsTableMeetings");
+		$row =& phpFrame_Base_Singleton::getInstance("projectsTableMeetings");
 		
 		// Delete row from database
 		if (!$row->delete($meetingid)) {
@@ -276,7 +276,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			return false;
 		}
 			
-		$row =& phpFrame::getInstance("projectsTableSlideshows");
+		$row =& phpFrame_Base_Singleton::getInstance("projectsTableSlideshows");
 		
 		if (!empty($post['id'])) {
 			$row->load($post['id']);
@@ -372,7 +372,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			return false;
 		}
 			
-		$row =& phpFrame::getInstance("projectsTableSlideshowsSlides");
+		$row =& phpFrame_Base_Singleton::getInstance("projectsTableSlideshowsSlides");
 		
 		if (!$row->bind($post)) {
 			$this->error[] = $row->getLastError();
@@ -435,7 +435,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			return false;
 		}
 				
-		$row =& phpFrame::getInstance("projectsTableSlideshowsSlides");
+		$row =& phpFrame_Base_Singleton::getInstance("projectsTableSlideshowsSlides");
 		
 		$row->load($slideid);
 		

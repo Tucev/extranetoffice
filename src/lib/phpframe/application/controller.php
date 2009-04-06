@@ -36,7 +36,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * 		}
  * }
  * 
- * $myController =& phpFrame::getInstance('myController');
+ * $myController =& phpFrame_Base_Singleton::getInstance('myController');
  * echo $myController->doSomething();
  * </code>
  * This will echo 'something'.
@@ -228,7 +228,7 @@ abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
 		}
 		
 		$model_class_name = substr(phpFrame_Environment_Request::getVar('option'), 4).'Model'.ucfirst($name);
-		$model = phpFrame::getInstance($model_class_name);
+		$model = phpFrame_Base_Singleton::getInstance($model_class_name);
 		return $model;
 	}
 	
@@ -247,7 +247,7 @@ abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
 		}
 		
 		$view_class_name = substr(phpFrame_Environment_Request::getVar('option'), 4).'View'.ucfirst($name);
-		$view =& phpFrame::getInstance($view_class_name);
+		$view =& phpFrame_Base_Singleton::getInstance($view_class_name);
 		return $view;
 	}
 	

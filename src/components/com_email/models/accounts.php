@@ -56,7 +56,7 @@ class emailModelAccounts extends phpFrame_Application_Model {
 	 */
 	public function saveAccount($post) {
 		require_once COMPONENT_PATH.DS."tables".DS."email_accounts.table.php";		
-		$row =& phpFrame::getInstance("emailTableAccounts");
+		$row =& phpFrame_Base_Singleton::getInstance("emailTableAccounts");
 		
 		if (!empty($post['id'])) {
 			$row->load($post['id']);
@@ -90,7 +90,7 @@ class emailModelAccounts extends phpFrame_Application_Model {
 	
 	public function deleteAccount($accountid) {
 		require_once COMPONENT_PATH.DS."tables".DS."email_accounts.table.php";		
-		$row =& phpFrame::getInstance("emailTableAccounts");
+		$row =& phpFrame_Base_Singleton::getInstance("emailTableAccounts");
 		
 		if (!$row->delete($accountid)) {
 			$this->error[] = $row->getLastError();

@@ -192,7 +192,7 @@ class projectsModelProjects extends phpFrame_Application_Model {
 	 */
 	public function saveProject($post) {
 		// Instantiate table object
-		$row =& phpFrame::getInstance('projectsTableProjects');
+		$row =& phpFrame_Base_Singleton::getInstance('projectsTableProjects');
 		
 		// Bind the post data to the row array
 		if ($row->bind($post, 'created,created_by') === false) {
@@ -227,7 +227,7 @@ class projectsModelProjects extends phpFrame_Application_Model {
 	 */
 	public function deleteProject($projectid) {
 		// Instantiate table object
-		$row =& phpFrame::getInstance('projectsTableProjects');
+		$row =& phpFrame_Base_Singleton::getInstance('projectsTableProjects');
 		
 		// Delete row from database
 		if ($row->delete($projectid) === false) {

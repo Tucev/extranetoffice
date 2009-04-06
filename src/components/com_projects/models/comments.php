@@ -55,7 +55,7 @@ class projectsModelComments extends phpFrame_Application_Model {
 			return false;
 		}
 		
-		$row =& phpFrame::getInstance("projectsTableComments");
+		$row =& phpFrame_Base_Singleton::getInstance("projectsTableComments");
 		
 		if (!$row->bind($post)) {
 			$this->error[] = $row->getLastError();
@@ -86,7 +86,7 @@ class projectsModelComments extends phpFrame_Application_Model {
 		//TODO: This function should also check permissions before deleting
 		
 		// Instantiate table object
-		$row =& phpFrame::getInstance("projectsTableComments");
+		$row =& phpFrame_Base_Singleton::getInstance("projectsTableComments");
 		
 		// Delete row from database
 		if (!$row->delete($commentid)) {
