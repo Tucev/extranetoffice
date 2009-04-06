@@ -2,7 +2,7 @@
 /**
  * @version 	$Id$
  * @package		ExtranetOffice
- * @subpackage 	PHPUnit test suite
+ * @subpackage 	PHPUnit_test_suite
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  */
