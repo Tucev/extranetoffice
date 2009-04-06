@@ -22,7 +22,7 @@ class installationManager {
 	}
 	
 	public static function resetFilesystem() {
-		$cmd = "rm -r hh".config::FILESYSTEM.DS."*";
+		$cmd = "rm -r ".config::FILESYSTEM.DS."*";
 		passthru($cmd, $status);
 		if ($status > 0) {
 			throw new Exception('Could NOT delete contents of '.config::FILESYSTEM.'.');
