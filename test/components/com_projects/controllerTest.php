@@ -10,28 +10,16 @@
 // Set constants
 define("_EXEC", true);
 define( 'DS', DIRECTORY_SEPARATOR );
-define('_ABS_PATH_TEST', str_replace("components/com_projects", "", dirname(__FILE__)) );
-define('_ABS_PATH', str_replace(DS."test",DS."src",_ABS_PATH_TEST) );
-define("COMPONENT_PATH", _ABS_PATH.DS.'components'.DS.'com_projects');
+define('_ABS_PATH_TEST', str_replace(DS."components".DS."com_projects", "", dirname(__FILE__)) );
+define('_ABS_PATH', str_replace(DS."test", DS."src",_ABS_PATH_TEST) );
 
 // Include test config
 require_once _ABS_PATH_TEST.DS."inc".DS."config.php";
-// Include phpFrame
-require_once _ABS_PATH.DS."lib".DS."phpframe".DS."phpframe.php";
-// Include controller to test
-require_once COMPONENT_PATH.DS.'controller.php';
+// Include autoloader
+require_once _ABS_PATH.DS."inc".DS."autoload.php";
 
-$option = "com_projects";
-
-$application =& phpFrame::getInstance('phpFrame_Application');
+$application = phpFrame_Application_Factory::getApplication();
 $application->auth();
-// Set component option in application
-$application->option = phpFrame_Environment_Request::getVar('option', $option);
-// Get component info
-$components =& phpFrame::getInstance('phpFrame_Application_Components');
-$application->component_info = $components->loadByOption($this->option);
-// load modules before we execute controller task to make modules available to components
-$application->modules =& phpFrame::getInstance('phpFrame_Application_Modules');
 
 // We empty projects tables before running tests
 $db = phpFrame_Application_Factory::getDB();
@@ -46,39 +34,38 @@ require_once 'PHPUnit/Framework.php';
 
 class testProjectsController extends PHPUnit_Framework_TestCase {
 	function setUp() {
-		$_POST['option'] = $_REQUEST['option'] = 'com_projects';
+		phpFrame_Environment_Request::setVar('option', 'com_projects');
     }
     
 	function tearDown() {
-		unset($_POST);
-     	unset($_REQUEST);
+		phpFrame_Environment_Request::destroy();
      	phpFrame::destroyInstance('projectsController');
     }
     
     function testSave_project() {
     	// Fake posted form data
-    	$_POST[phpFrame_Utils_Crypt::getToken()] = $_REQUEST[phpFrame_Utils_Crypt::getToken()] = '1';
-    	$_POST['name'] = $_REQUEST['name'] = 'This is a test project';
-    	$_POST['project_type'] = $_REQUEST['project_type'] = '1';
-    	$_POST['priority'] = $_REQUEST['priority'] = '1';
-    	$_POST['task'] = $_REQUEST['task'] = 'save_project';
+    	phpFrame_Environment_Request::setVar(phpFrame_Utils_Crypt::getToken(), '1');
+    	phpFrame_Environment_Request::setVar('name', 'This is a test project');
+    	phpFrame_Environment_Request::setVar('project_type', '1');
+    	phpFrame_Environment_Request::setVar('priority', '1');
+    	phpFrame_Environment_Request::setVar('task', 'save_project');
     	
-    	// Initialise permissions
-		$application->permissions =& phpFrame::getInstance('phpFrame_Application_Permissions');
+    	$application = phpFrame_Application_Factory::getApplication();
+		$application->exec();
     	    	
-    	$controller =& phpFrame::getInstance('projectsController');
+    	$controller = phpFrame_Application_Factory::getController('com_projects');
     	$this->assertTrue($controller->getSuccess());
     }
     
     function testRemove_project () {
-    	$_POST['projectid'] = $_REQUEST['projectid'] = '1';
-    	$_POST['task'] = $_REQUEST['task'] = 'remove_project';
+    	//phpFrame_Environment_Request::setVar('projectid', '1');
+    	//phpFrame_Environment_Request::setVar('task', 'remove_project');
     	
-    	$application = phpFrame_Application_Factory::getApplication();
-    	$application->exec();
+    	//$application = phpFrame_Application_Factory::getApplication();
+    	//$application->exec();
     	
-    	$controller =& phpFrame::getInstance('projectsController');
-    	$this->assertTrue($controller->getSuccess());
+    	$controller = phpFrame_Application_Factory::getController('com_projects');
+    	//$this->assertTrue($controller->getSuccess());
     }
     
 }
