@@ -56,7 +56,6 @@ class projectsModelComments extends phpFrame_Application_Model {
 			return false;
 		}
 		
-		require_once COMPONENT_PATH.DS."tables".DS."comments.table.php";
 		$row =& phpFrame::getInstance("projectsTableComments");
 		
 		if (!$row->bind($post)) {

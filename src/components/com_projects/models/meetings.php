@@ -146,8 +146,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
-		
-		require_once COMPONENT_PATH.DS."tables".DS."meetings.table.php";		
+				
 		$row =& phpFrame::getInstance("projectsTableMeetings");
 		
 		if (empty($post['id'])) {
@@ -239,7 +238,6 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		}
 		
 		// Instantiate table object
-		require_once COMPONENT_PATH.DS."tables".DS."meetings.table.php";
 		$row =& phpFrame::getInstance("projectsTableMeetings");
 		
 		// Delete row from database
@@ -278,8 +276,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
-		
-		require_once COMPONENT_PATH.DS."tables".DS."slideshows.table.php";		
+			
 		$row =& phpFrame::getInstance("projectsTableSlideshows");
 		
 		if (!empty($post['id'])) {
@@ -375,8 +372,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
-		
-		require_once COMPONENT_PATH.DS."tables".DS."slideshows_slides.table.php";		
+			
 		$row =& phpFrame::getInstance("projectsTableSlideshowsSlides");
 		
 		if (!$row->bind($post)) {
@@ -439,8 +435,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
-		
-		require_once COMPONENT_PATH.DS."tables".DS."slideshows_slides.table.php";		
+				
 		$row =& phpFrame::getInstance("projectsTableSlideshowsSlides");
 		
 		$row->load($slideid);

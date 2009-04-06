@@ -104,7 +104,7 @@ abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
 	 * @return 	void
 	 * @since	1.0
 	 */
-	public function __construct() {
+	protected function __construct() {
 		$this->option = phpFrame_Environment_Request::getVar('option');
 		$this->task = phpFrame_Environment_Request::getVar('task', 'display');
 		$this->view = phpFrame_Environment_Request::getVar('view');
@@ -227,17 +227,9 @@ abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
 			$name = phpFrame_Environment_Request::getVar('view');
 		}
 		
-		$model_path = COMPONENT_PATH.DS."models".DS.$name.".php";
-		if (file_exists($model_path)) {
-			require_once $model_path;
-			$model_class_name = substr(phpFrame_Environment_Request::getVar('option'), 4).'Model'.ucfirst($name);
-			$model =& phpFrame::getInstance($model_class_name);
-			return $model;
-		}
-		else {
-			phpFrame_Application_Error::raise(500, "error", "Model file ".$model_path." not found.");
-			return false;
-		}
+		$model_class_name = substr(phpFrame_Environment_Request::getVar('option'), 4).'Model'.ucfirst($name);
+		$model = phpFrame::getInstance($model_class_name);
+		return $model;
 	}
 	
 	/**
@@ -254,17 +246,9 @@ abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
 			$name = phpFrame_Environment_Request::getVar('view');
 		}
 		
-		$view_path = COMPONENT_PATH.DS."views".DS.$name.DS."view.php";
-		if (file_exists($view_path)) {
-			require_once $view_path;
-			$view_class_name = substr(phpFrame_Environment_Request::getVar('option'), 4).'View'.ucfirst($name);
-			$view =& phpFrame::getInstance($view_class_name);
-			return $view;
-		}
-		else {
-			phpFrame_Application_Error::raise(500, "error", "View file ".$model_path." not found.");
-			return false;
-		}
+		$view_class_name = substr(phpFrame_Environment_Request::getVar('option'), 4).'View'.ucfirst($name);
+		$view =& phpFrame::getInstance($view_class_name);
+		return $view;
 	}
 	
 	/**
@@ -315,6 +299,12 @@ abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
 		$pathway->addItem($title, $url);
 	}
 	
+	/**
+	 * Get controller's success flag
+	 * 
+	 * @return	boolean
+	 * @since	1.0
+	 */
 	public function getSuccess() {
 		return $this->success;
 	}

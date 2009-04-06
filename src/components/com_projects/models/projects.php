@@ -193,7 +193,6 @@ class projectsModelProjects extends phpFrame_Application_Model {
 	 */
 	public function saveProject($post) {
 		// Instantiate table object
-		require_once COMPONENT_PATH.DS.'tables'.DS.'projects.table.php';
 		$row =& phpFrame::getInstance('projectsTableProjects');
 		
 		// Bind the post data to the row array
@@ -229,7 +228,6 @@ class projectsModelProjects extends phpFrame_Application_Model {
 	 */
 	public function deleteProject($projectid) {
 		// Instantiate table object
-		require_once COMPONENT_PATH.DS.'tables'.DS.'projects.table.php';
 		$row =& phpFrame::getInstance('projectsTableProjects');
 		
 		// Delete row from database

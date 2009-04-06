@@ -2,10 +2,9 @@
 /**
  * @version 	$Id: default.php 267 2009-03-18 01:45:29Z luis.montero@e-noise.com $
  * @package		ExtranetOffice
- * @subpackage 	com_admin
+ * @subpackage 	com_email
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
- * @author 		Luis Montero [e-noise.com]
  * 
  * @todo	The form in this file needs validation before submit.
  */

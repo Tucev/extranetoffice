@@ -182,7 +182,6 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 			return false;
 		}
 		
-		require_once COMPONENT_PATH.DS."tables".DS."milestones.table.php";
 		$row =& phpFrame::getInstance("projectsTableMilestones");
 		
 		if (!$row->bind($post)) {
@@ -237,8 +236,6 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 	public function deleteMilestone($projectid, $milestoneid) {
 		//TODO: This function should allow ids as either int or array of ints.
 		//TODO: This function should also check permissions before deleting
-		
-		require_once COMPONENT_PATH.DS."tables".DS."milestones.table.php";
 		
 		// Delete message's comments
 		$query = "DELETE FROM #__comments ";

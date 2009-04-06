@@ -161,18 +161,9 @@ abstract class phpFrame_Application_View extends phpFrame_Base_Singleton {
 			$name = $this->view;
 		}
 		
-		$model_path = COMPONENT_PATH.DS."models".DS.$name.".php";
-		if (file_exists($model_path)) {
-			require_once $model_path;
-			$model_class_name = substr(phpFrame_Environment_Request::getVar('option'), 4).'Model'.ucfirst($name);
-			$model =& phpFrame::getInstance($model_class_name);
-			return $model;
-		}
-		else {
-			phpFrame_Application_Error::raise(500, "error", "Model file ".$model_path." not found.");
-			return false;
-		}
-		
+		$model_class_name = substr(phpFrame_Environment_Request::getVar('option'), 4).'Model'.ucfirst($name);
+		$model =& phpFrame::getInstance($model_class_name);
+		return $model;
 	}
 	
 	/**
