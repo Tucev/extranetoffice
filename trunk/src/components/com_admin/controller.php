@@ -42,7 +42,7 @@ class adminController extends phpFrame_Application_Controller {
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
-		$modelConfig =& $this->getModel('config');
+		$modelConfig = $this->getModel('config');
 		
 		if ($modelConfig->saveConfig() === false) {
 			phpFrame_Application_Error::raise('', 'error', $modelConfig->getLastError());
@@ -58,7 +58,7 @@ class adminController extends phpFrame_Application_Controller {
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
-		$modelUsers =& $this->getModel('users');
+		$modelUsers = $this->getModel('users');
 		
 		if ($modelUsers->saveUser() === false) {
 			phpFrame_Application_Error::raise('', 'error', $modelUsers->getLastError());
@@ -73,7 +73,7 @@ class adminController extends phpFrame_Application_Controller {
 	function remove_user() {
 		$userid = phpFrame_Environment_Request::getVar('id', 0);
 		
-		$modelUsers =& $this->getModel('users');
+		$modelUsers = $this->getModel('users');
 		
 		if ($modelUsers->deleteUser($userid) === false) {
 			phpFrame_Application_Error::raise('', 'error', $modelUsers->getLastError());

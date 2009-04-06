@@ -33,7 +33,7 @@ class usersController extends phpFrame_Application_Controller {
 	}
 	
 	function save_user() {
-		$modelUser =& $this->getModel('users');
+		$modelUser = $this->getModel('users');
 		
 		if ($modelUser->saveUser() === false) {
 			phpFrame_Application_Error::raise('', 'error', $modelUser->getLastError());

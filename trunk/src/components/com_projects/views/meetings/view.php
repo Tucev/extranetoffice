@@ -80,7 +80,7 @@ class projectsViewMeetings extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayMeetingsList() {
-		$modelMeetings =& $this->getModel('meetings');
+		$modelMeetings = $this->getModel('meetings');
 		$meetings = $modelMeetings->getMeetings($this->projectid);
 		$this->rows =& $meetings['rows'];
 		$this->pageNav =& $meetings['pageNav'];
@@ -92,7 +92,7 @@ class projectsViewMeetings extends phpFrame_Application_View {
 	function displayMeetingsDetail() {
 		$meetingid =& phpFrame_Environment_Request::getVar('meetingid', 0);
 		
-		$modelMeetings =& $this->getModel('meetings');
+		$modelMeetings = $this->getModel('meetings');
 		$this->row = $modelMeetings->getMeetingsDetail($this->projectid, $meetingid);
 		
 		$document =& phpFrame_Application_Factory::getDocument('html');
@@ -113,7 +113,7 @@ class projectsViewMeetings extends phpFrame_Application_View {
 		
 		if (!empty($meetingid)) {
 			$action = _LANG_MEETINGS_EDIT;
-			$modelMeetings =& $this->getModel('meetings');
+			$modelMeetings = $this->getModel('meetings');
 			$this->row = $modelMeetings->getMeetingsDetail($this->projectid, $meetingid);
 		}
 		else {
@@ -132,7 +132,7 @@ class projectsViewMeetings extends phpFrame_Application_View {
 		
 		if (!empty($slideshowid)) {
 			$action = _LANG_SLIDESHOWS_EDIT;
-			$modelSlideshows =& $this->getModel('meetings');
+			$modelSlideshows = $this->getModel('meetings');
 			$this->row = $modelSlideshows->getSlideshows($this->projectid, $this->meetingid, $slideshowid);
 			$this->row = $this->row[0];
 		}
@@ -151,11 +151,11 @@ class projectsViewMeetings extends phpFrame_Application_View {
 		$this->meetingid =& phpFrame_Environment_Request::getVar('meetingid', 0);
 		
 		if (!empty($this->meetingid)) {
-			$modelFiles =& $this->getModel('files');
+			$modelFiles = $this->getModel('files');
 			$this->project_files = $modelFiles->getFiles($this->projectid);
 			$this->project_files = $this->project_files['rows'];
 			
-			$modelSlideshows =& $this->getModel('meetings');
+			$modelSlideshows = $this->getModel('meetings');
 			$this->meeting_files = $modelSlideshows->getFiles($this->projectid, $this->meetingid);
 			$this->meeting_files_ids = array();
 			for ($i=0; $i<count($this->meeting_files); $i++) {

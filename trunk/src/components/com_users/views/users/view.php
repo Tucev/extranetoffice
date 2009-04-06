@@ -69,7 +69,7 @@ class usersViewUsers extends phpFrame_Application_View {
 	function displayUsersList() {
 		$this->page_title = _LANG_USERS;
 		
-		$modelUsers =& $this->getModel('users');
+		$modelUsers = $this->getModel('users');
 		$users = $modelUsers->getUsers();
 		$this->rows =& $users['rows'];
 		$this->pageNav =& $users['pageNav'];
@@ -84,7 +84,7 @@ class usersViewUsers extends phpFrame_Application_View {
 	function displayUsersDetail() {
 		$userid = phpFrame_Environment_Request::getVar('userid', 0);
 		
-		$modelUsers =& $this->getModel('users');
+		$modelUsers = $this->getModel('users');
 		$this->row = $modelUsers->getUsersDetail($userid);
 		
 		$this->page_title = $this->row->firstname.' '.$this->row->lastname;

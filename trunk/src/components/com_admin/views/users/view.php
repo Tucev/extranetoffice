@@ -69,7 +69,7 @@ class adminViewUsers extends phpFrame_Application_View {
 		$this->page_title = _LANG_ADMIN_USERS;
 		
 		// Push model into the view
-		$model =& $this->getModel('users');
+		$model = $this->getModel('users');
 		$users = $model->getUsers();
 		$this->rows =& $users['rows'];
 		$this->pageNav =& $users['pageNav'];
@@ -86,7 +86,7 @@ class adminViewUsers extends phpFrame_Application_View {
 			$this->page_title = _LANG_ADMIN_USERS_EDIT;
 			
 			// Push model into the view
-			$model =& $this->getModel('users');
+			$model = $this->getModel('users');
 			$this->row = $model->getUsersDetail($userid);
 		}
 	}

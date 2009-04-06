@@ -88,7 +88,7 @@ class projectsModelMessages extends phpFrame_Application_Model {
 				$row->assignees = $this->getAssignees($row->id);
 				
 				// get total comments
-				$modelComments =& $this->getModel('comments');
+				$modelComments = $this->getModel('comments');
 				$row->comments = $modelComments->getTotalComments($row->id, 'messages');
 			}
 		}
@@ -121,7 +121,7 @@ class projectsModelMessages extends phpFrame_Application_Model {
 		$row->assignees = $this->getAssignees($messageid);
 		
 		// Get comments
-		$modelComments =& $this->getModel('comments');
+		$modelComments = $this->getModel('comments');
 		$row->comments = $modelComments->getComments($projectid, 'messages', $messageid);
 		
 		return $row;

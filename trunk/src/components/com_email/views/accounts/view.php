@@ -67,7 +67,7 @@ class emailViewAccounts extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayAccountsList() {
-		$modelAccounts =& $this->getModel('accounts');
+		$modelAccounts = $this->getModel('accounts');
 		$this->rows = $modelAccounts->getAccounts($this->user->id);
 		
 		$this->page_title = _LANG_EMAIL_ACCOUNTS;
@@ -85,7 +85,7 @@ class emailViewAccounts extends phpFrame_Application_View {
 		$accountid = phpFrame_Environment_Request::getVar('accountid', 0);
 		
 		if (!empty($accountid)) {
-			$modelAccounts =& $this->getModel('accounts');
+			$modelAccounts = $this->getModel('accounts');
 			$rows = $modelAccounts->getAccounts($this->user->id, $accountid);
 			$this->row = $rows[0];
 		}

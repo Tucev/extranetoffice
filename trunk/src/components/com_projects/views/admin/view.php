@@ -86,7 +86,7 @@ class projectsViewAdmin extends phpFrame_Application_View {
 		$this->addPathwayItem(_LANG_ADMIN);
 		
 		// Push model into the view
-		$model =& $this->getModel('members');
+		$model = $this->getModel('members');
 		$this->members = $model->getMembers($this->projectid);
 	}
 	
@@ -129,7 +129,7 @@ class projectsViewAdmin extends phpFrame_Application_View {
 		$this->userid = phpFrame_Environment_Request::getVar('userid', 0);
 		
 		// Push model into the view
-		$model =& $this->getModel('members');
+		$model = $this->getModel('members');
 		if (!empty($this->userid)) {
 			$this->members = $model->getMembers($this->projectid, $this->userid);	
 		}

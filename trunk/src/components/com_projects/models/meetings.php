@@ -88,7 +88,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 				$row->assignees = $this->getAssignees($row->id);
 				
 				// get total comments
-				$modelComments =& $this->getModel('comments');
+				$modelComments = $this->getModel('comments');
 				$row->comments = $modelComments->getTotalComments($row->id, 'meetings');
 			}
 		}
@@ -127,7 +127,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$row->files = $this->getFiles($projectid, $meetingid);
 		
 		// Get comments
-		$modelComments =& $this->getModel('comments');
+		$modelComments = $this->getModel('comments');
 		$row->comments = $modelComments->getComments($projectid, 'meetings', $meetingid);
 		
 		return $row;

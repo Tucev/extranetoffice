@@ -81,7 +81,7 @@ class projectsViewMessages extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayMessagesList() {
-		$modelMessages =& $this->getModel('messages');
+		$modelMessages = $this->getModel('messages');
 		$messages = $modelMessages->getMessages($this->projectid);
 		$this->rows =& $messages['rows'];
 		$this->pageNav =& $messages['pageNav'];
@@ -91,7 +91,7 @@ class projectsViewMessages extends phpFrame_Application_View {
 	}
 	
 	function displayMessagesDetail() {
-		$modelMessages =& $this->getModel('messages');
+		$modelMessages = $this->getModel('messages');
 		$this->row = $modelMessages->getMessagesDetail($this->projectid, $this->messageid);
 		
 		$this->page_title .= ' - '.$this->row->subject;
