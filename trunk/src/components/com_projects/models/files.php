@@ -151,8 +151,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
-		
-		require_once COMPONENT_PATH.DS."tables".DS."files.table.php";		
+			
 		$row =& phpFrame::getInstance("projectsTableFiles");
 		
 		if (!$row->bind($post)) {
@@ -242,8 +241,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		//TODO: This function should also check permissions before deleting
 		//TODO: This function should delete related items if any (comments, ...)
 		
-		// Instantiate table object
-		require_once COMPONENT_PATH.DS."tables".DS."files.table.php";		
+		// Instantiate table object	
 		$row =& phpFrame::getInstance("projectsTableFiles");
 		
 		// Load row data
@@ -263,8 +261,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 	}
 	
 	public function downloadFile($projectid, $fileid) {
-		//TODO: This function should also check permissions
-		require_once COMPONENT_PATH.DS."tables".DS."files.table.php";		
+		//TODO: This function should also check permissions		
 		$row =& phpFrame::getInstance("projectsTableFiles");
 		
 		// Load row data

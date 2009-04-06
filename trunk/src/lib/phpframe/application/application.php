@@ -195,8 +195,12 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		define("COMPONENT_PATH", _ABS_PATH.DS."components".DS.$this->option);
 		// Start buffering
 		ob_start();
-		// Load component file
-		require_once COMPONENT_PATH.DS.substr($this->option, 4).'.php';
+		// Create the controller
+		$controller =& phpFrame_Application_Factory::getController($this->option);
+		// Execute task
+		$controller->execute(phpFrame_Environment_Request::getVar('task'));	
+		// Redirect if set by the controller
+		$controller->redirect();
 		// save buffer
 		$this->component_output = ob_get_contents();
 		// clean output buffer

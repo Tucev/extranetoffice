@@ -49,6 +49,11 @@ class phpFrame_Application_Factory {
 		return phpFrame::getInstance('phpFrame_Application_Pathway');
 	}
 	
+	public static function getController($option) {
+		$className = substr($option, 4)."Controller";
+		return phpFrame::getInstance($className);
+	}
+	
 	/**
 	 * Get database object
 	 * 

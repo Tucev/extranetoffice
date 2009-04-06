@@ -20,7 +20,6 @@
  * @package		ExtranetOffice
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
- * @author 		Luis Montero [e-noise.com]
  */
 
 /**
@@ -68,8 +67,8 @@ if ($dependencies->status === false) {
 	exit;
 }
 
-// Include libraries autoloader
-require_once _ABS_PATH.DS."lib".DS."autoload.php";
+// Include autoloader
+require_once _ABS_PATH.DS."inc".DS."autoload.php";
 
 // Instantiate application
 $application =& phpFrame::getInstance('phpFrame_Application');

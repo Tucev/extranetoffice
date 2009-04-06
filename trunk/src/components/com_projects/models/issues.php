@@ -185,8 +185,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
-		
-		require_once COMPONENT_PATH.DS."tables".DS."issues.table.php";		
+			
 		$row =& phpFrame::getInstance("projectsTableIssues");
 		
 		if (empty($post['id'])) {
@@ -263,8 +262,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 			return false;
 		}
 		
-		// Instantiate table object
-		require_once COMPONENT_PATH.DS."tables".DS."issues.table.php";
+		// Instantiate table 
 		$row =& phpFrame::getInstance("projectsTableIssues");
 		
 		// Delete row from database
@@ -293,7 +291,6 @@ class projectsModelIssues extends phpFrame_Application_Model {
 			return false;
 		}
 		
-		require_once COMPONENT_PATH.DS.'tables'.DS.'issues.table.php';
 		$row =& phpFrame::getInstance("projectsTableIssues");
 		$row->load($issueid);
 		return $row;
@@ -315,7 +312,6 @@ class projectsModelIssues extends phpFrame_Application_Model {
 			return false;
 		}
 		
-		require_once COMPONENT_PATH.DS.'tables'.DS.'issues.table.php';
 		$row =& phpFrame::getInstance("projectsTableIssues");
 		$row->load($issueid);
 		return $row;

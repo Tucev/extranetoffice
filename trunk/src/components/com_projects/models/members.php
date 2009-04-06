@@ -47,7 +47,6 @@ class projectsModelMembers extends phpFrame_Application_Model {
 	
 	function saveMember($projectid, $userid, $roleid, $notify=true) {
 		// Instantiate table object
-		require_once COMPONENT_PATH.DS.'tables'.DS.'users_roles.table.php';
 		$row =& phpFrame::getInstance('projectsTableUsersRoles');
 		
 		// Load existing entry before we overwrite with new values
@@ -129,7 +128,6 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		}
 		
 		// add user to project
-		require_once COMPONENT_PATH.DS.'tables'.DS.'users_roles.table.php';
 		$row_users_roles =& phpFrame::getInstance('projectsTableUsersRoles');
 		
 		$row_users_roles->userid = $row->id;

@@ -67,7 +67,6 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 	 */
 	function saveActivityLog($projectid, $userid, $type, $action, $title, $description, $url, $assignees, $notify) {
 		// Store notification in db
-		require_once COMPONENT_PATH.DS."tables".DS."activitylog.table.php";
 		$row =& phpFrame::getInstance("projectsTableActivitylog");
 		$row->projectid = $projectid;
 		$row->userid = $userid;

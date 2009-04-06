@@ -140,8 +140,7 @@ class projectsModelMessages extends phpFrame_Application_Model {
 			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
-		
-		require_once COMPONENT_PATH.DS."tables".DS."messages.table.php";		
+				
 		$row =& phpFrame::getInstance("projectsTableMessages");
 		
 		if (!$row->bind($post)) {
@@ -190,7 +189,6 @@ class projectsModelMessages extends phpFrame_Application_Model {
 	public function deleteMessage($projectid, $messageid) {
 		//TODO: This function should allow ids as either int or array of ints.
 		//TODO: This function should also check permissions before deleting
-		require_once COMPONENT_PATH.DS."tables".DS."messages.table.php";
 		
 		// Delete message's comments
 		$query = "DELETE FROM #__comments ";
@@ -205,7 +203,7 @@ class projectsModelMessages extends phpFrame_Application_Model {
 		$this->db->query();
 		
 		// Instantiate table object
-		$row = new projectsTableMessages();
+		$row = phpFrame::getInstance('projectsTableMessages');
 		
 		// Delete row from database
 		if (!$row->delete($messageid)) {

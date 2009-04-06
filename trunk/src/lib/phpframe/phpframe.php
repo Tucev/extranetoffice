@@ -82,5 +82,31 @@ class phpFrame extends phpFrame_Base_Singleton {
 	public function getLang() {
 		return $this->_lang;
 	}
+	
+	/**
+	 * Magic autoload method for component's classes 
+	 * 
+	 * @param	string	$className
+	 * @return	void
+	 * @since	1.0
+	 */
+	public function __autoload($className) {
+		if (strpos(strtolower($className), 'controller') !== false) {
+			$file_path = _ABS_PATH.DS."components".DS."com_projects".DS."controller.php";
+		}
+		elseif (strpos(strtolower($className), 'model') !== false) {
+			$file_path = _ABS_PATH.DS."components".DS."com_projects".DS."models".DS."phpmailer.php"; 
+		}
+		elseif (strpos(strtolower($className), 'view') !== false) {
+			$file_path = _ABS_PATH.DS."components".DS."com_projects".DS."views".DS."inputfilter.php"; 
+		}
+		
+		if (file_exists($file_path)) {
+			require $file_path;
+		}
+		else {
+			die('Could not autoload class '.$className);
+		}
+	}
 }
 ?>
