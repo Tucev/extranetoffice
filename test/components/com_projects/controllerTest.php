@@ -18,6 +18,7 @@ require_once _ABS_PATH_TEST.DS."inc".DS."config.php";
 // Include autoloader
 require_once _ABS_PATH.DS."inc".DS."autoload.php";
 
+// Initialise application
 $application = phpFrame_Application_Factory::getApplication();
 $application->auth();
 
@@ -45,7 +46,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
      	phpFrame::destroyInstance('projectsController');
     }
     
-    function testSave_project() {
+    function test_save_project() {
     	// Fake posted form data
     	phpFrame_Environment_Request::setVar('task', 'save_project');
     	phpFrame_Environment_Request::setVar('name', 'This is a test project');
@@ -60,10 +61,16 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	$this->assertTrue($controller->getSuccess());
     }
     
-    function testRemove_project() {
+    function test_remove_project() {
+    	// Add a project to db to then delete it
+    	$db = phpFrame_Application_Factory::getDB();
+    	$query = "INSERT INTO #__projects (id, name, project_type, priority) VALUES (NULL, 'another project', '2', '1')";
+		$db->setQuery($query);
+		$projectid = $db->query();
+		
     	// Fake posted form data
     	phpFrame_Environment_Request::setVar('task', 'remove_project');
-    	phpFrame_Environment_Request::setVar('projectid', '1');
+    	phpFrame_Environment_Request::setVar('projectid', $projectid);
     	
     	$application = phpFrame_Application_Factory::getApplication();
     	$application->exec();
@@ -72,7 +79,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	$this->assertTrue($controller->getSuccess());
     }
     
-    function testSave_memberInviteNewUser() {
+    function test_save_member_InviteNewUser() {
     	// Fake posted form data
     	phpFrame_Environment_Request::setVar('task', 'save_member');
     	phpFrame_Environment_Request::setVar('projectid', '1');
@@ -92,7 +99,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	
     }
     
-	function testSave_memberExistingUser() {
+	function test_save_member_ExistingUser() {
 		// Add an existing member to be able to assign to project
 		$db = phpFrame_Application_Factory::getDB();
 		$query = "INSERT INTO `#__users` (`id`, `groupid`, `username`, `password`, `email`, `firstname`, `lastname`,`photo`";
@@ -117,5 +124,44 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	
     }
     
+    function test_remove_member() {
+    	// Add an user to then delete it in this test
+		$db = phpFrame_Application_Factory::getDB();
+		$query = "INSERT INTO `#__users` (`id`, `groupid`, `username`, `password`, `email`, `firstname`, `lastname`,`photo`";
+		$query .= ", `notifications`, `show_email`, `block`, `created`, `last_visit`, `activation`, `params`, `ts`, `deleted`)";
+		$query .= " VALUES (NULL, '2', 'testuser3', '', 'notifications.test@extranetoffice.org', 'test', 'user 3', 'default.png'";
+		$query .= ", '1', '1', '0', '', NULL , NULL , NULL , CURRENT_TIMESTAMP, NULL)";
+		$db->setQuery($query);
+		$userid = $db->query();
+		// make user a project member
+		$query = "INSERT INTO #__users_roles (id, userid, roleid, projectid) VALUES (NULL, '".$userid."', '2', '1')";
+		$db->setQuery($query);
+		$db->query();
+		
+    	// Fake posted form data
+    	phpFrame_Environment_Request::setVar('task', 'remove_member');
+    	phpFrame_Environment_Request::setVar('projectid', '1');
+    	phpFrame_Environment_Request::setVar('userid', $userid);
+    	
+    	$application = phpFrame_Application_Factory::getApplication();
+    	$application->exec();
+    	
+    	$controller = phpFrame_Application_Factory::getController('com_projects');
+    	$this->assertTrue($controller->getSuccess());
+    }
+    
+    function test_admin_change_member_role() {
+    	// Fake posted form data
+    	phpFrame_Environment_Request::setVar('task', 'remove_member');
+    	phpFrame_Environment_Request::setVar('projectid', '1');
+    	phpFrame_Environment_Request::setVar('userid', '63');
+    	phpFrame_Environment_Request::setVar('roleid', '3');
+    	
+    	$application = phpFrame_Application_Factory::getApplication();
+    	$application->exec();
+    	
+    	$controller = phpFrame_Application_Factory::getController('com_projects');
+    	$this->assertTrue($controller->getSuccess());
+    }
 }
 ?>

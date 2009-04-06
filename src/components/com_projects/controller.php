@@ -192,6 +192,7 @@ class projectsController extends phpFrame_Application_Controller {
 		$modelMembers = $this->getModel('members');
 		if ($modelMembers->deleteMember($projectid, $userid) === true) {
 			phpFrame_Application_Error::raise('', 'message', _LANG_PROJECT_MEMBER_DELETE_SUCCESS);
+			$this->success = true;
 		}
 		else {
 			phpFrame_Application_Error::raise('', 'error', _LANG_PROJECT_MEMBER_DELETE_ERROR);	
@@ -211,6 +212,7 @@ class projectsController extends phpFrame_Application_Controller {
 		}
 		else {
 			phpFrame_Application_Error::raise('', 'message', _LANG_PROJECT_MEMBER_ROLE_SAVED);
+			$this->success = true;
 		}
 		
 		$this->setRedirect('index.php?option=com_projects&view=admin&projectid='.$projectid);
