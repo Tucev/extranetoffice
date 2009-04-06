@@ -31,7 +31,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     
 	function tearDown() {
 		phpFrame_Environment_Request::destroy();
-     	phpFrame::destroyInstance('projectsController');
+     	phpFrame_Base_Singleton::destroyInstance('projectsController');
     }
     
     function test_save_project() {
