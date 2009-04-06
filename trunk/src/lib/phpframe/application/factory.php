@@ -26,7 +26,7 @@ class phpFrame_Application_Factory {
 	 * @since 	1.0
 	 */
 	public static function getApplication() {
-		return phpFrame::getInstance('phpFrame_Application');
+		return phpFrame_Base_Singleton::getInstance('phpFrame_Application');
 	}
 	
 	/**
@@ -36,7 +36,7 @@ class phpFrame_Application_Factory {
 	 * @since 	1.0
 	 */
 	public static function getPermissions() {
-		return phpFrame::getInstance('phpFrame_Application_Permissions');
+		return phpFrame_Base_Singleton::getInstance('phpFrame_Application_Permissions');
 	}
 	
 	/**
@@ -46,12 +46,12 @@ class phpFrame_Application_Factory {
 	 * @since 	1.0
 	 */
 	public static function getPathway() {
-		return phpFrame::getInstance('phpFrame_Application_Pathway');
+		return phpFrame_Base_Singleton::getInstance('phpFrame_Application_Pathway');
 	}
 	
 	public static function getController($option) {
 		$className = substr($option, 4)."Controller";
-		return phpFrame::getInstance($className);
+		return phpFrame_Base_Singleton::getInstance($className);
 	}
 	
 	/**
@@ -61,7 +61,7 @@ class phpFrame_Application_Factory {
 	 * @since 	1.0
 	 */
 	public static function getDB() {
-		return phpFrame::getInstance('phpFrame_Database');
+		return phpFrame_Base_Singleton::getInstance('phpFrame_Database');
 	}
 	
 	/**
@@ -71,7 +71,7 @@ class phpFrame_Application_Factory {
 	 * @since 	1.0
 	 */
 	public static function getUser() {
-		return phpFrame::getInstance('phpFrame_User');
+		return phpFrame_Base_Singleton::getInstance('phpFrame_User');
 	}
 	
 	/**
@@ -81,7 +81,7 @@ class phpFrame_Application_Factory {
 	 * @since 	1.0
 	 */
 	public static function getSession() {
-		return phpFrame::getInstance('phpFrame_Environment_Session');
+		return phpFrame_Base_Singleton::getInstance('phpFrame_Environment_Session');
 	}
 	
 	/**
@@ -92,7 +92,7 @@ class phpFrame_Application_Factory {
 	 * @since 	1.0
 	 */
 	public static function getDocument($type) {
-		return phpFrame::getInstance('phpFrame_Document_'.strtoupper($type));
+		return phpFrame_Base_Singleton::getInstance('phpFrame_Document_'.strtoupper($type));
 	}
 	
 	/**

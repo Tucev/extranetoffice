@@ -46,7 +46,7 @@ class projectsViewProjects extends phpFrame_Application_View {
 		
 		if (!empty($this->projectid)) {
 			// get project data from controller
-			$controller =& phpFrame::getInstance('projectsController');
+			$controller =& phpFrame_Base_Singleton::getInstance('projectsController');
 			$this->project =& $controller->project;
 		}
 		

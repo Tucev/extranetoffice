@@ -151,7 +151,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 			return false;
 		}
 			
-		$row =& phpFrame::getInstance("projectsTableFiles");
+		$row =& phpFrame_Base_Singleton::getInstance("projectsTableFiles");
 		
 		if (!$row->bind($post)) {
 			$this->error[] = $row->getLastError();
@@ -241,7 +241,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		//TODO: This function should delete related items if any (comments, ...)
 		
 		// Instantiate table object	
-		$row =& phpFrame::getInstance("projectsTableFiles");
+		$row =& phpFrame_Base_Singleton::getInstance("projectsTableFiles");
 		
 		// Load row data
 		$row->load($fileid);
@@ -261,7 +261,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 	
 	public function downloadFile($projectid, $fileid) {
 		//TODO: This function should also check permissions		
-		$row =& phpFrame::getInstance("projectsTableFiles");
+		$row =& phpFrame_Base_Singleton::getInstance("projectsTableFiles");
 		
 		// Load row data
 		$row->load($fileid);

@@ -15,7 +15,7 @@ class testProjects extends PHPUnit_Framework_TestCase {
 	private $projects = null;
 
 	function setUp() {
-    	$this->projects = phpFrame::getInstance('projectsModelProjects');
+    	$this->projects = phpFrame_Base_Singleton::getInstance('projectsModelProjects');
     }
     
     function testGetProjects() {

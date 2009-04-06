@@ -185,7 +185,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 			return false;
 		}
 			
-		$row =& phpFrame::getInstance("projectsTableIssues");
+		$row =& phpFrame_Base_Singleton::getInstance("projectsTableIssues");
 		
 		if (empty($post['id'])) {
 			$row->created_by = $this->user->id;
@@ -262,7 +262,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		}
 		
 		// Instantiate table 
-		$row =& phpFrame::getInstance("projectsTableIssues");
+		$row =& phpFrame_Base_Singleton::getInstance("projectsTableIssues");
 		
 		// Delete row from database
 		if (!$row->delete($issueid)) {
@@ -290,7 +290,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 			return false;
 		}
 		
-		$row =& phpFrame::getInstance("projectsTableIssues");
+		$row =& phpFrame_Base_Singleton::getInstance("projectsTableIssues");
 		$row->load($issueid);
 		return $row;
 	}
@@ -311,7 +311,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 			return false;
 		}
 		
-		$row =& phpFrame::getInstance("projectsTableIssues");
+		$row =& phpFrame_Base_Singleton::getInstance("projectsTableIssues");
 		$row->load($issueid);
 		return $row;
 	}

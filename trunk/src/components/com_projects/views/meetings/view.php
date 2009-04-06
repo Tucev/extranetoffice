@@ -46,7 +46,7 @@ class projectsViewMeetings extends phpFrame_Application_View {
 		
 		// Set reference to project object loaded in controller
 		if (!empty($this->projectid)) {
-			$controller =& phpFrame::getInstance('projectsController');
+			$controller =& phpFrame_Base_Singleton::getInstance('projectsController');
 			$this->project =& $controller->project;
 		}
 		

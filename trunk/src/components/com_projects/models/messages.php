@@ -140,7 +140,7 @@ class projectsModelMessages extends phpFrame_Application_Model {
 			return false;
 		}
 				
-		$row =& phpFrame::getInstance("projectsTableMessages");
+		$row =& phpFrame_Base_Singleton::getInstance("projectsTableMessages");
 		
 		if (!$row->bind($post)) {
 			$this->error[] = $row->getLastError();
@@ -202,7 +202,7 @@ class projectsModelMessages extends phpFrame_Application_Model {
 		$this->db->query();
 		
 		// Instantiate table object
-		$row = phpFrame::getInstance('projectsTableMessages');
+		$row = phpFrame_Base_Singleton::getInstance('projectsTableMessages');
 		
 		// Delete row from database
 		if (!$row->delete($messageid)) {

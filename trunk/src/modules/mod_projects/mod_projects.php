@@ -12,7 +12,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 $projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 
-$controller =& phpFrame::getInstance('projectsController');
+$controller =& phpFrame_Base_Singleton::getInstance('projectsController');
 $views_available = $controller->views_available;
 ?>
 

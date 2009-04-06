@@ -35,7 +35,7 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 		
 		if (!empty($this->projectid)) {
 			// get project data from controller
-			$controller =& phpFrame::getInstance('projectsController');
+			$controller =& phpFrame_Base_Singleton::getInstance('projectsController');
 			$this->project =& $controller->project;
 		}
 		
@@ -66,7 +66,7 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 	 */
 	function saveActivityLog($projectid, $userid, $type, $action, $title, $description, $url, $assignees, $notify) {
 		// Store notification in db
-		$row =& phpFrame::getInstance("projectsTableActivitylog");
+		$row =& phpFrame_Base_Singleton::getInstance("projectsTableActivitylog");
 		$row->projectid = $projectid;
 		$row->userid = $userid;
 		$row->type = $type;

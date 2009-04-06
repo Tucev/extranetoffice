@@ -38,7 +38,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * 		}
  * }
  * 
- * $myModel =& phpFrame::getInstance('myModel');
+ * $myModel =& phpFrame_Base_Singleton::getInstance('myModel');
  * echo $myModel->doSomething();
  * </code>
  * This will echo 'something'.
@@ -92,7 +92,7 @@ abstract class phpFrame_Application_Model extends phpFrame_Base_Singleton {
 		// Figure out controller instance name
 		$controller_class_name = substr($option, 4).'Controller';
 		// Assign reference to controller
-		$controller =& phpFrame::getInstance($controller_class_name);
+		$controller =& phpFrame_Base_Singleton::getInstance($controller_class_name);
 		// Get model using controller's method
 		$model =& $controller->getModel($name);
 		

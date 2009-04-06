@@ -105,7 +105,7 @@ class emailModelEmail extends phpFrame_Application_Model {
 		// when accessing this model form the dashboard component.
 		// $accountModel = $this->getModel('accounts');
 		require_once _ABS_PATH.DS.'components'.DS.'com_email'.DS.'models'.DS.'accounts.php';
-		$accountModel =& phpFrame::getInstance('emailModelAccounts');
+		$accountModel =& phpFrame_Base_Singleton::getInstance('emailModelAccounts');
 		$account = $accountModel->getAccounts($this->user->id, $this->accountid, true);
 		
 		// Set account details in model

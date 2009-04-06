@@ -9,7 +9,7 @@
  * instantiate the application and run the apps methods in the following order:
  * 
  * <code>
- * $application =& phpFrame::getInstance('phpFrame_Application');
+ * $application =& phpFrame_Base_Singleton::getInstance('phpFrame_Application');
  * $application->auth();
  * $application->exec();
  * $application->render();
@@ -71,7 +71,7 @@ if ($dependencies->status === false) {
 require_once _ABS_PATH.DS."inc".DS."autoload.php";
 
 // Instantiate application
-$application =& phpFrame::getInstance('phpFrame_Application');
+$application = phpFrame_Application_Factory::getApplication();
 $application->auth();
 $application->exec();
 $application->render();
