@@ -85,7 +85,7 @@ class emailController extends phpFrame_Application_Controller {
 		$strFileName = phpFrame_Environment_Request::getVar('file_name', '');
 		$file = phpFrame_Environment_Request::getVar('file', 0);
 		
-		$modelEmail = &$this->getModel('email');
+		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
 		$modelEmail->openStream($folder);
 		$modelEmail->downloadAttachment($msgno, $strFileName, $file);
@@ -94,7 +94,7 @@ class emailController extends phpFrame_Application_Controller {
 	
 	function add_attachment() {
 		
-		$modelEmail = &$this->getModel('email');
+		$modelEmail = $this->getModel('email');
 		$attachment = $modelEmail->addAttachment();
 		
 		// Save the attachment data in request array so that the view can access it
@@ -115,7 +115,7 @@ class emailController extends phpFrame_Application_Controller {
 		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
 		$save_in_sent = phpFrame_Environment_Request::getVar('save_in_sent', 0);
 		
-		$modelEmail = &$this->getModel('email');
+		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
 		
 		if ($modelEmail->sendMessage($recipients, $subject, $body, $cc, $bcc, $replyto, $attachments) === true) {
@@ -162,7 +162,7 @@ class emailController extends phpFrame_Application_Controller {
 			return false;
 		}
 		else {
-			$modelEmail = &$this->getModel('email');
+			$modelEmail = $this->getModel('email');
 			$modelEmail->loadUserEmailAccount();
 			$modelEmail->openStream($folder);
 			$modelEmail->moveMessage($uid, $mailbox);
@@ -180,7 +180,7 @@ class emailController extends phpFrame_Application_Controller {
 		$uid = phpFrame_Environment_Request::getVar('uid', 0); // can contain a list of ids
 		$trash = phpFrame_Environment_Request::getVar('trash', 0);
 		
-		$modelEmail = &$this->getModel('email');
+		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
 		
 		if ($trash == 1) {
@@ -208,7 +208,7 @@ class emailController extends phpFrame_Application_Controller {
 		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
 		$uid = phpFrame_Environment_Request::getInt('uid');
 		
-		$modelEmail = &$this->getModel('email');
+		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
 		$modelEmail->openStream($folder);
 		$modelEmail->undeleteMessage($uid);
@@ -220,7 +220,7 @@ class emailController extends phpFrame_Application_Controller {
 	function empty_deleted_items() {
 		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
 		
-		$modelEmail = &$this->getModel('email');
+		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
 		$modelEmail->openStream($folder);
 		$modelEmail->emptyDeletedItems();
@@ -238,7 +238,7 @@ class emailController extends phpFrame_Application_Controller {
 	function empty_email_trash() {
 		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
 		
-		$modelEmail = &$this->getModel('email');
+		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
 		$modelEmail->openStream('Trash');
 		$modelEmail->emptyMailbox();
@@ -255,7 +255,7 @@ class emailController extends phpFrame_Application_Controller {
 		$uid = phpFrame_Environment_Request::getInt('uid');
 		$flag = phpFrame_Environment_Request::getVar('flag', '');
 		
-		$modelEmail = &$this->getModel('email');
+		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
 		$modelEmail->openStream($folder);
 		$modelEmail->setFlags($uid, "\\".$flag);
@@ -269,7 +269,7 @@ class emailController extends phpFrame_Application_Controller {
 		$uid = phpFrame_Environment_Request::getInt('uid');
 		$flag = phpFrame_Environment_Request::getVar('flag', '');
 		
-		$modelEmail = &$this->getModel('email');
+		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
 		$modelEmail->openStream($folder);
 		$modelEmail->clearFlags($uid, "\\".$flag);
@@ -285,7 +285,7 @@ class emailController extends phpFrame_Application_Controller {
 		if (!empty($new_folder_path)) {
 			$new_folder_name = $new_folder_path.".".$new_folder_name;
 		}
-		$modelEmail = &$this->getModel('email');
+		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
 		$modelEmail->openStream('');
 		$modelEmail->createMailbox($new_folder_name);
@@ -299,7 +299,7 @@ class emailController extends phpFrame_Application_Controller {
 		$old_box = phpFrame_Environment_Request::getVar('old_box', '');
 		$new_box = phpFrame_Environment_Request::getVar('new_box', '');
 		
-		$modelEmail = &$this->getModel('email');
+		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
 		$modelEmail->openStream('');
 		$modelEmail->renameMailbox($old_box, $new_box);
@@ -318,7 +318,7 @@ class emailController extends phpFrame_Application_Controller {
 		$mailbox = phpFrame_Environment_Request::getVar('mailbox', '');
 		$folder = phpFrame_Environment_Request::getVar('folder', '');
 		
-		$modelEmail = &$this->getModel('email');
+		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
 		$modelEmail->openStream($mailbox);
 		$modelEmail->deleteMailbox();
