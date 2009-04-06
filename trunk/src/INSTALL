@@ -69,11 +69,10 @@ Command line installation
 4. Filesystem settings
 
 	Create "filesystem" folder outside of web root, but make sure the webserver has both read 
-	and write access. Also create a subdirectory named "projects".
+	and write access.
 	
 	For example:
 	mkdir /var/extranet_fs
-	mkdir /var/extranet_fs/projects
 
 	Give web server user write access to uploads folder. By default this is a directory named 
 	"uploads".
