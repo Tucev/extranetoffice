@@ -92,6 +92,7 @@ define("_LANG_CONFIG_SAVE_SUCCESS", "Global configuration successfully saved");
 // com_admin > User Management
 define("_LANG_ADMIN_USERS", "User management");
 define("_LANG_ADMIN_USERS_NEW", "New user");
+define("_LANG_ADMIN_USERS_EDIT", "Edit user");
 define("_LANG_ADMIN_USERS_DELETE", "Delete user");
 define("_LANG_ADMIN_USER_DETAILS", "User details");
 define("_LANG_PASSWORD_AUTOGEN_INFO", "A password will be automatically generated and sent via email to the new user.");
@@ -105,8 +106,6 @@ Login username: %s
 Password: %s
 
 This email has been automatically generated. Please do not reply to this message.");
-define("_LANG_ADMIN_USERS_EDIT", "Edit user");
-define("_LANG_ADMIN_USERS_DELETE", "Delete user");
 define("_LANG_ADMIN_USERS_DELETE_CONFIRM", "Are you sure you want to delete user");
 define("_LANG_ADMIN_USERS_DELETE_SUCCESS", "User successfully deleted");
 
@@ -178,6 +177,7 @@ define("_LANG_PROJECTS_ACCESS_ADMINS", "Admins");
 define("_LANG_PROJECTS_ACCESS_WORKERS", "Project workers");
 define("_LANG_PROJECTS_ACCESS_GUESTS", "Guests");
 define("_LANG_PROJECTS_ACCESS_PUBLIC", "Public");
+define("_LANG_PROJECTS_ACCESS_PRIVATE", "Private");
 
 define("_LANG_PROJECTS_STATUS_PLANNING", "Planning");
 define("_LANG_PROJECTS_STATUS_IN_PROGRESS", "In progress");
@@ -188,9 +188,6 @@ define("_LANG_PROJECTS_STATUS_ARCHIVED", "Archived");
 define("_LANG_PROJECTS_PRIORITY_LOW", "Low");
 define("_LANG_PROJECTS_PRIORITY_MEDIUM", "Medium");
 define("_LANG_PROJECTS_PRIORITY_HIGH", "High");
-
-define("_LANG_PROJECTS_ACCESS_PUBLIC", "Public");
-define("_LANG_PROJECTS_ACCESS_PRIVATE", "Private");
 
 define("_LANG_PROJECTS_NAME_REQUIRED", "Project name is required");
 
@@ -247,8 +244,6 @@ define("_LANG_PROJECTS_CHANGE_ROLE", "Change role");
 define("_LANG_PROJECT_MEMBER_ROLE_SAVED", "Member role in this project has been updated");
 
 define("_LANG_COMMENTS_NEW", "Post new comment");
-
-define("_LANG_ACTIVITYLOG_NOTIFY_FAILED", "An error occured while attemting to send notifications");
 
 // Files
 define("_LANG_FILES", "Files");
@@ -374,7 +369,7 @@ Body:
 define("_LANG_PEOPLE", "People");
 
 // Activity log
-define("_LANG_ACTIVITYLOG_NOTIFY_FAILED", "Email notification failed");
+define("_LANG_ACTIVITYLOG_NOTIFY_FAILED", "An error occured while attemting to send notifications");
 define("_LANG_ACTIVITYLOG_NOTIFY_BODY", "--- Reply ABOVE THIS LINE to post a comment to the project ---
 
 [Project: %s]
