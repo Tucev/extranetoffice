@@ -70,7 +70,7 @@ class projectsModelMembers extends phpFrame_Application_Model {
 			$project_name = projectsHelperProjects::id2name($projectid);
 			$role_name = projectsHelperProjects::project_roleid2name($roleid);
 			$site_name = config::SITENAME;
-			$uri =& phpFrame_Application_Factory::getURI();
+			$uri =& phpFrame::getURI();
 			$new_member_email = phpFrame_User_Helper::id2email($userid);
 			
 			$new_mail = new phpFrame_Mail_Mailer();
@@ -94,7 +94,7 @@ class projectsModelMembers extends phpFrame_Application_Model {
 	
 	function inviteNewUser($projectid, $roleid) {
 		// Get user object
-		$user = phpFrame_Application_Factory::getUser();
+		$user = phpFrame::getUser();
 		
 		// Create standard object to store user properties
 		// We do this because we dont want to overwrite the current user object.
@@ -147,7 +147,7 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		$project_name = projectsHelperProjects::id2name($projectid);
 		$role_name = projectsHelperProjects::project_roleid2name($roleid);
 		$site_name = config::SITENAME;
-		$uri =& phpFrame_Application_Factory::getURI();
+		$uri =& phpFrame::getURI();
 		
 		$new_mail = new phpFrame_Mail_Mailer();
 		$new_mail->AddAddress($row->email, phpFrame_User_Helper::fullname_format($row->firstname, $row->lastname));

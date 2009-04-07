@@ -45,8 +45,8 @@ class phpFrame_Utils_Crypt {
      * @since	1.0
      */
     static function getToken($forceNew = false) {
-    	$user =& phpFrame_Application_Factory::getUser();
-    	$session =& phpFrame_Application_Factory::getSession();
+    	$user =& phpFrame::getUser();
+    	$session =& phpFrame::getSession();
     	$hash = phpFrame_Utils_Crypt::getHash($user->id.$session->getToken( $forceNew ));
 
     	return $hash;
@@ -66,7 +66,7 @@ class phpFrame_Utils_Crypt {
     	if (!phpFrame_Environment_Request::getVar($token, '')) {
     		return false;
     		/*
-    		$session =& phpFrame_Application_Factory::getSession();
+    		$session =& phpFrame::getSession();
     		if ($session->isNew()) {
     			//Redirect to login screen
     		}

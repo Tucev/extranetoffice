@@ -53,7 +53,7 @@ class projectsController extends phpFrame_Application_Controller {
 			$this->addPathwayItem($this->project->name, 'index.php?option=com_projects&view=projects&layout=detail&projectid='.$this->project->id);
 			
 			// Append page component name to document title
-			$document = phpFrame_Application_Factory::getDocument('html');
+			$document = phpFrame::getDocument('html');
 			if (!empty($document->title)) $document->title .= ' - ';
 			$document->title .= $this->project->name;
 		}
@@ -87,7 +87,7 @@ class projectsController extends phpFrame_Application_Controller {
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
-		$user = phpFrame_Application_Factory::getUser();
+		$user = phpFrame::getUser();
 		$post = phpFrame_Environment_Request::get('post');
 		
 		$modelProjects = $this->getModel('projects');

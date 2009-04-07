@@ -12,13 +12,13 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 $option = phpFrame_Environment_Request::getVar('option', 'com_dashboard');
 $active_component = substr($option, 4);
-$db =& phpFrame_Application_Factory::getDB();
+$db =& phpFrame::getDB();
 
 $query = "SELECT * FROM #__components WHERE system = '0' AND enabled = '1' ORDER BY ordering ASC";
 $db->setQuery($query);
 $components = $db->loadObjectList();
 
-$application =& phpFrame_Application_Factory::getApplication();
+$application =& phpFrame::getApplication();
 ?>
 
 <ul id="menu">

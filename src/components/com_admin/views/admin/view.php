@@ -55,7 +55,7 @@ class adminViewAdmin extends phpFrame_Application_View {
 		parent::display();
 		
 		// Append page title to document title
-		$document =& phpFrame_Application_Factory::getDocument('html');
+		$document =& phpFrame::getDocument('html');
 		$document->title .= ' - '.$this->page_title;
 	}
 	

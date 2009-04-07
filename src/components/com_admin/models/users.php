@@ -129,7 +129,7 @@ class adminModelUsers extends phpFrame_Application_Model {
 		$userid = phpFrame_Environment_Request::getVar('id', null);
 		
 		// Get reference to user object
-		$user =& phpFrame_Application_Factory::getUser();
+		$user =& phpFrame::getUser();
 		
 		// Create standard object to store user properties
 		// We do this because we dont want to overwrite the current user object.
@@ -178,7 +178,7 @@ class adminModelUsers extends phpFrame_Application_Model {
 		
 		// Send notification to new users
 		if ($new_user === true) {
-			$uri =& phpFrame_Application_Factory::getURI();
+			$uri =& phpFrame::getURI();
 		
 			$new_mail = new phpFrame_Mail_Mailer();
 			$new_mail->AddAddress($row->email, phpFrame_User_Helper::fullname_format($row->firstname, $row->lastname));

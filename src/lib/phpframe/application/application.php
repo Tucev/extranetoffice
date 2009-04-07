@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * The class should be instantiated as:
  * 
  * <code>
- * $application = phpFrame_Application_Factory::getApplication();
+ * $application = phpFrame::getApplication();
  * </code>
  * 
  * Before we instantiate the application we first need to set a few useful constants,
@@ -37,7 +37,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * // Include autoloader
  * require_once _ABS_PATH.DS."inc".DS."autoload.php";
  * 
- * $application = phpFrame_Application_Factory::getApplication();
+ * $application = phpFrame::getApplication();
  * $application->auth();
  * $application->exec();
  * $application->render();
@@ -127,7 +127,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		}
 		
 		// instantiate db object and store in application
-		$db = phpFrame_Application_Factory::getDB();
+		$db = phpFrame::getDB();
 		// connect to MySQL server
 		if ($db->connect(config::DB_HOST, config::DB_USER, config::DB_PASS, config::DB_NAME) !== true) {
 			phpFrame_Application_Error::raiseFatalError($db->getLastError());
@@ -147,9 +147,9 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 	 */
 	public function auth() {
 		// get session object (singeton)
-		$session = phpFrame_Application_Factory::getSession();
+		$session = phpFrame::getSession();
 		// get user object
-		$user = phpFrame_Application_Factory::getUser();
+		$user = phpFrame::getUser();
 		
 		if (!empty($session->userid)) {
 			$user->load($session->userid);
@@ -191,7 +191,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		$option = phpFrame_Environment_Request::getVar('option', 'com_dashboard');
 		
 		// Initialise permissions
-		$this->permissions = phpFrame_Application_Factory::getPermissions();
+		$this->permissions = phpFrame::getPermissions();
 		
 		// Get component info
 		$components = phpFrame_Base_Singleton::getInstance('phpFrame_Application_Components');
@@ -205,7 +205,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		// Start buffering
 		ob_start();
 		// Create the controller
-		$controller = phpFrame_Application_Factory::getController($option);
+		$controller = phpFrame::getController($option);
 		// Execute task
 		$controller->execute(phpFrame_Environment_Request::getVar('task'));	
 		// Redirect if set by the controller
@@ -226,7 +226,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 	public function render() {
 		// If client is default (pc web browser) we add the jQuery library + jQuery UI
 		if ($this->client == "default") {
-			$document = phpFrame_Application_Factory::getDocument('html');
+			$document = phpFrame::getDocument('html');
 			$document->addScript('lib/jquery/js/jquery-1.3.2.min.js');
 			$document->addScript('lib/jquery/js/jquery-ui-1.7.custom.min.js');
 			$document->addScript('lib/jquery/plugins/validate/jquery.validate.pack.js');
@@ -246,7 +246,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 			$template_filename = 'index.php';
 			
 			// get pathway
-			$this->pathway = phpFrame_Application_Factory::getPathway();
+			$this->pathway = phpFrame::getPathway();
 		}
 		
 		switch ($this->client) {
@@ -288,7 +288,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		}
 		
 		// clear errors after displaying
-		$session = phpFrame_Application_Factory::getSession();
+		$session = phpFrame::getSession();
 		$session->setVar('error', null);
 	}
 	

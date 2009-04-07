@@ -83,7 +83,7 @@ class phpFrame_Application_Debug {
 		echo 'Script Execution Time: ' . round(self::$_execution_end - self::$_execution_start, 5) . ' seconds'; 
 		
 		echo '<h2>Application:</h2>';
-		echo '<pre>'; var_dump(phpFrame_Application_Factory::getApplication()); echo '</pre>';
+		echo '<pre>'; var_dump(phpFrame::getApplication()); echo '</pre>';
 		echo '<hr />';
 		
 		echo '<h2>Request:</h2>';
@@ -95,11 +95,11 @@ class phpFrame_Application_Debug {
 		echo '<hr />';
 		
 		echo '<h2>Session:</h2>';
-		echo '<pre>'; var_dump(phpFrame_Application_Factory::getSession()); echo '</pre>';
+		echo '<pre>'; var_dump(phpFrame::getSession()); echo '</pre>';
 		echo '<hr />';
 		
 		echo '<h2>User:</h2>';
-		echo '<pre>'; var_dump(phpFrame_Application_Factory::getUser()); echo '</pre>';
+		echo '<pre>'; var_dump(phpFrame::getUser()); echo '</pre>';
 		echo '<hr />';
 		
 		global $dependencies;
