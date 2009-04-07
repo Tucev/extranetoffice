@@ -71,7 +71,7 @@ if ($dependencies->status === false) {
 require_once _ABS_PATH.DS."inc".DS."autoload.php";
 
 // Instantiate application
-$application = phpFrame_Application_Factory::getApplication();
+$application = phpFrame::getApplication();
 $application->auth();
 $application->exec();
 $application->render();

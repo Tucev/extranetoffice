@@ -31,7 +31,7 @@ class phpFrame_Application_Error {
 	 */
 	static function display($error=null) {
 		if (!$error) {
-			$session =& phpFrame_Application_Factory::getSession();
+			$session =& phpFrame::getSession();
 			if ($session->id) {
 				$error = $session->getVar('error');	
 			}
@@ -68,7 +68,7 @@ class phpFrame_Application_Error {
 		$error->msg = $msg;
 		
 		// Store error in session
-		$session =& phpFrame_Application_Factory::getSession();
+		$session =& phpFrame::getSession();
 		if (!$session->id) {
 			phpFrame_Application_Error::display(array($error));
 		}

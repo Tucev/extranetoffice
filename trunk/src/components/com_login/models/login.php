@@ -10,14 +10,14 @@
 class loginModelLogin extends phpFrame_Application_Model {
 	
 	public function login($username, $password) {
-		$db =& phpFrame_Application_Factory::getDB();
+		$db =& phpFrame::getDB();
 		$query = "SELECT id, password FROM #__users WHERE username = '".$username."'";
 		$db->setQuery($query);
 		$credentials = $db->loadObject();
 		
 		// User exists
 		if ($credentials->id) {
-			$user =& phpFrame_Application_Factory::getUser();
+			$user =& phpFrame::getUser();
 			$user->load($credentials->id);
 			
 			// check password
@@ -27,7 +27,7 @@ class loginModelLogin extends phpFrame_Application_Model {
 			$testcrypt = phpFrame_Utils_Crypt::getCryptedPassword($password, $salt);
 			if ($crypt == $testcrypt) {
 				// Store user data in session
-				$session =& phpFrame_Application_Factory::getSession();
+				$session =& phpFrame::getSession();
 				$session->userid = $user->id;
 				$session->groupid = $user->groupid;
 				$session->write();
@@ -84,7 +84,7 @@ class loginModelLogin extends phpFrame_Application_Model {
 			}
 			
 			// Send notification to new users
-			$uri =& phpFrame_Application_Factory::getURI();
+			$uri =& phpFrame::getURI();
 			
 			$new_mail = new phpFrame_Mail_Mailer();
 			$new_mail->AddAddress($row->email, phpFrame_User_Helper::fullname_format($row->firstname, $row->lastname));

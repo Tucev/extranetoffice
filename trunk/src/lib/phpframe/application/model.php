@@ -76,8 +76,8 @@ abstract class phpFrame_Application_Model extends phpFrame_Base_Singleton {
 	 * @return void
 	 */
 	function __construct() {
-		$this->user =& phpFrame_Application_Factory::getUser();
-		$this->db =& phpFrame_Application_Factory::getDB();
+		$this->user =& phpFrame::getUser();
+		$this->db =& phpFrame::getDB();
 	}
 	
 	/**

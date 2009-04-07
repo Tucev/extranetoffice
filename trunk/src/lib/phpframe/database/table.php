@@ -64,7 +64,7 @@ abstract class phpFrame_Database_Table extends phpFrame_Base_Singleton {
 	 * @since 	1.0
 	 */
 	public function __construct($table_name, $primary_key) {
-		$this->db =& phpFrame_Application_Factory::getDB();
+		$this->db =& phpFrame::getDB();
 		$this->table_name = $table_name;
 		$this->primary_key = $primary_key;
 		

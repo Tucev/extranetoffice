@@ -102,7 +102,7 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 	 * @todo	sanatise address, subject & body
 	 */
 	function _notify($row, $assignees) {
-		$uri = phpFrame_Application_Factory::getURI();
+		$uri = phpFrame::getURI();
 		$user_name = phpFrame_User_Helper::id2name($row->userid);
 		
 		$new_mail = new phpFrame_Mail_Mailer();

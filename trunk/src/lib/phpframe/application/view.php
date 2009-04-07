@@ -87,7 +87,7 @@ abstract class phpFrame_Application_View extends phpFrame_Base_Singleton {
     	$this->view =& phpFrame_Environment_Request::getVar('view');
     	
     	// Assign references to user object for quick access in tmpl
-		$this->user =& phpFrame_Application_Factory::getUser();
+		$this->user =& phpFrame::getUser();
 	}
 	
     /**
@@ -175,7 +175,7 @@ abstract class phpFrame_Application_View extends phpFrame_Base_Singleton {
 	 * @since	1.0
 	 */
 	function addPathwayItem($title, $url='') {
-		$pathway =& phpFrame_Application_Factory::getPathway();
+		$pathway =& phpFrame::getPathway();
 		// add item
 		$pathway->addItem($title, $url);
 	}

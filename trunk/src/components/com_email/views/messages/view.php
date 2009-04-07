@@ -64,7 +64,7 @@ class emailViewMessages extends phpFrame_Application_View {
 		
 		// Append page title to document title
 		if (phpFrame_Environment_Request::getVar('layout') != 'list') {
-			$document =& phpFrame_Application_Factory::getDocument('html');
+			$document =& phpFrame::getDocument('html');
 			$document->title .= ' - '.$this->page_title;
 		}
 	}
@@ -80,7 +80,7 @@ class emailViewMessages extends phpFrame_Application_View {
 		$this->page_title = _LANG_EMAIL;
 		
 		// Attach scripts and stylesheets
-		$document =& phpFrame_Application_Factory::getDocument('html');
+		$document =& phpFrame::getDocument('html');
 		$document->addScript('lib/contextmenu/webtoolkit.contextmenu.js');
 		$document->addStyleSheet('lib/contextmenu/webtoolkit.contextmenu.css');
 
@@ -110,7 +110,7 @@ class emailViewMessages extends phpFrame_Application_View {
 		$model->closeStream();
 			
 		// Set the page to auto refresh every set amount of time (in seconds)
-		//$document =& phpFrame_Application_Factory::getDocument('html');
+		//$document =& phpFrame::getDocument('html');
 		//$document->setMetaData('refresh', '120', true);
 	}
 	

@@ -114,7 +114,7 @@ class phpFrame_Document extends phpFrame_Base_Singleton {
 	 * @since	1.0
 	 */
 	public function __construct() {
-		$uri =& phpFrame_Application_Factory::getURI();
+		$uri =& phpFrame::getURI();
 		$this->base =& $uri->getBase();
 		$this->uri =& $uri->uri;
 	}
