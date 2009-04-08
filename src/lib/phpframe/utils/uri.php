@@ -106,6 +106,8 @@ class phpFrame_Utils_URI extends phpFrame_Base_StdObject {
 	 * This method initialises the object by invoking parseURI(). 
 	 * If no URI is passed the current request's URI will be used.
 	 * 
+	 * If the app was invoked on the command line we don't try to detect and parse the current URL.
+	 * 
 	 * @access	public
 	 * @param	string	$uri The URI string.
 	 * @return 	void
@@ -113,6 +115,11 @@ class phpFrame_Utils_URI extends phpFrame_Base_StdObject {
 	 */
 	public function __construct($uri='') {
 		if (empty($uri)) {
+			// If client is command line we simply return
+			if (phpFrame_Utils_Client::isCLI()) {
+				return;
+			}
+			
 			$uri = $this->_getRequestURI();
 		}
 		
