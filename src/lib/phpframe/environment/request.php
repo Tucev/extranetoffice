@@ -41,16 +41,11 @@ class phpFrame_Environment_Request {
 		
 		// Get arguments passed via command line and parse them as request vars
 		global $argv;
-		if (is_array($argv) && count($argv) > 0) {
-			foreach ($argv as $pair) {
-				$pair_array = explode('=', $pair);
-				self::$_request[$pair_array[0]] = $pair_array[1];
-				self::$_post[$pair_array[0]] = $pair_array[1];
-			}
-			define('CLI', true);
-		} 
-		else {
-		    define('CLI', false); 
+		
+		for ($i=1; $i<count($argv); $i++) {
+			$pair_array = explode('=', $argv[$i]);
+			self::$_request[$pair_array[0]] = $pair_array[1];
+			self::$_post[$pair_array[0]] = $pair_array[1];
 		}
 	}
 	

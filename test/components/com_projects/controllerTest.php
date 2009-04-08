@@ -15,8 +15,12 @@ require_once _ABS_PATH_TEST.DS."test.helper.php";
 // Prepare application for tests. This sets constants and include config and autoloader
 testHelper::prepareApplication();
 // Reset installation before running tests. This will reset database and filesystem.
-try { testHelper::freshInstall(); } 
-catch (Exception $e) { throw $e; }
+try { 
+	testHelper::freshInstall(); 
+} 
+catch (Exception $e) { 
+	throw $e; 
+}
 
 // Initialise application
 $application = phpFrame::getApplication();
