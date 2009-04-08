@@ -25,19 +25,19 @@ define("_EXEC", true);
  */
 define('_ABS_PATH', dirname(__FILE__) );
 /**
- * Set DS constant (directory separator depends on server operating system).
+ * Set convenience DS constant (directory separator depends on server operating system).
  */
 define( 'DS', DIRECTORY_SEPARATOR );
 
 /**
+ * Path to configuration file
+ * 
  * @var string
  */
 $config_file_path = _ABS_PATH.DS."inc".DS."config.php";
 /**
- * If there is no config file or the installation directory is present we redirect to installation directory
- * @todo	This needs to be changed once we are ready to start testing the installation process. See commented line below.
+ * If there is no config file we redirect to installation directory
  */
-//if (!file_exists($config_file_path) || is_dir(_ABS_PATH.DS."installation")) {
 if (!file_exists($config_file_path)) {
 	header("Location: installation/index.php");
 }
