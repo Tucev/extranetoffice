@@ -19,19 +19,29 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 class phpFrame_Utils_Client {
 	
-	private static $_client = null;
+	private static $_client=null;
 	
-	public static function init(){
+	public static function init() {
 		
 		if (!is_null(self::$_client)) {
 			return self::$_client;
 		}
 		
-		if (_checkCLI()) return self::$_client;
-		if (_checkMoblie()) return self::$_client;
+		if (self::_checkCLI()) {
+			self::$_client = "CLI";
+		}
+		elseif (self::_checkMobile()) {
+			self::$_client = "mobile";
+		}
+		else {
+			self::$_client = "default";
+		}
 		
-		self::$_client = "default";
-		return self::$client;
+		return self::$_client;
+	}
+	
+	public static function getClient() {
+		return self::$_client;
 	}
 	
 	/**
@@ -68,13 +78,11 @@ class phpFrame_Utils_Client {
 	}
 	
 	private static function _checkCLI() {
-		
 		global $argv;
-		
 		if (is_array($argv)) {
-			self::$_client = "CLI";
 			return true;
 		}
+		
 		return false;
 	}
 	
@@ -85,7 +93,6 @@ class phpFrame_Utils_Client {
 	 * @since 	1.0
 	 */
 	private static function _checkMobile() {
-		if (!is)
 		if (isset($_SERVER["HTTP_X_WAP_PROFILE"])) {
 			return true;
 		}

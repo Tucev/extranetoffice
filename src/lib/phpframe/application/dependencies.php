@@ -52,7 +52,7 @@ class phpFrame_Application_Dependencies {
 	private static $_status=null;
 	
 	/**
-	 * Private constructor prevents instantiation
+	 * Private constructor prevents instantiation. This class should always be used statically.
 	 * 
 	 * @access	private
 	 * @return	void
@@ -113,6 +113,7 @@ class phpFrame_Application_Dependencies {
 		}
 		
 		// If now exceptions have been thrown we set the status to true
+		// This will prevent running the check twice within the same process
 		self::$_status = true;
 	}
 	

@@ -82,30 +82,6 @@ class phpFrame_Application_Debug {
 		// Print execution time
 		echo 'Script Execution Time: ' . round(self::$_execution_end - self::$_execution_start, 5) . ' seconds'; 
 		
-		echo '<h2>Application:</h2>';
-		echo '<pre>'; var_dump(phpFrame::getApplication()); echo '</pre>';
-		echo '<hr />';
-		
-		echo '<h2>Request:</h2>';
-		echo '<pre>'; var_dump(phpFrame_Environment_Request::get('request')); echo '</pre>';
-		echo '<hr />';
-		
-		echo '<h2>Config:</h2>';
-		echo '<pre>'; var_dump(new config); echo '</pre>';
-		echo '<hr />';
-		
-		echo '<h2>Session:</h2>';
-		echo '<pre>'; var_dump(phpFrame::getSession()); echo '</pre>';
-		echo '<hr />';
-		
-		echo '<h2>User:</h2>';
-		echo '<pre>'; var_dump(phpFrame::getUser()); echo '</pre>';
-		echo '<hr />';
-		
-		global $dependencies;
-		echo '<h2>Dependencies:</h2>';
-		echo '<pre>'; var_dump($dependencies); echo '</pre>';
-		
 		echo '</div>';
 	}
 }
