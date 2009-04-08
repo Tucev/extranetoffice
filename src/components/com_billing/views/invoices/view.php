@@ -32,7 +32,7 @@ class billingViewInvoices extends phpFrame_Application_View {
 	
 	function __construct() {
 		// Set the view template to load
-		$this->tmpl =& phpFrame_Environment_Request::getVar('tmpl', 'list');
+		$this->tmpl = phpFrame_Environment_Request::getVar('tmpl', 'list');
 		
 		parent::__construct();
 	}

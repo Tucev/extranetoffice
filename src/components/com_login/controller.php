@@ -45,7 +45,7 @@ class loginController extends phpFrame_Application_Controller {
 		$model = $this->getModel('login');
 		
 		// if user is not logged on we attemp to login
-		$session =& phpFrame::getSession();
+		$session = phpFrame::getSession();
 		if (empty($session->userid)) {
 			$username = phpFrame_Environment_Request::getVar('username', '');
 			$password = phpFrame_Environment_Request::getVar('password', '');

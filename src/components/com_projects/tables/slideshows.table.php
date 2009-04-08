@@ -26,7 +26,7 @@ class projectsTableSlideshows extends phpFrame_Database_Table {
 	var $created=null; // datetime
   
 	function __construct() {
-		$db =& phpFrame::getDB();
+		$db = phpFrame::getDB();
 		parent::__construct( '#__slideshows', 'id' );
 	}
 }

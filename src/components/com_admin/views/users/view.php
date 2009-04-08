@@ -38,7 +38,7 @@ class adminViewUsers extends phpFrame_Application_View {
 	 */
 	function __construct() {
 		// Set the view template to load
-		$this->layout =& phpFrame_Environment_Request::getVar('layout', 'list');
+		$this->layout = phpFrame_Environment_Request::getVar('layout', 'list');
 		
 		parent::__construct();
 	}
@@ -56,7 +56,7 @@ class adminViewUsers extends phpFrame_Application_View {
 		parent::display();
 		
 		// Append page title to document title
-		$document =& phpFrame::getDocument('html');
+		$document = phpFrame::getDocument('html');
 		$document->title .= ' - '.$this->page_title;
 	}
 	

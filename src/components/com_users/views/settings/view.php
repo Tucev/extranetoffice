@@ -51,7 +51,7 @@ class usersViewSettings extends phpFrame_Application_View {
 	function display() {
 		$this->page_title = _LANG_USER_ACCOUNT;
 		// Append page title to document title
-		$document =& phpFrame::getDocument('html');
+		$document = phpFrame::getDocument('html');
 		$document->title .= ' - '.$this->page_title;
 		
 		parent::display();

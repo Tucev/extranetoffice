@@ -86,7 +86,7 @@ class phpFrame_Application_Permissions extends phpFrame_Base_Singleton {
 		$this->layout = phpFrame_Environment_Request::getVar('layout');
 		
 		// Check login
-		$user =& phpFrame::getUser();
+		$user = phpFrame::getUser();
 		$this->userid = $user->id;
 		if (empty($this->userid)) {
 			$this->userid = 0;
@@ -124,7 +124,7 @@ class phpFrame_Application_Permissions extends phpFrame_Base_Singleton {
 	 */
 	public function checkACL($option, $task='display', $view='', $layout='') {
 		// Get group ACL
-		$db =& phpFrame::getDB();
+		$db = phpFrame::getDB();
 		$query = "SELECT * ";
 		$query .= " FROM #__acl_groups ";
 		$query .= " WHERE groupid = ".$this->groupid." AND `option` = '".$option."'";

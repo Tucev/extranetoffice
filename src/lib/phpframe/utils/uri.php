@@ -28,61 +28,77 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 class phpFrame_Utils_URI extends phpFrame_Base_StdObject {
 	/**
-	 * The URI string
-	 * 
-	 * @var string
-	 */
-	var $uri=null;
-	/**
 	 * The URI scheme
 	 * 
 	 * ie: http, https, ftp, ...
 	 * 
-	 * @var string
+	 * @access	private
+	 * @var 	string
 	 */
-	var $scheme=null;
+	private $_scheme=null;
 	/**
-	 * The part of the URI string containing the user and password if any
+	 * The part of the URI string containing the user if any
 	 * 
-	 * @var string
+	 * @access	private
+	 * @var 	string
 	 */
-	var $userinfo=null;
+	private $_user=null;
+	/**
+	 * The part of the URI string containing the user password if any
+	 * 
+	 * @access	private
+	 * @var 	string
+	 */
+	private $_pass=null;
 	/**
 	 * The host name
 	 * 
-	 * @var string
+	 * @access	private
+	 * @var 	string
 	 */
-	var $hostname=null;
+	private $_host=null;
 	/**
 	 * Port number
 	 * 
-	 * @var int
+	 * @access	private
+	 * @var 	int
 	 */
-	var $port=null;
+	private $_port=null;
 	/**
-	 * The server path / directory
+	 * The server directory
 	 * 
-	 * @var string
+	 * @access	private
+	 * @var 	string
 	 */
-	var $path=null;
+	private $_dirname=null;
 	/**
-	 * The sript name / file name
+	 * The sript name / file name without the extension
 	 * 
-	 * @var string
+	 * @access	private
+	 * @var 	string
 	 */
-	var $scriptname=null;
+	private $_filename=null;
+	/**
+	 * The file extension
+	 * 
+	 * @access	private
+	 * @var 	string
+	 */
+	private $_extension=null;
 	/**
 	 * An array containing the query string's name/value pairs.
 	 * 
-	 * @var array
+	 * @access	private
+	 * @var 	array
 	 */
-	var $query=array();
+	private $_query=array();
 	/**
 	 * The fragment part of the URI
 	 * 
-	 * @var string
+	 * @access	private
+	 * @var		string
 	 */
-	var $fragment=null;
+	private $_fragment=null;
 	
 	/**
 	 * Constructor
@@ -90,47 +106,42 @@ class phpFrame_Utils_URI extends phpFrame_Base_StdObject {
 	 * This method initialises the object by invoking parseURI(). 
 	 * If no URI is passed the current request's URI will be used.
 	 * 
+	 * @access	public
 	 * @param	string	$uri The URI string.
 	 * @return 	void
 	 * @since	1.0
 	 */
-	function __construct($uri='') {
+	public function __construct($uri='') {
 		if (empty($uri)) {
-			$uri = $this->getURI();
+			$uri = $this->_getRequestURI();
 		}
 		
-		$this->parseURI($uri);
+		$this->_parseURI($uri);
 	}
 	
 	/**
-	 * Get the URI string
+	 * Get the URI string from the current request
 	 * 
-	 * If the uri property has been set it returns its value, otherwise it gets the current request's URL.
-	 * 
-	 * @return 	string
+	 * @access	private
+	 * @return 	string	The current request's URL
 	 * @since	1.0
 	 */
-	function getURI() {
-		if (!empty($this->uri)) {
-			return $this->uri;
-		}
+	private function _getRequestURI() {
+		// Determine if the request was over SSL (HTTPS)
+		if (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && (strtolower($_SERVER['HTTPS']) != 'off')) {
+			$scheme = 'https';
+		} 
 		else {
-			// Determine if the request was over SSL (HTTPS)
-			if (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && (strtolower($_SERVER['HTTPS']) != 'off')) {
-				$scheme = 'https';
-			} 
-			else {
-				$scheme = 'http';
-			}
-			
-			$uri = $scheme.'://'.$_SERVER['HTTP_HOST'];
-			if (($scheme == 'http' && $_SERVER['SERVER_PORT'] != 80) || ($scheme == 'https' && $_SERVER['SERVER_PORT'] != 443)) {
-				$uri .= ':'.$_SERVER['SERVER_PORT'];	
-			}
-			$uri .= $_SERVER["REQUEST_URI"];
-			
-			return $uri;
+			$scheme = 'http';
 		}
+		
+		$uri = $scheme.'://'.$_SERVER['HTTP_HOST'];
+		if (($scheme == 'http' && $_SERVER['SERVER_PORT'] != 80) || ($scheme == 'https' && $_SERVER['SERVER_PORT'] != 443)) {
+			$uri .= ':'.$_SERVER['SERVER_PORT'];	
+		}
+		$uri .= $_SERVER["REQUEST_URI"];
+		
+		return $uri;
 	}
 	
 	/**
@@ -138,54 +149,64 @@ class phpFrame_Utils_URI extends phpFrame_Base_StdObject {
 	 * 
 	 * This method parses the passed URI and sets the object's properties accordingly.
 	 * 
-	 * @todo 	Method needs to be able to parse userinfo and fragment. At the moment it doesn't.
+	 * @access	private
 	 * @param	string	$uri The URI to parse
 	 * @return	void
 	 * @since	1.0
 	 */
-	function parseURI($uri) {
-		// Explode URI string to get scheme
-		$array = explode('://', $uri);
-		$this->scheme = $array[0];
+	private function _parseURI($uri) {
+		// Parse URI using PHPs parse_url() method
+		$array = parse_url($uri);
 		
-		// Get host from remaining part of the URI string
-		$this->hostname = substr($array[1], 0, strpos($array[1], '/'));
+		$this->_scheme = $array['scheme'];
+		$this->_host = $array['host'];
 		
-		// Get port number
-		if (strpos($this->hostname, ':') !== false) {
-			$host_array = explode(':', $this->hostname);
-			$this->hostname = $host_array[0];
-			$this->port = (int) $host_array[1];
+		if (array_key_exists('port', $array)) {
+			$this->_port = $array['port'];	
 		}
-		elseif ($this->scheme == 'http') {
-			$this->port = (int) 80;
+		elseif ($this->_scheme == 'http') {
+			$this->_port = 80;
 		}
-		elseif ($this->scheme == 'https') {
-			$this->port = (int) 443;
+		elseif ($this->_scheme == 'https') {
+			$this->_port = 443;
 		}
 		
-		// Get server path
-		$remaining_uri_to_parse = substr($array[1], strpos($array[1], '/'));
-		$this->path = substr($remaining_uri_to_parse, 0, strrpos($remaining_uri_to_parse, '/'));
-		
-		// Get script name
-		$remaining_uri_to_parse = substr($remaining_uri_to_parse, strrpos($remaining_uri_to_parse, '/'));
-		$this->scriptname = substr($remaining_uri_to_parse, 1, (strpos($remaining_uri_to_parse, '?')-1));
-		
-		// Get query string
-		$remaining_uri_to_parse = substr($remaining_uri_to_parse, (strpos($remaining_uri_to_parse, '?')+1));
-		$query_pairs = explode('&', $remaining_uri_to_parse);
-		foreach ($query_pairs as $pair) {
-			$pair_array = explode('=', $pair);
-			$this->query[$pair_array[0]] = $pair_array[1];
+		if (array_key_exists('user', $array)) {
+			$this->_user = $array['user'];
 		}
 		
-		// Store URI string in instance
-		$this->uri = $this->scheme.'://'.$this->hostname;
-		if (($this->scheme == 'http' && $this->port != 80) || ($this->scheme == 'https' && $this->port != 443)) {
-			$this->uri .= ':'.$this->port;	
+		if (array_key_exists('pass', $array)) {
+			$this->_pass = $array['pass'];
 		}
-		$this->uri .= $this->path.'/'.$this->scriptname.'?'.$remaining_uri_to_parse;
+		
+		if (array_key_exists('fragment', $array)) {
+			$this->_fragment = $array['fragment'];
+		}
+		
+		// Parse path into components
+		if (array_key_exists('path', $array)) {
+			// If no file name is specified (path ends in forward slash)
+			if (preg_match('/^(.*)\/$/', $array['path'], $matches)) {
+				$this->_dirname = $matches[1];
+			}
+			else {
+				$pathinfo = pathinfo($array['path']);
+				if (array_key_exists('dirname', $pathinfo)) {
+					$this->_dirname = $pathinfo['dirname'];
+				}
+				if (array_key_exists('filename', $pathinfo)) {
+					$this->_filename = $pathinfo['filename'];
+				}
+				if (array_key_exists('extension', $pathinfo)) {
+					$this->_extension = $pathinfo['extension'];
+				}	
+			}
+		}
+		
+		// Parse query string
+		if (array_key_exists('query', $array)) {
+			parse_str($array['query'], $this->_query);	
+		}
 	}
 	
 	/**
@@ -193,21 +214,43 @@ class phpFrame_Utils_URI extends phpFrame_Base_StdObject {
 	 * 
 	 * This method retrieves the base URL for the current state of the URI object.
 	 * 
+	 * @access	public
 	 * @return	string
 	 * @since	1.0
 	 */
-	function getBase() {
-		if ($this->scheme && $this->hostname) {
-			$base = $this->scheme.'://'.$this->hostname;
-			if (($this->scheme == 'http' && $this->port != 80) || ($this->scheme == 'https' && $this->port != 443)) {
-				$base .= ':'.$this->port;	
+	public function getBase() {
+		$base = $this->_scheme."://".$this->_host;
+		if (($this->_scheme == "http" && $this->_port != 80) || ($this->_scheme == "https" && $this->_port != 443)) {
+			$base .= ":".$this->_port;	
+		}
+		$base .= $this->_dirname."/";
+		
+		return $base;
+	}
+	
+	/**
+	 * Print URI object as URI string
+	 * 
+	 * @access	public
+	 * @return 	string
+	 * @since	1.0
+	 */
+	public function __toString() {
+		$str = $this->getBase().$this->_filename.".".$this->_extension;
+		if (is_array($this->_query) && count($this->_query) > 0) {
+			$str .= "?";
+			$i=0;
+			foreach ($this->_query as $key=>$value) {
+				if ($i>0) $str .= "&";
+				$str .= $key."=".$value;
+				$i++;
 			}
-			$base .= $this->path.'/';
-			return $base;	
 		}
-		else {
-			return false;
+		if (!is_null($this->_fragment)) {
+			$str .= "#".$this->_fragment;
 		}
+		
+		return $str;
 	}
 }
 ?>

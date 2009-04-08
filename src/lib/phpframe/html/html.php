@@ -378,7 +378,7 @@ class phpFrame_HTML {
 	 * @since	1.0
 	 */
 	static function autocomplete($field_name, $attribs, $tokens, $matchContains=true) {
-		$document =& phpFrame::getDocument('html');
+		$document = phpFrame::getDocument('html');
 		$document->addScript('lib/jquery/plugins/autocomplete/jquery.autocomplete.pack.js');
 		$document->addStyleSheet('lib/jquery/plugins/autocomplete/jquery.autocomplete.css');
 		
@@ -429,7 +429,7 @@ class phpFrame_HTML {
 	}
 	
 	static function upload($data=array(), $name='userfile', $onComplete='', $action='index.php') {
-		$document =& phpFrame::getDocument('html');
+		$document = phpFrame::getDocument('html');
 		$document->addScript('lib/jquery/plugins/ajax-upload/jquery.ajax-upload-2.6.js');
 		
 		$token = phpFrame_Utils_Crypt::getToken();

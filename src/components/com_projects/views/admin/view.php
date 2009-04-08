@@ -41,10 +41,10 @@ class projectsViewAdmin extends phpFrame_Application_View {
 	 */
 	function __construct() {
 		// Set the view template to load (default value is set in controller)
-		$this->layout =& phpFrame_Environment_Request::getVar('layout');
+		$this->layout = phpFrame_Environment_Request::getVar('layout');
 		
 		// Set reference to projectid
-		$this->projectid =& phpFrame_Environment_Request::getVar('projectid', 0);
+		$this->projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		
 		if (!empty($this->projectid)) {
 			// get project data from controller
@@ -70,7 +70,7 @@ class projectsViewAdmin extends phpFrame_Application_View {
 		parent::display();
 		
 		// Append page title to document title
-		$document =& phpFrame::getDocument('html');
+		$document = phpFrame::getDocument('html');
 		$document->title .= ' - '.$this->page_title;
 	}
 	

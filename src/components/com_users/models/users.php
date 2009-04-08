@@ -96,7 +96,7 @@ class usersModelUsers extends phpFrame_Application_Model {
 		$userid = phpFrame_Environment_Request::getVar('id', null);
 		
 		// Get reference to user object
-		$user =& phpFrame::getUser();
+		$user = phpFrame::getUser();
 		//$user->load($userid, 'password');
 		
 		$post = phpFrame_Environment_Request::get('post');

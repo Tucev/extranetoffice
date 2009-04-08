@@ -10,7 +10,7 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
-$user =& phpFrame::getUser();
+$user = phpFrame::getUser();
 ?>
 		
 <div id="top">

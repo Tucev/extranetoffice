@@ -70,10 +70,11 @@ abstract class phpFrame_Base_Singleton extends phpFrame_Base_StdObject {
 	 * 
 	 * @static
 	 * @access	public
-	 * @param	string $className The class name.
+	 * @param	string	$className	The class name to instantiate.
+	 * @param	array	$params		Parameters to be passed to new instance constructor.
 	 * @return	object
 	 */
-	public static function &getInstance($className) {
+	public static function &getInstance($className, $params=array()) {
 		// Check whether the requested class has alreay been instantiated
 		if (!array_key_exists($className, self::$_instances)) {
             // instance does not exist, so create it

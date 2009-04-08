@@ -22,7 +22,7 @@ class projectsTableUsersMessages extends phpFrame_Database_Table {
 	var $messageid=null; // int(11)
   
 	function __construct() {
-		$db =& phpFrame::getDB();
+		$db = phpFrame::getDB();
 		parent::__construct( '#__users_messages', 'id' );
 	}
 }

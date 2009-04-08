@@ -38,7 +38,7 @@ class emailViewAccounts extends phpFrame_Application_View {
 	 */
 	function __construct() {
 		// Set the view template to load (default value is set in controller)
-		$this->layout =& phpFrame_Environment_Request::getVar('layout');
+		$this->layout = phpFrame_Environment_Request::getVar('layout');
 		
 		parent::__construct();
 	}
@@ -55,7 +55,7 @@ class emailViewAccounts extends phpFrame_Application_View {
 		parent::display();
 		
 		// Append page title to document title
-		$document =& phpFrame::getDocument('html');
+		$document = phpFrame::getDocument('html');
 		$document->title .= ' - '.$this->page_title;
 	}
 	

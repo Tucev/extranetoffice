@@ -75,6 +75,7 @@ class dashboardViewDashboard extends phpFrame_Application_View {
 		$this->projects =& $projects['rows'];
 		
 		// Get recent e-mails
+		$this->emails = array();
 		//if ($this->iOfficeConfig->get('enable_email_client') && $this->settings->enable_email_client) {
 			// Limit the number of entries to 5
 			/* Temporarily commented out.
