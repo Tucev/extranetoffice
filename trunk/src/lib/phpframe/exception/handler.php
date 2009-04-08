@@ -72,10 +72,9 @@ class phpFrame_Exception_Handler {
 	 * @access	public
 	 * @return	void
 	 * @since	1.0
+	 * @todo	This method needs to decide what to do with the uncaught exceptions. Right now it simply outputs some basic info.
 	 */
 	public static function handleException($exception) {
-		//echo 'I am an uncaught exception. Please finish me!!! You can find me in phpFrame_Exception_Handler::handleException().';
-		//var_dump($exception);
 		echo 'Uncaught exception: '.$exception->getMessage().'<br />';
 		echo 'File: '.$exception->getFile().'<br />';
 		echo 'Line: '.$exception->getLine().'<br />';
