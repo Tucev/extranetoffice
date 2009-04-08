@@ -108,11 +108,24 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 	 * @since	1.0
 	 */
 	protected function __construct() {
+		// Initialise phpFame's error and exception handlers.
+		phpFrame_Exception_Handler::init();
+		
 		// Initialise debbuger
 		phpFrame_Application_Debug::init();
 		
 		// Load language files
 		$this->_loadLanguage();
+		
+		// Set timezone
+		date_default_timezone_set(config::TIMEZONE);
+		
+		// Instantiate database object
+		$db = phpFrame::getDB();
+		
+		// Check dependencies. This has to be done after connecting to the database, 
+		// otherwise we can not check MySQL version.
+		phpFrame_Application_Dependencies::check();
 		
 		// Initialise request
 		phpFrame_Environment_Request::init();
@@ -124,13 +137,6 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		}
 		elseif (phpFrame_Utils_Client::isCLI()) {
 			$this->client = 'CLI';
-		}
-		
-		// instantiate db object and store in application
-		$db = phpFrame::getDB();
-		// connect to MySQL server
-		if ($db->connect(config::DB_HOST, config::DB_USER, config::DB_PASS, config::DB_NAME) !== true) {
-			phpFrame_Application_Error::raiseFatalError($db->getLastError());
 		}
 	}
 	
@@ -306,7 +312,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 			require_once $lang_file;
 		}
 		else {
-			phpFrame_Application_Error::raiseFatalError('phpFrame_Application::_loadLanguage(): Could not find language file ('.$lang_file.')');
+			throw new phpFrame_Exception('Could not find language file ('.$lang_file.')');
 		}
 		
 		// Include the phpFrame lib language file
@@ -315,7 +321,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 			require_once $lang_file;
 		}
 		else {
-			phpFrame_Application_Error::raiseFatalError('phpFrame_Application::_loadLanguage(): Could not find language file ('.$lang_file.')');
+			throw new phpFrame_Exception('Could not find language file ('.$lang_file.')');
 		}
 	}
 }

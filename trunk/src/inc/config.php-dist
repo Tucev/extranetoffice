@@ -33,11 +33,37 @@ class config {
 	 */
 	const DEFAULT_LANG="en-GB";
 	/**
+	 * Timezone
+	 * 
+	 * For a list of supported timezones:
+	 * http://www.php.net/manual/en/timezones.php
+	 * 
+	 * @var string
+	 */
+	const TIMEZONE="Europe/London";
+	/**
 	 * This option switched on/off the debugger for sys admins
 	 *
 	 * @const bool
 	 */
 	const DEBUG="0";
+	/**
+	 * The severity of exceptions to log.
+	 * 
+	 * Possible values:
+	 * 3 - notices, warnings and errors
+	 * 2 - warnings and errors
+	 * 1 - errors only
+	 * 
+	 * @var string
+	 */
+	const LOG_LEVEL="1";
+	/**
+	 * Path to log file
+	 * 
+	 * @var string
+	 */
+	const LOG_FILE="/path/to/log/file";
 	/**
 	 * Secret string used to generate secure hash
 	 * 

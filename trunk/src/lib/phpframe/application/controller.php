@@ -114,13 +114,13 @@ abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
 		$this->views_available = $this->getAvailableViews();
 		
 		// Get reference to application
-		$application =& phpFrame::getApplication();
+		$application = phpFrame::getApplication();
 		
 		// Add pathway item
 		$this->addPathwayItem(ucwords($application->component_info->name), 'index.php?option='.$this->option);
 		
 		// Append component name in ducument title
-		$document =& phpFrame::getDocument('html');
+		$document = phpFrame::getDocument('html');
 		if (!empty($document->title)) $document->title .= ' - ';
 		$document->title .= ucwords($application->component_info->name);
 	}
@@ -154,7 +154,7 @@ abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
 	 */
 	public function execute($task) {
 		// Get reference to application to check permissions before we execute
-		$application =& phpFrame::getApplication();
+		$application = phpFrame::getApplication();
 		
 		if ($application->permissions->is_allowed === true) {
 			if (is_callable(array($this, $task))) {
@@ -294,7 +294,7 @@ abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
 	 * @since	1.0
 	 */
 	function addPathwayItem($title, $url='') {
-		$pathway =& phpFrame::getPathway();
+		$pathway = phpFrame::getPathway();
 		// add item
 		$pathway->addItem($title, $url);
 	}

@@ -76,8 +76,8 @@ abstract class phpFrame_Application_Model extends phpFrame_Base_Singleton {
 	 * @return void
 	 */
 	function __construct() {
-		$this->user =& phpFrame::getUser();
-		$this->db =& phpFrame::getDB();
+		$this->user = phpFrame::getUser();
+		$this->db = phpFrame::getDB();
 	}
 	
 	/**
@@ -88,7 +88,7 @@ abstract class phpFrame_Application_Model extends phpFrame_Base_Singleton {
 	 */
 	function getModel($name) {
 		// Get current component option from request
-		$option =& phpFrame_Environment_Request::getVar('option');
+		$option = phpFrame_Environment_Request::getVar('option');
 		// Figure out controller instance name
 		$controller_class_name = substr($option, 4).'Controller';
 		// Assign reference to controller

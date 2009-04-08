@@ -26,7 +26,7 @@ class phpFrame_HTML_Text {
 	 * @param	bool	$javascript_safe
 	 * @return	string
 	 */
-	function _($str, $javascript_safe=false) {
+	public static function _($str, $javascript_safe=false) {
 		return $str;
 	}
 	

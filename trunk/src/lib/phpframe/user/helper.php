@@ -40,7 +40,7 @@ class phpFrame_User_Helper {
 	 */
 	static function id2name($id=0) {
 		if (!empty($id)) { // No user has been selected
-			$db =& phpFrame::getDB();
+			$db = phpFrame::getDB();
 			$query = "SELECT firstname, lastname FROM #__users WHERE id = '".$id."'";
 			$db->setQuery($query);
 			$row = $db->loadObject();
@@ -63,7 +63,7 @@ class phpFrame_User_Helper {
 	 */
 	static function username2id($username='') {
 		if (!empty($username)) { // No user has been selected
-			$db =& phpFrame::getDB();
+			$db = phpFrame::getDB();
 			$query = "SELECT id FROM #__users WHERE username = '".$username."'";
 			$db -> setQuery($query);
 			return $db->loadResult();
@@ -81,7 +81,7 @@ class phpFrame_User_Helper {
 	 */
 	static function email2id($email='') {
 		if (!empty($email)) { // No user has been selected
-			$db =& phpFrame::getDB();
+			$db = phpFrame::getDB();
 			$query = "SELECT id FROM #__users WHERE email = '".$email."'";
 			$db -> setQuery($query);
 			return $db->loadResult();
@@ -99,7 +99,7 @@ class phpFrame_User_Helper {
 	 */
 	static function id2email($id) {
 		if (!empty($id)) { // No user has been selected
-			$db =& phpFrame::getDB();
+			$db = phpFrame::getDB();
 			$query = "SELECT email FROM #__users WHERE id = '".$id."'";
 			$db -> setQuery($query);
 			return $db->loadResult();
@@ -117,7 +117,7 @@ class phpFrame_User_Helper {
 	 */
 	static function id2photo($id) {
 		if (!empty($id)) { // No user has been selected
-			$db =& phpFrame::getDB();
+			$db = phpFrame::getDB();
 			$query = "SELECT photo FROM #__users WHERE id = '".$id."'";
 			$db -> setQuery($query);
 			$photo = $db->loadResult();
@@ -142,7 +142,7 @@ class phpFrame_User_Helper {
 		$options[] = phpFrame_HTML::_('select.option', '0', phpFrame_HTML_Text::_( '-- Select a User --' ) );
 		
 		// get users from #__users
-		$db =& phpFrame::getDB();
+		$db = phpFrame::getDB();
 		$query = "SELECT u.id, u.firstname, u.lastname ";
 		$query .= " FROM #__users AS u ";
 		if (!empty($projectid)) {
@@ -180,7 +180,7 @@ class phpFrame_User_Helper {
 	 * @return	string	A string with the html code containing the checkboxes.
 	 */
 	static function assignees($selected=0, $attribs='', $fieldname='assignees[]', $projectid=0) {
-		$db =& phpFrame::getDB();
+		$db = phpFrame::getDB();
 		$query = "SELECT u.id, u.firstname, u.lastname ";
 		$query .= " FROM #__users AS u ";
 		if (!empty($projectid)) {
@@ -230,7 +230,7 @@ class phpFrame_User_Helper {
 	 * @return	void
 	 */
 	static function autocompleteUsername($where=array()) {
-		$db =& phpFrame::getDB();
+		$db = phpFrame::getDB();
 		
 		$where[] = "(u.deleted = '0000-00-00 00:00:00' OR u.deleted IS NULL)";
 		
@@ -263,7 +263,7 @@ class phpFrame_User_Helper {
 		//$options[] = phpFrame_HTML::_('select.option', '0', phpFrame_HTML_Text::_( '-- Select a Group --' ) );
 		
 		// get users from #__users
-		$db =& phpFrame::getDB();
+		$db = phpFrame::getDB();
 		$query = "SELECT id, name FROM #__groups ORDER BY id";
 		//echo $query; exit;
 		$db -> setQuery($query);

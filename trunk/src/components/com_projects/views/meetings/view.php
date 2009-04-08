@@ -39,10 +39,10 @@ class projectsViewMeetings extends phpFrame_Application_View {
 	 */
 	function __construct() {
 		// Set the view template to load (default value is set in controller)
-		$this->layout =& phpFrame_Environment_Request::getVar('layout');
+		$this->layout = phpFrame_Environment_Request::getVar('layout');
 		
 		// Set reference to projectid
-		$this->projectid =& phpFrame_Environment_Request::getVar('projectid', 0);
+		$this->projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		
 		// Set reference to project object loaded in controller
 		if (!empty($this->projectid)) {
@@ -70,7 +70,7 @@ class projectsViewMeetings extends phpFrame_Application_View {
 		parent::display();
 		
 		// Append page title to document title
-		$document =& phpFrame::getDocument('html');
+		$document = phpFrame::getDocument('html');
 		$document->title .= ' - '.$this->page_title;
 	}
 	
@@ -90,12 +90,12 @@ class projectsViewMeetings extends phpFrame_Application_View {
 	}
 	
 	function displayMeetingsDetail() {
-		$meetingid =& phpFrame_Environment_Request::getVar('meetingid', 0);
+		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
 		
 		$modelMeetings = $this->getModel('meetings');
 		$this->row = $modelMeetings->getMeetingsDetail($this->projectid, $meetingid);
 		
-		$document =& phpFrame::getDocument('html');
+		$document = phpFrame::getDocument('html');
 		$document->addScript('lib/jquery/plugins/lightbox/jquery.lightbox-0.5.pack.js');
 		$document->addStyleSheet('lib/jquery/plugins/lightbox/css/jquery.lightbox-0.5.css');
 		
@@ -109,7 +109,7 @@ class projectsViewMeetings extends phpFrame_Application_View {
 	 *
 	 */
 	function displayMeetingsForm() {
-		$meetingid =& phpFrame_Environment_Request::getVar('meetingid', 0);
+		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
 		
 		if (!empty($meetingid)) {
 			$action = _LANG_MEETINGS_EDIT;
@@ -127,8 +127,8 @@ class projectsViewMeetings extends phpFrame_Application_View {
 	}
 	
 	function displayMeetingsSlideshowsForm() {
-		$this->meetingid =& phpFrame_Environment_Request::getVar('meetingid', 0);
-		$slideshowid =& phpFrame_Environment_Request::getVar('slideshowid', 0);
+		$this->meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
+		$slideshowid = phpFrame_Environment_Request::getVar('slideshowid', 0);
 		
 		if (!empty($slideshowid)) {
 			$action = _LANG_SLIDESHOWS_EDIT;
@@ -148,7 +148,7 @@ class projectsViewMeetings extends phpFrame_Application_View {
 	}
 	
 	function displayMeetingsFilesForm() {
-		$this->meetingid =& phpFrame_Environment_Request::getVar('meetingid', 0);
+		$this->meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
 		
 		if (!empty($this->meetingid)) {
 			$modelFiles = $this->getModel('files');

@@ -14,15 +14,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * 
  * This class deals with the connection to the MySQL database.
  * 
- * This class uses the phpFrame_Base_Singleton design pattern, and it is therefore intantiated 
- * using the getInstance() method.
- * 
- * To make sure that the child model is instantiated using the correct run time
- * class name we pass the class name when invoking the getInstance() method.
+ * This class uses the phpFrame_Base_Singleton design pattern, and it is intantiated 
+ * using the main phpFrame factory class.
  * 
  * Usage example:
  * <code>
- * $db =& phpFrame_Base_Singleton::getInstance('phpFrame_Database');
+ * $db = phpFrame::getDB();
  * $query = "SELECT * FROM #__components";
  * $db->setQuery($query);
  * $array = $db->loadObjectList();
@@ -42,62 +39,67 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 class phpFrame_Database extends phpFrame_Base_Singleton {
 	/**
 	 * The MySQL link identifier on success, or FALSE on failure. 
-	 *
-	 * @var resource
+	 * 
+	 * @access	private
+	 * @var		resource
 	 */
-	var $link=null;
+	private $_link=null;
 	/**
 	 * The query string to be run.
-	 *
-	 * @var string
+	 * 
+	 * @access	private
+	 * @var		string
 	 */
-	var $query=null;
+	private $_query=null;
 	/**
 	 * The MySQL record set returned from last query.
 	 *
-	 * @var resource
+	 * @access	private
+	 * @var		resource
 	 */
-	var $rs=null;
+	private $_rs=null;
 	/**
 	 * Array containing error messages if any
 	 * 
-	 * @var array
+	 * @access	private
+	 * @var		array
 	 */
-	var $error=array();
+	private $_error=array();
     
 	/**
-	 * Connect to MySQL server and select database.
+	 * Constructor
 	 * 
-	 * This methid must be called before we can run any SQL queries.
-	 * It connects to the db server and selects the database.
+	 * The constructor connects to the MySQL server and selects the database.
 	 * 
-	 * @access	public
-	 * @param 	string 	$db_host 	The MySQL server hostname.
-	 * @param 	string 	$db_user 	The MySQL username.
-	 * @param 	string 	$db_pass 	The MySQL password.
-	 * @param 	string 	$db_name	The MySQL database name.
-	 * @return	bool	Returns TRUE on success or FALSE on failure.
+	 * 
+	 * @access	protected
+	 * @param 	string 	$db_host 	The MySQL server hostname. It uses the value set in inc/config.php by default.
+	 * @param 	string 	$db_user 	The MySQL username. It uses the value set in inc/config.php by default.
+	 * @param 	string 	$db_pass 	The MySQL password. It uses the value set in inc/config.php by default.
+	 * @param 	string 	$db_name	The MySQL database name. It uses the value set in inc/config.php by default.
 	 * @since	1.0
 	 */
-	public function connect($db_host, $db_user, $db_pass, $db_name) {
+	protected function __construct($db_host=config::DB_HOST, $db_user=config::DB_USER, $db_pass=config::DB_PASS, $db_name=config::DB_NAME) {
 		// Connect to database server
-		$this->link = @mysql_connect($db_host, $db_user, $db_pass);
+		// We catch PHP errors (converted into exceptions) and rethrow them as database exceptions
+		try {
+			$this->_link = @mysql_connect($db_host, $db_user, $db_pass);
+		}
+		catch (phpFrame_Exception_Error $e) {
+			throw new phpFrame_Exception_Database('Could not connect to database.');
+		}
 		
 		// Check if link is valid
-		if ($this->link === false) {
-			$this->error[] = 'phpFrame: db::connect(). Could not connect to database. MySQL Error: '.mysql_error();
-			return false;
+		if (!$this->_link) {
+			throw new phpFrame_Exception_Database('Could not connect to database.');
 		}
 		
 		// Select database. If it fails we destroy link and close connection
 		if (!mysql_select_db($db_name)) {
 			$this->close();
-			$this->link = false;
-			$this->error[] = 'phpFrame: db::connect(). Could not select database. MySQL Error: '.mysql_error();
-			return false;
-		}
-		
-		return true;
+			$this->_link = false;
+			throw new phpFrame_Exception_Database('Could not select database.');
+		}	
 	}
 	
 	/**
@@ -111,7 +113,7 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 	 * @since	1.0
 	 */
 	public function setQuery($query) {
-		$this->query = str_replace('#__', config::DB_PREFIX, $query);
+		$this->_query = str_replace('#__', config::DB_PREFIX, $query);
 	}
 	
 	/**
@@ -126,25 +128,25 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 	 */
 	public function query() {
 		// Only run query if active link is valid
-		if ($this->link === false) {
+		if ($this->_link === false) {
 			return false;
 		}
 		
 		// Run SQL query
-		$this->rs = mysql_query($this->query);
+		$this->_rs = mysql_query($this->_query);
 		
 		// Check query result is valid
-		if ($this->rs === false) {
-			$this->error[] = 'phpFrame: db::query(). Query failed: '.$this->query.'. MySQL Error: '.mysql_error();
+		if ($this->_rs === false) {
+			$this->_error[] = 'phpFrame: db::query(). Query failed: '.$this->_query.'. MySQL Error: '.mysql_error();
 			return false;
 		}
 		
 		// If it is an INSERT query we return the insert id
-		if (stripos($this->query, 'INSERT') !== false) {
+		if (stripos($this->_query, 'INSERT') !== false) {
 			return mysql_insert_id();
 		}
 		
-		return $this->rs;
+		return $this->_rs;
 	}
 	
 	/**
@@ -160,14 +162,14 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 	 */
 	public function loadResult() {
 		// Run SQL query
-		$this->rs = $this->query($this->query);
+		$this->_rs = $this->query($this->_query);
 		// Check query result is valid
-		if ($this->rs === false) {
+		if ($this->_rs === false) {
 			return false;
 		}
 		
 		// Fetch row
-		$result = mysql_fetch_row($this->rs);
+		$result = mysql_fetch_row($this->_rs);
 		// Check row is valid and return
 		if ($result !== false) {
 			return $result[0];
@@ -186,16 +188,16 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 	 */
 	public function loadResultArray() {
 		// Run SQL query
-		$this->rs = $this->query($this->query);
+		$this->_rs = $this->query($this->_query);
 		// Check query result is valid
-		if ($this->rs === false) {
+		if ($this->_rs === false) {
 			return false;
 		}
 		
 		$rows = array();
 		
 		// Fetch associative array
-		while ($row = mysql_fetch_array($this->rs)) {
+		while ($row = mysql_fetch_array($this->_rs)) {
 			if (is_array($row) && count($row) > 0) {
 				$rows[] = $row[0];	
 			}
@@ -216,14 +218,14 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 	 */
 	public function loadObject() {
 		// Run SQL query
-		$this->rs = $this->query($this->query);
+		$this->_rs = $this->query($this->_query);
 		// Check query result is valid
-		if ($this->rs === false) {
+		if ($this->_rs === false) {
 			return false;
 		}
 		
 		// Fetch row
-		$row = mysql_fetch_assoc($this->rs);
+		$row = mysql_fetch_assoc($this->_rs);
 		// Check row is valid and return
 		if ($row !== false) {
 			$row_obj = new phpFrame_Base_StdObject();
@@ -255,16 +257,16 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 	 */
 	public function loadObjectList() {
 		// Run SQL query
-		$this->rs = $this->query($this->query);
+		$this->_rs = $this->query($this->_query);
 		// Check query result is valid
-		if ($this->rs === false) {
+		if ($this->_rs === false) {
 			return false;
 		}
 		
 		$rows = array();
 		
 		// Fetch associative array
-		while ($row = mysql_fetch_assoc($this->rs)) {
+		while ($row = mysql_fetch_assoc($this->_rs)) {
 			$row_obj = new phpFrame_Base_StdObject();
 			if (is_array($row) && count($row) > 0) {
 				foreach ($row as $key=>$value) {
@@ -289,13 +291,13 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 	 */
 	public function loadAssoc() {
 		// Run SQL query
-		$this->rs = $this->query($this->query);
+		$this->_rs = $this->query($this->_query);
 		// Check query result is valid
-		if ($this->rs === false) {
+		if ($this->_rs === false) {
 			return false;
 		}
 		
-		$row = mysql_fetch_assoc($this->rs);
+		$row = mysql_fetch_assoc($this->_rs);
 		if ($row === false) {
 			return false;
 		}
@@ -313,7 +315,7 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 	 * @since	1.0
 	 */
 	public function getEscaped($text, $extra = false) {
-		$result = mysql_real_escape_string($text, $this->link);
+		$result = mysql_real_escape_string($text, $this->_link);
 		if ($extra) {
 			$result = addcslashes( $result, '%_' );
 		}
@@ -332,10 +334,10 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 	 * @since	1.0
 	 */
 	public function getNumRows() {
-		$num_rows = mysql_num_rows($this->rs);
+		$num_rows = mysql_num_rows($this->_rs);
 		// Check num_rows is valid
 		if ($num_rows === false) {
-			$this->error[] = 'phpFrame: db::getNumRows(). MySQL Error: '.mysql_error();
+			$this->_error[] = 'phpFrame: db::getNumRows(). MySQL Error: '.mysql_error();
 			return false;
 		}
 		
@@ -354,7 +356,7 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 		$affected_rows = mysql_affected_rows();
 		// Check affected rows is valid
 		if ($affected_rows == -1) {
-			$this->error[] = 'phpFrame: db::getAffectedRows(). MySQL Error: '.mysql_error();
+			$this->_error[] = 'phpFrame: db::getAffectedRows(). MySQL Error: '.mysql_error();
 			return false;
 		}
 		return $affected_rows;
@@ -374,7 +376,7 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 		// Free resultset
 		//mysql_free_result();
 		// Closing connection
-		return mysql_close($this->link);
+		return mysql_close($this->_link);
 	}
 	
 	/**
@@ -385,8 +387,8 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 	 * @since	1.0
 	 */
 	public function getLastError() {
-		if (is_array($this->error) && count($this->error) > 0) {
-			return end($this->error);
+		if (is_array($this->_error) && count($this->_error) > 0) {
+			return end($this->_error);
 		}
 		else {
 			return false;

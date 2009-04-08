@@ -49,7 +49,7 @@ class projectsTableUsersFiles extends phpFrame_Database_Table {
 	 * @since	1.0
 	 */
 	function __construct() {
-		$db =& phpFrame::getDB();
+		$db = phpFrame::getDB();
 		parent::__construct( '#__users_files', 'id' );
 	}
 }

@@ -31,7 +31,7 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 	 * @since 1.0.1
 	 */
 	function __construct() {
-		$this->projectid =& phpFrame_Environment_Request::getVar('projectid', 0);
+		$this->projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		
 		if (!empty($this->projectid)) {
 			// get project data from controller

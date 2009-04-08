@@ -64,7 +64,7 @@ abstract class phpFrame_Database_Table extends phpFrame_Base_Singleton {
 	 * @since 	1.0
 	 */
 	public function __construct($table_name, $primary_key) {
-		$this->db =& phpFrame::getDB();
+		$this->db = phpFrame::getDB();
 		$this->table_name = $table_name;
 		$this->primary_key = $primary_key;
 		
@@ -235,7 +235,9 @@ abstract class phpFrame_Database_Table extends phpFrame_Base_Singleton {
 		// Explode MySQL data type into type and length
 		$type_array = explode('(', $type);
 		$type = strtolower($type_array[0]); // make string lower case
-		$length = substr($type_array[1], 0, strlen($type_array[1])-1);
+		if (sizeof($type_array) > 1) {
+			$length = substr($type_array[1], 0, strlen($type_array[1])-1);	
+		}
 		
 		// Make type variation prefix (ie: tinyint to int or longtext to long)
 		$prefixes = array('tiny', 'small', 'medium', 'big', 'long');
