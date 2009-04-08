@@ -14,10 +14,26 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * 
  * @package		phpFrame
  * @subpackage 	utils
- * @author 		Luis Montero [e-noise.com]
+ * @author 		void
  * @since 		1.0
  */
 class phpFrame_Utils_Client {
+	
+	private static $_client = null;
+	
+	public static function init(){
+		
+		if (!is_null(self::$_client)) {
+			return self::$_client;
+		}
+		
+		if (_checkCLI()) return self::$_client;
+		if (_checkMoblie()) return self::$_client;
+		
+		self::$_client = "default";
+		return self::$client;
+	}
+	
 	/**
 	 * Check whether current client is PHP "Command Line Client" (CLI)
 	 * 
@@ -25,12 +41,41 @@ class phpFrame_Utils_Client {
 	 */
 	public static function isCLI() {
 		// The CLI constant is set in bootstrap index.php file
-		if (CLI) {
+		if (self::$_client == "CLI") {
 			return true;
 		}
 		else {
-			return false;
+			return false;	
 		}
+	}
+	
+	public static function isMobile() {
+		if (self::$_client == "mobile") {
+			return true;
+		}
+		else {
+			return false;	
+		}
+	}
+	
+	public static function isDefault() {
+		if (self::$_client == "default") {
+			return true;
+		}
+		else {
+			return false;	
+		}
+	}
+	
+	private static function _checkCLI() {
+		
+		global $argv;
+		
+		if (is_array($argv)) {
+			self::$_client = "CLI";
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -39,8 +84,8 @@ class phpFrame_Utils_Client {
 	 * @return	boolean
 	 * @since 	1.0
 	 */
-	public static function isMobile() {
-
+	private static function _checkMobile() {
+		if (!is)
 		if (isset($_SERVER["HTTP_X_WAP_PROFILE"])) {
 			return true;
 		}
