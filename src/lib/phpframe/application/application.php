@@ -106,7 +106,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		phpFrame_Exception_Handler::init();
 		
 		// Initialise debbuger
-		phpFrame_Application_Debug::init();
+		phpFrame_Debug_Profiler::init();
 		
 		// Load language files
 		$this->_loadLanguage();
@@ -275,11 +275,6 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 	 */
 	public function output() {
 		echo $this->output;
-		
-		// Display debug output
-		if (config::DEBUG) {
-			phpFrame_Application_Debug::display();	
-		}
 		
 		// clear errors after displaying
 		$session = phpFrame::getSession();

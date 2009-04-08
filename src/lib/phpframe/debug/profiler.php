@@ -2,7 +2,7 @@
 /**
  * @version		$Id$
  * @package		phpFrame
- * @subpackage 	application
+ * @subpackage 	debug
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  */
@@ -10,15 +10,16 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 /**
- * Debug Class
+ * Profiler Class
+ * 
+ * This class still needs to be fleshed out.
  * 
  * @package		phpFrame
- * @subpackage 	application
+ * @subpackage 	debug
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see			phpFrame
  */
-class phpFrame_Application_Debug {
+class phpFrame_Debug_Profiler {
 	/**
 	 * Execution start microtime
 	 * 
@@ -35,7 +36,7 @@ class phpFrame_Application_Debug {
 	/**
 	 * Constructor
 	 * 
-	 * The private constructor ensures this class is not instantiated and is alwas used statically
+	 * The private constructor ensures this class is not instantiated and is alwas used statically.
 	 * 
 	 * @return void
 	 */
@@ -72,17 +73,12 @@ class phpFrame_Application_Debug {
 	 * @return	void
 	 * @since	1.0
 	 */
-	public static function display() {
+	public static function getExecutionTime() {
 		// Get end time
 		self::$_execution_end = self::_microtime_float();
 		
-		echo '<div style="background-color: white; padding: 20px; font-size: 0.8em; overflow: hidden;">';
-		
-		echo '<h1 style="font-size: 2em;">Debugger:</h1>';
-		// Print execution time
-		echo 'Script Execution Time: ' . round(self::$_execution_end - self::$_execution_start, 5) . ' seconds'; 
-		
-		echo '</div>';
+		// Return difference between start and end times
+		return round(self::$_execution_end - self::$_execution_start, 5);
 	}
 }
 ?>
