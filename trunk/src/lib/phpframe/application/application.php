@@ -52,12 +52,6 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 class phpFrame_Application extends phpFrame_Base_Singleton {
 	/**
-	 * The client program accessing the the application (default, mobile, rss or api)
-	 * 
-	 * @var string
-	 */
-	var $client="default";
-	/**
 	 * A boolean representing whether a session is authenticated
 	 *
 	 * @var bool
@@ -131,13 +125,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		phpFrame_Environment_Request::init();
 		
 		// Get client from request
-		// This has to be done after we have initialised the request
-		if (phpFrame_Utils_Client::isMobile()) {
-			$this->client = 'mobile';
-		}
-		elseif (phpFrame_Utils_Client::isCLI()) {
-			$this->client = 'CLI';
-		}
+		phpFrame_Utils_Client::init();
 	}
 	
 	/**
@@ -160,7 +148,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		if (!empty($session->userid)) {
 			$user->load($session->userid);
 		}
-		elseif ($this->client == 'CLI') {
+		elseif (phpFrame_Utils_Client::isCLI()) {
 			$user->id = 1;
 			$user->groupid = 1;
 			$user->username = 'system';
@@ -172,7 +160,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 			$session->write();
 		}
 		
-		// If user user is not logged on we set auth to false and option to login
+		// If user is not logged on we set auth to false and option to login
 		if (!$user->id) {
 			$this->auth = false;
 		}
@@ -231,7 +219,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 	 */
 	public function render() {
 		// If client is default (pc web browser) we add the jQuery library + jQuery UI
-		if ($this->client == "default") {
+		if (phpFrame_Utils_Client::isDefault()) {
 			$document = phpFrame::getDocument('html');
 			$document->addScript('lib/jquery/js/jquery-1.3.2.min.js');
 			$document->addScript('lib/jquery/js/jquery-ui-1.7.custom.min.js');
@@ -243,7 +231,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		if (!$this->auth) {
 			$template_filename = 'login.php';
 		}
-		elseif (phpFrame_Environment_Request::getVar('tmpl') == 'component' || $this->client == 'CLI') {
+		elseif (phpFrame_Environment_Request::getVar('tmpl') == 'component' || phpFrame_Utils_Client::isCLI()) {
 			phpFrame_Application_Error::display();
 			$this->output = $this->component_output;
 			return;
@@ -255,7 +243,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 			$this->pathway = phpFrame::getPathway();
 		}
 		
-		switch ($this->client) {
+		switch (phpFrame_Utils_Client::getClient()) {
 			case 'api' :
 				$template_path = _ABS_PATH.DS."api";
 				break;

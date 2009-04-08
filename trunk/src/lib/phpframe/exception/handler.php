@@ -29,7 +29,7 @@ class phpFrame_Exception_Handler {
 	 * @since	1.0
 	 */
 	public static function init() {
-		set_error_handler(array("phpFrame_Exception_Handler", "handleError"));
+		//set_error_handler(array("phpFrame_Exception_Handler", "handleError"));
 		set_exception_handler(array('phpFrame_Exception_Handler', 'handleException'));
 	}
 	
@@ -75,9 +75,13 @@ class phpFrame_Exception_Handler {
 	 * @todo	This method needs to decide what to do with the uncaught exceptions. Right now it simply outputs some basic info.
 	 */
 	public static function handleException($exception) {
-		echo 'Uncaught exception: '.$exception->getMessage().'<br />';
-		echo 'File: '.$exception->getFile().'<br />';
-		echo 'Line: '.$exception->getLine().'<br />';
+		$str = 'Uncaught exception: '.$exception->getMessage()."\n";
+		$str .= 'File: '.$exception->getFile()."\n";
+		$str .= 'Line: '.$exception->getLine()."\n";
+		echo '<pre>';
+		echo $str;
+		echo $exception->getTraceAsString();
+		echo '</pre>';
 	}
 }
 ?>
