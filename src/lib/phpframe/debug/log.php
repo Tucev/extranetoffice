@@ -12,7 +12,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * Log Class
  * 
- * This class still is still work in progress...
+ * This class is still work in progress...
  * 
  * @package		phpFrame
  * @subpackage 	debug
