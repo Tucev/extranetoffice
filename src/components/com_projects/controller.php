@@ -16,7 +16,6 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @todo 		check every call to model (saveActivityLog) for possible failure (see save issue) 
  */
 class projectsController extends phpFrame_Application_Controller {
 	var $projectid=null;
@@ -40,13 +39,15 @@ class projectsController extends phpFrame_Application_Controller {
 		// running permission check as we need the available views loaded first.
 		parent::__construct();
 		
+		// Instantiate cusotom project permission model
+		$this->project_permissions = $this->getModel('permissions');
+		
 		if (!empty($this->projectid)) {
 			// Load the project data
 			$modelProjects = $this->getModel('projects');
 			$this->project = $modelProjects->getProjectsDetail($this->projectid);
 					
 			// Do security check with custom permission model for projects
-			$this->project_permissions = $this->getModel('permissions');
 			$this->project_permissions->checkProjectAccess($this->project, $this->views_available);
 			
 			// Add pathway item
