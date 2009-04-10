@@ -29,8 +29,9 @@ $views_available = $controller->views_available;
 </li>
 	
 <?php foreach($views_available as $tool) : ?>
+<?php if ($tool != 'projects') : ?>
 <?php $access_property = "access_".$tool; ?>
-<?php if ($this->roleid <= $controller->project->$access_property && $tool != 'projects') : ?>
+<?php if ($controller->project_permissions->roleid <= $controller->project->$access_property) : ?>
 <li>
 	<a href="<?php echo phpFrame_Application_Route::_("index.php?option=".phpFrame_Environment_Request::getVar('option')."&view=".$tool."&projectid=".phpFrame_Environment_Request::getVar('projectid')); ?>">
 	<?php 
@@ -39,6 +40,7 @@ $views_available = $controller->views_available;
 	?>
 	</a>
 </li>
+<?php endif; ?>
 <?php endif; ?>
 <?php endforeach; ?>
 	
