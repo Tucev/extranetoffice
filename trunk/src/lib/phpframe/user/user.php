@@ -171,7 +171,7 @@ class phpFrame_User extends phpFrame_Database_Table {
 		}
 		
 		// Encrypt password for storage
-		if (!is_null($row->password)) {
+		if (property_exists($row, 'password') && !is_null($row->password)) {
 			$salt = phpFrame_Utils_Crypt::genRandomPassword(32);
 			$crypt = phpFrame_Utils_Crypt::getCryptedPassword($row->password, $salt);
 			$row->password = $crypt.':'.$salt;

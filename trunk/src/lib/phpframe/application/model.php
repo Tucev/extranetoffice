@@ -94,7 +94,7 @@ abstract class phpFrame_Application_Model extends phpFrame_Base_Singleton {
 		// Assign reference to controller
 		$controller =& phpFrame_Base_Singleton::getInstance($controller_class_name);
 		// Get model using controller's method
-		$model =& $controller->getModel($name);
+		$model = $controller->getModel($name);
 		
 		return $model;
 	}

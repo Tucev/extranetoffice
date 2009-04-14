@@ -75,13 +75,17 @@ class phpFrame_Exception_Handler {
 	 * @todo	This method needs to decide what to do with the uncaught exceptions. Right now it simply outputs some basic info.
 	 */
 	public static function handleException($exception) {
+		//var_dump($exception);
 		$str = 'Uncaught exception: '.$exception->getMessage()."\n";
 		$str .= 'File: '.$exception->getFile()."\n";
 		$str .= 'Line: '.$exception->getLine()."\n";
+		$str .= 'Severity: '.$exception->getSeverity()."\n";
+		$str .= 'Code: '.$exception->getCode()."\n";
 		echo '<pre>';
 		echo $str;
 		echo $exception->getTraceAsString();
 		echo '</pre>';
+		return true;
 	}
 }
 ?>

@@ -32,9 +32,6 @@ class loginController extends phpFrame_Application_Controller {
 		$this->task = phpFrame_Environment_Request::getVar('task', 'display');
 		$this->view = phpFrame_Environment_Request::getVar('view', 'login');
 		$this->layout = phpFrame_Environment_Request::getVar('layout');
-		
-		// Override the permission check
-		$this->permissions->is_allowed = true;
 	}
 	
 	function login() {

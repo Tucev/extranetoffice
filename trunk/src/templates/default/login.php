@@ -12,7 +12,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->lang; ?>" lang="<?php echo $this->lang; ?>" >
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo config::DEFAULT_LANG; ?>" lang="<?php echo config::DEFAULT_LANG; ?>" >
 <head>
 <title><?php echo config::SITENAME; ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
