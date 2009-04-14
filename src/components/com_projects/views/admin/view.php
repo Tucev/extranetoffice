@@ -104,6 +104,7 @@ class projectsViewAdmin extends phpFrame_Application_View {
 		else {
 			$this->page_title = _LANG_PROJECTS_NEW;
 			// Set default values for tools
+			$this->project = new stdClass();
 			$this->project->access = '1';
 			$this->project->access_issues = '2';
 			$this->project->access_messages = '2';

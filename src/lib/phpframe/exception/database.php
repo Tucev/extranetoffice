@@ -42,7 +42,7 @@ class phpFrame_Exception_Database extends phpFrame_Exception {
 	 * @return	void
 	 * @since	1.0
 	 */
-	public function __construct($message=null, $code=0) {
+	public function __construct($message=null, $code=self::E_USER_ERROR) {
 		$this->_mysql_error = mysql_error();
 		$this->_mysql_errno = mysql_errno();
 		

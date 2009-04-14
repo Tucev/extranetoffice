@@ -346,10 +346,9 @@ abstract class phpFrame_Database_Table extends phpFrame_Base_Singleton {
 			foreach ($this->cols as $col) {
 				if ($col->Field != $this->primary_key) {
 					$col_name = $col->Field;
-					$col_value = $row->$col_name;
-					if (property_exists($row, $col_name) && !is_null($col_value)) {
+					if (property_exists($row, $col_name) && !is_null($row->$col_name)) {
 						if ($i>0) $query .= ", ";
-						$query .= "`".$col_name."` = '".$col_value."'";
+						$query .= "`".$col_name."` = '".$row->$col_name."'";
 						$i++;
 					}
 				}
