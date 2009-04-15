@@ -18,7 +18,7 @@ $query = "SELECT * FROM #__components WHERE system = '0' AND enabled = '1' ORDER
 $db->setQuery($query);
 $components = $db->loadObjectList();
 
-$application = phpFrame::getApplication();
+$frontcontroller = phpFrame::getFrontController();
 ?>
 
 <ul id="menu">
@@ -26,7 +26,7 @@ $application = phpFrame::getApplication();
 		<a href="index.php?option=com_dashboard">Dashboard</a>
 	</li>
 	<?php foreach ($components as $component) : ?>
-	<?php if ($application->permissions->checkACL('com_'.$component->name)) : ?>
+	<?php if ($frontcontroller->permissions->checkACL('com_'.$component->name)) : ?>
 	<li <?php if ($active_component == $component->name) { echo ' class="selected"'; } ?>>
 		<a href="index.php?option=com_<?php echo $component->name; ?>"><?php echo $component->menu_name; ?></a>
 	</li>

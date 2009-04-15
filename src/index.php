@@ -49,9 +49,8 @@ else {
 require_once _ABS_PATH.DS."inc".DS."autoload.php";
 
 // Instantiate application
-$application = phpFrame::getApplication();
-$application->auth();
-$application->exec();
-$application->render();
-$application->output();
+$frontcontroller = phpFrame::getFrontController();
+$frontcontroller->exec();
+$frontcontroller->render();
+$frontcontroller->output();
 ?>

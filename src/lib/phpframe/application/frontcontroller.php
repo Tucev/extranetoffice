@@ -10,7 +10,7 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 /**
- * Application Class
+ * FrontController Class
  * 
  * This is the mainframe application class.
  * 
@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * The class should be instantiated as:
  * 
  * <code>
- * $application = phpFrame::getApplication();
+ * $frontcontroller = phpFrame::getFrontController();
  * </code>
  * 
  * Before we instantiate the application we first need to set a few useful constants,
@@ -37,11 +37,10 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * // Include autoloader
  * require_once _ABS_PATH.DS."inc".DS."autoload.php";
  * 
- * $application = phpFrame::getApplication();
- * $application->auth();
- * $application->exec();
- * $application->render();
- * $application->output();
+ * $frontcontroller = phpFrame::getFrontController();
+ * $frontcontroller->exec();
+ * $frontcontroller->render();
+ * $frontcontroller->output();
  * </code>
  * 
  * @package		phpFrame
@@ -50,7 +49,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see			phpFrame
  */
-class phpFrame_Application extends phpFrame_Base_Singleton {
+class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 	/**
 	 * A boolean representing whether a session is authenticated
 	 *
@@ -126,20 +125,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		
 		// Get client from request
 		phpFrame_Utils_Client::init();
-	}
-	
-	/**
-	 * Authenticate
-	 * 
-	 * This method should be invoked after instantiating the application class.
-	 * It instantiates the session and user objects and returns a boolean depending 
-	 * on whether the current user has been authenticated.
-	 * 
-	 * @access	public
-	 * @return	bool
-	 * @since	1.0
-	 */
-	public function auth() {
+		
 		// get session object (singeton)
 		$session = phpFrame::getSession();
 		// get user object
@@ -147,6 +133,7 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 		
 		if (!empty($session->userid)) {
 			$user->load($session->userid);
+			$this->auth = true;
 		}
 		elseif (phpFrame_Utils_Client::isCLI()) {
 			$user->id = 1;
@@ -158,17 +145,11 @@ class phpFrame_Application extends phpFrame_Base_Singleton {
 			$session->userid = 1;
 			$session->groupid = 1;
 			$session->write();
-		}
-		
-		// If user is not logged on we set auth to false and option to login
-		if (!$user->id) {
-			$this->auth = false;
-		}
-		else {
 			$this->auth = true;
 		}
-		
-		return $this->auth;
+		else {
+			$this->auth = false;
+		}
 	}
 	
 	/**
