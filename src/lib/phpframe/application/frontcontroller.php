@@ -12,9 +12,10 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * FrontController Class
  * 
- * This is the mainframe application class.
+ * This is the FrontController. Its main objective is to initialise the framework 
+ * and decide which action controller should be run.
  * 
- * This class extends the "phpFrame_Base_Singleton" class in order to implement the phpFrame_Base_Singleton design pattern.
+ * This class is still work in progress.
  * 
  * The class should be instantiated as:
  * 
@@ -22,9 +23,9 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * $frontcontroller = phpFrame::getFrontController();
  * </code>
  * 
- * Before we instantiate the application we first need to set a few useful constants,
- * check for dependencies, include required framework files and then finally 
- * instantiate the application and run the apps methods in the following order:
+ * Before we instantiate the FrontController we first need to set a few useful constants,
+ * include the autoloader and the config file and then finally 
+ * instantiate the FrontController and run the public methods in the following order:
  * 
  * <code>
  * define("_EXEC", true);
