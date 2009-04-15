@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<xinc engine="Sunrise">
+	
+	<project name="ExtranetOffice-1.0">
+		
+		<property name="dir" value="${projectdir}/${project.name}" />
+		
+		<schedule interval="60" />
+		
+		<modificationset>
+			<svn directory="${dir}" update="true" />
+		</modificationset>
+		
+		<builders>
+			<phingbuilder buildfile="${dir}/build.xml" target="build" />
+		</builders>
+		
+		<publishers>
+			<phpUnitTestResults file="${dir}/report/logfile.xml" />
+			
+			<onfailure>
+				<email to="extranetoffice-dev@googlegroups.com" 
+					   subject="${project.name} build ${build.number} failed" 
+					   message="Build of project failed" />
+			</onfailure>
+				
+			<onsuccess>
+				<phingPublisher buildfile="${dir}/publish.xml" target="build" />
+				<artifactspublisher file="${dir}/publish.xml" />
+				<deliverable file="${dir}/builds/${project.name}-${build.label}.tar.gz" 
+							 alias="${project.name}.tar.gz" />
+				<email to="extranetoffice-dev@googlegroups.com" 
+					   subject="${project.name} build ${build.number} success" 
+					   message="Build of project was successful" />
+			</onsuccess>
+				
+			<onrecovery>
+				<email to="extranetoffice-dev@googlegroups.com" 
+					   subject="${project.name} build ${build.number} was recovered" 
+					   message="The build passed after having failed before." />
+			</onrecovery>
+		</publishers>
+		
+		</project>
+
+</xinc>
