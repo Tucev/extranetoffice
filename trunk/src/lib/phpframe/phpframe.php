@@ -37,8 +37,8 @@ class phpFrame {
 	 * @return	object
 	 * @since 	1.0
 	 */
-	public static function getApplication() {
-		return phpFrame_Base_Singleton::getInstance('phpFrame_Application');
+	public static function getFrontController() {
+		return phpFrame_Base_Singleton::getInstance('phpFrame_Application_FrontController');
 	}
 	
 	/**

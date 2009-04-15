@@ -114,15 +114,15 @@ abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
 		$this->views_available = $this->getAvailableViews();
 		
 		// Get reference to application
-		$application = phpFrame::getApplication();
+		$frontcontroller = phpFrame::getFrontController();
 		
 		// Add pathway item
-		$this->addPathwayItem(ucwords($application->component_info->name), 'index.php?option='.$this->option);
+		$this->addPathwayItem(ucwords($frontcontroller->component_info->name), 'index.php?option='.$this->option);
 		
 		// Append component name in ducument title
 		$document = phpFrame::getDocument('html');
 		if (!empty($document->title)) $document->title .= ' - ';
-		$document->title .= ucwords($application->component_info->name);
+		$document->title .= ucwords($frontcontroller->component_info->name);
 	}
 	
     /**
@@ -154,9 +154,9 @@ abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
 	 */
 	public function execute($task) {
 		// Get reference to application to check permissions before we execute
-		$application = phpFrame::getApplication();
+		$frontcontroller = phpFrame::getFrontController();
 		
-		if ($application->permissions->is_allowed === true) {
+		if ($frontcontroller->permissions->is_allowed === true) {
 			if (is_callable(array($this, $task))) {
 				$this->$task();	
 			}
@@ -165,7 +165,7 @@ abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
 			}
 		}
 		else {
-			if ($application->auth == false) {
+			if ($frontcontroller->auth == false) {
 				$this->setRedirect('index.php?option=com_login');
 			}
 			else {

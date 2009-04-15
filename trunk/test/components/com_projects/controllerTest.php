@@ -23,8 +23,7 @@ catch (Exception $e) {
 }
 
 // Initialise application
-$application = phpFrame::getApplication();
-$application->auth();
+$frontcontroller = phpFrame::getFrontController();
 
 require_once 'PHPUnit/Framework.php';
 
@@ -46,8 +45,8 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	phpFrame_Environment_Request::setVar('priority', '1');
     	phpFrame_Environment_Request::setVar(phpFrame_Utils_Crypt::getToken(), '1');
     	
-    	$application = phpFrame::getApplication();
-		$application->exec();
+    	$frontcontroller = phpFrame::getFrontController();
+		$frontcontroller->exec();
     	    	
     	$controller = phpFrame::getController('com_projects');
     	$this->assertTrue($controller->getSuccess());
@@ -64,8 +63,8 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	phpFrame_Environment_Request::setVar('task', 'remove_project');
     	phpFrame_Environment_Request::setVar('projectid', $projectid);
     	
-    	$application = phpFrame::getApplication();
-    	$application->exec();
+    	$frontcontroller = phpFrame::getFrontController();
+    	$frontcontroller->exec();
     	
     	$controller = phpFrame::getController('com_projects');
     	$this->assertTrue($controller->getSuccess());
@@ -83,8 +82,8 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	phpFrame_Environment_Request::setVar('email', 'notifications.test@extranetoffice.org');
     	phpFrame_Environment_Request::setVar(phpFrame_Utils_Crypt::getToken(), '1');
     	
-    	$application = phpFrame::getApplication();
-    	$application->exec();
+    	$frontcontroller = phpFrame::getFrontController();
+    	$frontcontroller->exec();
     	
     	$controller = phpFrame::getController('com_projects');
     	$this->assertTrue($controller->getSuccess());
@@ -108,8 +107,8 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	phpFrame_Environment_Request::setVar('userids', $userid);
     	phpFrame_Environment_Request::setVar(phpFrame_Utils_Crypt::getToken(), '1');
     	
-    	$application = phpFrame::getApplication();
-    	$application->exec();
+    	$frontcontroller = phpFrame::getFrontController();
+    	$frontcontroller->exec();
     	
     	$controller = phpFrame::getController('com_projects');
     	$this->assertTrue($controller->getSuccess());
@@ -135,8 +134,8 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	phpFrame_Environment_Request::setVar('projectid', '1');
     	phpFrame_Environment_Request::setVar('userid', $userid);
     	
-    	$application = phpFrame::getApplication();
-    	$application->exec();
+    	$frontcontroller = phpFrame::getFrontController();
+    	$frontcontroller->exec();
     	
     	$controller = phpFrame::getController('com_projects');
     	$this->assertTrue($controller->getSuccess());
@@ -149,8 +148,8 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	phpFrame_Environment_Request::setVar('userid', '63');
     	phpFrame_Environment_Request::setVar('roleid', '3');
     	
-    	$application = phpFrame::getApplication();
-    	$application->exec();
+    	$frontcontroller = phpFrame::getFrontController();
+    	$frontcontroller->exec();
     	
     	$controller = phpFrame::getController('com_projects');
     	$this->assertTrue($controller->getSuccess());
@@ -166,8 +165,8 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	phpFrame_Environment_Request::setVar('access', '1');
     	phpFrame_Environment_Request::setVar(phpFrame_Utils_Crypt::getToken(), '1');
     	
-    	$application = phpFrame::getApplication();
-    	$application->exec();
+    	$frontcontroller = phpFrame::getFrontController();
+    	$frontcontroller->exec();
     	
     	$controller = phpFrame::getController('com_projects');
     	$this->assertTrue($controller->getSuccess());
