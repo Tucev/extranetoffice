@@ -17,7 +17,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class emailController extends phpFrame_Application_Controller {
+class emailController extends phpFrame_Application_ActionController {
 	/**
 	 * Constructor
 	 * 
@@ -26,7 +26,7 @@ class emailController extends phpFrame_Application_Controller {
 	 */
 	function __construct() {
 		// set default request vars
-		$this->view = phpFrame_Environment_Request::getVar('view', 'messages');
+		$this->view = phpFrame_Environment_Request::getView('messages');
 		$this->layout = phpFrame_Environment_Request::getVar('layout', 'list');
 		
 		parent::__construct();
@@ -48,7 +48,7 @@ class emailController extends phpFrame_Application_Controller {
 			phpFrame_Application_Error::raise('', 'error', $modelAccounts->getLastError());
 		}
 		
-		$this->setRedirect('index.php?option=com_email&view=accounts');
+		$this->setRedirect('index.php?component=com_email&view=accounts');
 	}
 	
 	function remove_account() {
@@ -62,7 +62,7 @@ class emailController extends phpFrame_Application_Controller {
 			phpFrame_Application_Error::raise('', 'message', _LANG_EMAIL_ACCOUNT_DELETE_SUCCESS);
 		}
 		
-		$this->setRedirect('index.php?option=com_email&view=accounts');
+		$this->setRedirect('index.php?component=com_email&view=accounts');
 	}
 	
 	function make_default_account() {
@@ -76,7 +76,7 @@ class emailController extends phpFrame_Application_Controller {
 			phpFrame_Application_Error::raise('', 'message', _LANG_EMAIL_ACCOUNT_SAVED);
 		}
 		
-		$this->setRedirect('index.php?option=com_email&view=accounts');
+		$this->setRedirect('index.php?component=com_email&view=accounts');
 	}
 	
 	function download_attachment() {
@@ -149,7 +149,7 @@ class emailController extends phpFrame_Application_Controller {
 			JError::raiseError( '', JText::_( $modelEmail->error_msg ) );
 		}
 		
-		$this->setRedirect('index.php?option=com_intranetoffice&view=email&folder='.$folder);
+		$this->setRedirect('index.php?component=com_intranetoffice&view=email&folder='.$folder);
 	}
 	
 	function move_email() {
@@ -170,7 +170,7 @@ class emailController extends phpFrame_Application_Controller {
 			
 			JError::raiseNotice( '', JText::_( _INTRANETOFFICE_EMAIL_MOVED ) );
 			
-			//$this->setRedirect('index.php?option=com_intranetoffice&view=email&folder='.$folder);
+			//$this->setRedirect('index.php?component=com_intranetoffice&view=email&folder='.$folder);
 			parent::display();
 		}
 	}
@@ -201,7 +201,7 @@ class emailController extends phpFrame_Application_Controller {
 		
 		JError::raiseNotice( '', JText::_( _INTRANETOFFICE_EMAIL_DELETED ) );
 		
-		$this->setRedirect('index.php?option=com_intranetoffice&view=email&folder='.$folder);
+		$this->setRedirect('index.php?component=com_intranetoffice&view=email&folder='.$folder);
 	}
 	
 	function restore_email() {
@@ -214,7 +214,7 @@ class emailController extends phpFrame_Application_Controller {
 		$modelEmail->undeleteMessage($uid);
 		$modelEmail->closeStream();
 		
-		$this->setRedirect('index.php?option=com_intranetoffice&view=email&folder='.$folder);
+		$this->setRedirect('index.php?component=com_intranetoffice&view=email&folder='.$folder);
 	}
 	
 	function empty_deleted_items() {
@@ -228,7 +228,7 @@ class emailController extends phpFrame_Application_Controller {
 		
 		JError::raiseNotice( '', JText::_( _INTRANETOFFICE_EMAIL_DELETED_ITEMS_EMPTIED ) );
 		
-		$this->setRedirect('index.php?option=com_intranetoffice&view=email&folder='.$folder);
+		$this->setRedirect('index.php?component=com_intranetoffice&view=email&folder='.$folder);
 	}
 	
 	/**
@@ -247,7 +247,7 @@ class emailController extends phpFrame_Application_Controller {
 		
 		JError::raiseNotice( '', JText::_( _INTRANETOFFICE_EMAIL_DELETED_ITEMS_EMPTIED ) );
 		
-		$this->setRedirect('index.php?option=com_intranetoffice&view=email&folder='.$folder);
+		$this->setRedirect('index.php?component=com_intranetoffice&view=email&folder='.$folder);
 	}
 	
 	function set_flags() {
@@ -261,7 +261,7 @@ class emailController extends phpFrame_Application_Controller {
 		$modelEmail->setFlags($uid, "\\".$flag);
 		$modelEmail->closeStream();
 		
-		$this->setRedirect('index.php?option=com_intranetoffice&view=email&folder='.$folder);
+		$this->setRedirect('index.php?component=com_intranetoffice&view=email&folder='.$folder);
 	}
 	
 	function clear_flags() {
@@ -275,7 +275,7 @@ class emailController extends phpFrame_Application_Controller {
 		$modelEmail->clearFlags($uid, "\\".$flag);
 		$modelEmail->closeStream();
 		
-		$this->setRedirect('index.php?option=com_intranetoffice&view=email&folder='.$folder);
+		$this->setRedirect('index.php?component=com_intranetoffice&view=email&folder='.$folder);
 	}
 	
 	function create_mailbox() {
@@ -291,7 +291,7 @@ class emailController extends phpFrame_Application_Controller {
 		$modelEmail->createMailbox($new_folder_name);
 		$modelEmail->closeStream();
 		
-		//$this->setRedirect('index.php?option=com_intranetoffice&view=email&folder='.$folder);
+		//$this->setRedirect('index.php?component=com_intranetoffice&view=email&folder='.$folder);
 		parent::display();
 	}
 	
@@ -310,7 +310,7 @@ class emailController extends phpFrame_Application_Controller {
 			JError::raiseNotice( '', JText::_( _INTRANETOFFICE_MAILBOX_RENAMED ) );	
 		}
 		
-		//$this->setRedirect('index.php?option=com_intranetoffice&view=email&folder='.$folder);
+		//$this->setRedirect('index.php?component=com_intranetoffice&view=email&folder='.$folder);
 		parent::display();
 	}
 	
@@ -333,7 +333,7 @@ class emailController extends phpFrame_Application_Controller {
 		if ($folder == $mailbox) {
 			$folder == 'INBOX';
 		}
-		$this->setRedirect('index.php?option=com_intranetoffice&view=email&folder='.$folder);
+		$this->setRedirect('index.php?component=com_intranetoffice&view=email&folder='.$folder);
 	}
 	
 }

@@ -175,12 +175,12 @@ class phpFrame_Environment_Request {
 	 */
 	public static function getVar($key, $default='') {
 		// Set default value if var is empty
-		if (!isset(self::$_URA[$key]) || self::$_URA[$key] == '') {
+		if (!isset(self::$_URA['request'][$key]) || self::$_URA['request'][$key] == '') {
 			// Filter value before assigning to request arrays
-			self::$_URA[$key] = self::$_inputfilter->process($default);
+			self::$_URA['request'][$key] = self::$_inputfilter->process($default);
 		}
 		
-		return self::$_URA[$key];
+		return self::$_URA['request'][$key];
 	}
 	
 	/**
@@ -195,7 +195,6 @@ class phpFrame_Environment_Request {
 	 */
 	public static function setVar($key, $value) {
 		// Filter value before assigning to request arrays 
-		
 		return self::$_URA['request'][$key] = self::$_inputfilter->process($value);
 	}
 	
@@ -207,9 +206,13 @@ class phpFrame_Environment_Request {
 	 * @return	component
 	 */
 	public static function getComponent() {
-		
+		// If component has not been set we return the default value
+		if (empty(self::$_component)) {
+			self::$_component = 'com_dashboard';
+		}
 		return self::$_component;
 	}
+	
 	/**
 	 * Set $_component.
 	 * 
@@ -226,6 +229,7 @@ class phpFrame_Environment_Request {
 		
 		return $value;
 	}
+	
 	/**
 	 * Get $_action
 	 * 
@@ -234,9 +238,13 @@ class phpFrame_Environment_Request {
 	 * @return	action
 	 */
 	public static function getAction() {
-		
+		// If action has not been set we return the default value
+		if (empty(self::$_action)) {
+			self::$_action = 'display';
+		}
 		return self::$_action;
 	}
+	
 	/**
 	 * Set $_action.
 	 * 
@@ -253,6 +261,7 @@ class phpFrame_Environment_Request {
 		
 		return $value;
 	}
+	
 	/**
 	 * Get $_view
 	 * 
@@ -260,10 +269,14 @@ class phpFrame_Environment_Request {
 	 * @access	public
 	 * @return	action
 	 */
-	public static function getView() {
-		
+	public static function getView($default='') {
+		// If view has not been set we return the default value
+		if (empty(self::$_view)) {
+			self::$_view = self::$_inputfilter->process($default);
+		}
 		return self::$_view;
 	}
+	
 	/**
 	 * Set $_view.
 	 * 
@@ -280,6 +293,7 @@ class phpFrame_Environment_Request {
 		
 		return $value;
 	}
+	
 	/**	
 	 * Get $_layout
 	 * 
@@ -287,10 +301,14 @@ class phpFrame_Environment_Request {
 	 * @access	public
 	 * @return	layout
 	 */
-	public static function getLayout() {
-		
+	public static function getLayout($default='') {
+		// If view has not been set we return the default value
+		if (empty(self::$_layout)) {
+			self::$_layout = self::$_inputfilter->process($default);
+		}
 		return self::$_layout;
 	}
+	
 	/**
 	 * Set $_layout.
 	 * 

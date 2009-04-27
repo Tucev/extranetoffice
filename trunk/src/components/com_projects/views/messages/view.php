@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * Method name to be triggered will be formed as follows:
  * 
  * <code>
- * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getVar('view')).ucfirst($this->tmpl);
+ * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getView()).ucfirst($this->tmpl);
  * </code>
  * 
  * @package		ExtranetOffice
@@ -95,13 +95,13 @@ class projectsViewMessages extends phpFrame_Application_View {
 		$this->row = $modelMessages->getMessagesDetail($this->projectid, $this->messageid);
 		
 		$this->page_title .= ' - '.$this->row->subject;
-		$this->addPathwayItem($this->current_tool, "index.php?option=com_projects&view=messages&projectid=".$this->projectid);
+		$this->addPathwayItem($this->current_tool, "index.php?component=com_projects&view=messages&projectid=".$this->projectid);
 		$this->addPathwayItem($this->row->subject);
 	}
 	
 	function displayMessagesForm() {
 		$this->page_title .= ' - '._LANG_MESSAGES_NEW;
-		$this->addPathwayItem($this->current_tool, "index.php?option=com_projects&view=messages&projectid=".$this->projectid);
+		$this->addPathwayItem($this->current_tool, "index.php?component=com_projects&view=messages&projectid=".$this->projectid);
 		$this->addPathwayItem(_LANG_MESSAGES_NEW);
 	}
 }

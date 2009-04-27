@@ -10,7 +10,7 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 /**
- * Controller class
+ * Action Controller class
  * 
  * This class is used to implement the MVC (Model/View/Controller) architecture 
  * in the components.
@@ -30,7 +30,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * 
  * For example:
  * <code>
- * class myController extends phpFrame_Application_Controller {
+ * class myController extends phpFrame_Application_ActionController {
  * 		function doSomething() {
  * 			return 'something';
  * 		}
@@ -48,19 +48,19 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		model, view
  * @abstract 
  */
-abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
+abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singleton {
 	/**
 	 * The component (ie: com_projects)
 	 * 
 	 * @var string
 	 */
-	var $option=null;
+	var $component=null;
 	/**
 	 * The task to be executed
 	 * 
 	 * @var string
 	 */
-	var $task=null;
+	var $action=null;
 	/**
 	 * The view to be displayed
 	 * 
@@ -105,9 +105,9 @@ abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
 	 * @since	1.0
 	 */
 	protected function __construct() {
-		$this->option = phpFrame_Environment_Request::getVar('option');
+		$this->option = phpFrame_Environment_Request::getComponent();
 		$this->task = phpFrame_Environment_Request::getVar('task', 'display');
-		$this->view = phpFrame_Environment_Request::getVar('view');
+		$this->view = phpFrame_Environment_Request::getView();
 		$this->layout = phpFrame_Environment_Request::getVar('layout');
 		
 		// Get available views
@@ -117,7 +117,7 @@ abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
 		$frontcontroller = phpFrame::getFrontController();
 		
 		// Add pathway item
-		$this->addPathwayItem(ucwords($frontcontroller->component_info->name), 'index.php?option='.$this->option);
+		$this->addPathwayItem(ucwords($frontcontroller->component_info->name), 'index.php?component='.$this->option);
 		
 		// Append component name in ducument title
 		$document = phpFrame::getDocument('html');
@@ -134,7 +134,7 @@ abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
 	 * @since	1.0
      */
 	public function display() {
-		$this->view_obj = $this->getView(phpFrame_Environment_Request::getVar('view'));
+		$this->view_obj = $this->getView(phpFrame_Environment_Request::getView());
 		if (is_callable(array($this->view_obj, 'display'))) {
 			$this->view_obj->display();	
 		}
@@ -166,7 +166,7 @@ abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
 		}
 		else {
 			if ($frontcontroller->auth == false) {
-				$this->setRedirect('index.php?option=com_login');
+				$this->setRedirect('index.php?component=com_login');
 			}
 			else {
 				phpFrame_Application_Error::raise('', 'error', 'Permission denied.');
@@ -224,10 +224,10 @@ abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
 	 */
 	public function getModel($name='') {
 		if (empty($name)) {
-			$name = phpFrame_Environment_Request::getVar('view');
+			$name = phpFrame_Environment_Request::getView();
 		}
 		
-		$model_class_name = substr(phpFrame_Environment_Request::getVar('option'), 4).'Model'.ucfirst($name);
+		$model_class_name = substr(phpFrame_Environment_Request::getComponent(), 4).'Model'.ucfirst($name);
 		$model = phpFrame_Base_Singleton::getInstance($model_class_name);
 		return $model;
 	}
@@ -243,10 +243,10 @@ abstract class phpFrame_Application_Controller extends phpFrame_Base_Singleton {
 	 */
 	public function getView($name='') {
 		if (empty($name)) {
-			$name = phpFrame_Environment_Request::getVar('view');
+			$name = phpFrame_Environment_Request::getView();
 		}
 		
-		$view_class_name = substr(phpFrame_Environment_Request::getVar('option'), 4).'View'.ucfirst($name);
+		$view_class_name = substr(phpFrame_Environment_Request::getComponent(), 4).'View'.ucfirst($name);
 		$view =& phpFrame_Base_Singleton::getInstance($view_class_name);
 		return $view;
 	}

@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * Method name to be triggered will be formed as follows:
  * 
  * <code>
- * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getVar('view')).ucfirst($this->tmpl);
+ * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getView()).ucfirst($this->tmpl);
  * </code>
  * 
  * @package		ExtranetOffice
@@ -100,7 +100,7 @@ class projectsViewMeetings extends phpFrame_Application_View {
 		$document->addStyleSheet('lib/jquery/plugins/lightbox/css/jquery.lightbox-0.5.css');
 		
 		$this->page_title .= ' - '.$meeting->name;
-		$this->addPathwayItem($this->current_tool, "index.php?option=com_projects&view=meetings&projectid=".$this->projectid);
+		$this->addPathwayItem($this->current_tool, "index.php?component=com_projects&view=meetings&projectid=".$this->projectid);
 		$this->addPathwayItem($meeting->name);
 	}
 	
@@ -122,7 +122,7 @@ class projectsViewMeetings extends phpFrame_Application_View {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->addPathwayItem($this->current_tool, "index.php?option=com_projects&view=meetings&projectid=".$this->projectid);
+		$this->addPathwayItem($this->current_tool, "index.php?component=com_projects&view=meetings&projectid=".$this->projectid);
 		$this->addPathwayItem($action);
 	}
 	
@@ -142,7 +142,7 @@ class projectsViewMeetings extends phpFrame_Application_View {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->addPathwayItem($this->current_tool, "index.php?option=com_projects&view=meetings&projectid=".$this->projectid);
+		$this->addPathwayItem($this->current_tool, "index.php?component=com_projects&view=meetings&projectid=".$this->projectid);
 		$this->addPathwayItem($action);
 		$this->action = $action;
 	}
@@ -165,7 +165,7 @@ class projectsViewMeetings extends phpFrame_Application_View {
 		
 		$action = _LANG_PROJECTS_MEETINGS_FILES_ATTACH;
 		$this->page_title .= ' - '.$action;
-		$this->addPathwayItem($this->current_tool, "index.php?option=com_projects&view=meetings&projectid=".$this->projectid);
+		$this->addPathwayItem($this->current_tool, "index.php?component=com_projects&view=meetings&projectid=".$this->projectid);
 		$this->addPathwayItem($action);
 		$this->action = $action;
 	}

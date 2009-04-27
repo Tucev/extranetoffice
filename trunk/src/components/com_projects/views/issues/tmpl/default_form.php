@@ -16,7 +16,7 @@ phpFrame_HTML::validate('issuesform');
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getView().'&projectid='.$this->projectid); ?>">
 		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
@@ -160,8 +160,8 @@ phpFrame_HTML::validate('issuesform');
 
 <input type="hidden" name="projectid" value="<?php echo $this->projectid;?>" />
 <input type="hidden" name="id" value="<?php echo $this->row->id;?>" />
-<input type="hidden" name="option" value="com_projects" />
-<input type="hidden" name="task" value="save_issue" />
+<input type="hidden" name="component" value="com_projects" />
+<input type="hidden" name="action" value="save_issue" />
 <input type="hidden" name="type" value="" />
 <?php echo phpFrame_HTML::_( 'form.token' ); ?>
 

@@ -18,7 +18,7 @@ phpFrame_HTML::validate('commentsform');
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getView().'&projectid='.$this->projectid); ?>">
 		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
@@ -27,27 +27,27 @@ phpFrame_HTML::validate('commentsform');
 	
 	<?php if ($this->row->created_by == $this->user->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_issue" title="<?php echo phpFrame_HTML_Text::_($this->row->title, true); ?>" href="index.php?option=com_projects&task=remove_issue&projectid=<?php echo $this->row->projectid; ?>&issueid=<?php echo $this->row->id; ?>">
+		<a class="delete_issue" title="<?php echo phpFrame_HTML_Text::_($this->row->title, true); ?>" href="index.php?component=com_projects&action=remove_issue&projectid=<?php echo $this->row->projectid; ?>&issueid=<?php echo $this->row->id; ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
 	<div class="thread_edit">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=issues&layout=form&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&layout=form&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
 	
 	<?php if ($this->row->closed == "0000-00-00 00:00:00") : ?>
 	<div class="thread_close">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&task=close_issue&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=close_issue&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_ISSUES_CLOSE ); ?>
 		</a>
 	</div>
 	<?php else : ?>
 	<div class="thread_reopen">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&task=reopen_issue&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=reopen_issue&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_ISSUES_REOPEN ); ?>
 		</a>
 	</div>
@@ -67,7 +67,7 @@ phpFrame_HTML::validate('commentsform');
 		<?php if (!empty($this->row->assignees)) : ?>
     	<?php for ($j=0; $j<count($this->row->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=users&layout=detail&userid=".$this->row->assignees[$j]['id']); ?>">
+    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=users&layout=detail&userid=".$this->row->assignees[$j]['id']); ?>">
     		<?php echo $this->row->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>
@@ -123,8 +123,8 @@ phpFrame_HTML::validate('commentsform');
 		<p>
 		<button class="button"><?php echo _LANG_COMMENTS_SEND; ?></button>
 		</p>
-		<input type="hidden" name="option" value="com_projects" />
-		<input type="hidden" name="task" value="save_comment" />
+		<input type="hidden" name="component" value="com_projects" />
+		<input type="hidden" name="action" value="save_comment" />
 		<input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
 		<input type="hidden" name="type" value="issues" />
 		<input type="hidden" name="itemid" value="<?php echo  $this->row->id; ?>" />

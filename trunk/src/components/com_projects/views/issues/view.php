@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * Method name to be triggered will be formed as follows:
  * 
  * <code>
- * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getVar('view')).ucfirst($this->tmpl);
+ * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getView()).ucfirst($this->tmpl);
  * </code>
  * 
  * @package		ExtranetOffice
@@ -105,7 +105,7 @@ class projectsViewIssues extends phpFrame_Application_View {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->addPathwayItem($this->current_tool, phpFrame_Application_Route::_("index.php?option=com_projects&view=issues&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&projectid=".$this->projectid));
 		$this->addPathwayItem($action);
 	}
 	
@@ -115,7 +115,7 @@ class projectsViewIssues extends phpFrame_Application_View {
 		$this->row =& $issue;
 		
 		$this->page_title .= ' - '.$issue->title;
-		$this->addPathwayItem($this->current_tool, phpFrame_Application_Route::_("index.php?option=com_projects&view=issues&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&projectid=".$this->projectid));
 		$this->addPathwayItem($issue->title);
 	}
 }

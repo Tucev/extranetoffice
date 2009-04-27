@@ -56,8 +56,8 @@ $(document).ready(function() {
 		</td>
 	</tr>
 </table>
-<input type="hidden" name="option" value="com_login" />
-<input type="hidden" name="task" value="login" />
+<input type="hidden" name="component" value="com_login" />
+<input type="hidden" name="action" value="login" />
 <?php echo phpFrame_HTML::_( 'form.token' ); ?>
 </form>
 
@@ -104,8 +104,8 @@ $(document).ready(function() {
 		</td>
 	</tr>
 </table>
-<input type="hidden" name="option" value="com_login" />
-<input type="hidden" name="task" value="reset_password" />
+<input type="hidden" name="component" value="com_login" />
+<input type="hidden" name="action" value="reset_password" />
 <?php echo phpFrame_HTML::_( 'form.token' ); ?>
 </form>
 

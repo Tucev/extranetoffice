@@ -46,8 +46,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 </fieldset>
 
-<input type="hidden" name="option" value="com_projects" />
-<input type="hidden" name="task" value="admin_change_member_role" />
+<input type="hidden" name="component" value="com_projects" />
+<input type="hidden" name="action" value="admin_change_member_role" />
 <input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
 <input type="hidden" name="userid" value="<?php echo $this->members[0]->userid; ?>" />
 <?php echo phpFrame_HTML::_( 'form.token' ); ?>

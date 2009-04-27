@@ -65,8 +65,8 @@ $(document).ready(function() {
 	
 	</fieldset>
 	
-	<input type="hidden" name="option" value="com_intranetoffice" />
-	<input type="hidden" name="task" value="move_email" />
+	<input type="hidden" name="component" value="com_intranetoffice" />
+	<input type="hidden" name="action" value="move_email" />
 	<input type="hidden" name="view" value="email" />
 	<input type="hidden" name="type" value="move_email" />
 	<input type="hidden" name="tmpl" value="component" />
@@ -83,7 +83,7 @@ var selected_rows = new Array();
 selected_rows[<?php echo $this->message['uid']; ?>] = <?php echo $this->message['uid']; ?>;
 
 function confirm_delete(trash, uid, label) {
-	var remove_link = "index.php?option=com_email&task=remove_email&folder=<?php echo phpFrame_HTML_Text::_($this->folder, true); ?>";
+	var remove_link = "index.php?component=com_email&action=remove_email&folder=<?php echo phpFrame_HTML_Text::_($this->folder, true); ?>";
 	
 	if (trash) {
 		remove_link += "&trash=1";
@@ -122,17 +122,17 @@ function confirm_delete(trash, uid, label) {
 		</a>
 	</div>
 	<div>
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_email&view=email&type=reply&folder=".$this->folder."&uid=".$this->message['uid']); ?>" title="<?php echo _LANG_REPLY; ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_email&view=email&type=reply&folder=".$this->folder."&uid=".$this->message['uid']); ?>" title="<?php echo _LANG_REPLY; ?>">
 		<img border="0" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/email/32x32/mail_reply-32x32.png" alt="<?php echo _LANG_REPLY; ?>" title="<?php echo _LANG_REPLY; ?>" />
 		</a>
 	</div>
 	<div>
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_email&view=email&type=reply_all&folder=".$this->folder."&uid=".$this->message['uid']); ?>" title="<?php echo _LANG_REPLY_TO_ALL; ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_email&view=email&type=reply_all&folder=".$this->folder."&uid=".$this->message['uid']); ?>" title="<?php echo _LANG_REPLY_TO_ALL; ?>">
 		<img border="0" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/email/32x32/mail_replyall-32x32.png" alt="<?php echo _LANG_REPLY_TO_ALL; ?>" title="<?php echo _LANG_REPLY_TO_ALL; ?>" />
 		</a>
 	</div>
 	<div>
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_email&view=email&type=forward&folder=".$this->folder."&uid=".$this->message['uid']); ?>" title="<?php echo _LANG_FORWARD; ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_email&view=email&type=forward&folder=".$this->folder."&uid=".$this->message['uid']); ?>" title="<?php echo _LANG_FORWARD; ?>">
 		<img border="0" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/email/32x32/mail_forward-32x32.png" alt="<?php echo _LANG_FORWARD; ?>" title="<?php echo _LANG_FORWARD; ?>" />
 		</a>
 	</div>
@@ -186,7 +186,7 @@ function confirm_delete(trash, uid, label) {
 <?php for ($x=0; $x<count($this->message['attachments']); $x++) : ?>
 	<?php $attachment = $this->message['attachments'][$x]; ?>
 	<?php if (!empty($attachment['file_name'])) : ?>
-	<a href="index.php?option=com_email&amp;task=download_attachment&amp;view=email&folder=<?php echo $this->folder; ?>&amp;file_name=<?php echo $attachment['file_name']; ?>&amp;msgno=<?php echo $this->message['msgno'] ?>&amp;file=<?php echo $x; ?>">
+	<a href="index.php?component=com_email&amp;action=download_attachment&amp;view=email&folder=<?php echo $this->folder; ?>&amp;file_name=<?php echo $attachment['file_name']; ?>&amp;msgno=<?php echo $this->message['msgno'] ?>&amp;file=<?php echo $x; ?>">
 	<?php echo $attachment['file_name']; ?>
 	</a> - <?php echo phpFrame_HTML_Text::bytes($attachment['file_size']); ?> <br />
 	<?php endif; ?>

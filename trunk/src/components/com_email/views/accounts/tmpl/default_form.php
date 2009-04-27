@@ -139,11 +139,11 @@ phpFrame_HTML::validate('email_accountsform');
 <br style="clear: left;" />
 <br />
 
-<button type="button" onclick="window.location = 'index.php?option=com_email&view=accounts';"><?php echo phpFrame_HTML_Text::_(_LANG_BACK); ?></button>
+<button type="button" onclick="window.location = 'index.php?component=com_email&view=accounts';"><?php echo phpFrame_HTML_Text::_(_LANG_BACK); ?></button>
 <button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 	
-<input type="hidden" name="option" value="com_email" />
-<input type="hidden" name="task" value="save_account" />
+<input type="hidden" name="component" value="com_email" />
+<input type="hidden" name="action" value="save_account" />
 <input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 <?php echo phpFrame_HTML::_( 'form.token' ); ?>
 

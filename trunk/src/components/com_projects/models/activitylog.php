@@ -118,7 +118,7 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 		parse_str($row->url, $url_array);
 		$pattern = "/".substr($url_array['view'], 0, (strlen($url_array['view'])-1))."id=([0-9]+)/i";
 		preg_match($pattern, $row->url, $matches);
-		$new_mail->setMessageIdSuffix('o='.phpFrame_Environment_Request::getVar('option').'&p='.$row->projectid.'&t='.$url_array['view'].'&i='.$matches[1]);
+		$new_mail->setMessageIdSuffix('o='.phpFrame_Environment_Request::getComponent().'&p='.$row->projectid.'&t='.$url_array['view'].'&i='.$matches[1]);
 		
 		// Make sure assignees is an array
 		if (!is_array($assignees)) {

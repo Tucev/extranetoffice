@@ -17,12 +17,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <?php foreach($this->rows as $row) : ?>
 <div class="row_icons">
 	
-	<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_users&view=users&layout=detail&userid=".$row->id); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&view=users&layout=detail&userid=".$row->id); ?>">
 	<img border="0" src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo !empty($row->photo) ? $row->photo : 'default.png'; ?>" />
 	</a>
 	
 	<div class="row_icons_heading">
-	<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_users&view=users&layout=detail&userid=".$row->id); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&view=users&layout=detail&userid=".$row->id); ?>">
 		<?php echo phpFrame_User_Helper::fullname_format($row->firstname, $row->lastname); ?>
 	</a>
 	</div>

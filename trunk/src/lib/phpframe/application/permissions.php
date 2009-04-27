@@ -53,13 +53,13 @@ class phpFrame_Application_Permissions extends phpFrame_Base_Singleton {
 	 * 
 	 * @var string
 	 */
-	private $option=null;
+	private $component=null;
 	/**
 	 * The task to be executed.
 	 * 
 	 * @var string
 	 */
-	private $task=null;
+	private $action=null;
 	/**
 	 * The view set to be displayed.
 	 * 
@@ -80,9 +80,9 @@ class phpFrame_Application_Permissions extends phpFrame_Base_Singleton {
 	 */
 	protected function __construct() {
 		// Get URL vars
-		$this->option = phpFrame_Environment_Request::getVar('option');
+		$this->option = phpFrame_Environment_Request::getComponent();
 		$this->task = phpFrame_Environment_Request::getVar('task', 'display');
-		$this->view = phpFrame_Environment_Request::getVar('view');
+		$this->view = phpFrame_Environment_Request::getView();
 		$this->layout = phpFrame_Environment_Request::getVar('layout');
 		
 		// Check login
@@ -122,7 +122,7 @@ class phpFrame_Application_Permissions extends phpFrame_Base_Singleton {
 	 * @return bool
 	 * @since 1.0
 	 */
-	public function checkACL($option, $task='display', $view='', $layout='') {
+	public function checkACL($option, $action='display', $view='', $layout='') {
 		// Get group ACL
 		$db = phpFrame::getDB();
 		$query = "SELECT * ";

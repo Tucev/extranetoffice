@@ -67,8 +67,8 @@ phpFrame_HTML::validate('usersform');
 <?php endif; ?>
 
 <input type="hidden" name="id" value="<?php echo $this->row->id;?>" />
-<input type="hidden" name="option" value="com_admin" />
-<input type="hidden" name="task" value="save_user" />
+<input type="hidden" name="component" value="com_admin" />
+<input type="hidden" name="action" value="save_user" />
 <input type="hidden" name="layout" value="" />
 <input type="hidden" name="tmpl" value="<?php echo phpFrame_Environment_Request::getVar('tmpl', ''); ?>" />
 <?php echo phpFrame_HTML::_( 'form.token' ); ?>
