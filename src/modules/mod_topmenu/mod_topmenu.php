@@ -16,21 +16,21 @@ $user = phpFrame::getUser();
 <div id="top">
 	<span class="icons_16_outer">
 	<span class="icons_16 users_16">
-		<?php phpFrame_HTML::dialog('Account', 'index.php?option=com_users&view=settings', 600, 560, true); ?>
+		<?php phpFrame_HTML::dialog('Account', 'index.php?component=com_users&view=settings', 600, 560, true); ?>
 	</span>
 	</span>
 	
 	<?php if ($user->groupid == 1) : ?>
 	<span class="icons_16_outer">
 	<span class="icons_16 sysadmin_16">
-		<?php phpFrame_HTML::dialog('System Admin', 'index.php?option=com_admin', 760, 650); ?>
+		<?php phpFrame_HTML::dialog('System Admin', 'index.php?component=com_admin', 760, 650); ?>
 	</span>
 	</span>
 	<?php endif; ?>
 	
 	<span class="icons_16_outer">
 	<span class="icons_16 security_16">
-		<a href="index.php?option=com_login&amp;task=logout">Logout</a>
+		<a href="index.php?component=com_login&amp;action=logout">Logout</a>
 	</span>
 	</span>
 	

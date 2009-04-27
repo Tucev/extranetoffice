@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * Method name to be triggered will be formed as follows:
  * 
  * <code>
- * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getVar('view')).ucfirst($this->tmpl);
+ * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getView()).ucfirst($this->tmpl);
  * </code>
  * 
  * @package		ExtranetOffice
@@ -97,7 +97,7 @@ class projectsViewFiles extends phpFrame_Application_View {
 		$this->row = $modelFiles->getFilesDetail($this->projectid, $parentid);
 		
 		$this->page_title .= ' - '._LANG_FILES_NEW;
-		$this->addPathwayItem($this->current_tool, phpFrame_Application_Route::_("index.php?option=com_projects&view=files&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, phpFrame_Application_Route::_("index.php?component=com_projects&view=files&projectid=".$this->projectid));
 		$this->addPathwayItem(_LANG_FILES_NEW);
 	}
 	
@@ -108,7 +108,7 @@ class projectsViewFiles extends phpFrame_Application_View {
 		$this->row = $modelFiles->getFilesDetail($this->projectid, $fileid);
 		
 		$this->page_title .= ' - '.$this->row->title;
-		$this->addPathwayItem($this->current_tool, phpFrame_Application_Route::_("index.php?option=com_projects&view=files&projectid=".$this->projectid));
+		$this->addPathwayItem($this->current_tool, phpFrame_Application_Route::_("index.php?component=com_projects&view=files&projectid=".$this->projectid));
 		$this->addPathwayItem($this->row->title);
 	}
 	

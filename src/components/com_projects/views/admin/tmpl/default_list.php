@@ -19,14 +19,14 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 <div class="main_col_module_half">
 
 	<div style="float:right;" class="edit">
-		<a style="float:right;" href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=admin&layout=form&projectid=".$this->project->id); ?>">
+		<a style="float:right;" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=admin&layout=form&projectid=".$this->project->id); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
 	
 	<?php if ($this->project->created_by == $this->user->id) : ?>
 	<div style="float:right;" class="delete">
-		<a class="delete_project" title="<?php echo $this->project->name; ?>" style="float:right;" href="index.php?option=com_projects&task=remove_project&projectid=<?php echo $this->projectid; ?>">
+		<a class="delete_project" title="<?php echo $this->project->name; ?>" style="float:right;" href="index.php?component=com_projects&action=remove_project&projectid=<?php echo $this->projectid; ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?> &nbsp;&nbsp; 
 		</a>
 	</div>
@@ -49,7 +49,7 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 <div class="main_col_module_half">
 	
 	<div style="float:right;" class="edit">
-		<a style="float:right;" href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=admin&layout=form&projectid=".$this->project->id); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
+		<a style="float:right;" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=admin&layout=form&projectid=".$this->project->id); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
@@ -97,7 +97,7 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 <h3 class="people">Members</h3>
 
 <div class="new">
-<a href="<?php echo phpFrame_Application_Route::_("index.php?option=".phpFrame_Environment_Request::getVar('option')."&view=".$this->view."&layout=member_form&projectid=".$this->projectid); ?>">Add new member</a>
+<a href="<?php echo phpFrame_Application_Route::_("index.php?component=".phpFrame_Environment_Request::getComponent()."&view=".$this->view."&layout=member_form&projectid=".$this->projectid); ?>">Add new member</a>
 </div>
 
 <br />
@@ -120,7 +120,7 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
     	<?php echo $row->rolename; ?>
     </td>
     <td valign="top">
-    <a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&amp;view=users&amp;layout=detail&amp;userid=".$row->userid); ?>">
+    <a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&amp;view=users&amp;layout=detail&amp;userid=".$row->userid); ?>">
 	<?php echo $row->name; ?>
 	</a>
     </td>
@@ -128,13 +128,13 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
     	<?php echo $row->email; ?>
     </td>
 	<td>
-	<?php phpFrame_HTML::dialog(_LANG_PROJECTS_CHANGE_ROLE, 'index.php?option=com_projects&view=admin&layout=member_role&projectid='.$this->projectid.'&userid='.$row->userid, 300, 150, true); ?>
+	<?php phpFrame_HTML::dialog(_LANG_PROJECTS_CHANGE_ROLE, 'index.php?component=com_projects&view=admin&layout=member_role&projectid='.$this->projectid.'&userid='.$row->userid, 300, 150, true); ?>
 	<!-- 
 	<a class="" href="">
 		<img src="templates/<?php echo config::TEMPLATE; ?>/images/icons/generic/16x16/edit.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>" />
 	</a>
 	-->
-	<a class="delete_member" title="<?php echo phpFrame_HTML_Text::_($row->name, true); ?>" href="index.php?option=com_projects&task=remove_member&projectid=<?php echo $this->projectid; ?>&userid=<?php echo $row->userid; ?>">
+	<a class="delete_member" title="<?php echo phpFrame_HTML_Text::_($row->name, true); ?>" href="index.php?component=com_projects&action=remove_member&projectid=<?php echo $this->projectid; ?>&userid=<?php echo $row->userid; ?>">
 		<img src="templates/<?php echo config::TEMPLATE; ?>/images/icons/generic/16x16/remove.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>" />
 	</a>
 	</td>

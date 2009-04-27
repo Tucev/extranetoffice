@@ -84,7 +84,7 @@ abstract class phpFrame_Application_View extends phpFrame_Base_Singleton {
 	 */
 	function __construct() {
 		// set view name in view object
-    	$this->view = phpFrame_Environment_Request::getVar('view');
+    	$this->view = phpFrame_Environment_Request::getView();
     	
     	// Assign references to user object for quick access in tmpl
 		$this->user = phpFrame::getUser();
@@ -101,7 +101,7 @@ abstract class phpFrame_Application_View extends phpFrame_Base_Singleton {
      * 
      * Method name to be triggered will be formed as follows:
      * <code>
-     * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getVar('view')).ucfirst($this->tmpl);
+     * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getView()).ucfirst($this->tmpl);
      * </code>
      *
      * @since	1.0
@@ -113,7 +113,7 @@ abstract class phpFrame_Application_View extends phpFrame_Base_Singleton {
     	for ($i=0; $i<count($layout_array); $i++) {
     		$layout .= ucfirst($layout_array[$i]);
     	}
-		$tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getVar('view')).ucfirst($layout);
+		$tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getView()).ucfirst($layout);
 		if (method_exists($this, $tmpl_specific_method)) {
 			// Invoke layout specific display method
 			$this->$tmpl_specific_method();
@@ -161,7 +161,7 @@ abstract class phpFrame_Application_View extends phpFrame_Base_Singleton {
 			$name = $this->view;
 		}
 		
-		$model_class_name = substr(phpFrame_Environment_Request::getVar('option'), 4).'Model'.ucfirst($name);
+		$model_class_name = substr(phpFrame_Environment_Request::getComponent(), 4).'Model'.ucfirst($name);
 		$model =& phpFrame_Base_Singleton::getInstance($model_class_name);
 		return $model;
 	}

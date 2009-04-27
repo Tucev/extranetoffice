@@ -146,8 +146,8 @@ class phpFrame_HTML_Pagination {
 	 * @since	1.0
 	 */
 	public function getPageNav() {
-		$href = 'index.php?option='.phpFrame_Environment_Request::getVar('option');
-		$href .= '&amp;view='.phpFrame_Environment_Request::getVar('view');
+		$href = 'index.php?component='.phpFrame_Environment_Request::getComponent();
+		$href .= '&amp;view='.phpFrame_Environment_Request::getView();
 		$href .= '&amp;layout='.phpFrame_Environment_Request::getVar('layout');
 		$href .= '&amp;limit='.$this->limit;
 		

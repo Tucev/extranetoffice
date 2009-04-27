@@ -17,7 +17,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class usersController extends phpFrame_Application_Controller {
+class usersController extends phpFrame_Application_ActionController {
 	/**
 	 * Constructor
 	 * 
@@ -26,7 +26,7 @@ class usersController extends phpFrame_Application_Controller {
 	 */
 	function __construct() {
 		// set default request vars
-		$this->view = phpFrame_Environment_Request::getVar('view', 'users');
+		$this->view = phpFrame_Environment_Request::getView('users');
 		$this->layout = phpFrame_Environment_Request::getVar('layout', 'list');
 		
 		parent::__construct();

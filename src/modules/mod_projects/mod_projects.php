@@ -23,7 +23,7 @@ $views_available = $controller->views_available;
 <ul>
 	
 <li>
-	<a href="<?php echo phpFrame_Application_Route::_("index.php?option=".phpFrame_Environment_Request::getVar('option')."&view=projects&layout=detail&projectid=".phpFrame_Environment_Request::getVar('projectid')); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=".phpFrame_Environment_Request::getComponent()."&view=projects&layout=detail&projectid=".phpFrame_Environment_Request::getVar('projectid')); ?>">
 	Project Home
 	</a>
 </li>
@@ -33,7 +33,7 @@ $views_available = $controller->views_available;
 <?php $access_property = "access_".$tool; ?>
 <?php if ($controller->project_permissions->roleid <= $controller->project->$access_property) : ?>
 <li>
-	<a href="<?php echo phpFrame_Application_Route::_("index.php?option=".phpFrame_Environment_Request::getVar('option')."&view=".$tool."&projectid=".phpFrame_Environment_Request::getVar('projectid')); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=".phpFrame_Environment_Request::getComponent()."&view=".$tool."&projectid=".phpFrame_Environment_Request::getVar('projectid')); ?>">
 	<?php 
 	$tool_name = "_LANG_".strtoupper($tool);
 	eval("echo $tool_name;");

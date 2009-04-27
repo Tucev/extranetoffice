@@ -17,7 +17,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class projectsController extends phpFrame_Application_Controller {
+class projectsController extends phpFrame_Application_ActionController {
 	var $projectid=null;
 	var $project=null;
 	var $project_permissions=null;
@@ -31,7 +31,7 @@ class projectsController extends phpFrame_Application_Controller {
 	 */
 	function __construct() {
 		// set default request vars
-		$this->view = phpFrame_Environment_Request::getVar('view', 'projects');
+		$this->view = phpFrame_Environment_Request::getView('projects');
 		$this->layout = phpFrame_Environment_Request::getVar('layout', 'list');
 		$this->projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		
@@ -51,7 +51,7 @@ class projectsController extends phpFrame_Application_Controller {
 			$this->project_permissions->checkProjectAccess($this->project, $this->views_available);
 			
 			// Add pathway item
-			$this->addPathwayItem($this->project->name, 'index.php?option=com_projects&view=projects&layout=detail&projectid='.$this->project->id);
+			$this->addPathwayItem($this->project->name, 'index.php?component=com_projects&view=projects&layout=detail&projectid='.$this->project->id);
 			
 			// Append page component name to document title
 			$document = phpFrame::getDocument('html');
@@ -116,7 +116,7 @@ class projectsController extends phpFrame_Application_Controller {
 			$view = 'projects';
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view='.$view.'&layout='.phpFrame_Environment_Request::getVar('layout', 'list').'&projectid='.$projectid);
+		$this->setRedirect('index.php?component=com_projects&view='.$view.'&layout='.phpFrame_Environment_Request::getVar('layout', 'list').'&projectid='.$projectid);
 	}
 	
 	/**
@@ -136,7 +136,7 @@ class projectsController extends phpFrame_Application_Controller {
 			phpFrame_Application_Error::raise('', 'error', _LANG_PROJECT_DELETE_ERROR);
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=projects&layout=list');
+		$this->setRedirect('index.php?component=com_projects&view=projects&layout=list');
 	}
 	
 	function save_member() {
@@ -183,7 +183,7 @@ class projectsController extends phpFrame_Application_Controller {
 			}
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=admin&projectid='.$projectid);
+		$this->setRedirect('index.php?component=com_projects&view=admin&projectid='.$projectid);
 	}
 	
 	function remove_member() {
@@ -199,7 +199,7 @@ class projectsController extends phpFrame_Application_Controller {
 			phpFrame_Application_Error::raise('', 'error', _LANG_PROJECT_MEMBER_DELETE_ERROR);	
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=admin&projectid='.$projectid);
+		$this->setRedirect('index.php?component=com_projects&view=admin&projectid='.$projectid);
 	}
 	
 	function admin_change_member_role() {
@@ -216,7 +216,7 @@ class projectsController extends phpFrame_Application_Controller {
 			$this->success = true;
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=admin&projectid='.$projectid);
+		$this->setRedirect('index.php?component=com_projects&view=admin&projectid='.$projectid);
 	}
 	
 	function save_issue() {
@@ -239,7 +239,7 @@ class projectsController extends phpFrame_Application_Controller {
 			$action = empty($post['id']) ? _LANG_ISSUES_ACTION_NEW : _LANG_ISSUES_ACTION_EDIT;
 			$title = $row->title;
 			$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-			$url = phpFrame_Application_Route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->id);
+			$url = phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->id);
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
@@ -252,7 +252,7 @@ class projectsController extends phpFrame_Application_Controller {
 			}
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=issues&projectid='.$post['projectid']);	
+		$this->setRedirect('index.php?component=com_projects&view=issues&projectid='.$post['projectid']);	
 	}
 	
 	function remove_issue() {
@@ -267,7 +267,7 @@ class projectsController extends phpFrame_Application_Controller {
 			phpFrame_Application_Error::raise('', 'error', _LANG_ISSUE_DELETE_ERROR);
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=issues&projectid='.$projectid);
+		$this->setRedirect('index.php?component=com_projects&view=issues&projectid='.$projectid);
 	}
 	
 	function close_issue() {
@@ -287,7 +287,7 @@ class projectsController extends phpFrame_Application_Controller {
 			$action = _LANG_ISSUE_CLOSED;
 			$title = $row->title;
 			$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-			$url = phpFrame_Application_Route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->id);
+			$url = phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->id);
 			
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
@@ -296,7 +296,7 @@ class projectsController extends phpFrame_Application_Controller {
 			}
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=issues&layout=detail&projectid='.$projectid."&issueid=".$issueid);
+		$this->setRedirect('index.php?component=com_projects&view=issues&layout=detail&projectid='.$projectid."&issueid=".$issueid);
 	}
 	
 	function reopen_issue() {
@@ -316,7 +316,7 @@ class projectsController extends phpFrame_Application_Controller {
 			$action = _LANG_ISSUE_REOPENED;
 			$title = $row->title;
 			$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-			$url = phpFrame_Application_Route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->id);
+			$url = phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->id);
 			
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
@@ -325,7 +325,7 @@ class projectsController extends phpFrame_Application_Controller {
 			}
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=issues&layout=detail&projectid='.$projectid."&issueid=".$issueid);
+		$this->setRedirect('index.php?component=com_projects&view=issues&layout=detail&projectid='.$projectid."&issueid=".$issueid);
 	}
 	
 	function save_file() {
@@ -348,7 +348,7 @@ class projectsController extends phpFrame_Application_Controller {
 			$action = _LANG_FILES_ACTION_NEW;
 			$title = $row->title;
 			$description = sprintf(_LANG_FILES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->filename, $row->revision, $row->changelog);
-			$url = phpFrame_Application_Route::_("index.php?option=com_projects&view=files&projectid=".$row->projectid."&fileid=".$row->id);
+			$url = phpFrame_Application_Route::_("index.php?component=com_projects&view=files&projectid=".$row->projectid."&fileid=".$row->id);
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
@@ -358,7 +358,7 @@ class projectsController extends phpFrame_Application_Controller {
 			}
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=files&projectid='.$post['projectid']);
+		$this->setRedirect('index.php?component=com_projects&view=files&projectid='.$post['projectid']);
 	}
 	
 	function remove_file() {
@@ -374,7 +374,7 @@ class projectsController extends phpFrame_Application_Controller {
 			phpFrame_Application_Error::raise('', 'error', _LANG_FILE_DELETE_ERROR);
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=files&projectid='.$projectid);
+		$this->setRedirect('index.php?component=com_projects&view=files&projectid='.$projectid);
 	}
 	
 	function download_file() {
@@ -405,7 +405,7 @@ class projectsController extends phpFrame_Application_Controller {
 			$action = _LANG_MESSAGES_ACTION_NEW;
 			$title = $row->subject;
 			$description = sprintf(_LANG_MESSAGES_ACTIVITYLOG_DESCRIPTION, $row->subject, $row->body);
-			$url = phpFrame_Application_Route::_("index.php?option=com_projects&view=messages&layout=detail&projectid=".$row->projectid."&messageid=".$row->id);
+			$url = phpFrame_Application_Route::_("index.php?component=com_projects&view=messages&layout=detail&projectid=".$row->projectid."&messageid=".$row->id);
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
@@ -415,7 +415,7 @@ class projectsController extends phpFrame_Application_Controller {
 			}
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=messages&projectid='.$post['projectid']);
+		$this->setRedirect('index.php?component=com_projects&view=messages&projectid='.$post['projectid']);
 	}
 	
 	function remove_message() {
@@ -431,7 +431,7 @@ class projectsController extends phpFrame_Application_Controller {
 			phpFrame_Application_Error::raise('', 'error', _LANG_MESSAGE_DELETE_ERROR);
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=messages&projectid='.$projectid);
+		$this->setRedirect('index.php?component=com_projects&view=messages&projectid='.$projectid);
 	}
 	
 	function save_comment() {
@@ -456,19 +456,19 @@ class projectsController extends phpFrame_Application_Controller {
 			$description = sprintf(_LANG_COMMENTS_ACTIVITYLOG_DESCRIPTION, $title, $row->body);
 			switch ($row->type) {
 				case 'files' : 
-					$url = "index.php?option=com_projects&view=files&layout=detail&projectid=".$row->projectid."&fileid=".$row->itemid;
+					$url = "index.php?component=com_projects&view=files&layout=detail&projectid=".$row->projectid."&fileid=".$row->itemid;
 					break;
 				case 'issues' : 
-					$url = "index.php?option=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->itemid;
+					$url = "index.php?component=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->itemid;
 					break;
 				case 'meetings' : 
-					$url = "index.php?option=com_projects&view=meetings&layout=detail&projectid=".$row->projectid."&meetingid=".$row->itemid;
+					$url = "index.php?component=com_projects&view=meetings&layout=detail&projectid=".$row->projectid."&meetingid=".$row->itemid;
 					break;
 				case 'messages' : 
-					$url = "index.php?option=com_projects&view=messages&layout=detail&projectid=".$row->projectid."&messageid=".$row->itemid;
+					$url = "index.php?component=com_projects&view=messages&layout=detail&projectid=".$row->projectid."&messageid=".$row->itemid;
 					break;
 				case 'milestones' : 
-					$url = "index.php?option=com_projects&view=milestones&layout=detail&projectid=".$row->projectid."&milestoneid=".$row->itemid;
+					$url = "index.php?component=com_projects&view=milestones&layout=detail&projectid=".$row->projectid."&milestoneid=".$row->itemid;
 					break;
 			}
 			$url = phpFrame_Application_Route::_($url);
@@ -510,7 +510,7 @@ class projectsController extends phpFrame_Application_Controller {
 			$action = empty($post['id']) ? _LANG_MEETINGS_ACTION_NEW : _LANG_MEETINGS_ACTION_EDIT;
 			$title = $row->name;
 			$description = sprintf(_LANG_MEETINGS_ACTIVITYLOG_DESCRIPTION, $row->name, $row->dtstart, $row->dtend, $row->description);
-			$url = phpFrame_Application_Route::_("index.php?option=com_projects&view=meetings&layout=detail&projectid=".$row->projectid."&meetingid=".$row->id);
+			$url = phpFrame_Application_Route::_("index.php?component=com_projects&view=meetings&layout=detail&projectid=".$row->projectid."&meetingid=".$row->id);
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
@@ -520,7 +520,7 @@ class projectsController extends phpFrame_Application_Controller {
 			}	
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=meetings&layout=detail&projectid='.$post['projectid']."&meetingid=".$row->id);
+		$this->setRedirect('index.php?component=com_projects&view=meetings&layout=detail&projectid='.$post['projectid']."&meetingid=".$row->id);
 	}
 	
 	function remove_meeting() {
@@ -536,7 +536,7 @@ class projectsController extends phpFrame_Application_Controller {
 			phpFrame_Application_Error::raise('', 'error', _LANG_MEETING_DELETE_ERROR);
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=meetings&projectid='.$projectid);
+		$this->setRedirect('index.php?component=com_projects&view=meetings&projectid='.$projectid);
 	}
 	
 	function save_slideshow() {
@@ -549,7 +549,7 @@ class projectsController extends phpFrame_Application_Controller {
 		$modelMeetings = $this->getModel('meetings');
 		$row = $modelMeetings->saveSlideshow($post);
 		
-		$redirect_url = 'index.php?option=com_projects&view=meetings&layout=slideshows_form&projectid='.$post['projectid'].'&meetingid='.$post['meetingid'];
+		$redirect_url = 'index.php?component=com_projects&view=meetings&layout=slideshows_form&projectid='.$post['projectid'].'&meetingid='.$post['meetingid'];
 		
 		if ($row === false) {
 			phpFrame_Application_Error::raise('', 'error', $modelMeetings->getLastError());
@@ -576,7 +576,7 @@ class projectsController extends phpFrame_Application_Controller {
 			phpFrame_Application_Error::raise('', 'message', _LANG_MEETINGS_SLIDESHOW_DELETE_SUCCESS);
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=meetings&layout=detail&projectid='.$projectid.'&meetingid='.$meetingid);
+		$this->setRedirect('index.php?component=com_projects&view=meetings&layout=detail&projectid='.$projectid.'&meetingid='.$meetingid);
 	}
 	
 	function upload_slide() {
@@ -609,7 +609,7 @@ class projectsController extends phpFrame_Application_Controller {
 			}
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=meetings&projectid='.$projectid);
+		$this->setRedirect('index.php?component=com_projects&view=meetings&projectid='.$projectid);
 	}
 	
 	function remove_slide() {
@@ -627,7 +627,7 @@ class projectsController extends phpFrame_Application_Controller {
 			phpFrame_Application_Error::raise('', 'message', _LANG_MEETINGS_SLIDE_DELETE_SUCCESS);
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=meetings&layout=slideshows_form&projectid='.$projectid.'&meetingid='.$meetingid.'&slideshowid='.$slideshowid);
+		$this->setRedirect('index.php?component=com_projects&view=meetings&layout=slideshows_form&projectid='.$projectid.'&meetingid='.$meetingid.'&slideshowid='.$slideshowid);
 	}
 	
 	function save_meetings_files() {
@@ -650,7 +650,7 @@ class projectsController extends phpFrame_Application_Controller {
 			phpFrame_Application_Error::raise('', 'message', _LANG_MEETINGS_FILES_SAVE_SUCCESS);
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=meetings&layout=detail&projectid='.$projectid.'&meetingid='.$meetingid);
+		$this->setRedirect('index.php?component=com_projects&view=meetings&layout=detail&projectid='.$projectid.'&meetingid='.$meetingid);
 	}
 	
 	function save_milestone() {
@@ -673,7 +673,7 @@ class projectsController extends phpFrame_Application_Controller {
 			$action = empty($post['id']) ? _LANG_MILESTONES_ACTION_NEW : _LANG_MILESTONES_ACTION_EDIT;
 			$title = $row->title;
 			$description = sprintf(_LANG_MILESTONES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->due_date, $row->description);
-			$url = phpFrame_Application_Route::_("index.php?option=com_projects&view=milestones&layout=detail&projectid=".$row->projectid."&milestoneid=".$row->id);
+			$url = phpFrame_Application_Route::_("index.php?component=com_projects&view=milestones&layout=detail&projectid=".$row->projectid."&milestoneid=".$row->id);
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
@@ -683,7 +683,7 @@ class projectsController extends phpFrame_Application_Controller {
 			}
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=milestones&layout=detail&projectid='.$post['projectid']."&milestoneid=".$row->id);
+		$this->setRedirect('index.php?component=com_projects&view=milestones&layout=detail&projectid='.$post['projectid']."&milestoneid=".$row->id);
 	}
 	
 	function remove_milestone() {
@@ -699,7 +699,7 @@ class projectsController extends phpFrame_Application_Controller {
 			phpFrame_Application_Error::raise('', 'error', _LANG_MILESTONE_DELETE_ERROR);
 		}
 		
-		$this->setRedirect('index.php?option=com_projects&view=milestones&projectid='.$projectid);
+		$this->setRedirect('index.php?component=com_projects&view=milestones&projectid='.$projectid);
 	}
 	
 	function process_incoming_email() {
@@ -746,19 +746,19 @@ class projectsController extends phpFrame_Application_Controller {
 							$description = sprintf(_LANG_COMMENTS_ACTIVITYLOG_DESCRIPTION, $title, $row->body);
 							switch ($row->type) {
 								case 'files' : 
-									$url = "index.php?option=com_projects&view=files&layout=detail&projectid=".$row->projectid."&fileid=".$row->itemid;
+									$url = "index.php?component=com_projects&view=files&layout=detail&projectid=".$row->projectid."&fileid=".$row->itemid;
 									break;
 								case 'issues' : 
-									$url = "index.php?option=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->itemid;
+									$url = "index.php?component=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->itemid;
 									break;
 								case 'meetings' : 
-									$url = "index.php?option=com_projects&view=meetings&layout=detail&projectid=".$row->projectid."&meetingid=".$row->itemid;
+									$url = "index.php?component=com_projects&view=meetings&layout=detail&projectid=".$row->projectid."&meetingid=".$row->itemid;
 									break;
 								case 'messages' : 
-									$url = "index.php?option=com_projects&view=messages&layout=detail&projectid=".$row->projectid."&messageid=".$row->itemid;
+									$url = "index.php?component=com_projects&view=messages&layout=detail&projectid=".$row->projectid."&messageid=".$row->itemid;
 									break;
 								case 'milestones' : 
-									$url = "index.php?option=com_projects&view=milestones&layout=detail&projectid=".$row->projectid."&milestoneid=".$row->itemid;
+									$url = "index.php?component=com_projects&view=milestones&layout=detail&projectid=".$row->projectid."&milestoneid=".$row->itemid;
 									break;
 							}
 							$url = phpFrame_Application_Route::_($url);

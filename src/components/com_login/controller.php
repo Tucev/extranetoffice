@@ -17,7 +17,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class loginController extends phpFrame_Application_Controller {
+class loginController extends phpFrame_Application_ActionController {
 	/**
 	 * Constructor
 	 * 
@@ -28,9 +28,9 @@ class loginController extends phpFrame_Application_Controller {
 	 */
 	function __construct() {
 		// set default request vars
-		$this->option = phpFrame_Environment_Request::getVar('option');
+		$this->option = phpFrame_Environment_Request::getComponent();
 		$this->task = phpFrame_Environment_Request::getVar('task', 'display');
-		$this->view = phpFrame_Environment_Request::getVar('view', 'login');
+		$this->view = phpFrame_Environment_Request::getView('login');
 		$this->layout = phpFrame_Environment_Request::getVar('layout');
 	}
 	

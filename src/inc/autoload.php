@@ -38,24 +38,24 @@ function __autoload($className) {
 	elseif (strpos($className, 'Model') !== false) {
 		$array = explode('Model', $className);
 		if (sizeof($array) == 2) {
-			$file_path = _ABS_PATH.DS."components".DS.phpFrame_Environment_Request::getVar('option').DS;
+			$file_path = _ABS_PATH.DS."components".DS.phpFrame_Environment_Request::getComponent().DS;
 			$file_path .= "models".DS.strtolower($array[1]).".php";
 		}
 	}
 	elseif (strpos($className, 'View') !== false) {
 		$array = explode('View', $className);
 		if (sizeof($array) == 2) {
-			$file_path = _ABS_PATH.DS."components".DS.phpFrame_Environment_Request::getVar('option').DS;
+			$file_path = _ABS_PATH.DS."components".DS.phpFrame_Environment_Request::getComponent().DS;
 			$file_path .= "views".DS.strtolower($array[1]).DS."view.php";
 		}
 	}
 	elseif (strpos($className, 'Controller') !== false) {
-		$file_path = _ABS_PATH.DS."components".DS.phpFrame_Environment_Request::getVar('option').DS."controller.php";
+		$file_path = _ABS_PATH.DS."components".DS.phpFrame_Environment_Request::getComponent().DS."controller.php";
 	}
 	elseif (strpos($className, 'Helper') !== false) {
 		$array = explode('Helper', $className);
 		if (sizeof($array) == 2) {
-			$file_path = _ABS_PATH.DS."components".DS.phpFrame_Environment_Request::getVar('option').DS;
+			$file_path = _ABS_PATH.DS."components".DS.phpFrame_Environment_Request::getComponent().DS;
 			$file_path .= "helpers".DS.strtolower($array[1]).".helper.php";
 		}
 	}
@@ -67,7 +67,7 @@ function __autoload($className) {
 				$array[1] = substr($array[1], 0, strpos($array[1], $matches[1]))."_".substr($array[1], strpos($array[1], $matches[1]));
 			}
 			
-			$file_path = _ABS_PATH.DS."components".DS.phpFrame_Environment_Request::getVar('option').DS;
+			$file_path = _ABS_PATH.DS."components".DS.phpFrame_Environment_Request::getComponent().DS;
 			$file_path .= "tables".DS.strtolower($array[1]).".table.php";
 		}
 	}

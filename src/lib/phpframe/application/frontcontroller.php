@@ -164,7 +164,7 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 	 */
 	public function exec() {
 		// Get component option from request
-		$option = phpFrame_Environment_Request::getVar('option', 'com_dashboard');
+		$option = phpFrame_Environment_Request::getComponent();
 		
 		// Initialise permissions
 		$this->permissions = phpFrame::getPermissions();
@@ -183,7 +183,7 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 		// Create the controller
 		$controller = phpFrame::getController($option);
 		// Execute task
-		$controller->execute(phpFrame_Environment_Request::getVar('task'));	
+		$controller->execute(phpFrame_Environment_Request::getAction());	
 		// Redirect if set by the controller
 		$controller->redirect();
 		// save buffer

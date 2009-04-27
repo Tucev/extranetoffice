@@ -18,7 +18,7 @@ require_once _ABS_PATH.DS.'components'.DS.'com_projects'.DS.'helpers'.DS.'projec
 <script language="javascript" type="text/javascript">
 function switch_project(projectid) {
 	if (projectid > 0) {
-		window.location = "index.php?option=com_projects&view=projects&layout=detail&projectid="+projectid;
+		window.location = "index.php?component=com_projects&view=projects&layout=detail&projectid="+projectid;
 	}
 }
 </script>

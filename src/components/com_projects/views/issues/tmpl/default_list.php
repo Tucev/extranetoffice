@@ -30,13 +30,13 @@ $(document).ready(function() {
 
 
 <div class="new">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&layout=form&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getView().'&layout=form&projectid='.$this->projectid); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_NEW ); ?>
 	</a>
 </div>
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getView().'&projectid='.$this->projectid); ?>">
 		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
@@ -88,7 +88,7 @@ $(document).ready(function() {
 		</td>
 	</tr>
 	</table>
-	<input type="hidden" name="option" value="com_projects" />
+	<input type="hidden" name="component" value="com_projects" />
 	<input type="hidden" name="view" value="issues" />
 	<input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
 	</form>
@@ -103,14 +103,14 @@ $(document).ready(function() {
 
 	<?php if ($row->created_by == $this->user->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_issue" title="<?php echo phpFrame_HTML_Text::_($row->title, true); ?>" href="index.php?option=com_projects&task=remove_issue&projectid=<?php echo $row->projectid; ?>&issueid=<?php echo $row->id; ?>">
+		<a class="delete_issue" title="<?php echo phpFrame_HTML_Text::_($row->title, true); ?>" href="index.php?component=com_projects&action=remove_issue&projectid=<?php echo $row->projectid; ?>&issueid=<?php echo $row->id; ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
 	<div class="thread_heading">
-	<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->id); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->id); ?>">
 		<?php echo $row->title; ?>
 	</a>
 	</div>
@@ -125,7 +125,7 @@ $(document).ready(function() {
 		<?php if (!empty($row->assignees)) : ?>
     	<?php for ($j=0; $j<count($row->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=users&layout=detail&userid=".$row->assignees[$j]['id']); ?>">
+    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=users&layout=detail&userid=".$row->assignees[$j]['id']); ?>">
     		<?php echo $row->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>
@@ -147,11 +147,11 @@ $(document).ready(function() {
 	<?php endif; ?>
 	
 	<div class="comments_info">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$this->projectid."&issueid=".$row->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&layout=detail&projectid=".$this->projectid."&issueid=".$row->id); ?>">
 			<?php echo $row->comments; ?> <?php echo _LANG_COMMENTS; ?>
 		</a>
 		 - 
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=issues&layout=detail&projectid=".$this->projectid."&issueid=".$row->id."#post-comment"); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&layout=detail&projectid=".$this->projectid."&issueid=".$row->id."#post-comment"); ?>">
 			<?php echo _LANG_COMMENTS_NEW; ?>
 		</a>
 	</div>
@@ -164,7 +164,7 @@ $(document).ready(function() {
 
 <form name="pagenavform">
 <?php echo $this->pageNav->getListFooter(); ?>
-<input type="hidden" name="option" value="com_projects" />
+<input type="hidden" name="component" value="com_projects" />
 <input type="hidden" name="view" value="projects" />
 <input type="hidden" name="type" value="issues" />
 <input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />

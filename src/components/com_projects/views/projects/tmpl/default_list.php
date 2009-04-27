@@ -14,7 +14,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 <?php if ($this->user->groupid == 1) : ?>
 <div class="new">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view=admin&layout=form'); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view=admin&layout=form'); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>
 	</a>
 </div>
@@ -39,7 +39,7 @@ function submit_filter(reset) {
 <input type="text" name="search" id="search" value="<?php echo $this->lists['search']; ?>">
 <button type="button" class="button" onclick="submit_filter(false);">Search</button>
 <button type="button" class="button" onclick="submit_filter(true);">Reset</button>
-<input type="hidden" name="option" value="com_projects" />
+<input type="hidden" name="component" value="com_projects" />
 <input type="hidden" name="view" value="projects" />
 <input type="hidden" name="layout" value="list" />
 </form>
@@ -63,7 +63,7 @@ function submit_filter(reset) {
   <?php foreach($this->rows as $row) : ?>
   <tr class="row<?php echo $k; ?>">
     <td valign="top">
-    <a href="index.php?option=com_projects&amp;view=projects&amp;layout=detail&amp;projectid=<?php echo $row->id; ?>">
+    <a href="index.php?component=com_projects&amp;view=projects&amp;layout=detail&amp;projectid=<?php echo $row->id; ?>">
 	<?php echo $row->name; ?>
 	</a>
     </td>

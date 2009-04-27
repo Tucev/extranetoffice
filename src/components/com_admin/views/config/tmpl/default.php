@@ -218,7 +218,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 <?php 
 if (phpFrame_Environment_Request::getVar('tmpl') != 'component') {
-	phpFrame_HTML::button('button', _LANG_BACK, "window.location = 'index.php?option=com_admin';");
+	phpFrame_HTML::button('button', _LANG_BACK, "window.location = 'index.php?component=com_admin';");
 }
 else {
 	?><input type="hidden" name="tmpl" value="component" /><?php
@@ -227,7 +227,7 @@ else {
 phpFrame_HTML::button('submit', _LANG_SAVE);
 ?>
 	
-<input type="hidden" name="option" value="com_admin" />
-<input type="hidden" name="task" value="save_config" />
+<input type="hidden" name="component" value="com_admin" />
+<input type="hidden" name="action" value="save_config" />
 <?php echo phpFrame_HTML::_( 'form.token' ); ?>
 </form>

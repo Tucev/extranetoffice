@@ -94,7 +94,7 @@ function add_attachment(path, size, type) {
 		</a>
 	</div>
 	<div>
-		<a class="modal" href="index.php?option=com_intranetoffice&amp;view=email&amp;folder=<?php echo $this->folder; ?>&amp;type=new_attachment&tmpl=component" rel="{handler: 'iframe', size: {x: 340, y: 160}}">
+		<a class="modal" href="index.php?component=com_intranetoffice&amp;view=email&amp;folder=<?php echo $this->folder; ?>&amp;type=new_attachment&tmpl=component" rel="{handler: 'iframe', size: {x: 340, y: 160}}">
 		<img border="0" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/email/32x32/attach.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_ATTACH ); ?>" />
 		</a>
 	</div>
@@ -161,6 +161,6 @@ function add_attachment(path, size, type) {
 <input type="hidden" name="attachments" value="" />
 <input type="hidden" name="flag" value="<?php echo $this->message['uid']."|".phpFrame_Environment_Request::getVar('type', 'list'); ?>" />
 <input type="hidden" name="folder" value="<?php echo $this->folder; ?>" />
-<input type="hidden" name="option" value="com_intranetoffice" />
-<input type="hidden" name="task" value="send_email" />
+<input type="hidden" name="component" value="com_intranetoffice" />
+<input type="hidden" name="action" value="send_email" />
 </form>

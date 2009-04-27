@@ -17,7 +17,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class adminController extends phpFrame_Application_Controller {
+class adminController extends phpFrame_Application_ActionController {
 	/**
 	 * Constructor
 	 * 
@@ -26,7 +26,7 @@ class adminController extends phpFrame_Application_Controller {
 	 */
 	function __construct() {
 		// set default request vars
-		$this->view = phpFrame_Environment_Request::getVar('view', 'admin');
+		$this->view = phpFrame_Environment_Request::getView('admin');
 		
 		// It is important we invoke the parent's constructor before 
 		// running permission check as we need the available views loaded first.
@@ -51,7 +51,7 @@ class adminController extends phpFrame_Application_Controller {
 			phpFrame_Application_Error::raise('', 'message', _LANG_CONFIG_SAVE_SUCCESS);
 		}
 		
-		$this->setRedirect('index.php?option=com_admin&view=config');
+		$this->setRedirect('index.php?component=com_admin&view=config');
 	}
 	
 	function save_user() {
@@ -67,7 +67,7 @@ class adminController extends phpFrame_Application_Controller {
 			phpFrame_Application_Error::raise('', 'message', _LANG_USER_SAVE_SUCCESS);
 		}
 		
-		$this->setRedirect('index.php?option=com_admin&view=users');
+		$this->setRedirect('index.php?component=com_admin&view=users');
 	}
 	
 	function remove_user() {
@@ -82,7 +82,7 @@ class adminController extends phpFrame_Application_Controller {
 			phpFrame_Application_Error::raise('', 'message', _LANG_ADMIN_USERS_DELETE_SUCCESS);
 		}
 		
-		$this->setRedirect('index.php?option=com_admin&view=users');
+		$this->setRedirect('index.php?component=com_admin&view=users');
 	}
 }
 ?>

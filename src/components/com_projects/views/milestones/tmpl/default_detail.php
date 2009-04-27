@@ -19,7 +19,7 @@ phpFrame_HTML::validate('commentsform');
 
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getView().'&projectid='.$this->projectid); ?>">
 		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
@@ -29,14 +29,14 @@ phpFrame_HTML::validate('commentsform');
 
 	<?php if ($this->row->created_by == $this->user->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_milestone" title="<?php echo phpFrame_HTML_Text::_($this->row->title, true); ?>" href="index.php?option=com_projects&task=remove_milestone&projectid=<?php echo $this->row->projectid; ?>&milestoneid=<?php echo $this->row->id; ?>">
+		<a class="delete_milestone" title="<?php echo phpFrame_HTML_Text::_($this->row->title, true); ?>" href="index.php?component=com_projects&action=remove_milestone&projectid=<?php echo $this->row->projectid; ?>&milestoneid=<?php echo $this->row->id; ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
 	<div class="thread_edit">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=".phpFrame_Environment_Request::getVar('view')."&layout=form&projectid=".$this->project->id."&milestoneid=".$this->row->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=".phpFrame_Environment_Request::getView()."&layout=form&projectid=".$this->project->id."&milestoneid=".$this->row->id); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
@@ -55,7 +55,7 @@ phpFrame_HTML::validate('commentsform');
 		<?php if (!empty($this->row->assignees)) : ?>
     	<?php for ($j=0; $j<count($this->row->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=users&layout=detail&userid=".$this->row->assignees[$j]['id']); ?>">
+    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=users&layout=detail&userid=".$this->row->assignees[$j]['id']); ?>">
     		<?php echo $this->row->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>
@@ -114,8 +114,8 @@ phpFrame_HTML::validate('commentsform');
 		<p>
 		<button class="button"><?php echo _LANG_COMMENTS_SEND; ?></button>
 		</p>
-		<input type="hidden" name="option" value="com_projects" />
-		<input type="hidden" name="task" value="save_comment" />
+		<input type="hidden" name="component" value="com_projects" />
+		<input type="hidden" name="action" value="save_comment" />
 		<input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
 		<input type="hidden" name="type" value="milestones" />
 		<input type="hidden" name="itemid" value="<?php echo  $this->row->id; ?>" />

@@ -17,13 +17,13 @@ phpFrame_HTML::confirm('delete_message', _LANG_PROJECTS_MESSAGES_DELETE, _LANG_P
 
 
 <div class="new">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&layout=form&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getView().'&layout=form&projectid='.$this->projectid); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_NEW ); ?>
 	</a>
 </div>
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getView().'&projectid='.$this->projectid); ?>">
 		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
@@ -37,14 +37,14 @@ phpFrame_HTML::confirm('delete_message', _LANG_PROJECTS_MESSAGES_DELETE, _LANG_P
 
 	<?php if ($row->userid == $this->user->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_message" title="<?php echo phpFrame_HTML_Text::_($row->subject, true); ?>" href="index.php?option=com_projects&task=remove_message&projectid=<?php echo $row->projectid; ?>&messageid=<?php echo $row->id; ?>">
+		<a class="delete_message" title="<?php echo phpFrame_HTML_Text::_($row->subject, true); ?>" href="index.php?component=com_projects&action=remove_message&projectid=<?php echo $row->projectid; ?>&messageid=<?php echo $row->id; ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
 	<div class="thread_heading">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&layout=detail&projectid='.$row->projectid.'&messageid='.$row->id); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getView().'&layout=detail&projectid='.$row->projectid.'&messageid='.$row->id); ?>">
 		<?php echo $row->subject; ?>
 	</a>
 	</div>
@@ -59,7 +59,7 @@ phpFrame_HTML::confirm('delete_message', _LANG_PROJECTS_MESSAGES_DELETE, _LANG_P
 		<?php if (!empty($row->assignees)) : ?>
     	<?php for ($j=0; $j<count($row->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Application_Route::_("index.php?option=com_projects&view=users&layout=detail&userid=".$row->assignees[$j]['id']); ?>">
+    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=users&layout=detail&userid=".$row->assignees[$j]['id']); ?>">
     		<?php echo $row->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>
@@ -73,11 +73,11 @@ phpFrame_HTML::confirm('delete_message', _LANG_PROJECTS_MESSAGES_DELETE, _LANG_P
 	<?php endif; ?>
 	
 	<div class="comments_info">
-		<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&layout=detail&projectid='.$this->projectid.'&messageid='.$row->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getView().'&layout=detail&projectid='.$this->projectid.'&messageid='.$row->id); ?>">
 			<?php echo $row->comments; ?> <?php echo _LANG_COMMENTS; ?>
 		</a>
 		 - 
-		<a href="<?php echo phpFrame_Application_Route::_('index.php?option=com_projects&view='.phpFrame_Environment_Request::getVar('view').'&layout=detail&projectid='.$this->projectid.'&messageid='.$row->id.'#post-comment'); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getView().'&layout=detail&projectid='.$this->projectid.'&messageid='.$row->id.'#post-comment'); ?>">
 			<?php echo _LANG_COMMENTS_NEW; ?>
 		</a>
 	</div>

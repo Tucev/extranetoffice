@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * Method name to be triggered will be formed as follows:
  * 
  * <code>
- * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getVar('view')).ucfirst($this->tmpl);
+ * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getView()).ucfirst($this->tmpl);
  * </code>
  * 
  * @package		ExtranetOffice
@@ -145,7 +145,7 @@ class projectsViewAdmin extends phpFrame_Application_View {
 	function displayAdminMemberForm() {
 		$this->page_title = _LANG_ADMIN.' - '._LANG_PROJECTS_ADD_MEMBER;
 		$this->page_heading = $this->project->name.' - '._LANG_ADMIN;
-		$this->addPathwayItem(_LANG_ADMIN, 'index.php?option=com_projects&view=admin&projectid='.$this->projectid);
+		$this->addPathwayItem(_LANG_ADMIN, 'index.php?component=com_projects&view=admin&projectid='.$this->projectid);
 		$this->addPathwayItem(_LANG_PROJECTS_ADD_MEMBER);
 	}
 }

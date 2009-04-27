@@ -233,8 +233,8 @@ $(document).ready(function() {
 <button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 
 <input type="hidden" name="id" value="<?php echo $this->project->id;?>" />
-<input type="hidden" name="option" value="com_projects" />
-<input type="hidden" name="task" value="save_project" />
+<input type="hidden" name="component" value="com_projects" />
+<input type="hidden" name="action" value="save_project" />
 <input type="hidden" name="layout" value="" />
 <?php echo phpFrame_HTML::_( 'form.token' ); ?>
 
