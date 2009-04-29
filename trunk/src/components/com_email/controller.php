@@ -27,8 +27,8 @@ class emailController extends phpFrame_Application_ActionController {
 	function __construct() {
 		// set default request vars
 		$this->view = phpFrame_Environment_Request::getView('messages');
-		$this->layout = phpFrame_Environment_Request::getVar('layout', 'list');
-		
+		$this->layout = phpFrame_Environment_Request::getLayout('list');
+		 
 		parent::__construct();
 	}
 	
@@ -36,7 +36,7 @@ class emailController extends phpFrame_Application_ActionController {
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
-		$post = phpFrame_Environment_Request::get('post');
+		$post = phpFrame_Environment_Request::getPost();
 		
 		$modelAccounts = $this->getModel('accounts');
 		$row = $modelAccounts->saveAccount($post);

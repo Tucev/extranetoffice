@@ -152,7 +152,7 @@ class adminModelUsers extends phpFrame_Application_Model {
 			$new_user = false;
 		}
 		
-		$post = phpFrame_Environment_Request::get('post');
+		$post = phpFrame_Environment_Request::getPost();
 		
 		// exlude password if not passed in request
 		$exclude = '';

@@ -29,7 +29,7 @@ require_once 'PHPUnit/Framework.php';
 
 class testProjectsController extends PHPUnit_Framework_TestCase {
 	function setUp() {
-		phpFrame_Environment_Request::setVar('option', 'com_projects');
+		phpFrame_Environment_Request::setComponent('com_projects');
     }
     
 	function tearDown() {
@@ -39,7 +39,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     
     function test_save_project() {
     	// Fake posted form data
-    	phpFrame_Environment_Request::setVar('task', 'save_project');
+    	phpFrame_Environment_Request::setAction('save_project');
     	phpFrame_Environment_Request::setVar('name', 'This is a test project');
     	phpFrame_Environment_Request::setVar('project_type', '1');
     	phpFrame_Environment_Request::setVar('priority', '1');
@@ -60,7 +60,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
 		$projectid = $db->query();
 		
     	// Fake posted form data
-    	phpFrame_Environment_Request::setVar('task', 'remove_project');
+    	phpFrame_Environment_Request::setAction('remove_project');
     	phpFrame_Environment_Request::setVar('projectid', $projectid);
     	
     	$frontcontroller = phpFrame::getFrontController();
@@ -72,7 +72,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     
     function test_save_member_InviteNewUser() {
     	// Fake posted form data
-    	phpFrame_Environment_Request::setVar('task', 'save_member');
+    	phpFrame_Environment_Request::setAction('save_member');
     	phpFrame_Environment_Request::setVar('projectid', '1');
     	phpFrame_Environment_Request::setVar('roleid', '1');
     	phpFrame_Environment_Request::setVar('username', 'testuser');
@@ -101,7 +101,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
 		$userid = $db->query();
 		
     	// Fake posted form data
-    	phpFrame_Environment_Request::setVar('task', 'save_member');
+    	phpFrame_Environment_Request::setAction('save_member');
     	phpFrame_Environment_Request::setVar('projectid', '1');
     	phpFrame_Environment_Request::setVar('roleid', '1');
     	phpFrame_Environment_Request::setVar('userids', $userid);
@@ -130,7 +130,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
 		$db->query();
 		
     	// Fake posted form data
-    	phpFrame_Environment_Request::setVar('task', 'remove_member');
+    	phpFrame_Environment_Request::setAction('remove_member');
     	phpFrame_Environment_Request::setVar('projectid', '1');
     	phpFrame_Environment_Request::setVar('userid', $userid);
     	
@@ -143,7 +143,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     
     function test_admin_change_member_role() {
     	// Fake posted form data
-    	phpFrame_Environment_Request::setVar('task', 'admin_change_member_role');
+    	phpFrame_Environment_Request::setAction('admin_change_member_role');
     	phpFrame_Environment_Request::setVar('projectid', '1');
     	phpFrame_Environment_Request::setVar('userid', '63');
     	phpFrame_Environment_Request::setVar('roleid', '3');
@@ -157,7 +157,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     
     function test_save_issue() {
     	// Fake posted form data
-    	phpFrame_Environment_Request::setVar('task', 'save_issue');
+    	phpFrame_Environment_Request::setAction('save_issue');
     	phpFrame_Environment_Request::setVar('projectid', '1');
     	phpFrame_Environment_Request::setVar('title', 'Test issue');
     	phpFrame_Environment_Request::setVar('issue_type', '0');

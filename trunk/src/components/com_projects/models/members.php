@@ -108,7 +108,7 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		// Assign newly generated password to row object (this password will be encrypted when stored).
 		$row->password = $password;
 		
-		$post = phpFrame_Environment_Request::get('post');
+		$post = phpFrame_Environment_Request::getPost();
 		
 		// Bind the post data to the row array
 		if ($user->bind($post, 'password', $row) === false) {

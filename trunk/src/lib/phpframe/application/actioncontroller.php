@@ -106,9 +106,9 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 */
 	protected function __construct() {
 		$this->option = phpFrame_Environment_Request::getComponent();
-		$this->task = phpFrame_Environment_Request::getVar('task', 'display');
+		$this->task = phpFrame_Environment_Request::getAction();
 		$this->view = phpFrame_Environment_Request::getView();
-		$this->layout = phpFrame_Environment_Request::getVar('layout');
+		$this->layout = phpFrame_Environment_Request::getLayout();
 		
 		// Get available views
 		$this->views_available = $this->getAvailableViews();
