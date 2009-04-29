@@ -69,8 +69,12 @@ $module_positions['right'] = $this->modules->display('right');
 <!-- End Content -->
 
 <div id="footer">
-Powered by Extranet Office 1.0 Alpha $LastChangedRevision$<br />
+Powered by Extranet Office 1.0 Alpha and phpFrame<br />
 &copy; 2009 E-noise.com Limited
+<?php if (config::DEBUG) : ?>
+<br />
+Script Execution Time: <?php echo phpFrame_Debug_Profiler::getExecutionTime(); ?> seconds
+<?php endif; ?>
 </div>
 
 </body>
