@@ -30,7 +30,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			<?php echo date("D, d M Y", strtotime($issue->dtend)); ?>
 		</td>
 		<td>
-			<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=projects&layout=issues_detail&projectid=".$this->projectid."&issueid=".$issue->id); ?>">
+			<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&layout=detail&projectid=".$this->projectid."&issueid=".$issue->id); ?>">
 			<?php echo $issue->title; ?>
 			</a>
 		</td>
@@ -39,7 +39,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			<?php if (!empty($issue->assignees)) : ?>
 	    	<?php for ($j=0; $j<count($issue->assignees); $j++) : ?>
 	    		<?php if ($j>0) echo ', '; ?>
-	    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=users&layout=detail&userid=".$issue->assignees[$j]['id']); ?>">
+	    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&view=users&layout=detail&userid=".$issue->assignees[$j]['id']); ?>">
 	    		<?php echo $issue->assignees[$j]['name']; ?>
 	    		</a>
 	    	<?php endfor; ?>
