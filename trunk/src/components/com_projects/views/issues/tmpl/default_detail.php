@@ -67,7 +67,7 @@ phpFrame_HTML::validate('commentsform');
 		<?php if (!empty($this->row->assignees)) : ?>
     	<?php for ($j=0; $j<count($this->row->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=users&layout=detail&userid=".$this->row->assignees[$j]['id']); ?>">
+    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&view=users&layout=detail&userid=".$this->row->assignees[$j]['id']); ?>">
     		<?php echo $this->row->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>
