@@ -59,7 +59,7 @@ phpFrame_HTML::confirm('delete_milestone', _LANG_PROJECTS_MILESTONES_DELETE, _LA
 		<?php if (!empty($row->assignees)) : ?>
     	<?php for ($j=0; $j<count($row->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=users&layout=detail&userid=".$row->assignees[$j]['id']); ?>">
+    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&view=users&layout=detail&userid=".$row->assignees[$j]['id']); ?>">
     		<?php echo $row->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>

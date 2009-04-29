@@ -120,7 +120,7 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
     	<?php echo $row->rolename; ?>
     </td>
     <td valign="top">
-    <a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&amp;view=users&amp;layout=detail&amp;userid=".$row->userid); ?>">
+    <a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&view=users&layout=detail&userid=".$row->userid); ?>">
 	<?php echo $row->name; ?>
 	</a>
     </td>
