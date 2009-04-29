@@ -148,7 +148,7 @@ class phpFrame_HTML_Pagination {
 	public function getPageNav() {
 		$href = 'index.php?component='.phpFrame_Environment_Request::getComponent();
 		$href .= '&amp;view='.phpFrame_Environment_Request::getView();
-		$href .= '&amp;layout='.phpFrame_Environment_Request::getVar('layout');
+		$href .= '&amp;layout='.phpFrame_Environment_Request::getLayout();
 		$href .= '&amp;limit='.$this->limit;
 		
 		$html = '<ul>';

@@ -31,7 +31,7 @@ class loginController extends phpFrame_Application_ActionController {
 		$this->option = phpFrame_Environment_Request::getComponent();
 		$this->task = phpFrame_Environment_Request::getVar('task', 'display');
 		$this->view = phpFrame_Environment_Request::getView('login');
-		$this->layout = phpFrame_Environment_Request::getVar('layout');
+		$this->layout = phpFrame_Environment_Request::getLayout();
 	}
 	
 	function login() {

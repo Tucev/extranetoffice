@@ -27,15 +27,17 @@ class usersController extends phpFrame_Application_ActionController {
 	function __construct() {
 		// set default request vars
 		$this->view = phpFrame_Environment_Request::getView('users');
-		$this->layout = phpFrame_Environment_Request::getVar('layout', 'list');
+		$this->layout = phpFrame_Environment_Request::getLayout('list');
 		
 		parent::__construct();
 	}
 	
 	function save_user() {
+		$post = phpFrame_Environment_Request::getPost();
+		
 		$modelUser = $this->getModel('users');
 		
-		if ($modelUser->saveUser() === false) {
+		if ($modelUser->saveUser($post) === false) {
 			phpFrame_Application_Error::raise('', 'error', $modelUser->getLastError());
 		}
 		else {

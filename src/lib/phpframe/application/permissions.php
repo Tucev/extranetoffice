@@ -83,7 +83,7 @@ class phpFrame_Application_Permissions extends phpFrame_Base_Singleton {
 		$this->option = phpFrame_Environment_Request::getComponent();
 		$this->task = phpFrame_Environment_Request::getVar('task', 'display');
 		$this->view = phpFrame_Environment_Request::getView();
-		$this->layout = phpFrame_Environment_Request::getVar('layout');
+		$this->layout = phpFrame_Environment_Request::getLayout();
 		
 		// Check login
 		$user = phpFrame::getUser();

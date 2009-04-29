@@ -92,14 +92,12 @@ class usersModelUsers extends phpFrame_Application_Model {
 	 * 
 	 * @return	bool	Returns TRUE on success or FALSE on failure.
 	 */
-	function saveUser() {
+	function saveUser($post) {
 		$userid = phpFrame_Environment_Request::getVar('id', null);
 		
 		// Get reference to user object
 		$user = phpFrame::getUser();
 		//$user->load($userid, 'password');
-		
-		$post = phpFrame_Environment_Request::get('post');
 		
 		// Upload image if photo sent in request
 		if (!empty($_FILES['photo']['name'])) {

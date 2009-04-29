@@ -164,6 +164,15 @@ class phpFrame_Environment_Request {
 	}
 	
 	/**
+	 * Get request/post array from URA
+	 * 
+	 * @return	array
+	 */
+	function getPost() {
+		return self::$_URA['request'];
+	}
+	
+	/**
 	 * Get request variable
 	 * 
 	 * @static

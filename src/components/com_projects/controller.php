@@ -32,7 +32,7 @@ class projectsController extends phpFrame_Application_ActionController {
 	function __construct() {
 		// set default request vars
 		$this->view = phpFrame_Environment_Request::getView('projects');
-		$this->layout = phpFrame_Environment_Request::getVar('layout', 'list');
+		$this->layout = phpFrame_Environment_Request::getLayout('list');
 		$this->projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		
 		// It is important we invoke the parent's constructor before 
@@ -89,7 +89,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		$user = phpFrame::getUser();
-		$post = phpFrame_Environment_Request::get('post');
+		$post = phpFrame_Environment_Request::getPost();
 		
 		$modelProjects = $this->getModel('projects');
 		$projectid = $modelProjects->saveProject($post);
@@ -224,7 +224,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame_Environment_Request::get('post');
+		$post = phpFrame_Environment_Request::getPost();
 		
 		// Save issue using issues model
 		$modelIssues = $this->getModel('issues');
@@ -333,7 +333,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame_Environment_Request::get('post');
+		$post = phpFrame_Environment_Request::getPost();
 		
 		// Save file using files model
 		$modelFiles = $this->getModel('files');
@@ -390,7 +390,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame_Environment_Request::get('post');
+		$post = phpFrame_Environment_Request::getPost();
 		
 		// Save message using messages model
 		$modelMessages = $this->getModel('messages');
@@ -439,7 +439,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame_Environment_Request::get('post');
+		$post = phpFrame_Environment_Request::getPost();
 		
 		// Save comment using comments model
 		$modelComments = $this->getModel('comments');
@@ -495,7 +495,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame_Environment_Request::get('post');
+		$post = phpFrame_Environment_Request::getPost();
 		
 		// Save file using files model
 		$modelMeetings = $this->getModel('meetings');
@@ -544,7 +544,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame_Environment_Request::get('post');
+		$post = phpFrame_Environment_Request::getPost();
 		
 		$modelMeetings = $this->getModel('meetings');
 		$row = $modelMeetings->saveSlideshow($post);
@@ -584,7 +584,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame_Environment_Request::get('post');
+		$post = phpFrame_Environment_Request::getPost();
 		
 		$modelMeetings = $this->getModel('meetings');
 		$row = $modelMeetings->uploadSlide($post);
@@ -658,7 +658,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame_Environment_Request::get('post');
+		$post = phpFrame_Environment_Request::getPost();
 		
 		// Save file using files model
 		$modelMilestones = $this->getModel('milestones');
