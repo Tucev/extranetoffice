@@ -366,7 +366,7 @@ Body:
 %s");
 
 // People
-define("_LANG_PEOPLE", "People");
+define("_LANG_PEOPLE", "People in project");
 
 // Activity log
 define("_LANG_ACTIVITYLOG_NOTIFY_FAILED", "An error occured while attemting to send notifications");
