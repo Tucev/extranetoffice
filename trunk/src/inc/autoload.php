@@ -67,7 +67,7 @@ function __autoload($class_name) {
 					break;
 				case 'Table' : 
 					$file_path .= "tables".DS.strtolower($matches[3]);
-					if (isset($matches[4])) $file_path .= "_".$matches[4];
+					if (isset($matches[4])) $file_path .= "_".strtolower($matches[4]);
 					$file_path .=".table.php";
 					break;
 			}
