@@ -73,6 +73,8 @@ class phpFrame_Exception extends Exception {
 			case self::E_ERROR :
 			case self::E_USER_ERROR :
 				$this->_severity = 'error';
+				echo '<pre>'.$this->__toString();
+				exit;
 				break;
 				
 			case self::E_WARNING :

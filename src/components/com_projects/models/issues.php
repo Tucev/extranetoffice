@@ -16,7 +16,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		model
+ * @see 		phpFrame_Application_Model
  * @todo		check for NULL values rather than 00-00-000 00:00
  */
 class projectsModelIssues extends phpFrame_Application_Model {
