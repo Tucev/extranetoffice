@@ -1,7 +1,7 @@
 <?php
 /**
  * @version 	$Id: default.php 29 2009-01-28 15:14:15Z luis.montero $
- * @package		ExtranetOffice
+ * @package		phpFrame
  * @subpackage 	com_login
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
