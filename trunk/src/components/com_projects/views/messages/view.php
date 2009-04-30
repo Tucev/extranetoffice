@@ -25,7 +25,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		view, controller
+ * @see 		phpFrame_Application_View
  */
 class projectsViewMessages extends phpFrame_Application_View {
 	var $page_title=null;

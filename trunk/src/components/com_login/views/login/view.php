@@ -16,7 +16,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @subpackage 	com_login
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		view, controller
+ * @see 		phpFrame_Application_View
  */
 class loginViewLogin extends phpFrame_Application_View {
 	

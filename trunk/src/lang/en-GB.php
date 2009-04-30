@@ -412,6 +412,37 @@ define("_LANG_EMAIL_NEW", "New email");
 define("_LANG_EMAIL_SAVE_COPY_IN_SENT_FOLDER", "Save copy in 'Sent' folder");
 define("_LANG_EMAIL_MESSAGE_DETAIL", "Message detail");
 
+// com_addressbook
+define("_LANG_ADDRESSBOOK", "Address Book");
+define("_LANG_ADDRESSBOOK_CONTACT_NEW", "New contact");
+define("_LANG_CONTACTS_BASIC_DETAILS", "Basic details");
+define("_LANG_CONTACTS_FIRST_NAME", "First name");
+define("_LANG_CONTACTS_LAST_NAME", "Last name");
+define("_LANG_CONTACTS_DISPLAY_NAME", "Display name");
+define("_LANG_CONTACTS_ACCESS", "Access");
+define("_LANG_CONTACTS_PRIVATE", "Private");
+define("_LANG_CONTACTS_PUBLIC", "Public");
+define("_LANG_CONTACTS_CATEGORY", "Category");
+define("_LANG_CONTACTS_EMAIL_DETAILS", "Email details");
+define("_LANG_CONTACTS_HOME_EMAIL", "Home email");
+define("_LANG_CONTACTS_WORK_EMAIL", "Work email");
+define("_LANG_CONTACTS_OTHER_EMAIL", "Other email");
+define("_LANG_CONTACTS_PHONE_DETAILS", "Phone details");
+define("_LANG_CONTACTS_HOME_PHONE", "Home phone");
+define("_LANG_CONTACTS_BUSINESS_PHONE", "Work phone");
+define("_LANG_CONTACTS_MOBILE_PHONE", "Mobile phone");
+define("_LANG_CONTACTS_HOME_ADDRESS_DETAILS", "Home address");
+define("_LANG_CONTACTS_WORK_ADDRESS_DETAILS", "Work address");
+define("_LANG_CONTACTS_OTHER_ADDRESS_DETAILS", "Other address");
+define("_LANG_CONTACTS_ADDRESS1", "Address 1");
+define("_LANG_CONTACTS_ADDRESS2", "Address 2");
+define("_LANG_CONTACTS_LOCALITY", "City / Town");
+define("_LANG_CONTACTS_REGION", "County / Region");
+define("_LANG_CONTACTS_POST_CODE", "Post code");
+define("_LANG_CONTACTS_COUNTRY", "Country");
+define("_LANG_CONTACTS_DISPLAYNAME_REQUIRED", "Display name is required");
+define("_LANG_CONTACT_SAVED", "Contact successfully saved");
+
 // com_billing
 define("_LANG_BILLING", "Billing");
 define("_LANG_BILLING_INVOICES", "Invoices");

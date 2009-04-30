@@ -10,10 +10,10 @@
  * methods.
  * 
  * @version 	$Id: index.php 46 2009-02-13 01:37:49Z luis.montero $
- * @package		ExtranetOffice
+ * @package		phpFrame
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
- * @see			phpFrame_Application
+ * @see			phpFrame_Application_FrontController
  */
 
 /**

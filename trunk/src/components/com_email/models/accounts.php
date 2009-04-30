@@ -16,7 +16,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @subpackage 	com_email
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		model
+ * @see 		phpFrame_Application_Model
  */
 class emailModelAccounts extends phpFrame_Application_Model {
 	/**

@@ -252,7 +252,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			}
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=issues&projectid='.$post['projectid']);	
+		$this->setRedirect('index.php?component=com_projects&view=issues&projectid='.$post['projectid']);
 	}
 	
 	function remove_issue() {

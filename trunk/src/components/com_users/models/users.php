@@ -16,7 +16,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @subpackage 	com_users
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		model
+ * @see 		phpFrame_Application_Model
  */
 class usersModelUsers extends phpFrame_Application_Model {
 	function getUsers() {

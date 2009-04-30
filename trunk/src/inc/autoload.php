@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @package		ExtranetOffice
+ * @package		phpFrame
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  */
@@ -80,11 +80,12 @@ function __autoload($className) {
 		$file_path = _ABS_PATH.DS."lib".DS."phpinputfilter".DS."inputfilter.php"; 
 	}
 	
+	// require th file if it exists, otherwise we throw an exception
 	if (file_exists($file_path)) {
 		require $file_path;
 	}
 	else {
-		phpFrame_Application_Error::raiseFatalError('Could not autoload class '.$className.'. File '.$file_path.' not found.');
+		throw new phpFrame_Exception('Could not autoload class '.$className.'. File '.$file_path.' not found.');
 	}
 }
 ?>
