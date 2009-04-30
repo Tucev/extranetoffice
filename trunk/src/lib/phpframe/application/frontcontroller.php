@@ -176,6 +176,18 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 		// load modules before we execute controller task to make modules available to components
 		$this->modules = phpFrame_Base_Singleton::getInstance('phpFrame_Application_Modules');
 		
+		//TODO We should move the next block to the relevant client class. It is now here
+		// because jquery scripts need to be loaded before we load the jQuery plugins in the component output. 
+		// If client is default (pc web browser) we add the jQuery library + jQuery UI
+		if (phpFrame_Utils_Client::isDefault()) {
+			$document = phpFrame::getDocument('html');
+			$document->addScript('lib/jquery/js/jquery-1.3.2.min.js');
+			$document->addScript('lib/jquery/js/jquery-ui-1.7.custom.min.js');
+			$document->addScript('lib/jquery/plugins/validate/jquery.validate.pack.js');
+			$document->addScript('lib/jquery/plugins/form/jquery.form.pack.js');
+			$document->addStyleSheet('lib/jquery/css/smoothness/jquery-ui-1.7.custom.css');	
+		}
+		
 		// set the component path
 		define("COMPONENT_PATH", _ABS_PATH.DS."components".DS.$option);
 		// Start buffering
@@ -200,14 +212,10 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 	 * @since	1.0
 	 */
 	public function render() {
-		// If client is default (pc web browser) we add the jQuery library + jQuery UI
+		//TODO We should move the next block to the relevant client class. 
+		// Instantiate document object to make available in template scope
 		if (phpFrame_Utils_Client::isDefault()) {
 			$document = phpFrame::getDocument('html');
-			$document->addScript('lib/jquery/js/jquery-1.3.2.min.js');
-			$document->addScript('lib/jquery/js/jquery-ui-1.7.custom.min.js');
-			$document->addScript('lib/jquery/plugins/validate/jquery.validate.pack.js');
-			$document->addScript('lib/jquery/plugins/form/jquery.form.pack.js');
-			$document->addStyleSheet('lib/jquery/css/smoothness/jquery-ui-1.7.custom.css');	
 		}
 		
 		if (!$this->auth) {
