@@ -230,7 +230,14 @@ class phpFrame_Utils_URI extends phpFrame_Base_StdObject {
 		if (($this->_scheme == "http" && $this->_port != 80) || ($this->_scheme == "https" && $this->_port != 443)) {
 			$base .= ":".$this->_port;	
 		}
-		$base .= $this->_dirname."/";
+		
+		// Add dir name to base
+		$base .= $this->_dirname;
+		
+		// Add trailing slash if needed
+		if (!preg_match('/\/$/', $base)) {
+			$base .= "/";
+		}
 		
 		return $base;
 	}
