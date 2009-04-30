@@ -21,17 +21,17 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <div id="right_col">
 	
 	<div style="float:right;">
-		 <img style="float:right; margin: 5px 0 3px 3px;" src="<?php echo config::UPLOAD_DIR."/users/".$this->user->photo; ?>" />
+		 <img style="float:right; margin: 5px 0 3px 3px;" src="<?php echo config::UPLOAD_DIR."/users/".$this->_user->photo; ?>" />
 	</div>
 	
 	<h3>My profile</h3>
 	
-	<?php //var_dump($this->user); ?>
+	<?php //var_dump($this->_user); ?>
 	
 	<p style="font-size: 0.8em;">
-	Name: <br /> <?php echo $this->user->name; ?> <br />
-	Username: <br /> <?php echo $this->user->username; ?> <br />
-	Email: <br /> <?php echo $this->user->email; ?>
+	Name: <br /> <?php echo $this->_user->name; ?> <br />
+	Username: <br /> <?php echo $this->_user->username; ?> <br />
+	Email: <br /> <?php echo $this->_user->email; ?>
 	</p>
 	
 	<div style="clear:right;"></div>
@@ -42,7 +42,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	
 	<div class="ioffice_module">
 	
-	<?php if ($this->user->groupid == 1) : ?>
+	<?php if ($this->_user->groupid == 1) : ?>
 	<div style="float:right;" class="new">
 		 <a style="float:right;" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=admin&layout=form"); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>

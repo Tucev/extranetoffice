@@ -47,7 +47,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @subpackage 	application
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		controller, view
+ * @see 		phpFrame_Application_ActionController, phpFrame_Application_View
  * @abstract 
  */
 abstract class phpFrame_Application_Model extends phpFrame_Base_Singleton {
@@ -56,28 +56,28 @@ abstract class phpFrame_Application_Model extends phpFrame_Base_Singleton {
 	 * 
 	 * @var object
 	 */
-	var $user=null;
+	protected $_user=null;
 	/**
 	 * A reference to the database object
 	 * 
 	 * @var object
 	 */
-	var $db=null;
+	protected $_db=null;
 	/**
 	 * An array containing strings with internal error messages if any
 	 * 
 	 * @var array
 	 */
-	var $error=array();
+	protected $_error=array();
 	
 	/**
 	 * Constructor
 	 * 
 	 * @return void
 	 */
-	function __construct() {
-		$this->user = phpFrame::getUser();
-		$this->db = phpFrame::getDB();
+	public function __construct() {
+		$this->_user = phpFrame::getUser();
+		$this->_db = phpFrame::getDB();
 	}
 	
 	/**
@@ -86,7 +86,7 @@ abstract class phpFrame_Application_Model extends phpFrame_Base_Singleton {
 	 * @param	string	$name
 	 * @return	object
 	 */
-	function getModel($name) {
+	protected function getModel($name) {
 		// Get current component option from request
 		$option = phpFrame_Environment_Request::getComponent();
 		// Figure out controller instance name
@@ -100,13 +100,23 @@ abstract class phpFrame_Application_Model extends phpFrame_Base_Singleton {
 	}
 	
 	/**
+	 * Get table class
+	 * 
+	 * @param	string	$table_name
+	 * @return	object
+	 */
+	protected function getTable($table_name) {
+		return phpFrame::getTable(phpFrame_Environment_Request::getComponent(), $table_name);
+	}
+	
+	/**
 	 * Get last error in model
 	 * 
 	 * This method returns a string with the error message or FALSE if no errors.
 	 * 
 	 * @return mixed
 	 */
-	function getLastError() {
+	public function getLastError() {
 		if (is_array($this->error) && count($this->error) > 0) {
 			return end($this->error);
 		}

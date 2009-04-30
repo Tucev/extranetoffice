@@ -27,7 +27,7 @@ phpFrame_HTML::validate('userform');
 		</label>
 	</td>
 	<td>
-		<input class="required" type="text" id="username" name="username" value="<?php echo $this->user->get('username');?>" size="40" />
+		<input class="required" type="text" id="username" name="username" value="<?php echo $this->_user->get('username');?>" size="40" />
 	</td>
 </tr>
 <tr>
@@ -37,7 +37,7 @@ phpFrame_HTML::validate('userform');
 		</label>
 	</td>
 	<td>
-		<input class="required" type="text" id="email" name="email" value="<?php echo $this->user->get('email');?>" size="40" />
+		<input class="required" type="text" id="email" name="email" value="<?php echo $this->_user->get('email');?>" size="40" />
 	</td>
 </tr>
 <tr>
@@ -47,7 +47,7 @@ phpFrame_HTML::validate('userform');
 		</label>
 	</td>
 	<td>
-		<input type="text" id="firstname" name="firstname" value="<?php echo $this->user->get('firstname');?>" size="40" />
+		<input type="text" id="firstname" name="firstname" value="<?php echo $this->_user->get('firstname');?>" size="40" />
 	</td>
 </tr>
 <tr>
@@ -57,7 +57,7 @@ phpFrame_HTML::validate('userform');
 		</label>
 	</td>
 	<td>
-		<input type="text" id="lastname" name="lastname" value="<?php echo $this->user->get('lastname');?>" size="40" />
+		<input type="text" id="lastname" name="lastname" value="<?php echo $this->_user->get('lastname');?>" size="40" />
 	</td>
 </tr>
 <tr>
@@ -87,8 +87,8 @@ phpFrame_HTML::validate('userform');
 		</label>
 	</td>
 	<td>
-		<?php if (!empty($this->user->photo)) : ?>
-			<img src="<?php echo config::UPLOAD_DIR.'/users/'.$this->user->photo; ?>" alt="photo" vspace="5" />
+		<?php if (!empty($this->_user->photo)) : ?>
+			<img src="<?php echo config::UPLOAD_DIR.'/users/'.$this->_user->photo; ?>" alt="photo" vspace="5" />
 			<br />
 		<?php endif; ?>
 		<input type="file" name="photo" id="photo" />
@@ -102,8 +102,8 @@ phpFrame_HTML::validate('userform');
 	</td>
 	<td>
 		<select id="notifications" name="notifications">
-			<option value="0" <?php if ($this->user->notifications == 0) echo 'selected'; ?>>No</option>
-			<option value="1" <?php if ($this->user->notifications == 1) echo 'selected'; ?>>Yes</option>
+			<option value="0" <?php if ($this->_user->notifications == 0) echo 'selected'; ?>>No</option>
+			<option value="1" <?php if ($this->_user->notifications == 1) echo 'selected'; ?>>Yes</option>
 		</select>
 	</td>
 </tr>
@@ -115,8 +115,8 @@ phpFrame_HTML::validate('userform');
 	</td>
 	<td>
 		<select id="show_email" name="show_email">
-			<option value="0" <?php if ($this->user->show_email == 0) echo 'selected'; ?>>No</option>
-			<option value="1" <?php if ($this->user->show_email == 1) echo 'selected'; ?>>Yes</option>
+			<option value="0" <?php if ($this->_user->show_email == 0) echo 'selected'; ?>>No</option>
+			<option value="1" <?php if ($this->_user->show_email == 1) echo 'selected'; ?>>Yes</option>
 		</select>
 	</td>
 </tr>
@@ -130,8 +130,8 @@ phpFrame_HTML::validate('userform');
 <button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 <?php endif; ?>
 
-<input type="hidden" name="id" value="<?php echo $this->user->get('id'); ?>" />
-<input type="hidden" name="groupid" value="<?php echo $this->user->get('groupid');?>" />
+<input type="hidden" name="id" value="<?php echo $this->_user->get('id'); ?>" />
+<input type="hidden" name="groupid" value="<?php echo $this->_user->get('groupid');?>" />
 <input type="hidden" name="component" value="com_users" />
 <input type="hidden" name="action" value="save_user" />
 <input type="hidden" name="layout" value="" />

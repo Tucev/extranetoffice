@@ -49,8 +49,8 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 		$query .= " WHERE projectid = ".$projectid;
 		$query .= " ORDER BY ts DESC ";
 		$query .= " LIMIT 0,100";
-		$this->db->setQuery($query);
-		return $this->db->loadObjectList();
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
 	}
 	
 	/**
@@ -129,8 +129,8 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 		$query = "SELECT firstname, lastname, email ";
 		$query .= " FROM #__users ";
 		$query .= " WHERE id IN (".implode(',', $assignees).") AND id <> ".$row->userid;
-		$this->db->setQuery($query);
-		$recipients = $this->db->loadObjectList();
+		$this->_db->setQuery($query);
+		$recipients = $this->_db->loadObjectList();
 		
 		if (is_array($recipients) && count($recipients) > 0) {
 			$failed_recipients = array();

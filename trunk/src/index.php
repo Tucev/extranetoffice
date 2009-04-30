@@ -6,8 +6,7 @@
  * 
  * In order to instantiate the application we first set a few useful constants, 
  * set the global exception handler, load the config file, check for dependencies, 
- * include the autoloader and then finally instantiate the application and run its 
- * methods.
+ * include the autoloader and then finally instantiate the front controller.
  * 
  * @version 	$Id: index.php 46 2009-02-13 01:37:49Z luis.montero $
  * @package		phpFrame

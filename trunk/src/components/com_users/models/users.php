@@ -30,7 +30,7 @@ class usersModelUsers extends phpFrame_Application_Model {
 		$where = array();
 		
 		if ($search) {
-			$where[] = "u.lastname LIKE '%".$this->db->getEscaped($search)."%'";
+			$where[] = "u.lastname LIKE '%".$this->_db->getEscaped($search)."%'";
 		}
 		
 		$where[] = "(u.deleted = '0000-00-00 00:00:00' OR u.deleted IS NULL)";
@@ -49,9 +49,9 @@ class usersModelUsers extends phpFrame_Application_Model {
 				  FROM #__users AS u "
 				  . $where;
 				  
-		$this->db->setQuery($query);
-		$this->db->query();
-		$total = $this->db->getNumRows();
+		$this->_db->setQuery($query);
+		$this->_db->query();
+		$total = $this->_db->getNumRows();
 		
 		// get the subset (based on limits) of required records
 		$query = "SELECT 
@@ -63,8 +63,8 @@ class usersModelUsers extends phpFrame_Application_Model {
 			
 		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
 		//echo str_replace('#__', 'eo_', $query); exit;
-		$this->db->setQuery($query);
-		$rows = $this->db->loadObjectList();
+		$this->_db->setQuery($query);
+		$rows = $this->_db->loadObjectList();
 		
 		// table ordering
 		$lists['order_Dir']	= $filter_order_Dir;
@@ -83,8 +83,8 @@ class usersModelUsers extends phpFrame_Application_Model {
 	
 	function getUsersDetail($userid) {
 		$query = "SELECT * FROM #__users WHERE id = ".$userid;
-		$this->db->setQuery($query);
-		return $this->db->loadObject();
+		$this->_db->setQuery($query);
+		return $this->_db->loadObject();
 	}
 	
 	/**

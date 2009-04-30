@@ -89,12 +89,12 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		
 		// Show only public projects or projects where user has an assigned role
 		if (empty($userid)) {
-			$userid = $this->user->id;
+			$userid = $this->_user->id;
 		}
 		$where[] = "( p.access = '0' OR (".$userid." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 		
 		if ($search) {
-			$where[] = "p.name LIKE '%".$this->db->getEscaped($search)."%'";
+			$where[] = "p.name LIKE '%".$this->_db->getEscaped($search)."%'";
 		}
 
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
@@ -115,9 +115,9 @@ class projectsModelProjects extends phpFrame_Application_Model {
 				  . $where . 
 				  " GROUP BY p.id ";
 				  
-		$this->db->setQuery($query);
-		$this->db->query();
-		$total = $this->db->getNumRows();
+		$this->_db->setQuery($query);
+		$this->_db->query();
+		$total = $this->_db->getNumRows();
 		
 		// get the subset (based on limits) of required records
 		$query = "SELECT 
@@ -136,8 +136,8 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		
 		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
 		//echo str_replace('#__', 'eo_', $query); exit;
-		$this->db->setQuery($query);
-		$rows = $this->db->loadObjectList();
+		$this->_db->setQuery($query);
+		$rows = $this->_db->loadObjectList();
 	
 		// table ordering
 		$lists['order_Dir']	= $filter_order_Dir;
@@ -161,7 +161,7 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		}
 		
 		if (empty($userid)) {
-			$userid = $this->user->id;
+			$userid = $this->_user->id;
 		}
 		
 		$where[] = "( p.access = '0' OR (".$userid." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
@@ -179,8 +179,8 @@ class projectsModelProjects extends phpFrame_Application_Model {
 				  .$where. 
 				  " GROUP BY p.id ";
 				  	  
-		$this->db->setQuery($query);
-		return $this->db->loadObject();
+		$this->_db->setQuery($query);
+		return $this->_db->loadObject();
 	}
 	
 	
@@ -202,7 +202,7 @@ class projectsModelProjects extends phpFrame_Application_Model {
 	
 		if (empty($row->id)) {
 			$row->created = date("Y-m-d H:i:s");
-			$row->created_by = $this->user->id;
+			$row->created_by = $this->_user->id;
 		}
 		
 		if (!$row->check()) {

@@ -87,9 +87,9 @@ class phpFrame_Application_Permissions extends phpFrame_Base_Singleton {
 		
 		// Check login
 		$user = phpFrame::getUser();
-		$this->userid = $user->id;
-		if (empty($this->userid)) {
-			$this->userid = 0;
+		$this->_userid = $user->id;
+		if (empty($this->_userid)) {
+			$this->_userid = 0;
 			$this->groupid = 0;
 		}
 		else {

@@ -53,12 +53,8 @@ class dashboardViewDashboard extends phpFrame_Application_View {
 		$this->page_title = _LANG_DASHBOARD;
 		
 		// Get user's projects
-		require_once _ABS_PATH.DS.'components'.DS.'com_projects'.DS.'models'.DS.'projects.php';
-		require_once _ABS_PATH.DS.'components'.DS.'com_projects'.DS.'models'.DS.'activitylog.php';
-		require_once _ABS_PATH.DS.'components'.DS.'com_projects'.DS.'models'.DS.'issues.php';
-		require_once _ABS_PATH.DS.'components'.DS.'com_projects'.DS.'helpers'.DS.'projects.helper.php';
-		$modelProjects =& phpFrame_Base_Singleton::getInstance('projectsModelProjects');
-		$projects = $modelProjects->getProjects($this->user->id);
+		$modelProjects = phpFrame_Base_Singleton::getInstance('projectsModelProjects');
+		$projects = $modelProjects->getProjects($this->_user->id);
 		// Get project updates, overdue items and upcoming milestones
 		if (is_array($projects['rows']) && count($projects['rows']) > 0) {
 			foreach ($projects['rows'] as $row) {

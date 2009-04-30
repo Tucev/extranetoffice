@@ -12,7 +12,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 <h2 class="componentheading"><?php echo $this->page_title; ?></h2>
 
-<?php if ($this->user->groupid == 1) : ?>
+<?php if ($this->_user->groupid == 1) : ?>
 <div class="new">
 	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view=admin&layout=form'); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>

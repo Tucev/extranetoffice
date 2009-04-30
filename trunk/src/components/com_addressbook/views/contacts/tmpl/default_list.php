@@ -48,34 +48,62 @@ function submit_filter(reset) {
 <table class="data_list" width="100%" cellpadding="0" cellspacing="0">
   <thead>
   <tr>
-    <th><?php echo _LANG_PROJECTS_NAME; ?></th>
-    <th><?php echo _LANG_PROJECTS_STATUS; ?></th>
-    <th><?php echo _LANG_PROJECTS_PROJECT_TYPE; ?></th>
-    <th><?php echo _LANG_PROJECTS_PRIORITY; ?></th>
-    <th><?php echo _LANG_PROJECTS_ACCESS; ?></th>
+    <th><?php echo _LANG_CONTACTS_DISPLAY_NAME; ?></th>
+    <th><?php echo _LANG_CONTACTS_EMAIL; ?></th>
+    <th><?php echo _LANG_CONTACTS_PHONE; ?></th>
+    <th></th>
+    <th></th>
   </tr>
   </thead>
   <tbody>
   <?php $k = 0; ?>
-  <?php foreach($this->rows as $row) : ?>
+  <?php foreach($this->rows as $contact) : ?>
   <tr class="row<?php echo $k; ?>">
     <td valign="top">
-    <a href="index.php?component=com_projects&amp;view=projects&amp;layout=detail&amp;projectid=<?php echo $row->id; ?>">
-	<?php echo $row->name; ?>
+    <a href="index.php?option=com_addressbook&view=contacts&layout=form&id=<?php echo $contact->id; ?>">
+	<?php echo $contact->fn; ?>
 	</a>
     </td>
     <td>
-    	<?php echo projectsHelperProjects::statusid2name($row->status); ?>
+    
+    	<?php if (!empty($contact->home_email)) : ?>
+    	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_email&view=messages&layout=form&to=".$contact->home_email); ?>">
+    		<?php echo $contact->home_email;  ?>
+    	</a><br />
+    	<?php endif; ?>
+    	
+    	<?php if (!empty($contact->work_email)) : ?>
+    	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_email&view=messages&layout=form&to=".$contact->work_email); ?>">
+    	<?php echo $contact->work_email; ?>
+    	</a><br />
+    	<?php endif; ?>
+    	
+    	<?php if (!empty($contact->other_email)) : ?>
+    	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_email&view=messages&layout=form&to=".$contact->other_email); ?>">
+    	<?php echo $contact->other_email; ?>
+    	</a><br />
+    	<?php endif; ?>
+    	
     </td>
     <td>
-    	<?php echo projectsHelperProjects::project_typeid2name($row->project_type); ?>
+    	<?php if (!empty($contact->home_phone)) echo $contact->home_phone.'<br />'; ?>
+    	<?php if (!empty($contact->work_phone)) echo $contact->work_phone.'<br />'; ?>
+    	<?php if (!empty($contact->cell_phone)) echo $contact->cell_phone.'<br />'; ?>
     </td>
-    <td>
-    	<?php echo projectsHelperProjects::priorityid2name($row->priority); ?>
-    </td>
-    <td>
-    	<?php echo projectsHelperProjects::global_accessid2name($row->access); ?>
-    </td>
+	<td>
+		<a href="index.php?option=com_intranetoffice&amp;view=contacts&amp;task=export_contact&amp;id=<?php echo $contact->id; ?>">
+		<?php echo _LANG_EXPORT_VCARD; ?>
+		</a>
+	</td>
+	<td>
+		<a href="index.php?option=com_intranetoffice&amp;view=contacts&amp;type=edit&amp;id=<?php echo $contact->id; ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>">
+			<img src="templates/<?php echo config::TEMPLATE; ?>/images/icons/generic/16x16/edit.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>" />
+		</a>
+		
+		<a href="Javascript:confirm_delete(<?php echo $contact->id; ?>, '<?php echo phpFrame_HTML_Text::_($contact->fn, true); ?>');" title="<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>">
+			<img src="templates/<?php echo config::TEMPLATE; ?>/mages/icons/generic/16x16/remove.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>" />
+		</a>
+	</td>
   </tr>
   <?php $k = 1 - $k; ?>
   <?php endforeach; ?>

@@ -24,7 +24,7 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 		</a>
 	</div>
 	
-	<?php if ($this->project->created_by == $this->user->id) : ?>
+	<?php if ($this->project->created_by == $this->_user->id) : ?>
 	<div style="float:right;" class="delete">
 		<a class="delete_project" title="<?php echo $this->project->name; ?>" style="float:right;" href="index.php?component=com_projects&action=remove_project&projectid=<?php echo $this->projectid; ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?> &nbsp;&nbsp; 

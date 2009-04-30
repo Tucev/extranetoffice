@@ -41,10 +41,10 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		
 		// Show only public projects or projects where user has an assigned role
 		//TODO: Have to apply access levels
-		//$where[] = "( p.access = '0' OR (".$this->user->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
+		//$where[] = "( p.access = '0' OR (".$this->_user->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 
 		if ( $search ) {
-			$where[] = "f.title LIKE '%".$this->db->getEscaped($search)."%'";
+			$where[] = "f.title LIKE '%".$this->_db->getEscaped($search)."%'";
 		}
 		
 		if (!empty($projectid)) {
@@ -68,17 +68,17 @@ class projectsModelFiles extends phpFrame_Application_Model {
 				  INNER JOIN (SELECT MAX(id) AS id FROM #__files GROUP BY parentid) ids ON f.id = ids.id "
 				  . $where;
 		//echo $query; exit;	  
-		$this->db->setQuery( $query );
-		$this->db->query();
-		$total = $this->db->getNumRows();
+		$this->_db->setQuery( $query );
+		$this->_db->query();
+		$total = $this->_db->getNumRows();
 		
 		$pageNav = new phpFrame_HTML_Pagination( $total, $limitstart, $limit );
 
 		// get the subset (based on limits) of required records
 		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
 		//echo $query; exit;
-		$this->db->setQuery($query);
-		$rows = $this->db->loadObjectList();
+		$this->_db->setQuery($query);
+		$rows = $this->_db->loadObjectList();
 		
 		// Prepare rows and add relevant data
 		if (is_array($rows) && count($rows) > 0) {
@@ -116,8 +116,8 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		$query .= " JOIN #__users u ON u.id = f.userid ";
 		$query .= " WHERE f.id = ".$fileid;
 		$query .= " ORDER BY f.ts DESC";
-		$this->db->setQuery($query);
-		$row = $this->db->loadObject();
+		$this->_db->setQuery($query);
+		$row = $this->_db->loadObject();
 		
 		if ($row === false) {
 			return false;
@@ -166,8 +166,8 @@ class projectsModelFiles extends phpFrame_Application_Model {
 			$query = "SELECT revision FROM #__files ";
 			$query .= " WHERE parentid = ".$row->parentid;
 			$query .= " ORDER BY revision DESC LIMIT 0,1";
-			$this->db->setQuery($query);
-			$current_revision = $this->db->loadResult();
+			$this->_db->setQuery($query);
+			$current_revision = $this->_db->loadResult();
 			$row->revision = ($current_revision+1);
 		}
 		
@@ -190,7 +190,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		$row->filesize = $file['file_size'];
 		$row->mimetype = $file['file_type'];
 		
-		$row->userid = $this->user->id;
+		$row->userid = $this->_user->id;
 		
 		if (!$row->check()) {
 			$this->error[] = $row->getLastError();
@@ -216,8 +216,8 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		// Delete existing assignees before we store new ones if editing existing issue
 		if ($row->revision > 0) {
 			$query = "DELETE FROM #__users_files WHERE fileid = ".$row->parentid;
-			$this->db->setQuery($query);
-			$this->db->query();
+			$this->_db->setQuery($query);
+			$this->_db->query();
 		}
 		
 		// Store assignees
@@ -228,8 +228,8 @@ class projectsModelFiles extends phpFrame_Application_Model {
 				if ($i>0) { $query .= ","; }
 				$query .= " (NULL, '".$post['assignees'][$i]."', '".$row->parentid."') ";
 			}
-			$this->db->setQuery($query);
-			$this->db->query();
+			$this->_db->setQuery($query);
+			$this->_db->query();
 		}
 		
 		return $row;
@@ -293,8 +293,8 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		$query .= " FROM #__users_files AS uf ";
 		$query .= "LEFT JOIN #__users u ON u.id = uf.userid";
 		$query .= " WHERE uf.fileid = ".$fileid;
-		$this->db->setQuery($query);
-		$assignees = $this->db->loadObjectList();
+		$this->_db->setQuery($query);
+		$assignees = $this->_db->loadObjectList();
 		
 		// Prepare assignee data
 		for ($i=0; $i<count($assignees); $i++) {
@@ -342,8 +342,8 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		$query .= " JOIN #__users u ON u.id = f.userid";
 		$query .= " WHERE f.parentid = ".$parentid." AND f.id <> ".$id;
 		$query .= " ORDER BY f.ts DESC";
-		$this->db->setQuery($query);
-		return $this->db->loadObjectList();
+		$this->_db->setQuery($query);
+		return $this->_db->loadObjectList();
 	}
 }
 ?>

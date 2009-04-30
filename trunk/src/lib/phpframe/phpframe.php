@@ -68,9 +68,22 @@ class phpFrame {
 	 * @return	object
 	 * @since 	1.0
 	 */
-	public static function getController($option) {
-		$className = substr($option, 4)."Controller";
-		return phpFrame_Base_Singleton::getInstance($className);
+	public static function getController($component_name) {
+		$class_name = substr($component_name, 4)."Controller";
+		return phpFrame_Base_Singleton::getInstance($class_name);
+	}
+	
+	/**
+	 * Get a table class.
+	 * 
+	 * @param	string	$component_name
+	 * @param	string	$table_name
+	 * @return	object
+	 * @since 	1.0
+	 */
+	public static function getTable($component_name, $table_name) {
+		$class_name = substr($component_name, 4)."Table".ucfirst($table_name);
+		return phpFrame_Base_Singleton::getInstance($class_name);
 	}
 	
 	/**

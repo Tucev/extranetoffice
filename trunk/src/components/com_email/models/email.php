@@ -106,7 +106,7 @@ class emailModelEmail extends phpFrame_Application_Model {
 		// $accountModel = $this->getModel('accounts');
 		require_once _ABS_PATH.DS.'components'.DS.'com_email'.DS.'models'.DS.'accounts.php';
 		$accountModel =& phpFrame_Base_Singleton::getInstance('emailModelAccounts');
-		$account = $accountModel->getAccounts($this->user->id, $this->accountid, true);
+		$account = $accountModel->getAccounts($this->_user->id, $this->accountid, true);
 		
 		// Set account details in model
 		if (!empty($account[0]->server_type)) {
