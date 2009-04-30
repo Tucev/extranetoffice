@@ -41,10 +41,10 @@ class projectsModelMessages extends phpFrame_Application_Model {
 		
 		// Show only public projects or projects where user has an assigned role
 		//TODO: Have to apply access levels
-		//$where[] = "( p.access = '0' OR (".$this->user->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
+		//$where[] = "( p.access = '0' OR (".$this->_user->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 
 		if ( $search ) {
-			$where[] = "m.subject LIKE '%".$this->db->getEscaped($search)."%'";
+			$where[] = "m.subject LIKE '%".$this->_db->getEscaped($search)."%'";
 		}
 		
 		if (!empty($projectid)) {
@@ -68,9 +68,9 @@ class projectsModelMessages extends phpFrame_Application_Model {
 				  . $where . 
 				  " GROUP BY m.id ";
 		//echo $query; exit;	  
-		$this->db->setQuery( $query );
-		$this->db->query();
-		$total = $this->db->getNumRows();
+		$this->_db->setQuery( $query );
+		$this->_db->query();
+		$total = $this->_db->getNumRows();
 
 		
 		$pageNav = new phpFrame_HTML_Pagination( $total, $limitstart, $limit );
@@ -78,8 +78,8 @@ class projectsModelMessages extends phpFrame_Application_Model {
 		// get the subset (based on limits) of required records
 		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
 		//echo $query; exit;
-		$this->db->setQuery($query);
-		$rows = $this->db->loadObjectList();
+		$this->_db->setQuery($query);
+		$rows = $this->_db->loadObjectList();
 		
 		// Prepare rows and add relevant data
 		if (is_array($rows) && count($rows) > 0) {
@@ -114,8 +114,8 @@ class projectsModelMessages extends phpFrame_Application_Model {
 		$query .= " JOIN #__users u ON u.id = m.userid ";
 		$query .= " WHERE m.id = ".$messageid;
 		$query .= " ORDER BY m.date_sent DESC";
-		$this->db->setQuery($query);
-		$row = $this->db->loadObject();
+		$this->_db->setQuery($query);
+		$row = $this->_db->loadObject();
 		
 		// Get assignees
 		$row->assignees = $this->getAssignees($messageid);
@@ -148,7 +148,7 @@ class projectsModelMessages extends phpFrame_Application_Model {
 		}
 		
 		if (empty($row->id)) {
-			$row->userid = $this->user->id;
+			$row->userid = $this->_user->id;
 			$row->date_sent = date("Y-m-d H:i:s");
 			$row->status = '1';
 		}
@@ -166,8 +166,8 @@ class projectsModelMessages extends phpFrame_Application_Model {
 		// Delete existing assignees before we store new ones if editing existing issue
 		if (!empty($post['id'])) {
 			$query = "DELETE FROM #__users_messages WHERE messageid = ".$row->id;
-			$this->db->setQuery($query);
-			$this->db->query();
+			$this->_db->setQuery($query);
+			$this->_db->query();
 		}
 		
 		// Store assignees
@@ -178,8 +178,8 @@ class projectsModelMessages extends phpFrame_Application_Model {
 				if ($i>0) { $query .= ","; }
 				$query .= " (NULL, '".$post['assignees'][$i]."', '".$row->id."') ";
 			}
-			$this->db->setQuery($query);
-			$this->db->query();
+			$this->_db->setQuery($query);
+			$this->_db->query();
 		}
 		
 		return $row;
@@ -192,14 +192,14 @@ class projectsModelMessages extends phpFrame_Application_Model {
 		// Delete message's comments
 		$query = "DELETE FROM #__comments ";
 		$query .= " WHERE projectid = ".$projectid." AND type = 'messages' AND itemid = ".$messageid;
-		$this->db->setQuery($query);
-		$this->db->query();
+		$this->_db->setQuery($query);
+		$this->_db->query();
 		
 		// Delete message's assignees
 		$query = "DELETE FROM #__users_messages ";
 		$query .= " WHERE messageid = ".$messageid;
-		$this->db->setQuery($query);
-		$this->db->query();
+		$this->_db->setQuery($query);
+		$this->_db->query();
 		
 		// Instantiate table object
 		$row = phpFrame_Base_Singleton::getInstance('projectsTableMessages');
@@ -226,8 +226,8 @@ class projectsModelMessages extends phpFrame_Application_Model {
 		$query .= " FROM #__users_messages AS um ";
 		$query .= "LEFT JOIN #__users u ON u.id = um.userid";
 		$query .= " WHERE um.messageid = ".$messageid;
-		$this->db->setQuery($query);
-		$assignees = $this->db->loadObjectList();
+		$this->_db->setQuery($query);
+		$assignees = $this->_db->loadObjectList();
 		
 		// Prepare assignee data
 		for ($i=0; $i<count($assignees); $i++) {

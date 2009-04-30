@@ -45,7 +45,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @subpackage 	application
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		model, view
+ * @see 		phpFrame_Application_Model, phpFrame_Application_View
  * @abstract 
  */
 abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singleton {

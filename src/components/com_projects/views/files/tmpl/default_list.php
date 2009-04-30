@@ -34,7 +34,7 @@ phpFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECT
 <?php foreach($this->rows as $row) : ?>
 <div class="thread_row<?php echo $k; ?>">
 
-	<?php if ($row->userid == $this->user->id) : ?>
+	<?php if ($row->userid == $this->_user->id) : ?>
 	<div class="thread_delete">
 		<a class="delete_file" title="<?php echo phpFrame_HTML_Text::_($row->title, true); ?>" href="index.php?component=com_projects&action=remove_file&projectid=<?php echo $row->projectid; ?>&fileid=<?php echo $row->id; ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
@@ -108,7 +108,7 @@ phpFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECT
 	<div id="oldrevisions<?php echo $row->id; ?>" class="thread_oldrevisions">
 		<?php foreach ($row->children as $child) : ?>
 			<div class="thread_oldrevision_entry">
-				<?php if ($row->userid == $this->user->id) : ?>
+				<?php if ($row->userid == $this->_user->id) : ?>
 				<div class="thread_delete">
 					<a href="Javascript:confirm_delete(<?php echo $row->projectid; ?>, <?php echo $child->id; ?>, '<?php echo phpFrame_HTML_Text::_($child->title." r".$child->revision, true); ?>');">
 						<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>

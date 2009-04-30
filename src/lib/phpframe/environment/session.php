@@ -90,7 +90,7 @@ class phpFrame_Environment_Session extends phpFrame_Database_Table {
 		// If new session we set the id
 		if (!$this->id) {
 			$this->id = session_id();
-			$this->userid = 0;
+			$this->_userid = 0;
 			$this->groupid = 0;
 			$this->token = $this->getToken(true);
 		}

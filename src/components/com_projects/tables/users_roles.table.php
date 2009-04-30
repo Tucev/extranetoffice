@@ -60,7 +60,7 @@ class projectsTableUsersRoles extends phpFrame_Database_Table {
 		}
 		else {
 			$this->id = null;
-			$this->userid = null;
+			$this->_userid = null;
 			$this->projectid = null;
 			$this->roleid = null;
 			return false;

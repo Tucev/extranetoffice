@@ -35,7 +35,7 @@ phpFrame_HTML::confirm('delete_milestone', _LANG_PROJECTS_MILESTONES_DELETE, _LA
 <?php foreach($this->rows as $row) : ?>
 <div class="thread_row<?php echo $k; ?>">
 
-	<?php if ($row->created_by == $this->user->id) : ?>
+	<?php if ($row->created_by == $this->_user->id) : ?>
 	<div class="thread_delete">
 		<a class="delete_milestone" title="<?php echo phpFrame_HTML_Text::_($row->title, true); ?>" href="index.php?component=com_projects&action=remove_milestone&projectid=<?php echo $row->projectid; ?>&milestoneid=<?php echo $row->id; ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>

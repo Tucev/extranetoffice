@@ -26,7 +26,7 @@ phpFrame_HTML::validate('commentsform');
 
 <div class="thread_row0">
 
-	<?php if ($this->row->userid == $this->user->id) : ?>
+	<?php if ($this->row->userid == $this->_user->id) : ?>
 	<div class="thread_delete">
 		<a class="delete_file" title="<?php echo phpFrame_HTML_Text::_($this->row->title, true); ?>" href="index.php?component=com_projects&action=remove_file&projectid=<?php echo $this->row->projectid; ?>&fileid=<?php echo $this->row->id; ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
@@ -99,7 +99,7 @@ phpFrame_HTML::validate('commentsform');
 	<div id="oldrevisions<?php echo $this->row->id; ?>" class="thread_oldrevisions">
 		<?php foreach ($this->row->children as $child) : ?>
 			<div class="thread_oldrevision_entry">
-				<?php if ($this->row->userid == $this->user->id) : ?>
+				<?php if ($this->row->userid == $this->_user->id) : ?>
 				<div class="thread_delete">
 					<a href="Javascript:confirm_delete(<?php echo $this->row->projectid; ?>, <?php echo $child->id; ?>, '<?php echo phpFrame_HTML_Text::_($child->title." r".$child->revision, true); ?>');">
 						<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>

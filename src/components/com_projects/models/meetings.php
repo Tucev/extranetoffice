@@ -41,10 +41,10 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		
 		// Show only public projects or projects where user has an assigned role
 		//TODO: Have to apply access levels
-		//$where[] = "( p.access = '0' OR (".$this->user->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
+		//$where[] = "( p.access = '0' OR (".$this->_user->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 
 		if ( $search ) {
-			$where[] = "m.name LIKE '%".$this->db->getEscaped($search)."%'";
+			$where[] = "m.name LIKE '%".$this->_db->getEscaped($search)."%'";
 		}
 		
 		if (!empty($projectid)) {
@@ -68,9 +68,9 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 				  . $where . 
 				  " GROUP BY m.id ";
 		//echo $query; exit;	  
-		$this->db->setQuery( $query );
-		$this->db->query();
-		$total = $this->db->getNumRows();
+		$this->_db->setQuery( $query );
+		$this->_db->query();
+		$total = $this->_db->getNumRows();
 
 		
 		$pageNav = new phpFrame_HTML_Pagination( $total, $limitstart, $limit );
@@ -78,8 +78,8 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		// get the subset (based on limits) of required records
 		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
 		//echo $query; exit;
-		$this->db->setQuery($query);
-		$rows = $this->db->loadObjectList();
+		$this->_db->setQuery($query);
+		$rows = $this->_db->loadObjectList();
 		
 		// Prepare rows and add relevant data
 		if (is_array($rows) && count($rows) > 0) {
@@ -114,8 +114,8 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$query .= " JOIN #__users u ON u.id = m.created_by ";
 		$query .= " WHERE m.id = ".$meetingid;
 		$query .= " ORDER BY m.created DESC";
-		$this->db->setQuery($query);
-		$row = $this->db->loadObject();
+		$this->_db->setQuery($query);
+		$row = $this->_db->loadObject();
 		
 		// Get assignees
 		$row->assignees = $this->getAssignees($meetingid);
@@ -149,7 +149,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$row =& phpFrame_Base_Singleton::getInstance("projectsTableMeetings");
 		
 		if (empty($post['id'])) {
-			$row->created_by = $this->user->id;
+			$row->created_by = $this->_user->id;
 			$row->created = date("Y-m-d H:i:s");
 		}
 		else {
@@ -174,8 +174,8 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		// Delete existing assignees before we store new ones if editing existing issue
 		if (!empty($post['id'])) {
 			$query = "DELETE FROM #__users_meetings WHERE meetingid = ".$row->id;
-			$this->db->setQuery($query);
-			$this->db->query();
+			$this->_db->setQuery($query);
+			$this->_db->query();
 		}
 		
 		// Store assignees
@@ -186,8 +186,8 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 				if ($i>0) { $query .= ","; }
 				$query .= " (NULL, '".$post['assignees'][$i]."', '".$row->id."') ";
 			}
-			$this->db->setQuery($query);
-			$this->db->query();
+			$this->_db->setQuery($query);
+			$this->_db->query();
 		}
 		
 		return $row;
@@ -209,25 +209,25 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		// Delete meetings comments
 		$query = "DELETE FROM #__comments ";
 		$query .= " WHERE projectid = ".$projectid." AND type = 'meetings' AND itemid = ".$meetingid;
-		$this->db->setQuery($query);
-		if (!$this->db->query()) {
-			$this->error[] = $this->db->getLastError();
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) {
+			$this->error[] = $this->_db->getLastError();
 			return false;
 		}
 		
 		// Delete meetings assignees
 		$query = "DELETE FROM #__users_meetings ";
 		$query .= " WHERE meetingid = ".$meetingid;
-		$this->db->setQuery($query);
-		if (!$this->db->query()) {
-			$this->error[] = $this->db->getLastError();
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) {
+			$this->error[] = $this->_db->getLastError();
 			return false;
 		}
 		
 		// Delete meeting slideshows
 		$query = "SELECT id FROM #__slideshows WHERE meetingid = ".$meetingid;
-		$this->db->setQuery($query);
-		$slideshows = $this->db->loadResultArray();
+		$this->_db->setQuery($query);
+		$slideshows = $this->_db->loadResultArray();
 		if (is_array($slideshows) && count($slideshows) > 0) {
 			foreach ($slideshows as $slideshowid) {
 				if (!$this->deleteSlideshow($projectid, $slideshowid)) {
@@ -254,16 +254,16 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$query .= " FROM #__slideshows ";
 		$query .= " WHERE projectid = ".$projectid." AND meetingid = ".$meetingid;
 		if (!empty($slideshowid)) $query .= " AND id = ".$slideshowid; 
-		$this->db->setQuery($query);
-		$slideshows = $this->db->loadObjectList();
+		$this->_db->setQuery($query);
+		$slideshows = $this->_db->loadObjectList();
 		
 		// Get slideshows slides
 		for ($i=0; $i<count($slideshows); $i++) {
 			$query = "SELECT * ";
 			$query .= " FROM #__slideshows_slides ";
 			$query .= " WHERE slideshowid = ".$slideshows[$i]->id;
-			$this->db->setQuery($query);
-			$slideshows[$i]->slides = $this->db->loadObjectList();
+			$this->_db->setQuery($query);
+			$slideshows[$i]->slides = $this->_db->loadObjectList();
 		}
 		
 		return $slideshows;
@@ -282,7 +282,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			$row->load($post['id']);
 		}
 		else {
-			$row->created_by = $this->user->id;
+			$row->created_by = $this->_user->id;
 			$row->created = date("Y-m-d H:i:s");
 		}
 		
@@ -313,8 +313,8 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$query = "SELECT * ";
 		$query .= " FROM #__slideshows_slides ";
 		$query .= " WHERE slideshowid = ".$slideshowid;
-		$this->db->setQuery($query);
-		$slides = $this->db->loadObjectList();
+		$this->_db->setQuery($query);
+		$slides = $this->_db->loadObjectList();
 		
 		if (is_array($slides) && count($slides) > 0) {
 			foreach ($slides as $slide) {
@@ -329,9 +329,9 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 					return false;
 				}
 				$query = "DELETE FROM #__slideshows_slides WHERE id = ".$slide->id;
-				$this->db->setQuery($query);
-				if (!$this->db->query()) {
-					$this->error[] = $this->db->getLastError();
+				$this->_db->setQuery($query);
+				if (!$this->_db->query()) {
+					$this->error[] = $this->_db->getLastError();
 					return false;
 				}
 			}
@@ -350,9 +350,9 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		
 		$query = "DELETE FROM #__slideshows ";
 		$query .= " WHERE id = ".$slideshowid;
-		$this->db->setQuery($query);
-		if (!$this->db->query()) {
-			$this->error[] = $this->db->getLastError();
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) {
+			$this->error[] = $this->_db->getLastError();
 			return false;
 		}
 		
@@ -446,9 +446,9 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		}
 		else {
 			$query = "DELETE FROM #__slideshows_slides WHERE id = ".$slideid;
-			$this->db->setQuery($query);
-			if ($this->db->query() === false) {
-				$this->error[] = $this->db->getLastError();
+			$this->_db->setQuery($query);
+			if ($this->_db->query() === false) {
+				$this->error[] = $this->_db->getLastError();
 				return false;
 			}
 			else {
@@ -461,8 +461,8 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$query = "SELECT fileid ";
 		$query .= " FROM #__meetings_files ";
 		$query .= " WHERE meetingid = ".$meetingid;
-		$this->db->setQuery($query);
-		$fileids = $this->db->loadResultArray();
+		$this->_db->setQuery($query);
+		$fileids = $this->_db->loadResultArray();
 		
 		// Get files data
 		$files = array();
@@ -470,8 +470,8 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			$query = "SELECT * ";
 			$query .= " FROM #__files ";
 			$query .= " WHERE id = ".$fileids[$i];
-			$this->db->setQuery($query);
-			$files[$i] = $this->db->loadObject();
+			$this->_db->setQuery($query);
+			$files[$i] = $this->_db->loadObject();
 		}
 		
 		return $files;
@@ -488,17 +488,17 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		}
 		
 		$query = "DELETE FROM #__meetings_files WHERE meetingid = ".$meetingid;
-		$this->db->setQuery($query);
-		if (!$this->db->query()) {
-			$this->error[] = $this->db->getLastError();
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) {
+			$this->error[] = $this->_db->getLastError();
 			return false;
 		}
 		
 		foreach ($fileids as $fileid) {
 			$query = "INSERT INTO #__meetings_files (`id`, `meetingid`, `fileid`) VALUES (NULL, ".$meetingid.", ".$fileid.")";
-			$this->db->setQuery($query);
-			if (!$this->db->query()) {
-				$this->error[] = $this->db->getLastError();
+			$this->_db->setQuery($query);
+			if (!$this->_db->query()) {
+				$this->error[] = $this->_db->getLastError();
 				return false;
 			}
 		}
@@ -518,8 +518,8 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$query .= " FROM #__users_meetings AS um ";
 		$query .= "LEFT JOIN #__users u ON u.id = um.userid";
 		$query .= " WHERE um.meetingid = ".$meetingid;
-		$this->db->setQuery($query);
-		$assignees = $this->db->loadObjectList();
+		$this->_db->setQuery($query);
+		$assignees = $this->_db->loadObjectList();
 		
 		// Prepare assignee data
 		for ($i=0; $i<count($assignees); $i++) {

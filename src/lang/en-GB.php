@@ -414,6 +414,9 @@ define("_LANG_EMAIL_MESSAGE_DETAIL", "Message detail");
 
 // com_addressbook
 define("_LANG_ADDRESSBOOK", "Address Book");
+define("_LANG_CONTACTS_EMAIL", "Email");
+define("_LANG_CONTACTS_PHONE", "Phone");
+define("_LANG_EXPORT_VCARD", "Export vCard");
 define("_LANG_ADDRESSBOOK_CONTACT_NEW", "New contact");
 define("_LANG_CONTACTS_BASIC_DETAILS", "Basic details");
 define("_LANG_CONTACTS_FIRST_NAME", "First name");

@@ -60,26 +60,26 @@ class loginModelLogin extends phpFrame_Application_Model {
 	public function resetPassword($email) {
 		// First we check whether there is a user with the passed email address
 		$query = "SELECT id FROM #__users WHERE email = '".$email."'";
-		$this->db->setQuery($query);
-		$userid = $this->db->loadResult();
+		$this->_db->setQuery($query);
+		$userid = $this->_db->loadResult();
 		
 		if (!empty($userid)) {
 			// Create standard object to store user properties
 			// We do this because we dont want to overwrite the current user object.
 			$row = new phpFrame_Base_StdObject();
-			$this->user->load($userid, 'password', $row);
+			$this->_user->load($userid, 'password', $row);
 			// Generate random password and store in local variable to be used when sending email to user.
 			$password = phpFrame_Utils_Crypt::genRandomPassword();
 			// Assign newly generated password to row object (this password will be encrypted when stored).
 			$row->password = $password;
 			
-			if (!$this->user->check($row)) {
-				$this->error[] = $this->user->getLastError();
+			if (!$this->_user->check($row)) {
+				$this->error[] = $this->_user->getLastError();
 				return false;
 			}
 			
-			if (!$this->user->store($row)) {
-				$this->error[] = $this->user->getLastError();
+			if (!$this->_user->store($row)) {
+				$this->error[] = $this->_user->getLastError();
 				return false;
 			}
 			

@@ -73,7 +73,7 @@ class projectsModelPermissions extends phpFrame_Application_Model {
 		}
 		
 		// get role id
-		$this->roleid = $this->getUserRole($this->user->id, $project->id);
+		$this->roleid = $this->getUserRole($this->_user->id, $project->id);
 		
 		// Check project's global access level
 		if ($this->project->access > 0 && $this->roleid < 1) {
@@ -103,8 +103,8 @@ class projectsModelPermissions extends phpFrame_Application_Model {
 		$query = "SELECT roleid ";
 		$query .= " FROM #__users_roles ";
 		$query .= " WHERE userid = ".$userid." AND projectid = ".$projectid;
-		$this->db->setQuery($query);
-		return $this->db->loadResult();
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
 	}
 	
 	function checkViewAccess() {

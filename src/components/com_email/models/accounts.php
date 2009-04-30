@@ -40,8 +40,8 @@ class emailModelAccounts extends phpFrame_Application_Model {
 			elseif ($default == true) {
 				$query .= " AND `default` = '1'";
 			}
-			$this->db->setQuery($query);
-			return $this->db->loadObjectList();	
+			$this->_db->setQuery($query);
+			return $this->_db->loadObjectList();	
 		}
 		else {
 			return false;
@@ -63,7 +63,7 @@ class emailModelAccounts extends phpFrame_Application_Model {
 		}
 		
 		// Check whether this is the first account to be set up so that we make it default
-		$accounts = $this->getAccounts($this->user->id);
+		$accounts = $this->getAccounts($this->_user->id);
 		if (!is_array($accounts) || count($accounts) == 0) {
 			$row->default = '1';	
 		}
@@ -73,7 +73,7 @@ class emailModelAccounts extends phpFrame_Application_Model {
 			return false;
 		}
 		
-		$row->userid = $this->user->id;
+		$row->userid = $this->_user->id;
 		
 		if (!$row->check()) {
 			$this->error[] = $row->getLastError();
@@ -109,18 +109,18 @@ class emailModelAccounts extends phpFrame_Application_Model {
 	 */
 	public function makeDefault($accountid) {
 		// First we make sure that all accounts are set not to be default (we do this to avoid duplicate default accounts)
-		$query = "UPDATE `#__email_accounts` SET `default` = '0' WHERE `userid` = ".$this->user->id;
-		$this->db->setQuery($query);
-		if (!$this->db->query()) {
-			$this->error[] = $this->db->getLastError();
+		$query = "UPDATE `#__email_accounts` SET `default` = '0' WHERE `userid` = ".$this->_user->id;
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) {
+			$this->error[] = $this->_db->getLastError();
 			return false;
 		}
 		
 		// Make the selected account the default account
-		$query = "UPDATE `#__email_accounts` SET `default` = '1' WHERE `userid` = ".$this->user->id." AND `id` = ".$accountid;
-		$this->db->setQuery($query);
-		if (!$this->db->query()) {
-			$this->error[] = $this->db->getLastError();
+		$query = "UPDATE `#__email_accounts` SET `default` = '1' WHERE `userid` = ".$this->_user->id." AND `id` = ".$accountid;
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) {
+			$this->error[] = $this->_db->getLastError();
 			return false;
 		}
 		

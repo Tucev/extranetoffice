@@ -46,9 +46,9 @@ class phpFrame_Application_Components extends phpFrame_Database_Table {
 	 */
 	public function loadByOption($option) {
 		$query = "SELECT * FROM #__components WHERE name = '".substr($option, 4)."'";
-		$this->db->setQuery($query);
-		$row = $this->db->loadObject();
-		foreach ($this->cols as $col) {
+		$this->_db->setQuery($query);
+		$row = $this->_db->loadObject();
+		foreach ($this->_cols as $col) {
 			$col_name = $col->Field;
 			$col_value = $row->$col_name;
 			$this->$col_name = $col_value;
@@ -66,8 +66,8 @@ class phpFrame_Application_Components extends phpFrame_Database_Table {
 	 */
 	public static function isEnabled($name) {
 		$query = "SELECT enabled FROM #__users WHERE name = '".$name."'";
-		$this->db->setQuery($query);
-		$enabled = $this->db->getResult();
+		$this->_db->setQuery($query);
+		$enabled = $this->_db->getResult();
 		if ($enabled == '1') {
 			return true;
 		}

@@ -50,10 +50,10 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		$where = array();
 		
 		// Show only public projects or projects where user has an assigned role
-		$where[] = "( i.access = '0' OR (".$this->user->id." IN (SELECT userid FROM #__users_issues WHERE issueid = i.id) ) )";
+		$where[] = "( i.access = '0' OR (".$this->_user->id." IN (SELECT userid FROM #__users_issues WHERE issueid = i.id) ) )";
 
 		if ( $search ) {
-			$where[] = "i.title LIKE '%".$this->db->getEscaped($search)."%'";
+			$where[] = "i.title LIKE '%".$this->_db->getEscaped($search)."%'";
 		}
 		
 		if (!empty($projectid)) {
@@ -93,17 +93,17 @@ class projectsModelIssues extends phpFrame_Application_Model {
 				  . $where . 
 				  " GROUP BY i.id ";
 		//echo str_replace('#__', 'eo_', $query); exit;
-		$this->db->setQuery( $query );
-		$this->db->query();
-		$total = $this->db->getNumRows();
+		$this->_db->setQuery( $query );
+		$this->_db->query();
+		$total = $this->_db->getNumRows();
 		
 		$pageNav = new phpFrame_HTML_Pagination($total, $limitstart, $limit);
 
 		// get the subset (based on limits) of required records
 		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
 		//echo str_replace('#__', 'eo_', $query); exit;
-		$this->db->setQuery($query);
-		$rows = $this->db->loadObjectList();
+		$this->_db->setQuery($query);
+		$rows = $this->_db->loadObjectList();
 		
 		// Prepare rows and add relevant data
 		if (is_array($rows) && count($rows) > 0) {
@@ -159,8 +159,8 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		$query .= " JOIN #__users u ON u.id = i.created_by ";
 		$query .= " WHERE i.id = ".$issueid;
 		$query .= " ORDER BY i.created DESC";
-		$this->db->setQuery($query);
-		$row = $this->db->loadObject();
+		$this->_db->setQuery($query);
+		$row = $this->_db->loadObject();
 		
 		// Get assignees
 		$row->assignees = $this->getAssignees($issueid);
@@ -188,7 +188,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		$row =& phpFrame_Base_Singleton::getInstance("projectsTableIssues");
 		
 		if (empty($post['id'])) {
-			$row->created_by = $this->user->id;
+			$row->created_by = $this->_user->id;
 			$row->created = date("Y-m-d H:i:s");
 		}
 		else {
@@ -213,8 +213,8 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		// Delete existing assignees before we store new ones if editing existing issue
 		if (!empty($post['id'])) {
 			$query = "DELETE FROM #__users_issues WHERE issueid = ".$row->id;
-			$this->db->setQuery($query);
-			$this->db->query();
+			$this->_db->setQuery($query);
+			$this->_db->query();
 		}
 		
 		// Store assignees
@@ -225,8 +225,8 @@ class projectsModelIssues extends phpFrame_Application_Model {
 				if ($i>0) { $query .= ","; }
 				$query .= " (NULL, '".$post['assignees'][$i]."', '".$row->id."') ";
 			}
-			$this->db->setQuery($query);
-			$this->db->query();
+			$this->_db->setQuery($query);
+			$this->_db->query();
 		}
 		
 		return $row;
@@ -246,18 +246,18 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		// Delete message's comments
 		$query = "DELETE FROM #__comments ";
 		$query .= " WHERE projectid = ".$projectid." AND type = 'issues' AND itemid = ".$issueid;
-		$this->db->setQuery($query);
-		if (!$this->db->query()) {
-			$this->error[] = $this->db->getLastError();
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) {
+			$this->error[] = $this->_db->getLastError();
 			return false;
 		}
 		
 		// Delete message's assignees
 		$query = "DELETE FROM #__users_issues ";
 		$query .= " WHERE issueid = ".$issueid;
-		$this->db->setQuery($query);
-		if (!$this->db->query()) {
-			$this->error[] = $this->db->getLastError();
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) {
+			$this->error[] = $this->_db->getLastError();
 			return false;
 		}
 		
@@ -284,9 +284,9 @@ class projectsModelIssues extends phpFrame_Application_Model {
 	public function closeIssue($projectid, $issueid) {
 		$query = "UPDATE #__issues ";
 		$query .= " SET closed = '".date("Y-m-d H:i:s")."' WHERE id = ".$issueid;
-		$this->db->setQuery($query);
-		if (!$this->db->query()) {
-			$this->error[] = $this->db->getLastError();
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) {
+			$this->error[] = $this->_db->getLastError();
 			return false;
 		}
 		
@@ -305,9 +305,9 @@ class projectsModelIssues extends phpFrame_Application_Model {
 	public function reopenIssue($projectid, $issueid) {
 		$query = "UPDATE #__issues ";
 		$query .= " SET closed = '0000-00-00 00:00:00' WHERE id = ".$issueid;
-		$this->db->setQuery($query);
-		if (!$this->db->query()) {
-			$this->error[] = $this->db->getLastError();
+		$this->_db->setQuery($query);
+		if (!$this->_db->query()) {
+			$this->error[] = $this->_db->getLastError();
 			return false;
 		}
 		
@@ -329,8 +329,8 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		if ($overdue === true) { 
 			$query .= " AND dtend < '".date("Y-m-d")." 23:59:59' AND closed = '0000-00-00 00:00:00'"; 
 		}
-		$this->db->setQuery($query);
-		return $this->db->loadResult();
+		$this->_db->setQuery($query);
+		return $this->_db->loadResult();
 	}
 	
 	/**
@@ -345,8 +345,8 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		$query .= " FROM #__users_issues AS ui ";
 		$query .= "LEFT JOIN #__users u ON u.id = ui.userid";
 		$query .= " WHERE ui.issueid = ".$issueid;
-		$this->db->setQuery($query);
-		$assignees = $this->db->loadObjectList();
+		$this->_db->setQuery($query);
+		$assignees = $this->_db->loadObjectList();
 		
 		// Prepare assignee data
 		for ($i=0; $i<count($assignees); $i++) {

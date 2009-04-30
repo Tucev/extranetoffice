@@ -47,7 +47,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @subpackage 	application
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see			controller, model
+ * @see			phpFrame_Application_ActionController, phpFrame_Application_Model
  * @abstract 
  */
 abstract class phpFrame_Application_View extends phpFrame_Base_Singleton {
@@ -87,7 +87,7 @@ abstract class phpFrame_Application_View extends phpFrame_Base_Singleton {
     	$this->view = phpFrame_Environment_Request::getView();
     	
     	// Assign references to user object for quick access in tmpl
-		$this->user = phpFrame::getUser();
+		$this->_user = phpFrame::getUser();
 	}
 	
     /**

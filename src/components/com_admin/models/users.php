@@ -46,9 +46,9 @@ class adminModelUsers extends phpFrame_Application_Model {
 		}
 		
 		if ($search) {
-			$where[] = "(u.firstname LIKE '%".$this->db->getEscaped($search)."%' 
-						OR u.lastname LIKE '%".$this->db->getEscaped($search)."%' 
-						OR u.username LIKE '%".$this->db->getEscaped($search)."%')";
+			$where[] = "(u.firstname LIKE '%".$this->_db->getEscaped($search)."%' 
+						OR u.lastname LIKE '%".$this->_db->getEscaped($search)."%' 
+						OR u.username LIKE '%".$this->_db->getEscaped($search)."%')";
 		}
 
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
@@ -68,9 +68,9 @@ class adminModelUsers extends phpFrame_Application_Model {
 				  " GROUP BY u.id ";
 		
 		//echo str_replace('#__', 'eo_', $query); exit;
-		$this->db->setQuery($query);
-		$this->db->query();
-		$total = $this->db->getNumRows();
+		$this->_db->setQuery($query);
+		$this->_db->query();
+		$total = $this->_db->getNumRows();
 		
 		// get the subset (based on limits) of required records
 		$query = "SELECT 
@@ -85,8 +85,8 @@ class adminModelUsers extends phpFrame_Application_Model {
 			
 		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
 		//echo str_replace('#__', 'eo_', $query); exit;
-		$this->db->setQuery($query);
-		$rows = $this->db->loadObjectList();
+		$this->_db->setQuery($query);
+		$rows = $this->_db->loadObjectList();
 		
 		// table ordering
 		$lists['order_Dir']	= $filter_order_Dir;
@@ -117,8 +117,8 @@ class adminModelUsers extends phpFrame_Application_Model {
 					  FROM #__users AS u 
 					  LEFT JOIN #__groups g ON u.groupid = g.id 
 					  WHERE u.id = '".$userid."'";
-			$this->db->setQuery($query);
-			return $this->db->loadObject();
+			$this->_db->setQuery($query);
+			return $this->_db->loadObject();
 		}
 		else {
 			return false;
@@ -201,9 +201,9 @@ class adminModelUsers extends phpFrame_Application_Model {
 	
 	function deleteUser($userid) {
 		$query = "UPDATE #__users SET `deleted` = '".date("Y-m-d H:i:s")."' WHERE id = ".$userid;
-		$this->db->setQuery($query);
-		if ($this->db->query() === false) {
-			$this->error[] = $this->db->getLastError();
+		$this->_db->setQuery($query);
+		if ($this->_db->query() === false) {
+			$this->error[] = $this->_db->getLastError();
 			return false;
 		}
 		else {
