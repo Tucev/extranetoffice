@@ -1,7 +1,7 @@
 <?php
 /**
  * @version 	$Id$
- * @package		ExtranetOffice
+ * @package		phpFrame
  * @subpackage 	com_users
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.

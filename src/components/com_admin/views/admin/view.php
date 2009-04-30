@@ -1,7 +1,7 @@
 <?php
 /**
  * @version 	$Id$
- * @package		ExtranetOffice
+ * @package		phpFrame
  * @subpackage	com_admin
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -21,7 +21,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getView()).ucfirst($this->tmpl);
  * </code>
  * 
- * @package		ExtranetOffice
+ * @package		phpFrame
  * @subpackage 	com_admin
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
