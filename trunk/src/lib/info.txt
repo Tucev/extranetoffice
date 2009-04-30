@@ -1,7 +1,7 @@
+bitfolge vCard: GPL
 jquery: MIT
 openid: LGPL
 phpFrame: BSD style
 phpinputfilter: GPL
 phpmailer: LGPL
-phpxmlrpc: BSD style
 simplepie: BSD style
