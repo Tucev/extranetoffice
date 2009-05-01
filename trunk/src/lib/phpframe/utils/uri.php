@@ -116,7 +116,7 @@ class phpFrame_Utils_URI extends phpFrame_Base_StdObject {
 	public function __construct($uri='') {
 		if (empty($uri)) {
 			// If client is command line we simply return
-			if (phpFrame_Utils_Client::isCLI()) {
+			if (phpFrame_Environment_Request::getClientName() == 'cli') {
 				return;
 			}
 			

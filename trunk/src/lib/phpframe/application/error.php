@@ -40,7 +40,7 @@ class phpFrame_Application_Error {
 		if (is_array($error) && count($error) > 0) {
 			foreach ($error as $error_msg) {
 				// If we are running from the command line we don't include HTML in the output
-				if (phpFrame_Utils_Client::isCLI()) {
+				if (phpFrame_Environment_Request::getClientName() == 'cli') {
 					echo $error_msg->msg."\n";
 				}
 				else {
