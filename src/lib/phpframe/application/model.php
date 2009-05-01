@@ -88,7 +88,7 @@ abstract class phpFrame_Application_Model extends phpFrame_Base_Singleton {
 	 */
 	protected function getModel($name) {
 		// Get current component option from request
-		$option = phpFrame_Environment_Request::getComponent();
+		$option = phpFrame_Environment_Request::getComponentName();
 		// Figure out controller instance name
 		$controller_class_name = substr($option, 4).'Controller';
 		// Assign reference to controller
@@ -106,7 +106,7 @@ abstract class phpFrame_Application_Model extends phpFrame_Base_Singleton {
 	 * @return	object
 	 */
 	protected function getTable($table_name) {
-		return phpFrame::getTable(phpFrame_Environment_Request::getComponent(), $table_name);
+		return phpFrame::getTable(phpFrame_Environment_Request::getComponentName(), $table_name);
 	}
 	
 	/**

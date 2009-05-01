@@ -80,9 +80,9 @@ class phpFrame_Application_Permissions extends phpFrame_Base_Singleton {
 	 */
 	protected function __construct() {
 		// Get URL vars
-		$this->component = phpFrame_Environment_Request::getComponent();
+		$this->component = phpFrame_Environment_Request::getComponentName();
 		$this->action = phpFrame_Environment_Request::getAction('display');
-		$this->view = phpFrame_Environment_Request::getView();
+		$this->view = phpFrame_Environment_Request::getViewName();
 		$this->layout = phpFrame_Environment_Request::getLayout();
 		
 		// Check login

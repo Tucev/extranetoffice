@@ -29,7 +29,7 @@ require_once 'PHPUnit/Framework.php';
 
 class testProjectsController extends PHPUnit_Framework_TestCase {
 	function setUp() {
-		phpFrame_Environment_Request::setComponent('com_projects');
+		phpFrame_Environment_Request::setComponentName('com_projects');
     }
     
 	function tearDown() {

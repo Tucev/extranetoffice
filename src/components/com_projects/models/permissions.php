@@ -108,7 +108,7 @@ class projectsModelPermissions extends phpFrame_Application_Model {
 	}
 	
 	function checkViewAccess() {
-		$view = phpFrame_Environment_Request::getView();
+		$view = phpFrame_Environment_Request::getViewName();
 		$task = phpFrame_Environment_Request::getAction();
 		
 		// if a task has been requested we get the tool keyword from the task

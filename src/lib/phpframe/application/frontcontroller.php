@@ -164,7 +164,7 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 	 */
 	public function exec() {
 		// Get component option from request
-		$option = phpFrame_Environment_Request::getComponent();
+		$option = phpFrame_Environment_Request::getComponentName();
 		
 		// Initialise permissions
 		$this->permissions = phpFrame::getPermissions();

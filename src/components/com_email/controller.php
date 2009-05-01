@@ -26,7 +26,7 @@ class emailController extends phpFrame_Application_ActionController {
 	 */
 	function __construct() {
 		// set default request vars
-		$this->view = phpFrame_Environment_Request::getView('messages');
+		$this->view = phpFrame_Environment_Request::getViewName('messages');
 		$this->layout = phpFrame_Environment_Request::getLayout('list');
 		 
 		parent::__construct();

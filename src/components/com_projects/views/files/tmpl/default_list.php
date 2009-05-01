@@ -16,13 +16,13 @@ phpFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECT
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
 <div class="new">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getView().'&layout=form&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&layout=form&projectid='.$this->projectid); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_NEW ); ?>
 	</a>
 </div>
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getView().'&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&projectid='.$this->projectid); ?>">
 		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
@@ -47,7 +47,7 @@ phpFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECT
 		</a> 
 	</div>
 	<div class="thread_upload">
-		<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getView().'&layout=form&projectid='.$this->projectid."&parentid=".$row->parentid); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&layout=form&projectid='.$this->projectid."&parentid=".$row->parentid); ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_FILES_UPLOAD_NEW_VERSION ); ?>
 		</a> 
 	</div>
@@ -128,11 +128,11 @@ phpFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECT
 	<?php endif; ?>
 	
 	<div class="comments_info">
-		<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getView().'&layout=detail&projectid='.$this->projectid.'&fileid='.$row->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&layout=detail&projectid='.$this->projectid.'&fileid='.$row->id); ?>">
 			<?php echo $row->comments; ?> <?php echo _LANG_COMMENTS; ?>
 		</a>
 		 - 
-		<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getView().'&layout=detail&projectid='.$this->projectid.'&fileid='.$row->id.'#post-comment'); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&layout=detail&projectid='.$this->projectid.'&fileid='.$row->id.'#post-comment'); ?>">
 			<?php echo _LANG_COMMENTS_NEW; ?>
 		</a>
 	</div>

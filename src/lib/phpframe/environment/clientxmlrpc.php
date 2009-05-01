@@ -35,7 +35,21 @@ class phpFrame_Environment_ClientXmlrpc implements phpFrame_Environment_IClient 
 			$domDocument = new DOMDocument;
             if ($domDocument->loadXML($HTTP_RAW_POST_DATA))
 			{
-				return new self;
+				$domXPath = new DOMXPath($domDocument);
+				//check for valid RPC
+				if ($domXPath->query("methodCall/params/param")->$length > 0) //xpath for methodname and component
+				{
+					
+ob_start();
+var_dump($HTTP_RAW_POST_DATA);
+$output = ob_get_contents();
+ob_end_clean();
+file_put_contents("/var/www/xmlrpc/globals.html",$output);
+exit;
+	
+					
+					return new self;
+				}
 			}
 		}
 		return false;
@@ -49,7 +63,7 @@ class phpFrame_Environment_ClientXmlrpc implements phpFrame_Environment_IClient 
 	 */
 	public function populateURA() {
 		
-		
+		return _parseXMLRPC($HTTP_RAW_POST_DATA);
 		
 	}
 	
@@ -60,7 +74,7 @@ class phpFrame_Environment_ClientXmlrpc implements phpFrame_Environment_IClient 
 	 * @return	string name to identify helper type
 	 */
 	public function getName() {
-		return "XMLRPC";
+		return "xmlrpc";
 	}
 	
 	/**

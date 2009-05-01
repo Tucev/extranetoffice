@@ -238,7 +238,7 @@ class phpFrame_Environment_Request {
 	 * @access	public
 	 * @return	component
 	 */
-	public static function getComponent() {
+	public static function getComponentName() {
 		// If component has not been set we return the default value
 		if (empty(self::$_component)) {
 			self::$_component = 'com_dashboard';
@@ -254,7 +254,7 @@ class phpFrame_Environment_Request {
 	 * @param	string	$value The value to set the variable to.
 	 * @return	void
 	 */
-	public static function setComponent($value) {
+	public static function setComponentName($value) {
 		// Filter value before assigning to variable
 		$value = self::$_inputfilter->process($value);
 		
@@ -302,7 +302,7 @@ class phpFrame_Environment_Request {
 	 * @access	public
 	 * @return	action
 	 */
-	public static function getView($default='') {
+	public static function getViewName($default='') {
 		// If view has not been set we return the default value
 		if (empty(self::$_view)) {
 			self::$_view = self::$_inputfilter->process($default);
@@ -318,7 +318,7 @@ class phpFrame_Environment_Request {
 	 * @param	string	$value The value to set the variable to.
 	 * @return	void
 	 */
-	public static function setView($value) {
+	public static function setViewName($value) {
 		// Filter value before assigning to variable
 		$value = self::$_inputfilter->process($value);
 		
