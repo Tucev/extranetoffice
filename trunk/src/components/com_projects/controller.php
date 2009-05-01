@@ -107,7 +107,7 @@ class projectsController extends phpFrame_Application_ActionController {
 				}
 			}
 			
-			$this->success = true;
+			$this->_success = true;
 		}
 		else {
 			phpFrame_Application_Error::raise('', 'error', $modelProjects->getLastError());
@@ -130,7 +130,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		
 		if ($modelProjects->deleteProject($this->projectid) === true) {
 			phpFrame_Application_Error::raise('', 'message', _LANG_PROJECT_DELETE_SUCCESS);
-			$this->success = true;
+			$this->_success = true;
 		}
 		else {
 			phpFrame_Application_Error::raise('', 'error', _LANG_PROJECT_DELETE_ERROR);
@@ -156,7 +156,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			}
 			else {
 				phpFrame_Application_Error::raise('', 'message',  _LANG_PROJECT_NEW_MEMBER_SAVED);
-				$this->success = true;
+				$this->_success = true;
 			}
 		}
 		else {
@@ -178,7 +178,7 @@ class projectsController extends phpFrame_Application_ActionController {
 				
 				if ($error === false) {
 					phpFrame_Application_Error::raise('', 'message',  _LANG_PROJECT_NEW_MEMBER_SAVED);
-					$this->success = true;
+					$this->_success = true;
 				}	
 			}
 		}
@@ -193,7 +193,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		$modelMembers = $this->getModel('members');
 		if ($modelMembers->deleteMember($projectid, $userid) === true) {
 			phpFrame_Application_Error::raise('', 'message', _LANG_PROJECT_MEMBER_DELETE_SUCCESS);
-			$this->success = true;
+			$this->_success = true;
 		}
 		else {
 			phpFrame_Application_Error::raise('', 'error', _LANG_PROJECT_MEMBER_DELETE_ERROR);	
@@ -213,7 +213,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		}
 		else {
 			phpFrame_Application_Error::raise('', 'message', _LANG_PROJECT_MEMBER_ROLE_SAVED);
-			$this->success = true;
+			$this->_success = true;
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&view=admin&projectid='.$projectid);
@@ -248,7 +248,7 @@ class projectsController extends phpFrame_Application_ActionController {
 				phpFrame_Application_Error::raise('', 'error', $modelActivityLog->getLastError());
 			}
 			else {
-				$this->success = true;
+				$this->_success = true;
 			}
 		}
 		

@@ -63,32 +63,31 @@ abstract class phpFrame_Base_Singleton extends phpFrame_Base_StdObject {
 	/**
 	 * Get the single instance of this sigleton class.
 	 * 
-	 * The $className parameter is used in order to create the instance 
+	 * The $class_name parameter is used in order to create the instance 
 	 * using the class name from where the method is called at run level.
-	 * If $className is empty this method returns an instance of its own,
+	 * If $class_name is empty this method returns an instance of its own,
 	 * not the child class that inherited this method.
 	 * 
 	 * @static
 	 * @access	public
-	 * @param	string	$className	The class name to instantiate.
+	 * @param	string	$class_name	The class name to instantiate.
 	 * @param	array	$params		Parameters to be passed to new instance constructor.
 	 * @return	object
 	 */
-	public static function &getInstance($className, $params=array()) {
+	public static function &getInstance($class_name, $params=array()) {
 		// Check whether the requested class has alreay been instantiated
-		if (!array_key_exists($className, self::$_instances)) {
+		if (!array_key_exists($class_name, self::$_instances)) {
             // instance does not exist, so create it
-            if (class_exists($className)) {
-            	self::$_instances[$className] = new $className;
+            if (class_exists($class_name)) {
+            	//self::$_instances[$class_name] = new $class_name;
+            	eval('self::$_instances[$class_name] = new $class_name('.implode(",", $params).');');
             }
             else {
-            	throw new Exception('Class '.$className.' not found.');
+            	throw new Exception('Class '.$class_name.' not found.');
             }
         }
         
-        $instance =& self::$_instances[$className];
-        
-        return $instance;
+        return self::$_instances[$class_name];
     }
     
     /**
@@ -96,17 +95,17 @@ abstract class phpFrame_Base_Singleton extends phpFrame_Base_StdObject {
      * 
      * @static
      * @access	public
-     * @param	string	$className
+     * @param	string	$class_name
      * @return	void
      */
-    public static function destroyInstance($className) {
+    public static function destroyInstance($class_name) {
    		// Check whether the requested class has alreay been instantiated
-		if (array_key_exists($className, self::$_instances)) {
+		if (array_key_exists($class_name, self::$_instances)) {
             // unset instance
-            unset(self::$_instances[$className]);
+            unset(self::$_instances[$class_name]);
         }
         else {
-        	throw new Exception('No instance of '.$className.' found.');
+        	throw new Exception('No instance of '.$class_name.' found.');
         }
     } 
 }

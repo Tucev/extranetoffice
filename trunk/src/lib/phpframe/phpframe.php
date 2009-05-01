@@ -93,7 +93,8 @@ class phpFrame {
 	 * @since 	1.0
 	 */
 	public static function getDB() {
-		return phpFrame_Base_Singleton::getInstance('phpFrame_Database');
+		$params = array(config::DB_HOST, config::DB_USER, config::DB_PASS, config::DB_NAME);
+		return phpFrame_Base_Singleton::getInstance('phpFrame_Database', $params);
 	}
 	
 	/**
@@ -114,6 +115,16 @@ class phpFrame {
 	 */
 	public static function getSession() {
 		return phpFrame_Base_Singleton::getInstance('phpFrame_Environment_Session');
+	}
+	
+	/**
+	 * Get system events object
+	 * 
+	 * @return	object
+	 * @since 	1.0
+	 */
+	public static function getSysevents() {
+		return phpFrame_Base_Singleton::getInstance('phpFrame_Application_Sysevents');
 	}
 	
 	/**

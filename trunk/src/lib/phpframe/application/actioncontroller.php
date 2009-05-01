@@ -92,11 +92,19 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 */
 	var $redirect_url=null;
 	/**
+	 * A reference to the System Events object.
+	 * 
+	 * This object is used to report system messages from the action controllers.
+	 * 
+	 * @var	object
+	 */
+	protected $_sysevents=null;
+	/**
 	 * This is a flag we use to indicate whether the controller's executed task was successful or not.
 	 * 
 	 * @var boolean
 	 */
-	protected $success=false;
+	protected $_success=false;
 	
 	/**
 	 * Constructor
@@ -105,10 +113,13 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 * @since	1.0
 	 */
 	protected function __construct() {
-		$this->option = phpFrame_Environment_Request::getComponent();
-		$this->task = phpFrame_Environment_Request::getAction();
+		$this->component = phpFrame_Environment_Request::getComponent();
+		$this->action = phpFrame_Environment_Request::getAction();
 		$this->view = phpFrame_Environment_Request::getView();
 		$this->layout = phpFrame_Environment_Request::getLayout();
+		
+		// Get reference to System Events object
+		$this->_sysevents = phpFrame::getSysevents();
 		
 		// Get available views
 		$this->views_available = $this->getAvailableViews();
@@ -117,7 +128,7 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 		$frontcontroller = phpFrame::getFrontController();
 		
 		// Add pathway item
-		$this->addPathwayItem(ucwords($frontcontroller->component_info->name), 'index.php?component='.$this->option);
+		$this->addPathwayItem(ucwords($frontcontroller->component_info->name), 'index.php?component='.$this->component);
 		
 		// Append component name in ducument title
 		$document = phpFrame::getDocument('html');
@@ -293,7 +304,7 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 * @return	void
 	 * @since	1.0
 	 */
-	function addPathwayItem($title, $url='') {
+	public function addPathwayItem($title, $url='') {
 		$pathway = phpFrame::getPathway();
 		// add item
 		$pathway->addItem($title, $url);
@@ -306,7 +317,7 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 * @since	1.0
 	 */
 	public function getSuccess() {
-		return $this->success;
+		return $this->_success;
 	}
 }
 ?>

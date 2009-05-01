@@ -36,9 +36,18 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	</a>
 </div>
 
-<?php phpFrame_Application_Error::display(); ?>
+<div class="loginbox"> 
+
+<?php 
+$sys_events_obj = phpFrame::getSysevents();
+$sys_events = $sys_events_obj->__toString();
+$sys_events_obj->clear();
+echo $sys_events;
+?>
 
 <?php echo $this->component_output; ?>
+
+</div><!-- close .loginbox -->
 
 <div id="footer">
 Powered by Extranet Office 1.0 Alpha and phpFrame<br />
