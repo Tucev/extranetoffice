@@ -110,7 +110,7 @@ class phpFrame_Environment_Request {
 	 * @return	array
 	 * @since	1.0
 	 */
-	public static function init($client='http') {
+	public static function init() {
 		// Before processing request data we check wheter the request has already been
 		// initialised by testing to see if $_URA is populated
 		if (!empty(self::$_URA)) {
@@ -357,6 +357,20 @@ class phpFrame_Environment_Request {
 		self::$_layout = $value;
 		
 		return $value;
+	}
+	
+	/**	
+	 * Get $_client_helper->getName();
+	 * 
+	 * @static
+	 * @access	public
+	 * @return	client helper name
+	 */
+	public static function getClientName() {
+		//initialise if  $_client_helper is null 
+		if (self::$_client_helper == null) self::init();
+		//return $_client_helper->getName();
+		return self::$_client_helper->getName();
 	}
 	
 	/**
