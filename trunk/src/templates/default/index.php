@@ -83,7 +83,7 @@ $(document).ready(function() {
 <!-- End Content -->
 
 <div id="footer">
-Powered by Extranet Office 1.0 Alpha and phpFrame<br />
+Powered by Extranet Office and phpFrame <?php echo phpFrame::getVersion(); ?><br />
 &copy; 2009 E-noise.com Limited
 <?php if (config::DEBUG) : ?>
 <br />

@@ -27,6 +27,12 @@ class phpFrame {
 	 */
 	const VERSION='1.0 Alpha';
 	
+	/**
+	 * Get phpFrame version
+	 * 
+	 * @return	string
+	 * @since 	1.0
+	 */
 	public static function getVersion() {
 		return self::VERSION;
 	}
