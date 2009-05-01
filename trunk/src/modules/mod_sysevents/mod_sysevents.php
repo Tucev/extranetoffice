@@ -9,6 +9,10 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
+
+$sys_events_obj = phpFrame::getSysevents();
+$sys_events = $sys_events_obj->asArray();
+$sys_events_obj->clear();
 ?>
 
 <?php if (is_array($sys_events['summary']) && count($sys_events['summary']) > 0) : ?>
@@ -17,35 +21,35 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 $(document).ready(function() {
 //	window.setTimeout("$(\"#events_summary\").fadeOut(\"slow\")", 3000);
-	$("div#events_log").hide();
-	$("#events_log").dialog({
-		autoOpen: false
+	$("div#events_log").hide().dialog({ autoOpen: false	});
+	
+	$("#events_summary a#close").click(function(){
+		$(".module_sysevents").hide();
 	});
-	$(".events_summary_error a#more").click(function(){
+	
+	<?php if (is_array($sys_events['events_log']) && count($sys_events['events_log']) > 0) :?>
+	$("#events_summary a#more").click(function(){
 		$("#events_log").dialog('open');
-		$(".events_summary_error a#close").click(function(){
-			$(".module_sys_events").hide();
-		});
 	});
+	<?php endif; ?>
 });
 
 </script>
 
-<div id="events_summary">
-	<div class="events_summary_<?php echo $sys_events['summary'][0];?>">
+<div id="events_summary" class="events_message_<?php echo $sys_events['summary'][0];?>">
+	
 		<?php echo $sys_events['summary'][1];?>
 		<?php if (is_array($sys_events['events_log']) && count($sys_events['events_log']) > 0) :?>
 		<a id="more">more</a> / 
 		<?php endif; ?>
 				
 		<a id="close">close</a>
-	</div> 
 </div>
 
 <?php if (is_array($sys_events['events_log']) && count($sys_events['events_log']) > 0) :?>
 <div id="events_log" title="Event Log">
 	<?php foreach ($sys_events['events_log'] as $event) :?>
-		<div class="events_summary_<?php echo $event[0];?>">
+		<div class="events_message_<?php echo $event[0];?>">
 			<?php echo $event[1]; ?>
 		</div>
 	<?php endforeach; ?>	
