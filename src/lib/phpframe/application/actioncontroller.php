@@ -218,7 +218,7 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 * @since	1.0
 	 */
 	public function redirect() {
-		if ($this->redirect_url && !phpFrame_Utils_Client::isCLI()) {
+		if ($this->redirect_url && phpFrame_Environment_Request::getClientName() != 'cli') {
 			header("Location: ".$this->redirect_url);
 			exit;
 		}

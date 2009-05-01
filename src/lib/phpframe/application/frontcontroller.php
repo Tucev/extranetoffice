@@ -124,9 +124,6 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 		// Initialise request
 		phpFrame_Environment_Request::init();
 		
-		// Get client from request
-		phpFrame_Utils_Client::init();
-		
 		// get session object (singeton)
 		$session = phpFrame::getSession();
 		// get user object
@@ -136,7 +133,7 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 			$user->load($session->userid);
 			$this->auth = true;
 		}
-		elseif (phpFrame_Utils_Client::isCLI()) {
+		elseif (phpFrame_Environment_Request::getClientName() == 'cli') {
 			$user->id = 1;
 			$user->groupid = 1;
 			$user->username = 'system';
@@ -179,7 +176,7 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 		//TODO We should move the next block to the relevant client class. It is now here
 		// because jquery scripts need to be loaded before we load the jQuery plugins in the component output. 
 		// If client is default (pc web browser) we add the jQuery library + jQuery UI
-		if (phpFrame_Utils_Client::isDefault()) {
+		if (phpFrame_Environment_Request::getClientName() == 'default') {
 			$document = phpFrame::getDocument('html');
 			$document->addScript('lib/jquery/js/jquery-1.3.2.min.js');
 			$document->addScript('lib/jquery/js/jquery-ui-1.7.custom.min.js');
@@ -214,14 +211,14 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 	public function render() {
 		//TODO We should move the next block to the relevant client class. 
 		// Instantiate document object to make available in template scope
-		if (phpFrame_Utils_Client::isDefault()) {
+		if (phpFrame_Environment_Request::getClientName() == 'default') {
 			$document = phpFrame::getDocument('html');
 		}
 		
 		if (!$this->auth) {
 			$template_filename = 'login.php';
 		}
-		elseif (phpFrame_Environment_Request::getVar('tmpl') == 'component' || phpFrame_Utils_Client::isCLI()) {
+		elseif (phpFrame_Environment_Request::getVar('tmpl') == 'component' || phpFrame_Environment_Request::getClientName() == 'cli') {
 			phpFrame_Application_Error::display();
 			$this->output = $this->component_output;
 			return;
@@ -233,9 +230,9 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 			$this->pathway = phpFrame::getPathway();
 		}
 		
-		switch (phpFrame_Utils_Client::getClient()) {
-			case 'api' :
-				$template_path = _ABS_PATH.DS."api";
+		switch (phpFrame_Environment_Request::getClientName()) {
+			case 'xmlrpc' :
+				$template_path = _ABS_PATH.DS."xmlrpc";
 				break;
 			case 'mobile' :
 				$template_path = _ABS_PATH.DS.'templates'.DS.config::TEMPLATE.DS.'mobile';
