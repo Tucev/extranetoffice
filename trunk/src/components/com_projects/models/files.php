@@ -147,14 +147,14 @@ class projectsModelFiles extends phpFrame_Application_Model {
 	public function saveFile($post) {
 		// Check whether a project id is included in the post array
 		if (empty($post['projectid'])) {
-			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
+			$this->_error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
 			
 		$row =& phpFrame_Base_Singleton::getInstance("projectsTableFiles");
 		
 		if (!$row->bind($post)) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
@@ -182,7 +182,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		$file = phpFrame_Utils_Filesystem::uploadFile('filename', $upload_dir, $accept, $max_upload_size);
 		
 		if (!empty($file['error'])) {
-			$this->error[] = $file['error'];
+			$this->_error[] = $file['error'];
 			return false;
 		}
 		
@@ -193,12 +193,12 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		$row->userid = $this->_user->id;
 		
 		if (!$row->check()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 	
 		if (!$row->store()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
@@ -206,7 +206,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		if (empty($row->parentid)) {
 			$row->parentid = $row->id;
 			if (!$row->store()) {
-				$this->error[] = $row->getLastError();
+				$this->_error[] = $row->getLastError();
 				return false;
 			}
 		}
@@ -251,7 +251,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		
 		// Delete row from database
 		if (!$row->delete($fileid)) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		else {

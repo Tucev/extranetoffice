@@ -181,7 +181,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 	public function saveIssue($post) {
 		// Check whether a project id is included in the post array
 		if (empty($post['projectid'])) {
-			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
+			$this->_error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
 			
@@ -196,17 +196,17 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		}
 		
 		if (!$row->bind($post)) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
 		if (!$row->check()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 	
 		if (!$row->store()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
@@ -248,7 +248,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		$query .= " WHERE projectid = ".$projectid." AND type = 'issues' AND itemid = ".$issueid;
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) {
-			$this->error[] = $this->_db->getLastError();
+			$this->_error[] = $this->_db->getLastError();
 			return false;
 		}
 		
@@ -257,7 +257,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		$query .= " WHERE issueid = ".$issueid;
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) {
-			$this->error[] = $this->_db->getLastError();
+			$this->_error[] = $this->_db->getLastError();
 			return false;
 		}
 		
@@ -266,7 +266,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		
 		// Delete row from database
 		if (!$row->delete($issueid)) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		else {
@@ -286,7 +286,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		$query .= " SET closed = '".date("Y-m-d H:i:s")."' WHERE id = ".$issueid;
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) {
-			$this->error[] = $this->_db->getLastError();
+			$this->_error[] = $this->_db->getLastError();
 			return false;
 		}
 		
@@ -307,7 +307,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		$query .= " SET closed = '0000-00-00 00:00:00' WHERE id = ".$issueid;
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) {
-			$this->error[] = $this->_db->getLastError();
+			$this->_error[] = $this->_db->getLastError();
 			return false;
 		}
 		

@@ -128,8 +128,8 @@ class emailModelEmail extends phpFrame_Application_Model {
 	function openStream($folder='INBOX') {
 		
 		if($this->checkDependencies() !== true){
-			$this->error = 'IMAP Extention not installed. For more info visit <a href="http://uk3.php.net/manual/en/imap.setup.php">http://uk3.php.net/manual/en/imap.setup.php</a>';
-			return $this->error;
+			$this->_error = 'IMAP Extention not installed. For more info visit <a href="http://uk3.php.net/manual/en/imap.setup.php">http://uk3.php.net/manual/en/imap.setup.php</a>';
+			return $this->_error;
 		}
 		
 	  	// Set mailbox name depending on server type
@@ -143,8 +143,8 @@ class emailModelEmail extends phpFrame_Application_Model {
 	  	// Open mailbox stream
 	  	$this->stream = @imap_open($this->mbox_name, $this->account->imap_user, $this->account->imap_password);
 	  	if (!$this->stream) {
-	  		$this->error = imap_last_error();
-	  		return $this->error;
+	  		$this->_error = imap_last_error();
+	  		return $this->_error;
 	  	}
 	  	
 	  	return true;

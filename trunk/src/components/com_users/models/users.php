@@ -105,7 +105,7 @@ class usersModelUsers extends phpFrame_Application_Model {
 			$accept = 'image/jpeg,image/jpg,image/png,image/gif';
 			$upload = phpFrame_Utils_Filesystem::uploadFile('photo', $dir, $accept);
 			if (!empty($upload['error'])) {
-				$this->error[] = $upload['error'];
+				$this->_error[] = $upload['error'];
 				return false;
 			}
 			else {
@@ -125,17 +125,17 @@ class usersModelUsers extends phpFrame_Application_Model {
 		
 		// Bind the post data to the row array
 		if ($user->bind($post, $exclude) === false) {
-			$this->error[] = $user->getLastError();
+			$this->_error[] = $user->getLastError();
 			return false;
 		}
 		
 		if (!$user->check()) {
-			$this->error[] = $user->getLastError();
+			$this->_error[] = $user->getLastError();
 			return false;
 		}
 	
 		if (!$user->store()) {
-			$this->error[] = $user->getLastError();
+			$this->_error[] = $user->getLastError();
 			return false;
 		}
 		

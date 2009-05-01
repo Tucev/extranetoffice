@@ -142,7 +142,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 	public function saveMeeting($post) {
 		// Check whether a project id is included in the post array
 		if (empty($post['projectid'])) {
-			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
+			$this->_error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
 				
@@ -157,17 +157,17 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		}
 		
 		if (!$row->bind($post)) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
 		if (!$row->check()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
 		if (!$row->store()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
@@ -211,7 +211,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$query .= " WHERE projectid = ".$projectid." AND type = 'meetings' AND itemid = ".$meetingid;
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) {
-			$this->error[] = $this->_db->getLastError();
+			$this->_error[] = $this->_db->getLastError();
 			return false;
 		}
 		
@@ -220,7 +220,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$query .= " WHERE meetingid = ".$meetingid;
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) {
-			$this->error[] = $this->_db->getLastError();
+			$this->_error[] = $this->_db->getLastError();
 			return false;
 		}
 		
@@ -241,7 +241,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		
 		// Delete row from database
 		if (!$row->delete($meetingid)) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		else {
@@ -272,7 +272,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 	function saveSlideshow($post) {
 		// Check whether a project id is included in the post array
 		if (empty($post['projectid'])) {
-			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
+			$this->_error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
 			
@@ -287,17 +287,17 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		}
 		
 		if (!$row->bind($post)) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
 		if (!$row->check()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 	
 		if (!$row->store()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
@@ -320,18 +320,18 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			foreach ($slides as $slide) {
 				$file = _ABS_PATH.DS.config::UPLOAD_DIR.DS."projects".DS.$projectid.DS."slideshows".DS.$slideshowid.DS.$slide->filename;
 				if (file_exists($file) && !unlink($file)) {
-					$this->error[] = _LANG_MEETINGS_SLIDE_FILE_DELETE_ERROR;
+					$this->_error[] = _LANG_MEETINGS_SLIDE_FILE_DELETE_ERROR;
 					return false;
 				}
 				$thumb = _ABS_PATH.DS.config::UPLOAD_DIR.DS."projects".DS.$projectid.DS."slideshows".DS.$slideshowid.DS."thumb".DS.$slide->filename;
 				if (file_exists($thumb) && !unlink($thumb)) {
-					$this->error[] = _LANG_MEETINGS_SLIDE_FILE_DELETE_ERROR;
+					$this->_error[] = _LANG_MEETINGS_SLIDE_FILE_DELETE_ERROR;
 					return false;
 				}
 				$query = "DELETE FROM #__slideshows_slides WHERE id = ".$slide->id;
 				$this->_db->setQuery($query);
 				if (!$this->_db->query()) {
-					$this->error[] = $this->_db->getLastError();
+					$this->_error[] = $this->_db->getLastError();
 					return false;
 				}
 			}
@@ -339,12 +339,12 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		
 		$slideshow_dir_thumb = _ABS_PATH.DS.config::UPLOAD_DIR.DS."projects".DS.$projectid.DS."slideshows".DS.$slideshowid.DS."thumb".DS;
 		if (is_dir($slideshow_dir_thumb) && !rmdir($slideshow_dir_thumb)) {
-			$this->error[] = _LANG_MEETINGS_SLIDE_FILE_DELETE_ERROR;
+			$this->_error[] = _LANG_MEETINGS_SLIDE_FILE_DELETE_ERROR;
 			return false;
 		}
 		$slideshow_dir = _ABS_PATH.DS.config::UPLOAD_DIR.DS."projects".DS.$projectid.DS."slideshows".DS.$slideshowid.DS;
 		if (is_dir($slideshow_dir) && !rmdir($slideshow_dir)) {
-			$this->error[] = _LANG_MEETINGS_SLIDE_FILE_DELETE_ERROR;
+			$this->_error[] = _LANG_MEETINGS_SLIDE_FILE_DELETE_ERROR;
 			return false;
 		}
 		
@@ -352,7 +352,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$query .= " WHERE id = ".$slideshowid;
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) {
-			$this->error[] = $this->_db->getLastError();
+			$this->_error[] = $this->_db->getLastError();
 			return false;
 		}
 		
@@ -368,14 +368,14 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 	public function uploadSlide($post) {
 		// Check whether a project id is included in the post array
 		if (empty($post['projectid'])) {
-			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
+			$this->_error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
 			
 		$row =& phpFrame_Base_Singleton::getInstance("projectsTableSlideshowsSlides");
 		
 		if (!$row->bind($post)) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
@@ -397,31 +397,31 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$file = phpFrame_Utils_Filesystem::uploadFile('filename', $upload_dir, $accept, $max_upload_size);
 		
 		if (!empty($file['error'])) {
-			$this->error[] = $file['error'];
+			$this->_error[] = $file['error'];
 			return false;
 		}
 		
 		// Resize image
 		$image = new phpFrame_Utils_Image();
 		if (!$image->resize_image($upload_dir.$file['file_name'], $upload_dir.$file['file_name'], 764, 573)) {
-			$this->error[] = _LANG_MEETINGS_SLIDE_RESIZE_ERROR;
+			$this->_error[] = _LANG_MEETINGS_SLIDE_RESIZE_ERROR;
 			return false;
 		}
 		// Create thumbnail
 		if (!$image->resize_image($upload_dir.$file['file_name'], $upload_dir."thumb".DS.$file['file_name'], 120, 90)) {
-			$this->error[] = _LANG_MEETINGS_SLIDE_THUMBNAIL_ERROR;
+			$this->_error[] = _LANG_MEETINGS_SLIDE_THUMBNAIL_ERROR;
 			return false;
 		}
 		
 		$row->filename = $file['file_name'];
 		
 		if (!$row->check()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 	
 		if (!$row->store()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
@@ -431,7 +431,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 	public function deleteSlide($projectid, $slideid) {
 		// Check whether a project id is included in the post array
 		if (empty($projectid)) {
-			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
+			$this->_error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
 				
@@ -441,14 +441,14 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		
 		$upload_dir = config::UPLOAD_DIR.DS."projects".DS.$projectid.DS."slideshows".DS.$row->slideshowid.DS;
 		if (!unlink($upload_dir.$row->filename) || !unlink($upload_dir."thumb".DS.$row->filename)) {
-			$this->error[] = _LANG_MEETINGS_SLIDE_DELETE_ERROR;
+			$this->_error[] = _LANG_MEETINGS_SLIDE_DELETE_ERROR;
 			return false;
 		}
 		else {
 			$query = "DELETE FROM #__slideshows_slides WHERE id = ".$slideid;
 			$this->_db->setQuery($query);
 			if ($this->_db->query() === false) {
-				$this->error[] = $this->_db->getLastError();
+				$this->_error[] = $this->_db->getLastError();
 				return false;
 			}
 			else {
@@ -479,7 +479,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 	
 	public function saveFiles($meetingid, $fileids) {
 		if (empty($meetingid)) {
-			$this->error[] = _LANG_PROJECTS_MEETINGS_NO_MEETING_SELECTED;
+			$this->_error[] = _LANG_PROJECTS_MEETINGS_NO_MEETING_SELECTED;
 			return false;
 		}
 		
@@ -490,7 +490,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$query = "DELETE FROM #__meetings_files WHERE meetingid = ".$meetingid;
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) {
-			$this->error[] = $this->_db->getLastError();
+			$this->_error[] = $this->_db->getLastError();
 			return false;
 		}
 		
@@ -498,7 +498,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			$query = "INSERT INTO #__meetings_files (`id`, `meetingid`, `fileid`) VALUES (NULL, ".$meetingid.", ".$fileid.")";
 			$this->_db->setQuery($query);
 			if (!$this->_db->query()) {
-				$this->error[] = $this->_db->getLastError();
+				$this->_error[] = $this->_db->getLastError();
 				return false;
 			}
 		}

@@ -177,14 +177,14 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 	public function saveMilestone($post) {
 		// Check whether a project id is included in the post array
 		if (empty($post['projectid'])) {
-			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
+			$this->_error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
 		
 		$row =& phpFrame_Base_Singleton::getInstance("projectsTableMilestones");
 		
 		if (!$row->bind($post)) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
@@ -194,12 +194,12 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 		}
 		
 		if (!$row->check()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false; 
 		}
 		
 		if (!$row->store()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false; 
 		}
 		
@@ -253,7 +253,7 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 		
 		// Delete row from database
 		if (!$row->delete($milestoneid)) {
-			$this->error = $row->error;
+			$this->_error = $row->error;
 			return false;
 		}
 		else {

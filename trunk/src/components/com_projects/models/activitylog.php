@@ -76,12 +76,12 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 		$row->url = $url;
 		
 		if (!$row->check()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
 		if (!$row->store()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 				
@@ -153,14 +153,14 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 			}
 			
 			if (count($failed_recipients) > 0) {
-				$this->error[] = sprintf(_LANG_EMAIL_NOT_SENT, implode(',', $failed_recipients));
+				$this->_error[] = sprintf(_LANG_EMAIL_NOT_SENT, implode(',', $failed_recipients));
 				return false;
 			}
 			
 			return true;
 		}
 		else {
-			$this->error[] = _LANG_ACTIVITYLOG_NO_RECIPIENTS;
+			$this->_error[] = _LANG_ACTIVITYLOG_NO_RECIPIENTS;
 			return false;
 		}
 	}

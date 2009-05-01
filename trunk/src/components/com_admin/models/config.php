@@ -31,13 +31,13 @@ class adminModelConfig extends phpFrame_Application_Model {
 		$fname = _ABS_PATH.DS."inc".DS."config.php";
 		// Open file for reading first
 		if (!$fhandle = fopen($fname, "r")) {
-			$this->error[] = 'Error opening file '.$fname.'.';
+			$this->_error[] = 'Error opening file '.$fname.'.';
 			return false;
 		}
 		
 		// Read content of file into string
 		if (!$content = fread($fhandle, filesize($fname))) {
-			$this->error[] = 'Error reading file '.$fname.'.';
+			$this->_error[] = 'Error reading file '.$fname.'.';
 			return false;
 		}
 		
@@ -52,17 +52,17 @@ class adminModelConfig extends phpFrame_Application_Model {
 		
 		// Reopen file for writing
 		if (!$fhandle = fopen($fname,"w")) {
-			$this->error[] = 'Error opening file '.$fname.' for writing.';
+			$this->_error[] = 'Error opening file '.$fname.' for writing.';
 			return false;
 		}
 		// Write contents into file
 		if (!fwrite($fhandle, $content)) {
-			$this->error[] = 'Error writing file '.$fname.'.';
+			$this->_error[] = 'Error writing file '.$fname.'.';
 			return false;
 		}
 		// Close file
 		if (!fclose($fhandle)) {
-			$this->error[] = 'Error closing file '.$fname.' after writing.';
+			$this->_error[] = 'Error closing file '.$fname.' after writing.';
 			return false;
 		}
 		else {
