@@ -15,6 +15,7 @@ $module_positions['topmenu'] = $this->modules->display('topmenu', '_topmenu');
 $module_positions['mainmenu'] = $this->modules->display('mainmenu', '_mainmenu');
 $module_positions['topright'] = $this->modules->display('topright', '_topright');
 $module_positions['right'] = $this->modules->display('right');
+$module_positions['sys_events'] = $this->modules->display('sys_events', '_sys_events');
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -70,6 +71,7 @@ $(document).ready(function() {
 		<?php endif; ?>
 		
 		<div id="main_col_<?php echo $column_count; ?>">
+			<?php echo $module_positions['sys_events']; ?>
 			<div id="main_col_inner">
 			<?php echo $this->component_output; ?>
 			</div><!-- close #main_col_inner -->
