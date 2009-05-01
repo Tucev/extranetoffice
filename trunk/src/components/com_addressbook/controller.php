@@ -26,7 +26,7 @@ class addressbookController extends phpFrame_Application_ActionController {
 	 */
 	function __construct() {
 		// set default request vars
-		$this->view = phpFrame_Environment_Request::getView('contacts');
+		$this->view = phpFrame_Environment_Request::getViewName('contacts');
 		
 		// It is important we invoke the parent's constructor before 
 		// running permission check as we need the available views loaded first.

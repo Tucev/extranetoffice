@@ -113,9 +113,9 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 * @since	1.0
 	 */
 	protected function __construct() {
-		$this->component = phpFrame_Environment_Request::getComponent();
+		$this->component = phpFrame_Environment_Request::getComponentName();
 		$this->action = phpFrame_Environment_Request::getAction();
-		$this->view = phpFrame_Environment_Request::getView();
+		$this->view = phpFrame_Environment_Request::getViewName();
 		$this->layout = phpFrame_Environment_Request::getLayout();
 		
 		// Get reference to System Events object
@@ -145,7 +145,7 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 * @since	1.0
      */
 	public function display() {
-		$this->view_obj = $this->getView(phpFrame_Environment_Request::getView());
+		$this->view_obj = $this->getView(phpFrame_Environment_Request::getViewName());
 		if (is_callable(array($this->view_obj, 'display'))) {
 			$this->view_obj->display();	
 		}
@@ -235,10 +235,10 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 */
 	public function getModel($name='') {
 		if (empty($name)) {
-			$name = phpFrame_Environment_Request::getView();
+			$name = phpFrame_Environment_Request::getViewName();
 		}
 		
-		$model_class_name = substr(phpFrame_Environment_Request::getComponent(), 4).'Model'.ucfirst($name);
+		$model_class_name = substr(phpFrame_Environment_Request::getComponentName(), 4).'Model'.ucfirst($name);
 		$model = phpFrame_Base_Singleton::getInstance($model_class_name);
 		return $model;
 	}
@@ -254,10 +254,10 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 */
 	public function getView($name='') {
 		if (empty($name)) {
-			$name = phpFrame_Environment_Request::getView();
+			$name = phpFrame_Environment_Request::getViewName();
 		}
 		
-		$view_class_name = substr(phpFrame_Environment_Request::getComponent(), 4).'View'.ucfirst($name);
+		$view_class_name = substr(phpFrame_Environment_Request::getComponentName(), 4).'View'.ucfirst($name);
 		$view =& phpFrame_Base_Singleton::getInstance($view_class_name);
 		return $view;
 	}

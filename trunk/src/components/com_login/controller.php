@@ -28,9 +28,9 @@ class loginController extends phpFrame_Application_ActionController {
 	 */
 	function __construct() {
 		// set default request vars
-		$this->component = phpFrame_Environment_Request::getComponent();
+		$this->component = phpFrame_Environment_Request::getComponentName();
 		$this->action = phpFrame_Environment_Request::getAction('display');
-		$this->view = phpFrame_Environment_Request::getView('login');
+		$this->view = phpFrame_Environment_Request::getViewName('login');
 		$this->layout = phpFrame_Environment_Request::getLayout();
 		
 		parent::__construct();

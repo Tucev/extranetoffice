@@ -10,7 +10,7 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
-$option = phpFrame_Environment_Request::getComponent();
+$option = phpFrame_Environment_Request::getComponentName();
 $active_component = substr($option, 4);
 $db = phpFrame::getDB();
 

@@ -62,7 +62,7 @@ class phpFrame_Environment_ClientCli implements phpFrame_Environment_IClient {
 	 * @return	string name to identify helper type
 	 */
 	public function getName() {
-		return "CLI";
+		return "cli";
 	}
 }
 

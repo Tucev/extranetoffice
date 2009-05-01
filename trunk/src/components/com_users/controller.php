@@ -26,7 +26,7 @@ class usersController extends phpFrame_Application_ActionController {
 	 */
 	function __construct() {
 		// set default request vars
-		$this->view = phpFrame_Environment_Request::getView('users');
+		$this->view = phpFrame_Environment_Request::getViewName('users');
 		$this->layout = phpFrame_Environment_Request::getLayout('list');
 		
 		parent::__construct();

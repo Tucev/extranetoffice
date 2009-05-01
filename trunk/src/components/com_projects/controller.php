@@ -31,7 +31,7 @@ class projectsController extends phpFrame_Application_ActionController {
 	 */
 	function __construct() {
 		// set default request vars
-		$this->view = phpFrame_Environment_Request::getView('projects');
+		$this->view = phpFrame_Environment_Request::getViewName('projects');
 		$this->layout = phpFrame_Environment_Request::getLayout('list');
 		$this->projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		

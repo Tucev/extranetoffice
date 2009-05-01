@@ -97,7 +97,7 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 <h3 class="people">Members</h3>
 
 <div class="new">
-<a href="<?php echo phpFrame_Application_Route::_("index.php?component=".phpFrame_Environment_Request::getComponent()."&view=".$this->view."&layout=member_form&projectid=".$this->projectid); ?>">Add new member</a>
+<a href="<?php echo phpFrame_Application_Route::_("index.php?component=".phpFrame_Environment_Request::getComponentName()."&view=".$this->view."&layout=member_form&projectid=".$this->projectid); ?>">Add new member</a>
 </div>
 
 <br />

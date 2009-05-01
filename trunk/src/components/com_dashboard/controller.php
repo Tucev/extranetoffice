@@ -20,7 +20,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 class dashboardController extends phpFrame_Application_ActionController {
 	function __construct() {
 		// set default view and layout if none has been set
-		$this->view = phpFrame_Environment_Request::getView('dashboard');
+		$this->view = phpFrame_Environment_Request::getViewName('dashboard');
 		$this->layout = phpFrame_Environment_Request::getVar('layout', '');
 		
 		parent::__construct();
