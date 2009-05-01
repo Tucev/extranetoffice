@@ -29,6 +29,7 @@ class phpFrame_Exception_Handler {
 	 * @since	1.0
 	 */
 	public static function init() {
+		error_reporting(E_ALL & ~E_NOTICE);
 		//set_error_handler(array("phpFrame_Exception_Handler", "handleError"));
 		set_exception_handler(array('phpFrame_Exception_Handler', 'handleException'));
 	}
