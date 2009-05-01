@@ -93,8 +93,7 @@ class phpFrame {
 	 * @since 	1.0
 	 */
 	public static function getDB() {
-		$params = array(config::DB_HOST, config::DB_USER, config::DB_PASS, config::DB_NAME);
-		return phpFrame_Base_Singleton::getInstance('phpFrame_Database', $params);
+		return phpFrame_Base_Singleton::getInstance('phpFrame_Database');
 	}
 	
 	/**
