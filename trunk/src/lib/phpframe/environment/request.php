@@ -83,6 +83,15 @@ class phpFrame_Environment_Request {
 	private static $_inputfilter=null;
 	
 	/**
+	 * Private client helper object
+	 *
+	 * @static
+	 * @access	private
+	 * @var		object helper implements IClient
+	 */
+	private static $_client_helper=null;
+	
+	/**
 	 * Private constructor prevents instantiation. This class should always be used statically.
 	 * 
 	 * @access	private
@@ -108,34 +117,12 @@ class phpFrame_Environment_Request {
 			return;
 		}
 		
-		//TODO create instance of appropriate request helper to populate $_URA
+		self::$_inputfilter = new InputFilter();
+		
+		self::detect();
+		self::$_URA = self::$_client_helper->populateURA();
+		
 		//TODO stop ignoring $_SESSION and $_COOKIES
-		
-		if ($client == 'http') {
-			// Get an instance of PHP Input filter
-			self::$_inputfilter = new InputFilter();
-			
-			// Process incoming request arrays and store filtered data in class
-			self::$_URA['request'] = self::$_inputfilter->process($_REQUEST);
-			self::$_URA['get'] = self::$_inputfilter->process($_GET);
-			self::$_URA['post'] = self::$_inputfilter->process($_POST);
-			
-			// Once the superglobal request arrays are processed we unset them
-			// to prevent them being used from here on
-			unset($_REQUEST, $_GET, $_POST);
-		}
-		
-		if ($client == 'cli') {
-			// Get arguments passed via command line and parse them as request vars
-			global $argv;
-			$request = array();
-			for ($i=1; $i<count($argv); $i++) {
-				if (preg_match('/^(.*)=(.*)$/', $argv[$i], $matches)) {
-					$request[$matches[1]] = $matches[2];
-				}
-			}
-			self::$_URA['request'] = $request;
-		}
 		
 		//add other globals
 		self::$_URA['env'] = $_ENV;
@@ -161,6 +148,43 @@ class phpFrame_Environment_Request {
 		unset(self::$_URA['request']['view']);
 		self::$_layout = self::$_URA['request']['layout'];
 		unset(self::$_URA['request']['layout']);
+	}
+	
+	/**
+	 * Detect and set helper object 
+	 * 
+	 */
+	private static function detect() {
+		
+		//scan through environment dir to find files
+		$files = scandir(_ABS_PATH.DS."lib".DS."phpframe".DS."environment");
+		
+		//make sure the clientdefault is the last file in array as catch-all helper
+		$default = array_search('clientdefault.php',$files);	//if it's there
+		if ($default != false) {
+			unset($files[$default]);							//unset it
+			$files[] = 'clientdefault.php';						//add to end
+		}
+
+		//loop through files 
+		foreach ($files as $file) {
+			//filter client helper files
+			preg_match('/^client([a-zA-Z]+).php$/',$file,$matches);
+			if (is_array($matches) && count($matches) > 1) {
+				//build class names
+				$className = 'phpFrame_Environment_Client'.ucfirst($matches[1]);
+				if (is_callable(array($className,'detect'))) {
+					//call class's detect() to check if this is the helper we need 
+					self::$_client_helper = call_user_func(array($className,'detect'));
+					if (self::$_client_helper instanceof phpFrame_Environment_IClient) {
+						//break out of the function if we found our helper
+						return;
+					} 
+				}
+			} 
+		}
+		//throw error if no helper is found
+		throw new phpFrame_Exception(_PHPFRAME_LANG_REQUEST_ERROR_NO_CLIENT_HELPER);
 	}
 	
 	/**

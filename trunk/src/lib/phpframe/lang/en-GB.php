@@ -18,4 +18,7 @@ define("_PHPFRAME_LANG_UPLOAD_ERROR_MAX_FILESIZE", "ERROR: Maximum file size exc
 define("_PHPFRAME_LANG_UPLOAD_ERROR_FILETYPE", "ERROR: File type not valid!");
 define("_PHPFRAME_LANG_UPLOAD_ERROR_MOVE", "ERROR: Could not move file to destination directory!");
 define("_PHPFRAME_LANG_UPLOAD_ERROR_ATTACK", "ERROR: Possible file attack!");
+
+// environment > request
+define("_PHPFRAME_LANG_REQUEST_ERROR_NO_CLIENT_HELPER", "ERROR: No client helper could be found!");
 ?>
