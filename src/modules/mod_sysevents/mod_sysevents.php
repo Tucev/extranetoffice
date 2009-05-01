@@ -9,16 +9,6 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
-
-$sys_events = array(
-	"summary" => array("error", "An error occurred while saving project"),
-	"events_log" => array(
-		array("success", "Project successfully saved."),
-		array("error", "Failed to send email to someone@somewhere.com."),
-		array("warning", "Some notifications failed.")
-	) 
-);
-
 ?>
 
 <?php if (is_array($sys_events['summary']) && count($sys_events['summary']) > 0) : ?>
