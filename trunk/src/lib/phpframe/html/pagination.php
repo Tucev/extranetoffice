@@ -57,21 +57,27 @@ class phpFrame_HTML_Pagination {
 	 * @param	$limit		The maximum number of rows per page
 	 * @return	void
 	 */
-	function __construct($total, $limitstart, $limit) {
+	function __construct($total, $limitstart=0, $limit=-1) {
 		$this->total = $total;
 		$this->limitstart = $limitstart;
-		if ($limit == 'all') {
+		
+		if ($limit == -1) {
 			$this->limit = $this->total;
 		}
 		else {
 			$this->limit = $limit;
 		}
 		
-		
-		// Calculate number of pages
-		$this->pages = (int) ceil($this->total/$this->limit);
-		// Calculate current page
-		$this->current_page = (int) (ceil($this->limitstart/$this->limit)+1);
+		if ($this->limit > 0) {
+			// Calculate number of pages
+			$this->pages = (int) ceil($this->total/$this->limit);
+			// Calculate current page
+			$this->current_page = (int) (ceil($this->limitstart/$this->limit)+1);
+		}
+		else {
+			$this->pages = 0;
+			$this->current_page = 0;
+		}
 	}
 	
 	/**
@@ -220,4 +226,3 @@ class phpFrame_HTML_Pagination {
 		return $html;
 	}
 }
-?>
