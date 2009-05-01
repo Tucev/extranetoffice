@@ -7,8 +7,25 @@
  * @license		BSD revised. See LICENSE.
  */
 
+defined( '_EXEC' ) or die( 'Restricted access' );
+
+/**
+ * loginModelLogin Class
+ * 
+ * @package		phpFrame
+ * @subpackage 	com_login
+ * @author 		Luis Montero [e-noise.com]
+ * @since 		1.0
+ * @see 		phpFrame_Application_Model
+ */
 class loginModelLogin extends phpFrame_Application_Model {
-	
+	/**
+	 * Log in
+	 * 
+	 * @param	string	$username
+	 * @param	string	$password
+	 * @return	boolean
+	 */
 	public function login($username, $password) {
 		$db = phpFrame::getDB();
 		$query = "SELECT id, password FROM #__users WHERE username = '".$username."'";
@@ -16,7 +33,7 @@ class loginModelLogin extends phpFrame_Application_Model {
 		$credentials = $db->loadObject();
 		
 		// User exists
-		if ($credentials->id) {
+		if (is_object($credentials) && isset($credentials->id)) {
 			$user = phpFrame::getUser();
 			$user->load($credentials->id);
 			
@@ -34,13 +51,13 @@ class loginModelLogin extends phpFrame_Application_Model {
 				return true;
 			} else {
 				// Wrong password
-				phpFrame_Application_Error::raise('401', 'error', "Authorisation failed: Wrong password");
+				$this->_error[] = "Authorisation failed: Wrong password";
 				return false;
 			}
 		}
 		else {
 			// Username not found
-			phpFrame_Application_Error::raise('401', 'error', "Authorisation failed: Username not found");
+			$this->_error[] = "Authorisation failed: Username not found";
 			return false;
 		}
 	}

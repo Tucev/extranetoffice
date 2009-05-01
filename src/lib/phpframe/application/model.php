@@ -117,8 +117,8 @@ abstract class phpFrame_Application_Model extends phpFrame_Base_Singleton {
 	 * @return mixed
 	 */
 	public function getLastError() {
-		if (is_array($this->error) && count($this->error) > 0) {
-			return end($this->error);
+		if (is_array($this->_error) && count($this->_error) > 0) {
+			return end($this->_error);
 		}
 		else {
 			return false;

@@ -32,9 +32,6 @@ $(document).ready(function() {
 });
 </script>
 
-
-<div class="loginbox"> 
-
 <form id="form_login" action="index.php" method="post">
 <table class="table_login">
 	<tr>
@@ -110,5 +107,3 @@ $(document).ready(function() {
 </form>
 
 </div>
-
-</div><!-- close .loginbox -->

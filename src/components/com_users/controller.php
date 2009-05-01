@@ -38,10 +38,10 @@ class usersController extends phpFrame_Application_ActionController {
 		$modelUser = $this->getModel('users');
 		
 		if ($modelUser->saveUser($post) === false) {
-			phpFrame_Application_Error::raise('', 'error', $modelUser->getLastError());
+			$this->_sysevents->setSummary($modelUser->getLastError(), "error");
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'message', _LANG_USER_SAVE_SUCCESS);
+			$this->_sysevents->setSummary(_LANG_USER_SAVE_SUCCESS, "success");
 		}
 		
 		$this->setRedirect($_SERVER["HTTP_REFERER"]);

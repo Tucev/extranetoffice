@@ -80,8 +80,8 @@ class phpFrame_Application_Permissions extends phpFrame_Base_Singleton {
 	 */
 	protected function __construct() {
 		// Get URL vars
-		$this->option = phpFrame_Environment_Request::getComponent();
-		$this->task = phpFrame_Environment_Request::getVar('task', 'display');
+		$this->component = phpFrame_Environment_Request::getComponent();
+		$this->action = phpFrame_Environment_Request::getAction('display');
 		$this->view = phpFrame_Environment_Request::getView();
 		$this->layout = phpFrame_Environment_Request::getLayout();
 		
@@ -105,7 +105,7 @@ class phpFrame_Application_Permissions extends phpFrame_Base_Singleton {
 		}
 		
 		// decide if user is allowed to go ahead ased on group membership
-		if (!$this->checkACL($this->option, $this->task, $this->view, $this->layout)) {
+		if (!$this->checkACL($this->component, $this->action, $this->view, $this->layout)) {
 			return false;
 		}
 		else {

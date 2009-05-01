@@ -138,7 +138,7 @@ abstract class phpFrame_Application_View extends phpFrame_Base_Singleton {
     		}
     		$tmpl_path .= ".php";
     		
-    		if (file_exists($tmpl_path)) {
+    		if (is_file($tmpl_path)) {
     			require_once $tmpl_path;
     			return true;
     		}

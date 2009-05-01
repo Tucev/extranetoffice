@@ -28,10 +28,12 @@ class loginController extends phpFrame_Application_ActionController {
 	 */
 	function __construct() {
 		// set default request vars
-		$this->option = phpFrame_Environment_Request::getComponent();
-		$this->task = phpFrame_Environment_Request::getVar('task', 'display');
+		$this->component = phpFrame_Environment_Request::getComponent();
+		$this->action = phpFrame_Environment_Request::getAction('display');
 		$this->view = phpFrame_Environment_Request::getView('login');
 		$this->layout = phpFrame_Environment_Request::getLayout();
+		
+		parent::__construct();
 	}
 	
 	function login() {
@@ -46,7 +48,11 @@ class loginController extends phpFrame_Application_ActionController {
 		if (empty($session->userid)) {
 			$username = phpFrame_Environment_Request::getVar('username', '');
 			$password = phpFrame_Environment_Request::getVar('password', '');
-			$model->login($username, $password);
+			
+			if (!$model->login($username, $password)) {
+				$this->_sysevents->setSummary($model->getLastError(), "warning");
+			}
+			
 			$this->setRedirect('index.php');
 		}	
 	}
@@ -67,10 +73,10 @@ class loginController extends phpFrame_Application_ActionController {
 		// Push model into controller
 		$model = $this->getModel('login');
 		if (!$model->resetPassword($email)) {
-			phpFrame_Application_Error::raise('', 'warning', $model->getLastError());
+			$this->_sysevents->setSummary($model->getLastError(), "warning");
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'message', _LANG_RESET_PASS_SUCCESS);
+			$this->_sysevents->setSummary(_LANG_RESET_PASS_SUCCESS, "success");
 		}
 		
 		$this->setRedirect('index.php');

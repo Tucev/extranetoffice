@@ -9,8 +9,13 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
+
+$sys_events_obj = phpFrame::getSysevents();
+$sys_events = $sys_events_obj->asArray();
+$sys_events_obj->clear();
 ?>
 
 <div id="error_msg">
-	<?php phpFrame_Application_Error::display(); ?>
+	<?php //phpFrame_Application_Error::display(); ?>
+	<?php var_dump($sys_events); ?>
 </div>
