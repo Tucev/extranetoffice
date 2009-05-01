@@ -156,7 +156,7 @@ class projectsModelProjects extends phpFrame_Application_Model {
 	
 	public function getProjectsDetail($projectid, $userid=0) {
 		if (empty($projectid)) {
-			$this->error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
+			$this->_error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
 		
@@ -196,7 +196,7 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		
 		// Bind the post data to the row array
 		if ($row->bind($post, 'created,created_by') === false) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 	
@@ -206,12 +206,12 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		}
 		
 		if (!$row->check()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
 		if (!$row->store()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
@@ -231,7 +231,7 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		
 		// Delete row from database
 		if ($row->delete($projectid) === false) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		else {

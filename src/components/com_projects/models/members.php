@@ -56,12 +56,12 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		$row->roleid = $roleid;
 		
 		if (!$row->check()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
 		if (!$row->store()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
@@ -84,7 +84,7 @@ class projectsModelMembers extends phpFrame_Application_Model {
 							  );
 							  		   
 			if ($new_mail->Send() !== true) {
-				$this->error[] = sprintf(_LANG_EMAIL_NOT_SENT, $new_member_email);
+				$this->_error[] = sprintf(_LANG_EMAIL_NOT_SENT, $new_member_email);
 				return false;
 			}	
 		}
@@ -112,17 +112,17 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		
 		// Bind the post data to the row array
 		if ($user->bind($post, 'password', $row) === false) {
-			$this->error[] = $user->getLastError();
+			$this->_error[] = $user->getLastError();
 			return false;
 		}
 		
 		if (!$user->check($row)) {
-			$this->error[] = $user->getLastError();
+			$this->_error[] = $user->getLastError();
 			return false;
 		}
 		
 		if (!$user->store($row)) {
-			$this->error[] = $user->getLastError();
+			$this->_error[] = $user->getLastError();
 			return false;
 		}
 		
@@ -134,12 +134,12 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		$row_users_roles->roleid = $roleid;
 		
 		if (!$row_users_roles->check()) {
-			$this->error[] = $row_users_roles->getLastError();
+			$this->_error[] = $row_users_roles->getLastError();
 			return false;
 		}
 		
 		if (!$row_users_roles->store()) {
-			$this->error[] = $row_users_roles->getLastError();
+			$this->_error[] = $row_users_roles->getLastError();
 			return false;
 		}
 		
@@ -162,7 +162,7 @@ class projectsModelMembers extends phpFrame_Application_Model {
 						);
 								   
 		if ($new_mail->Send() !== true) {
-			$this->error[] = sprintf(_LANG_EMAIL_NOT_SENT, $row->email);
+			$this->_error[] = sprintf(_LANG_EMAIL_NOT_SENT, $row->email);
 			return false;
 		}
 		
@@ -193,7 +193,7 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		$query .= " WHERE projectid = ".$projectid." AND userid = ".$userid;
 		$this->_db->setQuery($query);
 		if ($this->_db->query() === false) {
-			$this->error[] = $this->_db->getLastError();
+			$this->_error[] = $this->_db->getLastError();
 			return false;
 		}
 		else {

@@ -77,7 +77,7 @@ class projectsModelPermissions extends phpFrame_Application_Model {
 		
 		// Check project's global access level
 		if ($this->project->access > 0 && $this->roleid < 1) {
-			$this->error[] = "You do not have access to this project";
+			$this->_error[] = "You do not have access to this project";
 			$this->is_allowed = false;
 			return false;
 		}
@@ -85,7 +85,7 @@ class projectsModelPermissions extends phpFrame_Application_Model {
 		// Check tool-specific (views) access
 		if (!empty($project->id)) {
 			if ($this->checkViewAccess() !== true) {
-				$this->error[] = "You do not have access to this tool in this project";
+				$this->_error[] = "You do not have access to this tool in this project";
 				$this->is_allowed = false;
 				return false;
 			}	

@@ -69,19 +69,19 @@ class emailModelAccounts extends phpFrame_Application_Model {
 		}
 		
 		if (!$row->bind($post)) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
 		$row->userid = $this->_user->id;
 		
 		if (!$row->check()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 	
 		if (!$row->store()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
@@ -93,7 +93,7 @@ class emailModelAccounts extends phpFrame_Application_Model {
 		$row =& phpFrame_Base_Singleton::getInstance("emailTableAccounts");
 		
 		if (!$row->delete($accountid)) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		else {
@@ -112,7 +112,7 @@ class emailModelAccounts extends phpFrame_Application_Model {
 		$query = "UPDATE `#__email_accounts` SET `default` = '0' WHERE `userid` = ".$this->_user->id;
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) {
-			$this->error[] = $this->_db->getLastError();
+			$this->_error[] = $this->_db->getLastError();
 			return false;
 		}
 		
@@ -120,7 +120,7 @@ class emailModelAccounts extends phpFrame_Application_Model {
 		$query = "UPDATE `#__email_accounts` SET `default` = '1' WHERE `userid` = ".$this->_user->id." AND `id` = ".$accountid;
 		$this->_db->setQuery($query);
 		if (!$this->_db->query()) {
-			$this->error[] = $this->_db->getLastError();
+			$this->_error[] = $this->_db->getLastError();
 			return false;
 		}
 		

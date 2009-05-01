@@ -91,12 +91,12 @@ class loginModelLogin extends phpFrame_Application_Model {
 			$row->password = $password;
 			
 			if (!$this->_user->check($row)) {
-				$this->error[] = $this->_user->getLastError();
+				$this->_error[] = $this->_user->getLastError();
 				return false;
 			}
 			
 			if (!$this->_user->store($row)) {
-				$this->error[] = $this->_user->getLastError();
+				$this->_error[] = $this->_user->getLastError();
 				return false;
 			}
 			
@@ -114,14 +114,14 @@ class loginModelLogin extends phpFrame_Application_Model {
 								);
 										   
 			if ($new_mail->Send() !== true) {
-				$this->error[] = sprintf(_LANG_EMAIL_NOT_SENT, $row->email);
+				$this->_error[] = sprintf(_LANG_EMAIL_NOT_SENT, $row->email);
 				return false;
 			}
 				
 			return true;
 		}
 		else {
-			$this->error[] = _LANG_RESET_PASS_EMAIL_NOT_FOUND;
+			$this->_error[] = _LANG_RESET_PASS_EMAIL_NOT_FOUND;
 			return false;
 		}
 	}

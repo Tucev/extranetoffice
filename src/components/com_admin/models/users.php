@@ -162,17 +162,17 @@ class adminModelUsers extends phpFrame_Application_Model {
 		
 		// Bind the post data to the row array
 		if ($user->bind($post, $exclude, $row) === false) {
-			$this->error[] = $user->getLastError();
+			$this->_error[] = $user->getLastError();
 			return false;
 		}
 		
 		if (!$user->check($row)) {
-			$this->error[] = $user->getLastError();
+			$this->_error[] = $user->getLastError();
 			return false;
 		}
 		
 		if (!$user->store($row)) {
-			$this->error[] = $user->getLastError();
+			$this->_error[] = $user->getLastError();
 			return false;
 		}
 		
@@ -191,7 +191,7 @@ class adminModelUsers extends phpFrame_Application_Model {
 							);
 									   
 			if ($new_mail->Send() !== true) {
-				$this->error[] = sprintf(_LANG_EMAIL_NOT_SENT, $row->email);
+				$this->_error[] = sprintf(_LANG_EMAIL_NOT_SENT, $row->email);
 				return false;
 			}
 		}
@@ -203,7 +203,7 @@ class adminModelUsers extends phpFrame_Application_Model {
 		$query = "UPDATE #__users SET `deleted` = '".date("Y-m-d H:i:s")."' WHERE id = ".$userid;
 		$this->_db->setQuery($query);
 		if ($this->_db->query() === false) {
-			$this->error[] = $this->_db->getLastError();
+			$this->_error[] = $this->_db->getLastError();
 			return false;
 		}
 		else {

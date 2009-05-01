@@ -79,17 +79,17 @@ class addressbookModelContacts extends phpFrame_Application_Model {
 		}
 		
 		if (!$row->bind($post)) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
 		if (!$row->check()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 	
 		if (!$row->store()) {
-			$this->error[] = $row->getLastError();
+			$this->_error[] = $row->getLastError();
 			return false;
 		}
 		
