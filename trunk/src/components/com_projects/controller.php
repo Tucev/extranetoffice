@@ -18,9 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  */
 class projectsController extends phpFrame_Application_ActionController {
-	var $projectid=null;
 	var $project=null;
-	var $project_permissions=null;
 	var $current_tool=null;
 	
 	/**
@@ -29,29 +27,27 @@ class projectsController extends phpFrame_Application_ActionController {
 	 * @return	void
 	 * @since 	1.0
 	 */
-	function __construct() {
-		// set default request vars
-		$this->view = phpFrame_Environment_Request::getViewName('projects');
-		$this->layout = phpFrame_Environment_Request::getLayout('list');
-		$this->projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		
+	protected function __construct() {
+		// Invoke parent's constructor to set default action and default view
 		// It is important we invoke the parent's constructor before 
 		// running permission check as we need the available views loaded first.
-		parent::__construct();
+		parent::__construct('get_projects');
 		
-		// Instantiate cusotom project permission model
-		$this->project_permissions = $this->getModel('permissions');
-		
-		if (!empty($this->projectid)) {
+		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
+		if (!empty($projectid)) {
 			// Load the project data
 			$modelProjects = $this->getModel('projects');
-			$this->project = $modelProjects->getProjectsDetail($this->projectid);
+			$this->project = $modelProjects->getProjectsDetail($projectid);
 					
 			// Do security check with custom permission model for projects
-			$this->project_permissions->checkProjectAccess($this->project, $this->views_available);
-			
+			$project_permissions = $this->getModel('permissions');
+			$project_permissions->checkProjectAccess($this->project, $this->views_available);
+			if (!$project_permissions->is_allowed) {
+				$this->_sysevents->setSummary($project_permissions->getLastError());
+			}
+		
 			// Add pathway item
-			$this->addPathwayItem($this->project->name, 'index.php?component=com_projects&view=projects&layout=detail&projectid='.$this->project->id);
+			phpFrame::getPathway()->addItem($this->project->name, 'index.php?component=com_projects&view=projects&layout=detail&projectid='.$this->project->id);
 			
 			// Append page component name to document title
 			$document = phpFrame::getDocument('html');
@@ -60,22 +56,55 @@ class projectsController extends phpFrame_Application_ActionController {
 		}
 	}
 	
-	/**
-	 * This method overrides the parent's Execute task method
-	 * 
-	 * This method executes a given task (runs a named member method).
-	 *
-	 * @param 	string $task The task to be executed (default is 'display').
-	 * @return 	void
-	 * @since	1.0
-	 */
-	public function execute($task) { 
-		if ($this->project_permissions->is_allowed || empty($this->projectid)) {
-			parent::execute($task);
-		}
-		else {
-			phpFrame_Application_Error::raise('', 'error', $this->project_permissions->getLastError());
-		}
+	public function get_projects() {
+		// Get request data
+		$orderby = phpFrame_Environment_Request::getVar('orderby', 'c.family');
+		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'ASC');
+		$limit = phpFrame_Environment_Request::getVar('limit', 25);
+		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
+		$search = phpFrame_Environment_Request::getVar('search', '');
+		
+		// Create list filter needed for getProjects()
+		$list_filter = new phpFrame_Database_Listfilter($orderby, $orderdir, $limit, $limitstart, $search);
+		
+		// Get projects using model
+		$projects = $this->getModel('projects')->getProjects($list_filter);
+		
+		// Get view
+		$view = $this->getView('projects', 'list');
+		// Set view data
+		$view->addData('rows', $projects);
+		$view->addData('page_nav', new phpFrame_HTML_Pagination($list_filter));
+		// Display view
+		$view->display();
+	}
+	
+	public function get_projects_detail() {
+		// Get request data
+		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
+		
+		// Get project using model
+		$project = $this->getModel('projects')->getProjectsDetail($projectid);
+		
+		// Get overdue issues
+		//$list_filter = new phpFrame_Database_Listfilter('i.dtstart', 'DESC');
+		//$modelIssues = $this->getModel('issues');
+		//$overdue_issues = $modelIssues->getIssues($list_filter, $projectid, true);
+		//var_dump($overdue_issues); exit;
+		//$this->overdue_issues =& $overdue_issues['rows'];
+			
+		// Get upcoming milestones
+		
+		// Get project updates
+		//$modelActivitylog = $this->getModel('activitylog');
+		//$this->activitylog = $modelActivitylog->getActivityLog($projectid);
+		
+		// Get view
+		$view = $this->getView('projects', 'detail');
+		// Set view data
+		$view->addData('row', $project);
+		// Display view
+		$view->display();
 	}
 	
 	/**
@@ -84,7 +113,7 @@ class projectsController extends phpFrame_Application_ActionController {
 	 * @return void
 	 * @since 	1.0
 	 */
-	function save_project() {
+	public function save_project() {
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
@@ -124,7 +153,7 @@ class projectsController extends phpFrame_Application_ActionController {
 	 * 
 	 * @return void
 	 */
-	function remove_project() {
+	public function remove_project() {
 		// get model
 		$modelProjects = $this->getModel('projects');
 		
@@ -217,6 +246,30 @@ class projectsController extends phpFrame_Application_ActionController {
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&view=admin&projectid='.$projectid);
+	}
+	
+	public function get_issues() {
+		// Get request data
+		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
+		$orderby = phpFrame_Environment_Request::getVar('orderby', 'c.family');
+		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'ASC');
+		$limit = phpFrame_Environment_Request::getVar('limit', 25);
+		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
+		$search = phpFrame_Environment_Request::getVar('search', '');
+		
+		// Create list filter needed for getIssues()
+		$list_filter = new phpFrame_Database_Listfilter($orderby, $orderdir, $limit, $limitstart, $search);
+		
+		// Get issues using model
+		$issues = $this->getModel('issues')->getIssues($list_filter, $projectid);
+		
+		// Get view
+		$view = $this->getView('issues', 'list');
+		// Set view data
+		$view->addData('rows', $issues);
+		$view->addData('page_nav', new phpFrame_HTML_Pagination($list_filter));
+		// Display view
+		$view->display();
 	}
 	
 	function save_issue() {

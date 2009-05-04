@@ -8,9 +8,11 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
+
+//var_dump($data); exit;
 ?>
 
-<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 <div class="new">
 	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_addressbook&view=contacts&layout=form'); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_ADDRESSBOOK_CONTACT_NEW ); ?>">
@@ -44,7 +46,7 @@ function submit_filter(reset) {
 
 <br />
 
-<?php if (is_array($this->rows) && count($this->rows) > 0) : ?>
+<?php if (is_array($data['rows']) && count($data['rows']) > 0) : ?>
 <table class="data_list" width="100%" cellpadding="0" cellspacing="0">
   <thead>
   <tr>
@@ -57,7 +59,7 @@ function submit_filter(reset) {
   </thead>
   <tbody>
   <?php $k = 0; ?>
-  <?php foreach($this->rows as $contact) : ?>
+  <?php foreach($data['rows'] as $contact) : ?>
   <tr class="row<?php echo $k; ?>">
     <td valign="top">
     <a href="index.php?option=com_addressbook&view=contacts&layout=form&id=<?php echo $contact->id; ?>">
@@ -91,7 +93,7 @@ function submit_filter(reset) {
     	<?php if (!empty($contact->cell_phone)) echo $contact->cell_phone.'<br />'; ?>
     </td>
 	<td>
-		<a href="index.php?option=com_intranetoffice&amp;view=contacts&amp;task=export_contact&amp;id=<?php echo $contact->id; ?>">
+		<a href="index.php?component=com_addressbook&action=export_contacts&id=<?php echo $contact->id; ?>">
 		<?php echo _LANG_EXPORT_VCARD; ?>
 		</a>
 	</td>
@@ -112,7 +114,7 @@ function submit_filter(reset) {
 
 <br />
 
-<?php echo $this->pageNav->getListFooter(); ?>
+<?php echo $data['page_nav']->getListFooter(); ?>
 
 <?php else : ?>
 <?php echo phpFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>

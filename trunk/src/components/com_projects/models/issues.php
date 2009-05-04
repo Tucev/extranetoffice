@@ -37,13 +37,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 	 * @param bool $overdue	If set to true it only returns overdue issues
 	 * @return array	An array containing the rows, pageNav and filter lists
 	 */
-	public function getIssues($projectid, $overdue=false) {
-		$filter_order = phpFrame_Environment_Request::getVar('filter_order', 'i.dtstart');
-		$filter_order_Dir = phpFrame_Environment_Request::getVar('filter_order_Dir', 'DESC');
-		$search = phpFrame_Environment_Request::getVar('search', '');
-		$search = strtolower( $search );
-		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
-		$limit = phpFrame_Environment_Request::getVar('limit', 20);
+	public function getIssues(phpFrame_Database_Listfilter $list_filter, $projectid, $overdue=false) {
 		$filter_status = phpFrame_Environment_Request::getVar('filter_status', 'all');
 		$filter_assignees = phpFrame_Environment_Request::getVar('filter_assignees', 'me');
 
@@ -53,7 +47,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		$where[] = "( i.access = '0' OR (".$this->_user->id." IN (SELECT userid FROM #__users_issues WHERE issueid = i.id) ) )";
 
 		if ( $search ) {
-			$where[] = "i.title LIKE '%".$this->_db->getEscaped($search)."%'";
+			$where[] = "i.title LIKE '%".$this->_db->getEscaped($list_filter->getSearchStr())."%'";
 		}
 		
 		if (!empty($projectid)) {
@@ -77,11 +71,6 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		}
 
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
-		if (empty($filter_order) || $filter_order == 'i.dtstart') {
-			$orderby = ' ORDER BY i.dtstart DESC';
-		} else {
-			$orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir.', i.dtstart DESC';
-		}
 
 		// get the total number of records
 		// This query groups the files by parentid so and retireves the latest revision for each file in current project
@@ -95,13 +84,15 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		//echo str_replace('#__', 'eo_', $query); exit;
 		$this->_db->setQuery( $query );
 		$this->_db->query();
-		$total = $this->_db->getNumRows();
 		
-		$pageNav = new phpFrame_HTML_Pagination($total, $limitstart, $limit);
+		// Set total number of record in list filter
+		$list_filter->setTotal($this->_db->getNumRows());
 
-		// get the subset (based on limits) of required records
-		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
+		// Add order by and limit statements for subset (based on filter)
+		//$query .= $list_filter->getOrderByStmt();
+		$query .= $list_filter->getLimitStmt();
 		//echo str_replace('#__', 'eo_', $query); exit;
+		
 		$this->_db->setQuery($query);
 		$rows = $this->_db->loadObjectList();
 		
@@ -128,22 +119,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 			}
 		}
 		
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
-		// search filter
-		$lists['search'] = $search;
-		// status filter
-		$lists['status'] = $filter_status;
-		// assignees filter
-		$lists['assignees'] = $filter_assignees;
-		
-		// pack data into an array to return
-		$return['rows'] = $rows;
-		$return['pageNav'] = $pageNav;
-		$return['lists'] = $lists;
-		
-		return $return;
+		return $rows;
 	}
 	
 	/**

@@ -28,27 +28,15 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		phpFrame_Application_View
  */
 class emailViewMessages extends phpFrame_Application_View {
-	var $page_title=null;
-	var $accountid=null;
-	var $folder=null;
-	
 	/**
 	 * Constructor
 	 * 
 	 * @return 	void
 	 * @since	1.0
 	 */
-	function __construct() {
-		// Set the view template to load (default value is set in controller)
-		$this->layout = phpFrame_Environment_Request::getLayout();
-		
-		// Set reference to account id if passed in request
-		$this->accountid = phpFrame_Environment_Request::getVar('accountid', 0);
-		
-		// Set reference to current mail folder if passed in request
-		$this->folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
-		
-		parent::__construct();
+	function __construct($layout) {
+		// Invoke the parent to set the view name and default layout
+		parent::__construct('messages', $layout);
 	}
 	
 	/**
@@ -123,7 +111,7 @@ class emailViewMessages extends phpFrame_Application_View {
 	 */
 	function displayMessagesDetail($uid=0) {
 		$this->page_title = _LANG_EMAIL_MESSAGE_DETAIL;
-		$this->addPathwayItem($this->page_title);
+		phpFrame::getPathway()->addItem($this->page_title);
 		
 		if (empty($uid)) {
 			$uid = phpFrame_Environment_Request::getVar('uid', 0);
@@ -160,7 +148,7 @@ class emailViewMessages extends phpFrame_Application_View {
 		$model->loadUserEmailAccount();
 		$this->account =& $model->account;
 		
-		$this->addPathwayItem($this->page_title);
+		phpFrame::getPathway()->addItem($this->page_title);
 	}
 }
 ?>

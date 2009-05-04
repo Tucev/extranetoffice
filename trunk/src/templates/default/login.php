@@ -40,7 +40,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 <?php 
 $sys_events_obj = phpFrame::getSysevents();
-$sys_events = $sys_events_obj->__toString();
+$sys_events = $sys_events_obj->asString();
 $sys_events_obj->clear();
 echo $sys_events;
 ?>

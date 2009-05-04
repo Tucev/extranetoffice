@@ -28,19 +28,15 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		phpFrame_Application_View
  */
 class usersViewUsers extends phpFrame_Application_View {
-	var $page_title=null;
-	
 	/**
 	 * Constructor
 	 * 
 	 * @return 	void
 	 * @since	1.0
 	 */
-	function __construct() {
-		// Set the view template to load (default value is set in controller)
-		$this->layout = phpFrame_Environment_Request::getLayout();
-		
-		parent::__construct();
+	function __construct($layout) {
+		// Invoke the parent to set the view name and default layout
+		parent::__construct('users', $layout);
 	}
 	
 	/**
@@ -88,7 +84,7 @@ class usersViewUsers extends phpFrame_Application_View {
 		$this->row = $modelUsers->getUsersDetail($userid);
 		
 		$this->page_title = $this->row->firstname.' '.$this->row->lastname;
-		$this->addPathwayItem($this->row->firstname.' '.$this->row->lastname);
+		phpFrame::getPathway()->addItem($this->row->firstname.' '.$this->row->lastname);
 	}
 }
 ?>

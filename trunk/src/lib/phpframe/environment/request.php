@@ -17,7 +17,10 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * All properties and methods in this class are static. Instantiation is prevented by 
  * the constructor being declared as private.
  * 
- * @todo		This class needs to be rewritten to use php's filter extension
+ * The request class is responsible for detecting the client (default, mobile, cli or xmlrpc)
+ * and processing the incoming request accordingly.
+ * 
+ * @todo		This class needs to be changed to use phpFrame_Utils_Filter instead of phpinputfilter
  * @package		phpFrame
  * @subpackage 	environment
  * @author 		Luis Montero [e-noise.com]
@@ -47,7 +50,7 @@ class phpFrame_Environment_Request {
 	 * @access	private
 	 * @var		string
 	 */
-	private static $_component;
+	private static $_component=null;
 	/**
 	 * A core request variable specifying controller/component functino to execute
 	 * 
@@ -55,7 +58,7 @@ class phpFrame_Environment_Request {
 	 * @access	private
 	 * @var		string
 	 */
-	private static $_action;
+	private static $_action=null;
 	/**
 	 * A core request variable specifying which view to render
 	 * 
@@ -63,7 +66,7 @@ class phpFrame_Environment_Request {
 	 * @access	private
 	 * @var		string
 	 */
-	private static $_view;	
+	private static $_view=null;	
 	/**
 	 * A core request variable specifying which view layout to use
 	 * 
@@ -71,7 +74,7 @@ class phpFrame_Environment_Request {
 	 * @access	private
 	 * @var		string
 	 */
-	private static $_layout;
+	private static $_layout=null;
 	
 	/**
 	 * Instance of PHPInputFilter
@@ -101,9 +104,10 @@ class phpFrame_Environment_Request {
 	private function __construct() {}
 	
 	/**
-	 * Constructor
+	 * Initialise
 	 * 
-	 * Initialise the request, filter input and return the request array.
+	 * Initialise the request. This method detects the client using a client helper
+	 * and populates the request variables accordingly.
 	 * 
 	 * @static
 	 * @access	public
@@ -119,7 +123,7 @@ class phpFrame_Environment_Request {
 		
 		self::$_inputfilter = new InputFilter();
 		
-		self::detect();
+		self::detectClient();
 		self::$_URA = self::$_client_helper->populateURA();
 		
 		//TODO stop ignoring $_SESSION and $_COOKIES
@@ -133,7 +137,6 @@ class phpFrame_Environment_Request {
 		/*
 		foreach (self::$_core_variables as $key) {
 			$core_variable_name = '_'.$key;
-			//self::$$core_variable_name = self::$_URA['request'][$key];
 			self::$$core_variable_name = self::$_URA['request'][$key];
 			unset(self::$_URA['request'][$key]);
 		}
@@ -154,13 +157,13 @@ class phpFrame_Environment_Request {
 	 * Detect and set helper object 
 	 * 
 	 */
-	private static function detect() {
+	private static function detectClient() {
 		
 		//scan through environment dir to find files
 		$files = scandir(_ABS_PATH.DS."lib".DS."phpframe".DS."environment");
 		
 		//make sure the clientdefault is the last file in array as catch-all helper
-		$default = array_search('clientdefault.php',$files);	//if it's there
+		$default = array_search('clientdefault.php', $files);	//if it's there
 		if ($default != false) {
 			unset($files[$default]);							//unset it
 			$files[] = 'clientdefault.php';						//add to end
@@ -169,13 +172,13 @@ class phpFrame_Environment_Request {
 		//loop through files 
 		foreach ($files as $file) {
 			//filter client helper files
-			preg_match('/^client([a-zA-Z]+).php$/',$file,$matches);
+			preg_match('/^client([a-zA-Z]+).php$/',$file, $matches);
 			if (is_array($matches) && count($matches) > 1) {
 				//build class names
 				$className = 'phpFrame_Environment_Client'.ucfirst($matches[1]);
-				if (is_callable(array($className,'detect'))) {
+				if (is_callable(array($className, 'detect'))) {
 					//call class's detect() to check if this is the helper we need 
-					self::$_client_helper = call_user_func(array($className,'detect'));
+					self::$_client_helper = call_user_func(array($className, 'detect'));
 					if (self::$_client_helper instanceof phpFrame_Environment_IClient) {
 						//break out of the function if we found our helper
 						return;
@@ -188,11 +191,35 @@ class phpFrame_Environment_Request {
 	}
 	
 	/**
+	 * Get client object
+	 * 
+	 * @return	object of type phpFrame_Environment_IClient
+	 */
+	public static function getClient() {
+		return self::$_client_helper;
+	}
+	
+
+	/**	
+	 * Get $_client_helper->getName();
+	 * 
+	 * @static
+	 * @access	public
+	 * @return	client helper name
+	 */
+	public static function getClientName() {
+		//initialise if  $_client_helper is null 
+		if (self::$_client_helper == null) self::init();
+		//return $_client_helper->getName();
+		return self::$_client_helper->getName();
+	}
+	
+	/**
 	 * Get request/post array from URA
 	 * 
 	 * @return	array
 	 */
-	function getPost() {
+	public static function getPost() {
 		return self::$_URA['request'];
 	}
 	
@@ -271,10 +298,6 @@ class phpFrame_Environment_Request {
 	 * @return	action
 	 */
 	public static function getAction() {
-		// If action has not been set we return the default value
-		if (empty(self::$_action)) {
-			self::$_action = 'display';
-		}
 		return self::$_action;
 	}
 	
@@ -288,11 +311,7 @@ class phpFrame_Environment_Request {
 	 */
 	public static function setAction($value) {
 		// Filter value before assigning to variable
-		$value = self::$_inputfilter->process($value);
-		
-		self::$_action = $value;
-		
-		return $value;
+		return self::$_action = self::$_inputfilter->process($value);
 	}
 	
 	/**
@@ -357,20 +376,6 @@ class phpFrame_Environment_Request {
 		self::$_layout = $value;
 		
 		return $value;
-	}
-	
-	/**	
-	 * Get $_client_helper->getName();
-	 * 
-	 * @static
-	 * @access	public
-	 * @return	client helper name
-	 */
-	public static function getClientName() {
-		//initialise if  $_client_helper is null 
-		if (self::$_client_helper == null) self::init();
-		//return $_client_helper->getName();
-		return self::$_client_helper->getName();
 	}
 	
 	/**

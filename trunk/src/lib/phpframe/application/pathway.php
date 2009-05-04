@@ -55,7 +55,7 @@ class phpFrame_Application_Pathway extends phpFrame_Base_Singleton {
 	 * @return 	void
 	 * @since	1.0
 	 */
-	function addItem($title, $url) {
+	function addItem($title, $url='') {
 		$item = new phpFrame_Base_StdObject();
 		$item->set('title', $title);
 		$item->set('url', $url);

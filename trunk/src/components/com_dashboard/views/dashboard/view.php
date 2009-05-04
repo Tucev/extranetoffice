@@ -28,16 +28,15 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		phpFrame_Application_View
  */
 class dashboardViewDashboard extends phpFrame_Application_View {
-	var $page_title=null;
-	
 	/**
 	 * Constructor
 	 * 
 	 * @return 	void
 	 * @since	1.0
 	 */
-	function __construct() {
-		parent::__construct();
+	function __construct($layout) {
+		// Invoke the parent to set the view name and default layout
+		parent::__construct('dashboard', $layout);
 	}
 	
 	/**
@@ -50,42 +49,7 @@ class dashboardViewDashboard extends phpFrame_Application_View {
 	 * @since	1.0
 	 */
 	function display() {
-		$this->page_title = _LANG_DASHBOARD;
-		
-		// Get user's projects
-		$modelProjects = phpFrame_Base_Singleton::getInstance('projectsModelProjects');
-		$projects = $modelProjects->getProjects($this->_user->id);
-		// Get project updates, overdue items and upcoming milestones
-		if (is_array($projects['rows']) && count($projects['rows']) > 0) {
-			foreach ($projects['rows'] as $row) {
-				// Get project updates
-				$modelActivitylog =& phpFrame_Base_Singleton::getInstance('projectsModelActivitylog');
-				$row->activitylog = $modelActivitylog->getActivityLog($row->id);
-				
-				// Get overdue issues
-				$modelIssues =& phpFrame_Base_Singleton::getInstance('projectsModelIssues');
-				$row->overdue_issues = $modelIssues->getTotalIssues($row->id, true);
-			}
-		}
-		
-		$this->projects =& $projects['rows'];
-		
-		// Get recent e-mails
-		$this->emails = array();
-		//if ($this->iOfficeConfig->get('enable_email_client') && $this->settings->enable_email_client) {
-			// Limit the number of entries to 5
-			/* Temporarily commented out.
-			phpFrame_Environment_Request::setVar('per_page', 5);
-			require_once _ABS_PATH.DS.'components'.DS.'com_email'.DS.'models'.DS.'email.php';
-			$modelEmail =& phpFrame_Base_Singleton::getInstance('emailModelEmail');
-			$modelEmail->loadUserEmailAccount();
-			$modelEmail->openStream('INBOX');
-			$emails = $modelEmail->getMessageList();
-			$modelEmail->closeStream();
-			
-			$this->emails =& $emails['res'];
-			*/
-		//}
+		$this->_data['page_title'] = _LANG_DASHBOARD;
 		
 		parent::display();
 	}

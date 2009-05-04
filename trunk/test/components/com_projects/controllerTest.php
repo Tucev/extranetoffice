@@ -46,7 +46,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	phpFrame_Environment_Request::setVar(phpFrame_Utils_Crypt::getToken(), '1');
     	
     	$frontcontroller = phpFrame::getFrontController();
-		$frontcontroller->exec();
+		$frontcontroller->run();
     	    	
     	$controller = phpFrame::getController('com_projects');
     	$this->assertTrue($controller->getSuccess());
@@ -64,7 +64,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	phpFrame_Environment_Request::setVar('projectid', $projectid);
     	
     	$frontcontroller = phpFrame::getFrontController();
-    	$frontcontroller->exec();
+    	$frontcontroller->run();
     	
     	$controller = phpFrame::getController('com_projects');
     	$this->assertTrue($controller->getSuccess());
@@ -83,7 +83,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	phpFrame_Environment_Request::setVar(phpFrame_Utils_Crypt::getToken(), '1');
     	
     	$frontcontroller = phpFrame::getFrontController();
-    	$frontcontroller->exec();
+    	$frontcontroller->run();
     	
     	$controller = phpFrame::getController('com_projects');
     	$this->assertTrue($controller->getSuccess());
@@ -108,7 +108,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	phpFrame_Environment_Request::setVar(phpFrame_Utils_Crypt::getToken(), '1');
     	
     	$frontcontroller = phpFrame::getFrontController();
-    	$frontcontroller->exec();
+    	$frontcontroller->run();
     	
     	$controller = phpFrame::getController('com_projects');
     	$this->assertTrue($controller->getSuccess());
@@ -135,7 +135,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	phpFrame_Environment_Request::setVar('userid', $userid);
     	
     	$frontcontroller = phpFrame::getFrontController();
-    	$frontcontroller->exec();
+    	$frontcontroller->run();
     	
     	$controller = phpFrame::getController('com_projects');
     	$this->assertTrue($controller->getSuccess());
@@ -149,7 +149,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	phpFrame_Environment_Request::setVar('roleid', '3');
     	
     	$frontcontroller = phpFrame::getFrontController();
-    	$frontcontroller->exec();
+    	$frontcontroller->run();
     	
     	$controller = phpFrame::getController('com_projects');
     	$this->assertTrue($controller->getSuccess());
@@ -166,7 +166,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	phpFrame_Environment_Request::setVar(phpFrame_Utils_Crypt::getToken(), '1');
     	
     	$frontcontroller = phpFrame::getFrontController();
-    	$frontcontroller->exec();
+    	$frontcontroller->run();
     	
     	$controller = phpFrame::getController('com_projects');
     	$this->assertTrue($controller->getSuccess());

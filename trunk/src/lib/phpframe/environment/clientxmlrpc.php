@@ -77,6 +77,12 @@ exit;
 		return "xmlrpc";
 	}
 	
+	public function preActionHook() {}
+	
+	public function renderView($data) {}
+	
+	public function renderTemplate(&$str) {}
+	
 	/**
      * This method is used to parse an XML remote procedure call
      *
@@ -123,5 +129,3 @@ exit;
         return $array;
     }
 }
-
-?>

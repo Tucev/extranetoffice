@@ -116,4 +116,3 @@ class phpFrame_Application_Modules extends phpFrame_Database_Table {
 		}
 	}
 }
-?>

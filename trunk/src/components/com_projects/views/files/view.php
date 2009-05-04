@@ -28,32 +28,15 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		phpFrame_Application_View
  */
 class projectsViewFiles extends phpFrame_Application_View {
-	var $page_title=null;
-	var $projectid=null;
-	var $project=null;
-	
 	/**
 	 * Constructor
 	 * 
 	 * @return 	void
 	 * @since	1.0
 	 */
-	function __construct() {
-		// Set the view template to load (default value is set in controller)
-		$this->layout = phpFrame_Environment_Request::getLayout();
-		
-		// Set reference to projectid
-		$this->projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		
-		// Set reference to project object loaded in controller
-		if (!empty($this->projectid)) {
-			$controller =& phpFrame_Base_Singleton::getInstance('projectsController');
-			$this->project =& $controller->project;
-		}
-		
-		$this->current_tool = _LANG_FILES;
-		
-		parent::__construct();
+	function __construct($layout) {
+		// Invoke the parent to set the view name and default layout
+		parent::__construct('files', $layout);
 	}
 	
 	/**
@@ -87,7 +70,7 @@ class projectsViewFiles extends phpFrame_Application_View {
 		$this->pageNav =& $files['pageNav'];
 		$this->lists =& $files['lists'];
 		
-		$this->addPathwayItem($this->page_title);
+		phpFrame::getPathway()->addItem($this->page_title);
 	}
 	
 	function displayFilesForm() {
@@ -97,8 +80,8 @@ class projectsViewFiles extends phpFrame_Application_View {
 		$this->row = $modelFiles->getFilesDetail($this->projectid, $parentid);
 		
 		$this->page_title .= ' - '._LANG_FILES_NEW;
-		$this->addPathwayItem($this->current_tool, phpFrame_Application_Route::_("index.php?component=com_projects&view=files&projectid=".$this->projectid));
-		$this->addPathwayItem(_LANG_FILES_NEW);
+		phpFrame::getPathway()->addItem($this->current_tool, phpFrame_Application_Route::_("index.php?component=com_projects&view=files&projectid=".$this->projectid));
+		phpFrame::getPathway()->addItem(_LANG_FILES_NEW);
 	}
 	
 	function displayFilesDetail() {
@@ -108,8 +91,8 @@ class projectsViewFiles extends phpFrame_Application_View {
 		$this->row = $modelFiles->getFilesDetail($this->projectid, $fileid);
 		
 		$this->page_title .= ' - '.$this->row->title;
-		$this->addPathwayItem($this->current_tool, phpFrame_Application_Route::_("index.php?component=com_projects&view=files&projectid=".$this->projectid));
-		$this->addPathwayItem($this->row->title);
+		phpFrame::getPathway()->addItem($this->current_tool, phpFrame_Application_Route::_("index.php?component=com_projects&view=files&projectid=".$this->projectid));
+		phpFrame::getPathway()->addItem($this->row->title);
 	}
 	
 }

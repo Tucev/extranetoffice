@@ -15,7 +15,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * This class is used to implement the MVC (Model/View/Controller) architecture 
  * in the components.
  * 
- * Views are used to renders the output of a component into a form suitable for 
+ * Views are used to render the output of a component into a form suitable for 
  * interaction, typically a user interface element. Multiple views can exist for 
  * a single component for different purposes.
  * 
@@ -24,57 +24,32 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * developing components. See the built in components (dashboard, user, admin, ...) 
  * for examples.
  * 
- * This class extends the phpFrame_Base_Singleton class, and it is therefore instantiated using 
- * the getInstance() method inherited from phpFrame_Base_Singleton.
- * 
- * To make sure that the child view is instantiated using the correct run time
- * class name we pass the class name when invoking the getInstance() method.
- * 
- * For example:
- * <code>
- * class myView extends phpFrame_Application_View {
- * 		function doSomething() {
- * 			return 'something';
- * 		}
- * }
- * 
- * $myView =& phpFrame_Base_Singleton::getInstance('myView');
- * echo $myView->doSomething();
- * </code>
- * This will echo 'something'.
- * 
+ * @abstract
  * @package		phpFrame
  * @subpackage 	application
  * @author 		Luis Montero [e-noise.com]
+ * @see			phpFrame_Application_ActionController, phpFrame_Application_Model 
  * @since 		1.0
- * @see			phpFrame_Application_ActionController, phpFrame_Application_Model
- * @abstract 
  */
-abstract class phpFrame_Application_View extends phpFrame_Base_Singleton {
+abstract class phpFrame_Application_View {
 	/**
 	 * The view name
 	 * 
 	 * @var string
 	 */
-	var $view=null;
-	/**
-	 * A reference to the user object
-	 * 
-	 * @var object
-	 */
-	var $user=null;
-	/**
-	 * The template prefix. Default value is "default", other possible values: "mobile", "xml".
-	 * 
-	 * @var string
-	 */
-	var $tmpl='default';
+	protected $_name=null;
 	/**
 	 * The layout to load. Typical values: "list", "detail", "form", ...
 	 * 
 	 * @var string
 	 */
-	var $layout=null;
+	protected $_layout=null;
+	/**
+	 * Data array for view
+	 * 
+	 * @var	array
+	 */
+	protected $_data=array();
     
 	/**
 	 * Constructor
@@ -82,12 +57,20 @@ abstract class phpFrame_Application_View extends phpFrame_Base_Singleton {
 	 * @since	1.0
 	 * @return	void
 	 */
-	function __construct() {
-		// set view name in view object
-    	$this->view = phpFrame_Environment_Request::getViewName();
-    	
-    	// Assign references to user object for quick access in tmpl
-		$this->_user = phpFrame::getUser();
+	public function __construct($name, $layout) {
+		$this->_name = (string) $name;
+		$this->_layout = (string) $layout;
+	}
+	
+	/**
+	 * Add a variable to data array
+	 * 
+	 * @param	string	$key
+	 * @param	string	$value
+	 * @return	void
+	 */
+	public function addData($key, $value) {
+		$this->_data[$key] = $value;
 	}
 	
     /**
@@ -106,78 +89,35 @@ abstract class phpFrame_Application_View extends phpFrame_Base_Singleton {
      *
      * @since	1.0
      */
-    function display() {
-		// If there is a layout specific method we trigger it before including the tmpl file.
-    	$layout_array = explode('_', $this->layout);
+    public function display() {
+		// If there is a layout specific method we trigger it before rendering
+    	$layout_array = explode('_', $this->_layout);
     	$layout = '';
     	for ($i=0; $i<count($layout_array); $i++) {
     		$layout .= ucfirst($layout_array[$i]);
     	}
-		$tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getViewName()).ucfirst($layout);
+		$tmpl_specific_method = "display".ucfirst($this->_name).ucfirst($layout);
 		if (method_exists($this, $tmpl_specific_method)) {
 			// Invoke layout specific display method
 			$this->$tmpl_specific_method();
 		}
 		
-    	if (!empty($this->view)) {
-    		$this->loadTemplate();
-    	}
+		// Render view depending on client
+		$this->_render();
     }
     
     /**
-     * This method loads a given view template.
+     * This method renders the view using the request's client
      *
-     * @param	string $layout The name of the view template (ie: "list" will load default_list.php)
      * @since	1.0
      */
-    function loadTemplate() {
-    	if (!empty($this->tmpl)) {
-    		$tmpl_path = COMPONENT_PATH.DS."views".DS.$this->view.DS."tmpl".DS.$this->tmpl;
-    		if (!empty($this->layout)) {
-    			$tmpl_path .= "_".$this->layout;
-    		}
-    		$tmpl_path .= ".php";
-    		
-    		if (is_file($tmpl_path)) {
-    			require_once $tmpl_path;
-    			return true;
-    		}
-    		else {
-    			phpFrame_Application_Error::raise(500, "error", "Layout template file ".$tmpl_path." not found.");
-    			return false;
-    		}
-    	}
+    protected function _render() {
+    	// Add view name and template name to data array
+    	$this->_data['view'] = $this->_name;
+    	$this->_data['layout'] = $this->_layout;
+    	
+    	// Delegate rendering to request's client object
+    	$client = phpFrame_Environment_Request::getClient();
+    	$client->renderView($this->_data);
     }
-    
-	/**
-	 * Gets a named model within the component.
-	 *
-	 * @param	string $name The model name. If empty the view name is used as default.
-	 * @return	object
-	 * @since	1.0
-	 */
-	public function getModel($name='') {
-		if (empty($name)) {
-			$name = $this->view;
-		}
-		
-		$model_class_name = substr(phpFrame_Environment_Request::getComponentName(), 4).'Model'.ucfirst($name);
-		$model =& phpFrame_Base_Singleton::getInstance($model_class_name);
-		return $model;
-	}
-	
-	/**
-	 * Add item to pathway
-	 * 
-	 * @param	string	$title
-	 * @param	string	$url
-	 * @return	void
-	 * @since	1.0
-	 */
-	function addPathwayItem($title, $url='') {
-		$pathway = phpFrame::getPathway();
-		// add item
-		$pathway->addItem($title, $url);
-	}
 }
-?>

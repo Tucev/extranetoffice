@@ -42,18 +42,14 @@ class phpFrame_Application_Sysevents extends phpFrame_Base_Singleton {
 	protected function __construct() {
 		// Restore sys_events from session
 		$session = phpFrame::getSession();
-		if (!$session->id) {
-			throw new phpFrame_Exception("Could not restore system events from session.");
+		$sys_events = $session->getVar('sys_events', array());
+		
+		if (is_array($sys_events) && array_key_exists('summary', $sys_events)) {
+			$this->_summary = $sys_events['summary'];
 		}
-		else {
-			$array = $session->getVar('sys_events', array());
-			if (is_array($array) && array_key_exists('summary', $array)) {
-				$this->_summary = $array['summary'];
-			}
 			
-			if (is_array($array) && array_key_exists('events_log', $array)) {
-				$this->_events_log = $array['events_log'];
-			}
+		if (is_array($sys_events) && array_key_exists('events_log', $sys_events)) {
+			$this->_events_log = $sys_events['events_log'];
 		}
 	}
 	
@@ -103,7 +99,7 @@ class phpFrame_Application_Sysevents extends phpFrame_Base_Singleton {
 	 * @return	string
 	 * @since 	1.0
 	 */
-	public function __toString() {
+	public function asString() {
 		$str = "";
 		if (count($this->_summary) > 0) {
 			$str .= ucfirst($this->_summary[0]).": ".$this->_summary[1];
@@ -146,11 +142,6 @@ class phpFrame_Application_Sysevents extends phpFrame_Base_Singleton {
 	private function _storeInSession() {
 		// Store sys_events in session
 		$session = phpFrame::getSession();
-		if (!$session->id) {
-			throw new phpFrame_Exception("Could not store system message in session.");
-		}
-		else {
-			$session->setVar('sys_events', $this->asArray());
-		}
+		$session->setVar('sys_events', $this->asArray());
 	} 
 }

@@ -89,6 +89,10 @@ class phpFrame_Environment_ClientMobile implements phpFrame_Environment_IClient 
 	public function getName() {
 		return "mobile";
 	}
+	
+	public function preActionHook() {}
+	
+	public function renderView($data) {}
+	
+	public function renderTemplate(&$str) {}
 }
-
-?>

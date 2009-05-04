@@ -28,34 +28,15 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		phpFrame_Application_View
  */
 class projectsViewAdmin extends phpFrame_Application_View {
-	var $page_title=null;
-	var $projectid=null;
-	var $project=null;
-	var $tools=null;
-	
 	/**
 	 * Constructor
 	 * 
 	 * @return 	void
 	 * @since	1.0
 	 */
-	function __construct() {
-		// Set the view template to load (default value is set in controller)
-		$this->layout = phpFrame_Environment_Request::getLayout();
-		
-		// Set reference to projectid
-		$this->projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		
-		if (!empty($this->projectid)) {
-			// get project data from controller
-			$controller =& phpFrame_Base_Singleton::getInstance('projectsController');
-			$this->project =& $controller->project;
-			$this->project_permissions =& $controller->project_permissions;
-		}
-		
-		$this->current_tool = _LANG_ADMIN;
-		
-		parent::__construct();
+	function __construct($layout) {
+		// Invoke the parent to set the view name and default layout
+		parent::__construct('admin', $layout);
 	}
 	
 	/**
@@ -83,7 +64,7 @@ class projectsViewAdmin extends phpFrame_Application_View {
 	function displayAdminList() {
 		$this->page_title = _LANG_ADMIN;
 		$this->page_heading = $this->project->name.' - '._LANG_ADMIN;
-		$this->addPathwayItem(_LANG_ADMIN);
+		phpFrame::getPathway()->addItem(_LANG_ADMIN);
 		
 		// Push model into the view
 		$model = $this->getModel('members');
@@ -117,7 +98,7 @@ class projectsViewAdmin extends phpFrame_Application_View {
 			$this->project->access_admin = '1';
 		}
 		
-		$this->addPathwayItem($this->page_title);
+		phpFrame::getPathway()->addItem($this->page_title);
 	}
 	
 	/**
@@ -125,7 +106,7 @@ class projectsViewAdmin extends phpFrame_Application_View {
 	 */
 	function displayAdminMemberRole() {
 		$this->page_title = projectsHelperProjects::id2name($this->projectid).' - '. _LANG_ADMIN;
-		$this->addPathwayItem(_LANG_PROJECTS_MEMBERS);
+		phpFrame::getPathway()->addItem(_LANG_PROJECTS_MEMBERS);
 		
 		$this->_userid = phpFrame_Environment_Request::getVar('userid', 0);
 		
@@ -145,8 +126,8 @@ class projectsViewAdmin extends phpFrame_Application_View {
 	function displayAdminMemberForm() {
 		$this->page_title = _LANG_ADMIN.' - '._LANG_PROJECTS_ADD_MEMBER;
 		$this->page_heading = $this->project->name.' - '._LANG_ADMIN;
-		$this->addPathwayItem(_LANG_ADMIN, 'index.php?component=com_projects&view=admin&projectid='.$this->projectid);
-		$this->addPathwayItem(_LANG_PROJECTS_ADD_MEMBER);
+		phpFrame::getPathway()->addItem(_LANG_ADMIN, 'index.php?component=com_projects&view=admin&projectid='.$this->projectid);
+		phpFrame::getPathway()->addItem(_LANG_PROJECTS_ADD_MEMBER);
 	}
 }
 ?>

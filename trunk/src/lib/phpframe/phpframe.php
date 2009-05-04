@@ -47,6 +47,10 @@ class phpFrame {
 		return phpFrame_Base_Singleton::getInstance('phpFrame_Application_FrontController');
 	}
 	
+	public static function getResponse() {
+		return phpFrame_Base_Singleton::getInstance('phpFrame_Environment_Response');
+	}
+	
 	/**
 	 * Get permissions object
 	 * 
@@ -58,24 +62,28 @@ class phpFrame {
 	}
 	
 	/**
-	 * Get pathway object
+	 * Get component action controller object for given option
 	 * 
+	 * @param	string	$component_name
 	 * @return	object
 	 * @since 	1.0
 	 */
-	public static function getPathway() {
-		return phpFrame_Base_Singleton::getInstance('phpFrame_Application_Pathway');
+	public static function getActionController($component_name) {
+		$class_name = substr($component_name, 4)."Controller";
+		return phpFrame_Base_Singleton::getInstance($class_name);
 	}
 	
 	/**
-	 * Get component controller object for given option
+	 * Get model
 	 * 
-	 * @param	string	$option
+	 * @param	$component_name
+	 * @param	$model_name
 	 * @return	object
 	 * @since 	1.0
 	 */
-	public static function getController($component_name) {
-		$class_name = substr($component_name, 4)."Controller";
+	public static function getModel($component_name, $model_name) {
+		$class_name = substr($component_name, 4)."Model";
+		$class_name .= ucfirst($model_name);
 		return phpFrame_Base_Singleton::getInstance($class_name);
 	}
 	
@@ -90,6 +98,10 @@ class phpFrame {
 	public static function getTable($component_name, $table_name) {
 		$class_name = substr($component_name, 4)."Table".ucfirst($table_name);
 		return phpFrame_Base_Singleton::getInstance($class_name);
+	}
+	
+	public static function getModules() {
+		return phpFrame_Base_Singleton::getInstance('phpFrame_Application_Modules');
 	}
 	
 	/**
@@ -151,6 +163,16 @@ class phpFrame {
 	 */
 	public static function getURI($uri='') {
 		return new phpFrame_Utils_URI($uri);
+	}
+	
+	/**
+	 * Get pathway object
+	 * 
+	 * @return	object
+	 * @since 	1.0
+	 */
+	public static function getPathway() {
+		return phpFrame_Base_Singleton::getInstance('phpFrame_Application_Pathway');
 	}
 }
 ?>

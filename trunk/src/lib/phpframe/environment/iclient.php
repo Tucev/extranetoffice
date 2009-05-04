@@ -45,6 +45,29 @@ interface phpFrame_Environment_IClient {
 	 * @return	string name to identify helper type
 	 */
 	public function getName();
+	
+	/**
+	 * Pre action hook
+	 * 
+	 * This method is invoked by the front controller before invoking the requested
+	 * action in the action controller. It gives the client an opportunity to do 
+	 * something before the component is executed.
+	 * 
+	 * @return	void
+	 */
+	public function preActionHook();
+	
+	/**
+	 * Render output
+	 * 
+	 * This method is invoked by the views and renders the ouput data in the format specified
+	 * by the client.
+	 * 
+	 * @param	array	$data	An array containing the output data
+	 * @return	void
+	 */
+	public function renderView($data);
+	
+	public function renderTemplate(&$str);
 }
 
-?>

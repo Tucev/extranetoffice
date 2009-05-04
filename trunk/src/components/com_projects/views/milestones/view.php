@@ -28,32 +28,15 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		phpFrame_Application_View
  */
 class projectsViewMilestones extends phpFrame_Application_View {
-	var $page_title=null;
-	var $projectid=null;
-	
 	/**
 	 * Constructor
 	 * 
 	 * @return 	void
 	 * @since	1.0
 	 */
-	function __construct() {
-		// Set the view template to load (default value is set in controller)
-		$this->layout = phpFrame_Environment_Request::getLayout();
-		
-		// Set reference to projectid
-		$this->projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		$this->milestoneid = phpFrame_Environment_Request::getVar('milestoneid', 0);
-		
-		// Set reference to project object loaded in controller
-		if (!empty($this->projectid)) {
-			$controller =& phpFrame_Base_Singleton::getInstance('projectsController');
-			$this->project =& $controller->project;
-		}
-		
-		$this->current_tool = _LANG_MILESTONES;
-		
-		parent::__construct();
+	function __construct($layout) {
+		// Invoke the parent to set the view name and default layout
+		parent::__construct('milestones', $layout);
 	}
 	
 	/**
@@ -87,7 +70,7 @@ class projectsViewMilestones extends phpFrame_Application_View {
 		$this->pageNav =& $milestones['pageNav'];
 		$this->lists =& $milestones['lists'];
 		
-		$this->addPathwayItem($this->page_title);
+		phpFrame::getPathway()->addItem($this->page_title);
 	}
 	
 	function displayMilestonesDetail() {
@@ -95,8 +78,8 @@ class projectsViewMilestones extends phpFrame_Application_View {
 		$this->row = $modelMilestones->getMilestonesDetail($this->projectid, $this->milestoneid);
 		
 		$this->page_title .= ' - '.$this->row->title;
-		$this->addPathwayItem($this->current_tool, "index.php?component=com_projects&view=milestones&projectid=".$this->projectid);
-		$this->addPathwayItem($this->row->title);
+		phpFrame::getPathway()->addItem($this->current_tool, "index.php?component=com_projects&view=milestones&projectid=".$this->projectid);
+		phpFrame::getPathway()->addItem($this->row->title);
 	}
 	
 	function displayMilestonesForm() {
@@ -111,8 +94,8 @@ class projectsViewMilestones extends phpFrame_Application_View {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->addPathwayItem($this->current_tool, "index.php?component=com_projects&view=milestones&projectid=".$this->projectid);
-		$this->addPathwayItem($action);
+		phpFrame::getPathway()->addItem($this->current_tool, "index.php?component=com_projects&view=milestones&projectid=".$this->projectid);
+		phpFrame::getPathway()->addItem($action);
 	}
 }
 ?>
