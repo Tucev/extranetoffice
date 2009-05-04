@@ -45,9 +45,7 @@ class loginModelLogin extends phpFrame_Application_Model {
 			if ($crypt == $testcrypt) {
 				// Store user data in session
 				$session = phpFrame::getSession();
-				$session->userid = $user->id;
-				$session->groupid = $user->groupid;
-				$session->write();
+				$session->setUser($user);
 				return true;
 			} else {
 				// Wrong password

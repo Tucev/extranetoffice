@@ -28,13 +28,14 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		phpFrame_Application_View
  */
 class addressbookViewContacts extends phpFrame_Application_View {
-	var $page_title=null;
-	
-	function __construct() {
-		// Set the view template to load
-		$this->layout = phpFrame_Environment_Request::getLayout('list');
-		
-		parent::__construct();
+	/**
+	 * Constructor
+	 * 
+	 * @return void
+	 */
+	function __construct($layout) {
+		// Invoke the parent to set the view name and default layout
+		parent::__construct('contacts', $layout);
 	}
 	
 	/**
@@ -51,37 +52,18 @@ class addressbookViewContacts extends phpFrame_Application_View {
 		// Append page title to document title
 		if (phpFrame_Environment_Request::getLayout() != 'list') {
 			$document = phpFrame::getDocument('html');
-			$document->title .= ' - '.$this->page_title;
+			$document->title .= ' - '.$this->_data['page_title'];
 		}
 	}
 	
 	function displayContactsList() {
-		$this->page_title = _LANG_ADDRESSBOOK;
-		
-		// Get request vars
-		$search = phpFrame_Environment_Request::getVar('search', '');
-		
-		// Push model into the view
-		$model = $this->getModel('contacts');
-		
-		// Get invoices and store data in view
-		$contacts = $model->getContacts($search);
-		$this->rows =& $contacts['rows'];
-		$this->pageNav =& $contacts['pageNav'];
-	}
-	
-	function displayContactsDetail() {
-		$modelMessages = $this->getModel('messages');
-		$this->row = $modelMessages->getMessagesDetail($this->projectid, $this->messageid);
-		
-		$this->page_title .= ' - '.$this->row->subject;
-		$this->addPathwayItem($this->current_tool, "index.php?component=com_projects&view=messages&projectid=".$this->projectid);
-		$this->addPathwayItem($this->row->subject);
+		$this->_data['page_title'] = _LANG_ADDRESSBOOK;
 	}
 	
 	function displayContactsForm() {
-		$this->page_title = _LANG_ADDRESSBOOK_CONTACT_NEW;
-		$this->addPathwayItem(_LANG_ADDRESSBOOK_CONTACT_NEW);
+		$this->_data['page_title'] = _LANG_ADDRESSBOOK_CONTACT_NEW;
+		// Add items to pathway object
+		phpFrame::getPathway()->addItem(_LANG_ADDRESSBOOK_CONTACT_NEW);
 	}
 }
 ?>

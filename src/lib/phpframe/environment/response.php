@@ -17,11 +17,19 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class phpFrame_Environment_Response {
+class phpFrame_Environment_Response extends phpFrame_Base_Singleton {
+	private $_header=null;
+	private $_body=null;
 	
-	function setHeader() {
-		
+	function setHeader($str) {
+		$this->_header = $str;
 	}
 	
+	function setBody($str) {
+		$this->_body = $str;
+	}
+	
+	function send() {
+		echo $this->_body;
+	}
 }
-?>

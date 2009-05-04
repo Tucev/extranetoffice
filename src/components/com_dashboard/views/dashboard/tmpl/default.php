@@ -16,12 +16,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	</a>
 </div>
 
-<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 <div id="right_col">
 	
 	<div style="float:right;">
-		 <img style="float:right; margin: 5px 0 3px 3px;" src="<?php echo config::UPLOAD_DIR."/users/".$this->_user->photo; ?>" />
+		 <img style="float:right; margin: 5px 0 3px 3px;" src="<?php echo config::UPLOAD_DIR."/users/".phpFrame::getUser()->photo; ?>" />
 	</div>
 	
 	<h3>My profile</h3>
@@ -29,9 +29,9 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	<?php //var_dump($this->_user); ?>
 	
 	<p style="font-size: 0.8em;">
-	Name: <br /> <?php echo $this->_user->name; ?> <br />
-	Username: <br /> <?php echo $this->_user->username; ?> <br />
-	Email: <br /> <?php echo $this->_user->email; ?>
+	Name: <br /> <?php echo phpFrame::getUser()->name; ?> <br />
+	Username: <br /> <?php echo phpFrame::getUser()->username; ?> <br />
+	Email: <br /> <?php echo phpFrame::getUser()->email; ?>
 	</p>
 	
 	<div style="clear:right;"></div>
@@ -42,7 +42,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	
 	<div class="ioffice_module">
 	
-	<?php if ($this->_user->groupid == 1) : ?>
+	<?php if (phpFrame::getUser()->groupid == 1) : ?>
 	<div style="float:right;" class="new">
 		 <a style="float:right;" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=admin&layout=form"); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>
@@ -52,8 +52,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	
 	<h3><?php echo _LANG_DASHBOARD_MY_PROJECTS;  ?></h3>
 	<ul>
-		<?php if (is_array($this->projects) && count($this->projects) > 0) : ?>
-		<?php foreach ($this->projects as $project) : ?>
+		<?php if (is_array($data['projects']) && count($data['projects']) > 0) : ?>
+		<?php foreach ($data['projects'] as $project) : ?>
 		<li>
 			<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=projects&layout=detail&projectid=".$project->id); ?>">
 				<?php echo $project->name; ?>
@@ -139,8 +139,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <div class="main_col_module">
 	<h3 class="project_updates"><?php echo _LANG_PROJECTS_UPDATES; ?></h3>
 	
-	<?php if (is_array($this->projects) && count($this->projects) > 0) : ?>
-	<?php foreach ($this->projects as $project) : ?>
+	<?php if (is_array($data['projects']) && count($data['projects']) > 0) : ?>
+	<?php foreach ($data['projects'] as $project) : ?>
 	
 	<?php if (is_array($project->activitylog) && count($project->activitylog) > 0) : ?>
 	<h4>

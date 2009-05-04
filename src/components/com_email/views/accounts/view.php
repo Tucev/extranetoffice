@@ -36,11 +36,9 @@ class emailViewAccounts extends phpFrame_Application_View {
 	 * @return 	void
 	 * @since	1.0
 	 */
-	function __construct() {
-		// Set the view template to load (default value is set in controller)
-		$this->layout = phpFrame_Environment_Request::getLayout();
-		
-		parent::__construct();
+	function __construct($layout) {
+		// Invoke the parent to set the view name and default layout
+		parent::__construct('accounts', $layout);
 	}
 	
 	/**
@@ -71,7 +69,7 @@ class emailViewAccounts extends phpFrame_Application_View {
 		$this->rows = $modelAccounts->getAccounts($this->_user->id);
 		
 		$this->page_title = _LANG_EMAIL_ACCOUNTS;
-		$this->addPathwayItem(_LANG_EMAIL_ACCOUNTS);
+		phpFrame::getPathway()->addItem(_LANG_EMAIL_ACCOUNTS);
 	}
 	
 	/**
@@ -97,7 +95,7 @@ class emailViewAccounts extends phpFrame_Application_View {
 		}
 		
 		$this->page_title = _LANG_EMAIL_ACCOUNTS;
-		$this->addPathwayItem(_LANG_EMAIL_ACCOUNTS);
+		phpFrame::getPathway()->addItem(_LANG_EMAIL_ACCOUNTS);
 	}
 }
 ?>

@@ -60,6 +60,11 @@ class projectsModelPermissions extends phpFrame_Application_Model {
 	 * @return 	bool
 	 */
 	function checkProjectAccess(&$project, $views_available) {
+		$session = phpFrame::getSession();
+		if ($session->isAdmin()) {
+			return $this->is_allowed = true;
+		}
+		
 		$this->project = $project;
 		
 		// Load tools/views and their access levels into tools array

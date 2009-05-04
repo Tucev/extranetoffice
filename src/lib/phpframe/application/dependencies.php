@@ -137,4 +137,3 @@ class phpFrame_Application_Dependencies {
 		}
 	}
 }
-?>

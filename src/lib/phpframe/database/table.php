@@ -63,7 +63,7 @@ abstract class phpFrame_Database_Table extends phpFrame_Base_Singleton {
 	 * @return	void
 	 * @since 	1.0
 	 */
-	public function __construct($table_name, $primary_key) {
+	protected function __construct($table_name, $primary_key) {
 		$this->_db = phpFrame::getDB();
 		$this->_table_name = $table_name;
 		$this->_primary_key = $primary_key;
@@ -90,9 +90,9 @@ abstract class phpFrame_Database_Table extends phpFrame_Base_Singleton {
 		$query = "SHOW COLUMNS FROM `".$this->_table_name."`";
 		$this->_db->setQuery($query);
 		$this->_cols = $this->_db->loadObjectList();
+		//var_dump($this->_cols); exit;
 		if ($this->_cols === false) {
-			$this->_error[] = $this->_db->getLastError();
-			return false;
+			throw new phpFrame_Exception_Database($this->_db->getLastError());
 		}
 		
 		// If no cols found set $this->_cols to empty array to avoid problems with 

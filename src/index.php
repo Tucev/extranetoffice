@@ -1,12 +1,13 @@
 <?php
 /**
- * The web application index or bootstrap file
+ * The web application index / bootstrap file
  * 
  * This is the file that we browse to access the web application.
  * 
- * In order to instantiate the application we first set a few useful constants, 
- * set the global exception handler, load the config file, check for dependencies, 
- * include the autoloader and then finally instantiate the front controller.
+ * This file instantiates and runs the Front Controller object.
+ * 
+ * In order to instantiate the Front Controller we first set a few useful constants, 
+ * load the config file and include the autoloader.
  * 
  * @version 	$Id: index.php 46 2009-02-13 01:37:49Z luis.montero $
  * @package		phpFrame
@@ -49,7 +50,4 @@ require_once _ABS_PATH.DS."inc".DS."autoload.php";
 
 // Instantiate application
 $frontcontroller = phpFrame::getFrontController();
-$frontcontroller->exec();
-$frontcontroller->render();
-$frontcontroller->output();
-?>
+$frontcontroller->run();

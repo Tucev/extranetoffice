@@ -28,29 +28,15 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		phpFrame_Application_View
  */
 class projectsViewProjects extends phpFrame_Application_View {
-	var $page_title=null;
-	var $projectid=null;
-	
 	/**
 	 * Constructor
 	 * 
 	 * @return 	void
 	 * @since	1.0
 	 */
-	function __construct() {
-		// Set the view template to load (default value is set in controller)
-		$this->layout = phpFrame_Environment_Request::getLayout();
-		
-		// Set reference to projectid
-		$this->projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		
-		if (!empty($this->projectid)) {
-			// get project data from controller
-			$controller =& phpFrame_Base_Singleton::getInstance('projectsController');
-			$this->project =& $controller->project;
-		}
-		
-		parent::__construct();
+	function __construct($layout) {
+		// Invoke the parent to set the view name and default layout
+		parent::__construct('projects', $layout);
 	}
 	
 	/**
@@ -79,16 +65,7 @@ class projectsViewProjects extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayProjectsList() {
-		$this->page_title = _LANG_PROJECTS;
-		
-		// Push model into the view
-		$model = $this->getModel('projects');
-		
-		// Get projects and store data in view
-		$projects = $model->getProjects();
-		$this->rows =& $projects['rows'];
-		$this->pageNav =& $projects['pageNav'];
-		$this->lists =& $projects['lists'];
+		$this->_data['page_title'] = _LANG_PROJECTS;
 	}
 	
 	/**
@@ -98,32 +75,10 @@ class projectsViewProjects extends phpFrame_Application_View {
 	 * 
 	 * @return void
 	 */
-	function displayProjectsDetail($projectid=0) {
-		if (empty($projectid)) {
-			$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		}
-		
-		if (empty($projectid)) {
-			phpFrame_Application_Error::raise('', 'error', 'No project was selected');
-			return false;
-		}
-		else {
-			$this->page_title = _LANG_PROJECTS_HOME;
-			$this->page_heading = $this->project->name.' - '._LANG_PROJECTS_HOME;
-			$this->addPathwayItem(_LANG_PROJECTS_HOME);
-			
-			// Get overdue issues
-			$modelIssues = $this->getModel('issues');
-			$overdue_issues = $modelIssues->getIssues($projectid, true);
-			$this->overdue_issues =& $overdue_issues['rows'];
-			
-			// Get upcoming milestones
-			
-			// Get project updates
-			$modelActivitylog = $this->getModel('activitylog');
-			$this->activitylog = $modelActivitylog->getActivityLog($projectid);
-		}
-		
+	function displayProjectsDetail() {
+		$this->_data['page_title'] = _LANG_PROJECTS_HOME;
+		$this->_data['page_heading'] = $this->_data['row']->name.' - '._LANG_PROJECTS_HOME;
+		phpFrame::getPathway()->addItem(_LANG_PROJECTS_HOME);
 	}
 }
 ?>

@@ -19,10 +19,6 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		phpFrame_Application_Model
  */
 class projectsModelProjects extends phpFrame_Application_Model {
-	var $view=null;
-	var $layout=null;
-	var $projectid=null;
-	
 	/**
 	 * Constructor
 	 *
@@ -31,20 +27,6 @@ class projectsModelProjects extends phpFrame_Application_Model {
 	 */
 	function __construct() {
 		parent::__construct();
-		
-		$this->_init();
-	}
-	
-	/**
-	 * Initialise the projects model. This method is invoked in the constructor.
-	 * 
-	 * @return	void
-	 * @since	1.0
-	 */
-	private function _init() {
-		$this->view = phpFrame_Environment_Request::getVar('view', 'projects');
-		$this->layout = phpFrame_Environment_Request::getVar('layout', 'list');
-		$this->projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		
 		// Check whether project directories exists and are writable
 		$projects_upload_dir = _ABS_PATH.DS.config::UPLOAD_DIR.DS."projects";
@@ -58,13 +40,14 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		}
 			
 		// Check whether project specific directories exists and are writable
-		if (!empty($this->projectid)) {
+		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
+		if (!empty($projectid)) {
 			//TODO: Have to catch errors here and look at file permissions
-			$project_specific_upload_dir = _ABS_PATH.DS.config::UPLOAD_DIR.DS."projects".DS.$this->projectid;
+			$project_specific_upload_dir = _ABS_PATH.DS.config::UPLOAD_DIR.DS."projects".DS.$projectid;
 			if (!is_dir($project_specific_upload_dir)) {
 				mkdir($project_specific_upload_dir, 0771);
 			}
-			$project_specific_filesystem = config::FILESYSTEM.DS."projects".DS.$this->projectid;
+			$project_specific_filesystem = config::FILESYSTEM.DS."projects".DS.$projectid;
 			if (!is_dir($project_specific_filesystem)) {
 				mkdir($project_specific_filesystem, 0771);
 			}
@@ -77,14 +60,8 @@ class projectsModelProjects extends phpFrame_Application_Model {
 	 * @param $userid
 	 * @return mixed	if no parameters returns array of objects if entries exist 
 	 */
-	public function getProjects($userid=0) {
-		$filter_order = phpFrame_Environment_Request::getVar('filter_order', 'p.name');
-		$filter_order_Dir = phpFrame_Environment_Request::getVar('filter_order_Dir', '');
-		$search = phpFrame_Environment_Request::getVar('search', '');
-		$search = strtolower( $search );
-		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
-		$limit = phpFrame_Environment_Request::getVar('limit', 20);
-
+	public function getProjects(phpFrame_Database_Listfilter $list_filter, $userid=0) {
+		// Build WHERE SQL clauses
 		$where = array();
 		
 		// Show only public projects or projects where user has an assigned role
@@ -94,16 +71,10 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		$where[] = "( p.access = '0' OR (".$userid." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 		
 		if ($search) {
-			$where[] = "p.name LIKE '%".$this->_db->getEscaped($search)."%'";
+			$where[] = "p.name LIKE '%".$this->_db->getEscaped($list_filter->getSearchStr())."%'";
 		}
 
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
-		
-		if (empty($filter_order)) {
-			$orderby = ' ORDER BY p.name ';
-		} else {
-			$orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir .', p.name ';
-		}
 		
 		// get the total number of records
 		$query = "SELECT 
@@ -117,7 +88,9 @@ class projectsModelProjects extends phpFrame_Application_Model {
 				  
 		$this->_db->setQuery($query);
 		$this->_db->query();
-		$total = $this->_db->getNumRows();
+		
+		// Set total number of record in list filter
+		$list_filter->setTotal($this->_db->getNumRows());
 		
 		// get the subset (based on limits) of required records
 		$query = "SELECT 
@@ -132,26 +105,13 @@ class projectsModelProjects extends phpFrame_Application_Model {
 				  . $where . 
 				  " GROUP BY p.id ";
 		
-		$pageNav = new phpFrame_HTML_Pagination($total, $limitstart, $limit);
-		
-		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
+		// Add order by and limit statements for subset (based on filter)
+		//$query .= $list_filter->getOrderByStmt();
+		$query .= $list_filter->getLimitStmt();
 		//echo str_replace('#__', 'eo_', $query); exit;
+		
 		$this->_db->setQuery($query);
-		$rows = $this->_db->loadObjectList();
-	
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
-
-		// search filter
-		$lists['search'] = $search;
-		
-		// pack data into an array to return
-		$return['rows'] = $rows;
-		$return['pageNav'] = $pageNav;
-		$return['lists'] = $lists;
-		
-		return $return;
+		return $this->_db->loadObjectList();
 	}
 	
 	public function getProjectsDetail($projectid, $userid=0) {
@@ -192,7 +152,7 @@ class projectsModelProjects extends phpFrame_Application_Model {
 	 */
 	public function saveProject($post) {
 		// Instantiate table object
-		$row =& phpFrame_Base_Singleton::getInstance('projectsTableProjects');
+		$row = $this->getTable('projects');
 		
 		// Bind the post data to the row array
 		if ($row->bind($post, 'created,created_by') === false) {
@@ -227,7 +187,7 @@ class projectsModelProjects extends phpFrame_Application_Model {
 	 */
 	public function deleteProject($projectid) {
 		// Instantiate table object
-		$row =& phpFrame_Base_Singleton::getInstance('projectsTableProjects');
+		$row = $this->getTable('projects');
 		
 		// Delete row from database
 		if ($row->delete($projectid) === false) {

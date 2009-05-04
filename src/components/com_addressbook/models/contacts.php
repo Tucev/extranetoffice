@@ -31,38 +31,32 @@ class addressbookModelContacts extends phpFrame_Application_Model {
 	/**
 	 * Get Invoices
 	 * 
-	 * @param	string	$search		Search string.	
-	 * @param	int		$limit		Limit the result set.
-	 * @param 	int		$limitstart	When limiting results this is used to specify the entry from which the current page starts.
-	 * @param 	string	$orderby	The column to use for sorting the results.
-	 * @param	string	$orderdir	The direction in which to sort the results. 
-	 * @return	mixed	Returns an asoc array containing the rows and pageNav or FALSE on failure.
+	 * @param	object	$list_filter	An object of type phpFrame_Database_Listfilter
+	 * @return	array	Returns an asoc array containing the rows.
 	 */
-	function getContacts($search='', $limit=25, $limitstart=0, $orderby='c.family', $orderdir='ASC') {
+	function getContacts(phpFrame_Database_Listfilter $list_filter) {
 		// Build SQL query
 		$query = "SELECT * ";
 		$query .= " FROM #__contacts AS c ";
-		//echo str_replace('#__','eo_', $query); exit;
 		
 		// get the total number of records
 		$this->_db->setQuery($query);
 		$this->_db->query();
-		$total = $this->_db->getNumRows();
 		
-		// get the subset (based on limits)
-		if ($limit == -1) $limit = $total;
-		$pageNav = new phpFrame_HTML_Pagination($total, $limitstart, $limit);
-		$query .= " ORDER BY ".$orderby." ".$orderdir.", c.id";
-		$query .= " LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
+		// Set total number of record in list filter
+		$list_filter->setTotal($this->_db->getNumRows());
+		
+		// Add order by and limit statements for subset (based on filter)
+		$query .= $list_filter->getOrderByStmt();
+		$query .= $list_filter->getLimitStmt();
+		//echo str_replace('#__','eo_', $query); exit;
+		
+		// Get rows from database
 		$this->_db->setQuery($query);
-		$rows = $this->_db->loadObjectList();
-		//var_dump($rows); exit;
-		
-		// pack data into an array to return
-		return array('rows'=>$rows, 'pageNav'=>$pageNav);
+		return $this->_db->loadObjectList();
 	}
 	
-	function getContactsDetail() {
+	function getContactsDetail($id) {
 		
 	}
 	
@@ -96,18 +90,19 @@ class addressbookModelContacts extends phpFrame_Application_Model {
 		return $row;
 	}
 	
-	function deleteContact() {
+	function deleteContact($id) {
 		
 	}
 	
-	function importContacts() {
+	function importContacts($file) {
 		
 	}
 	
-	function exportContacts($id=0) {
-		$row = new iOfficeTableContacts();
-		$row->load($id);
+	function exportContacts($id) {
+		// Load row from database table
+		$row = $this->getTable('contacts')->load($id);
 		
+		// Create new instance of vCard
 		$vCard = new vCard();
 		
 		// [ADR]

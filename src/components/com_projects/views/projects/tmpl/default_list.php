@@ -10,7 +10,7 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
-<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 <?php if ($this->_user->groupid == 1) : ?>
 <div class="new">
@@ -36,7 +36,7 @@ function submit_filter(reset) {
 </script>
 <div class="list_filter_container">
 <form action="index.php" id="listsearchform" name="listsearchform" method="post">
-<input type="text" name="search" id="search" value="<?php echo $this->lists['search']; ?>">
+<input type="text" name="search" id="search" value="<?php echo phpFrame_Environment_Request::getVar('search'); ?>">
 <button type="button" class="button" onclick="submit_filter(false);">Search</button>
 <button type="button" class="button" onclick="submit_filter(true);">Reset</button>
 <input type="hidden" name="component" value="com_projects" />
@@ -47,7 +47,7 @@ function submit_filter(reset) {
 
 <br />
 
-<?php if (is_array($this->rows) && count($this->rows) > 0) : ?>
+<?php if (is_array($data['rows']) && count($data['rows']) > 0) : ?>
 <table class="data_list" width="100%" cellpadding="0" cellspacing="0">
   <thead>
   <tr>
@@ -60,10 +60,10 @@ function submit_filter(reset) {
   </thead>
   <tbody>
   <?php $k = 0; ?>
-  <?php foreach($this->rows as $row) : ?>
+  <?php foreach($data['rows'] as $row) : ?>
   <tr class="row<?php echo $k; ?>">
     <td valign="top">
-    <a href="index.php?component=com_projects&amp;view=projects&amp;layout=detail&amp;projectid=<?php echo $row->id; ?>">
+    <a href="index.php?component=com_projects&amp;action=get_projects_detail&amp;projectid=<?php echo $row->id; ?>">
 	<?php echo $row->name; ?>
 	</a>
     </td>
@@ -87,7 +87,7 @@ function submit_filter(reset) {
 
 <br />
 
-<?php echo $this->pageNav->getListFooter(); ?>
+<?php echo $data['page_nav']->getListFooter(); ?>
 
 <?php else : ?>
 <?php echo phpFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>

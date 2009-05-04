@@ -8,14 +8,6 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
-
-// render module positions for output
-$module_positions = array();
-$module_positions['topmenu'] = $this->modules->display('topmenu', '_topmenu');
-$module_positions['mainmenu'] = $this->modules->display('mainmenu', '_mainmenu');
-$module_positions['topright'] = $this->modules->display('topright', '_topright');
-$module_positions['right'] = $this->modules->display('right');
-$module_positions['sysevents'] = $this->modules->display('sysevents', '_sysevents');
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -41,7 +33,7 @@ $(document).ready(function() {
 
 <a name="up" id="up"></a>
 
-<?php echo $module_positions['topmenu']; ?>
+<?php echo $modules->display('topmenu', '_topmenu'); ?>
 
 <div id="sitename">
 	<a href="index.php">
@@ -50,30 +42,31 @@ $(document).ready(function() {
 </div>
 
 <div id="breadcrumb">
-	<?php $this->pathway->display(); ?>
+	<?php $pathway->display(); ?>
 </div>
 <div style="clear:both;"></div>
  
 <!-- Content -->
 <div id="wrapper_outer">
 	
-	<?php echo $module_positions['topright']; ?>
-	<?php echo $module_positions['mainmenu']; ?>
+	<?php echo $modules->display('topright', '_topright'); ?>
+	<?php echo $modules->display('mainmenu', '_mainmenu'); ?>
 	
 	<div id="wrapper">
 		<?php $column_count = 1; ?>
 		
-		<?php if (!empty($module_positions['right'])) : ?>
+		<?php $modules_right = $modules->display('right'); ?>
+		<?php if (!empty($modules_right)) : ?>
 			<div id="right_col">
-				<?php echo $module_positions['right']; ?>
+				<?php echo $modules_right; ?>
 			</div><!-- close #right_col -->
 			<?php $column_count++; ?>
 		<?php endif; ?>
 		
 		<div id="main_col_<?php echo $column_count; ?>">
-			<?php echo $module_positions['sysevents']; ?>
+			<?php echo $modules->display('sysevents', '_sysevents'); ?>
 			<div id="main_col_inner">
-			<?php echo $this->component_output; ?>
+			<?php echo $component_output; ?>
 			</div><!-- close #main_col_inner -->
 		</div><!-- close #main_col -->
 

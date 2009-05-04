@@ -28,32 +28,15 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		phpFrame_Application_View
  */
 class projectsViewIssues extends phpFrame_Application_View {
-	var $page_title=null;
-	var $projectid=null;
-	
 	/**
 	 * Constructor
 	 * 
 	 * @return 	void
 	 * @since	1.0
 	 */
-	function __construct() {
-		// Set the view template to load (default value is set in controller)
-		$this->layout = phpFrame_Environment_Request::getLayout();
-		
-		// Set reference to projectid
-		$this->projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		$this->issueid = phpFrame_Environment_Request::getVar('issueid', 0);
-		
-		// Set reference to project object loaded in controller
-		if (!empty($this->projectid)) {
-			$controller =& phpFrame_Base_Singleton::getInstance('projectsController');
-			$this->project =& $controller->project;
-		}
-		
-		$this->current_tool = _LANG_ISSUES;
-		
-		parent::__construct();
+	function __construct($layout) {
+		// Invoke the parent to set the view name and default layout
+		parent::__construct('issues', $layout);
 	}
 	
 	/**
@@ -81,14 +64,7 @@ class projectsViewIssues extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayIssuesList() {
-		// Push model into the view
-		$modelIssues = $this->getModel('issues');
-		$issues = $modelIssues->getIssues($this->projectid);
-		$this->rows =& $issues['rows'];
-		$this->pageNav =& $issues['pageNav'];
-		$this->lists =& $issues['lists'];
-		
-		$this->addPathwayItem($this->page_title);
+		phpFrame::getPathway()->addItem($this->page_title);
 	}
 	
 	function displayIssuesForm() {
@@ -105,8 +81,8 @@ class projectsViewIssues extends phpFrame_Application_View {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->addPathwayItem($this->current_tool, phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&projectid=".$this->projectid));
-		$this->addPathwayItem($action);
+		phpFrame::getPathway()->addItem($this->current_tool, phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&projectid=".$this->projectid));
+		phpFrame::getPathway()->addItem($action);
 	}
 	
 	function displayIssuesDetail() {
@@ -115,8 +91,8 @@ class projectsViewIssues extends phpFrame_Application_View {
 		$this->row =& $issue;
 		
 		$this->page_title .= ' - '.$issue->title;
-		$this->addPathwayItem($this->current_tool, phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&projectid=".$this->projectid));
-		$this->addPathwayItem($issue->title);
+		phpFrame::getPathway()->addItem($this->current_tool, phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&projectid=".$this->projectid));
+		phpFrame::getPathway()->addItem($issue->title);
 	}
 }
 ?>

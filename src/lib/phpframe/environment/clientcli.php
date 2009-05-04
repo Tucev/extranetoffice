@@ -64,6 +64,10 @@ class phpFrame_Environment_ClientCli implements phpFrame_Environment_IClient {
 	public function getName() {
 		return "cli";
 	}
+	
+	public function preActionHook() {}
+	
+	public function renderView($data) {}
+	
+	public function renderTemplate(&$str) {}
 }
-
-?>

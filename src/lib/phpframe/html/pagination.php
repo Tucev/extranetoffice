@@ -19,65 +19,20 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 class phpFrame_HTML_Pagination {
 	/**
-	 * The total number of rows
+	 * The list filter object for which to provide pagination
 	 * 
-	 * @var int
+	 * @var	object	Object of type phpFrame_Database_Listfilter
 	 */
-	var $total=null;
-	/**
-	 * The start position for rows in current page
-	 * 
-	 * @var int
-	 */
-	var $limitstart=null;
-	/**
-	 * The maximum number of rows per page
-	 * 
-	 * @var int
-	 */
-	var $limit=null;
-	/**
-	 * The total number of pages
-	 * 
-	 * @var int
-	 */
-	var $pages=null;
-	/**
-	 * The current page
-	 * 
-	 * @var int
-	 */
-	var $current_page=null;
+	private $_list_filter=null;
 	
 	/**
 	 * Constructor
 	 * 
-	 * @param	$total		The total number of rows
-	 * @param	$limitstart	The start position for rows in current page
-	 * @param	$limit		The maximum number of rows per page
+	 * @param	object	$list_filter	Object of type phpFrame_Database_Listfilter
 	 * @return	void
 	 */
-	function __construct($total, $limitstart=0, $limit=-1) {
-		$this->total = $total;
-		$this->limitstart = $limitstart;
-		
-		if ($limit == -1) {
-			$this->limit = $this->total;
-		}
-		else {
-			$this->limit = $limit;
-		}
-		
-		if ($this->limit > 0) {
-			// Calculate number of pages
-			$this->pages = (int) ceil($this->total/$this->limit);
-			// Calculate current page
-			$this->current_page = (int) (ceil($this->limitstart/$this->limit)+1);
-		}
-		else {
-			$this->pages = 0;
-			$this->current_page = 0;
-		}
+	public function __construct(phpFrame_Database_Listfilter $list_filter) {
+		$this->_list_filter = $list_filter;
 	}
 	
 	/**
@@ -90,7 +45,7 @@ class phpFrame_HTML_Pagination {
 	 * @since	1.0
 	 */
 	public function getListFooter() {
-		if ($this->pages > 1) {
+		if ($this->_list_filter->getPages() > 1) {
 			// Build limit select
 			$html = '<div>';
 			$html .= $this->getLimitSelect();
@@ -118,7 +73,7 @@ class phpFrame_HTML_Pagination {
 	 * 
 	 * This method returns a string with HTML containing a select input to select the available pages.
 	 * 
-	 * @return string
+	 * @return	string
 	 * @access	public
 	 * @since	1.0
 	 */
@@ -128,7 +83,7 @@ class phpFrame_HTML_Pagination {
 		$html .= '<select name="limit" onchange="document.forms[\'limitform\'].submit();">';
 		for ($i=25; $i<=100; $i+=25) {
 			$html .= '<option value="'.$i.'"';
-			if ($this->limit == $i) {
+			if ($this->_list_filter->getLimit() == $i) {
 				$html .= ' selected';
 			}
 			$html .= '>'.$i.'</option>';
@@ -155,12 +110,12 @@ class phpFrame_HTML_Pagination {
 		$href = 'index.php?component='.phpFrame_Environment_Request::getComponentName();
 		$href .= '&amp;view='.phpFrame_Environment_Request::getViewName();
 		$href .= '&amp;layout='.phpFrame_Environment_Request::getLayout();
-		$href .= '&amp;limit='.$this->limit;
+		$href .= '&amp;limit='.$this->_list_filter->getLimit();
 		
 		$html = '<ul>';
 		// Start link
 		$html .= '<li>';
-		if ($this->current_page != 1) {
+		if ($this->_list_filter->getCurrentPage() != 1) {
 			$html .= '<a href="'.$href.'&amp;limitstart=0">Start</a>';
 		}
 		else {
@@ -169,18 +124,18 @@ class phpFrame_HTML_Pagination {
 		$html .= '</li>';
 		// Prev link
 		$html .= '<li>';
-		if ($this->current_page != 1) {
-			$html .= '<a href="'.$href.'&amp;limitstart='.(($this->current_page-2) * $this->limit).'">Prev</a>';
+		if ($this->_list_filter->getCurrentPage() != 1) {
+			$html .= '<a href="'.$href.'&amp;limitstart='.(($this->_list_filter->getCurrentPage()-2) * $this->_list_filter->getLimit()).'">Prev</a>';
 		}
 		else {
 			$html .= 'Prev';
 		}
 		$html .= '</li>';
 		// Page numbers
-		for ($j=0; $j<$this->pages; $j++) {
+		for ($j=0; $j<$this->_list_filter->getPages(); $j++) {
 			$html .= '<li>';
-			if ($this->current_page != ($j+1)) {
-				$html .= '<a href="'.$href.'&amp;limitstart='.($this->limit * $j).'">'.($j+1).'</a>';	
+			if ($this->_list_filter->getCurrentPage() != ($j+1)) {
+				$html .= '<a href="'.$href.'&amp;limitstart='.($this->_list_filter->getLimit() * $j).'">'.($j+1).'</a>';	
 			}
 			else {
 				$html .= ($j+1);
@@ -189,16 +144,16 @@ class phpFrame_HTML_Pagination {
 		}
 		// Next link
 		$html .= '<li>';
-		if ($this->current_page != $this->pages) {
-			$html .= '<a href="'.$href.'&amp;limitstart='.($this->current_page * $this->limit).'">Next</a>';	
+		if ($this->_list_filter->getCurrentPage() != $this->_list_filter->getPages()) {
+			$html .= '<a href="'.$href.'&amp;limitstart='.($this->_list_filter->getCurrentPage() * $this->_list_filter->getLimit()).'">Next</a>';	
 		}
 		else {
 			$html .= 'Next';
 		}
 		// End link
 		$html .= '<li>';
-		if ($this->current_page != $this->pages) {
-			$html .= '<a href="'.$href.'&amp;limitstart='.(($this->pages-1) * $this->limit).'">End</a>';	
+		if ($this->_list_filter->getCurrentPage() != $this->_list_filter->getPages()) {
+			$html .= '<a href="'.$href.'&amp;limitstart='.(($this->_list_filter->getPages()-1) * $this->_list_filter->getLimit()).'">End</a>';	
 		}
 		else {
 			$html .= 'End';
@@ -210,7 +165,7 @@ class phpFrame_HTML_Pagination {
 	}
 	
 	/**
-	 * getPageInfo()
+	 * Get page info
 	 * 
 	 * This method returns a string with the current page number and total number of pages.
 	 * 
@@ -221,8 +176,8 @@ class phpFrame_HTML_Pagination {
 	 * @since	1.0
 	 */
 	public function getPageInfo() {
-		$html = 'Page '.$this->current_page.' of '.$this->pages;
-		
-		return $html;
+		$str = 'Page '.$this->_list_filter->getCurrentPage();
+		$str .= ' of '.$this->_list_filter->getPages();
+		return $str;
 	}
 }

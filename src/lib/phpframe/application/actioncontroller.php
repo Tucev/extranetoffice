@@ -12,7 +12,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * Action Controller class
  * 
- * This class is used to implement the MVC (Model/View/Controller) architecture 
+ * This class is used to implement the MVC (Model/View/Controller) pattern 
  * in the components.
  * 
  * As an abstract class it has to be extended to be instantiated. This class is 
@@ -20,26 +20,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * the built in components (dashboard, user, admin, ...) for examples.
  * 
  * Controllers processes requests and respond to events, typically user actions, 
- * and may invoke changes on using the available models.
- * 
- * This class uses the phpFrame_Base_Singleton design pattern, and it is therefore instantiated 
- * using the getInstance() method.
- * 
- * To make sure that the child model is instantiated using the correct run time
- * class name we pass the class name when invoking the getInstance() method.
- * 
- * For example:
- * <code>
- * class myController extends phpFrame_Application_ActionController {
- * 		function doSomething() {
- * 			return 'something';
- * 		}
- * }
- * 
- * $myController =& phpFrame_Base_Singleton::getInstance('myController');
- * echo $myController->doSomething();
- * </code>
- * This will echo 'something'.
+ * and may invoke changes on data using the available models.
  * 
  * @package		phpFrame
  * @subpackage 	application
@@ -50,47 +31,23 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singleton {
 	/**
-	 * The component (ie: com_projects)
+	 * Default controller action
 	 * 
-	 * @var string
+	 * @var	string
 	 */
-	var $component=null;
-	/**
-	 * The task to be executed
-	 * 
-	 * @var string
-	 */
-	var $action=null;
-	/**
-	 * The view to be displayed
-	 * 
-	 * @var string
-	 */
-	var $view=null;
-	/**
-	 * The layout template to be used for rendering
-	 * 
-	 * @var string
-	 */
-	var $layout=null;
+	protected $_default_action=null;
 	/**
 	 * Array containing a list of with the available views
 	 * 
 	 * @var array
 	 */
-	var $views_available=null;
-	/**
-	 * The currently loaded view object.
-	 *
-	 * @var object
-	 */
-	var $view_obj=null;
+	protected $_views_available=null;
 	/**
 	 * A string containing a url to be redirected to. Leave empty for no redirection.
 	 *
 	 * @var string
 	 */
-	var $redirect_url=null;
+	protected $_redirect_url=null;
 	/**
 	 * A reference to the System Events object.
 	 * 
@@ -112,23 +69,20 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 * @return 	void
 	 * @since	1.0
 	 */
-	protected function __construct() {
-		$this->component = phpFrame_Environment_Request::getComponentName();
-		$this->action = phpFrame_Environment_Request::getAction();
-		$this->view = phpFrame_Environment_Request::getViewName();
-		$this->layout = phpFrame_Environment_Request::getLayout();
+	protected function __construct($default_action) {
+		$this->_default_action = (string) $default_action;
 		
 		// Get reference to System Events object
 		$this->_sysevents = phpFrame::getSysevents();
 		
 		// Get available views
-		$this->views_available = $this->getAvailableViews();
+		$this->_views_available = $this->getViewsAvailable();
 		
-		// Get reference to application
-		$frontcontroller = phpFrame::getFrontController();
+		$components = phpFrame_Base_Singleton::getInstance('phpFrame_Application_Components');
+		$this->component_info = $components->loadByOption(phpFrame_Environment_Request::getComponentName());
 		
 		// Add pathway item
-		$this->addPathwayItem(ucwords($frontcontroller->component_info->name), 'index.php?component='.$this->component);
+		phpFrame::getPathway()->addItem(ucwords($this->component_info->name), 'index.php?component='.$this->component);
 		
 		// Append component name in ducument title
 		$document = phpFrame::getDocument('html');
@@ -136,130 +90,55 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 		$document->title .= ucwords($frontcontroller->component_info->name);
 	}
 	
-    /**
-     * Display view
-     * 
-     * This method triggers the view.
-     *
-     * @return 	void
-	 * @since	1.0
-     */
-	public function display() {
-		$this->view_obj = $this->getView(phpFrame_Environment_Request::getViewName());
-		if (is_callable(array($this->view_obj, 'display'))) {
-			$this->view_obj->display();	
-		}
-		else {
-			phpFrame_Application_Error::raise('', 'error', 'display() method not found in view class.');
-		}
-	}
-	
 	/**
-	 * Execute task
+	 * Execute action
 	 * 
 	 * This method executes a given task (runs a named member method).
 	 *
-	 * @param 	string $task The task to be executed (default is 'display').
 	 * @return 	void
 	 * @since	1.0
 	 */
-	public function execute($task) {
-		// Get reference to application to check permissions before we execute
-		$frontcontroller = phpFrame::getFrontController();
+	public function execute() {
+		// Get action from the request
+		$request_action = phpFrame_Environment_Request::getAction();
+		//echo $request_action; exit;
+		// If no specific action has been requested we use default action
+		if (is_null($request_action)) {
+			$action = $this->_default_action;
+		}
+		else {
+			$action = $request_action;
+		}
 		
-		if ($frontcontroller->permissions->is_allowed === true) {
-			if (is_callable(array($this, $task))) {
-				$this->$task();	
+		// Check permissions before we execute
+		if (phpFrame::getPermissions()->is_allowed === true) {
+			if (is_callable(array($this, $action))) {
+				// Start buffering
+				ob_start();
+				$this->$action();
+				// save buffer in response object
+				$action_output = ob_get_contents();
+				// clean output buffer
+				ob_end_clean();
 			}
 			else {
-				phpFrame_Application_Error::raise('', 'error', $task.'() method not found in controller class.');
+				throw new phpFrame_Exception("Action ".$action."() not found in controller.");
 			}
 		}
 		else {
-			if ($frontcontroller->auth == false) {
+			if (!phpFrame::getSession()->isAuth()) {
 				$this->setRedirect('index.php?component=com_login');
 			}
 			else {
-				phpFrame_Application_Error::raise('', 'error', 'Permission denied.');
+				$this->_sysevents->setSummary('Permission denied.');
 			}
 		}
-	}
-	
-	/**
-	 * Cancel
-	 * 
-	 * Cancel and set redirect to index.
-	 *
-	 * @return 	void
-	 * @since	1.0
-	 */
-	public function cancel() {
-		$this->setRedirect( 'index.php' );
-	}
-	
-	/**
-	 * Set redirection url
-	 * 
-	 * Set the redirection URL.
-	 *
-	 * @param string $url
-	 * @return 	void
-	 * @since	1.0
-	 */
-	public function setRedirect($url) {
-		$this->redirect_url = phpFrame_Application_Route::_($url);
-	}
-	
-	/**
-	 * Redirect
-	 * 
-	 * Redirect browser to redirect URL.
-	 * @return 	void
-	 * @since	1.0
-	 */
-	public function redirect() {
-		if ($this->redirect_url && phpFrame_Environment_Request::getClientName() != 'cli') {
-			header("Location: ".$this->redirect_url);
-			exit;
-		}
-	}
-	
-	/**
-	 * Get model
-	 * 
-	 * Gets a named model within the component.
-	 *
-	 * @param	string	$name The model name. If empty the view name is used as default.
-	 * @return	object
-	 * @since	1.0
-	 */
-	public function getModel($name='') {
-		if (empty($name)) {
-			$name = phpFrame_Environment_Request::getViewName();
-		}
 		
-		$model_class_name = substr(phpFrame_Environment_Request::getComponentName(), 4).'Model'.ucfirst($name);
-		$model = phpFrame_Base_Singleton::getInstance($model_class_name);
-		return $model;
-	}
-	
-	/**
-	 * Get view
-	 * 
-	 * Get a named view within the component.
-	 *
-	 * @param	string	$name
-	 * @return	object
-	 * @since	1.0
-	 */
-	public function getView($name='') {
-		if (empty($name)) {
-			$name = phpFrame_Environment_Request::getViewName();
-		}
+		// Redirect if set by the controller
+		$this->redirect();
 		
-		$view_class_name = substr(phpFrame_Environment_Request::getComponentName(), 4).'View'.ucfirst($name);
-		$view =& phpFrame_Base_Singleton::getInstance($view_class_name);
-		return $view;
+		// Return action's output as string
+		return $action_output;
 	}
 	
 	/**
@@ -272,7 +151,11 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 * @return	array
 	 * @since	1.0
 	 */
-	function getAvailableViews() {
+	public function getViewsAvailable() {
+		if (!is_null($this->_views_available)) { 
+			return $this->_views_available;
+		}
+		
 		$views_path = COMPONENT_PATH.DS."views";
 		$array = scandir($views_path);
 		
@@ -289,25 +172,10 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 			else {
 				return false;
 			}
-			
 		}
 		else {
 			return false;
 		}
-	}
-	
-	/**
-	 * Add item to pathway
-	 * 
-	 * @param	string	$title
-	 * @param	string	$url
-	 * @return	void
-	 * @since	1.0
-	 */
-	public function addPathwayItem($title, $url='') {
-		$pathway = phpFrame::getPathway();
-		// add item
-		$pathway->addItem($title, $url);
 	}
 	
 	/**
@@ -319,5 +187,72 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	public function getSuccess() {
 		return $this->_success;
 	}
+	
+	/**
+	 * Cancel
+	 * 
+	 * Cancel and set redirect to index.
+	 *
+	 * @return 	void
+	 * @since	1.0
+	 */
+	protected function cancel() {
+		$this->setRedirect( 'index.php' );
+	}
+	
+	/**
+	 * Set redirection url
+	 * 
+	 * Set the redirection URL.
+	 *
+	 * @param string $url
+	 * @return 	void
+	 * @since	1.0
+	 */
+	protected function setRedirect($url) {
+		$this->_redirect_url = phpFrame_Application_Route::_($url);
+	}
+	
+	/**
+	 * Redirect
+	 * 
+	 * Redirect browser to redirect URL.
+	 * @return 	void
+	 * @since	1.0
+	 */
+	protected function redirect() {
+		if ($this->_redirect_url) {
+			header("Location: ".$this->_redirect_url);
+			exit;
+		}
+	}
+	
+	/**
+	 * Get model
+	 * 
+	 * Gets a named model within the component.
+	 *
+	 * @param	string	$name The model name. If empty the view name is used as default.
+	 * @return	object
+	 * @since	1.0
+	 */
+	protected function getModel($name) {
+		return phpFrame::getModel(phpFrame_Environment_Request::getComponentName(), $name);
+	}
+	
+	/**
+	 * Get view
+	 * 
+	 * Get a named view within the component.
+	 *
+	 * @param	string	$name
+	 * @return	object
+	 * @since	1.0
+	 */
+	protected function getView($name, $layout='') {
+		$class_name = strtolower(substr(phpFrame_Environment_Request::getComponentName(), 4));
+		$class_name .= "View".ucfirst($name);
+		
+		return new $class_name($layout);
+	}
 }
-?>

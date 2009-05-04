@@ -137,8 +137,7 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 		
 		// Check query result is valid
 		if ($this->_rs === false) {
-			$this->_error[] = 'phpFrame: db::query(). Query failed: '.$this->_query.'. MySQL Error: '.mysql_error();
-			return false;
+			throw new phpFrame_Exception_Database('Query failed', $this->_query);
 		}
 		
 		// If it is an INSERT query we return the insert id

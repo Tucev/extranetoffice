@@ -32,9 +32,7 @@ class phpFrame_Application_Error {
 	static function display($error=null) {
 		if (!$error) {
 			$session = phpFrame::getSession();
-			if ($session->id) {
-				$error = $session->getVar('error');	
-			}
+			$error = $session->getVar('error');
 		}
 		
 		if (is_array($error) && count($error) > 0) {
@@ -69,15 +67,9 @@ class phpFrame_Application_Error {
 		
 		// Store error in session
 		$session = phpFrame::getSession();
-		if (!$session->id) {
-			phpFrame_Application_Error::display(array($error));
-		}
-		else {
-			$array = $session->getVar('error', array());
-			$array[] = $error;
-			$session->setVar('error', $array);
-		}
-		
+		$array = $session->getVar('error', array());
+		$array[] = $error;
+		$session->setVar('error', $array);
 	}
 	
 	/**

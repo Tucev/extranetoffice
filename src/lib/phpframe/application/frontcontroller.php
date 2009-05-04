@@ -25,7 +25,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * 
  * Before we instantiate the FrontController we first need to set a few useful constants,
  * include the autoloader and the config file and then finally 
- * instantiate the FrontController and run the public methods in the following order:
+ * instantiate the FrontController and run it.
  * 
  * <code>
  * define("_EXEC", true);
@@ -39,9 +39,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * require_once _ABS_PATH.DS."inc".DS."autoload.php";
  * 
  * $frontcontroller = phpFrame::getFrontController();
- * $frontcontroller->exec();
- * $frontcontroller->render();
- * $frontcontroller->output();
+ * $frontcontroller->run();
  * </code>
  * 
  * @package		phpFrame
@@ -51,49 +49,6 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see			phpFrame
  */
 class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
-	/**
-	 * A boolean representing whether a session is authenticated
-	 *
-	 * @var bool
-	 */
-	var $auth=null;
-	/**
-	 * Global application permissions object
-	 * 
-	 * @var object
-	 */
-	var $permissions=null;
-	/**
-	 * The modules object
-	 *
-	 * @var object
-	 */
-	var $modules=null;
-	/**
-	 * A reference to the pathway object
-	 * 
-	 * @var object
-	 */
-	var $pathway=null;
-	/**
-	 * The component info (data stored in components table)
-	 * 
-	 * @var object
-	 */
-	var $component_info=null;
-	/**
-	 * The output buffer produced by the executed component
-	 *
-	 * @var string
-	 */
-	var $component_output=null;
-	/**
-	 * The final output once content is rendered in template
-	 *
-	 * @var string
-	 */
-	var $output=null;
-	
 	/**
 	 * Constructor
 	 * 
@@ -114,11 +69,7 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 		// Set timezone
 		date_default_timezone_set(config::TIMEZONE);
 		
-		// Instantiate database object
-		$db = phpFrame::getDB();
-		
-		// Check dependencies. This has to be done after connecting to the database, 
-		// otherwise we can not check MySQL version.
+		// Check dependencies
 		phpFrame_Application_Dependencies::check();
 		
 		// Initialise request
@@ -129,9 +80,8 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 		// get user object
 		$user = phpFrame::getUser();
 		
-		if (!empty($session->userid)) {
-			$user->load($session->userid);
-			$this->auth = true;
+		if ($session->isAuth()) {
+			$user->load($session->getUserId());
 		}
 		elseif (phpFrame_Environment_Request::getClientName() == 'cli') {
 			$user->id = 1;
@@ -140,18 +90,12 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 			$user->firstname = 'System';
 			$user->lastname = 'User';
 			// Store user detailt in session
-			$session->userid = 1;
-			$session->groupid = 1;
-			$session->write();
-			$this->auth = true;
-		}
-		else {
-			$this->auth = false;
+			$session->setUser($user);
 		}
 	}
 	
 	/**
-	 * Execute component
+	 * Run
 	 * 
 	 * This method executes the request and stores the component's output buffer in $this->component_output.
 	 * 
@@ -159,113 +103,31 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 	 * @return	void
 	 * @since	1.0
 	 */
-	public function exec() {
-		// Get component option from request
-		$option = phpFrame_Environment_Request::getComponentName();
-		
-		// Initialise permissions
-		$this->permissions = phpFrame::getPermissions();
-		
-		// Get component info
-		$components = phpFrame_Base_Singleton::getInstance('phpFrame_Application_Components');
-		$this->component_info = $components->loadByOption($option);
-		
-		// load modules before we execute controller task to make modules available to components
-		$this->modules = phpFrame_Base_Singleton::getInstance('phpFrame_Application_Modules');
-		
-		//TODO We should move the next block to the relevant client class. It is now here
-		// because jquery scripts need to be loaded before we load the jQuery plugins in the component output. 
-		// If client is default (pc web browser) we add the jQuery library + jQuery UI
-		if (phpFrame_Environment_Request::getClientName() == 'default') {
-			$document = phpFrame::getDocument('html');
-			$document->addScript('lib/jquery/js/jquery-1.3.2.min.js');
-			$document->addScript('lib/jquery/js/jquery-ui-1.7.custom.min.js');
-			$document->addScript('lib/jquery/plugins/validate/jquery.validate.pack.js');
-			$document->addScript('lib/jquery/plugins/form/jquery.form.pack.js');
-			$document->addStyleSheet('lib/jquery/css/extranetoffice/jquery-ui-1.7.custom.css');	
-		}
-		
+	public function run() {
 		// set the component path
-		define("COMPONENT_PATH", _ABS_PATH.DS."components".DS.$option);
-		// Start buffering
-		ob_start();
-		// Create the controller
-		$controller = phpFrame::getController($option);
-		// Execute task
-		$controller->execute(phpFrame_Environment_Request::getAction());	
-		// Redirect if set by the controller
-		$controller->redirect();
-		// save buffer
-		$this->component_output = ob_get_contents();
-		// clean output buffer
-		ob_end_clean();
-	}
-	
-	/**
-	 * Render output in template
-	 * 
-	 * @access	public
-	 * @return	void
-	 * @since	1.0
-	 */
-	public function render() {
-		//TODO We should move the next block to the relevant client class. 
-		// Instantiate document object to make available in template scope
-		if (phpFrame_Environment_Request::getClientName() == 'default') {
-			$document = phpFrame::getDocument('html');
-		}
+		define("COMPONENT_PATH", _ABS_PATH.DS."components".DS.phpFrame_Environment_Request::getComponentName());
 		
-		if (!$this->auth) {
-			$template_filename = 'login.php';
-		}
-		elseif (phpFrame_Environment_Request::getVar('tmpl') == 'component' || phpFrame_Environment_Request::getClientName() == 'cli') {
-			phpFrame_Application_Error::display();
-			$this->output = $this->component_output;
-			return;
+		$client = phpFrame_Environment_Request::getClient();
+		$client->preActionHook();
+		
+		// Create the action controller
+		$controller = phpFrame::getActionController(phpFrame_Environment_Request::getComponentName());
+		// Check that action controller is of valid type and run it if it is
+		if ($controller instanceof phpFrame_Application_ActionController) {
+			// Execute task
+			$output = $controller->execute();
 		}
 		else {
-			$template_filename = 'index.php';
-			
-			// get pathway
-			$this->pathway = phpFrame::getPathway();
+			throw new phpFrame_Exception("Controller not supported.");
 		}
 		
-		switch (phpFrame_Environment_Request::getClientName()) {
-			case 'xmlrpc' :
-				$template_path = _ABS_PATH.DS."xmlrpc";
-				break;
-			case 'mobile' :
-				$template_path = _ABS_PATH.DS.'templates'.DS.config::TEMPLATE.DS.'mobile';
-				break;
-			default :
-				$template_path = _ABS_PATH.DS.'templates'.DS.config::TEMPLATE;
-				break;
-		}
+		// Render output using client's template
+		$client->renderTemplate($output);
 		
-		// Start buffering
-		ob_start();
-		require_once $template_path.DS.$template_filename;
-		// save buffer
-		$this->output = ob_get_contents();
-		// clean output buffer
-		ob_end_clean();
-	}
-	
-	/**
-	 * Send output
-	 * 
-	 * Send the application output back to the client. This method should be invoked last, after all processing has been done.
-	 * 
-	 * @access	public
-	 * @return	void
-	 * @since	1.0
-	 */
-	public function output() {
-		echo $this->output;
-		
-		// clear errors after displaying
-		$session = phpFrame::getSession();
-		$session->setVar('error', null);
+		// Build response and send it
+		$response = phpFrame::getResponse();
+		$response->setBody($output);
+		$response->send();
 	}
 	
 	/**
@@ -295,4 +157,3 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 		}
 	}
 }
-?>

@@ -28,31 +28,15 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		phpFrame_Application_View
  */
 class projectsViewMeetings extends phpFrame_Application_View {
-	var $page_title=null;
-	var $projectid=null;
-	
 	/**
 	 * Constructor
 	 * 
 	 * @return 	void
 	 * @since	1.0
 	 */
-	function __construct() {
-		// Set the view template to load (default value is set in controller)
-		$this->layout = phpFrame_Environment_Request::getLayout();
-		
-		// Set reference to projectid
-		$this->projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		
-		// Set reference to project object loaded in controller
-		if (!empty($this->projectid)) {
-			$controller =& phpFrame_Base_Singleton::getInstance('projectsController');
-			$this->project =& $controller->project;
-		}
-		
-		$this->current_tool = _LANG_MEETINGS;
-		
-		parent::__construct();
+	function __construct($layout) {
+		// Invoke the parent to set the view name and default layout
+		parent::__construct('meetings', $layout);
 	}
 	
 	/**
@@ -86,7 +70,7 @@ class projectsViewMeetings extends phpFrame_Application_View {
 		$this->pageNav =& $meetings['pageNav'];
 		$this->lists =& $meetings['lists'];
 		
-		$this->addPathwayItem($this->page_title);
+		phpFrame::getPathway()->addItem($this->page_title);
 	}
 	
 	function displayMeetingsDetail() {
@@ -100,8 +84,8 @@ class projectsViewMeetings extends phpFrame_Application_View {
 		$document->addStyleSheet('lib/jquery/plugins/lightbox/css/jquery.lightbox-0.5.css');
 		
 		$this->page_title .= ' - '.$meeting->name;
-		$this->addPathwayItem($this->current_tool, "index.php?component=com_projects&view=meetings&projectid=".$this->projectid);
-		$this->addPathwayItem($meeting->name);
+		phpFrame::getPathway()->addItem($this->current_tool, "index.php?component=com_projects&view=meetings&projectid=".$this->projectid);
+		phpFrame::getPathway()->addItem($meeting->name);
 	}
 	
 	/**
@@ -122,8 +106,8 @@ class projectsViewMeetings extends phpFrame_Application_View {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->addPathwayItem($this->current_tool, "index.php?component=com_projects&view=meetings&projectid=".$this->projectid);
-		$this->addPathwayItem($action);
+		phpFrame::getPathway()->addItem($this->current_tool, "index.php?component=com_projects&view=meetings&projectid=".$this->projectid);
+		phpFrame::getPathway()->addItem($action);
 	}
 	
 	function displayMeetingsSlideshowsForm() {
@@ -142,8 +126,8 @@ class projectsViewMeetings extends phpFrame_Application_View {
 		}
 		
 		$this->page_title .= ' - '.$action;
-		$this->addPathwayItem($this->current_tool, "index.php?component=com_projects&view=meetings&projectid=".$this->projectid);
-		$this->addPathwayItem($action);
+		phpFrame::getPathway()->addItem($this->current_tool, "index.php?component=com_projects&view=meetings&projectid=".$this->projectid);
+		phpFrame::getPathway()->addItem($action);
 		$this->action = $action;
 	}
 	
@@ -165,8 +149,8 @@ class projectsViewMeetings extends phpFrame_Application_View {
 		
 		$action = _LANG_PROJECTS_MEETINGS_FILES_ATTACH;
 		$this->page_title .= ' - '.$action;
-		$this->addPathwayItem($this->current_tool, "index.php?component=com_projects&view=meetings&projectid=".$this->projectid);
-		$this->addPathwayItem($action);
+		phpFrame::getPathway()->addItem($this->current_tool, "index.php?component=com_projects&view=meetings&projectid=".$this->projectid);
+		phpFrame::getPathway()->addItem($action);
 		$this->action = $action;
 	}
 	
