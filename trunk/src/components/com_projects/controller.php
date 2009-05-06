@@ -369,7 +369,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		
 	
 		// Display view
-		$view->displayIssuesForm();
+		$view->display();
 	}
 	
 	public function save_issue() {

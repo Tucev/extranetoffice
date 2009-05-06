@@ -26,7 +26,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 	 */
 	function __construct() {}
 	
-	public function getFiles(phpFrame_Database_Listfilter $list_filter) {
+	public function getFiles(phpFrame_Database_Listfilter $list_filter, $projectid) {
 		// Build SQL query
 		$where = array();
 		

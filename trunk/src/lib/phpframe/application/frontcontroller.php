@@ -57,6 +57,7 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 	 * @since	1.0
 	 */
 	protected function __construct() {
+		
 		// Initialise phpFame's error and exception handlers.
 		phpFrame_Exception_Handler::init();
 		
@@ -83,6 +84,7 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 		if ($session->isAuth()) {
 			$user->load($session->getUserId());
 		}
+		//TODO move this to clientcli preActionHook
 		elseif (phpFrame_Environment_Request::getClientName() == 'cli') {
 			$user->id = 1;
 			$user->groupid = 1;

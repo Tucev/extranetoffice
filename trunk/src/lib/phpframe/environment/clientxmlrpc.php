@@ -29,6 +29,7 @@ class phpFrame_Environment_ClientXmlrpc implements phpFrame_Environment_IClient 
 	 */
 	public static function detect() {
 		
+		global $HTTP_RAW_POST_DATA;
 		//check existance of $_HTTP_RAW_POST_DATA array
 		if (count($HTTP_RAW_POST_DATA) > 0) {
 			//check for a valid XML structure
@@ -39,15 +40,6 @@ class phpFrame_Environment_ClientXmlrpc implements phpFrame_Environment_IClient 
 				//check for valid RPC
 				if ($domXPath->query("methodCall/params/param")->$length > 0) //xpath for methodname and component
 				{
-					
-ob_start();
-var_dump($HTTP_RAW_POST_DATA);
-$output = ob_get_contents();
-ob_end_clean();
-file_put_contents("/var/www/xmlrpc/globals.html",$output);
-exit;
-	
-					
 					return new self;
 				}
 			}
@@ -62,8 +54,16 @@ exit;
 	 * @return	Unified Request Array
 	 */
 	public function populateURA() {
+		global $HTTP_RAW_POST_DATA;
 		
-		return _parseXMLRPC($HTTP_RAW_POST_DATA);
+ob_start();
+var_dump($this->_parseXMLRPC($HTTP_RAW_POST_DATA));
+$output = ob_get_contents();
+ob_end_clean();
+file_put_contents("/var/www/xmlrpc/globals.html",$output);
+exit;	
+		
+		return $this->_parseXMLRPC($HTTP_RAW_POST_DATA);
 		
 	}
 	
