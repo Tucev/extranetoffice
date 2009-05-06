@@ -68,13 +68,7 @@ class projectsViewIssues extends phpFrame_Application_View {
 	}
 	
 	function displayIssuesForm() {
-		if (!empty($this->_data['issue'])) {
-			$action = _LANG_ISSUES_EDIT;
-		}
-		else {
-			$action = _LANG_ISSUES_NEW;
-		}
-		
+		$action = empty($this->data['row']) ? _LANG_ISSUES_NEW : _LANG_ISSUES_EDIT;
 		$this->_data['page_title'] .= ' - '.$action;
 		phpFrame::getPathway()->addItem($this->current_tool, phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&projectid=".$this->projectid));
 		phpFrame::getPathway()->addItem($action);
