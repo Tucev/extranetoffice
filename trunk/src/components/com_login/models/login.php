@@ -20,6 +20,13 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 class loginModelLogin extends phpFrame_Application_Model {
 	/**
+	 * Constructor
+	 * 
+	 * @return	void
+	 */
+	public function __construct() {}
+	
+	/**
 	 * Log in
 	 * 
 	 * @param	string	$username
@@ -75,8 +82,8 @@ class loginModelLogin extends phpFrame_Application_Model {
 	public function resetPassword($email) {
 		// First we check whether there is a user with the passed email address
 		$query = "SELECT id FROM #__users WHERE email = '".$email."'";
-		$this->_db->setQuery($query);
-		$userid = $this->_db->loadResult();
+		phpFrame::getDB()->setQuery($query);
+		$userid = phpFrame::getDB()->loadResult();
 		
 		if (!empty($userid)) {
 			// Create standard object to store user properties

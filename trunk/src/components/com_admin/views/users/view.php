@@ -28,19 +28,15 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		phpFrame_Application_View
  */
 class adminViewUsers extends phpFrame_Application_View {
-	var $page_title=null;
-	
 	/**
 	 * Constructor
 	 * 
 	 * @return 	void
 	 * @since	1.0
 	 */
-	function __construct() {
-		// Set the view template to load
-		$this->layout = phpFrame_Environment_Request::getVar('layout', 'list');
-		
-		parent::__construct();
+	public function __construct($layout) {
+		// Invoke the parent to set the view name and default layout
+		parent::__construct('users', $layout);
 	}
 	
 	/**
@@ -57,7 +53,7 @@ class adminViewUsers extends phpFrame_Application_View {
 		
 		// Append page title to document title
 		$document = phpFrame::getDocument('html');
-		$document->title .= ' - '.$this->page_title;
+		$document->title .= ' - '.$this->_data['page_title'];
 	}
 	
 	/**
@@ -66,29 +62,15 @@ class adminViewUsers extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayUsersList() {
-		$this->page_title = _LANG_ADMIN_USERS;
-		
-		// Push model into the view
-		$model = $this->getModel('users');
-		$users = $model->getUsers();
-		$this->rows =& $users['rows'];
-		$this->pageNav =& $users['pageNav'];
-		$this->lists =& $users['lists'];
+		$this->_data['page_title'] = _LANG_ADMIN_USERS;
 	}
 	
 	function displayUsersForm() {
-		$userid = phpFrame_Environment_Request::getVar('userid', 0);
-		
-		if (empty($userid)) {
-			$this->page_title = _LANG_ADMIN_USERS_NEW;
+		if (empty($this->_data['row']->id)) {
+			$this->_data['page_title'] = _LANG_ADMIN_USERS_NEW;
 		}
 		else {
-			$this->page_title = _LANG_ADMIN_USERS_EDIT;
-			
-			// Push model into the view
-			$model = $this->getModel('users');
-			$this->row = $model->getUsersDetail($userid);
+			$this->_data['page_title'] = _LANG_ADMIN_USERS_EDIT;
 		}
 	}
 }
-?>

@@ -591,8 +591,7 @@ class phpFrame_HTML {
 			return call_user_func_array( array( 'phpFrame_HTML', $function_name ), $args );
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'warning', 'phpFrame_HTML::'.$function_name.' not supported.' );
-			return false;
+			throw new phpFrame_Exception('phpFrame_HTML::'.$function_name.' not supported.');
 		}
 		
 	}

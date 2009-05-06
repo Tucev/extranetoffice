@@ -23,7 +23,7 @@ $views_available = $controller->getViewsAvailable();
 <ul>
 	
 <li>
-	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=".phpFrame_Environment_Request::getComponentName()."&action=get_projects_detail&projectid=".phpFrame_Environment_Request::getVar('projectid')); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=".phpFrame_Environment_Request::getComponentName()."&action=get_project_detail&projectid=".phpFrame_Environment_Request::getVar('projectid')); ?>">
 	Project Home
 	</a>
 </li>

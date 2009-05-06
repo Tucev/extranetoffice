@@ -24,10 +24,7 @@ class projectsModelMembers extends phpFrame_Application_Model {
 	 *
 	 * @since	1.0
 	 */
-	function __construct() {
-		//TODO: Check permissions
-		parent::__construct();
-	}
+	function __construct() {}
 	
 	function getMembers($projectid, $userid=0) {
 		$query = "SELECT ur.userid, ur.roleid, r.name AS rolename";
@@ -40,8 +37,8 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		
 		//echo str_replace('#__', 'eo_', $query); exit;
 
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		phpFrame::getDB()->setQuery($query);
+		return phpFrame::getDB()->loadObjectList();
 	}
 	
 	function saveMember($projectid, $userid, $roleid, $notify=true) {
@@ -75,9 +72,9 @@ class projectsModelMembers extends phpFrame_Application_Model {
 			
 			$new_mail = new phpFrame_Mail_Mailer();
 			$new_mail->AddAddress($new_member_email, phpFrame_User_Helper::id2name($userid));
-			$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, $this->_user->get('name'), $project_name, $site_name);
+			$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, phpFrame::getUser()->name, $project_name, $site_name);
 			$new_mail->Body = phpFrame_HTML_Text::_(sprintf(_LANG_PROJECTS_INVITATION_BODY,
-									 $this->_user->get('name'), 
+									 phpFrame::getUser()->name, 
 									 $project_name, 
 									 $role_name, 
 									 $uri->getBase())
@@ -151,9 +148,9 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		
 		$new_mail = new phpFrame_Mail_Mailer();
 		$new_mail->AddAddress($row->email, phpFrame_User_Helper::fullname_format($row->firstname, $row->lastname));
-		$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, $this->_user->get('name'), $project_name, $site_name);
+		$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, phpFrame::getUser()->name, $project_name, $site_name);
 		$new_mail->Body = sprintf(_LANG_PROJECTS_INVITATION_NEW_USER_BODY, 
-								 $this->_user->get('name'),
+								 phpFrame::getUser()->name,
 								 $project_name, 
 								 $role_name, 
 								 $row->username, 
@@ -178,8 +175,8 @@ class projectsModelMembers extends phpFrame_Application_Model {
 	 */
 	function deleteMember($projectid, $userid) {
 		$query = "DELETE FROM #__users_roles WHERE projectid = ".$projectid." AND userid = ".$userid;
-		$this->_db->setQuery($query);
-		if ($this->_db->query() === false) {
+		phpFrame::getDB()->setQuery($query);
+		if (phpFrame::getDB()->query() === false) {
 			return false;
 		}
 		else {
@@ -191,9 +188,9 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		$query = "UPDATE #__users_roles ";
 		$query .= " SET roleid = ".$roleid;
 		$query .= " WHERE projectid = ".$projectid." AND userid = ".$userid;
-		$this->_db->setQuery($query);
-		if ($this->_db->query() === false) {
-			$this->_error[] = $this->_db->getLastError();
+		phpFrame::getDB()->setQuery($query);
+		if (phpFrame::getDB()->query() === false) {
+			$this->_error[] = phpFrame::getDB()->getLastError();
 			return false;
 		}
 		else {
@@ -203,8 +200,8 @@ class projectsModelMembers extends phpFrame_Application_Model {
 	
 	function isMember($projectid, $userid) {
 		$query = "SELECT roleid FROM #__users_roles WHERE projectid = ".$projectid." AND userid = ".$userid;
-		$this->_db->setQuery($query);
-		$roleid = $this->_db->loadResult();
+		phpFrame::getDB()->setQuery($query);
+		$roleid = phpFrame::getDB()->loadResult();
 		if (!empty($roleid)) {
 			return $roleid;
 		}

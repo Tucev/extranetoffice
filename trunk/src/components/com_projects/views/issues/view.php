@@ -48,14 +48,13 @@ class projectsViewIssues extends phpFrame_Application_View {
 	 * @since	1.0
 	 */
 	function display() {
-		$this->page_title = _LANG_ISSUES;
-		$this->page_heading = $this->project->name;
+		$this->_data['page_title'] = _LANG_ISSUES;
 		
 		parent::display();
 		
 		// Append page title to document title
 		$document = phpFrame::getDocument('html');
-		$document->title .= ' - '.$this->page_title;
+		$document->title .= ' - '.$this->_data['page_title'];
 	}
 	
 	/**
@@ -64,7 +63,8 @@ class projectsViewIssues extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayIssuesList() {
-		phpFrame::getPathway()->addItem($this->page_title);
+		$this->_data['page_heading'] = $this->_data['project']->name;
+		phpFrame::getPathway()->addItem(_LANG_ISSUES);
 	}
 	
 	function displayIssuesForm() {

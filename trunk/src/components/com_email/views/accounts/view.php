@@ -68,7 +68,7 @@ class emailViewAccounts extends phpFrame_Application_View {
 		$modelAccounts = $this->getModel('accounts');
 		$this->rows = $modelAccounts->getAccounts($this->_user->id);
 		
-		$this->page_title = _LANG_EMAIL_ACCOUNTS;
+		$this->_data['page_title'] = _LANG_EMAIL_ACCOUNTS;
 		phpFrame::getPathway()->addItem(_LANG_EMAIL_ACCOUNTS);
 	}
 	
@@ -94,7 +94,7 @@ class emailViewAccounts extends phpFrame_Application_View {
 			$this->row->smtp_port = 25;
 		}
 		
-		$this->page_title = _LANG_EMAIL_ACCOUNTS;
+		$this->_data['page_title'] = _LANG_EMAIL_ACCOUNTS;
 		phpFrame::getPathway()->addItem(_LANG_EMAIL_ACCOUNTS);
 	}
 }

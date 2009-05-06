@@ -103,7 +103,7 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 		$request_action = phpFrame_Environment_Request::getAction();
 		//echo $request_action; exit;
 		// If no specific action has been requested we use default action
-		if (is_null($request_action)) {
+		if (empty($request_action)) {
 			$action = $this->_default_action;
 		}
 		else {
@@ -221,7 +221,7 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 * @since	1.0
 	 */
 	protected function redirect() {
-		if ($this->_redirect_url) {
+		if ($this->_redirect_url && phpFrame_Environment_Request::getClientName() != "cli") {
 			header("Location: ".$this->_redirect_url);
 			exit;
 		}

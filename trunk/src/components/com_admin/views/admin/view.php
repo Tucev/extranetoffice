@@ -28,19 +28,15 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		phpFrame_Application_View
  */
 class adminViewAdmin extends phpFrame_Application_View {
-	var $page_title=null;
-	
 	/**
 	 * Constructor
 	 * 
 	 * @return 	void
 	 * @since	1.0
 	 */
-	function __construct() {
-		// Set the view template to load (default value is set in controller)
-		$this->layout = phpFrame_Environment_Request::getLayout();
-		
-		parent::__construct();
+	function __construct($layout) {
+		// Invoke the parent to set the view name and default layout
+		parent::__construct('admin', $layout);
 	}
 	
 	/**
@@ -56,7 +52,7 @@ class adminViewAdmin extends phpFrame_Application_View {
 		
 		// Append page title to document title
 		$document = phpFrame::getDocument('html');
-		$document->title .= ' - '.$this->page_title;
+		$document->title .= ' - '.$this->_data['page_title'];
 	}
 	
 	/**
@@ -65,7 +61,6 @@ class adminViewAdmin extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayAdmin() {
-		$this->page_title = _LANG_ADMIN;
+		$this->_data['page_title'] = _LANG_ADMIN;
 	}
 }
-?>

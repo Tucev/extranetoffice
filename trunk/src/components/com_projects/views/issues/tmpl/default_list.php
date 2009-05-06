@@ -26,17 +26,17 @@ $(document).ready(function() {
 });
 </script>
 
-<h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
 
 <div class="new">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&layout=form&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&layout=form&projectid='.$data['project']->id); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_NEW ); ?>
 	</a>
 </div>
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&projectid='.$data['project']->id); ?>">
 		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
@@ -90,15 +90,15 @@ $(document).ready(function() {
 	</table>
 	<input type="hidden" name="component" value="com_projects" />
 	<input type="hidden" name="view" value="issues" />
-	<input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
+	<input type="hidden" name="projectid" value="<?php echo $data['project']->id; ?>" />
 	</form>
 </div>
 
 
-<?php if (is_array($this->rows) && count($this->rows) > 0) : ?>
+<?php if (is_array($data['rows']) && count($data['rows']) > 0) : ?>
 
 <?php $k = 0; ?>
-<?php foreach($this->rows as $row) : ?>
+<?php foreach($data['rows'] as $row) : ?>
 <div class="thread_row<?php echo $k; ?>">
 
 	<?php if ($row->created_by == $this->_user->id) : ?>
@@ -147,11 +147,11 @@ $(document).ready(function() {
 	<?php endif; ?>
 	
 	<div class="comments_info">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&layout=detail&projectid=".$this->projectid."&issueid=".$row->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&layout=detail&projectid=".$data['project']->id."&issueid=".$row->id); ?>">
 			<?php echo $row->comments; ?> <?php echo _LANG_COMMENTS; ?>
 		</a>
 		 - 
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&layout=detail&projectid=".$this->projectid."&issueid=".$row->id."#post-comment"); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&layout=detail&projectid=".$data['project']->id."&issueid=".$row->id."#post-comment"); ?>">
 			<?php echo _LANG_COMMENTS_NEW; ?>
 		</a>
 	</div>
@@ -162,16 +162,10 @@ $(document).ready(function() {
 
 <br />
 
-<form name="pagenavform">
-<?php echo $this->pageNav->getListFooter(); ?>
-<input type="hidden" name="component" value="com_projects" />
-<input type="hidden" name="view" value="projects" />
-<input type="hidden" name="type" value="issues" />
-<input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
-</form>
+<?php echo $data['page_nav']->getListFooter(); ?>
 
 <?php else : ?>
 <?php echo phpFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>
 
-<?php //echo '<pre>'; var_dump($this->rows); echo '</pre>'; ?>
+<?php //echo '<pre>'; var_dump($data['rows']); echo '</pre>'; ?>

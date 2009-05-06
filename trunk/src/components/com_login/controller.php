@@ -26,22 +26,21 @@ class loginController extends phpFrame_Application_ActionController {
 	 * 
 	 * @return void
 	 */
-	function __construct() {
-		// set default request vars
-		$this->component = phpFrame_Environment_Request::getComponentName();
-		$this->action = phpFrame_Environment_Request::getAction('display');
-		$this->view = phpFrame_Environment_Request::getViewName('login');
-		$this->layout = phpFrame_Environment_Request::getLayout();
-		
-		parent::__construct();
+	protected function __construct() {
+		// Invoke parent's constructor to set default action
+		parent::__construct('get_login_form');
 	}
 	
-	function login() {
+	public function get_login_form() {
+		// Get view
+		$view = $this->getView('login', '');
+		// Display view
+		$view->display();
+	}
+	
+	public function login() {
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
-		
-		// Push model into controller
-		$model = $this->getModel('login');
 		
 		// if user is not logged on we attemp to login
 		$session = phpFrame::getSession();
@@ -49,6 +48,8 @@ class loginController extends phpFrame_Application_ActionController {
 			$username = phpFrame_Environment_Request::getVar('username', '');
 			$password = phpFrame_Environment_Request::getVar('password', '');
 			
+			// Get login model
+			$model = $this->getModel('login');
 			if (!$model->login($username, $password)) {
 				$this->_sysevents->setSummary($model->getLastError(), "warning");
 			}
@@ -57,14 +58,14 @@ class loginController extends phpFrame_Application_ActionController {
 		}	
 	}
 	
-	function logout() {
+	public function logout() {
 		// Push model into controller
 		$model = $this->getModel('login');
 		$model->logout();
 		$this->setRedirect('index.php');
 	}
 	
-	function reset_password() {
+	public function reset_password() {
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
@@ -83,4 +84,3 @@ class loginController extends phpFrame_Application_ActionController {
 	}
 	
 }
-?>

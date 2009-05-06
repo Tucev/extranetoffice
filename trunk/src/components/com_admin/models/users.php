@@ -25,16 +25,12 @@ class adminModelUsers extends phpFrame_Application_Model {
 	 * 
 	 * This method returns an array with row objects for each user
 	 * 
-	 * @return array
+	 * @param	object	$list_filter	Object of type phpFrame_Database_Listfilter
+	 * @param	boolean	$deleted		Indicates whether we want to include deleted users
+	 * @return	array
 	 */
-	function getUsers($deleted=false) {
-		$filter_order = phpFrame_Environment_Request::getVar('filter_order', 'u.lastname');
-		$filter_order_Dir = phpFrame_Environment_Request::getVar('filter_order_Dir', '');
-		$search = phpFrame_Environment_Request::getVar('search', '');
-		$search = strtolower( $search );
-		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
-		$limit = phpFrame_Environment_Request::getVar('limit', 20);
-
+	function getUsers(phpFrame_Database_Listfilter $list_filter, $deleted=false) {
+		// Build SQL query
 		$where = array();
 		
 		if ($deleted === true) {
@@ -46,18 +42,12 @@ class adminModelUsers extends phpFrame_Application_Model {
 		}
 		
 		if ($search) {
-			$where[] = "(u.firstname LIKE '%".$this->_db->getEscaped($search)."%' 
-						OR u.lastname LIKE '%".$this->_db->getEscaped($search)."%' 
-						OR u.username LIKE '%".$this->_db->getEscaped($search)."%')";
+			$where[] = "(u.firstname LIKE '%".phpFrame::getDB()->getEscaped($list_filter->getSearchStr())."%' 
+						OR u.lastname LIKE '%".phpFrame::getDB()->getEscaped($list_filter->getSearchStr())."%' 
+						OR u.username LIKE '%".phpFrame::getDB()->getEscaped($list_filter->getSearchStr())."%')";
 		}
 
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
-		
-		if (empty($filter_order)) {
-			$orderby = ' ORDER BY u.lastname ';
-		} else {
-			$orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir .', u.lastname ';
-		}
 		
 		// get the total number of records
 		$query = "SELECT 
@@ -68,9 +58,11 @@ class adminModelUsers extends phpFrame_Application_Model {
 				  " GROUP BY u.id ";
 		
 		//echo str_replace('#__', 'eo_', $query); exit;
-		$this->_db->setQuery($query);
-		$this->_db->query();
-		$total = $this->_db->getNumRows();
+		phpFrame::getDB()->setQuery($query);
+		phpFrame::getDB()->query();
+		
+		// Set total number of record in list filter
+		$list_filter->setTotal(phpFrame::getDB()->getNumRows());
 		
 		// get the subset (based on limits) of required records
 		$query = "SELECT 
@@ -80,27 +72,14 @@ class adminModelUsers extends phpFrame_Application_Model {
 				  LEFT JOIN #__groups g ON u.groupid = g.id "
 				  . $where . 
 				  " GROUP BY u.id ";
-
-		$pageNav = new phpFrame_HTML_Pagination($total, $limitstart, $limit);
 			
-		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
+		// Add order by and limit statements for subset (based on filter)
+		$query .= $list_filter->getOrderByStmt();
+		$query .= $list_filter->getLimitStmt();
 		//echo str_replace('#__', 'eo_', $query); exit;
-		$this->_db->setQuery($query);
-		$rows = $this->_db->loadObjectList();
 		
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
-	
-		// search filter
-		$lists['search'] = $search;
-			
-		// pack data into an array to return
-		$return['rows'] = $rows;
-		$return['pageNav'] = $pageNav;
-		$return['lists'] = $lists;
-			
-		return $return;
+		phpFrame::getDB()->setQuery($query);
+		return phpFrame::getDB()->loadObjectList();
 	}
 	
 	/**
@@ -117,8 +96,8 @@ class adminModelUsers extends phpFrame_Application_Model {
 					  FROM #__users AS u 
 					  LEFT JOIN #__groups g ON u.groupid = g.id 
 					  WHERE u.id = '".$userid."'";
-			$this->_db->setQuery($query);
-			return $this->_db->loadObject();
+			phpFrame::getDB()->setQuery($query);
+			return phpFrame::getDB()->loadObject();
 		}
 		else {
 			return false;
@@ -201,9 +180,9 @@ class adminModelUsers extends phpFrame_Application_Model {
 	
 	function deleteUser($userid) {
 		$query = "UPDATE #__users SET `deleted` = '".date("Y-m-d H:i:s")."' WHERE id = ".$userid;
-		$this->_db->setQuery($query);
-		if ($this->_db->query() === false) {
-			$this->_error[] = $this->_db->getLastError();
+		phpFrame::getDB()->setQuery($query);
+		if (phpFrame::getDB()->query() === false) {
+			$this->_error[] = phpFrame::getDB()->getLastError();
 			return false;
 		}
 		else {
@@ -211,4 +190,3 @@ class adminModelUsers extends phpFrame_Application_Model {
 		}
 	}
 }
-?>

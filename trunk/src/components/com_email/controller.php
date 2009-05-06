@@ -24,15 +24,16 @@ class emailController extends phpFrame_Application_ActionController {
 	 * @return	void
 	 * @since 	1.0
 	 */
-	function __construct() {
-		// set default request vars
-		$this->view = phpFrame_Environment_Request::getViewName('messages');
-		$this->layout = phpFrame_Environment_Request::getLayout('list');
-		 
-		parent::__construct();
+	protected function __construct() {
+		// Invoke parent's constructor to set default action
+		parent::__construct('get_messages');
 	}
 	
-	function save_account() {
+	public function get_messages() {
+		
+	}
+	
+	public function save_account() {
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
@@ -51,7 +52,7 @@ class emailController extends phpFrame_Application_ActionController {
 		$this->setRedirect('index.php?component=com_email&view=accounts');
 	}
 	
-	function remove_account() {
+	public function remove_account() {
 		$accountid = phpFrame_Environment_Request::getVar('accountid', 0);
 		
 		$modelAccounts = $this->getModel('accounts');
@@ -65,7 +66,7 @@ class emailController extends phpFrame_Application_ActionController {
 		$this->setRedirect('index.php?component=com_email&view=accounts');
 	}
 	
-	function make_default_account() {
+	public function make_default_account() {
 		$accountid = phpFrame_Environment_Request::getVar('accountid', 0);
 		
 		$modelAccounts = $this->getModel('accounts');
@@ -79,7 +80,7 @@ class emailController extends phpFrame_Application_ActionController {
 		$this->setRedirect('index.php?component=com_email&view=accounts');
 	}
 	
-	function download_attachment() {
+	public function download_attachment() {
 		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
 		$msgno = phpFrame_Environment_Request::getVar('msgno', 0);
 		$strFileName = phpFrame_Environment_Request::getVar('file_name', '');
@@ -92,7 +93,7 @@ class emailController extends phpFrame_Application_ActionController {
 		//$modelEmail->closeStream(); // Don't need to close stream because script will exit before we get back from previous call.
 	}
 	
-	function add_attachment() {
+	public function add_attachment() {
 		
 		$modelEmail = $this->getModel('email');
 		$attachment = $modelEmail->addAttachment();
@@ -103,7 +104,7 @@ class emailController extends phpFrame_Application_ActionController {
 		parent::display();
 	}
 	
-	function send_email() {
+	public function send_email() {
 		$recipients = phpFrame_Environment_Request::getVar('recipients', '');
 		$cc = phpFrame_Environment_Request::getVar('cc', '');
 		$bcc = phpFrame_Environment_Request::getVar('bcc', '');
@@ -152,7 +153,7 @@ class emailController extends phpFrame_Application_ActionController {
 		$this->setRedirect('index.php?component=com_intranetoffice&view=email&folder='.$folder);
 	}
 	
-	function move_email() {
+	public function move_email() {
 		$folder = phpFrame_Environment_Request::getVar('folder', '');
 		$mailbox = phpFrame_Environment_Request::getVar('mailbox', '');
 		$uid = phpFrame_Environment_Request::getVar('uid', 0); // can contain a list of ids
@@ -175,7 +176,7 @@ class emailController extends phpFrame_Application_ActionController {
 		}
 	}
 	
-	function remove_email() {
+	public function remove_email() {
 		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
 		$uid = phpFrame_Environment_Request::getVar('uid', 0); // can contain a list of ids
 		$trash = phpFrame_Environment_Request::getVar('trash', 0);
@@ -204,7 +205,7 @@ class emailController extends phpFrame_Application_ActionController {
 		$this->setRedirect('index.php?component=com_intranetoffice&view=email&folder='.$folder);
 	}
 	
-	function restore_email() {
+	public function restore_email() {
 		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
 		$uid = phpFrame_Environment_Request::getInt('uid');
 		
@@ -217,7 +218,7 @@ class emailController extends phpFrame_Application_ActionController {
 		$this->setRedirect('index.php?component=com_intranetoffice&view=email&folder='.$folder);
 	}
 	
-	function empty_deleted_items() {
+	public function empty_deleted_items() {
 		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
 		
 		$modelEmail = $this->getModel('email');
@@ -235,7 +236,7 @@ class emailController extends phpFrame_Application_ActionController {
 	* This function deletes all messages in Trash folder and then expunges deleted messages
 	* It is different from empty_deleted_items() which only flags selected messages in any folder as deleted
 	*/
-	function empty_email_trash() {
+	public function empty_email_trash() {
 		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
 		
 		$modelEmail = $this->getModel('email');
@@ -250,7 +251,7 @@ class emailController extends phpFrame_Application_ActionController {
 		$this->setRedirect('index.php?component=com_intranetoffice&view=email&folder='.$folder);
 	}
 	
-	function set_flags() {
+	public function set_flags() {
 		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
 		$uid = phpFrame_Environment_Request::getInt('uid');
 		$flag = phpFrame_Environment_Request::getVar('flag', '');
@@ -264,7 +265,7 @@ class emailController extends phpFrame_Application_ActionController {
 		$this->setRedirect('index.php?component=com_intranetoffice&view=email&folder='.$folder);
 	}
 	
-	function clear_flags() {
+	public function clear_flags() {
 		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
 		$uid = phpFrame_Environment_Request::getInt('uid');
 		$flag = phpFrame_Environment_Request::getVar('flag', '');
@@ -278,7 +279,7 @@ class emailController extends phpFrame_Application_ActionController {
 		$this->setRedirect('index.php?component=com_intranetoffice&view=email&folder='.$folder);
 	}
 	
-	function create_mailbox() {
+	public function create_mailbox() {
 		$new_folder_path = phpFrame_Environment_Request::getVar('new_folder_path', '');
 		$new_folder_name = phpFrame_Environment_Request::getVar('new_folder_name', '');
 		
@@ -295,7 +296,7 @@ class emailController extends phpFrame_Application_ActionController {
 		parent::display();
 	}
 	
-	function rename_mailbox() {
+	public function rename_mailbox() {
 		$old_box = phpFrame_Environment_Request::getVar('old_box', '');
 		$new_box = phpFrame_Environment_Request::getVar('new_box', '');
 		
@@ -314,7 +315,7 @@ class emailController extends phpFrame_Application_ActionController {
 		parent::display();
 	}
 	
-	function delete_mailbox() {
+	public function delete_mailbox() {
 		$mailbox = phpFrame_Environment_Request::getVar('mailbox', '');
 		$folder = phpFrame_Environment_Request::getVar('folder', '');
 		
@@ -337,4 +338,3 @@ class emailController extends phpFrame_Application_ActionController {
 	}
 	
 }
-?>

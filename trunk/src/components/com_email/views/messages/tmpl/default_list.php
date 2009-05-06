@@ -95,7 +95,7 @@ function confirm_delete_folder(mailbox, label) {
 }
 </script>
 
-<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 <div id="right_col">
 	

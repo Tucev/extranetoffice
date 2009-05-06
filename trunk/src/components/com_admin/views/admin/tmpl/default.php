@@ -29,21 +29,21 @@ $(function() {
 });
 </script>
 
-<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 <div id="sysadmin_tabs">
 	<ul>
 		<li>
-			<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_admin&amp;view=config"); ?>">Global Config</a>
+			<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_admin&amp;action=get_config"); ?>">Global Config</a>
 		</li>
 		<li>
-			<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_admin&amp;view=users"); ?>">Users</a>
+			<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_admin&amp;action=get_users"); ?>">Users</a>
 		</li>
 		<li>
-			<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_admin&amp;view=components"); ?>">Components</a>
+			<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_admin&amp;action=get_components"); ?>">Components</a>
 		</li>
 		<li>
-			<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_admin&amp;view=modules"); ?>">Modules</a>
+			<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_admin&amp;action=get_modules"); ?>">Modules</a>
 		</li>
 	</ul>
 </div>

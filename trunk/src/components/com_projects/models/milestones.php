@@ -24,10 +24,7 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 	 *
 	 * @since 1.0.1
 	 */
-	function __construct() {
-		//TODO: Check permissions
-		parent::__construct();
-	}
+	function __construct() {}
 	
 	/**
 	 * Gets milestones list info
@@ -50,7 +47,7 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 		//$where[] = "( p.access = '0' OR (".$this->_user->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 
 		if ( $search ) {
-			$where[] = "m.title LIKE '%".$this->_db->getEscaped($search)."%'";
+			$where[] = "m.title LIKE '%".phpFrame::getDB()->getEscaped($search)."%'";
 		}
 		
 		if (!empty($projectid)) {
@@ -74,9 +71,9 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 				  . $where . 
 				  " GROUP BY m.id ";
 		//echo $query; exit;	  
-		$this->_db->setQuery( $query );
-		$this->_db->query();
-		$total = $this->_db->getNumRows();
+		phpFrame::getDB()->setQuery( $query );
+		phpFrame::getDB()->query();
+		$total = phpFrame::getDB()->getNumRows();
 
 		
 		$pageNav = new phpFrame_HTML_Pagination( $total, $limitstart, $limit );
@@ -84,8 +81,8 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 		// get the subset (based on limits) of required records
 		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
 		//echo $query; exit;
-		$this->_db->setQuery($query);
-		$rows = $this->_db->loadObjectList();
+		phpFrame::getDB()->setQuery($query);
+		$rows = phpFrame::getDB()->loadObjectList();
 		
 		// Prepare rows and add relevant data
 		if (is_array($rows) && count($rows) > 0) {
@@ -141,8 +138,8 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 		$query .= " JOIN #__users u ON u.id = m.created_by ";
 		$query .= " WHERE m.id = ".$milestoneid;
 		$query .= " ORDER BY m.due_date DESC";
-		$this->_db->setQuery($query);
-		$row = $this->_db->loadObject();
+		phpFrame::getDB()->setQuery($query);
+		$row = phpFrame::getDB()->loadObject();
 		
 		// Sort out status according to due date
 		if ($row->due_date < date("Y-m-d H:i:s") && $row->closed == '0000-00-00 00:00:00') {
@@ -206,8 +203,8 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 		// Delete existing assignees before we store new ones if editing existing issue
 		if (!empty($post['id'])) {
 			$query = "DELETE FROM #__users_milestones WHERE milestoneid = ".$row->id;
-			$this->_db->setQuery($query);
-			$this->_db->query();
+			phpFrame::getDB()->setQuery($query);
+			phpFrame::getDB()->query();
 		}
 		
 		// Store assignees
@@ -218,8 +215,8 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 				if ($i>0) { $query .= ","; }
 				$query .= " (NULL, '".$post['assignees'][$i]."', '".$row->id."') ";
 			}
-			$this->_db->setQuery($query);
-			$this->_db->query();
+			phpFrame::getDB()->setQuery($query);
+			phpFrame::getDB()->query();
 		}
 		
 		return $row;
@@ -239,14 +236,14 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 		// Delete message's comments
 		$query = "DELETE FROM #__comments ";
 		$query .= " WHERE projectid = ".$projectid." AND type = 'milestones' AND itemid = ".$milestoneid;
-		$this->_db->setQuery($query);
-		$this->_db->query();
+		phpFrame::getDB()->setQuery($query);
+		phpFrame::getDB()->query();
 		
 		// Delete message's assignees
 		$query = "DELETE FROM #__users_milestones ";
 		$query .= " WHERE milestoneid = ".$milestoneid;
-		$this->_db->setQuery($query);
-		$this->_db->query();
+		phpFrame::getDB()->setQuery($query);
+		phpFrame::getDB()->query();
 		
 		// Instantiate table object
 		$row =& phpFrame_Base_Singleton::getInstance("projectsTableMilestones");
@@ -273,8 +270,8 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 		$query .= " FROM #__users_milestones AS um ";
 		$query .= "LEFT JOIN #__users u ON u.id = um.userid";
 		$query .= " WHERE um.milestoneid = ".$milestoneid;
-		$this->_db->setQuery($query);
-		$assignees = $this->_db->loadObjectList();
+		phpFrame::getDB()->setQuery($query);
+		$assignees = phpFrame::getDB()->loadObjectList();
 		
 		// Prepare assignee data
 		for ($i=0; $i<count($assignees); $i++) {

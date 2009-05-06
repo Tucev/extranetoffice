@@ -20,7 +20,7 @@ $(function() {
 });
 </script>
 
-<div class="componentheading"><?php echo $this->page_title; ?></div>
+<div class="componentheading"><?php echo $data['page_title']; ?></div>
 
 <form action="index.php" method="post" name="contactsform" id="contactsform">
 

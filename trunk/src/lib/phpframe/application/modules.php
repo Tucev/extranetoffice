@@ -94,7 +94,7 @@ class phpFrame_Application_Modules extends phpFrame_Database_Table {
 					ob_end_clean();
 				}
 				else {
-					phpFrame_Application_Error::raise('', 'error', 'Module file '.$module_file_path.' not found.');
+					throw new phpFrame_Exception('Module file '.$module_file_path.' not found.');
 				}
 			}
 			

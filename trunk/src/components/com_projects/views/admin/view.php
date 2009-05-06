@@ -52,7 +52,7 @@ class projectsViewAdmin extends phpFrame_Application_View {
 		
 		// Append page title to document title
 		$document = phpFrame::getDocument('html');
-		$document->title .= ' - '.$this->page_title;
+		$document->title .= ' - '.$this->_data['page_title'];
 	}
 	
 	/**
@@ -62,13 +62,9 @@ class projectsViewAdmin extends phpFrame_Application_View {
 	 * @since	1.0
 	 */
 	function displayAdminList() {
-		$this->page_title = _LANG_ADMIN;
-		$this->page_heading = $this->project->name.' - '._LANG_ADMIN;
+		$this->_data['page_title'] = _LANG_ADMIN;
+		$this->_data['page_heading'] = $this->_data['project']->name.' - '._LANG_ADMIN;
 		phpFrame::getPathway()->addItem(_LANG_ADMIN);
-		
-		// Push model into the view
-		$model = $this->getModel('members');
-		$this->members = $model->getMembers($this->projectid);
 	}
 	
 	/**
@@ -80,32 +76,20 @@ class projectsViewAdmin extends phpFrame_Application_View {
 	 */
 	function displayAdminForm() {
 		if (!empty($this->projectid)) {
-			$this->page_title = _LANG_PROJECTS_EDIT;
+			$this->_data['page_title'] = _LANG_PROJECTS_EDIT;
 		}
 		else {
-			$this->page_title = _LANG_PROJECTS_NEW;
-			// Set default values for tools
-			$this->project = new stdClass();
-			$this->project->access = '1';
-			$this->project->access_issues = '2';
-			$this->project->access_messages = '2';
-			$this->project->access_milestones = '2';
-			$this->project->access_files = '2';
-			$this->project->access_meetings = '3';
-			$this->project->access_polls = '3';
-			$this->project->access_reports = '1';
-			$this->project->access_people = '3';
-			$this->project->access_admin = '1';
+			$this->_data['page_title'] = _LANG_PROJECTS_NEW;
 		}
 		
-		phpFrame::getPathway()->addItem($this->page_title);
+		phpFrame::getPathway()->addItem($this->_data['page_title']);
 	}
 	
 	/**
 	 * @todo This method needs to be ported to extranetoffice from intranetoffice
 	 */
 	function displayAdminMemberRole() {
-		$this->page_title = projectsHelperProjects::id2name($this->projectid).' - '. _LANG_ADMIN;
+		$this->_data['page_title'] = projectsHelperProjects::id2name($this->projectid).' - '. _LANG_ADMIN;
 		phpFrame::getPathway()->addItem(_LANG_PROJECTS_MEMBERS);
 		
 		$this->_userid = phpFrame_Environment_Request::getVar('userid', 0);
@@ -124,10 +108,9 @@ class projectsViewAdmin extends phpFrame_Application_View {
 	 * @since	1.0
 	 */
 	function displayAdminMemberForm() {
-		$this->page_title = _LANG_ADMIN.' - '._LANG_PROJECTS_ADD_MEMBER;
-		$this->page_heading = $this->project->name.' - '._LANG_ADMIN;
-		phpFrame::getPathway()->addItem(_LANG_ADMIN, 'index.php?component=com_projects&view=admin&projectid='.$this->projectid);
+		$this->_data['page_title'] = _LANG_ADMIN.' - '._LANG_PROJECTS_ADD_MEMBER;
+		$this->_data['page_heading'] = $this->_data['project']->name.' - '._LANG_ADMIN;
+		phpFrame::getPathway()->addItem(_LANG_ADMIN, 'index.php?component=com_projects&view=admin&projectid='.$this->_data['project']->id);
 		phpFrame::getPathway()->addItem(_LANG_PROJECTS_ADD_MEMBER);
 	}
 }
-?>

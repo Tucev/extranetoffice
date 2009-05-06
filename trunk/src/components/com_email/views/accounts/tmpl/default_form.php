@@ -49,7 +49,7 @@ phpFrame_HTML::validate('email_accountsform');
 </script>
 
 
-<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 <form action="index.php" method="post" id="email_accountsform" name="email_accountsform">
 	

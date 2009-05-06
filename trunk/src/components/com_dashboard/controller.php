@@ -24,7 +24,7 @@ class dashboardController extends phpFrame_Application_ActionController {
 	 * @return	void
 	 */
 	protected function __construct() {
-		// Invoke parent's constructor to set default action and default view
+		// Invoke parent's constructor to set default action
 		parent::__construct('get_dashboard');
 	}
 	

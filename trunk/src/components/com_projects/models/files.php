@@ -24,19 +24,10 @@ class projectsModelFiles extends phpFrame_Application_Model {
 	 *
 	 * @since 1.0.1
 	 */
-	function __construct() {
-		//TODO: Check permissions
-		parent::__construct();
-	}
+	function __construct() {}
 	
-	public function getFiles($projectid) {
-		$filter_order = phpFrame_Environment_Request::getVar('filter_order', 'f.ts');
-		$filter_order_Dir = phpFrame_Environment_Request::getVar('filter_order_Dir', 'DESC');
-		$search = phpFrame_Environment_Request::getVar('search', '');
-		$search = strtolower( $search );
-		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
-		$limit = phpFrame_Environment_Request::getVar('limit', 20);
-
+	public function getFiles(phpFrame_Database_Listfilter $list_filter) {
+		// Build SQL query
 		$where = array();
 		
 		// Show only public projects or projects where user has an assigned role
@@ -44,7 +35,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		//$where[] = "( p.access = '0' OR (".$this->_user->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 
 		if ( $search ) {
-			$where[] = "f.title LIKE '%".$this->_db->getEscaped($search)."%'";
+			$where[] = "f.title LIKE '%".phpFrame::getDB()->getEscaped($list_filter->getSearchStr())."%'";
 		}
 		
 		if (!empty($projectid)) {
@@ -68,17 +59,17 @@ class projectsModelFiles extends phpFrame_Application_Model {
 				  INNER JOIN (SELECT MAX(id) AS id FROM #__files GROUP BY parentid) ids ON f.id = ids.id "
 				  . $where;
 		//echo $query; exit;	  
-		$this->_db->setQuery( $query );
-		$this->_db->query();
-		$total = $this->_db->getNumRows();
+		phpFrame::getDB()->setQuery( $query );
+		phpFrame::getDB()->query();
+		$total = phpFrame::getDB()->getNumRows();
 		
 		$pageNav = new phpFrame_HTML_Pagination( $total, $limitstart, $limit );
 
 		// get the subset (based on limits) of required records
 		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
 		//echo $query; exit;
-		$this->_db->setQuery($query);
-		$rows = $this->_db->loadObjectList();
+		phpFrame::getDB()->setQuery($query);
+		$rows = phpFrame::getDB()->loadObjectList();
 		
 		// Prepare rows and add relevant data
 		if (is_array($rows) && count($rows) > 0) {
@@ -116,8 +107,8 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		$query .= " JOIN #__users u ON u.id = f.userid ";
 		$query .= " WHERE f.id = ".$fileid;
 		$query .= " ORDER BY f.ts DESC";
-		$this->_db->setQuery($query);
-		$row = $this->_db->loadObject();
+		phpFrame::getDB()->setQuery($query);
+		$row = phpFrame::getDB()->loadObject();
 		
 		if ($row === false) {
 			return false;
@@ -166,8 +157,8 @@ class projectsModelFiles extends phpFrame_Application_Model {
 			$query = "SELECT revision FROM #__files ";
 			$query .= " WHERE parentid = ".$row->parentid;
 			$query .= " ORDER BY revision DESC LIMIT 0,1";
-			$this->_db->setQuery($query);
-			$current_revision = $this->_db->loadResult();
+			phpFrame::getDB()->setQuery($query);
+			$current_revision = phpFrame::getDB()->loadResult();
 			$row->revision = ($current_revision+1);
 		}
 		
@@ -216,8 +207,8 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		// Delete existing assignees before we store new ones if editing existing issue
 		if ($row->revision > 0) {
 			$query = "DELETE FROM #__users_files WHERE fileid = ".$row->parentid;
-			$this->_db->setQuery($query);
-			$this->_db->query();
+			phpFrame::getDB()->setQuery($query);
+			phpFrame::getDB()->query();
 		}
 		
 		// Store assignees
@@ -228,8 +219,8 @@ class projectsModelFiles extends phpFrame_Application_Model {
 				if ($i>0) { $query .= ","; }
 				$query .= " (NULL, '".$post['assignees'][$i]."', '".$row->parentid."') ";
 			}
-			$this->_db->setQuery($query);
-			$this->_db->query();
+			phpFrame::getDB()->setQuery($query);
+			phpFrame::getDB()->query();
 		}
 		
 		return $row;
@@ -293,8 +284,8 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		$query .= " FROM #__users_files AS uf ";
 		$query .= "LEFT JOIN #__users u ON u.id = uf.userid";
 		$query .= " WHERE uf.fileid = ".$fileid;
-		$this->_db->setQuery($query);
-		$assignees = $this->_db->loadObjectList();
+		phpFrame::getDB()->setQuery($query);
+		$assignees = phpFrame::getDB()->loadObjectList();
 		
 		// Prepare assignee data
 		for ($i=0; $i<count($assignees); $i++) {
@@ -342,8 +333,8 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		$query .= " JOIN #__users u ON u.id = f.userid";
 		$query .= " WHERE f.parentid = ".$parentid." AND f.id <> ".$id;
 		$query .= " ORDER BY f.ts DESC";
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		phpFrame::getDB()->setQuery($query);
+		return phpFrame::getDB()->loadObjectList();
 	}
 }
 ?>

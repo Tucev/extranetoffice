@@ -24,19 +24,65 @@ class usersController extends phpFrame_Application_ActionController {
 	 * @return	void
 	 * @since 	1.0
 	 */
-	function __construct() {
-		// set default request vars
-		$this->view = phpFrame_Environment_Request::getViewName('users');
-		$this->layout = phpFrame_Environment_Request::getLayout('list');
-		
-		parent::__construct();
+	protected function __construct() {
+		// Invoke parent's constructor to set default action
+		parent::__construct('get_users');
 	}
 	
-	function save_user() {
+	public function get_users() {
+		// Get request data
+		$orderby = phpFrame_Environment_Request::getVar('orderby', 'u.lastname');
+		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'ASC');
+		$limit = phpFrame_Environment_Request::getVar('limit', 25);
+		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
+		$search = phpFrame_Environment_Request::getVar('search', '');
+		
+		// Create list filter needed for getUsers()
+		$list_filter = new phpFrame_Database_Listfilter($orderby, $orderdir, $limit, $limitstart, $search);
+		
+		// Get users using model
+		$users = $this->getModel('users')->getUsers($list_filter);
+		
+		// Get view
+		$view = $this->getView('users', 'list');
+		// Set view data
+		$view->addData('rows', $users);
+		$view->addData('page_nav', new phpFrame_HTML_Pagination($list_filter));
+		// Display view
+		$view->display();
+	}
+	
+	public function get_user() {
+		$userid = phpFrame_Environment_Request::getVar('userid', 0);
+		
+		// Get users using model
+		$user = $this->getModel('users')->getUsersDetail($userid);
+		
+		// Get view
+		$view = $this->getView('users', 'detail');
+		// Set view data
+		$view->addData('row', $user);
+		// Display view
+		$view->display();
+	}
+	
+	public function get_settings() {
+		// Get view
+		$view = $this->getView('settings', '');
+		// Set view data
+		$view->addData('row', phpFrame::getUser());
+		// Display view
+		$view->display();
+	}
+	
+	public function save_user() {
+		// Check for request forgeries
+		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
+		
+		// Get request vars
 		$post = phpFrame_Environment_Request::getPost();
 		
 		$modelUser = $this->getModel('users');
-		
 		if ($modelUser->saveUser($post) === false) {
 			$this->_sysevents->setSummary($modelUser->getLastError(), "error");
 		}
@@ -47,4 +93,3 @@ class usersController extends phpFrame_Application_ActionController {
 		$this->setRedirect($_SERVER["HTTP_REFERER"]);
 	}
 }
-?>

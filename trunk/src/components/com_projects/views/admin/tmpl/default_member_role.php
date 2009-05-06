@@ -11,7 +11,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
 <?php if (phpFrame_Environment_Request::getVar('tmpl') != 'component') : ?>
-<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 <?php endif; ?>
 
 <form action="index.php" method="post" name="iofficeform">
