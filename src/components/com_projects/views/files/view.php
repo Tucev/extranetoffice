@@ -55,7 +55,7 @@ class projectsViewFiles extends phpFrame_Application_View {
 		
 		// Append page title to document title
 		$document = phpFrame::getDocument('html');
-		$document->title .= ' - '.$this->page_title;
+		$document->title .= ' - '.$this->_data['page_title'];
 	}
 	
 	/**
@@ -64,13 +64,7 @@ class projectsViewFiles extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayFilesList() {
-		$modelFiles = $this->getModel('files');
-		$files = $modelFiles->getFiles($this->projectid);
-		$this->rows =& $files['rows'];
-		$this->pageNav =& $files['pageNav'];
-		$this->lists =& $files['lists'];
-		
-		phpFrame::getPathway()->addItem($this->page_title);
+		phpFrame::getPathway()->addItem($this->_data['page_title']);
 	}
 	
 	function displayFilesForm() {
