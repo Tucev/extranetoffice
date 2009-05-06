@@ -356,12 +356,14 @@ class projectsController extends phpFrame_Application_ActionController {
 		
 		// Get view
 		$view = $this->getView('issues', 'form');
+		
+		// Set view data
+		$view->addData('projectid', $this->project->id);
 			
 		if (issueid != 0) {		
 			// Get issue using model
 			$issue = $this->getModel('issues')->getIssuesDetail($this->project->id, $issueid);
-			
-			// Set view data
+ 
 			$view->addData('row', $issue);
 		}
 		else {
@@ -374,6 +376,7 @@ class projectsController extends phpFrame_Application_ActionController {
 	}
 	
 	public function save_issue() {
+		
 		if (!$this->_authorise("issues")) return;
 		
 		// Check for request forgeries
@@ -385,6 +388,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Save issue using issues model
 		$modelIssues = $this->getModel('issues');
 		$row = $modelIssues->saveIssue($post);
+
 		if ($row === false) {
 			$this->_sysevents->setSummary($modelIssues->getLastError());
 		}
@@ -713,6 +717,29 @@ class projectsController extends phpFrame_Application_ActionController {
 	
 	public function get_meetings() {
 		if (!$this->_authorise("meetings")) return;
+		
+		// Get request data
+		$filter_order = phpFrame_Environment_Request::getVar('filter_order', 'm.created');
+		$filter_order_Dir = phpFrame_Environment_Request::getVar('filter_order_Dir', 'DESC');
+		$search = phpFrame_Environment_Request::getVar('search', '');
+		$search = strtolower( $search );
+		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
+		$limit = phpFrame_Environment_Request::getVar('limit', 20);
+		
+		// Create list filter needed for getMeetings()
+		$list_filter = new phpFrame_Database_Listfilter($orderby, $orderdir, $limit, $limitstart, $search);
+		
+		// Get meetings using model
+		$meetings = $this->getModel('meetings')->getMeetings($list_filter, $this->project->id);
+		
+		// Get view
+		$view = $this->getView('meetings', 'list');
+		// Set view data
+		$view->addData('project', $this->project);
+		$view->addData('rows', $meetings);
+		$view->addData('page_nav', new phpFrame_HTML_Pagination($list_filter));
+		// Display view
+		$view->display();
 	}
 	
 	public function get_meeting_detail() {

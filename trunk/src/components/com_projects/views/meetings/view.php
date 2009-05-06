@@ -64,12 +64,6 @@ class projectsViewMeetings extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayMeetingsList() {
-		$modelMeetings = $this->getModel('meetings');
-		$meetings = $modelMeetings->getMeetings($this->projectid);
-		$this->rows =& $meetings['rows'];
-		$this->pageNav =& $meetings['pageNav'];
-		$this->lists =& $meetings['lists'];
-		
 		phpFrame::getPathway()->addItem($this->page_title);
 	}
 	
