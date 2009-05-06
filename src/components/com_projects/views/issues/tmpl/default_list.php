@@ -1,3 +1,4 @@
+<?php var_dump($data); ?>
 <?php
 /**
  * @version 	$Id$
@@ -28,15 +29,14 @@ $(document).ready(function() {
 
 <h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
-
 <div class="new">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&layout=form&projectid='.$data['project']->id); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_issue_form&projectid='.$data['project']->id); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_NEW ); ?>
 	</a>
 </div>
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&projectid='.$data['project']->id); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_issue_form&projectid='.$data['project']->id); ?>">
 		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
@@ -49,7 +49,7 @@ $(document).ready(function() {
 	<table border="0" cellpadding="3" cellspacing="1">
 	<tr>
 		<td>Search:</td>
-		<td><input type="text" name="search" value="<?php echo $this->lists['search']; ?>" /></td>
+		<td><input type="text" name="search" value="<?php echo $data['search']; ?>" /></td>
 	</tr>
 	<tr>
 		<td>Filter:</td>
