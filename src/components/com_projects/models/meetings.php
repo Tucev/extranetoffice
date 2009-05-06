@@ -26,14 +26,8 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 	 */
 	function __construct() {}
 	
-	public function getMeetings($projectid) {
-		$filter_order = phpFrame_Environment_Request::getVar('filter_order', 'm.created');
-		$filter_order_Dir = phpFrame_Environment_Request::getVar('filter_order_Dir', 'DESC');
-		$search = phpFrame_Environment_Request::getVar('search', '');
-		$search = strtolower( $search );
-		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
-		$limit = phpFrame_Environment_Request::getVar('limit', 20);
-
+	public function getMeetings(phpFrame_Database_Listfilter $list_filter, $projectid) {
+	
 		$where = array();
 		
 		// Show only public projects or projects where user has an assigned role
@@ -67,13 +61,12 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		//echo $query; exit;	  
 		phpFrame::getDB()->setQuery( $query );
 		phpFrame::getDB()->query();
-		$total = phpFrame::getDB()->getNumRows();
-
 		
-		$pageNav = new phpFrame_HTML_Pagination( $total, $limitstart, $limit );
+		$list_filter->setTotal(phpFrame::getDB()->getNumRows());
 
 		// get the subset (based on limits) of required records
-		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
+		$query .= $list_filter->getLimitStmt();
+		
 		//echo $query; exit;
 		phpFrame::getDB()->setQuery($query);
 		$rows = phpFrame::getDB()->loadObjectList();
@@ -89,18 +82,6 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 				$row->comments = $modelComments->getTotalComments($row->id, 'meetings');
 			}
 		}
-		
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
-
-		// search filter
-		$lists['search'] = $search;
-		
-		// pack data into an array to return
-		$return['rows'] = $rows;
-		$return['pageNav'] = $pageNav;
-		$return['lists'] = $lists;
 		
 		return $return;
 	}
