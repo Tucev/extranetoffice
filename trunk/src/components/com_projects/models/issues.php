@@ -41,7 +41,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		$where = array();
 		
 		// Show only public projects or projects where user has an assigned role
-		$where[] = "( i.access = '0' OR (".$this->_user->id." IN (SELECT userid FROM #__users_issues WHERE issueid = i.id) ) )";
+		$where[] = "( i.access = '0' OR (".phpFrame::getUser()->id." IN (SELECT userid FROM #__users_issues WHERE issueid = i.id) ) )";
 
 		if ( $search ) {
 			$where[] = "i.title LIKE '%".phpFrame::getDB()->getEscaped($list_filter->getSearchStr())."%'";
@@ -161,7 +161,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		$row =& phpFrame_Base_Singleton::getInstance("projectsTableIssues");
 		
 		if (empty($post['id'])) {
-			$row->created_by = $this->_user->id;
+			$row->created_by = phpFrame::getUser()->id;
 			$row->created = date("Y-m-d H:i:s");
 		}
 		else {

@@ -164,7 +164,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$this->setRedirect("index.php?component=com_projects&action=get_admin&projectid=".$projectid);
 		}
 		else {
-			$this->_sysevents->setSummary($modelProjects->getLastError(), 'error');
+			$this->_sysevents->setSummary($modelProjects->getLastError());
 			// Redirect back to form
 			$this->setRedirect("index.php?component=com_projects&action=get_project_form");
 		}
@@ -311,8 +311,8 @@ class projectsController extends phpFrame_Application_ActionController {
 		
 		// Get request data
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		$orderby = phpFrame_Environment_Request::getVar('orderby', 'c.family');
-		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'ASC');
+		$orderby = phpFrame_Environment_Request::getVar('orderby', 'i.dtstart');
+		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'DESC');
 		$limit = phpFrame_Environment_Request::getVar('limit', 25);
 		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
 		$search = phpFrame_Environment_Request::getVar('search', '');
@@ -335,6 +335,20 @@ class projectsController extends phpFrame_Application_ActionController {
 	
 	public function get_issue_detail() {
 		if (!$this->_authorise("issues")) return;
+		
+		// Get request data
+		$issueid = phpFrame_Environment_Request::getVar('issueid', 0);
+		
+		// Get projects using model
+		$issue = $this->getModel('issues')->getIssuesDetail($this->project->id, $issueid);
+		var_dump($issue); exit;
+		// Get view
+		$view = $this->getView('projects', 'list');
+		// Set view data
+		$view->addData('rows', $projects);
+		$view->addData('page_nav', new phpFrame_HTML_Pagination($list_filter));
+		// Display view
+		$view->display();
 	}
 	
 	public function get_issue_form() {
@@ -469,17 +483,17 @@ class projectsController extends phpFrame_Application_ActionController {
 		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
 		$search = phpFrame_Environment_Request::getVar('search', '');
 		
-		// Create list filter needed for getIssues()
+		// Create list filter needed for getFiles()
 		$list_filter = new phpFrame_Database_Listfilter($orderby, $orderdir, $limit, $limitstart, $search);
 		
-		// Get issues using model
-		$issues = $this->getModel('issues')->getIssues($list_filter, $projectid);
+		// Get files using model
+		$files = $this->getModel('files')->getFiles($list_filter, $projectid);
 		
 		// Get view
-		$view = $this->getView('issues', 'list');
+		$view = $this->getView('files', 'list');
 		// Set view data
 		$view->addData('project', $this->project);
-		$view->addData('rows', $issues);
+		$view->addData('rows', $files);
 		$view->addData('page_nav', new phpFrame_HTML_Pagination($list_filter));
 		// Display view
 		$view->display();
