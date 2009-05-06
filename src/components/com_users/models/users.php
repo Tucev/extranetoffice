@@ -19,29 +19,22 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		phpFrame_Application_Model
  */
 class usersModelUsers extends phpFrame_Application_Model {
-	function getUsers() {
-		$filter_order = phpFrame_Environment_Request::getVar('filter_order', 'u.lastname');
-		$filter_order_Dir = phpFrame_Environment_Request::getVar('filter_order_Dir', '');
-		$search = phpFrame_Environment_Request::getVar('search', '');
-		$search = strtolower( $search );
-		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
-		$limit = phpFrame_Environment_Request::getVar('limit', 20);
-
+	/**
+	 * Get users list
+	 * 
+	 * @param	object	$list_filter	Object if type phpFrame_Database_Listfilter
+	 * @return	array
+	 */
+	public function getUsers(phpFrame_Database_Listfilter $list_filter) {
 		$where = array();
 		
 		if ($search) {
-			$where[] = "u.lastname LIKE '%".$this->_db->getEscaped($search)."%'";
+			$where[] = "u.lastname LIKE '%".phpFrame::getDB()->getEscaped($list_filter->getSearchStr())."%'";
 		}
 		
 		$where[] = "(u.deleted = '0000-00-00 00:00:00' OR u.deleted IS NULL)";
 
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
-		
-		if (empty($filter_order)) {
-			$orderby = ' ORDER BY u.lastname ';
-		} else {
-			$orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir .', u.lastname ';
-		}
 		
 		// get the total number of records
 		$query = "SELECT 
@@ -49,50 +42,45 @@ class usersModelUsers extends phpFrame_Application_Model {
 				  FROM #__users AS u "
 				  . $where;
 				  
-		$this->_db->setQuery($query);
-		$this->_db->query();
-		$total = $this->_db->getNumRows();
+		phpFrame::getDB()->setQuery($query);
+		phpFrame::getDB()->query();
+		
+		// Set total number of record in list filter
+		$list_filter->setTotal(phpFrame::getDB()->getNumRows());
 		
 		// get the subset (based on limits) of required records
 		$query = "SELECT 
 				  u.*
 				  FROM #__users AS u "
 				  . $where;
-
-		$pageNav = new phpFrame_HTML_Pagination($total, $limitstart, $limit);
 			
-		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
+		// Add order by and limit statements for subset (based on filter)
+		$query .= $list_filter->getOrderByStmt();
+		$query .= $list_filter->getLimitStmt();
 		//echo str_replace('#__', 'eo_', $query); exit;
-		$this->_db->setQuery($query);
-		$rows = $this->_db->loadObjectList();
 		
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
-	
-		// search filter
-		$lists['search'] = $search;
-			
-		// pack data into an array to return
-		$return['rows'] = $rows;
-		$return['pageNav'] = $pageNav;
-		$return['lists'] = $lists;
-			
-		return $return;
-	}
-	
-	function getUsersDetail($userid) {
-		$query = "SELECT * FROM #__users WHERE id = ".$userid;
-		$this->_db->setQuery($query);
-		return $this->_db->loadObject();
+		phpFrame::getDB()->setQuery($query);
+		return phpFrame::getDB()->loadObjectList();
 	}
 	
 	/**
-	 * Save current user
+	 * Get a single user's details
+	 * 
+	 * @param	int	$userid
+	 * @return	object
+	 */
+	public function getUsersDetail($userid) {
+		$query = "SELECT * FROM #__users WHERE id = ".$userid;
+		phpFrame::getDB()->setQuery($query);
+		return phpFrame::getDB()->loadObject();
+	}
+	
+	/**
+	 * Save user
 	 * 
 	 * @return	bool	Returns TRUE on success or FALSE on failure.
 	 */
-	function saveUser($post) {
+	public function saveUser($post) {
 		$userid = phpFrame_Environment_Request::getVar('id', null);
 		
 		// Get reference to user object
@@ -142,4 +130,3 @@ class usersModelUsers extends phpFrame_Application_Model {
 		return true;
 	}
 }
-?>

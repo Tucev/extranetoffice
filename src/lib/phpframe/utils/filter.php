@@ -39,8 +39,7 @@ class phpFrame_Utils_Filter {
 		// Check that passed type is recognised
 		$allowed_types = array("default", "int", "boolean", "float", "regexp", "url", "email", "ip");
 		if (!in_array($type, $allowed_types)) {
-			phpFrame_Application_Error::raise('', 'warning', 'phpFrame Filter error: Data type not recognised by filter.');
-			return false;
+			throw new phpFrame_Exception('phpFrame Filter error: Data type not recognised by filter.');
 		}
 		
 		// Make filter constant using passed type

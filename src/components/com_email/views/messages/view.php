@@ -65,7 +65,7 @@ class emailViewMessages extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayMessagesList() {
-		$this->page_title = _LANG_EMAIL;
+		$this->_data['page_title'] = _LANG_EMAIL;
 		
 		// Attach scripts and stylesheets
 		$document = phpFrame::getDocument('html');
@@ -110,7 +110,7 @@ class emailViewMessages extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayMessagesDetail($uid=0) {
-		$this->page_title = _LANG_EMAIL_MESSAGE_DETAIL;
+		$this->_data['page_title'] = _LANG_EMAIL_MESSAGE_DETAIL;
 		phpFrame::getPathway()->addItem($this->page_title);
 		
 		if (empty($uid)) {
@@ -142,7 +142,7 @@ class emailViewMessages extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayMessagesForm() {
-		$this->page_title = _LANG_EMAIL_NEW;
+		$this->_data['page_title'] = _LANG_EMAIL_NEW;
 		
 		$model = $this->getModel('email');
 		$model->loadUserEmailAccount();

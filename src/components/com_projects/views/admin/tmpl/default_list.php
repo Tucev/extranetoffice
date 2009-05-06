@@ -13,20 +13,20 @@ phpFrame_HTML::confirm('delete_project', _LANG_PROJECTS_DELETE, _LANG_PROJECT_DE
 phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJECT_MEMBER_DELETE_CONFIRM);
 ?>
 
-<h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
 
 <div class="main_col_module_half">
 
 	<div style="float:right;" class="edit">
-		<a style="float:right;" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=admin&layout=form&projectid=".$this->project->id); ?>">
+		<a style="float:right;" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_project_form&projectid=".$data['project']->id); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
 	
-	<?php if ($this->project->created_by == $this->_user->id) : ?>
+	<?php if ($data['project']->created_by == phpFrame::getUser()->id) : ?>
 	<div style="float:right;" class="delete">
-		<a class="delete_project" title="<?php echo $this->project->name; ?>" style="float:right;" href="index.php?component=com_projects&action=remove_project&projectid=<?php echo $this->projectid; ?>">
+		<a class="delete_project" title="<?php echo $data['project']->name; ?>" style="float:right;" href="index.php?component=com_projects&action=remove_project&projectid=<?php echo $data['project']->id; ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?> &nbsp;&nbsp; 
 		</a>
 	</div>
@@ -35,21 +35,21 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 	<h3 class="project_details">Project info</h3>
 
 	<?php echo phpFrame_HTML_Text::_( _LANG_DESCRIPTION ); ?>: <br />
-	<?php echo $this->project->description; ?> <br />
+	<?php echo $data['project']->description; ?> <br />
 	<br />
-	<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_PROJECT_TYPE ); ?>: <?php echo $this->project->project_type_name; ?> <br />
-	<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_PRIORITY ); ?>: <?php echo projectsHelperProjects::priorityid2name($this->project->priority); ?> <br />
-	<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_ACCESS ); ?>: <?php echo projectsHelperProjects::global_accessid2name($this->project->access); ?> <br />
-	<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_STATUS ); ?>: <?php echo projectsHelperProjects::statusid2name($this->project->status); ?> <br />
-	<?php echo phpFrame_HTML_Text::_( _LANG_CREATED_BY ); ?>: <?php echo phpFrame_User_Helper::id2name($this->project->created_by); ?> <br />
-	<?php echo phpFrame_HTML_Text::_( _LANG_CREATED ); ?>: <?php echo $this->project->created; ?>
+	<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_PROJECT_TYPE ); ?>: <?php echo $data['project']->project_type_name; ?> <br />
+	<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_PRIORITY ); ?>: <?php echo projectsHelperProjects::priorityid2name($data['project']->priority); ?> <br />
+	<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_ACCESS ); ?>: <?php echo projectsHelperProjects::global_accessid2name($data['project']->access); ?> <br />
+	<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_STATUS ); ?>: <?php echo projectsHelperProjects::statusid2name($data['project']->status); ?> <br />
+	<?php echo phpFrame_HTML_Text::_( _LANG_CREATED_BY ); ?>: <?php echo phpFrame_User_Helper::id2name($data['project']->created_by); ?> <br />
+	<?php echo phpFrame_HTML_Text::_( _LANG_CREATED ); ?>: <?php echo $data['project']->created; ?>
 	
 </div><!-- close .main_col_module_half -->
 
 <div class="main_col_module_half">
 	
 	<div style="float:right;" class="edit">
-		<a style="float:right;" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=admin&layout=form&projectid=".$this->project->id); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
+		<a style="float:right;" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_project_form&projectid=".$data['project']->id); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
@@ -72,18 +72,21 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 	<td>Yes</td>
 	<td>Yes</td>
 	<td>Yes</td>
-	<td><?php if ($this->project->access == 0) { echo 'Yes'; } else { echo 'No'; } ?></td>
+	<td><?php if ($data['project']->access == 0) { echo 'Yes'; } else { echo 'No'; } ?></td>
 	</tr>
 	<?php $k = 0; ?>
-	<?php foreach ($this->project_permissions->tools as $tool) : ?>
+	<?php foreach ($data['tools'] as $tool) : ?>
+	<?php if ($tool != 'projects') : ?>
 	<tr class="row<?php echo $k; ?>">
-	<th><?php echo $tool[0]; ?></th>
-	<td><?php if ($tool[1] >= 1) { echo 'Yes'; } else { echo 'No'; } ?></td>
-	<td><?php if ($tool[1] >= 2) { echo 'Yes'; } else { echo 'No'; } ?></td>
-	<td><?php if ($tool[1] >= 3) { echo 'Yes'; } else { echo 'No'; } ?></td>
-	<td><?php if ($tool[1] >= 4) { echo 'Yes'; } else { echo 'No'; } ?></td>
+	<th><?php echo $tool; ?></th>
+	<?php $access_property_name = "access_".$tool; ?>
+	<td><?php if ($data['project']->$access_property_name >= 1) { echo 'Yes'; } else { echo 'No'; } ?></td>
+	<td><?php if ($data['project']->$access_property_name >= 2) { echo 'Yes'; } else { echo 'No'; } ?></td>
+	<td><?php if ($data['project']->$access_property_name >= 3) { echo 'Yes'; } else { echo 'No'; } ?></td>
+	<td><?php if ($data['project']->$access_property_name >= 4) { echo 'Yes'; } else { echo 'No'; } ?></td>
 	</tr>
 	<?php $k = 1 - $k; ?>
+	<?php endif; ?>
 	<?php endforeach; ?>
 	</tbody>
 	</table>
@@ -97,12 +100,12 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 <h3 class="people">Members</h3>
 
 <div class="new">
-<a href="<?php echo phpFrame_Application_Route::_("index.php?component=".phpFrame_Environment_Request::getComponentName()."&view=".$this->view."&layout=member_form&projectid=".$this->projectid); ?>">Add new member</a>
+<a href="<?php echo phpFrame_Application_Route::_("index.php?component=".phpFrame_Environment_Request::getComponentName()."&action=get_member_form&projectid=".$data['project']->id); ?>">Add new member</a>
 </div>
 
 <br />
 
-<?php if (is_array($this->members) && count($this->members) > 0) : ?>
+<?php if (is_array($data['members']) && count($data['members']) > 0) : ?>
 <table class="list" width="100%" cellpadding="0" cellspacing="0">
   <thead>
   <tr>
@@ -114,13 +117,13 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
   </thead>
   <tbody>
   <?php $k = 0; ?>
-  <?php foreach($this->members as $row) : ?>
+  <?php foreach($data['members'] as $row) : ?>
   <tr class="row<?php echo $k; ?>">
   	<td>
     	<?php echo $row->rolename; ?>
     </td>
     <td valign="top">
-    <a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&view=users&layout=detail&userid=".$row->userid); ?>">
+    <a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&action=get_user&userid=".$row->userid); ?>">
 	<?php echo $row->name; ?>
 	</a>
     </td>
@@ -128,13 +131,13 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
     	<?php echo $row->email; ?>
     </td>
 	<td>
-	<?php phpFrame_HTML::dialog(_LANG_PROJECTS_CHANGE_ROLE, 'index.php?component=com_projects&view=admin&layout=member_role&projectid='.$this->projectid.'&userid='.$row->userid, 300, 150, true); ?>
+	<?php phpFrame_HTML::dialog(_LANG_PROJECTS_CHANGE_ROLE, 'index.php?component=com_projects&view=admin&layout=member_role&projectid='.$data['project']->id.'&userid='.$row->userid, 300, 150, true); ?>
 	<!-- 
 	<a class="" href="">
 		<img src="templates/<?php echo config::TEMPLATE; ?>/images/icons/generic/16x16/edit.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>" />
 	</a>
 	-->
-	<a class="delete_member" title="<?php echo phpFrame_HTML_Text::_($row->name, true); ?>" href="index.php?component=com_projects&action=remove_member&projectid=<?php echo $this->projectid; ?>&userid=<?php echo $row->userid; ?>">
+	<a class="delete_member" title="<?php echo phpFrame_HTML_Text::_($row->name, true); ?>" href="index.php?component=com_projects&action=remove_member&projectid=<?php echo $data['project']->id; ?>&userid=<?php echo $row->userid; ?>">
 		<img src="templates/<?php echo config::TEMPLATE; ?>/images/icons/generic/16x16/remove.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>" />
 	</a>
 	</td>
@@ -150,4 +153,4 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 
 </div><!-- close .dashboard_item -->
 
-<?php //echo '<pre>'; var_dump($this->members); echo '</pre>'; ?>
+<?php //echo '<pre>'; var_dump($data['members']); echo '</pre>'; ?>

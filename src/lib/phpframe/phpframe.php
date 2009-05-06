@@ -84,7 +84,7 @@ class phpFrame {
 	public static function getModel($component_name, $model_name) {
 		$class_name = substr($component_name, 4)."Model";
 		$class_name .= ucfirst($model_name);
-		return phpFrame_Base_Singleton::getInstance($class_name);
+		return new $class_name();
 	}
 	
 	/**

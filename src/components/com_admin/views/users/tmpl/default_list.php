@@ -12,12 +12,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 phpFrame_HTML::confirm('delete_user', _LANG_ADMIN_USERS_DELETE, _LANG_ADMIN_USERS_DELETE_CONFIRM, "div[id^='ui-tabs']:has(a.delete_user)");
 ?>
 
-<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 
-<?php if ($this->_user->groupid == 1) : ?>
+<?php if (phpFrame::getUser()->groupid == 1) : ?>
 <div class="new">
-	<?php phpFrame_HTML::dialog(_LANG_ADMIN_USERS_NEW, 'index.php?component=com_admin&view=users&layout=form', 550, 390, true, "div[id^='ui-tabs']:has(a.delete_user)"); ?>
+	<?php phpFrame_HTML::dialog(_LANG_ADMIN_USERS_NEW, 'index.php?component=com_admin&action=get_user_form', 550, 390, true, "div[id^='ui-tabs']:has(a.delete_user)"); ?>
 </div>
 <?php endif; ?>
 
@@ -48,7 +48,7 @@ function submit_filter(reset) {
 
 <br />
 
-<?php if (is_array($this->rows) && count($this->rows) > 0) : ?>
+<?php if (is_array($data['rows']) && count($data['rows']) > 0) : ?>
 <table class="data_list" width="100%" cellpadding="0" cellspacing="0">
   <thead>
   <tr>
@@ -64,13 +64,13 @@ function submit_filter(reset) {
   </thead>
   <tbody>
   <?php $k = 0; ?>
-  <?php foreach($this->rows as $row) : ?>
+  <?php foreach($data['rows'] as $row) : ?>
   <tr class="row<?php echo $k; ?>">
   	<td>
   		<input type="checkbox" name="ids[]" value="<?php echo $row->id; ?>" />
   	</td>
     <td valign="top">
-    <?php phpFrame_HTML::dialog($row->username, 'index.php?component=com_admin&view=users&layout=form&userid='.$row->id, 550, 390, true, "div[id^='ui-tabs']:has(a.delete_user)"); ?>
+    <?php phpFrame_HTML::dialog($row->username, 'index.php?component=com_admin&action=get_user_form&userid='.$row->id, 550, 390, true, "div[id^='ui-tabs']:has(a.delete_user)"); ?>
     </td>
     <td>
     	<?php echo $row->email; ?>
@@ -100,7 +100,7 @@ function submit_filter(reset) {
 
 <br />
 
-<?php echo $this->pageNav->getListFooter(); ?>
+<?php echo $data['page_nav']->getListFooter(); ?>
 
 <?php else : ?>
 <?php echo phpFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>

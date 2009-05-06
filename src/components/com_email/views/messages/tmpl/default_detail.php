@@ -111,7 +111,7 @@ function confirm_delete(trash, uid, label) {
 }
 </script>
 
-<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 <?php //echo '<pre>'; var_dump($this->message); echo '<pre>'; exit; ?>
 

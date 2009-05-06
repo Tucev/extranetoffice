@@ -10,7 +10,7 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
-<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 <div class="new">
 	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_email&view=accounts&layout=form'); ?>">

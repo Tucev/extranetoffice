@@ -24,9 +24,7 @@ class addressbookModelContacts extends phpFrame_Application_Model {
 	 * 
 	 * @return void
 	 */
-	function __construct() {
-		parent::__construct();
-	}
+	function __construct() {}
 	
 	/**
 	 * Get Invoices
@@ -40,11 +38,11 @@ class addressbookModelContacts extends phpFrame_Application_Model {
 		$query .= " FROM #__contacts AS c ";
 		
 		// get the total number of records
-		$this->_db->setQuery($query);
-		$this->_db->query();
+		phpFrame::getDB()->setQuery($query);
+		phpFrame::getDB()->query();
 		
 		// Set total number of record in list filter
-		$list_filter->setTotal($this->_db->getNumRows());
+		$list_filter->setTotal(phpFrame::getDB()->getNumRows());
 		
 		// Add order by and limit statements for subset (based on filter)
 		$query .= $list_filter->getOrderByStmt();
@@ -52,8 +50,8 @@ class addressbookModelContacts extends phpFrame_Application_Model {
 		//echo str_replace('#__','eo_', $query); exit;
 		
 		// Get rows from database
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		phpFrame::getDB()->setQuery($query);
+		return phpFrame::getDB()->loadObjectList();
 	}
 	
 	function getContactsDetail($id) {
@@ -154,4 +152,3 @@ class addressbookModelContacts extends phpFrame_Application_Model {
 		exit;
 	}
 }
-?>

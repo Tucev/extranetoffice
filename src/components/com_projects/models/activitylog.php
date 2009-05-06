@@ -38,9 +38,6 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 			$controller =& phpFrame_Base_Singleton::getInstance('projectsController');
 			$this->project =& $controller->project;
 		}
-		
-		//TODO: Check permissions
-		parent::__construct();
 	}
 	
 	function getActivityLog($projectid=0) {
@@ -49,8 +46,8 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 		$query .= " WHERE projectid = ".$projectid;
 		$query .= " ORDER BY ts DESC ";
 		$query .= " LIMIT 0,100";
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		phpFrame::getDB()->setQuery($query);
+		return phpFrame::getDB()->loadObjectList();
 	}
 	
 	/**
@@ -129,8 +126,8 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 		$query = "SELECT firstname, lastname, email ";
 		$query .= " FROM #__users ";
 		$query .= " WHERE id IN (".implode(',', $assignees).") AND id <> ".$row->userid;
-		$this->_db->setQuery($query);
-		$recipients = $this->_db->loadObjectList();
+		phpFrame::getDB()->setQuery($query);
+		$recipients = phpFrame::getDB()->loadObjectList();
 		
 		if (is_array($recipients) && count($recipients) > 0) {
 			$failed_recipients = array();

@@ -12,8 +12,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 phpFrame_HTML::validate('usersform');
 ?>
 
-
-<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 <form action="index.php" method="post" id="usersform" name="usersform">
 
@@ -23,25 +22,25 @@ phpFrame_HTML::validate('usersform');
 		<table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 		<tr>
 			<td width="22%"><?php echo phpFrame_HTML_Text::_( _LANG_USERNAME ); ?></td>
-			<td><input class="required" type="text" size="30" name="username" value="<?php echo $this->row->username; ?>" /></td>
+			<td><input class="required" type="text" size="30" name="username" value="<?php echo $data['row']->username; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_EMAIL ); ?></td>
-			<td><input class="required email" type="text" size="30" name="email" value="<?php echo $this->row->email; ?>" /></td>
+			<td><input class="required email" type="text" size="30" name="email" value="<?php echo $data['row']->email; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_FIRSTNAME ); ?></td>
-			<td><input class="required" type="text" size="30" name="firstname" value="<?php echo $this->row->firstname; ?>" /></td>
+			<td><input class="required" type="text" size="30" name="firstname" value="<?php echo $data['row']->firstname; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_LASTNAME ); ?></td>
-			<td><input class="required" type="text" size="30" name="lastname" value="<?php echo $this->row->lastname; ?>" /></td>
+			<td><input class="required" type="text" size="30" name="lastname" value="<?php echo $data['row']->lastname; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_GROUP ); ?></td>
-			<td><?php echo phpFrame_User_Helper::selectGroup($this->row->groupid); ?></td>
+			<td><?php echo phpFrame_User_Helper::selectGroup($data['row']->groupid); ?></td>
 		</tr>
-		<?php if (!empty($this->row->id)) :?>
+		<?php if (!empty($data['row']->id)) :?>
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_PASSWORD ); ?></td>
 			<td><input type="password" size="30" name="password" id="password" value="" /></td>
@@ -66,10 +65,9 @@ phpFrame_HTML::validate('usersform');
 <button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 <?php endif; ?>
 
-<input type="hidden" name="id" value="<?php echo $this->row->id;?>" />
+<input type="hidden" name="id" value="<?php echo $data['row']->id;?>" />
 <input type="hidden" name="component" value="com_admin" />
 <input type="hidden" name="action" value="save_user" />
-<input type="hidden" name="layout" value="" />
 <input type="hidden" name="tmpl" value="<?php echo phpFrame_Environment_Request::getVar('tmpl', ''); ?>" />
 <?php echo phpFrame_HTML::_( 'form.token' ); ?>
 </form>

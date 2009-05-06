@@ -24,10 +24,7 @@ class projectsModelComments extends phpFrame_Application_Model {
 	 *
 	 * @since 1.0.1
 	 */
-	function __construct() {
-		//TODO: Check permissions
-		parent::__construct();
-	}
+	function __construct() {}
 	
 	function getComments($projectid, $type, $itemid) {
 		$query = "SELECT c.*, u.username AS created_by_name";
@@ -36,8 +33,8 @@ class projectsModelComments extends phpFrame_Application_Model {
 		$query .= " WHERE c.projectid = ".$projectid." AND c.type = '".$type."' AND c.itemid = ".$itemid;
 		$query .= " ORDER BY c.created DESC";
 		//echo $query; exit;	  
-		$this->_db->setQuery($query);
-		$rows = $this->_db->loadObjectList();
+		phpFrame::getDB()->setQuery($query);
+		$rows = phpFrame::getDB()->loadObjectList();
 		
 		return $rows;
 	}
@@ -116,15 +113,15 @@ class projectsModelComments extends phpFrame_Application_Model {
 				$query = "SELECT title FROM #__milestones WHERE id = ".$itemid;
 				break;
 		}
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
+		phpFrame::getDB()->setQuery($query);
+		return phpFrame::getDB()->loadResult();
 	}
 	
 	function getTotalComments($itemid, $type) {
 		$query = "SELECT COUNT(id) FROM #__comments ";
 		$query .= " WHERE itemid = ".$itemid." AND type = '".$type."'";
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
+		phpFrame::getDB()->setQuery($query);
+		return phpFrame::getDB()->loadResult();
 	}
 	
 	function fetchCommentsFromEmail() {

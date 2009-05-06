@@ -66,4 +66,3 @@ class addressbookViewContacts extends phpFrame_Application_View {
 		phpFrame::getPathway()->addItem(_LANG_ADDRESSBOOK_CONTACT_NEW);
 	}
 }
-?>

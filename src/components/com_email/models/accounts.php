@@ -40,8 +40,8 @@ class emailModelAccounts extends phpFrame_Application_Model {
 			elseif ($default == true) {
 				$query .= " AND `default` = '1'";
 			}
-			$this->_db->setQuery($query);
-			return $this->_db->loadObjectList();	
+			phpFrame::getDB()->setQuery($query);
+			return phpFrame::getDB()->loadObjectList();	
 		}
 		else {
 			return false;
@@ -110,17 +110,17 @@ class emailModelAccounts extends phpFrame_Application_Model {
 	public function makeDefault($accountid) {
 		// First we make sure that all accounts are set not to be default (we do this to avoid duplicate default accounts)
 		$query = "UPDATE `#__email_accounts` SET `default` = '0' WHERE `userid` = ".$this->_user->id;
-		$this->_db->setQuery($query);
-		if (!$this->_db->query()) {
-			$this->_error[] = $this->_db->getLastError();
+		phpFrame::getDB()->setQuery($query);
+		if (!phpFrame::getDB()->query()) {
+			$this->_error[] = phpFrame::getDB()->getLastError();
 			return false;
 		}
 		
 		// Make the selected account the default account
 		$query = "UPDATE `#__email_accounts` SET `default` = '1' WHERE `userid` = ".$this->_user->id." AND `id` = ".$accountid;
-		$this->_db->setQuery($query);
-		if (!$this->_db->query()) {
-			$this->_error[] = $this->_db->getLastError();
+		phpFrame::getDB()->setQuery($query);
+		if (!phpFrame::getDB()->query()) {
+			$this->_error[] = phpFrame::getDB()->getLastError();
 			return false;
 		}
 		

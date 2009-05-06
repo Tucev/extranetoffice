@@ -45,7 +45,7 @@ $sys_events_obj->clear();
 echo $sys_events;
 ?>
 
-<?php echo $this->component_output; ?>
+<?php echo $component_output; ?>
 
 </div><!-- close .loginbox -->
 

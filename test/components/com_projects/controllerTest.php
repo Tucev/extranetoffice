@@ -48,7 +48,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	$frontcontroller = phpFrame::getFrontController();
 		$frontcontroller->run();
     	    	
-    	$controller = phpFrame::getController('com_projects');
+    	$controller = phpFrame::getActionController('com_projects');
     	$this->assertTrue($controller->getSuccess());
     }
     
@@ -66,7 +66,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	$frontcontroller = phpFrame::getFrontController();
     	$frontcontroller->run();
     	
-    	$controller = phpFrame::getController('com_projects');
+    	$controller = phpFrame::getActionController('com_projects');
     	$this->assertTrue($controller->getSuccess());
     }
     
@@ -85,7 +85,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	$frontcontroller = phpFrame::getFrontController();
     	$frontcontroller->run();
     	
-    	$controller = phpFrame::getController('com_projects');
+    	$controller = phpFrame::getActionController('com_projects');
     	$this->assertTrue($controller->getSuccess());
     	
     }
@@ -110,7 +110,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	$frontcontroller = phpFrame::getFrontController();
     	$frontcontroller->run();
     	
-    	$controller = phpFrame::getController('com_projects');
+    	$controller = phpFrame::getActionController('com_projects');
     	$this->assertTrue($controller->getSuccess());
     	
     }
@@ -137,13 +137,13 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	$frontcontroller = phpFrame::getFrontController();
     	$frontcontroller->run();
     	
-    	$controller = phpFrame::getController('com_projects');
+    	$controller = phpFrame::getActionController('com_projects');
     	$this->assertTrue($controller->getSuccess());
     }
     
-    function test_admin_change_member_role() {
+    function test_change_member_role() {
     	// Fake posted form data
-    	phpFrame_Environment_Request::setAction('admin_change_member_role');
+    	phpFrame_Environment_Request::setAction('change_member_role');
     	phpFrame_Environment_Request::setVar('projectid', '1');
     	phpFrame_Environment_Request::setVar('userid', '63');
     	phpFrame_Environment_Request::setVar('roleid', '3');
@@ -151,7 +151,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	$frontcontroller = phpFrame::getFrontController();
     	$frontcontroller->run();
     	
-    	$controller = phpFrame::getController('com_projects');
+    	$controller = phpFrame::getActionController('com_projects');
     	$this->assertTrue($controller->getSuccess());
     }
     
@@ -168,7 +168,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	$frontcontroller = phpFrame::getFrontController();
     	$frontcontroller->run();
     	
-    	$controller = phpFrame::getController('com_projects');
+    	$controller = phpFrame::getActionController('com_projects');
     	$this->assertTrue($controller->getSuccess());
     }
 }

@@ -25,7 +25,7 @@ class addressbookController extends phpFrame_Application_ActionController {
 	 * @since 	1.0
 	 */
 	protected function __construct() {
-		// Invoke parent's constructor to set default action and default view
+		// Invoke parent's constructor to set default action
 		parent::__construct('get_contacts');
 	}
 	
@@ -82,4 +82,3 @@ class addressbookController extends phpFrame_Application_ActionController {
 		$modelContacts->exportContacts($id);
 	}
 }
-?>

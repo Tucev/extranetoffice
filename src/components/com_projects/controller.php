@@ -18,8 +18,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  */
 class projectsController extends phpFrame_Application_ActionController {
-	var $project=null;
-	var $current_tool=null;
+	public $project=null;
+	public $permissions=null;
 	
 	/**
 	 * Constructor
@@ -28,23 +28,19 @@ class projectsController extends phpFrame_Application_ActionController {
 	 * @since 	1.0
 	 */
 	protected function __construct() {
-		// Invoke parent's constructor to set default action and default view
+		// Invoke parent's constructor to set default action
 		// It is important we invoke the parent's constructor before 
 		// running permission check as we need the available views loaded first.
 		parent::__construct('get_projects');
+		
+		// Get reference to custom permissions model for project tools
+		$this->permissions = projectsModelPermissions::getInstance();
 		
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		if (!empty($projectid)) {
 			// Load the project data
 			$modelProjects = $this->getModel('projects');
 			$this->project = $modelProjects->getProjectsDetail($projectid);
-					
-			// Do security check with custom permission model for projects
-			$project_permissions = $this->getModel('permissions');
-			$project_permissions->checkProjectAccess($this->project, $this->views_available);
-			if (!$project_permissions->is_allowed) {
-				$this->_sysevents->setSummary($project_permissions->getLastError());
-			}
 		
 			// Add pathway item
 			phpFrame::getPathway()->addItem($this->project->name, 'index.php?component=com_projects&view=projects&layout=detail&projectid='.$this->project->id);
@@ -79,12 +75,9 @@ class projectsController extends phpFrame_Application_ActionController {
 		$view->display();
 	}
 	
-	public function get_projects_detail() {
+	public function get_project_detail() {
 		// Get request data
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		
-		// Get project using model
-		$project = $this->getModel('projects')->getProjectsDetail($projectid);
 		
 		// Get overdue issues
 		//$list_filter = new phpFrame_Database_Listfilter('i.dtstart', 'DESC');
@@ -102,7 +95,37 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Get view
 		$view = $this->getView('projects', 'detail');
 		// Set view data
-		$view->addData('row', $project);
+		$view->addData('row', $this->project);
+		// Display view
+		$view->display();
+	}
+	
+	public function get_project_form() {
+		if (!$this->_authorise("admin")) return;
+		
+		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
+		// Set default values for tools access
+		if (empty($projectid)) {
+			$project = new stdClass();
+			$project->access = '1';
+			$project->access_issues = '2';
+			$project->access_messages = '2';
+			$project->access_milestones = '2';
+			$project->access_files = '2';
+			$project->access_meetings = '3';
+			$project->access_polls = '3';
+			$project->access_reports = '1';
+			$project->access_people = '3';
+			$project->access_admin = '1';
+		}
+		else {
+			$project = $this->project;
+		}
+		
+		// Get view
+		$view = $this->getView('admin', 'form');
+		// Set view data
+		$view->addData('project', $project);
 		// Display view
 		$view->display();
 	}
@@ -114,6 +137,8 @@ class projectsController extends phpFrame_Application_ActionController {
 	 * @since 	1.0
 	 */
 	public function save_project() {
+		if (isset($this->project->id) && !$this->_authorise("admin")) return;
+		
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
@@ -124,28 +149,25 @@ class projectsController extends phpFrame_Application_ActionController {
 		$projectid = $modelProjects->saveProject($post);
 		
 		if ($projectid !== false) {
-			phpFrame_Application_Error::raise('', 'message', _LANG_PROJECT_SAVED);
-			// Redirect depending on "apply" or "save"
-			$view = phpFrame_Environment_Request::getVar('layout', 'list') == 'list' ? 'admin' : 'projects';	
+			$this->_sysevents->setSummary(_LANG_PROJECT_SAVED, "success");
 			
 			// If NEW project saved correctly we now make project creator a project member
 			if (empty($post['id'])) {
 				$modelMembers = $this->getModel('members');
 				if (!$modelMembers->saveMember($projectid, $user->id, '1', false)) {
-					phpFrame_Application_Error::raise('', 'error', $modelMembers->getLastError());
+					$this->_sysevents->setSummary($modelMembers->getLastError());
 				}
 			}
 			
 			$this->_success = true;
+			
+			$this->setRedirect("index.php?component=com_projects&action=get_admin&projectid=".$projectid);
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'error', $modelProjects->getLastError());
-			// Redirect back to form if save failed
-			phpFrame_Environment_Request::setVar('layout', 'form');
-			$view = 'projects';
+			$this->_sysevents->setSummary($modelProjects->getLastError(), 'error');
+			// Redirect back to form
+			$this->setRedirect("index.php?component=com_projects&action=get_project_form");
 		}
-		
-		$this->setRedirect('index.php?component=com_projects&view='.$view.'&layout='.phpFrame_Environment_Request::getVar('layout', 'list').'&projectid='.$projectid);
 	}
 	
 	/**
@@ -154,21 +176,53 @@ class projectsController extends phpFrame_Application_ActionController {
 	 * @return void
 	 */
 	public function remove_project() {
+		if (!$this->_authorise("admin")) return;
+		
 		// get model
 		$modelProjects = $this->getModel('projects');
 		
-		if ($modelProjects->deleteProject($this->projectid) === true) {
-			phpFrame_Application_Error::raise('', 'message', _LANG_PROJECT_DELETE_SUCCESS);
+		if ($modelProjects->deleteProject($this->project->id) === true) {
+			$this->_sysevents->setSummary(_LANG_PROJECT_DELETE_SUCCESS, "success");
 			$this->_success = true;
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'error', _LANG_PROJECT_DELETE_ERROR);
+			$this->_sysevents->setSummary(_LANG_PROJECT_DELETE_ERROR);
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=projects&layout=list');
+		$this->setRedirect('index.php?component=com_projects');
 	}
 	
-	function save_member() {
+	public function get_admin() {
+		if (!$this->_authorise("admin")) return;
+		
+		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
+		// Push model into the view
+		$members = $this->getModel('members')->getMembers($projectid);
+		
+		// Get view
+		$view = $this->getView('admin', 'list');
+		// Set view data
+		$view->addData('project', $this->project);
+		$view->addData('tools', $this->getViewsAvailable());
+		$view->addData('members', $members);
+		// Display view
+		$view->display();
+	}
+	
+	public function get_member_form() {
+		if (!$this->_authorise("admin")) return;
+		
+		// Get view
+		$view = $this->getView('admin', 'member_form');
+		// Set view data
+		$view->addData('project', $this->project);
+		// Display view
+		$view->display();
+	}
+	
+	public function save_member() {
+		if (!$this->_authorise("admin")) return;
+		
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
@@ -181,10 +235,10 @@ class projectsController extends phpFrame_Application_ActionController {
 			$modelMembers = $this->getModel('members');
 			// Add the user to the system and add as a member of this project
 			if ($modelMembers->inviteNewUser($projectid, $roleid) === false) {
-				phpFrame_Application_Error::raise('', 'error',  $modelMembers->getLastError());
+				$this->_sysevents->setSummary($modelMembers->getLastError());
 			}
 			else {
-				phpFrame_Application_Error::raise('', 'message',  _LANG_PROJECT_NEW_MEMBER_SAVED);
+				$this->_sysevents->setSummary(_LANG_PROJECT_NEW_MEMBER_SAVED, "success");
 				$this->_success = true;
 			}
 		}
@@ -192,7 +246,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			// Add existing users to project
 			$userids = phpFrame_Environment_Request::getVar('userids', '');
 			if (empty($userids)) {
-				phpFrame_Application_Error::raise('', 'error',  _LANG_USERS_NO_SELECTED);
+				$this->_sysevents->setSummary(_LANG_USERS_NO_SELECTED);
 			}
 			else {
 				$userids_array = explode(',', $userids);
@@ -201,12 +255,12 @@ class projectsController extends phpFrame_Application_ActionController {
 				foreach ($userids_array as $userid) {
 					if ($modelMembers->saveMember($projectid, $userid, $roleid) === false) {
 						$error = true;
-						phpFrame_Application_Error::raise('', 'warning',  $modelMembers->getLastError());
+						$this->_sysevents->setSummary($modelMembers->getLastError());
 					}
 				}
 				
 				if ($error === false) {
-					phpFrame_Application_Error::raise('', 'message',  _LANG_PROJECT_NEW_MEMBER_SAVED);
+					$this->_sysevents->setSummary(_LANG_PROJECT_NEW_MEMBER_SAVED, "success");
 					$this->_success = true;
 				}	
 			}
@@ -215,33 +269,37 @@ class projectsController extends phpFrame_Application_ActionController {
 		$this->setRedirect('index.php?component=com_projects&view=admin&projectid='.$projectid);
 	}
 	
-	function remove_member() {
+	public function remove_member() {
+		if (!$this->_authorise("admin")) return;
+		
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$userid = phpFrame_Environment_Request::getVar('userid', 0);
 		
 		$modelMembers = $this->getModel('members');
 		if ($modelMembers->deleteMember($projectid, $userid) === true) {
-			phpFrame_Application_Error::raise('', 'message', _LANG_PROJECT_MEMBER_DELETE_SUCCESS);
+			$this->_sysevents->setSummary(_LANG_PROJECT_MEMBER_DELETE_SUCCESS, "success");
 			$this->_success = true;
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'error', _LANG_PROJECT_MEMBER_DELETE_ERROR);	
+			$this->_sysevents->setSummary(_LANG_PROJECT_MEMBER_DELETE_ERROR);	
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&view=admin&projectid='.$projectid);
 	}
 	
-	function admin_change_member_role() {
+	public function change_member_role() {
+		if (!$this->_authorise("admin")) return;
+		
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$userid = phpFrame_Environment_Request::getVar('userid', 0);
 		$roleid = phpFrame_Environment_Request::getVar('roleid', 0);
 		
 		$modelMembers = $this->getModel('members');
 		if (!$modelMembers->changeMemberRole($projectid, $userid, $roleid)) {
-			phpFrame_Application_Error::raise('', 'error', $modelMembers->getLastError());
+			$this->_sysevents->setSummary($modelMembers->getLastError());
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'message', _LANG_PROJECT_MEMBER_ROLE_SAVED);
+			$this->_sysevents->setSummary(_LANG_PROJECT_MEMBER_ROLE_SAVED, "success");
 			$this->_success = true;
 		}
 		
@@ -249,6 +307,8 @@ class projectsController extends phpFrame_Application_ActionController {
 	}
 	
 	public function get_issues() {
+		if (!$this->_authorise("issues")) return;
+		
 		// Get request data
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$orderby = phpFrame_Environment_Request::getVar('orderby', 'c.family');
@@ -266,13 +326,24 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Get view
 		$view = $this->getView('issues', 'list');
 		// Set view data
+		$view->addData('project', $this->project);
 		$view->addData('rows', $issues);
 		$view->addData('page_nav', new phpFrame_HTML_Pagination($list_filter));
 		// Display view
 		$view->display();
 	}
 	
-	function save_issue() {
+	public function get_issue_detail() {
+		if (!$this->_authorise("issues")) return;
+	}
+	
+	public function get_issue_form() {
+		if (!$this->_authorise("issues")) return;
+	}
+	
+	public function save_issue() {
+		if (!$this->_authorise("issues")) return;
+		
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
@@ -283,10 +354,10 @@ class projectsController extends phpFrame_Application_ActionController {
 		$modelIssues = $this->getModel('issues');
 		$row = $modelIssues->saveIssue($post);
 		if ($row === false) {
-			phpFrame_Application_Error::raise('', 'error', $modelIssues->getLastError());
+			$this->_sysevents->setSummary($modelIssues->getLastError());
 		}
 		else {
-			phpFrame_Application_Error::raise( '', 'message',  _LANG_ISSUE_SAVED);
+			$this->_sysevents->setSummary(_LANG_ISSUE_SAVED, "success");
 			
 			// Prepare data for activity log entry
 			$action = empty($post['id']) ? _LANG_ISSUES_ACTION_NEW : _LANG_ISSUES_ACTION_EDIT;
@@ -298,7 +369,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
 			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->created_by, 'issues', $action, $title, $description, $url, $post['assignees'], $notify)) {
-				phpFrame_Application_Error::raise('', 'error', $modelActivityLog->getLastError());
+				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}
 			else {
 				$this->_success = true;
@@ -308,32 +379,36 @@ class projectsController extends phpFrame_Application_ActionController {
 		$this->setRedirect('index.php?component=com_projects&view=issues&projectid='.$post['projectid']);
 	}
 	
-	function remove_issue() {
+	public function remove_issue() {
+		if (!$this->_authorise("issues")) return;
+		
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$issueid = phpFrame_Environment_Request::getVar('issueid', 0);
 		
 		$modelIssues = &$this->getModel('issues');
 		if ($modelIssues->deleteIssue($projectid, $issueid) === true) {
-			phpFrame_Application_Error::raise('', 'message', _LANG_ISSUE_DELETE_SUCCESS);
+			$this->_sysevents->setSummary(_LANG_ISSUE_DELETE_SUCCESS, "success");
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'error', _LANG_ISSUE_DELETE_ERROR);
+			$this->_sysevents->setSummary(_LANG_ISSUE_DELETE_ERROR);
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&view=issues&projectid='.$projectid);
 	}
 	
-	function close_issue() {
+	public function close_issue() {
+		if (!$this->_authorise("issues")) return;
+		
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$issueid = phpFrame_Environment_Request::getVar('issueid', 0);
 		
 		$modelIssues = &$this->getModel('issues');
 		$row = $modelIssues->closeIssue($projectid, $issueid);
 		if ($row === false) {
-			phpFrame_Application_Error::raise('', 'error', $modelIssues->getLastError());
+			$this->_sysevents->setSummary($modelIssues->getLastError());
 		}
 		else {
-			phpFrame_Application_Error::raise( '', 'message',  _LANG_ISSUE_CLOSED);
+			$this->_sysevents->setSummary(_LANG_ISSUE_CLOSED, "success");
 			
 			// Prepare data for activity log entry
 			$assignees = $modelIssues->getAssignees($row->id, false);
@@ -345,24 +420,26 @@ class projectsController extends phpFrame_Application_ActionController {
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
 			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, true)) {
-				phpFrame_Application_Error::raise('', 'error', $modelActivityLog->getLastError());
+				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&view=issues&layout=detail&projectid='.$projectid."&issueid=".$issueid);
 	}
 	
-	function reopen_issue() {
+	public function reopen_issue() {
+		if (!$this->_authorise("issues")) return;
+		
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$issueid = phpFrame_Environment_Request::getVar('issueid', 0);
 		
 		$modelIssues = &$this->getModel('issues');
 		$row = $modelIssues->reopenIssue($projectid, $issueid);
 		if ($row === false) {
-			phpFrame_Application_Error::raise('', 'error', $modelIssues->getLastError());
+			$this->_sysevents->setSummary($modelIssues->getLastError());
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'message', _LANG_ISSUE_REOPENED);
+			$this->_sysevents->setSummary(_LANG_ISSUE_REOPENED, "success");
 			
 			// Prepare data for activity log entry
 			$assignees = $modelIssues->getAssignees($row->id, false);
@@ -374,14 +451,51 @@ class projectsController extends phpFrame_Application_ActionController {
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
 			if (!$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, true)) {
-				phpFrame_Application_Error::raise('', 'error', $modelActivityLog->getLastError());
+				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&view=issues&layout=detail&projectid='.$projectid."&issueid=".$issueid);
 	}
 	
-	function save_file() {
+	public function get_files() {
+		if (!$this->_authorise("files")) return;
+		
+		// Get request data
+		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
+		$orderby = phpFrame_Environment_Request::getVar('orderby', 'f.ts');
+		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'DESC');
+		$limit = phpFrame_Environment_Request::getVar('limit', 25);
+		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
+		$search = phpFrame_Environment_Request::getVar('search', '');
+		
+		// Create list filter needed for getIssues()
+		$list_filter = new phpFrame_Database_Listfilter($orderby, $orderdir, $limit, $limitstart, $search);
+		
+		// Get issues using model
+		$issues = $this->getModel('issues')->getIssues($list_filter, $projectid);
+		
+		// Get view
+		$view = $this->getView('issues', 'list');
+		// Set view data
+		$view->addData('project', $this->project);
+		$view->addData('rows', $issues);
+		$view->addData('page_nav', new phpFrame_HTML_Pagination($list_filter));
+		// Display view
+		$view->display();
+	}
+	
+	public function get_file_detail() {
+		if (!$this->_authorise("files")) return;
+	}
+	
+	public function get_file_form() {
+		if (!$this->_authorise("files")) return;
+	}
+	
+	public function save_file() {
+		if (!$this->_authorise("files")) return;
+		
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
@@ -392,10 +506,10 @@ class projectsController extends phpFrame_Application_ActionController {
 		$modelFiles = $this->getModel('files');
 		$row = $modelFiles->saveFile($post);
 		if ($row === false) {
-			phpFrame_Application_Error::raise('', 'error', $modelFiles->getLastError());
+			$this->_sysevents->setSummary($modelFiles->getLastError());
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'message', _LANG_FILE_SAVED);
+			$this->_sysevents->setSummary(_LANG_FILE_SAVED, "success");
 			
 			// Prepare data for activity log entry
 			$action = _LANG_FILES_ACTION_NEW;
@@ -407,30 +521,34 @@ class projectsController extends phpFrame_Application_ActionController {
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
 			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->userid, 'files', $action, $title, $description, $url, $post['assignees'], $notify)) {
-				phpFrame_Application_Error::raise('', 'error', $modelActivityLog->getLastError());
+				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&view=files&projectid='.$post['projectid']);
 	}
 	
-	function remove_file() {
+	public function remove_file() {
+		if (!$this->_authorise("files")) return;
+		
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$fileid = phpFrame_Environment_Request::getVar('fileid', 0);
 		
 		$modelFiles = &$this->getModel('files');
 		
 		if ($modelFiles->deleteFile($projectid, $fileid) === true) {
-			phpFrame_Application_Error::raise('', 'message', _LANG_FILE_DELETE_SUCCESS);
+			$this->_sysevents->setSummary(_LANG_FILE_DELETE_SUCCESS, "success");
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'error', _LANG_FILE_DELETE_ERROR);
+			$this->_sysevents->setSummary(_LANG_FILE_DELETE_ERROR);
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&view=files&projectid='.$projectid);
 	}
 	
-	function download_file() {
+	public function download_file() {
+		if (!$this->_authorise("files")) return;
+		
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$fileid = phpFrame_Environment_Request::getVar('fileid', 0);
 		
@@ -438,7 +556,21 @@ class projectsController extends phpFrame_Application_ActionController {
 		$modelProjects->downloadFile($projectid, $fileid);
 	}
 	
-	function save_message() {
+	public function get_messages() {
+		if (!$this->_authorise("messages")) return;
+	}
+	
+	public function get_message_detail() {
+		if (!$this->_authorise("messages")) return;
+	}
+	
+	public function get_message_form() {
+		if (!$this->_authorise("messages")) return;
+	}
+	
+	public function save_message() {
+		if (!$this->_authorise("messages")) return;
+		
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
@@ -449,10 +581,10 @@ class projectsController extends phpFrame_Application_ActionController {
 		$modelMessages = $this->getModel('messages');
 		$row = $modelMessages->saveMessage($post);
 		if ($row === false) {
-			phpFrame_Application_Error::raise('', 'error', $modelMessages->getLastError());
+			$this->_sysevents->setSummary($modelMessages->getLastError());
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'message', _LANG_MESSAGE_SAVED);
+			$this->_sysevents->setSummary(_LANG_MESSAGE_SAVED, "success");
 			
 			// Prepare data for activity log entry
 			$action = _LANG_MESSAGES_ACTION_NEW;
@@ -464,30 +596,34 @@ class projectsController extends phpFrame_Application_ActionController {
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
 			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->userid, 'messages', $action, $title, $description, $url, $post['assignees'], $notify)) {
-				phpFrame_Application_Error::raise('', 'error', $modelActivityLog->getLastError());
+				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&view=messages&projectid='.$post['projectid']);
 	}
 	
-	function remove_message() {
+	public function remove_message() {
+		if (!$this->_authorise("messages")) return;
+		
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$messageid = phpFrame_Environment_Request::getVar('messageid', 0);
 		
 		$modelMessages = &$this->getModel('messages');
 		
 		if ($modelMessages->deleteMessage($projectid, $messageid) === true) {
-			phpFrame_Application_Error::raise('', 'message', _LANG_MESSAGE_DELETE_SUCCESS);
+			$this->_sysevents->setSummary(_LANG_MESSAGE_DELETE_SUCCESS, "success");
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'error', _LANG_MESSAGE_DELETE_ERROR);
+			$this->_sysevents->setSummary(_LANG_MESSAGE_DELETE_ERROR);
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&view=messages&projectid='.$projectid);
 	}
 	
-	function save_comment() {
+	public function save_comment() {
+		if (!$this->_authorise(phpFrame_Environment_Request::getVar('type'))) return;
+		
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
@@ -498,10 +634,10 @@ class projectsController extends phpFrame_Application_ActionController {
 		$modelComments = $this->getModel('comments');
 		$row = $modelComments->saveComment($post);
 		if ($row === false) {
-			phpFrame_Application_Error::raise('', 'error', $modelComments->getLastError());
+			$this->_sysevents->setSummary($modelComments->getLastError());
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'message', _LANG_COMMENT_SAVED);
+			$this->_sysevents->setSummary(_LANG_COMMENT_SAVED, "success");
 			
 			// Prepare data for activity log entry
 			$action = _LANG_COMMENTS_ACTION_NEW;
@@ -535,7 +671,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			if ($row->type == 'issues' && $close_issue == 'on') {
 				$modelIssues = $this->getModel('issues');
 				if (!$modelIssues->closeIssue($row->projectid, $row->itemid)) {
-					phpFrame_Application_Error::raise('', 'error', $modelIssues->getLastError());
+					$this->_sysevents->setSummary($modelIssues->getLastError());
 				}
 			}	
 		}
@@ -543,7 +679,21 @@ class projectsController extends phpFrame_Application_ActionController {
 		$this->setRedirect($_SERVER['HTTP_REFERER']);
 	}
 	
-	function save_meeting() {
+	public function get_meetings() {
+		if (!$this->_authorise("meetings")) return;
+	}
+	
+	public function get_meeting_detail() {
+		if (!$this->_authorise("meetings")) return;
+	}
+	
+	public function get_meeting_form() {
+		if (!$this->_authorise("meetings")) return;
+	}
+	
+	public function save_meeting() {
+		if (!$this->_authorise("meetings")) return;
+		
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
@@ -554,10 +704,10 @@ class projectsController extends phpFrame_Application_ActionController {
 		$modelMeetings = $this->getModel('meetings');
 		$row = $modelMeetings->saveMeeting($post);
 		if ($row === false){
-			phpFrame_Application_Error::raise('', 'error', $modelMeetings->getLastError());
+			$this->_sysevents->setSummary($modelMeetings->getLastError());
 		}
 		else{
-			phpFrame_Application_Error::raise('', 'message', _LANG_MEETING_SAVED);
+			$this->_sysevents->setSummary(_LANG_MEETING_SAVED, "success");
 			
 			// Prepare data for activity log entry
 			$action = empty($post['id']) ? _LANG_MEETINGS_ACTION_NEW : _LANG_MEETINGS_ACTION_EDIT;
@@ -569,30 +719,34 @@ class projectsController extends phpFrame_Application_ActionController {
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
 			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->created_by, 'meetings', $action, $title, $description, $url, $post['assignees'], $notify)) {
-				phpFrame_Application_Error::raise('', 'error', $modelActivityLog->getLastError());
+				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}	
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&view=meetings&layout=detail&projectid='.$post['projectid']."&meetingid=".$row->id);
 	}
 	
-	function remove_meeting() {
+	public function remove_meeting() {
+		if (!$this->_authorise("meetings")) return;
+		
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
 		
 		$modelMeetings = $this->getModel('meetings');
 		
 		if ($modelMeetings->deleteMeeting($projectid, $meetingid) === true) {
-			phpFrame_Application_Error::raise('', 'message', _LANG_MEETING_DELETE_SUCCESS);
+			$this->_sysevents->setSummary(_LANG_MEETING_DELETE_SUCCESS, "success");
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'error', _LANG_MEETING_DELETE_ERROR);
+			$this->_sysevents->setSummary(_LANG_MEETING_DELETE_ERROR);
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&view=meetings&projectid='.$projectid);
 	}
 	
-	function save_slideshow() {
+	public function save_slideshow() {
+		if (!$this->_authorise("meetings")) return;
+		
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
@@ -605,17 +759,19 @@ class projectsController extends phpFrame_Application_ActionController {
 		$redirect_url = 'index.php?component=com_projects&view=meetings&layout=slideshows_form&projectid='.$post['projectid'].'&meetingid='.$post['meetingid'];
 		
 		if ($row === false) {
-			phpFrame_Application_Error::raise('', 'error', $modelMeetings->getLastError());
+			$this->_sysevents->setSummary($modelMeetings->getLastError());
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'message', _LANG_MEETINGS_SLIDESHOW_SAVE_SUCCESS);
+			$this->_sysevents->setSummary(_LANG_MEETINGS_SLIDESHOW_SAVE_SUCCESS, "success");
 			$redirect_url .= '&slideshowid='.$row->id;
 		}
 		
 		$this->setRedirect($redirect_url);
 	}
 	
-	function remove_slideshow() {
+	public function remove_slideshow() {
+		if (!$this->_authorise("meetings")) return;
+		
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
 		$slideshowid = phpFrame_Environment_Request::getVar('slideshowid', 0);
@@ -623,16 +779,18 @@ class projectsController extends phpFrame_Application_ActionController {
 		$modelMeetings = $this->getModel('meetings');
 		
 		if (!$modelMeetings->deleteSlideshow($projectid, $slideshowid)) {
-			phpFrame_Application_Error::raise('', 'error', $modelMeetings->getLastError());
+			$this->_sysevents->setSummary($modelMeetings->getLastError());
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'message', _LANG_MEETINGS_SLIDESHOW_DELETE_SUCCESS);
+			$this->_sysevents->setSummary(_LANG_MEETINGS_SLIDESHOW_DELETE_SUCCESS, "success");
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&view=meetings&layout=detail&projectid='.$projectid.'&meetingid='.$meetingid);
 	}
 	
-	function upload_slide() {
+	public function upload_slide() {
+		if (!$this->_authorise("meetings")) return;
+		
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
@@ -649,7 +807,7 @@ class projectsController extends phpFrame_Application_ActionController {
 				exit;
 			}
 			else {
-				phpFrame_Application_Error::raise('', 'error', $modelMeetings->getLastError());
+				$this->_sysevents->setSummary($modelMeetings->getLastError());
 			}
 		}
 		else {
@@ -658,14 +816,16 @@ class projectsController extends phpFrame_Application_ActionController {
 				exit;
 			}
 			else {
-				phpFrame_Application_Error::raise('', 'message', _LANG_MEETINGS_SLIDE_UPLOAD_SUCCESS);
+				$this->_sysevents->setSummary(_LANG_MEETINGS_SLIDE_UPLOAD_SUCCESS, "success");
 			}
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&view=meetings&projectid='.$projectid);
 	}
 	
-	function remove_slide() {
+	public function remove_slide() {
+		if (!$this->_authorise("meetings")) return;
+		
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$slideid = phpFrame_Environment_Request::getVar('slideid', 0);
 		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
@@ -674,16 +834,18 @@ class projectsController extends phpFrame_Application_ActionController {
 		$modelMeetings = $this->getModel('meetings');
 		
 		if (!$modelMeetings->deleteSlide($projectid, $slideid)) {
-			phpFrame_Application_Error::raise('', 'error', $modelMeetings->getLastError());
+			$this->_sysevents->setSummary($modelMeetings->getLastError());
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'message', _LANG_MEETINGS_SLIDE_DELETE_SUCCESS);
+			$this->_sysevents->setSummary(_LANG_MEETINGS_SLIDE_DELETE_SUCCESS, "success");
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&view=meetings&layout=slideshows_form&projectid='.$projectid.'&meetingid='.$meetingid.'&slideshowid='.$slideshowid);
 	}
 	
-	function save_meetings_files() {
+	public function save_meetings_files() {
+		if (!$this->_authorise("meetings")) return;
+		
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
 		$fileids = phpFrame_Environment_Request::getVar('fileids', 0);
@@ -697,16 +859,30 @@ class projectsController extends phpFrame_Application_ActionController {
 		$modelMeetings = $this->getModel('meetings');
 		
 		if (!$modelMeetings->saveFiles($meetingid, $fileids_array)) {
-			phpFrame_Application_Error::raise('', 'error', $modelMeetings->getLastError());
+			$this->_sysevents->setSummary($modelMeetings->getLastError());
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'message', _LANG_MEETINGS_FILES_SAVE_SUCCESS);
+			$this->_sysevents->setSummary(_LANG_MEETINGS_FILES_SAVE_SUCCESS, "success");
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&view=meetings&layout=detail&projectid='.$projectid.'&meetingid='.$meetingid);
 	}
 	
-	function save_milestone() {
+	public function get_milestones() {
+		if (!$this->_authorise("milestones")) return;
+	}
+	
+	public function get_milestone_details() {
+		if (!$this->_authorise("milestones")) return;
+	}
+	
+	public function get_milestone_form() {
+		if (!$this->_authorise("milestones")) return;
+	}
+	
+	public function save_milestone() {
+		if (!$this->_authorise("milestones")) return;
+		
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
@@ -717,10 +893,10 @@ class projectsController extends phpFrame_Application_ActionController {
 		$modelMilestones = $this->getModel('milestones');
 		$row = $modelMilestones->saveMilestone($post);
 		if ($row === false) {
-			phpFrame_Application_Error::raise('', 'error', $modelMilestones->getLastError());
+			$this->_sysevents->setSummary($modelMilestones->getLastError());
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'message', _LANG_MILESTONE_SAVED);
+			$this->_sysevents->setSummary(_LANG_MILESTONE_SAVED, "success");
 			
 			// Prepare data for activity log entry
 			$action = empty($post['id']) ? _LANG_MILESTONES_ACTION_NEW : _LANG_MILESTONES_ACTION_EDIT;
@@ -732,30 +908,32 @@ class projectsController extends phpFrame_Application_ActionController {
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
 			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->created_by, 'milestones', $action, $title, $description, $url, $post['assignees'], $notify)) {
-				phpFrame_Application_Error::raise('', 'error', $modelActivityLog->getLastError());
+				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&view=milestones&layout=detail&projectid='.$post['projectid']."&milestoneid=".$row->id);
 	}
 	
-	function remove_milestone() {
+	public function remove_milestone() {
+		if (!$this->_authorise("milestones")) return;
+		
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$milestoneid = phpFrame_Environment_Request::getVar('milestoneid', 0);
 		
 		$modelMilestones = $this->getModel('milestones');
 		
 		if ($modelMilestones->deleteMilestone($projectid, $milestoneid) === true) {
-			phpFrame_Application_Error::raise('', 'message', _LANG_MILESTONE_DELETE_SUCCESS);
+			$this->_sysevents->setSummary(_LANG_MILESTONE_DELETE_SUCCESS, "success");
 		}
 		else {
-			phpFrame_Application_Error::raise('', 'error', _LANG_MILESTONE_DELETE_ERROR);
+			$this->_sysevents->setSummary(_LANG_MILESTONE_DELETE_ERROR);
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&view=milestones&projectid='.$projectid);
 	}
 	
-	function process_incoming_email() {
+	public function process_incoming_email() {
 		// Get models
 		$modelComments = $this->getModel('comments');
 		
@@ -788,10 +966,10 @@ class projectsController extends phpFrame_Application_ActionController {
 						
 						$row = $modelComments->saveComment($post);
 						if ($row === false) {
-							phpFrame_Application_Error::raise('', 'error', $modelComments->getLastError());
+							$this->_sysevents->setSummary($modelComments->getLastError());
 						}
 						else {
-							phpFrame_Application_Error::raise('', 'message', _LANG_COMMENT_SAVED);
+							$this->_sysevents->setSummary(_LANG_COMMENT_SAVED, "success");
 							
 							// Prepare data for activity log entry
 							$action = _LANG_COMMENTS_ACTION_NEW;
@@ -825,7 +1003,7 @@ class projectsController extends phpFrame_Application_ActionController {
 							$modelActivityLog->project =& $this->project;
 							$delete_uids = array();
 							if (!$modelActivityLog->saveActivityLog($row->projectid, $row->userid, 'comments', $action, $title, $description, $url, $assignees, true)) {
-								phpFrame_Application_Error::raise('', 'error', $modelActivityLog->getLastError());
+								$this->_sysevents->setSummary($modelActivityLog->getLastError());
 							}
 							else {
 								$delete_uids[] = $message->uid;
@@ -845,5 +1023,19 @@ class projectsController extends phpFrame_Application_ActionController {
 			//exit;
 		}
 	}
+	
+	public function get_people() {
+	
+	}
+	
+	private function _authorise($tool) {
+		if (isset($this->project->id)) {
+			if (!$this->permissions->authorise($tool, phpFrame::getUser()->id, $this->project)) {
+				$this->_sysevents->setSummary("Permission denied");
+				return false;
+			}
+		}
+		
+		return true;
+	}
 }
-?>

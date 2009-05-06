@@ -24,25 +24,6 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * developing components. See the built in components (dashboard, user, admin, ...) 
  * for examples.
  * 
- * This class extends the phpFrame_Base_Singleton class, and it is therefore instantiated using 
- * the getInstance() method inherited from phpFrame_Base_Singleton.
- * 
- * To make sure that the child model is instantiated using the correct run time
- * class name we pass the class name when invoking the getInstance() method.
- * 
- * For example:
- * <code>
- * class myModel phpFrame_Application_Model {
- * 		function doSomething() {
- * 			return 'something';
- * 		}
- * }
- * 
- * $myModel =& phpFrame_Base_Singleton::getInstance('myModel');
- * echo $myModel->doSomething();
- * </code>
- * This will echo 'something'.
- * 
  * @package		phpFrame
  * @subpackage 	application
  * @author 		Luis Montero [e-noise.com]
@@ -50,64 +31,13 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @see 		phpFrame_Application_ActionController, phpFrame_Application_View
  * @abstract 
  */
-abstract class phpFrame_Application_Model extends phpFrame_Base_Singleton {
-	/**
-	 * A reference to the user object
-	 * 
-	 * @var object
-	 */
-	protected $_user=null;
-	/**
-	 * A reference to the database object
-	 * 
-	 * @var object
-	 */
-	protected $_db=null;
+abstract class phpFrame_Application_Model {
 	/**
 	 * An array containing strings with internal error messages if any
 	 * 
 	 * @var array
 	 */
 	protected $_error=array();
-	
-	/**
-	 * Constructor
-	 * 
-	 * @return void
-	 */
-	public function __construct() {
-		$this->_user = phpFrame::getUser();
-		$this->_db = phpFrame::getDB();
-	}
-	
-	/**
-	 * Get a named model
-	 * 
-	 * @param	string	$name
-	 * @return	object
-	 */
-	protected function getModel($name) {
-		// Get current component option from request
-		$option = phpFrame_Environment_Request::getComponentName();
-		// Figure out controller instance name
-		$controller_class_name = substr($option, 4).'Controller';
-		// Assign reference to controller
-		$controller =& phpFrame_Base_Singleton::getInstance($controller_class_name);
-		// Get model using controller's method
-		$model = $controller->getModel($name);
-		
-		return $model;
-	}
-	
-	/**
-	 * Get table class
-	 * 
-	 * @param	string	$table_name
-	 * @return	object
-	 */
-	protected function getTable($table_name) {
-		return phpFrame::getTable(phpFrame_Environment_Request::getComponentName(), $table_name);
-	}
 	
 	/**
 	 * Get last error in model
@@ -124,5 +54,14 @@ abstract class phpFrame_Application_Model extends phpFrame_Base_Singleton {
 			return false;
 		}
 	}
+	
+	/**
+	 * Get table class
+	 * 
+	 * @param	string	$table_name
+	 * @return	object
+	 */
+	protected function getTable($table_name) {
+		return phpFrame::getTable(phpFrame_Environment_Request::getComponentName(), $table_name);
+	}
 }
-?>

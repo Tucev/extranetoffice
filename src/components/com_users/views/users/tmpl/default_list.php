@@ -10,19 +10,19 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
-<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
-<?php if (is_array($this->rows) && count($this->rows) > 0) : ?>
+<?php if (is_array($data['rows']) && count($data['rows']) > 0) : ?>
 
-<?php foreach($this->rows as $row) : ?>
+<?php foreach($data['rows'] as $row) : ?>
 <div class="row_icons">
 	
-	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&view=users&layout=detail&userid=".$row->id); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&action=get_user&userid=".$row->id); ?>">
 	<img border="0" src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo !empty($row->photo) ? $row->photo : 'default.png'; ?>" />
 	</a>
 	
 	<div class="row_icons_heading">
-	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&view=users&layout=detail&userid=".$row->id); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&action=get_user&userid=".$row->id); ?>">
 		<?php echo phpFrame_User_Helper::fullname_format($row->firstname, $row->lastname); ?>
 	</a>
 	</div>

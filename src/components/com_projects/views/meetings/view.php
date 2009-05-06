@@ -48,7 +48,7 @@ class projectsViewMeetings extends phpFrame_Application_View {
 	 * @since	1.0
 	 */
 	function display() {
-		$this->page_title = _LANG_MEETINGS;
+		$this->_data['page_title'] = _LANG_MEETINGS;
 		$this->page_heading = $this->project->name;
 		
 		parent::display();

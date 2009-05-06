@@ -80,7 +80,7 @@ function add_attachment(path, size, type) {
 }
 </script>
 
-<div class="componentheading"><?php echo $this->page_title; ?></div>
+<div class="componentheading"><?php echo $data['page_title']; ?></div>
 
 <div id="email_detail_actions">
 	<div>

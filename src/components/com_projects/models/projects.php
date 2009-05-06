@@ -26,8 +26,6 @@ class projectsModelProjects extends phpFrame_Application_Model {
 	 * @since	1.0
 	 */
 	function __construct() {
-		parent::__construct();
-		
 		// Check whether project directories exists and are writable
 		$projects_upload_dir = _ABS_PATH.DS.config::UPLOAD_DIR.DS."projects";
 		//TODO: Have to catch errors here and look at file permissions
@@ -66,12 +64,13 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		
 		// Show only public projects or projects where user has an assigned role
 		if (empty($userid)) {
-			$userid = $this->_user->id;
+			$userid = phpFrame::getUser()->id;
 		}
 		$where[] = "( p.access = '0' OR (".$userid." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 		
+		$search = $list_filter->getSearchStr();
 		if ($search) {
-			$where[] = "p.name LIKE '%".$this->_db->getEscaped($list_filter->getSearchStr())."%'";
+			$where[] = "p.name LIKE '%".phpFrame::getDB()->getEscaped($search)."%'";
 		}
 
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
@@ -86,11 +85,11 @@ class projectsModelProjects extends phpFrame_Application_Model {
 				  . $where . 
 				  " GROUP BY p.id ";
 				  
-		$this->_db->setQuery($query);
-		$this->_db->query();
+		phpFrame::getDB()->setQuery($query);
+		phpFrame::getDB()->query();
 		
 		// Set total number of record in list filter
-		$list_filter->setTotal($this->_db->getNumRows());
+		$list_filter->setTotal(phpFrame::getDB()->getNumRows());
 		
 		// get the subset (based on limits) of required records
 		$query = "SELECT 
@@ -110,8 +109,8 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		$query .= $list_filter->getLimitStmt();
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		phpFrame::getDB()->setQuery($query);
+		return phpFrame::getDB()->loadObjectList();
 	}
 	
 	public function getProjectsDetail($projectid, $userid=0) {
@@ -121,7 +120,7 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		}
 		
 		if (empty($userid)) {
-			$userid = $this->_user->id;
+			$userid = phpFrame::getUser()->id;
 		}
 		
 		$where[] = "( p.access = '0' OR (".$userid." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
@@ -138,9 +137,9 @@ class projectsModelProjects extends phpFrame_Application_Model {
 				  LEFT JOIN #__users_roles ur ON p.id = ur.projectid "
 				  .$where. 
 				  " GROUP BY p.id ";
-				  	  
-		$this->_db->setQuery($query);
-		return $this->_db->loadObject();
+		
+		phpFrame::getDB()->setQuery($query);
+		return phpFrame::getDB()->loadObject();
 	}
 	
 	
@@ -162,7 +161,7 @@ class projectsModelProjects extends phpFrame_Application_Model {
 	
 		if (empty($row->id)) {
 			$row->created = date("Y-m-d H:i:s");
-			$row->created_by = $this->_user->id;
+			$row->created_by = phpFrame::getUser()->id;
 		}
 		
 		if (!$row->check()) {

@@ -53,7 +53,7 @@ class projectsViewProjects extends phpFrame_Application_View {
 		// Append page title to document title
 		if (phpFrame_Environment_Request::getLayout() != 'list') {
 			$document = phpFrame::getDocument('html');
-			$document->title .= ' - '.$this->page_title;
+			$document->title .= ' - '.$this->_data['page_title'];
 		}
 	}
 	

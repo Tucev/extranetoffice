@@ -63,13 +63,7 @@ class usersViewUsers extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayUsersList() {
-		$this->page_title = _LANG_USERS;
-		
-		$modelUsers = $this->getModel('users');
-		$users = $modelUsers->getUsers();
-		$this->rows =& $users['rows'];
-		$this->pageNav =& $users['pageNav'];
-		$this->lists =& $users['lists'];
+		$this->_data['page_title'] = _LANG_USERS;
 	}
 	
 	/**
@@ -78,13 +72,7 @@ class usersViewUsers extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayUsersDetail() {
-		$userid = phpFrame_Environment_Request::getVar('userid', 0);
-		
-		$modelUsers = $this->getModel('users');
-		$this->row = $modelUsers->getUsersDetail($userid);
-		
-		$this->page_title = $this->row->firstname.' '.$this->row->lastname;
-		phpFrame::getPathway()->addItem($this->row->firstname.' '.$this->row->lastname);
+		$this->_data['page_title'] = $this->_data['row']->firstname.' '.$this->_data['row']->lastname;
+		phpFrame::getPathway()->addItem($this->_data['row']->firstname.' '.$this->_data['row']->lastname);
 	}
 }
-?>

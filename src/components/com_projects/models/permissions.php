@@ -20,136 +20,91 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 class projectsModelPermissions extends phpFrame_Application_Model {
 	/**
-	 * The current project object
+	 * Instance of the permission object
 	 * 
-	 * @var object
+	 * @var	object
 	 */
-	var $project=null;
+	private static $_instance=null;
 	/**
-	 * The current user's role id for the current project
+	 * User id
 	 * 
 	 * @var int
 	 */
-	var $roleid=null;
+	private $_userid=null;
 	/**
-	 * Array containing a list of the available views
+	 * Project id
 	 * 
-	 * @var array
+	 * @var int
 	 */
-	var $tools=null;
+	private $_projectid=null;
 	/**
-	 * A boolean indicating whether the permissions check was passed
+	 * The cached user's role id
 	 * 
-	 * @var bool
+	 * @var int
 	 */
-	var $is_allowed=null;
-	/**
-	 * The currently loaded tool/view
-	 * 
-	 * @var string
-	 */
-	var $current_tool=null;
+	private $_roleid=null;
 	
 	/**
-	 * Check project access
+	 * Private constructor to prevent instantiation and implement the singleton pattern.
+	 * @return unknown_type
+	 */
+	private function __construct() {}
+	
+	/**
+	 * Get instance
 	 * 
-	 * This method checks access to a given project.
+	 * @return	object of type projectsModelPermissions
+	 */
+	public static function getInstance() {
+		if (!self::$_instance instanceof projectsModelPermissions) {
+			self::$_instance = new projectsModelPermissions();
+		}
+		
+		return self::$_instance;
+	}
+	
+	/**
+	 * Authorise access to a given tool for a given user in a given project
 	 * 
+	 * @param	string	$tool
+	 * @param	int		$userid
 	 * @param	object	$project
-	 * @param	array	$views_available
-	 * @return 	bool
+	 * @return	boolean
 	 */
-	function checkProjectAccess(&$project, $views_available) {
-		$session = phpFrame::getSession();
-		if ($session->isAdmin()) {
-			return $this->is_allowed = true;
-		}
-		
-		$this->project = $project;
-		
-		// Load tools/views and their access levels into tools array
-		foreach ($views_available as $view) {
-			// Filter out "projects" view (this is not a tool)
-			if ($view != 'projects') {
-				$access_property_name = 'access_'.$view;
-				$view_access_level = $this->project->$access_property_name;
-				$this->tools[] = array($view, $view_access_level);	
+	public function authorise($tool, $userid, $project) {
+		$access_property_name = "access_".$tool;
+		if (isset($project->$access_property_name)) {
+			$roleid = $this->_getUserRole($userid, $project->id);
+			
+			if ($roleid !== false && $roleid <= $project->$access_property_name) {
+				return true;
 			}
 		}
 		
-		// get role id
-		$this->roleid = $this->getUserRole($this->_user->id, $project->id);
-		
-		// Check project's global access level
-		if ($this->project->access > 0 && $this->roleid < 1) {
-			$this->_error[] = "You do not have access to this project";
-			$this->is_allowed = false;
-			return false;
-		}
-		
-		// Check tool-specific (views) access
-		if (!empty($project->id)) {
-			if ($this->checkViewAccess() !== true) {
-				$this->_error[] = "You do not have access to this tool in this project";
-				$this->is_allowed = false;
-				return false;
-			}	
-		}
-		
-		$this->is_allowed = true;
-		return true;
+		return false;
 	}
 	
 	/**
-	 * Returns current user's role in current project
-	 *
+	 * Get user role
+	 * 
+	 * @param	int	$userid
+	 * @param	int	$projectid
+	 * @return	mixed	Returns an integer on success or FALSE on failure.
 	 */
-	function getUserRole($userid, $projectid) {
-		$query = "SELECT roleid ";
-		$query .= " FROM #__users_roles ";
-		$query .= " WHERE userid = ".$userid." AND projectid = ".$projectid;
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
-	
-	function checkViewAccess() {
-		$view = phpFrame_Environment_Request::getViewName();
-		$task = phpFrame_Environment_Request::getAction();
-		
-		// if a task has been requested we get the tool keyword from the task
-		if (!empty($task)) {
-			$task_tool = substr($task, (strpos($task, '_')+1));
+	private function _getUserRole($userid, $projectid) {
+		// Get user role from database if cached one needs refreshing
+		if (is_null($this->_roleid) 
+			|| $userid != $this->_userid 
+			|| $projectid != $this->_projectid) {
+			$query = "SELECT roleid FROM #__users_roles ";
+			$query .= " WHERE userid = ".$userid." AND projectid = ".$projectid;
+			phpFrame::getDB()->setQuery($query);
+			$this->_roleid = phpFrame::getDB()->loadResult();
+			$this->_userid = $userid;
+			$this->_projectid = $projectid;
 		}
 		
-		// Return true when no specific project tool has been selected (projects view)
-		if ($view == 'projects' || strpos('projects', $task_tool) !== false) {
-			return true;
-		}
-		else {
-			$this->current_tool = $view;
-			$access_property_name = 'access_'.$view;
-			$view_access_level = $this->project->$access_property_name;
-			//echo 'view_access_level: '.$view_access_level.'<br />';
-			//echo 'roleid: '.$this->roleid;
-			switch ($view_access_level) {
-				case '1' : // Admins only
-					if ($this->roleid == 1) return true;
-					else return false;
-					break;
-				case '2' : // Admins + Project workers only
-					if ($this->roleid < 3) return true;
-					else return false;
-					break;
-				case '3' : // Admins + Project workers + Guests only
-					if ($this->roleid < 4) return true;
-					else return false;
-					break;
-				case '4' : // Admins + Project workers + Guests + Public
-					return true;
-					break;
-			}
-		}
+		return $this->_roleid;
 	}
 	
 }
-?>

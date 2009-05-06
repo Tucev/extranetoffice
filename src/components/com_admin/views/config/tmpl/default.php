@@ -46,7 +46,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 </script>
 
 
-<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 <form action="index.php" method="post" id="configform" name="configform">
 	

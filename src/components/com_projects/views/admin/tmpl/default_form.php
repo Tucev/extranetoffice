@@ -25,7 +25,7 @@ $(document).ready(function() {
 });
 </script>
 
-<h2 class="componentheading"><?php echo $this->page_title; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 
 <form action="index.php" method="post" id="projectsform" name="projectsform">
@@ -40,7 +40,7 @@ $(document).ready(function() {
 		</label>
 	</td>
 	<td>
-		<input class="required" type="text" id="name" name="name" size="32" maxlength="128" value="<?php echo $this->project->name; ?>" />
+		<input class="required" type="text" id="name" name="name" size="32" maxlength="128" value="<?php echo $data['project']->name; ?>" />
 	</td>
 </tr>
 <tr>
@@ -50,7 +50,7 @@ $(document).ready(function() {
 		</label>
 	</td>
 	<td>
-		<input type="text" id="description" name="description" size="80" maxlength="255" value="<?php echo $this->project->description; ?>" />
+		<input type="text" id="description" name="description" size="80" maxlength="255" value="<?php echo $data['project']->description; ?>" />
 	</td>
 </tr>
 <tr>
@@ -60,7 +60,7 @@ $(document).ready(function() {
 		</label>
 	</td>
 	<td>
-		<?php echo projectsHelperProjects::project_type_select($this->project->project_type); ?>
+		<?php echo projectsHelperProjects::project_type_select($data['project']->project_type); ?>
 	</td>
 </tr>
 <tr>
@@ -70,7 +70,7 @@ $(document).ready(function() {
 		</label>
 	</td>
 	<td>
-		<?php echo projectsHelperProjects::priority_select($this->project->priority); ?>
+		<?php echo projectsHelperProjects::priority_select($data['project']->priority); ?>
 	</td>
 </tr>
 <tr>
@@ -80,7 +80,7 @@ $(document).ready(function() {
 		</label>
 	</td>
 	<td>
-		<?php echo projectsHelperProjects::status_select($this->project->status); ?>
+		<?php echo projectsHelperProjects::status_select($data['project']->status); ?>
 	</td>
 </tr>
 <tr>
@@ -90,11 +90,11 @@ $(document).ready(function() {
 		</label>
 	</td>
 	<td>
-		<?php echo projectsHelperProjects::global_access_select('access', $this->project->access); ?>
+		<?php echo projectsHelperProjects::global_access_select('access', $data['project']->access); ?>
 	</td>
 </tr>
 
-<?php if (!empty($this->project->id)) : ?>
+<?php if (!empty($data['project']->id)) : ?>
 <tr>
 	<td width="30%">
 		<label id="created_bymsg" for="created_by">
@@ -102,7 +102,7 @@ $(document).ready(function() {
 		</label>
 	</td>
 	<td>
-		<?php echo phpFrame_User_Helper::id2name($this->project->created_by); ?>
+		<?php echo phpFrame_User_Helper::id2name($data['project']->created_by); ?>
 	</td>
 </tr>
 <tr>
@@ -112,7 +112,7 @@ $(document).ready(function() {
 		</label>
 	</td>
 	<td>
-		<?php echo $this->project->created; ?>
+		<?php echo $data['project']->created; ?>
 	</td>
 </tr>
 <?php endif; ?>
@@ -135,7 +135,7 @@ $(document).ready(function() {
 		</label>
 	</td>
 	<td>
-		<?php echo projectsHelperProjects::access_select('access_issues', $this->project->access_issues); ?>
+		<?php echo projectsHelperProjects::access_select('access_issues', $data['project']->access_issues); ?>
 	</td>
 </tr>
 <tr>
@@ -145,7 +145,7 @@ $(document).ready(function() {
 		</label>
 	</td>
 	<td>
-		<?php echo projectsHelperProjects::access_select('access_messages', $this->project->access_messages); ?>
+		<?php echo projectsHelperProjects::access_select('access_messages', $data['project']->access_messages); ?>
 	</td>
 </tr>
 <tr>
@@ -155,7 +155,7 @@ $(document).ready(function() {
 		</label>
 	</td>
 	<td>
-		<?php echo projectsHelperProjects::access_select('access_milestones', $this->project->access_milestones); ?>
+		<?php echo projectsHelperProjects::access_select('access_milestones', $data['project']->access_milestones); ?>
 	</td>
 </tr>
 <tr>
@@ -165,7 +165,7 @@ $(document).ready(function() {
 		</label>
 	</td>
 	<td>
-		<?php echo projectsHelperProjects::access_select('access_files', $this->project->access_files); ?>
+		<?php echo projectsHelperProjects::access_select('access_files', $data['project']->access_files); ?>
 	</td>
 </tr>
 <tr>
@@ -175,7 +175,7 @@ $(document).ready(function() {
 		</label>
 	</td>
 	<td>
-		<?php echo projectsHelperProjects::access_select('access_meetings', $this->project->access_meetings); ?>
+		<?php echo projectsHelperProjects::access_select('access_meetings', $data['project']->access_meetings); ?>
 	</td>
 </tr>
 <!-- 
@@ -186,7 +186,7 @@ $(document).ready(function() {
 		</label>
 	</td>
 	<td>
-		<?php echo projectsHelperProjects::access_select('access_polls', $this->project->access_polls); ?>
+		<?php echo projectsHelperProjects::access_select('access_polls', $data['project']->access_polls); ?>
 	</td>
 </tr>
  -->
@@ -197,7 +197,7 @@ $(document).ready(function() {
 		</label>
 	</td>
 	<td>
-		<?php echo projectsHelperProjects::access_select('access_people', $this->project->access_people); ?>
+		<?php echo projectsHelperProjects::access_select('access_people', $data['project']->access_people); ?>
 	</td>
 </tr>
 <!-- 
@@ -208,7 +208,7 @@ $(document).ready(function() {
 		</label>
 	</td>
 	<td>
-		<?php echo projectsHelperProjects::access_select('access_reports', $this->project->access_reports); ?>
+		<?php echo projectsHelperProjects::access_select('access_reports', $data['project']->access_reports); ?>
 	</td>
 </tr>
  -->
@@ -219,7 +219,7 @@ $(document).ready(function() {
 		</label>
 	</td>
 	<td>
-		<?php echo projectsHelperProjects::access_select('access_admin', $this->project->access_admin); ?>
+		<?php echo projectsHelperProjects::access_select('access_admin', $data['project']->access_admin); ?>
 	</td>
 </tr>
 </table>
@@ -232,7 +232,7 @@ $(document).ready(function() {
 <button type="button" onclick="window.history.back();"><?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?></button>
 <button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 
-<input type="hidden" name="id" value="<?php echo $this->project->id;?>" />
+<input type="hidden" name="id" value="<?php echo $data['project']->id;?>" />
 <input type="hidden" name="component" value="com_projects" />
 <input type="hidden" name="action" value="save_project" />
 <input type="hidden" name="layout" value="" />
