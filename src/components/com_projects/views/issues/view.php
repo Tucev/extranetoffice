@@ -68,19 +68,14 @@ class projectsViewIssues extends phpFrame_Application_View {
 	}
 	
 	function displayIssuesForm() {
-		if (!empty($this->issueid)) {
+		if (!empty($this->_data['issue'])) {
 			$action = _LANG_ISSUES_EDIT;
-			$modelIssues = $this->getModel('issues');
-			$issue = $modelIssues->getIssuesDetail($this->projectid, $this->issueid);
-			$this->row =& $issue;
 		}
 		else {
 			$action = _LANG_ISSUES_NEW;
-			// default values
-			$this->issue->access = 1;	
 		}
 		
-		$this->page_title .= ' - '.$action;
+		$this->_data['page_title'] .= ' - '.$action;
 		phpFrame::getPathway()->addItem($this->current_tool, phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&projectid=".$this->projectid));
 		phpFrame::getPathway()->addItem($action);
 	}

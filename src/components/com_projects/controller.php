@@ -310,7 +310,6 @@ class projectsController extends phpFrame_Application_ActionController {
 		if (!$this->_authorise("issues")) return;
 		
 		// Get request data
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$orderby = phpFrame_Environment_Request::getVar('orderby', 'i.dtstart');
 		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'DESC');
 		$limit = phpFrame_Environment_Request::getVar('limit', 25);
@@ -321,7 +320,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		$list_filter = new phpFrame_Database_Listfilter($orderby, $orderdir, $limit, $limitstart, $search);
 		
 		// Get issues using model
-		$issues = $this->getModel('issues')->getIssues($list_filter, $projectid);
+		$issues = $this->getModel('issues')->getIssues($list_filter, $this->project->id);
 		
 		// Get view
 		$view = $this->getView('issues', 'list');
@@ -341,18 +340,36 @@ class projectsController extends phpFrame_Application_ActionController {
 		
 		// Get projects using model
 		$issue = $this->getModel('issues')->getIssuesDetail($this->project->id, $issueid);
-		var_dump($issue); exit;
 		// Get view
 		$view = $this->getView('projects', 'list');
 		// Set view data
 		$view->addData('rows', $projects);
-		$view->addData('page_nav', new phpFrame_HTML_Pagination($list_filter));
 		// Display view
 		$view->display();
 	}
 	
 	public function get_issue_form() {
 		if (!$this->_authorise("issues")) return;
+		
+		// Get request data
+		$issueid = phpFrame_Environment_Request::getVar('issueid', 0);
+		if (issueid != 0) {
+			
+			// Get issue using model
+			$issue = $this->getModel('issues')->getIssuesDetail($this->project->id, $issueid);
+			
+			// Get view
+			$view = $this->getView('issues', 'list');
+			// Set view data
+			$view->addData('row', $issue);
+		}
+		else {
+			$this->_data['row']->access = 1;	
+		}
+		
+	
+		// Display view
+		$view->displayIssuesForm();
 	}
 	
 	public function save_issue() {
