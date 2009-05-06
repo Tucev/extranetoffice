@@ -1,4 +1,3 @@
-<?php var_dump($data); ?>
 <?php
 /**
  * @version 	$Id$
@@ -110,7 +109,7 @@ $(document).ready(function() {
 	<?php endif; ?>
 	
 	<div class="thread_heading">
-	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->id); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_issue_detail&projectid=".$row->projectid."&issueid=".$row->id); ?>">
 		<?php echo $row->title; ?>
 	</a>
 	</div>

@@ -54,7 +54,9 @@ phpFrame_HTML::validate('issuesform');
 		</label>
 	</td>
 	<td>
-		<?php echo $data['row']->issue_type; ?>
+		<?php
+		//TODO: Needs Table name eo_issue_types in projectsHelper.php, function name is issue_type_select. 
+		 echo projectsHelperProjects::issue_type_select($data['row']->issue_type); ?>
 	</td>
 </tr>
 <tr>
@@ -64,7 +66,7 @@ phpFrame_HTML::validate('issuesform');
 		</label>
 	</td>
 	<td>
-		<?php echo $data['row']->priority; ?>
+		<?php echo projectsHelperProjects::priority_select($data['row']->priority); ?>
 	</td>
 </tr>
 <tr>
