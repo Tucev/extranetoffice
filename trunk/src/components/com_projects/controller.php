@@ -748,6 +748,28 @@ class projectsController extends phpFrame_Application_ActionController {
 	
 	public function get_meeting_form() {
 		if (!$this->_authorise("meetings")) return;
+		
+		// Get request data
+		$issueid = phpFrame_Environment_Request::getVar('meetingid', 0);
+		
+		// Get view
+		$view = $this->getView('meetings', 'form');
+		
+		// Set view data
+		$view->addData('projectid', $this->project->id);
+			
+		if (meetingid != 0) {		
+			// Get issue using model
+			$meeting = $this->getModel('meetings')->getMeetingsDetail($this->project->id, $meetingid);
+ 
+			$view->addData('row', $meeting);
+		}
+		else {
+			$this->_data['row']->access = 1;	
+		}
+	
+		// Display view
+		$view->display();
 	}
 	
 	public function save_meeting() {

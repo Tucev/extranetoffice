@@ -87,18 +87,8 @@ class projectsViewMeetings extends phpFrame_Application_View {
 	 *
 	 */
 	function displayMeetingsForm() {
-		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
 		
-		if (!empty($meetingid)) {
-			$action = _LANG_MEETINGS_EDIT;
-			$modelMeetings = $this->getModel('meetings');
-			$this->row = $modelMeetings->getMeetingsDetail($this->projectid, $meetingid);
-		}
-		else {
-			$action = _LANG_MEETINGS_NEW;
-			// default values	
-		}
-		
+		$action = empty($this->data['row']) ? _LANG_MEETINGS_NEW : _LANG_MEETINGS_EDIT;
 		$this->page_title .= ' - '.$action;
 		phpFrame::getPathway()->addItem($this->current_tool, "index.php?component=com_projects&view=meetings&projectid=".$this->projectid);
 		phpFrame::getPathway()->addItem($action);
