@@ -353,13 +353,14 @@ class projectsController extends phpFrame_Application_ActionController {
 		
 		// Get request data
 		$issueid = phpFrame_Environment_Request::getVar('issueid', 0);
-		if (issueid != 0) {
+		
+		// Get view
+		$view = $this->getView('issues', 'form');
 			
+		if (issueid != 0) {		
 			// Get issue using model
 			$issue = $this->getModel('issues')->getIssuesDetail($this->project->id, $issueid);
 			
-			// Get view
-			$view = $this->getView('issues', 'list');
 			// Set view data
 			$view->addData('row', $issue);
 		}
