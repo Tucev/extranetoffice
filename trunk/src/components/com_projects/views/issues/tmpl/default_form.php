@@ -1,3 +1,4 @@
+<?php var_dump($data); ?>
 <?php
 /**
  * @version 	$Id$
@@ -13,10 +14,10 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 phpFrame_HTML::validate('issuesform');
 ?>
 
-<h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
 <h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_issue_list&projectid='.$data['page_title']->id); ?>">
 		<?php echo $this->current_tool; ?>
 	</a>
 </h2>
@@ -24,7 +25,7 @@ phpFrame_HTML::validate('issuesform');
 <form action="index.php" method="post" id="issuesform" name="issuesform">
 
 <fieldset>
-<legend><?php echo empty($this->issueid) ? _LANG_ISSUES_NEW : _LANG_ISSUES_EDIT; ?></legend>
+<legend><?php echo empty($data['row']->issueid) ? _LANG_ISSUES_NEW : _LANG_ISSUES_EDIT; ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td width="30%">
@@ -33,7 +34,7 @@ phpFrame_HTML::validate('issuesform');
 		</label>
 	</td>
 	<td>
-		<input class="required" type="text" id="title" name="title" size="32" maxlength="128" value="<?php echo htmlentities($this->row->title); ?>" />
+		<input class="required" type="text" id="title" name="title" size="32" maxlength="128" value="<?php echo htmlentities($data['row']->title); ?>" />
 	</td>
 </tr>
 <tr>
@@ -43,7 +44,7 @@ phpFrame_HTML::validate('issuesform');
 		</label>
 	</td>
 	<td>
-		<textarea id="description" name="description" cols="80"><?php echo $this->row->description; ?></textarea> 
+		<textarea id="description" name="description" cols="80"><?php echo $data['row']->description; ?></textarea> 
 	</td>
 </tr>
 <tr>
@@ -53,7 +54,7 @@ phpFrame_HTML::validate('issuesform');
 		</label>
 	</td>
 	<td>
-		<?php echo projectsHelperProjects::issue_type_select($this->row->issue_type); ?>
+		<?php echo $data['row']->issue_type; ?>
 	</td>
 </tr>
 <tr>
@@ -63,7 +64,7 @@ phpFrame_HTML::validate('issuesform');
 		</label>
 	</td>
 	<td>
-		<?php echo projectsHelperProjects::priority_select($this->row->priority); ?>
+		<?php echo $data['row']->priority; ?>
 	</td>
 </tr>
 <tr>
@@ -73,7 +74,7 @@ phpFrame_HTML::validate('issuesform');
 		</label>
 	</td>
 	<td>
-		<?php echo phpFrame_HTML::_('calendar', 'dtstart', 'dtstart', $this->row->dtstart, 'dd/mm/yy', array('size'=>'10',  'maxlength'=>'10')); ?>
+		<?php echo phpFrame_HTML::_('calendar', 'dtstart', 'dtstart', $data['row']->dtstart, 'dd/mm/yy', array('size'=>'10',  'maxlength'=>'10')); ?>
 	</td>
 </tr>
 <tr>
@@ -83,7 +84,7 @@ phpFrame_HTML::validate('issuesform');
 		</label>
 	</td>
 	<td>
-		<?php echo phpFrame_HTML::_('calendar', 'dtend', 'dtend', $this->row->dtend, 'dd/mm/yy', array('size'=>'10',  'maxlength'=>'10')); ?>
+		<?php echo phpFrame_HTML::_('calendar', 'dtend', 'dtend', $data['row']->dtend, 'dd/mm/yy', array('size'=>'10',  'maxlength'=>'10')); ?>
 	</td>
 </tr>
 <tr>
@@ -93,7 +94,7 @@ phpFrame_HTML::validate('issuesform');
 		</label>
 	</td>
 	<td>
-		<input class="number" type="text" id="expected_duration" name="expected_duration" size="9" maxlength="9" value="<?php echo $this->row->expected_duration; ?>" /> 
+		<input class="number" type="text" id="expected_duration" name="expected_duration" size="9" maxlength="9" value="<?php echo $data['row']->expected_duration; ?>" /> 
 		<?php echo strtolower(_LANG_HOURS); ?>
 	</td>
 </tr>
@@ -104,7 +105,7 @@ phpFrame_HTML::validate('issuesform');
 		</label>
 	</td>
 	<td>
-		<?php echo projectsHelperProjects::global_access_select('access', $this->row->access); ?>
+		<?php echo projectsHelperProjects::global_access_select('access', $data['row']->access); ?>
 	</td>
 </tr>
 <tr>
@@ -114,7 +115,7 @@ phpFrame_HTML::validate('issuesform');
 		</label>
 	</td>
 	<td>
-		<?php echo phpFrame_User_Helper::assignees($this->row->assignees, '', 'assignees[]', $this->projectid); ?>
+		<?php echo phpFrame_User_Helper::assignees($data['row']->assignees, '', 'assignees[]', $this->projectid); ?>
 	</td>
 </tr>
 <tr>
@@ -128,7 +129,7 @@ phpFrame_HTML::validate('issuesform');
 	</td>
 </tr>
 
-<?php if (!empty($this->row->id)) : ?>
+<?php if (!empty($data['row']->id)) : ?>
 <tr>
 	<td width="30%">
 		<label id="created_bymsg" for="created_by">
@@ -136,7 +137,7 @@ phpFrame_HTML::validate('issuesform');
 		</label>
 	</td>
 	<td>
-		<?php echo phpFrame_User_Helper::id2name($this->row->created_by); ?>
+		<?php echo phpFrame_User_Helper::id2name($data['row']->created_by); ?>
 	</td>
 </tr>
 <tr>
@@ -146,7 +147,7 @@ phpFrame_HTML::validate('issuesform');
 		</label>
 	</td>
 	<td>
-		<?php echo $this->row->created; ?>
+		<?php echo $data['row']->created; ?>
 	</td>
 </tr>
 <?php endif; ?>
@@ -158,8 +159,8 @@ phpFrame_HTML::validate('issuesform');
 <button type="button" onclick="Javascript:window.history.back();"><?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?></button>
 <button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 
-<input type="hidden" name="projectid" value="<?php echo $this->projectid;?>" />
-<input type="hidden" name="id" value="<?php echo $this->row->id;?>" />
+<input type="hidden" name="projectid" value="<?php echo $data['projectid'];?>" />
+<input type="hidden" name="id" value="<?php echo $data['row']->id;?>" />
 <input type="hidden" name="component" value="com_projects" />
 <input type="hidden" name="action" value="save_issue" />
 <input type="hidden" name="type" value="" />
