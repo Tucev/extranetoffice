@@ -17,7 +17,7 @@ class phpFrame_Database_Listfilter {
 	 * @param	string	$_search
 	 * @return	void
 	 */
-	public function __construct($_orderby, $_orderdir="ASC", $_limit=-1, $_limitstart=0, $_search="") {
+	public function __construct($_orderby="", $_orderdir="ASC", $_limit=-1, $_limitstart=0, $_search="") {
 		$this->_orderby = (string) $_orderby;
 		$this->_orderdir = (string) $_orderdir;
 		$this->_limit = (int) $_limit;
