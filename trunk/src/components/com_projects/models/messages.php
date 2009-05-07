@@ -26,6 +26,13 @@ class projectsModelMessages extends phpFrame_Application_Model {
 	 */
 	function __construct() {}
 	
+	/**
+	 * Get messages
+	 * 
+	 * @param	object	$list_filter	Object of type phpFrame_Database_Listfilter
+	 * @param	int		$projectid
+	 * @return	array
+	 */
 	public function getMessages(phpFrame_Database_Listfilter $list_filter, $projectid) {
 		$where = array();
 		

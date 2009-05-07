@@ -26,8 +26,14 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 	 */
 	function __construct() {}
 	
+	/**
+	 * Get meetings
+	 * 
+	 * @param	object	$list_filter	Object of type phpFrame_Database_Listfilter
+	 * @param	int		$projectid
+	 * @return	array
+	 */
 	public function getMeetings(phpFrame_Database_Listfilter $list_filter, $projectid) {
-	
 		$where = array();
 		
 		// Show only public projects or projects where user has an assigned role

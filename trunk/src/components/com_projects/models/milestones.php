@@ -28,11 +28,12 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 	
 	/**
 	 * Gets milestones list info
-	 *
-	 * @param int $projectid
-	 * @return array
+	 * 
+	 * @param	object	$list_filter	Object of type phpFrame_Database_Listfilter
+	 * @param	int		$projectid
+	 * @return	array
 	 */
-	public function getMilestones($projectid) {
+	public function getMilestones(phpFrame_Database_Listfilter $list_filter, $projectid) {
 		$filter_order = phpFrame_Environment_Request::getVar('filter_order', 'm.due_date');
 		$filter_order_Dir = phpFrame_Environment_Request::getVar('filter_order_Dir', 'DESC');
 		$search = phpFrame_Environment_Request::getVar('search', '');
