@@ -48,7 +48,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 <input type="hidden" name="component" value="com_projects" />
 <input type="hidden" name="action" value="change_member_role" />
-<input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
+<input type="hidden" name="projectid" value="<?php echo $data['project']->id; ?>" />
 <input type="hidden" name="userid" value="<?php echo $data['members'][0]->userid; ?>" />
 <?php echo phpFrame_HTML::_( 'form.token' ); ?>
 
