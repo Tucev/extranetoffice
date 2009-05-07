@@ -55,8 +55,9 @@ class projectsModelProjects extends phpFrame_Application_Model {
 	/**
 	 * Get projects.
 	 * 
-	 * @param $userid
-	 * @return mixed	if no parameters returns array of objects if entries exist 
+	 * @param	object	$list_filter	Object of type phpFrame_Database_Listfilter
+	 * @param	int		$userid
+	 * @return	mixed	if no parameters returns array of objects if entries exist 
 	 */
 	public function getProjects(phpFrame_Database_Listfilter $list_filter, $userid=0) {
 		// Build WHERE SQL clauses

@@ -29,10 +29,11 @@ class projectsModelIssues extends phpFrame_Application_Model {
 	
 	/**
 	 * This method gets issues for specified project
-	 *
-	 * @param int $projectid
-	 * @param bool $overdue	If set to true it only returns overdue issues
-	 * @return array	An array containing the rows, pageNav and filter lists
+	 * 
+	 * @param	object	$list_filter	Object of type phpFrame_Database_Listfilter
+	 * @param 	int 	$projectid
+	 * @param 	bool	$overdue		If set to true it only returns overdue issues
+	 * @return	array
 	 */
 	public function getIssues(phpFrame_Database_Listfilter $list_filter, $projectid, $overdue=false) {
 		$filter_status = phpFrame_Environment_Request::getVar('filter_status', 'all');
