@@ -52,7 +52,7 @@ class projectsModelComments extends phpFrame_Application_Model {
 			return false;
 		}
 		
-		$row =& phpFrame_Base_Singleton::getInstance("projectsTableComments");
+		$row = $this->getTable('comments');
 		
 		if (!$row->bind($post)) {
 			$this->_error[] = $row->getLastError();
@@ -60,7 +60,7 @@ class projectsModelComments extends phpFrame_Application_Model {
 		}
 		
 		if (empty($row->userid)) {
-			$row->userid = $this->_user->id;	
+			$row->userid = phpFrame::getUser()->id;	
 		}
 		
 		$row->created = date("Y-m-d H:i:s");
@@ -149,4 +149,3 @@ class projectsModelComments extends phpFrame_Application_Model {
 		return $comments_messages;
 	}
 }
-?>

@@ -31,5 +31,9 @@ class phpFrame_Environment_Response extends phpFrame_Base_Singleton {
 	
 	function send() {
 		echo $this->_body;
+		
+		if (config::DEBUG) {
+			echo '<pre>'.phpFrame_Debug_Profiler::getReport().'</pre>';
+		}
 	}
 }

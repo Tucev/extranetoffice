@@ -44,7 +44,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	
 	<?php if (phpFrame::getUser()->groupid == 1) : ?>
 	<div style="float:right;" class="new">
-		 <a style="float:right;" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=admin&layout=form"); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
+		 <a style="float:right;" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_project_form"); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>
 		</a>
 	</div>
@@ -55,7 +55,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 		<?php if (is_array($data['projects']) && count($data['projects']) > 0) : ?>
 		<?php foreach ($data['projects'] as $project) : ?>
 		<li>
-			<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=projects&layout=detail&projectid=".$project->id); ?>">
+			<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_project_detail&projectid=".$project->id); ?>">
 				<?php echo $project->name; ?>
 			</a>
 		</li>

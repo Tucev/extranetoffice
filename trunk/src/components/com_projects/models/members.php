@@ -210,4 +210,3 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		}
 	}
 }
-?>

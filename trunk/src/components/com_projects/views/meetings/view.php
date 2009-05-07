@@ -139,4 +139,3 @@ class projectsViewMeetings extends phpFrame_Application_View {
 	}
 	
 }
-?>

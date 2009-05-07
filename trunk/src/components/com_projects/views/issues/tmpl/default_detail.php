@@ -17,9 +17,9 @@ phpFrame_HTML::validate('commentsform');
 
 <h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
 
-<h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&projectid='.$this->projectid); ?>">
-		<?php echo $this->current_tool; ?>
+<h2 class="subheading <?php echo strtolower($data['view']); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_issue_list&projectid='.$data['project']->id); ?>">
+		<?php echo $data['view']; ?>
 	</a>
 </h2>
 

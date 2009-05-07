@@ -67,4 +67,3 @@ class projectsTableUsersRoles extends phpFrame_Database_Table {
 		}
 	}
 }
-?>

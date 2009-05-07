@@ -81,4 +81,3 @@ class projectsTableActivitylog extends phpFrame_Database_Table {
 		parent::__construct( '#__activitylog', 'id' );
 	}
 }
-?>

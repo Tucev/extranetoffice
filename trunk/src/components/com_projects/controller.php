@@ -287,6 +287,24 @@ class projectsController extends phpFrame_Application_ActionController {
 		$this->setRedirect('index.php?component=com_projects&view=admin&projectid='.$projectid);
 	}
 	
+	public function get_member_role_form() {
+		if (!$this->_authorise("admin")) return;
+		
+		$userid = phpFrame_Environment_Request::getVar('userid', 0);
+		
+		if (!empty($userid)) {
+			$model = $this->getModel('members');
+			$members = $model->getMembers($this->project->id, $userid);	
+		}
+		
+		// Get view
+		$view = $this->getView('admin', 'member_role');
+		// Set view data
+		$view->addData('members', $members);
+		// Display view
+		$view->display();
+	}
+	
 	public function change_member_role() {
 		if (!$this->_authorise("admin")) return;
 		
@@ -304,6 +322,19 @@ class projectsController extends phpFrame_Application_ActionController {
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&view=admin&projectid='.$projectid);
+	}
+	
+	public function get_people() {
+		
+		$members = $this->getModel('members')->getMembers($this->project->id);
+		
+		// Get view
+		$view = $this->getView('people', 'list');
+		// Set view data
+		$view->addData('project', $this->project);
+		$view->addData('rows', $members);
+		// Display view
+		$view->display();
 	}
 	
 	public function get_issues() {
@@ -340,6 +371,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		
 		// Get projects using model
 		$issue = $this->getModel('issues')->getIssuesDetail($this->project->id, $issueid);
+		
 		// Get view
 		$view = $this->getView('projects', 'list');
 		// Set view data
@@ -356,21 +388,20 @@ class projectsController extends phpFrame_Application_ActionController {
 		
 		// Get view
 		$view = $this->getView('issues', 'form');
-		
 		// Set view data
-		$view->addData('projectid', $this->project->id);
+		$view->addData('project', $this->project);
 			
-		if (issueid != 0) {		
+		if ($issueid != 0) {		
 			// Get issue using model
 			$issue = $this->getModel('issues')->getIssuesDetail($this->project->id, $issueid);
- 
 			$view->addData('row', $issue);
 		}
 		else {
-			$this->_data['row']->access = 1;	
+			$issue = new stdClass();
+			$issue->access = 1;
+			$view->addData('row', $issue);
 		}
 		
-	
 		// Display view
 		$view->display();
 	}
@@ -412,7 +443,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			}
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=issues&projectid='.$post['projectid']);
+		$this->setRedirect('index.php?component=com_projects&action=get_issues&projectid='.$post['projectid']);
 	}
 	
 	public function remove_issue() {
@@ -523,10 +554,36 @@ class projectsController extends phpFrame_Application_ActionController {
 	
 	public function get_file_detail() {
 		if (!$this->_authorise("files")) return;
+		
+		$fileid = phpFrame_Environment_Request::getVar('fileid', 0);
+		
+		$files = $this->getModel('files')->getFilesDetail($this->project->id, $fileid);
+		
+		// Get view
+		$view = $this->getView('files', 'detail');
+		// Set view data
+		$view->addData('project', $this->project);
+		$view->addData('row', $files);
+		// Display view
+		$view->display();
 	}
 	
 	public function get_file_form() {
 		if (!$this->_authorise("files")) return;
+		
+		$parentid = phpFrame_Environment_Request::getVar('parentid', 0);
+		
+		if ($parentid > 0) {
+			$files = $this->getModel('files')->getFilesDetail($this->project->id, $parentid);
+		}
+		
+		// Get view
+		$view = $this->getView('files', 'form');
+		// Set view data
+		$view->addData('project', $this->project);
+		$view->addData('row', $files);
+		// Display view
+		$view->display();
 	}
 	
 	public function save_file() {
@@ -541,6 +598,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Save file using files model
 		$modelFiles = $this->getModel('files');
 		$row = $modelFiles->saveFile($post);
+		
 		if ($row === false) {
 			$this->_sysevents->setSummary($modelFiles->getLastError());
 		}
@@ -551,7 +609,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$action = _LANG_FILES_ACTION_NEW;
 			$title = $row->title;
 			$description = sprintf(_LANG_FILES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->filename, $row->revision, $row->changelog);
-			$url = phpFrame_Application_Route::_("index.php?component=com_projects&view=files&projectid=".$row->projectid."&fileid=".$row->id);
+			$url = phpFrame_Application_Route::_("index.php?component=com_projects&action=get_file_detail&projectid=".$row->projectid."&fileid=".$row->id);
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
@@ -561,7 +619,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			}
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=files&projectid='.$post['projectid']);
+		$this->setRedirect('index.php?component=com_projects&action=get_files&projectid='.$post['projectid']);
 	}
 	
 	public function remove_file() {
@@ -579,7 +637,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$this->_sysevents->setSummary(_LANG_FILE_DELETE_ERROR);
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=files&projectid='.$projectid);
+		$this->setRedirect('index.php?component=com_projects&action=get_files&projectid='.$projectid);
 	}
 	
 	public function download_file() {
@@ -1103,10 +1161,6 @@ class projectsController extends phpFrame_Application_ActionController {
 			}
 			//exit;
 		}
-	}
-	
-	public function get_people() {
-	
 	}
 	
 	private function _authorise($tool) {

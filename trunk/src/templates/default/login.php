@@ -52,10 +52,6 @@ echo $sys_events;
 <div id="footer">
 Powered by Extranet Office and phpFrame <?php echo phpFrame::getVersion(); ?><br />
 &copy; 2009 E-noise.com Limited
-<?php if (config::DEBUG) : ?>
-<br />
-Script Execution Time: <?php echo phpFrame_Debug_Profiler::getExecutionTime(); ?> seconds
-<?php endif; ?>
 </div>
 
 </div><!-- close #login_wrapper -->

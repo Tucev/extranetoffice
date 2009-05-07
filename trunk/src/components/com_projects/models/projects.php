@@ -198,4 +198,3 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		}
 	}
 }
-?>

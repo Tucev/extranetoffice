@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		
  * @since 		
  */
-class phpFrame_Environment_ClientMobile implements phpFrame_Environment_IClient {
+class phpFrame_Client_Mobile implements phpFrame_Client_IClient {
 		
 	/**
 	 * Check if this is the correct helper for the client being used

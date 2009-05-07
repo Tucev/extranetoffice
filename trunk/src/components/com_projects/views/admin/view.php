@@ -91,14 +91,6 @@ class projectsViewAdmin extends phpFrame_Application_View {
 	function displayAdminMemberRole() {
 		$this->_data['page_title'] = projectsHelperProjects::id2name($this->projectid).' - '. _LANG_ADMIN;
 		phpFrame::getPathway()->addItem(_LANG_PROJECTS_MEMBERS);
-		
-		$this->_userid = phpFrame_Environment_Request::getVar('userid', 0);
-		
-		// Push model into the view
-		$model = $this->getModel('members');
-		if (!empty($this->_userid)) {
-			$this->members = $model->getMembers($this->projectid, $this->_userid);	
-		}
 	}
 	
 	/**

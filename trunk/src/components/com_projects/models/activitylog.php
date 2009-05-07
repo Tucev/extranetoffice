@@ -162,4 +162,3 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 		}
 	}
 }
-?>

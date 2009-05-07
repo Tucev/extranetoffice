@@ -57,12 +57,11 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 	 * @since	1.0
 	 */
 	protected function __construct() {
+		// Set profiler milestone
+		phpFrame_Debug_Profiler::setMilestone('Start');
 		
 		// Initialise phpFame's error and exception handlers.
 		phpFrame_Exception_Handler::init();
-		
-		// Initialise debbuger
-		phpFrame_Debug_Profiler::init();
 		
 		// Load language files
 		$this->_loadLanguage();
@@ -94,6 +93,9 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 			// Store user detailt in session
 			$session->setUser($user);
 		}
+		
+		// Set profiler milestone
+		phpFrame_Debug_Profiler::setMilestone('Front controller constructed');
 	}
 	
 	/**
@@ -112,6 +114,9 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 		$client = phpFrame_Environment_Request::getClient();
 		$client->preActionHook();
 		
+		// Set profiler milestone
+		phpFrame_Debug_Profiler::setMilestone('Delegate to action controller');
+		
 		// Create the action controller
 		$controller = phpFrame::getActionController(phpFrame_Environment_Request::getComponentName());
 		// Check that action controller is of valid type and run it if it is
@@ -123,12 +128,22 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 			throw new phpFrame_Exception("Controller not supported.");
 		}
 		
+		// Set profiler milestone
+		phpFrame_Debug_Profiler::setMilestone('Action controller executed');
+		
 		// Render output using client's template
 		$client->renderTemplate($output);
+		
+		// Set profiler milestone
+		phpFrame_Debug_Profiler::setMilestone('Overall template rendered');
 		
 		// Build response and send it
 		$response = phpFrame::getResponse();
 		$response->setBody($output);
+		
+		// Set profiler milestone
+		phpFrame_Debug_Profiler::setMilestone('Set response');
+		
 		$response->send();
 	}
 	

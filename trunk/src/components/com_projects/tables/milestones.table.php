@@ -37,4 +37,3 @@ class projectsTableMilestones extends phpFrame_Database_Table {
 		parent::__construct( '#__milestones', 'id' );
 	}
 }
-?>

@@ -81,4 +81,3 @@ class projectsViewProjects extends phpFrame_Application_View {
 		phpFrame::getPathway()->addItem(_LANG_PROJECTS_HOME);
 	}
 }
-?>

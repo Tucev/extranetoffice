@@ -98,4 +98,3 @@ class projectsViewMilestones extends phpFrame_Application_View {
 		phpFrame::getPathway()->addItem($action);
 	}
 }
-?>

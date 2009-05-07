@@ -48,8 +48,8 @@ class projectsViewFiles extends phpFrame_Application_View {
 	 * @since	1.0
 	 */
 	function display() {
-		$this->_data['page_title'] = _LANG_FILES;
-		$this->page_heading = $this->project->name;
+		$this->addData('page_title', _LANG_FILES);
+		$this->addData('page_heading', $this->_data['project']->name);
 		
 		parent::display();
 		
@@ -68,26 +68,15 @@ class projectsViewFiles extends phpFrame_Application_View {
 	}
 	
 	function displayFilesForm() {
-		$parentid = phpFrame_Environment_Request::getVar('parentid', 0);
-		
-		$modelFiles = $this->getModel('files');
-		$this->row = $modelFiles->getFilesDetail($this->projectid, $parentid);
-		
-		$this->page_title .= ' - '._LANG_FILES_NEW;
+		$this->_data['page_title'] .= ' - '._LANG_FILES_NEW;
 		phpFrame::getPathway()->addItem($this->current_tool, phpFrame_Application_Route::_("index.php?component=com_projects&view=files&projectid=".$this->projectid));
 		phpFrame::getPathway()->addItem(_LANG_FILES_NEW);
 	}
 	
 	function displayFilesDetail() {
-		$fileid = phpFrame_Environment_Request::getVar('fileid', 0);
-		
-		$modelFiles = $this->getModel('files');
-		$this->row = $modelFiles->getFilesDetail($this->projectid, $fileid);
-		
-		$this->page_title .= ' - '.$this->row->title;
+		$this->_data['page_title'] .= ' - '.$this->row->title;
 		phpFrame::getPathway()->addItem($this->current_tool, phpFrame_Application_Route::_("index.php?component=com_projects&view=files&projectid=".$this->projectid));
 		phpFrame::getPathway()->addItem($this->row->title);
 	}
 	
 }
-?>

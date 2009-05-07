@@ -35,4 +35,3 @@ class projectsTableComments extends phpFrame_Database_Table {
 		parent::__construct( '#__comments', 'id' );
 	}
 }
-?>
