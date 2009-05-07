@@ -156,4 +156,3 @@ class projectsTableIssues extends phpFrame_Database_Table {
 		parent::__construct( '#__issues', 'id' );
 	}
 }
-?>

@@ -32,10 +32,11 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		
 		// Show only public projects or projects where user has an assigned role
 		//TODO: Have to apply access levels
-		//$where[] = "( p.access = '0' OR (".$this->_user->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
-
-		if ( $search ) {
-			$where[] = "f.title LIKE '%".phpFrame::getDB()->getEscaped($list_filter->getSearchStr())."%'";
+		//$where[] = "( p.access = '0' OR (".phpFrame::getUser()->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
+		
+		$search = $list_filter->getSearchStr();
+		if ($search) {
+			$where[] = "f.title LIKE '%".phpFrame::getDB()->getEscaped($search)."%'";
 		}
 		
 		if (!empty($projectid)) {
@@ -43,11 +44,6 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		}
 
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
-		if ($filter_order == 'f.ts'){
-			$orderby = ' ORDER BY f.ts DESC';
-		} else {
-			$orderby = ' ORDER BY f.ts DESC, '. $filter_order .' '. $filter_order_Dir;
-		}
 
 		// get the total number of records
 		// This query groups the files by parentid so and retireves the latest revision for each file in current project
@@ -58,16 +54,19 @@ class projectsModelFiles extends phpFrame_Application_Model {
 				  JOIN #__users u ON u.id = f.userid 
 				  INNER JOIN (SELECT MAX(id) AS id FROM #__files GROUP BY parentid) ids ON f.id = ids.id "
 				  . $where;
-		//echo $query; exit;	  
+		//echo str_replace('#__', 'eo_', $query); exit;
+		
 		phpFrame::getDB()->setQuery( $query );
 		phpFrame::getDB()->query();
-		$total = phpFrame::getDB()->getNumRows();
 		
-		$pageNav = new phpFrame_HTML_Pagination( $total, $limitstart, $limit );
+		// Set total number of record in list filter
+		$list_filter->setTotal(phpFrame::getDB()->getNumRows());
 
-		// get the subset (based on limits) of required records
-		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
-		//echo $query; exit;
+		// Add order by and limit statements for subset (based on filter)
+		$query .= $list_filter->getOrderByStmt();
+		$query .= $list_filter->getLimitStmt();
+		//echo str_replace('#__', 'eo_', $query); exit;
+		
 		phpFrame::getDB()->setQuery($query);
 		$rows = phpFrame::getDB()->loadObjectList();
 		
@@ -78,7 +77,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 				$row->assignees = $this->getAssignees($row->id);
 				
 				// get total comments
-				$modelComments = $this->getModel('comments');
+				$modelComments = phpFrame::getModel('com_projects', 'comments');
 				$row->comments = $modelComments->getTotalComments($row->id, 'files');
 					
 				// Get older revisions
@@ -86,19 +85,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 			}
 		}
 		
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
-
-		// search filter
-		$lists['search'] = $search;
-		
-		// pack data into an array to return
-		$return['rows'] = $rows;
-		$return['pageNav'] = $pageNav;
-		$return['lists'] = $lists;
-		
-		return $return;
+		return $rows;
 	}
 	
 	public function getFilesDetail($projectid, $fileid) {
@@ -118,7 +105,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		$row->assignees = $this->getAssignees($fileid);
 		
 		// Get comments
-		$modelComments = $this->getModel('comments');
+		$modelComments = phpFrame::getModel('com_projects', 'comments');
 		$row->comments = $modelComments->getComments($projectid, 'files', $fileid);
 		
 		// Get older revisions
@@ -142,7 +129,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 			return false;
 		}
 			
-		$row =& phpFrame_Base_Singleton::getInstance("projectsTableFiles");
+		$row = $this->getTable('files');
 		
 		if (!$row->bind($post)) {
 			$this->_error[] = $row->getLastError();
@@ -181,7 +168,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		$row->filesize = $file['file_size'];
 		$row->mimetype = $file['file_type'];
 		
-		$row->userid = $this->_user->id;
+		$row->userid = phpFrame::getUser()->id;
 		
 		if (!$row->check()) {
 			$this->_error[] = $row->getLastError();
@@ -337,4 +324,3 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		return phpFrame::getDB()->loadObjectList();
 	}
 }
-?>

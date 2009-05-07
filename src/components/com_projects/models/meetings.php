@@ -514,4 +514,3 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		return $new_assignees;
 	}
 }
-?>

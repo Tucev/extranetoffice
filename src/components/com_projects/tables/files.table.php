@@ -116,4 +116,3 @@ class projectsTableFiles extends phpFrame_Database_Table {
 		parent::__construct( '#__files', 'id' );
 	}
 }
-?>

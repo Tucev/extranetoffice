@@ -35,4 +35,3 @@ class projectsTableMessages extends phpFrame_Database_Table {
 		parent::__construct( '#__messages', 'id' );
 	}
 }
-?>

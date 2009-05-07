@@ -49,7 +49,7 @@ class projectsViewPeople extends phpFrame_Application_View {
 	 */
 	function display() {
 		$this->_data['page_title'] = _LANG_PEOPLE;
-		$this->page_heading = $this->project->name;
+		$this->_data['page_heading'] = $this->_data['project']->name;
 		
 		parent::display();
 		
@@ -64,11 +64,7 @@ class projectsViewPeople extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayPeopleList() {
-		$modelMembers = $this->getModel('members');
-		$this->rows = $modelMembers->getMembers($this->projectid);
-		
-		phpFrame::getPathway()->addItem($this->current_tool);
+		phpFrame::getPathway()->addItem($this->_data['view']);
 	}
 
 }
-?>

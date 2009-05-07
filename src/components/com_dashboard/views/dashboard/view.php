@@ -51,6 +51,9 @@ class dashboardViewDashboard extends phpFrame_Application_View {
 	function display() {
 		$this->_data['page_title'] = _LANG_DASHBOARD;
 		
+		$document = phpFrame::getDocument('html');
+		$document->title = _LANG_DASHBOARD;
+		
 		parent::display();
 	}
 }

@@ -131,7 +131,7 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
     	<?php echo $row->email; ?>
     </td>
 	<td>
-	<?php phpFrame_HTML::dialog(_LANG_PROJECTS_CHANGE_ROLE, 'index.php?component=com_projects&view=admin&layout=member_role&projectid='.$data['project']->id.'&userid='.$row->userid, 300, 150, true); ?>
+	<?php phpFrame_HTML::dialog(_LANG_PROJECTS_CHANGE_ROLE, 'index.php?component=com_projects&action=get_member_role_form&projectid='.$data['project']->id.'&userid='.$row->userid, 300, 150, true); ?>
 	<!-- 
 	<a class="" href="">
 		<img src="templates/<?php echo config::TEMPLATE; ?>/images/icons/generic/16x16/edit.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>" />

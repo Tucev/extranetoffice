@@ -180,4 +180,3 @@ class projectsTableProjects extends phpFrame_Database_Table {
 		parent::__construct( '#__projects', 'id' );
 	}
 }
-?>

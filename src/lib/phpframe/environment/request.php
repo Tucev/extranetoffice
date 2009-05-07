@@ -160,31 +160,30 @@ class phpFrame_Environment_Request {
 	private static function detectClient() {
 		
 		//scan through environment dir to find files
-		$files = scandir(_ABS_PATH.DS."lib".DS."phpframe".DS."environment");
+		$clients_path = _ABS_PATH.DS."lib".DS."phpframe".DS."client";
+		$files = scandir($clients_path);
 		
 		//make sure the clientdefault is the last file in array as catch-all helper
-		$default = array_search('clientdefault.php', $files);	//if it's there
+		$default = array_search('default.php', $files);	//if it's there
 		if ($default != false) {
-			unset($files[$default]);							//unset it
-			$files[] = 'clientdefault.php';						//add to end
+			unset($files[$default]);						//unset it
+			$files[] = 'default.php';						//add to end
 		}
-
+		
 		//loop through files 
 		foreach ($files as $file) {
-			//filter client helper files
-			preg_match('/^client([a-zA-Z]+).php$/',$file, $matches);
-			if (is_array($matches) && count($matches) > 1) {
+			if (is_file($clients_path.DS.$file) && $file != 'iclient.php') {
 				//build class names
-				$className = 'phpFrame_Environment_Client'.ucfirst($matches[1]);
+				$className = 'phpFrame_Client_'.ucfirst(substr($file, 0, strpos($file, '.')));
 				if (is_callable(array($className, 'detect'))) {
 					//call class's detect() to check if this is the helper we need 
 					self::$_client_helper = call_user_func(array($className, 'detect'));
-					if (self::$_client_helper instanceof phpFrame_Environment_IClient) {
+					if (self::$_client_helper instanceof phpFrame_Client_IClient) {
 						//break out of the function if we found our helper
 						return;
 					} 
 				}
-			} 
+			}
 		}
 		//throw error if no helper is found
 		throw new phpFrame_Exception(_PHPFRAME_LANG_REQUEST_ERROR_NO_CLIENT_HELPER);

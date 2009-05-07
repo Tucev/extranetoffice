@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		
  * @since 		
  */
-interface phpFrame_Environment_IClient {
+interface phpFrame_Client_IClient {
 		
 	/**
 	 * Check if this is the correct helper for the client being used and returns instance if so

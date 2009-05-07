@@ -29,4 +29,3 @@ class projectsTableProjectTypes extends phpFrame_Database_Table {
 		parent::__construct( '#__project_types', 'id' );
 	}
 }
-?>

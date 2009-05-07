@@ -15,93 +15,93 @@ phpFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECT
 phpFrame_HTML::validate('commentsform');
 ?>
 
-<h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
-<h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&projectid='.$this->projectid); ?>">
-		<?php echo $this->current_tool; ?>
+<h2 class="subheading <?php echo strtolower($data['view']); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_files&projectid='.$data['project']->id); ?>">
+		<?php echo $data['view']; ?>
 	</a>
 </h2>
 
 
 <div class="thread_row0">
 
-	<?php if ($this->row->userid == $this->_user->id) : ?>
+	<?php if ($data['row']->userid == phpFrame::getUser()->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_file" title="<?php echo phpFrame_HTML_Text::_($this->row->title, true); ?>" href="index.php?component=com_projects&action=remove_file&projectid=<?php echo $this->row->projectid; ?>&fileid=<?php echo $this->row->id; ?>">
+		<a class="delete_file" title="<?php echo phpFrame_HTML_Text::_($data['row']->title, true); ?>" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=remove_file&projectid=".$data['row']->projectid)."&fileid=".$data['row']->id; ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	<div class="thread_download">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=download_file&fileid=".$this->row->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=download_file&fileid=".$data['row']->id); ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DOWNLOAD ); ?>
 		</a> 
 	</div>
 	<div class="thread_upload">
-		<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view=files&layout=form&projectid='.$this->projectid."&parentid=".$this->row->parentid); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_file_form&projectid='.$data['project']->id."&parentid=".$data['row']->parentid); ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_FILES_UPLOAD_NEW_VERSION ); ?>
 		</a> 
 	</div>
 	
 	<div style="float: left; padding: 0 3px 0 0; ">
-		<img height="48" width="48" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($this->row->mimetype); ?>" alt="<?php echo $this->row->mimetype; ?>" />
+		<img height="48" width="48" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($data['row']->mimetype); ?>" alt="<?php echo $data['row']->mimetype; ?>" />
 	</div>
 	
 	<div class="thread_heading">
-	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=download_file&fileid=".$this->row->id); ?>">
-		<?php echo $this->row->title; ?>
+	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=download_file&fileid=".$data['row']->id); ?>">
+		<?php echo $data['row']->title; ?>
 	</a>
 	</div>
 	
 	<div class="thread_date">
-	<?php echo date("D, d M Y H:ia", strtotime($this->row->ts)); ?> 
+	<?php echo date("D, d M Y H:ia", strtotime($data['row']->ts)); ?> 
 	</div>
 	
 	<div class="thread_details">
-	<?php echo _LANG_FILES_FILENAME.": ".$this->row->filename; ?> (Revision <?php echo $this->row->revision; ?>) 
-	Uploaded by: <?php echo $this->row->created_by_name; ?>
-	<?php if (!empty($this->row->assignees)) : ?>
+	<?php echo _LANG_FILES_FILENAME.": ".$data['row']->filename; ?> (Revision <?php echo $data['row']->revision; ?>) 
+	Uploaded by: <?php echo $data['row']->created_by_name; ?>
+	<?php if (!empty($data['row']->assignees)) : ?>
 		<br />
 		<?php echo _LANG_ASSIGNEES; ?>: 
-    	<?php for ($j=0; $j<count($this->row->assignees); $j++) : ?>
+    	<?php for ($j=0; $j<count($data['row']->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&view=users&layout=detail&userid=".$this->row->assignees[$j]['id']); ?>">
-    		<?php echo $this->row->assignees[$j]['name']; ?>
+    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&action=get_user&userid=".$data['row']->assignees[$j]['id']); ?>">
+    		<?php echo $data['row']->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>
     <?php endif; ?>
 	</div>
 	
-	<?php if (!empty($this->row->changelog)) : ?>
+	<?php if (!empty($data['row']->changelog)) : ?>
 	<div class="thread_body">
-		<?php echo $this->row->changelog; ?>
+		<?php echo $data['row']->changelog; ?>
 	</div>
 	<?php endif; ?>
 	
-	<?php if (!empty($this->row->children)) : ?>
+	<?php if (!empty($data['row']->children)) : ?>
 	
 	<!-- jquery slider for show/hide older versions -->
 	<script language="javascript" type="text/javascript">
 	$(document).ready(function() {
 		// hides the filterpanel as soon as the DOM is ready
-		$('#oldrevisions<?php echo $this->row->id; ?>').hide();
+		$('#oldrevisions<?php echo $data['row']->id; ?>').hide();
 		// toggles the filterpanel on clicking the noted link  
-		$('a#toggle<?php echo $this->row->id; ?>').click(function() {
-			$('#oldrevisions<?php echo $this->row->id; ?>').slideToggle('normal');
+		$('a#toggle<?php echo $data['row']->id; ?>').click(function() {
+			$('#oldrevisions<?php echo $data['row']->id; ?>').slideToggle('normal');
 			return false;
   		});
 	});
 	</script>
 	
-	<a class="show_revisions" id="toggle<?php echo $this->row->id; ?>" href="#">Show/Hide older versions</a>
+	<a class="show_revisions" id="toggle<?php echo $data['row']->id; ?>" href="#">Show/Hide older versions</a>
 
-	<div id="oldrevisions<?php echo $this->row->id; ?>" class="thread_oldrevisions">
-		<?php foreach ($this->row->children as $child) : ?>
+	<div id="oldrevisions<?php echo $data['row']->id; ?>" class="thread_oldrevisions">
+		<?php foreach ($data['row']->children as $child) : ?>
 			<div class="thread_oldrevision_entry">
-				<?php if ($this->row->userid == $this->_user->id) : ?>
+				<?php if ($data['row']->userid == phpFrame::getUser()->id) : ?>
 				<div class="thread_delete">
-					<a href="Javascript:confirm_delete(<?php echo $this->row->projectid; ?>, <?php echo $child->id; ?>, '<?php echo phpFrame_HTML_Text::_($child->title." r".$child->revision, true); ?>');">
+					<a class="delete_file" title="<?php echo phpFrame_HTML_Text::_($child->title, true); ?>" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=remove_file&projectid=".$data['row']->projectid)."&fileid=".$child->id; ?>">
 						<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 					</a> 
 				</div>
@@ -118,9 +118,9 @@ phpFrame_HTML::validate('commentsform');
 	</div>
 	<?php endif; ?>
 	
-	<?php if (is_array($this->row->comments) && count($this->row->comments) > 0) : ?>
+	<?php if (is_array($data['row']->comments) && count($data['row']->comments) > 0) : ?>
 	<h3><?php echo _LANG_COMMENTS; ?></h3>
-	<?php foreach ($this->row->comments as $comment) : ?>
+	<?php foreach ($data['row']->comments as $comment) : ?>
 		<div class="comment_row">
 			<div style="float:left; margin-right: 10px;">
 				<img src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo phpFrame_User_Helper::id2photo($comment->userid); ?>" />
@@ -156,11 +156,11 @@ phpFrame_HTML::validate('commentsform');
 		</p>
 		<input type="hidden" name="component" value="com_projects" />
 		<input type="hidden" name="action" value="save_comment" />
-		<input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
+		<input type="hidden" name="projectid" value="<?php echo $data['project']->id; ?>" />
 		<input type="hidden" name="type" value="files" />
-		<input type="hidden" name="itemid" value="<?php echo  $this->row->id; ?>" />
-		<?php if (is_array($this->row->assignees) && count($this->row->assignees) > 0) : ?>
-		<?php foreach ($this->row->assignees as $assignee) : ?>
+		<input type="hidden" name="itemid" value="<?php echo  $data['row']->id; ?>" />
+		<?php if (is_array($data['row']->assignees) && count($data['row']->assignees) > 0) : ?>
+		<?php foreach ($data['row']->assignees as $assignee) : ?>
 		<input type="hidden" name="assignees[]" value="<?php echo $assignee['id']; ?>" />
 		<?php endforeach; ?>
 		<?php endif; ?>

@@ -257,7 +257,7 @@ class projectsHelperProjects {
 		if (!empty($id)) { // No category has been selected
 			$db = phpFrame::getDB();
 			$query = "SELECT name FROM #__issue_types WHERE id = '".$id."'";
-			$db -> setQuery($query);
+			$db->setQuery($query);
 			return $db->loadResult();
 		}
 		else {
@@ -274,7 +274,7 @@ class projectsHelperProjects {
 		$db = phpFrame::getDB();
 		$query = "SELECT id, name FROM #__issue_types ";
 		$query .= " ORDER BY id ASC";
-		$db -> setQuery($query);
+		$db->setQuery($query);
 		$rows = $db->loadObjectList();
 		
 		if (is_array($rows) && count($rows) > 0) {
@@ -340,4 +340,3 @@ class projectsHelperProjects {
 		}
 	}
 }
-?>

@@ -53,4 +53,3 @@ class projectsTableUsersFiles extends phpFrame_Database_Table {
 		parent::__construct( '#__users_files', 'id' );
 	}
 }
-?>

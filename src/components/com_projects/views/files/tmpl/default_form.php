@@ -13,11 +13,11 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 phpFrame_HTML::validate('filesform');
 ?>
 
-<h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
-<h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&projectid='.$this->projectid); ?>">
-		<?php echo $this->current_tool; ?>
+<h2 class="subheading <?php echo strtolower($data['view']); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_files&projectid='.$data['project']->id); ?>">
+		<?php echo $data['view']; ?>
 	</a>
 </h2>
 
@@ -27,7 +27,7 @@ phpFrame_HTML::validate('filesform');
 <fieldset>
 <legend><?php echo phpFrame_HTML_Text::_( _LANG_FILES_NEW ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
-<?php if (!empty($this->row->id)) : ?>
+<?php if (!empty($data['row']->id)) : ?>
 <tr>
 	<td width="30%">
 		<label id="parentidmsg" for="parentid">
@@ -35,8 +35,8 @@ phpFrame_HTML::validate('filesform');
 		</label>
 	</td>
 	<td>
-		<?php echo $this->row->title; ?>
-		<input type="hidden" id="parentid" name="parentid" value="<?php echo $this->row->id; ?>" />
+		<?php echo $data['row']->title; ?>
+		<input type="hidden" id="parentid" name="parentid" value="<?php echo $data['row']->id; ?>" />
 	</td>
 </tr>
 <?php endif; ?>
@@ -48,7 +48,7 @@ phpFrame_HTML::validate('filesform');
 		</label>
 	</td>
 	<td>
-		<input class="required" type="text" id="title" name="title" size="32" maxlength="64" value="<?php echo $this->row->title; ?>" />
+		<input class="required" type="text" id="title" name="title" size="32" maxlength="64" value="<?php echo $data['row']->title; ?>" />
 	</td>
 </tr>
 <tr>
@@ -79,7 +79,7 @@ phpFrame_HTML::validate('filesform');
 		</label>
 	</td>
 	<td>
-		<?php echo phpFrame_User_Helper::assignees($this->row->assignees, '', 'assignees[]', $this->projectid); ?>
+		<?php echo phpFrame_User_Helper::assignees($data['row']->assignees, '', 'assignees[]', $data['project']->id); ?>
 	</td>
 </tr>
 <tr>
@@ -100,10 +100,9 @@ phpFrame_HTML::validate('filesform');
 <button type="button" onclick="Javascript:window.history.back();"><?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?></button>
 <button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 
-<input type="hidden" name="projectid" value="<?php echo $this->projectid;?>" />
+<input type="hidden" name="projectid" value="<?php echo $data['project']->id;?>" />
 <input type="hidden" name="component" value="com_projects" />
 <input type="hidden" name="action" value="save_file" />
-<input type="hidden" name="type" value="" />
 <?php echo phpFrame_HTML::_( 'form.token' ); ?>
 
 </form>

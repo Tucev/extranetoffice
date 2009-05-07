@@ -1,4 +1,3 @@
-<?php var_dump($data); ?>
 <?php
 /**
  * @version 	$Id$
@@ -16,9 +15,9 @@ phpFrame_HTML::validate('issuesform');
 
 <h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
-<h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_issue_list&projectid='.$data['page_title']->id); ?>">
-		<?php echo $this->current_tool; ?>
+<h2 class="subheading <?php echo strtolower($data['view']); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_issue_list&projectid='.$data['project']->id); ?>">
+		<?php echo $data['view']; ?>
 	</a>
 </h2>
 
@@ -117,7 +116,7 @@ phpFrame_HTML::validate('issuesform');
 		</label>
 	</td>
 	<td>
-		<?php echo phpFrame_User_Helper::assignees($data['row']->assignees, '', 'assignees[]', $this->projectid); ?>
+		<?php echo phpFrame_User_Helper::assignees($data['row']->assignees, '', 'assignees[]', $data['project']->id); ?>
 	</td>
 </tr>
 <tr>
@@ -161,11 +160,10 @@ phpFrame_HTML::validate('issuesform');
 <button type="button" onclick="Javascript:window.history.back();"><?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?></button>
 <button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 
-<input type="hidden" name="projectid" value="<?php echo $data['projectid'];?>" />
-<input type="hidden" name="id" value="<?php echo $data['row']->id;?>" />
+<input type="hidden" name="projectid" value="<?php echo $data['project']->id; ?>" />
+<input type="hidden" name="id" value="<?php echo $data['row']->id; ?>" />
 <input type="hidden" name="component" value="com_projects" />
 <input type="hidden" name="action" value="save_issue" />
-<input type="hidden" name="type" value="" />
 <?php echo phpFrame_HTML::_( 'form.token' ); ?>
 
 </form>

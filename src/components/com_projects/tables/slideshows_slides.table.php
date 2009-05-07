@@ -31,4 +31,3 @@ class projectsTableSlideshowsSlides extends phpFrame_Database_Table {
 		parent::__construct( '#__slideshows_slides', 'id' );
 	}
 }
-?>

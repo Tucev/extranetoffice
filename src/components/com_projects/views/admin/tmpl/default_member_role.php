@@ -25,7 +25,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	</label>
 </td>
 <td>
-	<?php echo $this->members[0]->name; ?>
+	<?php echo $data['members'][0]->name; ?>
 </td>
 </tr>
 <tr>
@@ -35,7 +35,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	</label>
 </td>
 <td>
-	<?php echo projectsHelperProjects::project_role_select($this->members[0]->roleid); ?>
+	<?php echo projectsHelperProjects::project_role_select($data['members'][0]->roleid); ?>
 </td>
 </tr>
 </table>
@@ -47,9 +47,9 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 </fieldset>
 
 <input type="hidden" name="component" value="com_projects" />
-<input type="hidden" name="action" value="admin_change_member_role" />
+<input type="hidden" name="action" value="change_member_role" />
 <input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
-<input type="hidden" name="userid" value="<?php echo $this->members[0]->userid; ?>" />
+<input type="hidden" name="userid" value="<?php echo $data['members'][0]->userid; ?>" />
 <?php echo phpFrame_HTML::_( 'form.token' ); ?>
 
 </form>

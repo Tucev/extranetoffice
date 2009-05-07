@@ -88,4 +88,3 @@ class projectsViewMessages extends phpFrame_Application_View {
 		phpFrame::getPathway()->addItem(_LANG_MESSAGES_NEW);
 	}
 }
-?>

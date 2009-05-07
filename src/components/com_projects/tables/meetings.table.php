@@ -36,4 +36,3 @@ class projectsTableMeetings extends phpFrame_Database_Table {
 		parent::__construct( '#__meetings', 'id' );
 	}
 }
-?>
