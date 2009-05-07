@@ -49,13 +49,13 @@ class projectsViewMessages extends phpFrame_Application_View {
 	 */
 	function display() {
 		$this->_data['page_title'] = _LANG_MESSAGES;
-		$this->page_heading = $this->project->name;
+		$this->_data['page_heading'] = $this->_data['project']->name;
 		
 		parent::display();
 		
 		// Append page title to document title
 		$document = phpFrame::getDocument('html');
-		$document->title .= ' - '.$this->page_title;
+		$document->title .= ' - '.$this->_data['page_title'];
 	}
 	
 	/**
@@ -64,27 +64,18 @@ class projectsViewMessages extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayMessagesList() {
-		$modelMessages = $this->getModel('messages');
-		$messages = $modelMessages->getMessages($this->projectid);
-		$this->rows =& $messages['rows'];
-		$this->pageNav =& $messages['pageNav'];
-		$this->lists =& $messages['lists'];
-		
 		phpFrame::getPathway()->addItem($this->page_title);
 	}
 	
 	function displayMessagesDetail() {
-		$modelMessages = $this->getModel('messages');
-		$this->row = $modelMessages->getMessagesDetail($this->projectid, $this->messageid);
-		
-		$this->page_title .= ' - '.$this->row->subject;
-		phpFrame::getPathway()->addItem($this->current_tool, "index.php?component=com_projects&view=messages&projectid=".$this->projectid);
-		phpFrame::getPathway()->addItem($this->row->subject);
+		$this->_data['page_title'] .= ' - '.$this->_data['row']->subject;
+		phpFrame::getPathway()->addItem(_LANG_MESSAGES, "index.php?component=com_projects&action=get_messages&projectid=".$this->_data['project']->id);
+		phpFrame::getPathway()->addItem($this->_data['row']->subject);
 	}
 	
 	function displayMessagesForm() {
-		$this->page_title .= ' - '._LANG_MESSAGES_NEW;
-		phpFrame::getPathway()->addItem($this->current_tool, "index.php?component=com_projects&view=messages&projectid=".$this->projectid);
+		$this->_data['page_title'] .= ' - '._LANG_MESSAGES_NEW;
+		phpFrame::getPathway()->addItem(_LANG_MESSAGES, "index.php?component=com_projects&action=get_messages&projectid=".$this->_data['project']->id);
 		phpFrame::getPathway()->addItem(_LANG_MESSAGES_NEW);
 	}
 }

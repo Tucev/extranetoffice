@@ -26,20 +26,14 @@ class projectsModelMessages extends phpFrame_Application_Model {
 	 */
 	function __construct() {}
 	
-	public function getMessages($projectid) {
-		$filter_order = phpFrame_Environment_Request::getVar('filter_order', 'm.date_sent');
-		$filter_order_Dir = phpFrame_Environment_Request::getVar('filter_order_Dir', 'DESC');
-		$search = phpFrame_Environment_Request::getVar('search', '');
-		$search = strtolower( $search );
-		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
-		$limit = phpFrame_Environment_Request::getVar('limit', 20);
-
+	public function getMessages(phpFrame_Database_Listfilter $list_filter, $projectid) {
 		$where = array();
 		
 		// Show only public projects or projects where user has an assigned role
 		//TODO: Have to apply access levels
-		//$where[] = "( p.access = '0' OR (".$this->_user->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
-
+		//$where[] = "( p.access = '0' OR (".phpFrame::getUser()->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
+		
+		$search = $list_filter->getSearchStr();
 		if ( $search ) {
 			$where[] = "m.subject LIKE '%".phpFrame::getDB()->getEscaped($search)."%'";
 		}
@@ -49,11 +43,6 @@ class projectsModelMessages extends phpFrame_Application_Model {
 		}
 
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
-		if ($filter_order == 'm.date_sent'){
-			$orderby = ' ORDER BY m.date_sent DESC';
-		} else {
-			$orderby = ' ORDER BY m.date_sent DESC, '. $filter_order .' '. $filter_order_Dir;
-		}
 
 		// get the total number of records
 		// This query groups the files by parentid so and retireves the latest revision for each file in current project
@@ -64,17 +53,21 @@ class projectsModelMessages extends phpFrame_Application_Model {
 				  JOIN #__users u ON u.id = m.userid "
 				  . $where . 
 				  " GROUP BY m.id ";
-		//echo $query; exit;	  
+		//echo str_replace('#__', 'eo_', $query); exit;
+		  
 		phpFrame::getDB()->setQuery( $query );
 		phpFrame::getDB()->query();
+		
 		$total = phpFrame::getDB()->getNumRows();
 
+		// Set total number of records in list filter
+		$list_filter->setTotal(phpFrame::getDB()->getNumRows());
 		
-		$pageNav = new phpFrame_HTML_Pagination( $total, $limitstart, $limit );
-
-		// get the subset (based on limits) of required records
-		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
-		//echo $query; exit;
+		// Add order by and limit statements for subset (based on filter)
+		$query .= $list_filter->getOrderByStmt();
+		$query .= $list_filter->getLimitStmt();
+		//echo str_replace('#__', 'eo_', $query); exit;
+		
 		phpFrame::getDB()->setQuery($query);
 		$rows = phpFrame::getDB()->loadObjectList();
 		
@@ -85,24 +78,12 @@ class projectsModelMessages extends phpFrame_Application_Model {
 				$row->assignees = $this->getAssignees($row->id);
 				
 				// get total comments
-				$modelComments = $this->getModel('comments');
+				$modelComments = phpFrame::getModel('com_projects', 'comments');
 				$row->comments = $modelComments->getTotalComments($row->id, 'messages');
 			}
 		}
 		
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
-
-		// search filter
-		$lists['search'] = $search;
-		
-		// pack data into an array to return
-		$return['rows'] = $rows;
-		$return['pageNav'] = $pageNav;
-		$return['lists'] = $lists;
-		
-		return $return;
+		return $rows;
 	}
 	
 	public function getMessagesDetail($projectid, $messageid) {
@@ -118,7 +99,7 @@ class projectsModelMessages extends phpFrame_Application_Model {
 		$row->assignees = $this->getAssignees($messageid);
 		
 		// Get comments
-		$modelComments = $this->getModel('comments');
+		$modelComments = phpFrame::getModel('com_projects', 'comments');
 		$row->comments = $modelComments->getComments($projectid, 'messages', $messageid);
 		
 		return $row;
@@ -136,8 +117,8 @@ class projectsModelMessages extends phpFrame_Application_Model {
 			$this->_error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
-				
-		$row =& phpFrame_Base_Singleton::getInstance("projectsTableMessages");
+		
+		$row = $this->getTable('messages');
 		
 		if (!$row->bind($post)) {
 			$this->_error[] = $row->getLastError();
@@ -145,7 +126,7 @@ class projectsModelMessages extends phpFrame_Application_Model {
 		}
 		
 		if (empty($row->id)) {
-			$row->userid = $this->_user->id;
+			$row->userid = phpFrame::getUser()->id;
 			$row->date_sent = date("Y-m-d H:i:s");
 			$row->status = '1';
 		}
@@ -199,7 +180,7 @@ class projectsModelMessages extends phpFrame_Application_Model {
 		phpFrame::getDB()->query();
 		
 		// Instantiate table object
-		$row = phpFrame_Base_Singleton::getInstance('projectsTableMessages');
+		$row = $this->getTable('messages');
 		
 		// Delete row from database
 		if (!$row->delete($messageid)) {
