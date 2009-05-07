@@ -79,6 +79,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 				  . $where . 
 				  " GROUP BY i.id ";
 		//echo str_replace('#__', 'eo_', $query); exit;
+		
 		phpFrame::getDB()->setQuery( $query );
 		phpFrame::getDB()->query();
 		
@@ -139,7 +140,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		$row->assignees = $this->getAssignees($issueid);
 		
 		// Get comments
-		$modelComments = $this->getModel('comments');
+		$modelComments = phpFrame::getModel('com_projects', 'comments');
 		$row->comments = $modelComments->getComments($projectid, 'issues', $issueid);
 		
 		return $row;
@@ -158,7 +159,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 			return false;
 		}
 			
-		$row =& phpFrame_Base_Singleton::getInstance("projectsTableIssues");
+		$row = $this->getTable('issues');
 		
 		if (empty($post['id'])) {
 			$row->created_by = phpFrame::getUser()->id;

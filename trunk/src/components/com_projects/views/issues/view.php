@@ -68,19 +68,15 @@ class projectsViewIssues extends phpFrame_Application_View {
 	}
 	
 	function displayIssuesForm() {
-		$action = empty($this->data['row']) ? _LANG_ISSUES_NEW : _LANG_ISSUES_EDIT;
+		$action = empty($this->_data['row']) ? _LANG_ISSUES_NEW : _LANG_ISSUES_EDIT;
 		$this->_data['page_title'] .= ' - '.$action;
 		phpFrame::getPathway()->addItem(_LANG_ISSUES, phpFrame_Application_Route::_("index.php?component=com_projects&action=get_issues&projectid=".$this->_data['project']->id));
 		phpFrame::getPathway()->addItem($action);
 	}
 	
 	function displayIssuesDetail() {
-		$modelIssues = $this->getModel('issues');
-		$issue = $modelIssues->getIssuesDetail($this->projectid, $this->issueid);
-		$this->row =& $issue;
-		
-		$this->page_title .= ' - '.$issue->title;
-		phpFrame::getPathway()->addItem($this->_data['view'], phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&projectid=".$this->_data['project']->id));
-		phpFrame::getPathway()->addItem($issue->title);
+		$this->_data['page_title'] .= ' - '.$this->_data['row']->title;
+		phpFrame::getPathway()->addItem(_LANG_ISSUES, phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&projectid=".$this->_data['project']->id));
+		phpFrame::getPathway()->addItem($this->_data['row']->title);
 	}
 }

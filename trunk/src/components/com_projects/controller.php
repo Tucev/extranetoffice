@@ -370,13 +370,14 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Get request data
 		$issueid = phpFrame_Environment_Request::getVar('issueid', 0);
 		
-		// Get projects using model
+		// Get issue using model
 		$issue = $this->getModel('issues')->getIssuesDetail($this->project->id, $issueid);
 		
 		// Get view
-		$view = $this->getView('projects', 'list');
+		$view = $this->getView('issues', 'detail');
 		// Set view data
-		$view->addData('rows', $projects);
+		$view->addData('project', $this->project);
+		$view->addData('row', $issue);
 		// Display view
 		$view->display();
 	}
@@ -444,7 +445,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			}
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&action=get_issues&projectid='.$post['projectid']);
+		$this->setRedirect("index.php?component=com_projects&action=get_issue_detail&projectid=".$post['projectid']."&issueid=".$row->id);
 	}
 	
 	public function remove_issue() {
@@ -483,7 +484,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$action = _LANG_ISSUE_CLOSED;
 			$title = $row->title;
 			$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-			$url = phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->id);
+			$url = phpFrame_Application_Route::_("index.php?component=com_projects&action=get_issue_detail&projectid=".$row->projectid."&issueid=".$row->id);
 			
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
@@ -492,7 +493,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			}
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=issues&layout=detail&projectid='.$projectid."&issueid=".$issueid);
+		$this->setRedirect('index.php?component=com_projects&action=get_issue_detail&projectid='.$projectid."&issueid=".$issueid);
 	}
 	
 	public function reopen_issue() {
@@ -514,7 +515,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$action = _LANG_ISSUE_REOPENED;
 			$title = $row->title;
 			$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-			$url = phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->id);
+			$url = phpFrame_Application_Route::_("index.php?component=com_projects&action=get_issue_detail&projectid=".$row->projectid."&issueid=".$row->id);
 			
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
@@ -523,7 +524,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			}
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=issues&layout=detail&projectid='.$projectid."&issueid=".$issueid);
+		$this->setRedirect('index.php?component=com_projects&action=get_issue_detail&projectid='.$projectid."&issueid=".$issueid);
 	}
 	
 	public function get_files() {

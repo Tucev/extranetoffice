@@ -16,7 +16,7 @@ phpFrame_HTML::validate('issuesform');
 <h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
 <h2 class="subheading <?php echo strtolower($data['view']); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_issue_list&projectid='.$data['project']->id); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_issues&projectid='.$data['project']->id); ?>">
 		<?php echo $data['view']; ?>
 	</a>
 </h2>

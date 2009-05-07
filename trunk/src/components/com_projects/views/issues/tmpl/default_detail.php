@@ -15,78 +15,78 @@ phpFrame_HTML::confirm('delete_issue', _LANG_PROJECTS_ISSUES_DELETE, _LANG_PROJE
 phpFrame_HTML::validate('commentsform');
 ?>
 
-<h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
 <h2 class="subheading <?php echo strtolower($data['view']); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_issue_list&projectid='.$data['project']->id); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_issues&projectid='.$data['project']->id); ?>">
 		<?php echo $data['view']; ?>
 	</a>
 </h2>
 
 <div class="thread_row0">
 	
-	<?php if ($this->row->created_by == $this->_user->id) : ?>
+	<?php if ($data['row']->created_by == phpFrame::getUser()->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_issue" title="<?php echo phpFrame_HTML_Text::_($this->row->title, true); ?>" href="index.php?component=com_projects&action=remove_issue&projectid=<?php echo $this->row->projectid; ?>&issueid=<?php echo $this->row->id; ?>">
+		<a class="delete_issue" title="<?php echo phpFrame_HTML_Text::_($data['row']->title, true); ?>" href="index.php?component=com_projects&action=remove_issue&projectid=<?php echo $data['row']->projectid; ?>&issueid=<?php echo $data['row']->id; ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
 	<div class="thread_edit">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&layout=form&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_issue_form&projectid=".$data['project']->id."&issueid=".$data['row']->id); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
 	
-	<?php if ($this->row->closed == "0000-00-00 00:00:00") : ?>
+	<?php if ($data['row']->closed == "0000-00-00 00:00:00") : ?>
 	<div class="thread_close">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=close_issue&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=close_issue&projectid=".$data['project']->id."&issueid=".$data['row']->id); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_ISSUES_CLOSE ); ?>
 		</a>
 	</div>
 	<?php else : ?>
 	<div class="thread_reopen">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=reopen_issue&projectid=".$this->project->id."&issueid=".$this->row->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=reopen_issue&projectid=".$data['project']->id."&issueid=".$data['row']->id); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_ISSUES_REOPEN ); ?>
 		</a>
 	</div>
 	<?php endif; ?>
 	
 	<div class="thread_heading">
-		<?php echo $this->row->title; ?>
+		<?php echo $data['row']->title; ?>
 	</div>
 	
 	<div class="thread_date">
-	<?php echo date("D, d M Y H:ia", strtotime($this->row->created)); ?>
+	<?php echo date("D, d M Y H:ia", strtotime($data['row']->created)); ?>
 	</div>
 	
 	<div class="thread_details">
-		<?php echo _LANG_POSTED_BY ?>: <?php echo $this->row->created_by_name; ?><br />
+		<?php echo _LANG_POSTED_BY ?>: <?php echo $data['row']->created_by_name; ?><br />
 		<?php echo _LANG_ASSIGNEES; ?>: 
-		<?php if (!empty($this->row->assignees)) : ?>
-    	<?php for ($j=0; $j<count($this->row->assignees); $j++) : ?>
+		<?php if (!empty($data['row']->assignees)) : ?>
+    	<?php for ($j=0; $j<count($data['row']->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&view=users&layout=detail&userid=".$this->row->assignees[$j]['id']); ?>">
-    		<?php echo $this->row->assignees[$j]['name']; ?>
+    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&action=get_user&userid=".$data['row']->assignees[$j]['id']); ?>">
+    		<?php echo $data['row']->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>
     	<?php endif; ?>
     	<br />
-    	<?php echo _LANG_DTSTART; ?>: <?php if ($this->row->dtstart != '0000-00-00') { echo date("d M Y", strtotime($this->row->dtstart)); } else { echo _LANG_NOT_SET; } ?> 
+    	<?php echo _LANG_DTSTART; ?>: <?php if ($data['row']->dtstart != '0000-00-00') { echo date("d M Y", strtotime($data['row']->dtstart)); } else { echo _LANG_NOT_SET; } ?> 
     	- 
-    	<?php echo _LANG_DTEND; ?>: <?php if ($this->row->dtend != '0000-00-00') { echo date("d M Y", strtotime($this->row->dtend)); } else { echo _LANG_NOT_SET; } ?>
+    	<?php echo _LANG_DTEND; ?>: <?php if ($data['row']->dtend != '0000-00-00') { echo date("d M Y", strtotime($data['row']->dtend)); } else { echo _LANG_NOT_SET; } ?>
 	</div>
 	
-	<?php if (!empty($this->row->description)) : ?>
+	<?php if (!empty($data['row']->description)) : ?>
 	<div class="thread_body">
-		<?php echo nl2br($this->row->description); ?>
+		<?php echo nl2br($data['row']->description); ?>
 	</div>
 	<?php endif; ?>
 	
-	<?php if (is_array($this->row->comments) && count($this->row->comments) > 0) : ?>
+	<?php if (is_array($data['row']->comments) && count($data['row']->comments) > 0) : ?>
 	<h3><?php echo _LANG_COMMENTS; ?></h3>
-	<?php foreach ($this->row->comments as $comment) : ?>
+	<?php foreach ($data['row']->comments as $comment) : ?>
 		<div class="comment_row">
 			<div style="float:left; margin-right: 10px;">
 				<img src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo phpFrame_User_Helper::id2photo($comment->userid); ?>" />
@@ -127,10 +127,10 @@ phpFrame_HTML::validate('commentsform');
 		<input type="hidden" name="action" value="save_comment" />
 		<input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
 		<input type="hidden" name="type" value="issues" />
-		<input type="hidden" name="itemid" value="<?php echo  $this->row->id; ?>" />
-		<input type="hidden" name="issueid" value="<?php echo  $this->row->id; ?>" />
-		<?php if (is_array($this->row->assignees) && count($this->row->assignees) > 0) : ?>
-		<?php foreach ($this->row->assignees as $assignee) : ?>
+		<input type="hidden" name="itemid" value="<?php echo  $data['row']->id; ?>" />
+		<input type="hidden" name="issueid" value="<?php echo  $data['row']->id; ?>" />
+		<?php if (is_array($data['row']->assignees) && count($data['row']->assignees) > 0) : ?>
+		<?php foreach ($data['row']->assignees as $assignee) : ?>
 		<input type="hidden" name="assignees[]" value="<?php echo $assignee['id']; ?>" />
 		<?php endforeach; ?>
 		<?php endif; ?>
