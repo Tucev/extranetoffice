@@ -106,6 +106,8 @@ class phpFrame {
 					return $reflectionObj->newInstanceArgs($args);
 				}
 			}
+			// No declared constructor, so we instantiate without args
+			return new $class_name;
 		}
 		elseif ($reflectionObj->hasMethod('getInstance')) {
 			$get_instance = $reflectionObj->getMethod('getInstance');
