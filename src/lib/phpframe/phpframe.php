@@ -84,13 +84,38 @@ class phpFrame {
 	 * 
 	 * @param	$component_name
 	 * @param	$model_name
+	 * @param	$args
 	 * @return	object
 	 * @since 	1.0
 	 */
-	public static function getModel($component_name, $model_name) {
+	public static function getModel($component_name, $model_name, $args=array()) {
 		$class_name = substr($component_name, 4)."Model";
 		$class_name .= ucfirst($model_name);
-		return new $class_name();
+		
+		// make a reflection object
+		$reflectionObj = new ReflectionClass($class_name);
+		
+		// Check if class is instantiable
+		if ($reflectionObj->isInstantiable()) {
+			// Try to get the constructor
+			$constructor = $reflectionObj->getConstructor();
+			// Check to see if we have a valid constructor method
+			if ($constructor instanceof ReflectionMethod) {
+				// If constructor is public we create a new instance
+				if ($constructor->isPublic()) {
+					return $reflectionObj->newInstanceArgs($args);
+				}
+			}
+		}
+		elseif ($reflectionObj->hasMethod('getInstance')) {
+			$get_instance = $reflectionObj->getMethod('getInstance');
+			if ($get_instance->isPublic() && $get_instance->isStatic()) {
+				return call_user_func_array(array($class_name, 'getInstance'), $args);
+			}
+		}
+		
+		// If we have not been able to return a model object we throw an exception
+		throw new Exception($model_name." not supported. Could not get instance of ".$class_name);
 	}
 	
 	/**
