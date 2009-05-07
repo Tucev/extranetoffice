@@ -236,8 +236,8 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 * @return	object
 	 * @since	1.0
 	 */
-	protected function getModel($name) {
-		return phpFrame::getModel(phpFrame_Environment_Request::getComponentName(), $name);
+	protected function getModel($name, $args=array()) {
+		return phpFrame::getModel(phpFrame_Environment_Request::getComponentName(), $name, $args);
 	}
 	
 	/**
