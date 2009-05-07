@@ -15,72 +15,72 @@ phpFrame_HTML::confirm('delete_milestone', _LANG_PROJECTS_MILESTONES_DELETE, _LA
 phpFrame_HTML::validate('commentsform');
 ?>
 
-<h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
 
-<h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&projectid='.$this->projectid); ?>">
-		<?php echo $this->current_tool; ?>
+<h2 class="subheading <?php echo strtolower($data['view']); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_milestones&projectid='.$data['project']->id); ?>">
+		<?php echo $data['view']; ?>
 	</a>
 </h2>
 
 
 <div class="thread_row0">
 
-	<?php if ($this->row->created_by == $this->_user->id) : ?>
+	<?php if ($data['row']->created_by == phpFrame::getUser()->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_milestone" title="<?php echo phpFrame_HTML_Text::_($this->row->title, true); ?>" href="index.php?component=com_projects&action=remove_milestone&projectid=<?php echo $this->row->projectid; ?>&milestoneid=<?php echo $this->row->id; ?>">
+		<a class="delete_milestone" title="<?php echo phpFrame_HTML_Text::_($data['row']->title, true); ?>" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=remove_milestone&projectid=".$data['row']->projectid."&milestoneid=".$data['row']->id); ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
 	<div class="thread_edit">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=".phpFrame_Environment_Request::getViewName()."&layout=form&projectid=".$this->project->id."&milestoneid=".$this->row->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_milestone_form&projectid=".$data['project']->id."&milestoneid=".$data['row']->id); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
 	
 	<div class="thread_heading">
-		<?php echo $this->row->title; ?>
+		<?php echo $data['row']->title; ?>
 	</div>
 	
 	<div class="thread_date">
-	<?php echo date("D, d M Y H:ia", strtotime($this->row->created)); ?>
+	<?php echo date("D, d M Y H:ia", strtotime($data['row']->created)); ?>
 	</div>
 	
 	<div class="thread_details">
-		<?php echo _LANG_POSTED_BY ?>: <?php echo $this->row->created_by_name; ?><br />
+		<?php echo _LANG_POSTED_BY ?>: <?php echo $data['row']->created_by_name; ?><br />
 		<?php echo _LANG_ASSIGNEES; ?>: 
-		<?php if (!empty($this->row->assignees)) : ?>
-    	<?php for ($j=0; $j<count($this->row->assignees); $j++) : ?>
+		<?php if (!empty($data['row']->assignees)) : ?>
+    	<?php for ($j=0; $j<count($data['row']->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&view=users&layout=detail&userid=".$this->row->assignees[$j]['id']); ?>">
-    		<?php echo $this->row->assignees[$j]['name']; ?>
+    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&action=get_user&userid=".$data['row']->assignees[$j]['id']); ?>">
+    		<?php echo $data['row']->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>
     	<?php endif; ?>
 	</div>
 	
-	<div class="<?php echo $this->row->due_date_class; ?> status">
+	<div class="<?php echo $data['row']->due_date_class; ?> status">
     	<span>
-    		<?php echo strtoupper($this->row->status); ?> &gt; 
+    		<?php echo strtoupper($data['row']->status); ?> &gt; 
 			<?php echo _LANG_MILESTONES_DUEDATE; ?>: 
-			<?php echo date("l, d M Y", strtotime($this->row->due_date)); ?>
+			<?php echo date("l, d M Y", strtotime($data['row']->due_date)); ?>
     	</span>
     </div>
     
     <br />
 	
-	<?php if (!empty($this->row->description)) : ?>
+	<?php if (!empty($data['row']->description)) : ?>
 	<div class="thread_body">
-		<?php echo nl2br($this->row->description); ?>
+		<?php echo nl2br($data['row']->description); ?>
 	</div>
 	<?php endif; ?>
 	
-	<?php if (is_array($this->row->comments) && count($this->row->comments) > 0) : ?>
+	<?php if (is_array($data['row']->comments) && count($data['row']->comments) > 0) : ?>
 	<h3><?php echo _LANG_COMMENTS; ?></h3>
-	<?php foreach ($this->row->comments as $comment) : ?>
+	<?php foreach ($data['row']->comments as $comment) : ?>
 		<div class="comment_row">
 			<div style="float:left; margin-right: 10px;">
 				<img src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo phpFrame_User_Helper::id2photo($comment->userid); ?>" />
@@ -116,11 +116,11 @@ phpFrame_HTML::validate('commentsform');
 		</p>
 		<input type="hidden" name="component" value="com_projects" />
 		<input type="hidden" name="action" value="save_comment" />
-		<input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
+		<input type="hidden" name="projectid" value="<?php echo $data['project']->id; ?>" />
 		<input type="hidden" name="type" value="milestones" />
-		<input type="hidden" name="itemid" value="<?php echo  $this->row->id; ?>" />
-		<?php if (is_array($this->row->assignees) && count($this->row->assignees) > 0) : ?>
-		<?php foreach ($this->row->assignees as $assignee) : ?>
+		<input type="hidden" name="itemid" value="<?php echo  $data['row']->id; ?>" />
+		<?php if (is_array($data['row']->assignees) && count($data['row']->assignees) > 0) : ?>
+		<?php foreach ($data['row']->assignees as $assignee) : ?>
 		<input type="hidden" name="assignees[]" value="<?php echo $assignee['id']; ?>" />
 		<?php endforeach; ?>
 		<?php endif; ?>

@@ -49,13 +49,13 @@ class projectsViewMilestones extends phpFrame_Application_View {
 	 */
 	function display() {
 		$this->_data['page_title'] = _LANG_MILESTONES;
-		$this->page_heading = $this->project->name;
+		$this->_data['page_heading'] = $this->_data['project']->name;
 		
 		parent::display();
 		
 		// Append page title to document title
 		$document = phpFrame::getDocument('html');
-		$document->title .= ' - '.$this->page_title;
+		$document->title .= ' - '._LANG_MILESTONES;
 	}
 	
 	/**
@@ -64,37 +64,21 @@ class projectsViewMilestones extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayMilestonesList() {
-		$modelMilestones = $this->getModel('milestones');
-		$milestones = $modelMilestones->getMilestones($this->projectid);
-		$this->rows =& $milestones['rows'];
-		$this->pageNav =& $milestones['pageNav'];
-		$this->lists =& $milestones['lists'];
-		
-		phpFrame::getPathway()->addItem($this->page_title);
+		phpFrame::getPathway()->addItem(_LANG_MILESTONES);
 	}
 	
 	function displayMilestonesDetail() {
-		$modelMilestones = $this->getModel('milestones');
-		$this->row = $modelMilestones->getMilestonesDetail($this->projectid, $this->milestoneid);
-		
-		$this->page_title .= ' - '.$this->row->title;
-		phpFrame::getPathway()->addItem($this->current_tool, "index.php?component=com_projects&view=milestones&projectid=".$this->projectid);
-		phpFrame::getPathway()->addItem($this->row->title);
+		$this->_data['page_title'] .= ' - '.$this->_data['row']->title;
+		phpFrame::getPathway()->addItem(_LANG_MILESTONES, "index.php?component=com_projects&action=get_milestones&projectid=".$this->_data['project']->id);
+		phpFrame::getPathway()->addItem($this->_data['row']->title);
 	}
 	
 	function displayMilestonesForm() {
-		if (!empty($this->milestoneid)) {
-			$action = _LANG_MILESTONES_EDIT;
-			$modelMilestones = $this->getModel('milestones');
-			$this->row = $modelMilestones->getMilestonesDetail($this->projectid, $this->milestoneid);
-		}
-		else {
-			$action = _LANG_MILESTONES_NEW;
-			// default values	
-		}
-		
-		$this->page_title .= ' - '.$action;
-		phpFrame::getPathway()->addItem($this->current_tool, "index.php?component=com_projects&view=milestones&projectid=".$this->projectid);
+		$action = empty($this->_data['row']->id) ? _LANG_MILESTONES_NEW : _LANG_MILESTONES_EDIT;
+		$this->_data['page_title'] .= ' - '.$action;
+		phpFrame::getPathway()->addItem(_LANG_MILESTONES, "index.php?component=com_projects&action=get_milestones&projectid=".$this->_data['project']->id);
 		phpFrame::getPathway()->addItem($action);
+		
+		$this->addData('action', $action);
 	}
 }
