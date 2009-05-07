@@ -32,8 +32,9 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		
 		// Show only public projects or projects where user has an assigned role
 		//TODO: Have to apply access levels
-		//$where[] = "( p.access = '0' OR (".$this->_user->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
-
+		//$where[] = "( p.access = '0' OR (".phpFrame::getUser()->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
+		
+		$search = $list_filter->getSearchStr();
 		if ( $search ) {
 			$where[] = "m.name LIKE '%".phpFrame::getDB()->getEscaped($search)."%'";
 		}
@@ -43,11 +44,6 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		}
 
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
-		if ($filter_order == 'm.created'){
-			$orderby = ' ORDER BY m.created DESC';
-		} else {
-			$orderby = ' ORDER BY m.created DESC, '. $filter_order .' '. $filter_order_Dir;
-		}
 
 		// get the total number of records
 		// This query groups the files by parentid so and retireves the latest revision for each file in current project
@@ -58,14 +54,18 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 				  JOIN #__users u ON u.id = m.created_by "
 				  . $where . 
 				  " GROUP BY m.id ";
-		//echo $query; exit;	  
+		//echo str_replace('#__', 'eo_', $query); exit;
+			  
 		phpFrame::getDB()->setQuery( $query );
 		phpFrame::getDB()->query();
 		
+		// Set total number of records in list filter
 		$list_filter->setTotal(phpFrame::getDB()->getNumRows());
 
-		// get the subset (based on limits) of required records
+		// Add order by and limit statements for subset (based on filter)
+		//$query .= $list_filter->getOrderByStmt();
 		$query .= $list_filter->getLimitStmt();
+		//echo str_replace('#__', 'eo_', $query); exit;
 		
 		//echo $query; exit;
 		phpFrame::getDB()->setQuery($query);
@@ -78,12 +78,12 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 				$row->assignees = $this->getAssignees($row->id);
 				
 				// get total comments
-				$modelComments = $this->getModel('comments');
+				$modelComments = phpFrame::getModel('com_projects', 'comments');
 				$row->comments = $modelComments->getTotalComments($row->id, 'meetings');
 			}
 		}
 		
-		return $return;
+		return $rows;
 	}
 	
 	public function getMeetingsDetail($projectid, $meetingid) {
@@ -105,7 +105,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$row->files = $this->getFiles($projectid, $meetingid);
 		
 		// Get comments
-		$modelComments = $this->getModel('comments');
+		$modelComments = phpFrame::getModel('com_projects', 'comments');
 		$row->comments = $modelComments->getComments($projectid, 'meetings', $meetingid);
 		
 		return $row;
@@ -123,11 +123,11 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			$this->_error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
-				
-		$row =& phpFrame_Base_Singleton::getInstance("projectsTableMeetings");
+		
+		$row = $this->getTable('meetings');
 		
 		if (empty($post['id'])) {
-			$row->created_by = $this->_user->id;
+			$row->created_by = phpFrame::getUser()->id;
 			$row->created = date("Y-m-d H:i:s");
 		}
 		else {
@@ -253,14 +253,14 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			$this->_error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
-			
-		$row =& phpFrame_Base_Singleton::getInstance("projectsTableSlideshows");
+	
+		$row = $this->getTable('slideshows');
 		
 		if (!empty($post['id'])) {
 			$row->load($post['id']);
 		}
 		else {
-			$row->created_by = $this->_user->id;
+			$row->created_by = phpFrame::getUser()->id;
 			$row->created = date("Y-m-d H:i:s");
 		}
 		
@@ -349,8 +349,8 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			$this->_error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
-			
-		$row =& phpFrame_Base_Singleton::getInstance("projectsTableSlideshowsSlides");
+		
+		$row = $this->getTable('slideshowsSlides');
 		
 		if (!$row->bind($post)) {
 			$this->_error[] = $row->getLastError();
@@ -412,8 +412,8 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			$this->_error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
-				
-		$row =& phpFrame_Base_Singleton::getInstance("projectsTableSlideshowsSlides");
+		
+		$row = $this->getTable('slideshowsSlides');
 		
 		$row->load($slideid);
 		
@@ -461,7 +461,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			return false;
 		}
 		
-		if (!is_array($fileids)) {
+		if (!is_array($fileids) && is_int($fileids)) {
 			$fileids[] = $fileids;
 		}
 		
@@ -472,12 +472,14 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			return false;
 		}
 		
-		foreach ($fileids as $fileid) {
-			$query = "INSERT INTO #__meetings_files (`id`, `meetingid`, `fileid`) VALUES (NULL, ".$meetingid.", ".$fileid.")";
-			phpFrame::getDB()->setQuery($query);
-			if (!phpFrame::getDB()->query()) {
-				$this->_error[] = phpFrame::getDB()->getLastError();
-				return false;
+		if (is_array($fileids) && count($fileids) > 0) {
+			foreach ($fileids as $fileid) {
+				$query = "INSERT INTO #__meetings_files (`id`, `meetingid`, `fileid`) VALUES (NULL, ".$meetingid.", ".$fileid.")";
+				phpFrame::getDB()->setQuery($query);
+				if (!phpFrame::getDB()->query()) {
+					$this->_error[] = phpFrame::getDB()->getLastError();
+					return false;
+				}
 			}
 		}
 		

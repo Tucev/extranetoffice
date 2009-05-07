@@ -83,7 +83,7 @@ class projectsModelIssues extends phpFrame_Application_Model {
 		phpFrame::getDB()->setQuery( $query );
 		phpFrame::getDB()->query();
 		
-		// Set total number of record in list filter
+		// Set total number of records in list filter
 		$list_filter->setTotal(phpFrame::getDB()->getNumRows());
 
 		// Add order by and limit statements for subset (based on filter)
