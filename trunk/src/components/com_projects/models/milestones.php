@@ -34,19 +34,13 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 	 * @return	array
 	 */
 	public function getMilestones(phpFrame_Database_Listfilter $list_filter, $projectid) {
-		$filter_order = phpFrame_Environment_Request::getVar('filter_order', 'm.due_date');
-		$filter_order_Dir = phpFrame_Environment_Request::getVar('filter_order_Dir', 'DESC');
-		$search = phpFrame_Environment_Request::getVar('search', '');
-		$search = strtolower( $search );
-		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
-		$limit = phpFrame_Environment_Request::getVar('limit', 20);
-
 		$where = array();
 		
 		// Show only public projects or projects where user has an assigned role
 		//TODO: Have to apply access levels
-		//$where[] = "( p.access = '0' OR (".$this->_user->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
-
+		//$where[] = "( p.access = '0' OR (".phpFrame::getUser()->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
+		
+		$search = $list_filter->getSearchStr();
 		if ( $search ) {
 			$where[] = "m.title LIKE '%".phpFrame::getDB()->getEscaped($search)."%'";
 		}
@@ -56,11 +50,6 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 		}
 
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
-		if ($filter_order == 'm.due_date'){
-			$orderby = ' ORDER BY m.due_date DESC';
-		} else {
-			$orderby = ' ORDER BY m.due_date DESC, '. $filter_order .' '. $filter_order_Dir;
-		}
 
 		// get the total number of records
 		// This query groups the files by parentid so and retireves the latest revision for each file in current project
@@ -71,17 +60,20 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 				  JOIN #__users u ON u.id = m.created_by "
 				  . $where . 
 				  " GROUP BY m.id ";
-		//echo $query; exit;	  
+		//echo str_replace('#__', 'eo_', $query); exit;
+		 
 		phpFrame::getDB()->setQuery( $query );
 		phpFrame::getDB()->query();
-		$total = phpFrame::getDB()->getNumRows();
-
 		
-		$pageNav = new phpFrame_HTML_Pagination( $total, $limitstart, $limit );
+		
+		// Set total number of records in list filter
+		$list_filter->setTotal(phpFrame::getDB()->getNumRows());
 
-		// get the subset (based on limits) of required records
-		$query .= $orderby." LIMIT ".$pageNav->limitstart.", ".$pageNav->limit;
-		//echo $query; exit;
+		// Add order by and limit statements for subset (based on filter)
+		//$query .= $list_filter->getOrderByStmt();
+		$query .= $list_filter->getLimitStmt();
+		//echo str_replace('#__', 'eo_', $query); exit;
+		
 		phpFrame::getDB()->setQuery($query);
 		$rows = phpFrame::getDB()->loadObjectList();
 		
@@ -92,7 +84,7 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 				$row->assignees = $this->getAssignees($row->id);
 				
 				// get total comments
-				$modelComments = $this->getModel('comments');
+				$modelComments = phpFrame::getModel('com_projects', 'comments');
 				$row->comments = $modelComments->getTotalComments($row->id, 'milestones');
 				
 				// Sort out status according to due date
@@ -111,19 +103,7 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 			}
 		}
 		
-		// table ordering
-		$lists['order_Dir']	= $filter_order_Dir;
-		$lists['order']		= $filter_order;
-
-		// search filter
-		$lists['search'] = $search;
-		
-		// pack data into an array to return
-		$return['rows'] = $rows;
-		$return['pageNav'] = $pageNav;
-		$return['lists'] = $lists;
-		
-		return $return;
+		return $rows;
 	}
 	
 	/**
@@ -160,7 +140,7 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 		$row->assignees = $this->getAssignees($milestoneid);
 		
 		// Get comments
-		$modelComments = $this->getModel('comments');
+		$modelComments = phpFrame::getModel('com_projects', 'comments');
 		$row->comments = $modelComments->getComments($projectid, 'milestones', $milestoneid);
 		
 		return $row;
@@ -179,7 +159,7 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 			return false;
 		}
 		
-		$row =& phpFrame_Base_Singleton::getInstance("projectsTableMilestones");
+		$row = $this->getTable('milestones');
 		
 		if (!$row->bind($post)) {
 			$this->_error[] = $row->getLastError();
@@ -187,8 +167,11 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 		}
 		
 		if (empty($row->id)) {
-			$row->created_by = $this->_user->id;
+			$row->created_by = phpFrame::getUser()->id;
 			$row->created = date("Y-m-d H:i:s");
+		}
+		else {
+			$row->load($post['id']);
 		}
 		
 		if (!$row->check()) {
@@ -247,7 +230,7 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 		phpFrame::getDB()->query();
 		
 		// Instantiate table object
-		$row =& phpFrame_Base_Singleton::getInstance("projectsTableMilestones");
+		$row = $this->getTable('milestones');
 		
 		// Delete row from database
 		if (!$row->delete($milestoneid)) {

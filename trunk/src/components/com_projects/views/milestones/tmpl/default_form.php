@@ -8,41 +8,24 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
+
+// Load jQuery validation behaviour for form
+phpFrame_HTML::validate('milestonesform');
 ?>
 
-<script language="javascript" type="text/javascript">
-function submitbutton(action) {
-	var form = document.iofficeform;
+<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
-	// do field validation
-	if (form.title.value == "") {
-		alert('<?php echo phpFrame_HTML_Text::_( _LANG_NAME_REQUIRED , true); ?>');
-		form.title.focus();
-		return;
-	}
-	else if (form.due_date.value == "") {
-		alert('<?php echo phpFrame_HTML_Text::_( _LANG_MILESTONES_DUEDATE_REQUIRED , true); ?>');
-		form.due_date.focus();
-		return;
-	}
-	
-	form.submit();
-}
-</script>
-
-<h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
-
-<h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&projectid='.$this->projectid); ?>">
-		<?php echo $this->current_tool; ?>
+<h2 class="subheading <?php echo strtolower($data['view']); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_milestones&projectid='.$data['project']->id); ?>">
+		<?php echo $data['view']; ?>
 	</a>
 </h2>
 
 
-<form action="index.php" method="post" name="iofficeform">
+<form action="index.php" method="post" name="milestonesform" id="milestonesform">
 
 <fieldset>
-<legend><?php echo phpFrame_HTML_Text::_( _LANG_MILESTONES_NEW ); ?></legend>
+<legend><?php echo phpFrame_HTML_Text::_( $data['action'] ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td width="30%">
@@ -51,7 +34,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<input type="text" id="title" name="title" size="32" maxlength="50" value="<?php echo htmlentities($this->row->title); ?>" />
+		<input class="required" type="text" id="title" name="title" size="32" maxlength="50" value="<?php echo htmlentities($data['row']->title); ?>" />
 	</td>
 </tr>
 <tr>
@@ -61,7 +44,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<?php echo phpFrame_HTML::_('calendar', 'due_date', 'due_date', $this->row->due_date, 'dd/mm/yy', array('size'=>'10',  'maxlength'=>'10')); ?>
+		<?php echo phpFrame_HTML::_('calendar', 'due_date', 'due_date', $data['row']->due_date, 'dd/mm/yy', array('size'=>'10', 'maxlength'=>'10', 'class'=>'required')); ?>
 	</td>
 </tr>
 <tr>
@@ -71,7 +54,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<textarea name="description" id="description" cols="80"><?php echo $this->row->description; ?></textarea>
+		<textarea name="description" id="description" cols="80"><?php echo $data['row']->description; ?></textarea>
 	</td>
 </tr>
 
@@ -82,7 +65,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<?php echo phpFrame_User_Helper::assignees($this->row->assignees, '', 'assignees[]', $this->projectid); ?>
+		<?php echo phpFrame_User_Helper::assignees($data['row']->assignees, '', 'assignees[]', $data['project']->id); ?>
 	</td>
 </tr>
 <tr>
@@ -96,7 +79,7 @@ function submitbutton(action) {
 	</td>
 </tr>
 
-<?php if (!empty($this->row->id)) : ?>
+<?php if (!empty($data['row']->id)) : ?>
 <tr>
 	<td width="30%">
 		<label id="created_bymsg" for="created_by">
@@ -104,7 +87,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<?php echo phpFrame_User_Helper::id2name($this->row->created_by); ?>
+		<?php echo phpFrame_User_Helper::id2name($data['row']->created_by); ?>
 	</td>
 </tr>
 <tr>
@@ -114,7 +97,7 @@ function submitbutton(action) {
 		</label>
 	</td>
 	<td>
-		<?php echo $this->row->created; ?>
+		<?php echo $data['row']->created; ?>
 	</td>
 </tr>
 <?php endif; ?>
@@ -126,11 +109,10 @@ function submitbutton(action) {
 <button type="button" onclick="Javascript:window.history.back();"><?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?></button>
 <button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 
-<input type="hidden" name="projectid" value="<?php echo $this->projectid;?>" />
-<input type="hidden" name="id" value="<?php echo $this->row->id;?>" />
+<input type="hidden" name="projectid" value="<?php echo $data['project']->id;?>" />
+<input type="hidden" name="id" value="<?php echo $data['row']->id;?>" />
 <input type="hidden" name="component" value="com_projects" />
 <input type="hidden" name="action" value="save_milestone" />
-<input type="hidden" name="layout" value="" />
 <?php echo phpFrame_HTML::_( 'form.token' ); ?>
 
 </form>

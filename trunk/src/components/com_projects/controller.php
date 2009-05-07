@@ -1108,14 +1108,69 @@ class projectsController extends phpFrame_Application_ActionController {
 	
 	public function get_milestones() {
 		if (!$this->_authorise("milestones")) return;
+		
+		// Get request data
+		$orderby = phpFrame_Environment_Request::getVar('orderby', 'm.due_date');
+		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'DESC');
+		$limit = phpFrame_Environment_Request::getVar('limit', 25);
+		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
+		$search = phpFrame_Environment_Request::getVar('search', '');
+		
+		// Create list filter needed for getIssues()
+		$list_filter = new phpFrame_Database_Listfilter($orderby, $orderdir, $limit, $limitstart, $search);
+		
+		// Get milestones using model
+		$milestones = $this->getModel('milestones')->getMilestones($list_filter, $this->project->id);
+		
+		// Get view
+		$view = $this->getView('milestones', 'list');
+		// Set view data
+		$view->addData('project', $this->project);
+		$view->addData('rows', $milestones);
+		$view->addData('page_nav', new phpFrame_HTML_Pagination($list_filter));
+		// Display view
+		$view->display();
 	}
 	
-	public function get_milestone_details() {
+	public function get_milestone_detail() {
 		if (!$this->_authorise("milestones")) return;
+		
+		// Get request data
+		$milestoneid = phpFrame_Environment_Request::getVar('milestoneid', 0);
+		
+		// Get milestone using model
+		$milestone = $this->getModel('milestones')->getMilestonesDetail($this->project->id, $milestoneid);
+		
+		// Get view
+		$view = $this->getView('milestones', 'detail');
+		// Set view data
+		$view->addData('project', $this->project);
+		$view->addData('row', $milestone);
+		// Display view
+		$view->display();
 	}
 	
 	public function get_milestone_form() {
 		if (!$this->_authorise("milestones")) return;
+		
+		// Get request data
+		$milestoneid = phpFrame_Environment_Request::getVar('milestoneid', 0);
+			
+		if ($milestoneid != 0) {		
+			// Get milestone using model
+			$milestone = $this->getModel('milestones')->getMilestonesDetail($this->project->id, $milestoneid);
+		}
+		else {
+			$milestone = new stdClass();
+		}
+		
+		// Get view
+		$view = $this->getView('milestones', 'form');
+		// Set view data
+		$view->addData('project', $this->project);
+		$view->addData('row', $milestone);
+		// Display view
+		$view->display();
 	}
 	
 	public function save_milestone() {
@@ -1140,7 +1195,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$action = empty($post['id']) ? _LANG_MILESTONES_ACTION_NEW : _LANG_MILESTONES_ACTION_EDIT;
 			$title = $row->title;
 			$description = sprintf(_LANG_MILESTONES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->due_date, $row->description);
-			$url = phpFrame_Application_Route::_("index.php?component=com_projects&view=milestones&layout=detail&projectid=".$row->projectid."&milestoneid=".$row->id);
+			$url = phpFrame_Application_Route::_("index.php?component=com_projects&action=get_milestone_detail&projectid=".$row->projectid."&milestoneid=".$row->id);
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
@@ -1150,7 +1205,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			}
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=milestones&layout=detail&projectid='.$post['projectid']."&milestoneid=".$row->id);
+		$this->setRedirect('index.php?component=com_projects&action=get_milestones&projectid='.$post['projectid']);
 	}
 	
 	public function remove_milestone() {
@@ -1168,7 +1223,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$this->_sysevents->setSummary(_LANG_MILESTONE_DELETE_ERROR);
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=milestones&projectid='.$projectid);
+		$this->setRedirect('index.php?component=com_projects&action=get_milestones&projectid='.$projectid);
 	}
 	
 	public function process_incoming_email() {
