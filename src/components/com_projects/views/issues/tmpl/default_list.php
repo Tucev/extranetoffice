@@ -88,7 +88,7 @@ $(document).ready(function() {
 	</tr>
 	</table>
 	<input type="hidden" name="component" value="com_projects" />
-	<input type="hidden" name="view" value="issues" />
+	<input type="hidden" name="action" value="get_issues" />
 	<input type="hidden" name="projectid" value="<?php echo $data['project']->id; ?>" />
 	</form>
 </div>
@@ -124,7 +124,7 @@ $(document).ready(function() {
 		<?php if (!empty($row->assignees)) : ?>
     	<?php for ($j=0; $j<count($row->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&view=users&layout=detail&userid=".$row->assignees[$j]['id']); ?>">
+    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&action=get_user&userid=".$row->assignees[$j]['id']); ?>">
     		<?php echo $row->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>
@@ -146,11 +146,11 @@ $(document).ready(function() {
 	<?php endif; ?>
 	
 	<div class="comments_info">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&layout=detail&projectid=".$data['project']->id."&issueid=".$row->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_issue_detail&projectid=".$data['project']->id."&issueid=".$row->id); ?>">
 			<?php echo $row->comments; ?> <?php echo _LANG_COMMENTS; ?>
 		</a>
 		 - 
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&layout=detail&projectid=".$data['project']->id."&issueid=".$row->id."#post-comment"); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_issue_detail&projectid=".$data['project']->id."&issueid=".$row->id."#post-comment"); ?>">
 			<?php echo _LANG_COMMENTS_NEW; ?>
 		</a>
 	</div>
