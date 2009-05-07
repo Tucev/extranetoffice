@@ -47,6 +47,12 @@ class phpFrame {
 		return phpFrame_Base_Singleton::getInstance('phpFrame_Application_FrontController');
 	}
 	
+	/**
+	 * Get response object
+	 * 
+	 * @return object
+	 * @since 	1.0
+	 */
 	public static function getResponse() {
 		return phpFrame_Base_Singleton::getInstance('phpFrame_Environment_Response');
 	}
@@ -100,6 +106,12 @@ class phpFrame {
 		return phpFrame_Base_Singleton::getInstance($class_name);
 	}
 	
+	/**
+	 * Get modules
+	 * 
+	 * @return	object
+	 * @since 	1.0
+	 */
 	public static function getModules() {
 		return phpFrame_Base_Singleton::getInstance('phpFrame_Application_Modules');
 	}
@@ -175,4 +187,3 @@ class phpFrame {
 		return phpFrame_Base_Singleton::getInstance('phpFrame_Application_Pathway');
 	}
 }
-?>
