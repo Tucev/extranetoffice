@@ -65,9 +65,23 @@ class phpFrame_Client_Cli implements phpFrame_Client_IClient {
 		return "cli";
 	}
 	
-	public function preActionHook() {}
+	public function preActionHook() {
+		// Automatically log in as system user
+		$user = phpFrame::getUser();
+		$user->id = 1;
+		$user->groupid = 1;
+		$user->username = 'system';
+		$user->firstname = 'System';
+		$user->lastname = 'User';
+		
+		// Store user detailt in session
+		$session = phpFrame::getSession();
+		$session->setUser($user);
+	}
 	
-	public function renderView($data) {}
+	public function renderView($data) {
+		var_dump($data);
+	}
 	
 	public function renderTemplate(&$str) {}
 }

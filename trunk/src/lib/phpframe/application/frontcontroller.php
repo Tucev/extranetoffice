@@ -75,23 +75,11 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 		// Initialise request
 		phpFrame_Environment_Request::init();
 		
-		// get session object (singeton)
+		// get session object
 		$session = phpFrame::getSession();
-		// get user object
-		$user = phpFrame::getUser();
-		
 		if ($session->isAuth()) {
+			$user = phpFrame::getUser();
 			$user->load($session->getUserId());
-		}
-		//TODO move this to clientcli preActionHook
-		elseif (phpFrame_Environment_Request::getClientName() == 'cli') {
-			$user->id = 1;
-			$user->groupid = 1;
-			$user->username = 'system';
-			$user->firstname = 'System';
-			$user->lastname = 'User';
-			// Store user detailt in session
-			$session->setUser($user);
 		}
 		
 		// Set profiler milestone
