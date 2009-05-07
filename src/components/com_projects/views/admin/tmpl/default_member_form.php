@@ -44,7 +44,7 @@ function submitbutton() {
 <h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
 <h2 class="subheading people">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&projectid='.$this->projectid); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_people&projectid='.$data['project']->id); ?>">
 		<?php echo _LANG_PEOPLE; ?>
 	</a>
 </h2>
@@ -63,7 +63,7 @@ function submitbutton() {
 				</label>
 			</td>
 			<td>
-				<?php echo projectsHelperProjects::autocompleteMembers($this->projectid, false); ?> 
+				<?php echo projectsHelperProjects::autocompleteMembers($data['project']->id, false); ?> 
 				<!-- This should be added in a tooltip 
 				<div class="note">
 					Start typing usernames to display autocompleter. Note that the autocompleter will only
@@ -144,7 +144,7 @@ function submitbutton() {
 	<input type="hidden" name="component" value="com_projects" />
 	<input type="hidden" name="action" value="save_member" />
 	<input type="hidden" name="view" value="admin" />
-	<input type="hidden" name="projectid" value="<?php echo $this->projectid;?>" />
+	<input type="hidden" name="projectid" value="<?php echo $data['project']->id;?>" />
 	<?php phpFrame_HTML::_( 'form.token' ); ?>
 	
 </form>

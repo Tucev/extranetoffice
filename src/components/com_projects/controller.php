@@ -266,7 +266,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			}
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=admin&projectid='.$projectid);
+		$this->setRedirect('index.php?component=com_projects&action=get_admin&projectid='.$projectid);
 	}
 	
 	public function remove_member() {
@@ -284,7 +284,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$this->_sysevents->setSummary(_LANG_PROJECT_MEMBER_DELETE_ERROR);	
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=admin&projectid='.$projectid);
+		$this->setRedirect('index.php?component=com_projects&action=get_admin&projectid='.$projectid);
 	}
 	
 	public function get_member_role_form() {
@@ -300,6 +300,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Get view
 		$view = $this->getView('admin', 'member_role');
 		// Set view data
+		$view->addData('project', $this->project);
 		$view->addData('members', $members);
 		// Display view
 		$view->display();
@@ -321,7 +322,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$this->_success = true;
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=admin&projectid='.$projectid);
+		$this->setRedirect('index.php?component=com_projects&action=get_admin&projectid='.$projectid);
 	}
 	
 	public function get_people() {
@@ -460,7 +461,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$this->_sysevents->setSummary(_LANG_ISSUE_DELETE_ERROR);
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=issues&projectid='.$projectid);
+		$this->setRedirect('index.php?component=com_projects&action=get_issues&projectid='.$projectid);
 	}
 	
 	public function close_issue() {
