@@ -22,7 +22,6 @@ catch (Exception $e) {
 	throw $e; 
 }
 
-// Initialise application
 $frontcontroller = phpFrame::getFrontController();
 
 require_once 'PHPUnit/Framework.php';
