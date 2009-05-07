@@ -22,9 +22,9 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <div class="main_col_module">
 	<h3 class="overdue_issues"><?php echo _LANG_ISSUES_OVERDUE; ?></h3>
 	
-	<?php if (is_array($this->overdue_issues) && count($this->overdue_issues) > 0) : ?>
+	<?php if (is_array($data['overdue_issues']) && count($data['overdue_issues']) > 0) : ?>
 	<table>
-	<?php foreach ($this->overdue_issues as $issue) : ?>
+	<?php foreach ($data['overdue_issues'] as $issue) : ?>
 	<tr>
 		<td>
 			<?php echo date("D, d M Y", strtotime($issue->dtend)); ?>
@@ -59,9 +59,9 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <div class="main_col_module">
 	<h3 class="project_updates"><?php echo _LANG_PROJECTS_UPDATES; ?></h3>
 	
-	<?php if (is_array($this->activitylog) && count($this->activitylog) > 0) : ?>
+	<?php if (is_array($data['activitylog']) && count($data['activitylog']) > 0) : ?>
 	<table>
-	<?php foreach ($this->activitylog as $log) : ?>
+	<?php foreach ($data['activitylog'] as $log) : ?>
 	<tr>
 		<td width="70">
 			<div class="activitylog_<?php echo $log->type; ?>">

@@ -80,22 +80,20 @@ class projectsController extends phpFrame_Application_ActionController {
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		
 		// Get overdue issues
-		//$list_filter = new phpFrame_Database_Listfilter('i.dtstart', 'DESC');
-		//$modelIssues = $this->getModel('issues');
-		//$overdue_issues = $modelIssues->getIssues($list_filter, $projectid, true);
-		//var_dump($overdue_issues); exit;
-		//$this->overdue_issues =& $overdue_issues['rows'];
+		$list_filter = new phpFrame_Database_Listfilter('i.dtstart', 'DESC');
+		$overdue_issues = $this->getModel('issues')->getIssues($list_filter, $projectid, true);
 			
 		// Get upcoming milestones
 		
 		// Get project updates
-		//$modelActivitylog = $this->getModel('activitylog');
-		//$this->activitylog = $modelActivitylog->getActivityLog($projectid);
+		$activitylog = $this->getModel('activitylog')->getActivityLog($projectid);
 		
 		// Get view
 		$view = $this->getView('projects', 'detail');
 		// Set view data
 		$view->addData('row', $this->project);
+		$view->addData('overdue_issues', $overdue_issues);
+		$view->addData('activitylog', $activitylog);
 		// Display view
 		$view->display();
 	}
@@ -779,8 +777,8 @@ class projectsController extends phpFrame_Application_ActionController {
 		if (!$this->_authorise("meetings")) return;
 		
 		// Get request data
-		$filter_order = phpFrame_Environment_Request::getVar('filter_order', 'm.created');
-		$filter_order_Dir = phpFrame_Environment_Request::getVar('filter_order_Dir', 'DESC');
+		$orderby = phpFrame_Environment_Request::getVar('orderby', 'm.created');
+		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'DESC');
 		$search = phpFrame_Environment_Request::getVar('search', '');
 		$search = strtolower( $search );
 		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
@@ -804,30 +802,40 @@ class projectsController extends phpFrame_Application_ActionController {
 	
 	public function get_meeting_detail() {
 		if (!$this->_authorise("meetings")) return;
+		
+		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
+		
+		$meeting = $this->getModel('meetings')->getMeetingsDetail($this->project->id, $meetingid);
+		
+		// Get view
+		$view = $this->getView('meetings', 'detail');
+		// Set view data
+		$view->addData('project', $this->project);
+		$view->addData('row', $meeting);
+		// Display view
+		$view->display();
 	}
 	
 	public function get_meeting_form() {
 		if (!$this->_authorise("meetings")) return;
 		
 		// Get request data
-		$issueid = phpFrame_Environment_Request::getVar('meetingid', 0);
+		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
+			
+		if ($meetingid != 0) {		
+			// Get issue using model
+			$meeting = $this->getModel('meetings')->getMeetingsDetail($this->project->id, $meetingid);
+		}
+		else {
+			$meeting = new stdClass();
+			$meeting->access = 1;
+		}
 		
 		// Get view
 		$view = $this->getView('meetings', 'form');
-		
 		// Set view data
-		$view->addData('projectid', $this->project->id);
-			
-		if (meetingid != 0) {		
-			// Get issue using model
-			$meeting = $this->getModel('meetings')->getMeetingsDetail($this->project->id, $meetingid);
- 
-			$view->addData('row', $meeting);
-		}
-		else {
-			$this->_data['row']->access = 1;	
-		}
-	
+		$view->addData('project', $this->project);
+		$view->addData('row', $meeting);
 		// Display view
 		$view->display();
 	}
@@ -854,7 +862,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$action = empty($post['id']) ? _LANG_MEETINGS_ACTION_NEW : _LANG_MEETINGS_ACTION_EDIT;
 			$title = $row->name;
 			$description = sprintf(_LANG_MEETINGS_ACTIVITYLOG_DESCRIPTION, $row->name, $row->dtstart, $row->dtend, $row->description);
-			$url = phpFrame_Application_Route::_("index.php?component=com_projects&view=meetings&layout=detail&projectid=".$row->projectid."&meetingid=".$row->id);
+			$url = phpFrame_Application_Route::_("index.php?component=com_projects&action=get_meeting_detail&projectid=".$row->projectid."&meetingid=".$row->id);
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
@@ -864,7 +872,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			}	
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=meetings&layout=detail&projectid='.$post['projectid']."&meetingid=".$row->id);
+		$this->setRedirect('index.php?component=com_projects&action=get_meeting_detail&projectid='.$post['projectid']."&meetingid=".$row->id);
 	}
 	
 	public function remove_meeting() {
@@ -882,7 +890,28 @@ class projectsController extends phpFrame_Application_ActionController {
 			$this->_sysevents->setSummary(_LANG_MEETING_DELETE_ERROR);
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=meetings&projectid='.$projectid);
+		$this->setRedirect('index.php?component=com_projects&action=get_meetings&projectid='.$projectid);
+	}
+	
+	public function get_slideshow_form() {
+		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
+		$slideshowid = phpFrame_Environment_Request::getVar('slideshowid', 0);
+			
+		if ($slideshowid != 0) {		
+			// Get issue using model
+			$slideshow = $this->getModel('meetings')->getSlideshows($this->project->id, $meetingid, $slideshowid);
+		}
+		else {
+			$slideshow[0] = new stdClass();
+		}
+		
+		// Get view
+		$view = $this->getView('meetings', 'slideshows_form');
+		// Set view data
+		$view->addData('project', $this->project);
+		$view->addData('row', $slideshow[0]);
+		// Display view
+		$view->display();
 	}
 	
 	public function save_slideshow() {
@@ -897,7 +926,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		$modelMeetings = $this->getModel('meetings');
 		$row = $modelMeetings->saveSlideshow($post);
 		
-		$redirect_url = 'index.php?component=com_projects&view=meetings&layout=slideshows_form&projectid='.$post['projectid'].'&meetingid='.$post['meetingid'];
+		$redirect_url = 'index.php?component=com_projects&action=get_slideshow_form&projectid='.$post['projectid'].'&meetingid='.$post['meetingid'];
 		
 		if ($row === false) {
 			$this->_sysevents->setSummary($modelMeetings->getLastError());
@@ -926,7 +955,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$this->_sysevents->setSummary(_LANG_MEETINGS_SLIDESHOW_DELETE_SUCCESS, "success");
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=meetings&layout=detail&projectid='.$projectid.'&meetingid='.$meetingid);
+		$this->setRedirect('index.php?component=com_projects&action=get_meeting_detail&projectid='.$projectid.'&meetingid='.$meetingid);
 	}
 	
 	public function upload_slide() {
@@ -961,7 +990,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			}
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=meetings&projectid='.$projectid);
+		$this->setRedirect('index.php?component=com_projects&action=get_meetings&projectid='.$projectid);
 	}
 	
 	public function remove_slide() {
@@ -981,7 +1010,31 @@ class projectsController extends phpFrame_Application_ActionController {
 			$this->_sysevents->setSummary(_LANG_MEETINGS_SLIDE_DELETE_SUCCESS, "success");
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=meetings&layout=slideshows_form&projectid='.$projectid.'&meetingid='.$meetingid.'&slideshowid='.$slideshowid);
+		$this->setRedirect('index.php?component=com_projects&action=get_slideshow_form&projectid='.$projectid.'&meetingid='.$meetingid.'&slideshowid='.$slideshowid);
+	}
+	
+	public function get_meeting_files_form() {
+		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
+		
+		if (!empty($meetingid)) {
+			$project_files = $this->getModel('files')->getFiles(new phpFrame_Database_Listfilter(), $this->project->id);
+			
+			$meeting_files = $this->getModel('meetings')->getFiles($this->project->id, $meetingid);
+			$meeting_files_ids = array();
+			for ($i=0; $i<count($meeting_files); $i++) {
+				$meeting_files_ids[] = $meeting_files[$i]->id;
+			}
+		}
+		
+		// Get view
+		$view = $this->getView('meetings', 'files_form');
+		// Set view data
+		$view->addData('project', $this->project);
+		$view->addData('meetingid', $meetingid);
+		$view->addData('project_files', $project_files);
+		$view->addData('meeting_files_ids', $meeting_files_ids);
+		// Display view
+		$view->display();
 	}
 	
 	public function save_meetings_files() {
@@ -1006,7 +1059,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$this->_sysevents->setSummary(_LANG_MEETINGS_FILES_SAVE_SUCCESS, "success");
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=meetings&layout=detail&projectid='.$projectid.'&meetingid='.$meetingid);
+		$this->setRedirect('index.php?component=com_projects&action=get_meeting_detail&projectid='.$projectid.'&meetingid='.$meetingid);
 	}
 	
 	public function get_milestones() {

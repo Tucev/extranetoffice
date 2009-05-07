@@ -14,88 +14,92 @@ phpFrame_HTML::confirm('delete_meeting', _LANG_PROJECTS_MEETINGS_DELETE, _LANG_P
 phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DELETE, _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DELETE_CONFIRM);
 ?>
 
-<h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
 
-<h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&projectid='.$this->projectid); ?>">
-		<?php echo $this->current_tool; ?>
+<h2 class="subheading <?php echo strtolower($data['view']); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_meetings&projectid='.$data['project']->id); ?>">
+		<?php echo $data['view']; ?>
 	</a>
 </h2>
 
 <div class="thread_row0">
 
-	<?php if ($this->row->created_by == $this->_user->id) : ?>
+	<?php if ($data['row']->created_by == phpFrame::getUser()->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_meeting" title="<?php echo phpFrame_HTML_Text::_($this->row->name, true); ?>" href="index.php?component=com_projects&action=remove_meeting&projectid=<?php echo $this->row->projectid; ?>&meetingid=<?php echo $this->row->id; ?>">
+		<a class="delete_meeting" title="<?php echo phpFrame_HTML_Text::_($data['row']->name, true); ?>" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=remove_meeting&projectid=".$data['row']->projectid."&meetingid=".$data['row']->id); ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
 	<div class="thread_edit">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=".phpFrame_Environment_Request::getViewName()."&layout=form&projectid=".$this->project->id."&meetingid=".$this->row->id); ?>">
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_meeting_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
 	
 	<div class="thread_heading">
-		<?php echo $this->row->name; ?>
+		<?php echo $data['row']->name; ?>
 	</div>
 	
 	<div class="thread_details">
-		<?php echo _LANG_POSTED_BY ?>: <?php echo $this->row->created_by_name; ?><br />
+		<?php echo _LANG_POSTED_BY ?>: <?php echo $data['row']->created_by_name; ?><br />
 		<?php echo _LANG_ASSIGNEES; ?>: 
-		<?php if (!empty($this->row->assignees)) : ?>
-    	<?php for ($j=0; $j<count($this->row->assignees); $j++) : ?>
+		<?php if (!empty($data['row']->assignees)) : ?>
+    	<?php for ($j=0; $j<count($data['row']->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&view=users&layout=detail&userid=".$this->row->assignees[$j]['id']); ?>">
-    		<?php echo $this->row->assignees[$j]['name']; ?>
+    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&action=get_user&userid=".$data['row']->assignees[$j]['id']); ?>">
+    		<?php echo $data['row']->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>
     	<?php endif; ?>
     	<br />
-    	<?php echo _LANG_DTSTART; ?>: <?php echo date("d M Y", strtotime($this->row->dtstart)); ?><br /> 
-    	<?php echo _LANG_DTEND; ?>: <?php echo date("d M Y", strtotime($this->row->dtend)); ?>
+    	<?php echo _LANG_DTSTART; ?>: <?php echo date("d M Y", strtotime($data['row']->dtstart)); ?><br /> 
+    	<?php echo _LANG_DTEND; ?>: <?php echo date("d M Y", strtotime($data['row']->dtend)); ?>
 	</div>
 	
-	<?php if (!empty($this->row->description)) : ?>
+	<?php if (!empty($data['row']->description)) : ?>
 	<div class="thread_body">
-		<?php echo nl2br($this->row->description); ?>
+		<?php echo nl2br($data['row']->description); ?>
 	</div>
 	<?php endif; ?>
 	
 
 	<div class="thread_new">
-	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=meetings&layout=slideshows_form&projectid=".$this->project->id."&meetingid=".$this->row->id); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_slideshow_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id); ?>">
 	Add new slideshow
 	</a>
 	</div>
 	
 	<h3>Slideshows</h3>
 	 
-	<?php if (is_array($this->row->slideshows) && count($this->row->slideshows) > 0) : ?>
+	<?php if (is_array($data['row']->slideshows) && count($data['row']->slideshows) > 0) : ?>
 	
-	<?php for ($k=0; $k<count($this->row->slideshows); $k++) : ?>
+	<?php for ($k=0; $k<count($data['row']->slideshows); $k++) : ?>
 	<div>
 		<div style="margin-bottom: 10px; border-bottom: 1px solid #CCCCCC;">
 		
-		<div style="float:left;" class="thread_heading"><?php echo $this->row->slideshows[$k]->name; ?></div>
+		<div style="float:left;" class="thread_heading"><?php echo $data['row']->slideshows[$k]->name; ?></div>
 	
 		<div style="float:left; margin-left: 10px;" class="edit">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=meetings&layout=slideshows_form&projectid=".$this->project->id."&meetingid=".$this->row->id."&slideshowid=".$this->row->slideshows[$k]->id); ?>"><?php echo _LANG_EDIT; ?></a>
+		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_slideshow_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id."&slideshowid=".$data['row']->slideshows[$k]->id); ?>">
+			<?php echo _LANG_EDIT; ?>
+		</a>
 		</div>
 		
 		<div style="float:left;" class="delete">
-		<a class="delete_slideshow" title="<?php echo $this->row->slideshows[$k]->name; ?>" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=remove_slideshow&projectid=".$this->project->id."&meetingid=".$this->row->id."&slideshowid=".$this->row->slideshows[$k]->id); ?>"><?php echo _LANG_DELETE; ?></a>
+		<a class="delete_slideshow" title="<?php echo $data['row']->slideshows[$k]->name; ?>" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=remove_slideshow&projectid=".$data['project']->id."&meetingid=".$data['row']->id."&slideshowid=".$data['row']->slideshows[$k]->id); ?>">
+			<?php echo _LANG_DELETE; ?>
+		</a>
 		</div>
 		
 		<div style="clear:left;"></div>
 		
 		</div>
 		
-		<?php if (is_array($this->row->slideshows[$k]->slides) && count($this->row->slideshows[$k]->slides) > 0) : ?>
-		<?php foreach ($this->row->slideshows[$k]->slides as $slide) : ?>
+		<?php if (is_array($data['row']->slideshows[$k]->slides) && count($data['row']->slideshows[$k]->slides) > 0) : ?>
+		<?php foreach ($data['row']->slideshows[$k]->slides as $slide) : ?>
 		
 		<?php
 			$lightbox_comment_html = "<div class='comments_info'>
@@ -110,13 +114,13 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 		?>
 		<script>
 		$(function() {
-			$('.lightbox_<?php echo $this->row->slideshows[$k]->id; ?>').lightBox({fixedNavigation:true});
+			$('.lightbox_<?php echo $data['row']->slideshows[$k]->id; ?>').lightBox({fixedNavigation:true});
 		});
 		</script>
 	
 		<div class="thumbnail">
-		<a class="lightbox_<?php echo $this->row->slideshows[$k]->id; ?>" title="<?php echo $slide->title.$lightbox_comment_html; ?>" href="uploads/projects/<?php echo $this->projectid; ?>/slideshows/<?php echo $slide->slideshowid."/".$slide->filename; ?>">
-		<img src="uploads/projects/<?php echo $this->projectid; ?>/slideshows/<?php echo $slide->slideshowid."/thumb/".$slide->filename; ?>" alt="" />
+		<a class="lightbox_<?php echo $data['row']->slideshows[$k]->id; ?>" title="<?php echo $slide->title.$lightbox_comment_html; ?>" href="uploads/projects/<?php echo $data['project']->id; ?>/slideshows/<?php echo $slide->slideshowid."/".$slide->filename; ?>">
+		<img src="uploads/projects/<?php echo $data['project']->id; ?>/slideshows/<?php echo $slide->slideshowid."/thumb/".$slide->filename; ?>" alt="" />
 		</a>
 		</div>
 		
@@ -125,7 +129,7 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 		<div style="clear: left;"></div>
 		
 		<div style="margin-bottom: 15px;">
-		Total slides: <?php echo count($this->row->slideshows[$k]->slides); ?>
+		Total slides: <?php echo count($data['row']->slideshows[$k]->slides); ?>
 		</div>
 		<?php endif; ?>
 		
@@ -140,16 +144,16 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 	<div style="float:left;" class="thread_heading">Files</div>
 	
 	<div style="float:left; margin-left: 10px;" class="edit">
-	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&view=meetings&layout=files_form&projectid=".$this->project->id."&meetingid=".$this->row->id); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_meeting_files_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id); ?>">
 	Manage files attached to this meeting
 	</a>
 	</div>
 	
 	<div style="clear: left;"></div>
 	
-	<?php if (is_array($this->row->files) && count($this->row->files) > 0) : ?>
+	<?php if (is_array($data['row']->files) && count($data['row']->files) > 0) : ?>
 	<table>
-	<?php foreach ($this->row->files as $file) : ?>
+	<?php foreach ($data['row']->files as $file) : ?>
 	<tr>
 		<td width="32">
 			<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=download_file&fileid=".$file->id); ?>">
@@ -169,9 +173,9 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 	<?php endif; ?>
 	
 	
-	<?php if (is_array($this->row->comments) && count($this->row->comments) > 0) : ?>
+	<?php if (is_array($data['row']->comments) && count($data['row']->comments) > 0) : ?>
 	<h3><?php echo _LANG_COMMENTS; ?></h3>
-	<?php foreach ($this->row->comments as $comment) : ?>
+	<?php foreach ($data['row']->comments as $comment) : ?>
 		<div class="comment_row">
 			<div style="float:left; margin-right: 10px;">
 				<img src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo phpFrame_User_Helper::id2photo($comment->userid); ?>" />
@@ -206,12 +210,12 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 		</p>
 		<input type="hidden" name="component" value="com_projects" />
 		<input type="hidden" name="action" value="save_comment" />
-		<input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
+		<input type="hidden" name="projectid" value="<?php echo $data['project']->id; ?>" />
 		<input type="hidden" name="type" value="meetings" />
-		<input type="hidden" name="itemid" value="<?php echo  $this->row->id; ?>" />
-		<input type="hidden" name="meetingid" value="<?php echo  $this->row->id; ?>" />
-		<?php if (is_array($this->row->assignees) && count($this->row->assignees) > 0) : ?>
-		<?php foreach ($this->row->assignees as $assignee) : ?>
+		<input type="hidden" name="itemid" value="<?php echo  $data['row']->id; ?>" />
+		<input type="hidden" name="meetingid" value="<?php echo  $data['row']->id; ?>" />
+		<?php if (is_array($data['row']->assignees) && count($data['row']->assignees) > 0) : ?>
+		<?php foreach ($data['row']->assignees as $assignee) : ?>
 		<input type="hidden" name="assignees[]" value="<?php echo $assignee['id']; ?>" />
 		<?php endforeach; ?>
 		<?php endif; ?>
