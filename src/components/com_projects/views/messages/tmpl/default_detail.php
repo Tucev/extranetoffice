@@ -15,54 +15,54 @@ phpFrame_HTML::confirm('delete_message', _LANG_PROJECTS_MESSAGES_DELETE, _LANG_P
 phpFrame_HTML::validate('commentsform');
 ?>
 
-<h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
-<h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&projectid='.$this->projectid); ?>">
-		<?php echo $this->current_tool; ?>
+<h2 class="subheading <?php echo strtolower($data['view']); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_messages&projectid='.$data['project']->id); ?>">
+		<?php echo $data['view']; ?>
 	</a>
 </h2>
 
 <div class="thread_row0">
 
-	<?php if ($this->row->userid == $this->_user->id) : ?>
+	<?php if ($data['row']->userid == phpFrame::getUser()->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_message" title="<?php echo phpFrame_HTML_Text::_($this->row->subject, true); ?>" href="index.php?component=com_projects&action=remove_message&projectid=<?php echo $this->row->projectid; ?>&messageid=<?php echo $this->row->id; ?>">
+		<a class="delete_message" title="<?php echo phpFrame_HTML_Text::_($data['row']->subject, true); ?>" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=remove_message&projectid=".$data['row']->projectid."&messageid=".$data['row']->id); ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
 	<div class="thread_heading">
-		<?php echo $this->row->subject; ?>
+		<?php echo $data['row']->subject; ?>
 	</div>
 	
 	<div class="thread_date">
-	<?php echo date("D, d M Y H:ia", strtotime($this->row->date_sent)); ?>
+	<?php echo date("D, d M Y H:ia", strtotime($data['row']->date_sent)); ?>
 	</div>
 	
 	<div class="thread_details">
-		<?php echo _LANG_POSTED_BY ?>: <?php echo $this->row->created_by_name; ?><br />
+		<?php echo _LANG_POSTED_BY ?>: <?php echo $data['row']->created_by_name; ?><br />
 		<?php echo _LANG_ASSIGNEES; ?>: 
-		<?php if (!empty($this->row->assignees)) : ?>
-    	<?php for ($j=0; $j<count($this->row->assignees); $j++) : ?>
+		<?php if (!empty($data['row']->assignees)) : ?>
+    	<?php for ($j=0; $j<count($data['row']->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&view=users&layout=detail&userid=".$this->row->assignees[$j]['id']); ?>">
-    		<?php echo $this->row->assignees[$j]['name']; ?>
+    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&action=get_user&userid=".$data['row']->assignees[$j]['id']); ?>">
+    		<?php echo $data['row']->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>
     	<?php endif; ?>
 	</div>
 	
-	<?php if (!empty($this->row->body)) : ?>
+	<?php if (!empty($data['row']->body)) : ?>
 	<div class="thread_body">
-		<?php echo nl2br($this->row->body); ?>
+		<?php echo nl2br($data['row']->body); ?>
 	</div>
 	<?php endif; ?>
 	
-	<?php if (is_array($this->row->comments) && count($this->row->comments) > 0) : ?>
+	<?php if (is_array($data['row']->comments) && count($data['row']->comments) > 0) : ?>
 	<h3><?php echo _LANG_COMMENTS; ?></h3>
-	<?php foreach ($this->row->comments as $comment) : ?>
+	<?php foreach ($data['row']->comments as $comment) : ?>
 		<div class="comment_row">
 			<div style="float:left; margin-right: 10px;">
 				<img src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo phpFrame_User_Helper::id2photo($comment->userid); ?>" />
@@ -98,11 +98,11 @@ phpFrame_HTML::validate('commentsform');
 		</p>
 		<input type="hidden" name="component" value="com_projects" />
 		<input type="hidden" name="action" value="save_comment" />
-		<input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
+		<input type="hidden" name="projectid" value="<?php echo $data['project']->id; ?>" />
 		<input type="hidden" name="type" value="messages" />
-		<input type="hidden" name="itemid" value="<?php echo  $this->row->id; ?>" />
-		<?php if (is_array($this->row->assignees) && count($this->row->assignees) > 0) : ?>
-		<?php foreach ($this->row->assignees as $assignee) : ?>
+		<input type="hidden" name="itemid" value="<?php echo  $data['row']->id; ?>" />
+		<?php if (is_array($data['row']->assignees) && count($data['row']->assignees) > 0) : ?>
+		<?php foreach ($data['row']->assignees as $assignee) : ?>
 		<input type="hidden" name="assignees[]" value="<?php echo $assignee['id']; ?>" />
 		<?php endforeach; ?>
 		<?php endif; ?>
@@ -113,4 +113,4 @@ phpFrame_HTML::validate('commentsform');
 
 <div style="clear: left;"></div>
 
-<?php //echo '<pre>'; var_dump($this->row); echo '</pre>'; ?>
+<?php //echo '<pre>'; var_dump($data['row']); echo '</pre>'; ?>

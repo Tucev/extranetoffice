@@ -8,37 +8,20 @@
  */
 
 defined( '_EXEC' ) or die( 'Restricted access' );
+
+// Load jQuery validation behaviour for form
+phpFrame_HTML::validate('messagesform');
 ?>
 
-<script language="javascript" type="text/javascript">
-function submitbutton() {
-	var form = document.iofficeform;
+<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
-	// do field validation
-	if (form.subject.value == "") {
-		alert('<?php echo phpFrame_HTML_Text::_( _LANG_MESSAGES_SUBJECT_REQUIRED , true); ?>');
-		form.subject.focus();
-		return;
-	}
-	else if (form.body.value == "") {
-		alert('<?php echo phpFrame_HTML_Text::_( _LANG_MESSAGES_BODY_REQUIRED , true); ?>');
-		form.body.focus();
-		return;
-	}
-	
-	form.submit();
-}
-</script>
-
-<h2 class="componentheading"><?php echo $this->page_heading; ?></h2>
-
-<h2 class="subheading <?php echo strtolower($this->current_tool); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&view='.phpFrame_Environment_Request::getViewName().'&projectid='.$this->projectid); ?>">
-		<?php echo $this->current_tool; ?>
+<h2 class="subheading <?php echo strtolower($data['view']); ?>">
+	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_messages&projectid='.$data['project']->id); ?>">
+		<?php echo $data['view']; ?>
 	</a>
 </h2>
 
-<form action="index.php" method="post" name="iofficeform" enctype="multipart/form-data">
+<form action="index.php" method="post" name="messagesform" id="messagesform" enctype="multipart/form-data">
 
 <fieldset>
 <legend><?php echo phpFrame_HTML_Text::_( _LANG_MESSAGES_NEW ); ?></legend>
@@ -50,7 +33,7 @@ function submitbutton() {
 		</label>
 	</td>
 	<td>
-		<input type="text" id="subject" name="subject" size="32" maxlength="64" value="<?php echo $this->subject; ?>" />
+		<input class="required" type="text" id="subject" name="subject" size="32" maxlength="64" value="" />
 	</td>
 </tr>
 <tr>
@@ -60,7 +43,7 @@ function submitbutton() {
 		</label>
 	</td>
 	<td>
-		<textarea id="body" name="body" cols="80" rows="10"><?php echo $this->body; ?></textarea>
+		<textarea class="required" id="body" name="body" cols="80" rows="10"></textarea>
 	</td>
 </tr>
 
@@ -71,7 +54,7 @@ function submitbutton() {
 		</label>
 	</td>
 	<td>
-		<?php echo phpFrame_User_Helper::assignees($this->tracker->assignees, '', 'assignees[]', $this->projectid); ?>
+		<?php echo phpFrame_User_Helper::assignees('', '', 'assignees[]', $data['project']->id); ?>
 	</td>
 </tr>
 <tr>
@@ -92,10 +75,9 @@ function submitbutton() {
 <button type="button" onclick="Javascript:window.history.back();"><?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?></button>
 <button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button> 
 
-<input type="hidden" name="projectid" value="<?php echo $this->projectid;?>" />
+<input type="hidden" name="projectid" value="<?php echo $data['project']->id;?>" />
 <input type="hidden" name="component" value="com_projects" />
 <input type="hidden" name="action" value="save_message" />
-<input type="hidden" name="type" value="" />
 <?php echo phpFrame_HTML::_( 'form.token' ); ?>
 
 </form>

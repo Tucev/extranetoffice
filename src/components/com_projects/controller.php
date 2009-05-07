@@ -652,14 +652,58 @@ class projectsController extends phpFrame_Application_ActionController {
 	
 	public function get_messages() {
 		if (!$this->_authorise("messages")) return;
+		
+		// Get request data
+		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
+		$orderby = phpFrame_Environment_Request::getVar('orderby', 'm.date_sent');
+		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'DESC');
+		$limit = phpFrame_Environment_Request::getVar('limit', 25);
+		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
+		$search = phpFrame_Environment_Request::getVar('search', '');
+		
+		// Create list filter needed for getMessages()
+		$list_filter = new phpFrame_Database_Listfilter($orderby, $orderdir, $limit, $limitstart, $search);
+		
+		// Get messages using model
+		$messages = $this->getModel('messages')->getMessages($list_filter, $projectid);
+		
+		// Get view
+		$view = $this->getView('messages', 'list');
+		// Set view data
+		$view->addData('project', $this->project);
+		$view->addData('rows', $messages);
+		$view->addData('page_nav', new phpFrame_HTML_Pagination($list_filter));
+		// Display view
+		$view->display();
 	}
 	
 	public function get_message_detail() {
 		if (!$this->_authorise("messages")) return;
+		
+		// Get request data
+		$messageid = phpFrame_Environment_Request::getVar('messageid', 0);
+		
+		// Get message using model
+		$message = $this->getModel('messages')->getMessagesDetail($this->project->id, $messageid);
+		
+		// Get view
+		$view = $this->getView('messages', 'detail');
+		// Set view data
+		$view->addData('project', $this->project);
+		$view->addData('row', $message);
+		// Display view
+		$view->display();
 	}
 	
 	public function get_message_form() {
 		if (!$this->_authorise("messages")) return;
+		
+		// Get view
+		$view = $this->getView('messages', 'form');
+		// Set view data
+		$view->addData('project', $this->project);
+		// Display view
+		$view->display();
 	}
 	
 	public function save_message() {
@@ -684,7 +728,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$action = _LANG_MESSAGES_ACTION_NEW;
 			$title = $row->subject;
 			$description = sprintf(_LANG_MESSAGES_ACTIVITYLOG_DESCRIPTION, $row->subject, $row->body);
-			$url = phpFrame_Application_Route::_("index.php?component=com_projects&view=messages&layout=detail&projectid=".$row->projectid."&messageid=".$row->id);
+			$url = phpFrame_Application_Route::_("index.php?component=com_projects&action=get_message_detail&projectid=".$row->projectid."&messageid=".$row->id);
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
@@ -694,7 +738,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			}
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=messages&projectid='.$post['projectid']);
+		$this->setRedirect('index.php?component=com_projects&action=get_messages&projectid='.$post['projectid']);
 	}
 	
 	public function remove_message() {
@@ -712,7 +756,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$this->_sysevents->setSummary(_LANG_MESSAGE_DELETE_ERROR);
 		}
 		
-		$this->setRedirect('index.php?component=com_projects&view=messages&projectid='.$projectid);
+		$this->setRedirect('index.php?component=com_projects&action=get_messages&projectid='.$projectid);
 	}
 	
 	public function save_comment() {
