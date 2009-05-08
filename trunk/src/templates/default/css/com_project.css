@@ -112,8 +112,9 @@ margin: 5px 0;
 }
 div.thread_oldrevision_entry {
 border-bottom:1px dotted #CCCCCC;
-padding: 5px 0;
 font-size: 0.9em;
+padding: 5px 0;
+min-height:30px;
 }
 a.show_revisions {
 font-size: 0.8em;

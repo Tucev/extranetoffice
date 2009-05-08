@@ -49,6 +49,7 @@ border:1px solid #999999;
 background-color: #F0F0F0;
 padding:20px;
 height:100%;
+min-width:850px;
 color: #333333;
 }
 
