@@ -21,7 +21,11 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <div id="right_col">
 	
 	<div style="float:right;">
-		 <img style="float:right; margin: 5px 0 3px 3px;" src="<?php echo config::UPLOAD_DIR."/users/".phpFrame::getUser()->photo; ?>" />
+		<?php 
+			$img = '<img style="float:right; margin: 5px 0 3px 3px;" src="' ;
+			$img .= config::UPLOAD_DIR."/users/".phpFrame::getUser()->photo . '" />'; 
+			phpFrame_HTML::dialog($img, 'index.php?component=com_users&action=get_settings', 600, 560, true);
+		?> 
 	</div>
 	
 	<h3>My profile</h3>
