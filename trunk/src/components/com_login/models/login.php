@@ -69,8 +69,6 @@ class loginModelLogin extends phpFrame_Application_Model {
 	
 	public function logout() {
 		session_regenerate_id(true); // this destroys the session and generates a new session id
-		unset($GLOBALS['application']->session);
-		unset($GLOBALS['application']->user);
 	}
 	
 	/**
@@ -89,19 +87,20 @@ class loginModelLogin extends phpFrame_Application_Model {
 			// Create standard object to store user properties
 			// We do this because we dont want to overwrite the current user object.
 			$row = new phpFrame_Base_StdObject();
-			$this->_user->load($userid, 'password', $row);
+			$user = phpFrame::getUser();
+			$user->load($userid, 'password', $row);
 			// Generate random password and store in local variable to be used when sending email to user.
 			$password = phpFrame_Utils_Crypt::genRandomPassword();
 			// Assign newly generated password to row object (this password will be encrypted when stored).
 			$row->password = $password;
 			
-			if (!$this->_user->check($row)) {
-				$this->_error[] = $this->_user->getLastError();
+			if (!$user->check($row)) {
+				$this->_error[] = $user->getLastError();
 				return false;
 			}
 			
-			if (!$this->_user->store($row)) {
-				$this->_error[] = $this->_user->getLastError();
+			if (!$user->store($row)) {
+				$this->_error[] = $user->getLastError();
 				return false;
 			}
 			
@@ -122,7 +121,7 @@ class loginModelLogin extends phpFrame_Application_Model {
 				$this->_error[] = sprintf(_LANG_EMAIL_NOT_SENT, $row->email);
 				return false;
 			}
-				
+			
 			return true;
 		}
 		else {

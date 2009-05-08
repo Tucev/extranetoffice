@@ -44,7 +44,7 @@ class loginController extends phpFrame_Application_ActionController {
 		
 		// if user is not logged on we attemp to login
 		$session = phpFrame::getSession();
-		if (empty($session->userid)) {
+		if (!$session->isAuth()) {
 			$username = phpFrame_Environment_Request::getVar('username', '');
 			$password = phpFrame_Environment_Request::getVar('password', '');
 			
@@ -54,14 +54,15 @@ class loginController extends phpFrame_Application_ActionController {
 				$this->_sysevents->setSummary($model->getLastError(), "warning");
 			}
 			
+			$this->_success = true;
+			
 			$this->setRedirect('index.php');
 		}	
 	}
 	
 	public function logout() {
-		// Push model into controller
-		$model = $this->getModel('login');
-		$model->logout();
+		// Logout using model
+		$this->getModel('login')->logout();
 		$this->setRedirect('index.php');
 	}
 	
@@ -78,6 +79,7 @@ class loginController extends phpFrame_Application_ActionController {
 		}
 		else {
 			$this->_sysevents->setSummary(_LANG_RESET_PASS_SUCCESS, "success");
+			$this->_success = true;
 		}
 		
 		$this->setRedirect('index.php');
