@@ -18,7 +18,7 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 
 
 <h2 class="subheading <?php echo strtolower($data['view']); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_meetings&projectid='.$data['project']->id); ?>">
+	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_meetings&projectid='.$data['project']->id); ?>">
 		<?php echo $data['view']; ?>
 	</a>
 </h2>
@@ -27,14 +27,14 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 
 	<?php if ($data['row']->created_by == phpFrame::getUser()->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_meeting" title="<?php echo phpFrame_HTML_Text::_($data['row']->name, true); ?>" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=remove_meeting&projectid=".$data['row']->projectid."&meetingid=".$data['row']->id); ?>">
+		<a class="delete_meeting" title="<?php echo phpFrame_HTML_Text::_($data['row']->name, true); ?>" href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_meeting&projectid=".$data['row']->projectid."&meetingid=".$data['row']->id); ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
 	<div class="thread_edit">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_meeting_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id); ?>">
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_meeting_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
@@ -49,7 +49,7 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 		<?php if (!empty($data['row']->assignees)) : ?>
     	<?php for ($j=0; $j<count($data['row']->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&action=get_user&userid=".$data['row']->assignees[$j]['id']); ?>">
+    		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$data['row']->assignees[$j]['id']); ?>">
     		<?php echo $data['row']->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>
@@ -67,7 +67,7 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 	
 
 	<div class="thread_new">
-	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_slideshow_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id); ?>">
+	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_slideshow_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id); ?>">
 	Add new slideshow
 	</a>
 	</div>
@@ -83,13 +83,13 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 		<div style="float:left;" class="thread_heading"><?php echo $data['row']->slideshows[$k]->name; ?></div>
 	
 		<div style="float:left; margin-left: 10px;" class="edit">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_slideshow_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id."&slideshowid=".$data['row']->slideshows[$k]->id); ?>">
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_slideshow_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id."&slideshowid=".$data['row']->slideshows[$k]->id); ?>">
 			<?php echo _LANG_EDIT; ?>
 		</a>
 		</div>
 		
 		<div style="float:left;" class="delete">
-		<a class="delete_slideshow" title="<?php echo $data['row']->slideshows[$k]->name; ?>" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=remove_slideshow&projectid=".$data['project']->id."&meetingid=".$data['row']->id."&slideshowid=".$data['row']->slideshows[$k]->id); ?>">
+		<a class="delete_slideshow" title="<?php echo $data['row']->slideshows[$k]->name; ?>" href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_slideshow&projectid=".$data['project']->id."&meetingid=".$data['row']->id."&slideshowid=".$data['row']->slideshows[$k]->id); ?>">
 			<?php echo _LANG_DELETE; ?>
 		</a>
 		</div>
@@ -144,7 +144,7 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 	<div style="float:left;" class="thread_heading">Files</div>
 	
 	<div style="float:left; margin-left: 10px;" class="edit">
-	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_meeting_files_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id); ?>">
+	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_meeting_files_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id); ?>">
 	Manage files attached to this meeting
 	</a>
 	</div>
@@ -156,12 +156,12 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 	<?php foreach ($data['row']->files as $file) : ?>
 	<tr>
 		<td width="32">
-			<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=download_file&fileid=".$file->id); ?>">
+			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=download_file&fileid=".$file->id); ?>">
 			<img border="0" height="32" width="32" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($file->mimetype); ?>" />
 			</a>
 		</td>
 		<td>
-			<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=download_file&fileid=".$file->id); ?>">
+			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=download_file&fileid=".$file->id); ?>">
 			<?php echo $file->title; ?>
 			</a>
 		</td>

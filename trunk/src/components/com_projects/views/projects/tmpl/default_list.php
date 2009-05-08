@@ -14,7 +14,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 <?php if (phpFrame::getUser()->groupid == 1) : ?>
 <div class="new">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_project_form'); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
+	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_project_form'); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>
 	</a>
 </div>
@@ -62,7 +62,7 @@ function submit_filter(reset) {
   <?php foreach($data['rows'] as $row) : ?>
   <tr class="row<?php echo $k; ?>">
     <td valign="top">
-    <a href="<?php echo phpFrame_HTML_Text::_("index.php?component=com_projects&action=get_project_detail&projectid=".$row->id); ?>">
+    <a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_detail&projectid=".$row->id); ?>">
 	<?php echo $row->name; ?>
 	</a>
     </td>

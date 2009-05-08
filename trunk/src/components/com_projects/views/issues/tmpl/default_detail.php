@@ -18,7 +18,7 @@ phpFrame_HTML::validate('commentsform');
 <h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
 <h2 class="subheading <?php echo strtolower($data['view']); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_issues&projectid='.$data['project']->id); ?>">
+	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_issues&projectid='.$data['project']->id); ?>">
 		<?php echo $data['view']; ?>
 	</a>
 </h2>
@@ -34,20 +34,20 @@ phpFrame_HTML::validate('commentsform');
 	<?php endif; ?>
 	
 	<div class="thread_edit">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_issue_form&projectid=".$data['project']->id."&issueid=".$data['row']->id); ?>">
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issue_form&projectid=".$data['project']->id."&issueid=".$data['row']->id); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
 	
 	<?php if ($data['row']->closed == "0000-00-00 00:00:00") : ?>
 	<div class="thread_close">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=close_issue&projectid=".$data['project']->id."&issueid=".$data['row']->id); ?>">
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=close_issue&projectid=".$data['project']->id."&issueid=".$data['row']->id); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_ISSUES_CLOSE ); ?>
 		</a>
 	</div>
 	<?php else : ?>
 	<div class="thread_reopen">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=reopen_issue&projectid=".$data['project']->id."&issueid=".$data['row']->id); ?>">
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=reopen_issue&projectid=".$data['project']->id."&issueid=".$data['row']->id); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_ISSUES_REOPEN ); ?>
 		</a>
 	</div>
@@ -67,7 +67,7 @@ phpFrame_HTML::validate('commentsform');
 		<?php if (!empty($data['row']->assignees)) : ?>
     	<?php for ($j=0; $j<count($data['row']->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&action=get_user&userid=".$data['row']->assignees[$j]['id']); ?>">
+    		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$data['row']->assignees[$j]['id']); ?>">
     		<?php echo $data['row']->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>

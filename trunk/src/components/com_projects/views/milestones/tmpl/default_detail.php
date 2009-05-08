@@ -19,7 +19,7 @@ phpFrame_HTML::validate('commentsform');
 
 
 <h2 class="subheading <?php echo strtolower($data['view']); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_milestones&projectid='.$data['project']->id); ?>">
+	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_milestones&projectid='.$data['project']->id); ?>">
 		<?php echo $data['view']; ?>
 	</a>
 </h2>
@@ -29,14 +29,14 @@ phpFrame_HTML::validate('commentsform');
 
 	<?php if ($data['row']->created_by == phpFrame::getUser()->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_milestone" title="<?php echo phpFrame_HTML_Text::_($data['row']->title, true); ?>" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=remove_milestone&projectid=".$data['row']->projectid."&milestoneid=".$data['row']->id); ?>">
+		<a class="delete_milestone" title="<?php echo phpFrame_HTML_Text::_($data['row']->title, true); ?>" href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_milestone&projectid=".$data['row']->projectid."&milestoneid=".$data['row']->id); ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
 	<div class="thread_edit">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_milestone_form&projectid=".$data['project']->id."&milestoneid=".$data['row']->id); ?>">
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_milestone_form&projectid=".$data['project']->id."&milestoneid=".$data['row']->id); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
@@ -55,7 +55,7 @@ phpFrame_HTML::validate('commentsform');
 		<?php if (!empty($data['row']->assignees)) : ?>
     	<?php for ($j=0; $j<count($data['row']->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&action=get_user&userid=".$data['row']->assignees[$j]['id']); ?>">
+    		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$data['row']->assignees[$j]['id']); ?>">
     		<?php echo $data['row']->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>

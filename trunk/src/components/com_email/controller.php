@@ -30,54 +30,39 @@ class emailController extends phpFrame_Application_ActionController {
 	}
 	
 	public function get_messages() {
-		
-	}
-	
-	public function save_account() {
-		// Check for request forgeries
-		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
-		
-		$post = phpFrame_Environment_Request::getPost();
-		
-		$modelAccounts = $this->getModel('accounts');
-		$row = $modelAccounts->saveAccount($post);
-		
-		if ($row !== false) {
-			phpFrame_Application_Error::raise('', 'message', _LANG_EMAIL_ACCOUNT_SAVED);
-		}
-		else {
-			phpFrame_Application_Error::raise('', 'error', $modelAccounts->getLastError());
-		}
-		
-		$this->setRedirect('index.php?component=com_email&view=accounts');
-	}
-	
-	public function remove_account() {
+		// Get request vars
 		$accountid = phpFrame_Environment_Request::getVar('accountid', 0);
+		$folder = phpFrame_Environment_Request::getVar('folder', 'INBOX');
 		
-		$modelAccounts = $this->getModel('accounts');
-		if (!$modelAccounts->deleteAccount($accountid)) {
-			phpFrame_Application_Error::raise('', 'error', $modelAccounts->getLastError());
-		}
-		else {
-			phpFrame_Application_Error::raise('', 'message', _LANG_EMAIL_ACCOUNT_DELETE_SUCCESS);
-		}
+		// Get account details
+		$account = $this->getModel('accounts')->getAccount($accountid);
 		
-		$this->setRedirect('index.php?component=com_email&view=accounts');
-	}
-	
-	public function make_default_account() {
-		$accountid = phpFrame_Environment_Request::getVar('accountid', 0);
-		
-		$modelAccounts = $this->getModel('accounts');
-		if (!$modelAccounts->makeDefault($accountid)) {
-			phpFrame_Application_Error::raise('', 'error', $modelAccounts->getLastError());
-		}
-		else {
-			phpFrame_Application_Error::raise('', 'message', _LANG_EMAIL_ACCOUNT_SAVED);
+		if ($account === false) {
+			$this->_sysevents->setSummary(_LANG_EMAIL_NO_ACCOUNT);
+			return;
 		}
 		
-		$this->setRedirect('index.php?component=com_email&view=accounts');
+		// Connect to incoming mail server
+		$emailModel = $this->getModel('email', array($account));
+		//var_dump($emailModel); exit;
+		if ($emailModel->openStream($folder) !== true) {
+			$this->_sysevents->setSummary($emailModel->getLastError());
+			return;
+		}
+		
+		// Get messages from inbox
+		$messages = $emailModel->getMessageList();
+		var_dump($messages); exit;
+		// Close connection
+		$model->closeStream();
+			
+		// Get mailboxes outside of inbox
+		if ($model->openStream('') !== true) {
+			phpFrame_Application_Error::raise(0, 'warning', $model->error );
+			return;
+		}	
+		$this->boxes = $model->getMailboxList();
+		$model->closeStream();
 	}
 	
 	public function download_attachment() {
@@ -337,4 +322,50 @@ class emailController extends phpFrame_Application_ActionController {
 		$this->setRedirect('index.php?component=com_intranetoffice&view=email&folder='.$folder);
 	}
 	
+	public function save_account() {
+		// Check for request forgeries
+		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
+		
+		$post = phpFrame_Environment_Request::getPost();
+		
+		$modelAccounts = $this->getModel('accounts');
+		$row = $modelAccounts->saveAccount($post);
+		
+		if ($row !== false) {
+			phpFrame_Application_Error::raise('', 'message', _LANG_EMAIL_ACCOUNT_SAVED);
+		}
+		else {
+			phpFrame_Application_Error::raise('', 'error', $modelAccounts->getLastError());
+		}
+		
+		$this->setRedirect('index.php?component=com_email&view=accounts');
+	}
+	
+	public function remove_account() {
+		$accountid = phpFrame_Environment_Request::getVar('accountid', 0);
+		
+		$modelAccounts = $this->getModel('accounts');
+		if (!$modelAccounts->deleteAccount($accountid)) {
+			phpFrame_Application_Error::raise('', 'error', $modelAccounts->getLastError());
+		}
+		else {
+			phpFrame_Application_Error::raise('', 'message', _LANG_EMAIL_ACCOUNT_DELETE_SUCCESS);
+		}
+		
+		$this->setRedirect('index.php?component=com_email&view=accounts');
+	}
+	
+	public function make_default_account() {
+		$accountid = phpFrame_Environment_Request::getVar('accountid', 0);
+		
+		$modelAccounts = $this->getModel('accounts');
+		if (!$modelAccounts->makeDefault($accountid)) {
+			phpFrame_Application_Error::raise('', 'error', $modelAccounts->getLastError());
+		}
+		else {
+			phpFrame_Application_Error::raise('', 'message', _LANG_EMAIL_ACCOUNT_SAVED);
+		}
+		
+		$this->setRedirect('index.php?component=com_email&view=accounts');
+	}
 }

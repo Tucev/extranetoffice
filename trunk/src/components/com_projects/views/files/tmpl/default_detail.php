@@ -18,7 +18,7 @@ phpFrame_HTML::validate('commentsform');
 <h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
 <h2 class="subheading <?php echo strtolower($data['view']); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_files&projectid='.$data['project']->id); ?>">
+	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_files&projectid='.$data['project']->id); ?>">
 		<?php echo $data['view']; ?>
 	</a>
 </h2>
@@ -28,18 +28,18 @@ phpFrame_HTML::validate('commentsform');
 
 	<?php if ($data['row']->userid == phpFrame::getUser()->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_file" title="<?php echo phpFrame_HTML_Text::_($data['row']->title, true); ?>" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=remove_file&projectid=".$data['row']->projectid)."&fileid=".$data['row']->id; ?>">
+		<a class="delete_file" title="<?php echo phpFrame_HTML_Text::_($data['row']->title, true); ?>" href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_file&projectid=".$data['row']->projectid)."&fileid=".$data['row']->id; ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	<div class="thread_download">
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=download_file&fileid=".$data['row']->id); ?>">
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=download_file&fileid=".$data['row']->id); ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_DOWNLOAD ); ?>
 		</a> 
 	</div>
 	<div class="thread_upload">
-		<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_file_form&projectid='.$data['project']->id."&parentid=".$data['row']->parentid); ?>">
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_file_form&projectid='.$data['project']->id."&parentid=".$data['row']->parentid); ?>">
 			<?php echo phpFrame_HTML_Text::_( _LANG_FILES_UPLOAD_NEW_VERSION ); ?>
 		</a> 
 	</div>
@@ -49,7 +49,7 @@ phpFrame_HTML::validate('commentsform');
 	</div>
 	
 	<div class="thread_heading">
-	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=download_file&fileid=".$data['row']->id); ?>">
+	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=download_file&fileid=".$data['row']->id); ?>">
 		<?php echo $data['row']->title; ?>
 	</a>
 	</div>
@@ -66,7 +66,7 @@ phpFrame_HTML::validate('commentsform');
 		<?php echo _LANG_ASSIGNEES; ?>: 
     	<?php for ($j=0; $j<count($data['row']->assignees); $j++) : ?>
     		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&action=get_user&userid=".$data['row']->assignees[$j]['id']); ?>">
+    		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$data['row']->assignees[$j]['id']); ?>">
     		<?php echo $data['row']->assignees[$j]['name']; ?>
     		</a>
     	<?php endfor; ?>
@@ -101,12 +101,12 @@ phpFrame_HTML::validate('commentsform');
 			<div class="thread_oldrevision_entry">
 				<?php if ($data['row']->userid == phpFrame::getUser()->id) : ?>
 				<div class="thread_delete">
-					<a class="delete_file" title="<?php echo phpFrame_HTML_Text::_($child->title, true); ?>" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=remove_file&projectid=".$data['row']->projectid)."&fileid=".$child->id; ?>">
+					<a class="delete_file" title="<?php echo phpFrame_HTML_Text::_($child->title, true); ?>" href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_file&projectid=".$data['row']->projectid)."&fileid=".$child->id; ?>">
 						<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
 					</a> 
 				</div>
 				<?php endif; ?>
-				<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=download_file&fileid=".$child->id); ?>">
+				<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=download_file&fileid=".$child->id); ?>">
 					<?php echo $child->title; ?>
 				</a> 
 				(Revision <?php echo $child->revision; ?> - <?php echo date("D, d M Y H:ia", strtotime($child->ts)); ?>) 

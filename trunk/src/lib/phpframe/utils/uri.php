@@ -267,4 +267,3 @@ class phpFrame_Utils_URI extends phpFrame_Base_StdObject {
 		return $str;
 	}
 }
-?>

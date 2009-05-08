@@ -69,13 +69,13 @@ class projectsViewFiles extends phpFrame_Application_View {
 	
 	function displayFilesForm() {
 		$this->_data['page_title'] .= ' - '._LANG_FILES_NEW;
-		phpFrame::getPathway()->addItem($this->current_tool, phpFrame_Application_Route::_("index.php?component=com_projects&view=files&projectid=".$this->projectid));
+		phpFrame::getPathway()->addItem($this->current_tool, phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&view=files&projectid=".$this->projectid));
 		phpFrame::getPathway()->addItem(_LANG_FILES_NEW);
 	}
 	
 	function displayFilesDetail() {
 		$this->_data['page_title'] .= ' - '.$this->row->title;
-		phpFrame::getPathway()->addItem($this->current_tool, phpFrame_Application_Route::_("index.php?component=com_projects&view=files&projectid=".$this->projectid));
+		phpFrame::getPathway()->addItem($this->current_tool, phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&view=files&projectid=".$this->projectid));
 		phpFrame::getPathway()->addItem($this->row->title);
 	}
 	

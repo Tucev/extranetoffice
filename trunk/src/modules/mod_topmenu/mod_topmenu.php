@@ -30,7 +30,7 @@ $user = phpFrame::getUser();
 	
 	<span class="icons_16_outer">
 	<span class="icons_16 security_16">
-		<a href="index.php?component=com_login&amp;action=logout">Logout</a>
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_login&action=logout"); ?>">Logout</a>
 	</span>
 	</span>
 	

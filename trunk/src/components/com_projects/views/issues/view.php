@@ -70,13 +70,13 @@ class projectsViewIssues extends phpFrame_Application_View {
 	function displayIssuesForm() {
 		$action = empty($this->_data['row']) ? _LANG_ISSUES_NEW : _LANG_ISSUES_EDIT;
 		$this->_data['page_title'] .= ' - '.$action;
-		phpFrame::getPathway()->addItem(_LANG_ISSUES, phpFrame_Application_Route::_("index.php?component=com_projects&action=get_issues&projectid=".$this->_data['project']->id));
+		phpFrame::getPathway()->addItem(_LANG_ISSUES, phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issues&projectid=".$this->_data['project']->id));
 		phpFrame::getPathway()->addItem($action);
 	}
 	
 	function displayIssuesDetail() {
 		$this->_data['page_title'] .= ' - '.$this->_data['row']->title;
-		phpFrame::getPathway()->addItem(_LANG_ISSUES, phpFrame_Application_Route::_("index.php?component=com_projects&view=issues&projectid=".$this->_data['project']->id));
+		phpFrame::getPathway()->addItem(_LANG_ISSUES, phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&view=issues&projectid=".$this->_data['project']->id));
 		phpFrame::getPathway()->addItem($this->_data['row']->title);
 	}
 }

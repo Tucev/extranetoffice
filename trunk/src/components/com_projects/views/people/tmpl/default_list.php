@@ -14,7 +14,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 
 <h2 class="subheading <?php echo strtolower($data['view']); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_people&projectid='.$data['project']->id); ?>">
+	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_people&projectid='.$data['project']->id); ?>">
 		<?php echo $data['view']; ?>
 	</a>
 </h2>
@@ -25,12 +25,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <?php foreach($data['rows'] as $row) : ?>
 <div class="row_icons">
 	
-	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&action=get_user&userid=".$row->id); ?>">
+	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$row->id); ?>">
 	<img border="0" src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo !empty($row->photo) ? $row->photo : 'default.png'; ?>" />
 	</a>
 	
 	<div class="row_icons_heading">
-	<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&action=get_user&userid=".$row->id); ?>">
+	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$row->id); ?>">
 		<?php echo $row->name; ?>
 	</a>
 	</div>
