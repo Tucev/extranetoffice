@@ -12,6 +12,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * adminController Class
  * 
+ * @todo		Handling of tmpl get var should be delegated to URL rewriter instead 
+ * 				of appearing inside the required controler actions.
  * @package		phpFrame
  * @subpackage 	com_admin
  * @author 		Luis Montero [e-noise.com]
@@ -97,6 +99,9 @@ class adminController extends phpFrame_Application_ActionController {
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
+		// Get request vars
+		$tmpl = phpFrame_Environment_Request::getVar('tmpl', '');
+		
 		$modelConfig = $this->getModel('config');
 		
 		if ($modelConfig->saveConfig() === false) {
@@ -106,12 +111,16 @@ class adminController extends phpFrame_Application_ActionController {
 			$this->_sysevents->setSummary(_LANG_CONFIG_SAVE_SUCCESS, "success");
 		}
 		
-		$this->setRedirect('index.php?component=com_admin&view=config');
+		if (!empty($tmpl)) $tmpl = "&tmpl=".$tmpl;
+		$this->setRedirect('index.php?component=com_admin&action=get_config'.$tmpl);
 	}
 	
 	public function save_user() {
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
+		
+		// Get request vars
+		$tmpl = phpFrame_Environment_Request::getVar('tmpl', '');
 		
 		$modelUsers = $this->getModel('users');
 		
@@ -122,10 +131,13 @@ class adminController extends phpFrame_Application_ActionController {
 			$this->_sysevents->setSummary(_LANG_USER_SAVE_SUCCESS, "success");
 		}
 		
-		$this->setRedirect('index.php?component=com_admin&view=users');
+		if (!empty($tmpl)) $tmpl = "&tmpl=".$tmpl;
+		$this->setRedirect('index.php?component=com_admin&action=get_users'.$tmpl);
 	}
 	
 	public function remove_user() {
+		// Get request vars
+		$tmpl = phpFrame_Environment_Request::getVar('tmpl', '');
 		$userid = phpFrame_Environment_Request::getVar('id', 0);
 		
 		$modelUsers = $this->getModel('users');
@@ -137,6 +149,7 @@ class adminController extends phpFrame_Application_ActionController {
 			$this->_sysevents->setSummary(_LANG_ADMIN_USERS_DELETE_SUCCESS, "success");
 		}
 		
-		$this->setRedirect('index.php?component=com_admin&view=users');
+		if (!empty($tmpl)) $tmpl = "&tmpl=".$tmpl;
+		$this->setRedirect('index.php?component=com_admin&action=get_users'.$tmpl);
 	}
 }
