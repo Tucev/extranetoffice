@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: May 08, 2009 at 10:21 AM
+-- Generation Time: May 08, 2009 at 10:36 PM
 -- Server version: 5.0.51
 -- PHP Version: 5.2.8
 
@@ -23,40 +23,40 @@ DROP TABLE IF EXISTS `eo_acl_groups`;
 CREATE TABLE IF NOT EXISTS `eo_acl_groups` (
   `id` int(11) NOT NULL auto_increment,
   `groupid` int(11) NOT NULL,
-  `option` varchar(50) NOT NULL,
-  `task` varchar(32) NOT NULL,
-  `view` varchar(32) NOT NULL,
-  `layout` varchar(32) NOT NULL,
+  `component` varchar(50) NOT NULL,
+  `action` varchar(50) NOT NULL,
   `value` varchar(4) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
 
 --
 -- Dumping data for table `eo_acl_groups`
 --
 
-INSERT INTO `eo_acl_groups` (`id`, `groupid`, `option`, `task`, `view`, `layout`, `value`) VALUES
-(1, 1, 'com_login', '*', '*', '*', 'all'),
-(2, 2, 'com_login', '*', '*', '*', 'all'),
-(3, 1, 'com_dashboard', '*', '*', '*', 'own'),
-(4, 2, 'com_dashboard', '*', '*', '*', 'own'),
-(5, 1, 'com_email', '*', '*', '*', 'own'),
-(6, 2, 'com_email', '*', '*', '*', 'own'),
-(7, 1, 'com_addressbook', '*', '*', '*', 'own'),
-(8, 2, 'com_addressbook', '*', '*', '*', 'own'),
-(9, 1, 'com_projects', '*', '*', '*', 'all'),
-(10, 2, 'com_projects', '*', '*', '*', 'own'),
-(11, 2, 'com_users', '*', '*', '*', 'own'),
-(12, 3, 'com_users', '*', '*', '*', 'own'),
-(13, 4, 'com_users', '*', '*', '*', 'own'),
-(14, 0, 'com_login', '*', '*', '*', 'own'),
-(15, 3, 'com_login', '*', '*', '*', 'own'),
-(16, 4, 'com_login', '*', '*', '*', 'own'),
-(17, 3, 'com_dashboard', '*', '*', '*', 'own'),
-(18, 3, 'com_projects', '*', '*', '*', 'own'),
-(19, 4, 'com_dashboard', '*', '*', '*', 'own'),
-(20, 0, 'com_projects', 'process_incoming_email', '*', '*', 'all'),
-(21, 0, 'com_users', 'reset_password', '*', '*', 'all');
+INSERT INTO `eo_acl_groups` (`id`, `groupid`, `component`, `action`, `value`) VALUES
+(1, 1, 'com_login', '*', 'all'),
+(2, 2, 'com_login', '*', 'all'),
+(3, 1, 'com_dashboard', '*', 'own'),
+(4, 2, 'com_dashboard', '*', 'own'),
+(5, 1, 'com_email', '*', 'own'),
+(6, 2, 'com_email', '*', 'own'),
+(7, 1, 'com_addressbook', '*', 'own'),
+(8, 2, 'com_addressbook', '*', 'own'),
+(9, 1, 'com_projects', '*', 'all'),
+(10, 2, 'com_projects', '*', 'own'),
+(11, 2, 'com_users', '*', 'own'),
+(12, 3, 'com_users', '*', 'own'),
+(13, 4, 'com_users', '*', 'own'),
+(14, 0, 'com_login', '*', 'own'),
+(15, 3, 'com_login', '*', 'own'),
+(16, 4, 'com_login', '*', 'own'),
+(17, 3, 'com_dashboard', '*', 'own'),
+(18, 3, 'com_projects', '*', 'own'),
+(19, 4, 'com_dashboard', '*', 'own'),
+(20, 0, 'com_projects', 'process_incoming_email', 'all'),
+(21, 0, 'com_users', 'reset_password', 'all'),
+(22, 1, 'com_users', '*', 'all'),
+(23, 1, 'com_billing', '*', 'all');
 
 -- --------------------------------------------------------
 
@@ -761,7 +761,7 @@ CREATE TABLE IF NOT EXISTS `eo_users` (
   `ts` timestamp NULL default CURRENT_TIMESTAMP,
   `deleted` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=66 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=67 ;
 
 --
 -- Dumping data for table `eo_users`

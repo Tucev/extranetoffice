@@ -111,7 +111,10 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 		}
 		
 		// Check permissions before we execute
-		if (phpFrame::getPermissions()->is_allowed === true) {
+		$component = phpFrame_Environment_Request::getComponentName();
+		$groupid = phpFrame::getSession()->getGroupId();
+		$permissions = phpFrame::getPermissions();
+		if ($permissions->authorise($component, $action, $groupid) === true) {
 			if (is_callable(array($this, $action))) {
 				// Start buffering
 				ob_start();
