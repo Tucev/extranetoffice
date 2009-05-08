@@ -124,7 +124,7 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
     </td>
     <td valign="top">
     <a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$row->userid); ?>">
-	<?php echo $row->name; ?>
+	<?php echo $row->firstname." ". $row->lastname;?>
 	</a>
     </td>
     <td>
