@@ -18,12 +18,16 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <div class="row_icons">
 	
 	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$row->id); ?>">
-	<img border="0" src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo !empty($row->photo) ? $row->photo : 'default.png'; ?>" />
+	<img border="0" src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo !empty($row->photo) ? $row->photo : 'default.png'; ?>" alt="<?php echo $row->firstname." ".$row->lastname; ?>" />
 	</a>
 	
 	<div class="row_icons_heading">
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$row->id); ?>">
-		<?php echo phpFrame_User_Helper::fullname_format($row->firstname, $row->lastname); ?>
+	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$row->id); ?>" title="<?php echo $row->firstname." ".$row->lastname; ?>"> 
+	
+	 	<?php $shortlastname = phpFrame_HTML_Text::limit_chars($row->lastname, 10); ?>
+	 
+	 	<?php echo phpFrame_User_Helper::fullname_format($row->firstname, $shortlastname); ?>
+		
 	</a>
 	</div>
 
