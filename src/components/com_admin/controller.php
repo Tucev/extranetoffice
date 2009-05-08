@@ -121,10 +121,11 @@ class adminController extends phpFrame_Application_ActionController {
 		
 		// Get request vars
 		$tmpl = phpFrame_Environment_Request::getVar('tmpl', '');
+		$post = phpFrame_Environment_Request::getPost();
 		
 		$modelUsers = $this->getModel('users');
 		
-		if ($modelUsers->saveUser() === false) {
+		if ($modelUsers->saveUser($post) === false) {
 			$this->_sysevents->setSummary($modelUsers->getLastError());
 		}
 		else {

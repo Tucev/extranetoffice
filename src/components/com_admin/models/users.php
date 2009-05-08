@@ -104,7 +104,7 @@ class adminModelUsers extends phpFrame_Application_Model {
 		}
 	}
 	
-	function saveUser() {
+	function saveUser($post) {
 		$userid = phpFrame_Environment_Request::getVar('id', null);
 		
 		// Get reference to user object
@@ -130,8 +130,6 @@ class adminModelUsers extends phpFrame_Application_Model {
 			$user->load($userid, 'password', $row);
 			$new_user = false;
 		}
-		
-		$post = phpFrame_Environment_Request::getPost();
 		
 		// exlude password if not passed in request
 		$exclude = '';
