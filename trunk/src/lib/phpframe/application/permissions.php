@@ -33,11 +33,21 @@ class phpFrame_Application_Permissions {
 	
 	/**
 	 * Constructor
-	 *
-	 * @since 1.0
+	 * 
+	 * We declare a privae constructor to prevent multiple instantiation
+	 * 
+	 * @access	private
+	 * @since 	1.0
 	 */
 	private function __construct() {}
 	
+	/**
+	 * Get instance of the permissions object
+	 * 
+	 * @access	public
+	 * @return	object of type phpFrame_Application_Permissions
+	 * @since	1.0
+	 */
 	public static function getInstance() {
 		if (!self::$_instance instanceof phpFrame_Application_Permissions) {
 			self::$_instance = new phpFrame_Application_Permissions();
@@ -46,6 +56,16 @@ class phpFrame_Application_Permissions {
 		return self::$_instance;
 	}
 	
+	/**
+	 * Authorise action in a component for a given user group
+	 * 
+	 * @access	public
+	 * @param	string	$component
+	 * @param	string	$action
+	 * @param	int		$groupid
+	 * @return	bool
+	 * @since	1.0
+	 */
 	public function authorise($component, $action, $groupid) {
 		// Load ACL from DB if not loaded yet
 		if (is_null(self::$_acl)) {
@@ -65,6 +85,13 @@ class phpFrame_Application_Permissions {
 		return false;
 	}
 	
+	/**
+	 * Load access levels from database
+	 * 
+	 * @access	private
+	 * @return	array	An array ob database row objects
+	 * @since	1.0
+	 */
 	private function _loadACL() {
 		// Load access list from DB
 		$query = "SELECT * FROM #__acl_groups";
