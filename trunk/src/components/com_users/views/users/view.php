@@ -51,7 +51,7 @@ class usersViewUsers extends phpFrame_Application_View {
 		parent::display();
 		
 		// Append page title to document title
-		if (phpFrame_Environment_Request::getLayout() != 'list') {
+		if ($this->_layout != 'list') {
 			$document = phpFrame::getDocument('html');
 			$document->title .= ' - '.$this->page_title;
 		}
