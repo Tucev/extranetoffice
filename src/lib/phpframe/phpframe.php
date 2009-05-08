@@ -64,7 +64,7 @@ class phpFrame {
 	 * @since 	1.0
 	 */
 	public static function getPermissions() {
-		return phpFrame_Base_Singleton::getInstance('phpFrame_Application_Permissions');
+		return phpFrame_Application_Permissions::getInstance();
 	}
 	
 	/**

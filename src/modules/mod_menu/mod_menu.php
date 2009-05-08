@@ -26,7 +26,7 @@ $permissions = phpFrame::getPermissions();
 		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_dashboard"); ?>">Dashboard</a>
 	</li>
 	<?php foreach ($components as $component) : ?>
-	<?php if ($permissions->checkACL('com_'.$component->name)) : ?>
+	<?php if ($permissions->authorise('com_'.$component->name, '', phpFrame::getSession()->getGroupId())) : ?>
 	<li <?php if ($active_component == $component->name) { echo ' class="selected"'; } ?>>
 		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_".$component->name); ?>">
 			<?php echo $component->menu_name; ?>
