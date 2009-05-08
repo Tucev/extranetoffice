@@ -34,17 +34,24 @@ $(function() {
 <div id="sysadmin_tabs">
 	<ul>
 		<li>
-			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&amp;action=get_config"); ?>">Global Config</a>
+			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&action=get_config".$data['tmpl']); ?>">
+				Global Config
+			</a>
 		</li>
 		<li>
-			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&amp;action=get_users"); ?>">Users</a>
+			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&action=get_users".$data['tmpl']); ?>">
+				Users
+			</a>
 		</li>
 		<li>
-			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&amp;action=get_components"); ?>">Components</a>
+			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&action=get_components".$data['tmpl']); ?>">
+				Components
+			</a>
 		</li>
 		<li>
-			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&amp;action=get_modules"); ?>">Modules</a>
+			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&action=get_modules".$data['tmpl']); ?>">
+				Modules
+			</a>
 		</li>
 	</ul>
 </div>
-	
