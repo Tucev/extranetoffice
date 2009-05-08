@@ -125,7 +125,7 @@ phpFrame_HTML::validate('commentsform');
 		</p>
 		<input type="hidden" name="component" value="com_projects" />
 		<input type="hidden" name="action" value="save_comment" />
-		<input type="hidden" name="projectid" value="<?php echo $this->projectid; ?>" />
+		<input type="hidden" name="projectid" value="<?php echo $data['project']->id; ?>" />
 		<input type="hidden" name="type" value="issues" />
 		<input type="hidden" name="itemid" value="<?php echo  $data['row']->id; ?>" />
 		<input type="hidden" name="issueid" value="<?php echo  $data['row']->id; ?>" />
