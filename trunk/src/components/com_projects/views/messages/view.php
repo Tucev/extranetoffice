@@ -64,7 +64,7 @@ class projectsViewMessages extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayMessagesList() {
-		phpFrame::getPathway()->addItem($this->page_title);
+		phpFrame::getPathway()->addItem($this->_data['page_title']);
 	}
 	
 	function displayMessagesDetail() {
