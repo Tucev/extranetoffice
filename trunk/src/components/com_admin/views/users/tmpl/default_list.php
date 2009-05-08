@@ -70,16 +70,17 @@ function submit_filter(reset) {
   		<input type="checkbox" name="ids[]" value="<?php echo $row->id; ?>" />
   	</td>
     <td valign="top">
-    <?php phpFrame_HTML::dialog($row->username, 'index.php?component=com_admin&action=get_user_form&userid='.$row->id, 550, 390, true, "div[id^='ui-tabs']:has(a.delete_user)"); ?>
+    <?php $username = phpFrame_HTML_Text::limit_chars($row->username, 10); ?>
+    <?php phpFrame_HTML::dialog($username, 'index.php?component=com_admin&action=get_user_form&userid='.$row->id, 550, 390, true, "div[id^='ui-tabs']:has(a.delete_user)"); ?>
     </td>
     <td>
     	<?php echo $row->email; ?>
     </td>
     <td>
-    	<?php echo $row->firstname; ?>
+    	<?php echo phpFrame_HTML_Text::limit_chars($row->firstname, 10); ?>
     </td>
     <td>
-    	<?php echo $row->lastname; ?>
+    	<?php echo phpFrame_HTML_Text::limit_chars($row->lastname, 10); ?>
     </td>
     <td>
     	<?php echo $row->block; ?>
