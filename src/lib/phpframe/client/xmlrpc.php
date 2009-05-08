@@ -30,6 +30,7 @@ class phpFrame_Client_Xmlrpc implements phpFrame_Client_IClient {
 	public static function detect() {
 		
 		global $HTTP_RAW_POST_DATA;
+			
 		//check existance of $_HTTP_RAW_POST_DATA array
 		if (count($HTTP_RAW_POST_DATA) > 0) {
 			//check for a valid XML structure
@@ -38,7 +39,11 @@ class phpFrame_Client_Xmlrpc implements phpFrame_Client_IClient {
 			{
 				$domXPath = new DOMXPath($domDocument);
 				//check for valid RPC
-				if ($domXPath->query("methodCall/params/param")->$length > 0) //xpath for methodname and component
+				//query always returns DOMNodelist,
+				//item(0) returns DOMNode or null,
+				//DOMNode has $nodeValue and null->nodeValue = null
+				//TODO: xmlrpc detect perhaps check for empty methodName string?
+				if ($domXPath->query("//methodCall/methodName")->item(0)->nodeValue != null)
 				{
 					return new self;
 				}
@@ -54,16 +59,11 @@ class phpFrame_Client_Xmlrpc implements phpFrame_Client_IClient {
 	 * @return	Unified Request Array
 	 */
 	public function populateURA() {
+		
 		global $HTTP_RAW_POST_DATA;
 		
-ob_start();
-var_dump($this->_parseXMLRPC($HTTP_RAW_POST_DATA));
-$output = ob_get_contents();
-ob_end_clean();
-file_put_contents("/var/www/xmlrpc/globals.html",$output);
-exit;	
-		
-		return $this->_parseXMLRPC($HTTP_RAW_POST_DATA);
+		$params = $this->_parseXMLRPC($HTTP_RAW_POST_DATA);
+		return $params;
 		
 	}
 	
@@ -91,14 +91,38 @@ exit;
      * @return array A nice asociative array with all the data.
      */
     private function _parseXMLRPC($xml) {
-        $domDocument = new DOMDocument;
+    	
+    	$array = array();
+    	
+    	$domDocument = new DOMDocument;
         $domDocument->loadXML($xml);
-        
-        $domXPath = new DOMXPath($domDocument);
-        $query = "//methodCall/params/param";
-        $nodes = $domXPath->query($query);
-        $array = $this->_parseXMLRPCRecurse($domXPath, $nodes);
-    	return $array;
+		$domXPath = new DOMXPath($domDocument);
+		
+		$methodName = $domXPath->query("//methodCall/methodName")->item(0)->nodeValue;
+		
+		//look for 'component.action' format 
+		preg_match('/^([a-zA-Z]+)(\.([a-zA-Z_]+))?$/', $methodName, $matches);
+		
+		//matches?
+		if (count($matches) > 0) {
+			//first match is component
+			$array['request']['component'] = 'com_'.$matches[1];
+			//third match is action (if it exists) 
+			if (count($matches) > 2) {
+				$array['request']['action'] = $matches[3];	
+			}
+		} 
+		
+		//if a <struct> element exists and has child nodes
+		if ($domXPath->query("//methodCall/params/param/value/struct")->item(0)->hasChildNodes()) {
+			
+	        $query = "//methodCall/params/param/value/struct/member";
+	        $members = $domXPath->query($query);
+
+	        $array['request'] = $this->_parseXMLRPCRecurse($domXPath, $members);
+	    	
+		}
+		return $array;
     }
        
     /**
@@ -112,20 +136,37 @@ exit;
      * @return array
      */
     private function _parseXMLRPCRecurse(&$domXPath, $nodes, $search_path="", &$array=array()) {
-        foreach ($nodes as $node) {
-            if ($node->childNodes->length > 1) {
+        
+    	foreach ($nodes as $node) {
+ 			
+ob_start();
+var_dump($nodes->item(2)->childNodes->item(2)->firstChild->nodeName);
+$output = ob_get_contents();
+ob_end_clean();
+file_put_contents("/var/www/extranetoffice/test/xmlrpc/globals.html",$output);
+exit;		
+
+    		if ($node->childNodes->item(2)->hasChildNodes()) {
+    			//recurse	
+    		}
+    		else {
+    			$array[$node->childNodes->item(0)->textContent] = $node->childNodes->item(2)->textContent;
+    		}
+        	
+            /*if ($node->childNodes->length > 1) {
                 $query = "params/param";
                 $children = $domXPath->query($query, $node);
                 $this->_parseXMLResponseRecurse($domXPath, $children, $query, $array[$node->getAttribute("key")]);
                       
-                $query = "dt_array/item";
+                $query = "struct/member";
                 $children = $domXPath->query($query, $node);
                 $this->_parseXMLResponseRecurse($domXPath, $children, $query, $array[$node->getAttribute("key")]);
             }
             else {
                        $array[$node->getAttribute("key")] = $node->nodeValue;
-            }
+            }*/
         }
+        
         return $array;
     }
 }
