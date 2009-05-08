@@ -12,6 +12,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * emailModelEmail Class
  * 
+ * This class depends on php-imap extension.
+ * 
  * @package		ExtranetOffice
  * @subpackage 	com_email
  * @author 		Luis Montero [e-noise.com]
@@ -20,103 +22,25 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 class emailModelEmail extends phpFrame_Application_Model {
 	/**
-	 * The id of the account to use. If not specified the default account for user is used.
-	 * 
-	 * @var int
-	 */
-	var $accountid=null;
-	/**
 	 * Object containing the email account settings
 	 * 
 	 * @var object
 	 */
-	var $account=null;
+	private $_account=null;
 	/**
-	 * The IMAP stream
+	 * IMAP object
 	 * 
-	 * @var resource
+	 * @var object of type phpFrame_Mail_IMAP
 	 */
-	var $stream=null;
-	/**
-	 * The mailbox name
-	 * 
-	 * @var string
-	 */
-	var $mbox_name=null;
-	/**
-	 * A string containing the latest error
-	 * 
-	 * @var string
-	 */
-	var $error=null;
+	private $_imap=null;
 	
 	/**
 	 * Constructor
 	 *
 	 * @since 1.0.1
 	 */
-	function __construct() {
-		//TODO: Check permissions
-		parent::__construct();
-		
-		$this->accountid = phpFrame_Environment_Request::getVar('accountid', 0);
-	}
-	
-	function checkDependencies() {
-		if (!function_exists('imap_open')) {
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
-	
-	/**
-	 * This function sets the mail account to use for connection
-	 * 
-	 * @param	object	$account An object containing the mail account settings.
-	 * @return	void
-	 */
-	function setEmailAccount($account) {
-		$this->account->fromname = $account->fromname;
-		$this->account->email_address = $account->email_address;
-		$this->account->email_signature = $account->email_signature;
-		$this->account->server_type = $account->server_type;
-		$this->account->imap_host = $account->imap_host;
-		$this->account->imap_port = $account->imap_port;
-		$this->account->imap_user = $account->imap_user;
-		$this->account->imap_password = $account->imap_password;
-		$this->account->smtp_host = $account->smtp_host;
-		$this->account->smtp_port = $account->smtp_port;
-		$this->account->smtp_auth = $account->smtp_auth;
-		$this->account->smtp_user = $account->smtp_user;
-		$this->account->smtp_password = $account->smtp_password;
-	}
-	
-	/**
-	 * Load current user's email account settings
-	 * 
-	 * @todo	See comments bellow for more info...
-	 * @return	void
-	 */
-	function loadUserEmailAccount() {
-		// Load settings
-		// This is a very dirty hack to get instance of accounts model correctly 
-		// when accessing this model form the dashboard component.
-		// $accountModel = $this->getModel('accounts');
-		require_once _ABS_PATH.DS.'components'.DS.'com_email'.DS.'models'.DS.'accounts.php';
-		$accountModel =& phpFrame_Base_Singleton::getInstance('emailModelAccounts');
-		$account = $accountModel->getAccounts($this->_user->id, $this->accountid, true);
-		
-		// Set account details in model
-		if (!empty($account[0]->server_type)) {
-			$this->setEmailAccount($account[0]);
-			return true;
-		}
-		else {
-			return false;
-		}
-		
+	public function __construct($account) {
+		$this->_account = $account;
 	}
 	
 	/**
@@ -126,22 +50,16 @@ class emailModelEmail extends phpFrame_Application_Model {
 	 * @return	bool
 	 */
 	function openStream($folder='INBOX') {
-		
-		if($this->checkDependencies() !== true){
-			$this->_error = 'IMAP Extention not installed. For more info visit <a href="http://uk3.php.net/manual/en/imap.setup.php">http://uk3.php.net/manual/en/imap.setup.php</a>';
-			return $this->_error;
-		}
-		
 	  	// Set mailbox name depending on server type
-	  	if ($this->account->server_type == 'POP3') {
-	    	$this->mbox_name = '{'.$this->account->imap_host.':'.$this->account->imap_port.'/pop3}'.$folder;
+	  	if ($this->_account->server_type == 'POP3') {
+	    	$this->mbox_name = '{'.$this->_account->imap_host.':'.$this->_account->imap_port.'/pop3}'.$folder;
 	  	}
-	  	if ($this->account->server_type == 'IMAP') {
-	    	$this->mbox_name = '{'.$this->account->imap_host.':'.$this->account->imap_port.'/novalidate-cert}'.$folder;
+	  	if ($this->_account->server_type == 'IMAP') {
+	    	$this->mbox_name = '{'.$this->_account->imap_host.':'.$this->_account->imap_port.'/novalidate-cert}'.$folder;
 	  	}
 	  		
 	  	// Open mailbox stream
-	  	$this->stream = @imap_open($this->mbox_name, $this->account->imap_user, $this->account->imap_password);
+	  	$this->stream = @imap_open($this->mbox_name, $this->_account->imap_user, $this->_account->imap_password);
 	  	if (!$this->stream) {
 	  		$this->_error = imap_last_error();
 	  		return $this->_error;
@@ -383,7 +301,7 @@ class emailModelEmail extends phpFrame_Application_Model {
 	 * @return unknown
 	 */
 	function sendMessage($recipients, $subject, $body, $cc='', $bcc='', $replyto='', $attachments) {
-		$sender = $this->account->email_address;
+		$sender = $this->_account->email_address;
 		
 		jimport( 'joomla.mail.mail' );
 		jimport( 'joomla.mail.helper' );
@@ -442,10 +360,10 @@ class emailModelEmail extends phpFrame_Application_Model {
 			$new_mail->addReplyTo($replyto);
 		}
 		$new_mail->setSender($sender);
-		$new_mail->FromName = $this->account->fromname;
+		$new_mail->FromName = $this->_account->fromname;
 		$new_mail->setSubject($subject);
 		$new_mail->setBody($body);
-		$new_mail->useSMTP(true, $this->account->smtp_host, $this->account->smtp_user, $this->account->smtp_password);
+		$new_mail->useSMTP(true, $this->_account->smtp_host, $this->_account->smtp_user, $this->_account->smtp_password);
 		//$new_mail->useSendmail();
 		
 		if ($new_mail->Send() !== true) {

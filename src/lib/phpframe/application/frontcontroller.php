@@ -72,6 +72,9 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 		// Check dependencies
 		phpFrame_Application_Dependencies::check();
 		
+		//
+		phpFrame_Utils_Rewrite::rewriteRequest();
+		
 		// Initialise request
 		phpFrame_Environment_Request::init();
 		
@@ -102,9 +105,6 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 	public function run() {
 		// set the component path
 		define("COMPONENT_PATH", _ABS_PATH.DS."components".DS.phpFrame_Environment_Request::getComponentName());
-		
-		// Set profiler milestone
-		phpFrame_Debug_Profiler::setMilestone('Delegate to action controller');
 		
 		// Create the action controller
 		$controller = phpFrame::getActionController(phpFrame_Environment_Request::getComponentName());

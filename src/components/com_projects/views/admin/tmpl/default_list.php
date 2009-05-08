@@ -19,7 +19,7 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 <div class="main_col_module_half">
 
 	<div style="float:right;" class="edit">
-		<a style="float:right;" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_project_form&projectid=".$data['project']->id); ?>">
+		<a style="float:right;" href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_form&projectid=".$data['project']->id); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
@@ -49,7 +49,7 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 <div class="main_col_module_half">
 	
 	<div style="float:right;" class="edit">
-		<a style="float:right;" href="<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_project_form&projectid=".$data['project']->id); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
+		<a style="float:right;" href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_form&projectid=".$data['project']->id); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
@@ -100,7 +100,7 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 <h3 class="people">Members</h3>
 
 <div class="new">
-<a href="<?php echo phpFrame_Application_Route::_("index.php?component=".phpFrame_Environment_Request::getComponentName()."&action=get_member_form&projectid=".$data['project']->id); ?>">Add new member</a>
+<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=".phpFrame_Environment_Request::getComponentName()."&action=get_member_form&projectid=".$data['project']->id); ?>">Add new member</a>
 </div>
 
 <br />
@@ -123,7 +123,7 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
     	<?php echo $row->rolename; ?>
     </td>
     <td valign="top">
-    <a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_users&action=get_user&userid=".$row->userid); ?>">
+    <a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$row->userid); ?>">
 	<?php echo $row->name; ?>
 	</a>
     </td>

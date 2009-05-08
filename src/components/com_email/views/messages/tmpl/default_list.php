@@ -102,7 +102,7 @@ function confirm_delete_folder(mailbox, label) {
 	<div class="module">
 	
 	<div>
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_email&view=accounts"); ?>">
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=accounts"); ?>">
 		<?php echo phpFrame_HTML_Text::_(_LANG_EMAIL_ACCOUNTS); ?>
 		</a>
 	</div>
@@ -174,7 +174,7 @@ function confirm_delete_folder(mailbox, label) {
 
 <div id="email_detail_actions">
 	<div>
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_email&amp;view=messages&amp;layout=form"); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_NEW ); ?>">
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&amp;view=messages&amp;layout=form"); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_NEW ); ?>">
 		<img border="0" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/generic/32x32/new.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_NEW ); ?>" />
 		</a>
 	</div>
@@ -355,7 +355,7 @@ function confirm_delete_folder(mailbox, label) {
 			for ($i=0; $i<$this->messages['pages']; $i++) {
 		      if ($i > 0) { echo ' - '; }
 			  if ($this->messages['current_page'] != ($i+1)) {
-			    echo '<a href="'.phpFrame_Application_Route::_('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&page='.($i+1)).'&per_page='.$this->messages['per_page'].'">';
+			    echo '<a href="'.phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&page='.($i+1)).'&per_page='.$this->messages['per_page'].'">';
 			    echo ($i+1);
 			    echo '</a>';
 			  }
@@ -369,12 +369,12 @@ function confirm_delete_folder(mailbox, label) {
 		
 		<form name="form1">
 		  Messages per page: <select name="menu1" onChange="window.location = this.options[selectedIndex].value;">
-			<option value="<?php echo phpFrame_Application_Route::_('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=5'); ?>" <?php if ($this->messages['per_page'] == '5') { echo 'selected'; } ?>>5</option>
-			<option value="<?php echo phpFrame_Application_Route::_('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=10'); ?>" <?php if ($this->messages['per_page'] == '10') { echo 'selected'; } ?>>10</option>
-			<option value="<?php echo phpFrame_Application_Route::_('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=20'); ?>" <?php if ($this->messages['per_page'] == '20') { echo 'selected'; } ?>>20</option>
-			<option value="<?php echo phpFrame_Application_Route::_('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=25'); ?>" <?php if ($this->messages['per_page'] == '25') { echo 'selected'; } ?>>25</option>
-			<option value="<?php echo phpFrame_Application_Route::_('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=50'); ?>" <?php if ($this->messages['per_page'] == '50') { echo 'selected'; } ?>>50</option>
-			<option value="<?php echo phpFrame_Application_Route::_('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=100'); ?>" <?php if ($this->messages['per_page'] == '100') { echo 'selected'; } ?>>100</option>
+			<option value="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=5'); ?>" <?php if ($this->messages['per_page'] == '5') { echo 'selected'; } ?>>5</option>
+			<option value="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=10'); ?>" <?php if ($this->messages['per_page'] == '10') { echo 'selected'; } ?>>10</option>
+			<option value="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=20'); ?>" <?php if ($this->messages['per_page'] == '20') { echo 'selected'; } ?>>20</option>
+			<option value="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=25'); ?>" <?php if ($this->messages['per_page'] == '25') { echo 'selected'; } ?>>25</option>
+			<option value="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=50'); ?>" <?php if ($this->messages['per_page'] == '50') { echo 'selected'; } ?>>50</option>
+			<option value="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=100'); ?>" <?php if ($this->messages['per_page'] == '100') { echo 'selected'; } ?>>100</option>
 		  </select>
 		</form>
 

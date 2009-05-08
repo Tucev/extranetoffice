@@ -23,16 +23,18 @@ $permissions = phpFrame::getPermissions();
 
 <ul id="menu">
 	<li <?php if ($active_component == 'dashboard') { echo ' class="selected"'; } ?>>
-		<a href="index.php?component=com_dashboard">Dashboard</a>
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_dashboard"); ?>">Dashboard</a>
 	</li>
 	<?php foreach ($components as $component) : ?>
 	<?php if ($permissions->checkACL('com_'.$component->name)) : ?>
 	<li <?php if ($active_component == $component->name) { echo ' class="selected"'; } ?>>
-		<a href="index.php?component=com_<?php echo $component->name; ?>"><?php echo $component->menu_name; ?></a>
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_".$component->name); ?>">
+			<?php echo $component->menu_name; ?>
+		</a>
 	</li>
 	<?php endif; ?>
 	<?php endforeach; ?>
 	<li <?php if ($active_component == 'users') { echo ' class="selected"'; } ?>>
-		<a href="index.php?component=com_users">Users</a>
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users"); ?>">Users</a>
 	</li>
 </ul>

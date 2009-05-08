@@ -13,7 +13,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
 <h2 class="subheading <?php echo strtolower($data['view']); ?>">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_projects&action=get_meetings&projectid='.$data['project']->id); ?>">
+	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_meetings&projectid='.$data['project']->id); ?>">
 		<?php echo $data['view']; ?>
 	</a>
 </h2>
@@ -44,7 +44,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 
 <div style="clear:left; margin-top:30px;"></div>
 
-<button type="button" onclick="window.location = '<?php echo phpFrame_Application_Route::_("index.php?component=com_projects&action=get_meeting_detail&projectid=".$data['project']->id."&meetingid=".$data['meetingid']); ?>';"><?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?></button>
+<button type="button" onclick="window.location = '<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_meeting_detail&projectid=".$data['project']->id."&meetingid=".$data['meetingid']); ?>';"><?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?></button>
 <button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 
 <input type="hidden" name="projectid" value="<?php echo $data['project']->id; ?>" />

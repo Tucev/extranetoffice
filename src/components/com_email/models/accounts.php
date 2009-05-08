@@ -24,9 +24,21 @@ class emailModelAccounts extends phpFrame_Application_Model {
 	 *
 	 * @since 1.0.1
 	 */
-	function __construct() {
-		//TODO: Check permissions
-		parent::__construct();
+	public function __construct() {}
+	
+	public function getAccount($accountid=0) {
+		$query = "SELECT * ";
+		$query .= " FROM #__email_accounts ";
+		$query .= " WHERE userid = ".phpFrame::getUser()->id;
+		if (!empty($accountid)) {
+			$query .= " AND id = ".$accountid;
+		}
+		else {
+			$query .= " AND `default` = '1'";
+		}
+		
+		phpFrame::getDB()->setQuery($query);
+		return phpFrame::getDB()->loadObject();	
 	}
 	
 	public function getAccounts($userid=0, $accountid=0, $default=false) {
@@ -55,8 +67,7 @@ class emailModelAccounts extends phpFrame_Application_Model {
 	 * @return	mixed	Returns the stored table row object on success or FALSE on failure
 	 */
 	public function saveAccount($post) {
-		require_once COMPONENT_PATH.DS."tables".DS."email_accounts.table.php";		
-		$row =& phpFrame_Base_Singleton::getInstance("emailTableAccounts");
+		$row = $this->getTable('accounts');
 		
 		if (!empty($post['id'])) {
 			$row->load($post['id']);
@@ -89,8 +100,7 @@ class emailModelAccounts extends phpFrame_Application_Model {
 	}
 	
 	public function deleteAccount($accountid) {
-		require_once COMPONENT_PATH.DS."tables".DS."email_accounts.table.php";		
-		$row =& phpFrame_Base_Singleton::getInstance("emailTableAccounts");
+		$row = $this->getTable('accounts');
 		
 		if (!$row->delete($accountid)) {
 			$this->_error[] = $row->getLastError();

@@ -53,7 +53,7 @@ class emailViewMessages extends phpFrame_Application_View {
 		// Append page title to document title
 		if (phpFrame_Environment_Request::getLayout() != 'list') {
 			$document = phpFrame::getDocument('html');
-			$document->title .= ' - '.$this->page_title;
+			$document->title .= ' - '.$this->_data['page_title'];
 		}
 	}
 	
@@ -71,31 +71,6 @@ class emailViewMessages extends phpFrame_Application_View {
 		$document = phpFrame::getDocument('html');
 		$document->addScript('lib/contextmenu/webtoolkit.contextmenu.js');
 		$document->addStyleSheet('lib/contextmenu/webtoolkit.contextmenu.css');
-
-		$model = $this->getModel('email');
-		if ($model->loadUserEmailAccount() === false) {
-			phpFrame_Application_Error::raise(0, 'warning', _LANG_EMAIL_NO_ACCOUNT );
-			return;
-		}
-		
-		// Connect to incoming mail server
-		if ($model->openStream($this->folder) !== true) {
-			phpFrame_Application_Error::raise(0, 'warning', $model->error );
-			return;
-		}
-		
-		// Get messages from inbox
-		$this->messages = $model->getMessageList();
-		// Close connection
-		$model->closeStream();
-			
-		// Get mailboxes outside of inbox
-		if ($model->openStream('') !== true) {
-			phpFrame_Application_Error::raise(0, 'warning', $model->error );
-			return;
-		}	
-		$this->boxes = $model->getMailboxList();
-		$model->closeStream();
 			
 		// Set the page to auto refresh every set amount of time (in seconds)
 		//$document = phpFrame::getDocument('html');

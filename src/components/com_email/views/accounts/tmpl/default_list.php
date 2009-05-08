@@ -13,7 +13,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 <div class="new">
-	<a href="<?php echo phpFrame_Application_Route::_('index.php?component=com_email&view=accounts&layout=form'); ?>">
+	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=accounts&layout=form'); ?>">
 		<?php echo phpFrame_HTML_Text::_( _LANG_NEW ); ?>
 	</a>
 </div>
@@ -36,7 +36,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	<tr>
 		<td><?php echo $row->fromname; ?></td>
 		<td>
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_email&view=accounts&layout=form&accountid=".$row->id); ?>">
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=accounts&layout=form&accountid=".$row->id); ?>">
 			<?php echo $row->email_address; ?>
 		</a>
 		</td>
@@ -47,13 +47,13 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			<?php if ($row->default == '1') : ?>
 				Default
 			<?php else : ?>
-			<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_email&action=make_default_account&accountid=".$row->id); ?>">
+			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&action=make_default_account&accountid=".$row->id); ?>">
 				<?php echo phpFrame_HTML_Text::_(_LANG_EMAIL_ACCOUNTS_MAKE_DEFAULT); ?>
 			</a>
 			<?php endif; ?>
 		</td>
 		<td>
-			<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_email&action=remove_account&accountid=".$row->id); ?>">
+			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&action=remove_account&accountid=".$row->id); ?>">
 				<?php echo phpFrame_HTML_Text::_(_LANG_DELETE); ?>
 			</a>
 		</td>

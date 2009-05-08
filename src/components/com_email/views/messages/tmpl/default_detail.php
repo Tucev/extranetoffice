@@ -122,17 +122,17 @@ function confirm_delete(trash, uid, label) {
 		</a>
 	</div>
 	<div>
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_email&view=email&type=reply&folder=".$this->folder."&uid=".$this->message['uid']); ?>" title="<?php echo _LANG_REPLY; ?>">
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=email&type=reply&folder=".$this->folder."&uid=".$this->message['uid']); ?>" title="<?php echo _LANG_REPLY; ?>">
 		<img border="0" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/email/32x32/mail_reply-32x32.png" alt="<?php echo _LANG_REPLY; ?>" title="<?php echo _LANG_REPLY; ?>" />
 		</a>
 	</div>
 	<div>
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_email&view=email&type=reply_all&folder=".$this->folder."&uid=".$this->message['uid']); ?>" title="<?php echo _LANG_REPLY_TO_ALL; ?>">
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=email&type=reply_all&folder=".$this->folder."&uid=".$this->message['uid']); ?>" title="<?php echo _LANG_REPLY_TO_ALL; ?>">
 		<img border="0" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/email/32x32/mail_replyall-32x32.png" alt="<?php echo _LANG_REPLY_TO_ALL; ?>" title="<?php echo _LANG_REPLY_TO_ALL; ?>" />
 		</a>
 	</div>
 	<div>
-		<a href="<?php echo phpFrame_Application_Route::_("index.php?component=com_email&view=email&type=forward&folder=".$this->folder."&uid=".$this->message['uid']); ?>" title="<?php echo _LANG_FORWARD; ?>">
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=email&type=forward&folder=".$this->folder."&uid=".$this->message['uid']); ?>" title="<?php echo _LANG_FORWARD; ?>">
 		<img border="0" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/email/32x32/mail_forward-32x32.png" alt="<?php echo _LANG_FORWARD; ?>" title="<?php echo _LANG_FORWARD; ?>" />
 		</a>
 	</div>
