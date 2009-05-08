@@ -28,7 +28,7 @@ class projectsModelMembers extends phpFrame_Application_Model {
 	
 	function getMembers($projectid, $userid=0) {
 		$query = "SELECT ur.userid, ur.roleid, r.name AS rolename";
-		$query .= ", u.id AS id, u.username, CONCAT(u.firstname, ' ', u.lastname) AS name, u.email, u.photo ";
+		$query .= ", u.id AS id, u.username, u.firstname AS firstname, u.lastname AS lastname, u.email, u.photo ";
 		$query .= " FROM #__users_roles AS ur, #__users AS u, #__roles AS r ";
 		$query .= " WHERE u.id = ur.userid AND r.id = ur.roleid AND ur.projectid = ".$projectid;
 		$query .= " AND (u.deleted = '0000-00-00 00:00:00' OR u.deleted IS NULL)";
