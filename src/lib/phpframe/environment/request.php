@@ -59,23 +59,7 @@ class phpFrame_Environment_Request {
 	 * @var		string
 	 */
 	private static $_action=null;
-	/**
-	 * A core request variable specifying which view to render
-	 * 
-	 * @static
-	 * @access	private
-	 * @var		string
-	 */
-	private static $_view=null;	
-	/**
-	 * A core request variable specifying which view layout to use
-	 * 
-	 * @static
-	 * @access	private
-	 * @var		string
-	 */
-	private static $_layout=null;
-	
+		
 	/**
 	 * Instance of PHPInputFilter
 	 * 
@@ -147,10 +131,6 @@ class phpFrame_Environment_Request {
 		unset(self::$_URA['request']['component']);
 		self::$_action = self::$_URA['request']['action'];
 		unset(self::$_URA['request']['action']);
-		self::$_view = self::$_URA['request']['view'];
-		unset(self::$_URA['request']['view']);
-		self::$_layout = self::$_URA['request']['layout'];
-		unset(self::$_URA['request']['layout']);
 	}
 	
 	/**
@@ -311,70 +291,6 @@ class phpFrame_Environment_Request {
 	public static function setAction($value) {
 		// Filter value before assigning to variable
 		return self::$_action = self::$_inputfilter->process($value);
-	}
-	
-	/**
-	 * Get $_view
-	 * 
-	 * @static
-	 * @access	public
-	 * @return	action
-	 */
-	public static function getViewName($default='') {
-		// If view has not been set we return the default value
-		if (empty(self::$_view)) {
-			self::$_view = self::$_inputfilter->process($default);
-		}
-		return self::$_view;
-	}
-	
-	/**
-	 * Set $_view.
-	 * 
-	 * @static
-	 * @access	public
-	 * @param	string	$value The value to set the variable to.
-	 * @return	void
-	 */
-	public static function setViewName($value) {
-		// Filter value before assigning to variable
-		$value = self::$_inputfilter->process($value);
-		
-		self::$_view = $value;
-		
-		return $value;
-	}
-	
-	/**	
-	 * Get $_layout
-	 * 
-	 * @static
-	 * @access	public
-	 * @return	layout
-	 */
-	public static function getLayout($default='') {
-		// If view has not been set we return the default value
-		if (empty(self::$_layout)) {
-			self::$_layout = self::$_inputfilter->process($default);
-		}
-		return self::$_layout;
-	}
-	
-	/**
-	 * Set $_layout.
-	 * 
-	 * @static
-	 * @access	public
-	 * @param	string	$value The value to set the variable to.
-	 * @return	void
-	 */
-	public static function setLayout($value) {
-		// Filter value before assigning to variable
-		$value = self::$_inputfilter->process($value);
-		
-		self::$_layout = $value;
-		
-		return $value;
 	}
 	
 	/**
