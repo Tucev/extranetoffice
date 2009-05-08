@@ -430,7 +430,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$action = empty($post['id']) ? _LANG_ISSUES_ACTION_NEW : _LANG_ISSUES_ACTION_EDIT;
 			$title = $row->title;
 			$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-			$url = phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->id);
+			$url = phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issue_detail&projectid=".$row->projectid."&issueid=".$row->id);
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
