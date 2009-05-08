@@ -37,7 +37,7 @@ class phpFrame_HTML_Text {
 	 * @return	string
 	 * @since 	1.0
 	 */
-	function bytes($str) {
+	public static function bytes($str) {
 	    $unim = array("B","KB","MB","GB","TB","PB");
 	    $c = 0;
 	    while ($str>=1024) {
@@ -48,6 +48,23 @@ class phpFrame_HTML_Text {
 	}
 	
 	/**
+	 * Limit string to a set number of characters
+	 * 
+	 * @param	string	$str
+	 * @param	int		$max_chars
+	 * @param 	boolean	$add_trailing_dots
+	 * @return	string
+	 */
+	public static function limit_chars($str, $max_chars, $add_trailing_dots=true) {
+		if (strlen($str) > $max_chars) {
+			$str = substr($str, 0, $max_chars);
+			if ($add_trailing_dots === true) $str .= " ...";
+		}
+		
+		return $str;
+	}
+	
+	/**
 	 * Limit the number of words.
 	 * 
 	 * @param	string	$str
@@ -55,7 +72,7 @@ class phpFrame_HTML_Text {
 	 * @param	bool	$add_trailing_dots
 	 * @return	string
 	 */
-	function limit_words($str, $max_chars, $add_trailing_dots=true) {
+	public static function limit_words($str, $max_chars, $add_trailing_dots=true) {
 		if (strlen($str) > $max_chars) {
 			$str = substr($str, 0, $max_chars);
 			$str = substr($str, 0, strrpos($str, " "));
@@ -65,4 +82,3 @@ class phpFrame_HTML_Text {
 		return $str;
 	}
 }
-?>
