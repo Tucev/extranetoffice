@@ -43,7 +43,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$this->project = $modelProjects->getProjectsDetail($projectid);
 		
 			// Add pathway item
-			phpFrame::getPathway()->addItem($this->project->name, 'index.php?component=com_projects&view=projects&layout=detail&projectid='.$this->project->id);
+			phpFrame::getPathway()->addItem($this->project->name, 'index.php?component=com_projects&action=get_project_detail&projectid='.$this->project->id);
 			
 			// Append page component name to document title
 			$document = phpFrame::getDocument('html');
