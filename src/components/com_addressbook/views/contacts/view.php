@@ -15,12 +15,6 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * The methods in this class are invoked by its parent class. See display() 
  * method in 'view' class.
  * 
- * Method name to be triggered will be formed as follows:
- * 
- * <code>
- * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getViewName()).ucfirst($this->tmpl);
- * </code>
- * 
  * @package		ExtranetOffice
  * @subpackage 	com_addressbook
  * @author 		Luis Montero [e-noise.com]
@@ -50,7 +44,7 @@ class addressbookViewContacts extends phpFrame_Application_View {
 		parent::display();
 		
 		// Append page title to document title
-		if (phpFrame_Environment_Request::getLayout() != 'list') {
+		if ($this->_layout != 'list') {
 			$document = phpFrame::getDocument('html');
 			$document->title .= ' - '.$this->_data['page_title'];
 		}

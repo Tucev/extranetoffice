@@ -81,11 +81,6 @@ abstract class phpFrame_Application_View {
      * This method  also trigger layout specific methods. 
      * For example, if we are displaying layout "list" and there is a method called 
      * displayMyviewList within the extended view class this method will be automatically invoked.
-     * 
-     * Method name to be triggered will be formed as follows:
-     * <code>
-     * $tmpl_specific_method = "display".ucfirst(phpFrame_Environment_Request::getViewName()).ucfirst($this->tmpl);
-     * </code>
      *
      * @since	1.0
      */
