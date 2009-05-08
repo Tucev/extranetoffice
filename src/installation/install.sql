@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: May 08, 2009 at 10:09 AM
+-- Generation Time: May 08, 2009 at 10:21 AM
 -- Server version: 5.0.51
 -- PHP Version: 5.2.8
 
@@ -19,6 +19,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Table structure for table `eo_acl_groups`
 --
 
+DROP TABLE IF EXISTS `eo_acl_groups`;
 CREATE TABLE IF NOT EXISTS `eo_acl_groups` (
   `id` int(11) NOT NULL auto_increment,
   `groupid` int(11) NOT NULL,
@@ -63,6 +64,7 @@ INSERT INTO `eo_acl_groups` (`id`, `groupid`, `option`, `task`, `view`, `layout`
 -- Table structure for table `eo_activitylog`
 --
 
+DROP TABLE IF EXISTS `eo_activitylog`;
 CREATE TABLE IF NOT EXISTS `eo_activitylog` (
   `id` int(11) NOT NULL auto_increment,
   `projectid` int(11) NOT NULL,
@@ -87,6 +89,7 @@ CREATE TABLE IF NOT EXISTS `eo_activitylog` (
 -- Table structure for table `eo_comments`
 --
 
+DROP TABLE IF EXISTS `eo_comments`;
 CREATE TABLE IF NOT EXISTS `eo_comments` (
   `id` int(11) NOT NULL auto_increment,
   `projectid` int(11) NOT NULL,
@@ -109,6 +112,7 @@ CREATE TABLE IF NOT EXISTS `eo_comments` (
 -- Table structure for table `eo_components`
 --
 
+DROP TABLE IF EXISTS `eo_components`;
 CREATE TABLE IF NOT EXISTS `eo_components` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) collate utf8_unicode_ci NOT NULL,
@@ -141,6 +145,7 @@ INSERT INTO `eo_components` (`id`, `name`, `menu_name`, `author`, `version`, `en
 -- Table structure for table `eo_contacts`
 --
 
+DROP TABLE IF EXISTS `eo_contacts`;
 CREATE TABLE IF NOT EXISTS `eo_contacts` (
   `id` int(11) NOT NULL auto_increment,
   `created_by` int(11) NOT NULL,
@@ -195,6 +200,7 @@ CREATE TABLE IF NOT EXISTS `eo_contacts` (
 -- Table structure for table `eo_email_accounts`
 --
 
+DROP TABLE IF EXISTS `eo_email_accounts`;
 CREATE TABLE IF NOT EXISTS `eo_email_accounts` (
   `id` int(11) NOT NULL auto_increment,
   `userid` int(11) NOT NULL,
@@ -226,6 +232,7 @@ CREATE TABLE IF NOT EXISTS `eo_email_accounts` (
 -- Table structure for table `eo_files`
 --
 
+DROP TABLE IF EXISTS `eo_files`;
 CREATE TABLE IF NOT EXISTS `eo_files` (
   `id` int(11) NOT NULL auto_increment,
   `projectid` int(11) NOT NULL,
@@ -252,6 +259,7 @@ CREATE TABLE IF NOT EXISTS `eo_files` (
 -- Table structure for table `eo_groups`
 --
 
+DROP TABLE IF EXISTS `eo_groups`;
 CREATE TABLE IF NOT EXISTS `eo_groups` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) collate utf8_unicode_ci NOT NULL,
@@ -274,6 +282,7 @@ INSERT INTO `eo_groups` (`id`, `name`) VALUES
 -- Table structure for table `eo_invoices`
 --
 
+DROP TABLE IF EXISTS `eo_invoices`;
 CREATE TABLE IF NOT EXISTS `eo_invoices` (
   `id` int(11) NOT NULL auto_increment,
   `customerid` int(11) NOT NULL default '0',
@@ -306,6 +315,7 @@ CREATE TABLE IF NOT EXISTS `eo_invoices` (
 -- Table structure for table `eo_invoice_entries`
 --
 
+DROP TABLE IF EXISTS `eo_invoice_entries`;
 CREATE TABLE IF NOT EXISTS `eo_invoice_entries` (
   `id` int(11) NOT NULL auto_increment,
   `customerid` int(11) NOT NULL default '0',
@@ -341,6 +351,7 @@ CREATE TABLE IF NOT EXISTS `eo_invoice_entries` (
 -- Table structure for table `eo_invoice_transactions`
 --
 
+DROP TABLE IF EXISTS `eo_invoice_transactions`;
 CREATE TABLE IF NOT EXISTS `eo_invoice_transactions` (
   `id` int(11) NOT NULL auto_increment,
   `invoiceid` int(11) NOT NULL default '0',
@@ -365,6 +376,7 @@ CREATE TABLE IF NOT EXISTS `eo_invoice_transactions` (
 -- Table structure for table `eo_issues`
 --
 
+DROP TABLE IF EXISTS `eo_issues`;
 CREATE TABLE IF NOT EXISTS `eo_issues` (
   `id` int(11) NOT NULL auto_increment,
   `projectid` int(11) NOT NULL,
@@ -396,6 +408,7 @@ CREATE TABLE IF NOT EXISTS `eo_issues` (
 -- Table structure for table `eo_issue_types`
 --
 
+DROP TABLE IF EXISTS `eo_issue_types`;
 CREATE TABLE IF NOT EXISTS `eo_issue_types` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) collate utf8_unicode_ci NOT NULL,
@@ -417,6 +430,7 @@ INSERT INTO `eo_issue_types` (`id`, `name`) VALUES
 -- Table structure for table `eo_meetings`
 --
 
+DROP TABLE IF EXISTS `eo_meetings`;
 CREATE TABLE IF NOT EXISTS `eo_meetings` (
   `id` int(11) NOT NULL auto_increment,
   `projectid` int(11) NOT NULL,
@@ -440,6 +454,7 @@ CREATE TABLE IF NOT EXISTS `eo_meetings` (
 -- Table structure for table `eo_meetings_files`
 --
 
+DROP TABLE IF EXISTS `eo_meetings_files`;
 CREATE TABLE IF NOT EXISTS `eo_meetings_files` (
   `id` int(11) NOT NULL auto_increment,
   `meetingid` int(11) NOT NULL,
@@ -458,6 +473,7 @@ CREATE TABLE IF NOT EXISTS `eo_meetings_files` (
 -- Table structure for table `eo_messages`
 --
 
+DROP TABLE IF EXISTS `eo_messages`;
 CREATE TABLE IF NOT EXISTS `eo_messages` (
   `id` int(11) NOT NULL auto_increment,
   `projectid` int(11) NOT NULL,
@@ -480,6 +496,7 @@ CREATE TABLE IF NOT EXISTS `eo_messages` (
 -- Table structure for table `eo_milestones`
 --
 
+DROP TABLE IF EXISTS `eo_milestones`;
 CREATE TABLE IF NOT EXISTS `eo_milestones` (
   `id` int(11) NOT NULL auto_increment,
   `projectid` int(11) NOT NULL,
@@ -504,6 +521,7 @@ CREATE TABLE IF NOT EXISTS `eo_milestones` (
 -- Table structure for table `eo_modules`
 --
 
+DROP TABLE IF EXISTS `eo_modules`;
 CREATE TABLE IF NOT EXISTS `eo_modules` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) collate utf8_unicode_ci NOT NULL,
@@ -534,6 +552,7 @@ INSERT INTO `eo_modules` (`id`, `name`, `author`, `version`, `enabled`, `system`
 -- Table structure for table `eo_modules_options`
 --
 
+DROP TABLE IF EXISTS `eo_modules_options`;
 CREATE TABLE IF NOT EXISTS `eo_modules_options` (
   `id` int(11) NOT NULL auto_increment,
   `moduleid` int(11) NOT NULL,
@@ -559,6 +578,7 @@ INSERT INTO `eo_modules_options` (`id`, `moduleid`, `option`) VALUES
 -- Table structure for table `eo_organisations`
 --
 
+DROP TABLE IF EXISTS `eo_organisations`;
 CREATE TABLE IF NOT EXISTS `eo_organisations` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(100) collate utf8_unicode_ci NOT NULL,
@@ -576,6 +596,7 @@ CREATE TABLE IF NOT EXISTS `eo_organisations` (
 -- Table structure for table `eo_projects`
 --
 
+DROP TABLE IF EXISTS `eo_projects`;
 CREATE TABLE IF NOT EXISTS `eo_projects` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(128) NOT NULL,
@@ -610,6 +631,7 @@ CREATE TABLE IF NOT EXISTS `eo_projects` (
 -- Table structure for table `eo_project_types`
 --
 
+DROP TABLE IF EXISTS `eo_project_types`;
 CREATE TABLE IF NOT EXISTS `eo_project_types` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
@@ -633,6 +655,7 @@ INSERT INTO `eo_project_types` (`id`, `name`) VALUES
 -- Table structure for table `eo_roles`
 --
 
+DROP TABLE IF EXISTS `eo_roles`;
 CREATE TABLE IF NOT EXISTS `eo_roles` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(32) NOT NULL,
@@ -654,6 +677,7 @@ INSERT INTO `eo_roles` (`id`, `name`) VALUES
 -- Table structure for table `eo_session`
 --
 
+DROP TABLE IF EXISTS `eo_session`;
 CREATE TABLE IF NOT EXISTS `eo_session` (
   `id` varchar(32) collate utf8_unicode_ci NOT NULL,
   `userid` int(11) NOT NULL default '0',
@@ -674,6 +698,7 @@ CREATE TABLE IF NOT EXISTS `eo_session` (
 -- Table structure for table `eo_slideshows`
 --
 
+DROP TABLE IF EXISTS `eo_slideshows`;
 CREATE TABLE IF NOT EXISTS `eo_slideshows` (
   `id` int(11) NOT NULL auto_increment,
   `projectid` int(11) NOT NULL,
@@ -696,6 +721,7 @@ CREATE TABLE IF NOT EXISTS `eo_slideshows` (
 -- Table structure for table `eo_slideshows_slides`
 --
 
+DROP TABLE IF EXISTS `eo_slideshows_slides`;
 CREATE TABLE IF NOT EXISTS `eo_slideshows_slides` (
   `id` int(11) NOT NULL auto_increment,
   `slideshowid` int(11) NOT NULL,
@@ -715,6 +741,7 @@ CREATE TABLE IF NOT EXISTS `eo_slideshows_slides` (
 -- Table structure for table `eo_users`
 --
 
+DROP TABLE IF EXISTS `eo_users`;
 CREATE TABLE IF NOT EXISTS `eo_users` (
   `id` int(11) NOT NULL auto_increment,
   `groupid` tinyint(4) NOT NULL,
@@ -749,6 +776,7 @@ INSERT INTO `eo_users` (`id`, `groupid`, `username`, `password`, `email`, `first
 -- Table structure for table `eo_users_files`
 --
 
+DROP TABLE IF EXISTS `eo_users_files`;
 CREATE TABLE IF NOT EXISTS `eo_users_files` (
   `id` int(11) NOT NULL auto_increment,
   `userid` int(11) NOT NULL,
@@ -767,6 +795,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_files` (
 -- Table structure for table `eo_users_issues`
 --
 
+DROP TABLE IF EXISTS `eo_users_issues`;
 CREATE TABLE IF NOT EXISTS `eo_users_issues` (
   `id` int(11) NOT NULL auto_increment,
   `userid` int(11) NOT NULL,
@@ -785,6 +814,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_issues` (
 -- Table structure for table `eo_users_meetings`
 --
 
+DROP TABLE IF EXISTS `eo_users_meetings`;
 CREATE TABLE IF NOT EXISTS `eo_users_meetings` (
   `id` int(11) NOT NULL auto_increment,
   `userid` int(11) NOT NULL,
@@ -803,6 +833,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_meetings` (
 -- Table structure for table `eo_users_messages`
 --
 
+DROP TABLE IF EXISTS `eo_users_messages`;
 CREATE TABLE IF NOT EXISTS `eo_users_messages` (
   `id` int(11) NOT NULL auto_increment,
   `userid` int(11) NOT NULL,
@@ -821,6 +852,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_messages` (
 -- Table structure for table `eo_users_milestones`
 --
 
+DROP TABLE IF EXISTS `eo_users_milestones`;
 CREATE TABLE IF NOT EXISTS `eo_users_milestones` (
   `id` int(11) NOT NULL auto_increment,
   `userid` int(11) NOT NULL,
@@ -839,6 +871,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_milestones` (
 -- Table structure for table `eo_users_organisations`
 --
 
+DROP TABLE IF EXISTS `eo_users_organisations`;
 CREATE TABLE IF NOT EXISTS `eo_users_organisations` (
   `id` int(11) NOT NULL auto_increment,
   `userid` int(11) NOT NULL,
@@ -857,6 +890,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_organisations` (
 -- Table structure for table `eo_users_roles`
 --
 
+DROP TABLE IF EXISTS `eo_users_roles`;
 CREATE TABLE IF NOT EXISTS `eo_users_roles` (
   `id` int(11) NOT NULL auto_increment,
   `userid` int(11) NOT NULL,
@@ -876,6 +910,7 @@ CREATE TABLE IF NOT EXISTS `eo_users_roles` (
 -- Table structure for table `eo_user_openids`
 --
 
+DROP TABLE IF EXISTS `eo_user_openids`;
 CREATE TABLE IF NOT EXISTS `eo_user_openids` (
   `openid_url` varchar(255) collate utf8_unicode_ci NOT NULL,
   `user_id` int(11) NOT NULL,
