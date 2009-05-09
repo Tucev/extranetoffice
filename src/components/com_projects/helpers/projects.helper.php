@@ -205,7 +205,7 @@ class projectsHelperProjects {
 		$query .= "FROM #__users AS u ";
 		$query .= " WHERE u.id ";
 		if (!$members)  $query .= " NOT ";
-		$query .= " IN (SELECT u.id FROM #__users AS u LEFT JOIN #__users_roles ur ON ur.userid = u.id WHERE ur.projectid = 1)";
+		$query .= " IN (SELECT u.id FROM #__users AS u LEFT JOIN #__users_roles ur ON ur.userid = u.id WHERE ur.projectid = ".$projectid.")";
 		$query .= " AND (u.deleted = '0000-00-00 00:00:00' OR u.deleted IS NULL)";
 		$query .= " ORDER BY u.username";
 		$db -> setQuery($query);
