@@ -41,7 +41,7 @@ class testAdminController extends PHPUnit_Framework_TestCase {
     	phpFrame_Environment_Request::setAction('save_user');
     	phpFrame_Environment_Request::setVar('id', '');
     	phpFrame_Environment_Request::setVar('username', 'testuser');
-    	phpFrame_Environment_Request::setVar('email', 'testuser@extranetoffice.org');
+    	phpFrame_Environment_Request::setVar('email', 'anotheruser@extranetoffice.org');
     	phpFrame_Environment_Request::setVar('firstname', 'test');
     	phpFrame_Environment_Request::setVar('lastname', 'user');
     	phpFrame_Environment_Request::setVar('groupid', '2');
