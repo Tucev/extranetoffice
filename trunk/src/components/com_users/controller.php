@@ -67,10 +67,14 @@ class usersController extends phpFrame_Application_ActionController {
 	}
 	
 	public function get_settings() {
+		// Get request vars
+		$ret_url = phpFrame_Environment_Request::getVar('ret_url', 'index.php');
+		
 		// Get view
 		$view = $this->getView('settings', '');
 		// Set view data
 		$view->addData('row', phpFrame::getUser());
+		$view->addData('ret_url', $ret_url);
 		// Display view
 		$view->display();
 	}
@@ -90,6 +94,7 @@ class usersController extends phpFrame_Application_ActionController {
 			$this->_sysevents->setSummary(_LANG_USER_SAVE_SUCCESS, "success");
 		}
 		
-		$this->setRedirect($_SERVER["HTTP_REFERER"]);
+		$ret_url = phpFrame_Environment_Request::getVar('ret_url', 'index.php');
+		$this->setRedirect($ret_url);
 	}
 }

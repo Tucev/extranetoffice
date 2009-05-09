@@ -134,6 +134,7 @@ phpFrame_HTML::validate('userform');
 <input type="hidden" name="groupid" value="<?php echo $data['row']->get('groupid');?>" />
 <input type="hidden" name="component" value="com_users" />
 <input type="hidden" name="action" value="save_user" />
+<input type="hidden" name="ret_url" value="<?php echo $data['ret_url']; ?>">
 <?php echo phpFrame_HTML::_( 'form.token' ); ?>
 
 </form>
