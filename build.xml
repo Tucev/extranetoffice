@@ -6,8 +6,10 @@
 	</fileset>
 	
 	<fileset dir="./test/components" id="testfiles">
-		<include name="com_projects/controllerTest.php"/>
+		<include name="com_admin/controllerTest.php"/>
 		<include name="com_login/controllerTest.php"/>
+		<include name="com_projects/controllerTest.php"/>
+		<include name="com_users/controllerTest.php"/>
 	</fileset>
 	
 	<property name="report.dir" value="${project.basedir}/report"/>

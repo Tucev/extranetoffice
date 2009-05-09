@@ -130,6 +130,7 @@ class adminController extends phpFrame_Application_ActionController {
 		}
 		else {
 			$this->_sysevents->setSummary(_LANG_USER_SAVE_SUCCESS, "success");
+			$this->_success = true;
 		}
 		
 		if (!empty($tmpl)) $tmpl = "&tmpl=".$tmpl;
