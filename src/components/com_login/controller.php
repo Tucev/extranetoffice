@@ -55,14 +55,16 @@ class loginController extends phpFrame_Application_ActionController {
 			}
 			
 			$this->_success = true;
-			
-			$this->setRedirect('index.php');
-		}	
+		}
+		
+		$this->setRedirect('index.php');
 	}
 	
 	public function logout() {
 		// Logout using model
 		$this->getModel('login')->logout();
+		
+		// Redirect
 		$this->setRedirect('index.php');
 	}
 	

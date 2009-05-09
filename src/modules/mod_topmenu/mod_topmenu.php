@@ -16,7 +16,7 @@ $user = phpFrame::getUser();
 <div id="top">
 	<span class="icons_16_outer">
 	<span class="icons_16 users_16">
-		<?php phpFrame_HTML::dialog('Account', 'index.php?component=com_users&action=get_settings', 600, 560, true); ?>
+		<?php phpFrame_HTML::dialog('Account', 'index.php?component=com_users&action=get_settings&ret_url='.urlencode("index.php?".$_SERVER['QUERY_STRING']), 600, 560, true); ?>
 	</span>
 	</span>
 	

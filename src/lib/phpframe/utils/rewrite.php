@@ -19,6 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 class phpFrame_Utils_Rewrite {
 	public static function rewriteRequest() {
+		//var_dump($_SERVER); exit;
 		// Get path to script
 		$path = substr($_SERVER['SCRIPT_NAME'], 0, (strrpos($_SERVER['SCRIPT_NAME'], '/')+1));
 		
@@ -49,20 +50,31 @@ class phpFrame_Utils_Rewrite {
 				$_SERVER['REQUEST_URI'] = $path."index.php?".$_SERVER['QUERY_STRING'];
 				
 				// Set vars in _REQUEST array
-				$_REQUEST['component'] = $component;
-				$_REQUEST['action'] = $action;
-				// Set vars in _GET array
-				$_GET['component'] = $component;
-				$_GET['action'] = $action;	
+				if (!empty($component)) {
+					$_REQUEST['component'] = $component;
+					$_GET['component'] = $component;
+				}
+				if (!empty($action)) {
+					$_REQUEST['action'] = $action;
+					$_GET['action'] = $action;	
+				}
 			}
 		}
 	}
 	
 	public static function rewriteURL($url) {
-		return $url;
+		$uri = phpFrame::getURI();
 		
-		$url = parse_url($url);
-		parse_str($url['query'], $query_array);
+		if (strpos($url, 'http') != 0) {
+			$url = $uri->getBase().$url;
+		}
+		
+		// Parse URL string
+		$url_array = parse_url($url);
+		parse_str($url_array['query'], $query_array);
+		
+		// If there are no query parameters we don't need to rewrite anything
+		if (count($query_array) == 0) return $url;
 		
 		$rewritten_url = "";
 		
@@ -86,6 +98,6 @@ class phpFrame_Utils_Rewrite {
 			}
 		}
 		
-		return $rewritten_url;
+		return $uri->getBase().$rewritten_url;
 	}
 }
