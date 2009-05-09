@@ -131,15 +131,14 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
     	<?php echo $row->email; ?>
     </td>
 	<td>
-	<?php phpFrame_HTML::dialog(_LANG_PROJECTS_CHANGE_ROLE, 'index.php?component=com_projects&action=get_member_role_form&projectid='.$data['project']->id.'&userid='.$row->userid, 300, 150, true); ?>
-	<!-- 
-	<a class="" href="">
-		<img src="templates/<?php echo config::TEMPLATE; ?>/images/icons/generic/16x16/edit.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>" />
-	</a>
-	-->
-	<a class="delete_member" title="<?php echo phpFrame_HTML_Text::_($row->name, true); ?>" href="index.php?component=com_projects&action=remove_member&projectid=<?php echo $data['project']->id; ?>&userid=<?php echo $row->userid; ?>">
+	<?php if ($row->userid != phpFrame::getSession()->getUserId()) : ?>
+	<?php phpFrame_HTML::dialog(_LANG_PROJECTS_CHANGE_ROLE, 'index.php?component=com_projects&action=get_member_role_form&projectid='.$data['project']->id.'&userid='.$row->userid, 300, 150, true); ?> 
+	<a class="delete_member" title="<?php echo phpFrame_HTML_Text::_($row->firstname." ". $row->lastname, true); ?>" href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_member&projectid=".$data['project']->id."&userid=".$row->userid); ?>">
 		<img src="templates/<?php echo config::TEMPLATE; ?>/images/icons/generic/16x16/remove.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>" />
 	</a>
+	<?php else : ?>
+	<?php echo _LANG_PROJECTS_CANT_CHANGE_OWN_ROLE; ?>
+	<?php endif; ?>
 	</td>
   </tr>
   <?php $k = 1 - $k; ?>
