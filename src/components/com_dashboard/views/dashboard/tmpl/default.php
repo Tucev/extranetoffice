@@ -148,18 +148,18 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	
 	<?php if (is_array($project->activitylog) && count($project->activitylog) > 0) : ?>
 	<h4>
-		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&view=projects&layout=detail&projectid=".$project->id); ?>">
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_detail&projectid=".$project->id); ?>">
 		<?php echo $project->name; ?>
 		</a>
 	</h4>
 	
 	<div class="overdue_issues_16">
-		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&view=issues&projectid=".$project->id); ?>">
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issues&projectid=".$project->id); ?>">
 		<?php echo $project->overdue_issues." "._LANG_ISSUES_OVERDUE; ?>
 		</a>
 	</div>
 	<div class="upcoming_milestones_16">
-		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&view=milestones&projectid=".$project->id); ?>">
+		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_milestones&projectid=".$project->id); ?>">
 		<?php echo _LANG_MILESTONES_UPCOMING; ?>
 		</a>
 	</div>
