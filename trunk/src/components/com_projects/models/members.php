@@ -89,14 +89,14 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		return true;
 	}
 	
-	function inviteNewUser($projectid, $roleid) {
+	function inviteNewUser($post, $projectid, $roleid) {
 		// Get user object
 		$user = phpFrame::getUser();
 		
 		// Create standard object to store user properties
 		// We do this because we dont want to overwrite the current user object.
 		// Remember the user object extends phpFrame_Database_Table, which in turn extends phpFrame_Base_Singleton.
-		$row = new phpFrame_Base_StdObject();
+		$row = new stdClass();
 		
 		$row->block = '0';
 		$row->created = date("Y-m-d H:i:s");
@@ -104,8 +104,6 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		$password = phpFrame_Utils_Crypt::genRandomPassword();
 		// Assign newly generated password to row object (this password will be encrypted when stored).
 		$row->password = $password;
-		
-		$post = phpFrame_Environment_Request::getPost();
 		
 		// Bind the post data to the row array
 		if ($user->bind($post, 'password', $row) === false) {

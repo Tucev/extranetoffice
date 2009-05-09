@@ -170,6 +170,12 @@ class phpFrame_User extends phpFrame_Database_Table {
 			$row =& $this;
 		}
 		
+		// Before we store user check whether email already exists in db
+		if ($this->_emailExists($row->email)) {
+			$this->_error[] = _PHPFRAME_LANG_EMAIL_ALREADY_REGISTERED;
+			return false;
+		}
+		
 		// Encrypt password for storage
 		if (property_exists($row, 'password') && !is_null($row->password)) {
 			$salt = phpFrame_Utils_Crypt::genRandomPassword(32);
@@ -180,5 +186,12 @@ class phpFrame_User extends phpFrame_Database_Table {
 		// Invoke parent store() method to store row in db
 		return parent::store($row);
 	}
+	
+	private function _emailExists($email) {
+		$query = "SELECT id FROM #__users WHERE email = '".$email."'";
+		phpFrame::getDB()->setQuery($query);
+		$id = phpFrame::getDB()->loadResult();
+		
+		return ($id > 0);
+	}
 }
-?>
