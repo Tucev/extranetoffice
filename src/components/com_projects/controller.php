@@ -227,12 +227,13 @@ class projectsController extends phpFrame_Application_ActionController {
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		$roleid = phpFrame_Environment_Request::getVar('roleid', 0);
 		$email = phpFrame_Environment_Request::getVar('email', '');
+		$post = phpFrame_Environment_Request::getPost();
 		
 		// if an email address has been passed to invite a new member we do so
 		if (!empty($email)) {
 			$modelMembers = $this->getModel('members');
 			// Add the user to the system and add as a member of this project
-			if ($modelMembers->inviteNewUser($projectid, $roleid) === false) {
+			if ($modelMembers->inviteNewUser($post, $projectid, $roleid) === false) {
 				$this->_sysevents->setSummary($modelMembers->getLastError());
 			}
 			else {
