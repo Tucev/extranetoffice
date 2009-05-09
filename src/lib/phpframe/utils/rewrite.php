@@ -63,8 +63,6 @@ class phpFrame_Utils_Rewrite {
 	}
 	
 	public static function rewriteURL($url) {
-		return $url;
-		
 		$uri = phpFrame::getURI();
 		
 		if (strpos($url, 'http') != 0) {
