@@ -431,7 +431,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$action = empty($post['id']) ? _LANG_ISSUES_ACTION_NEW : _LANG_ISSUES_ACTION_EDIT;
 			$title = $row->title;
 			$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-			$url = phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issue_detail&projectid=".$row->projectid."&issueid=".$row->id);
+			$url = phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issue_detail&projectid=".$row->projectid."&issueid=".$row->id, false);
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
@@ -483,7 +483,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$action = _LANG_ISSUE_CLOSED;
 			$title = $row->title;
 			$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-			$url = phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issue_detail&projectid=".$row->projectid."&issueid=".$row->id);
+			$url = phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issue_detail&projectid=".$row->projectid."&issueid=".$row->id, false);
 			
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
@@ -514,7 +514,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$action = _LANG_ISSUE_REOPENED;
 			$title = $row->title;
 			$description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-			$url = phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issue_detail&projectid=".$row->projectid."&issueid=".$row->id);
+			$url = phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issue_detail&projectid=".$row->projectid."&issueid=".$row->id, false);
 			
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
@@ -610,7 +610,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$action = _LANG_FILES_ACTION_NEW;
 			$title = $row->title;
 			$description = sprintf(_LANG_FILES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->filename, $row->revision, $row->changelog);
-			$url = phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_file_detail&projectid=".$row->projectid."&fileid=".$row->id);
+			$url = phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_file_detail&projectid=".$row->projectid."&fileid=".$row->id, false);
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
@@ -729,7 +729,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$action = _LANG_MESSAGES_ACTION_NEW;
 			$title = $row->subject;
 			$description = sprintf(_LANG_MESSAGES_ACTIVITYLOG_DESCRIPTION, $row->subject, $row->body);
-			$url = phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_message_detail&projectid=".$row->projectid."&messageid=".$row->id);
+			$url = phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_message_detail&projectid=".$row->projectid."&messageid=".$row->id, false);
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
@@ -799,7 +799,7 @@ class projectsController extends phpFrame_Application_ActionController {
 					$url = "index.php?component=com_projects&view=milestones&layout=detail&projectid=".$row->projectid."&milestoneid=".$row->itemid;
 					break;
 			}
-			$url = phpFrame_Utils_Rewrite::rewriteURL($url);
+			$url = phpFrame_Utils_Rewrite::rewriteURL($url, false);
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
@@ -907,7 +907,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$action = empty($post['id']) ? _LANG_MEETINGS_ACTION_NEW : _LANG_MEETINGS_ACTION_EDIT;
 			$title = $row->name;
 			$description = sprintf(_LANG_MEETINGS_ACTIVITYLOG_DESCRIPTION, $row->name, $row->dtstart, $row->dtend, $row->description);
-			$url = phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_meeting_detail&projectid=".$row->projectid."&meetingid=".$row->id);
+			$url = phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_meeting_detail&projectid=".$row->projectid."&meetingid=".$row->id, false);
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
@@ -1196,7 +1196,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$action = empty($post['id']) ? _LANG_MILESTONES_ACTION_NEW : _LANG_MILESTONES_ACTION_EDIT;
 			$title = $row->title;
 			$description = sprintf(_LANG_MILESTONES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->due_date, $row->description);
-			$url = phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_milestone_detail&projectid=".$row->projectid."&milestoneid=".$row->id);
+			$url = phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_milestone_detail&projectid=".$row->projectid."&milestoneid=".$row->id, false);
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
@@ -1286,7 +1286,7 @@ class projectsController extends phpFrame_Application_ActionController {
 									$url = "index.php?component=com_projects&view=milestones&layout=detail&projectid=".$row->projectid."&milestoneid=".$row->itemid;
 									break;
 							}
-							$url = phpFrame_Utils_Rewrite::rewriteURL($url);
+							$url = phpFrame_Utils_Rewrite::rewriteURL($url, false);
 							
 							// Get assignees
 							$itemModel = $this->getModel($row->type);
