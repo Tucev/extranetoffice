@@ -63,7 +63,7 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 	 */
 	function saveActivityLog($projectid, $userid, $type, $action, $title, $description, $url, $assignees, $notify) {
 		// Store notification in db
-		$row =& phpFrame_Base_Singleton::getInstance("projectsTableActivitylog");
+		$row = $this->getTable('activitylog');
 		$row->projectid = $projectid;
 		$row->userid = $userid;
 		$row->type = $type;
@@ -81,9 +81,14 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 			$this->_error[] = $row->getLastError();
 			return false;
 		}
-				
+		
+		// Make sure assignees is an array
+		if (!is_array($assignees) && !is_null($assignees)) {
+			$assignees = array($assignees);
+		}
+		
 		// Send notifications via email
-		if ($notify === true && sizeof($assignees) > 0 && $assignees != $userid) {
+		if ($notify === true && sizeof($assignees) > 0 && $assignees[0] != $userid) {
 			return $this->_notify($row, $assignees);
 		}
 		
@@ -98,7 +103,7 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 	 * @return	bool	Returns TRUE on success or FALSE on failure
 	 * @todo	sanatise address, subject & body
 	 */
-	function _notify($row, $assignees) {
+	private function _notify($row, $assignees) {
 		$uri = phpFrame::getURI();
 		$user_name = phpFrame_User_Helper::id2name($row->userid);
 		
@@ -116,11 +121,6 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 		$pattern = "/".substr($url_array['view'], 0, (strlen($url_array['view'])-1))."id=([0-9]+)/i";
 		preg_match($pattern, $row->url, $matches);
 		$new_mail->setMessageIdSuffix('o='.phpFrame_Environment_Request::getComponentName().'&p='.$row->projectid.'&t='.$url_array['view'].'&i='.$matches[1]);
-		
-		// Make sure assignees is an array
-		if (!is_array($assignees)) {
-			$assignees = array($assignees);
-		}
 		
 		// Get assignees email addresses and exclude the user triggering the notification
 		$query = "SELECT firstname, lastname, email ";
