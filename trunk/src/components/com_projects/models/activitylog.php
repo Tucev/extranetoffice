@@ -112,7 +112,7 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 		$new_mail->Body = phpFrame_HTML_Text::_(sprintf(_LANG_ACTIVITYLOG_NOTIFY_BODY, 
 								 $this->project->name, 
 								 $row->action." by ".$user_name,
-								 $uri->getBase().$row->url, 
+								 phpFrame_Utils_Rewrite::rewriteURL($row->url), 
 								 $row->description)
 						);
 		
