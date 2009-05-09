@@ -450,4 +450,3 @@ define("_LANG_CONTACT_SAVED", "Contact successfully saved");
 // com_billing
 define("_LANG_BILLING", "Billing");
 define("_LANG_BILLING_INVOICES", "Invoices");
-?>
