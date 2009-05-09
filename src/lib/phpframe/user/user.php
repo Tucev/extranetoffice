@@ -170,8 +170,8 @@ class phpFrame_User extends phpFrame_Database_Table {
 			$row =& $this;
 		}
 		
-		// Before we store user check whether email already exists in db
-		if ($this->_emailExists($row->email)) {
+		// Before we store new users we check whether email already exists in db
+		if (empty($row->id) && $this->_emailExists($row->email)) {
 			$this->_error[] = _PHPFRAME_LANG_EMAIL_ALREADY_REGISTERED;
 			return false;
 		}
