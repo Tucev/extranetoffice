@@ -118,8 +118,6 @@ class phpFrame_HTML {
 		?>
 		
 		<script type="text/javascript">
-		<![CDATA[
-		 		
 		$(document).ready(function() {
 
 			// Dynamically add an HTML element at the end of the body to show the dialog
@@ -183,8 +181,6 @@ class phpFrame_HTML {
 				$("#dialog_<?php echo $uid; ?>").dialog('open');
 			});
 		});
-
-		]]>
 		</script>
 		
 		<a id="dialog_trigger_<?php echo $uid; ?>" href="<?php echo $target; ?>"><?php echo $label; ?></a>
@@ -220,8 +216,6 @@ class phpFrame_HTML {
 		?>
 		
 		<script language="javascript" type="text/javascript">
-		<![CDATA[
-		
 		// Declare confirm_href and confirm_title.
 		// We declare this variables in global scope so that they are available to all functions below.
 		var confirm_href_<?php echo $uid; ?>;
@@ -295,8 +289,6 @@ class phpFrame_HTML {
 				$("#confirm_dialog_<?php echo $uid; ?>").dialog('open');
 			});
 		});
-
-		]]>
 		</script>
 		
 		<?php
