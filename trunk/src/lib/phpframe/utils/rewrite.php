@@ -31,11 +31,18 @@ class phpFrame_Utils_Rewrite {
 			// This gives us the component and action expressed as directories
 			$params = str_replace($path, "", $_SERVER['REQUEST_URI']);
 			
-			preg_match('/^([a-zA-Z]+)\/?([a-zA-Z_]+)?\/?.*$/', $params, $matches);
-			if (is_array($matches) && count($matches) > 1) {
-				$component = "com_".$matches[1];
-				if (isset($matches[2])) {
-					$action = $matches[2];
+			//preg_match('/^([a-zA-Z]+)\/?([a-zA-Z_]+)?\/?.*$/', $params, $matches);
+			
+			// Get component name using regex
+			preg_match('/^([a-zA-Z]+)/', $params, $component_matches);
+			
+			// Get action name using regex
+			preg_match('/^[a-zA-Z]+\/([a-zA-Z_]+)/', $params, $action_matches);
+			
+			if (isset($component_matches[1]) && !empty($component_matches[1])) {
+				$component = "com_".$component_matches[1];
+				if (isset($action_matches[1])) {
+					$action = $action_matches[1];
 				}
 
 				// Prepend component and action to query string
