@@ -26,7 +26,7 @@ $frontcontroller = phpFrame::getFrontController();
 
 require_once 'PHPUnit/Framework.php';
 
-class testLoginController extends PHPUnit_Framework_TestCase {
+class testAdminController extends PHPUnit_Framework_TestCase {
 	function setUp() {
 		phpFrame_Environment_Request::setComponentName('com_admin');
     }
