@@ -34,29 +34,29 @@ CREATE TABLE IF NOT EXISTS `eo_acl_groups` (
 --
 
 INSERT INTO `eo_acl_groups` (`id`, `groupid`, `component`, `action`, `value`) VALUES
-(1, 1, 'com_login', '*', 'all'),
-(2, 2, 'com_login', '*', 'all'),
-(3, 1, 'com_dashboard', '*', 'own'),
-(4, 2, 'com_dashboard', '*', 'own'),
-(5, 1, 'com_email', '*', 'own'),
-(6, 2, 'com_email', '*', 'own'),
-(7, 1, 'com_addressbook', '*', 'own'),
-(8, 2, 'com_addressbook', '*', 'own'),
-(9, 1, 'com_projects', '*', 'all'),
-(10, 2, 'com_projects', '*', 'own'),
-(11, 2, 'com_users', '*', 'own'),
-(12, 3, 'com_users', '*', 'own'),
-(13, 4, 'com_users', '*', 'own'),
-(14, 0, 'com_login', '*', 'own'),
-(15, 3, 'com_login', '*', 'own'),
-(16, 4, 'com_login', '*', 'own'),
-(17, 3, 'com_dashboard', '*', 'own'),
-(18, 3, 'com_projects', '*', 'own'),
-(19, 4, 'com_dashboard', '*', 'own'),
-(20, 0, 'com_projects', 'process_incoming_email', 'all'),
-(21, 0, 'com_users', 'reset_password', 'all'),
-(22, 1, 'com_users', '*', 'all'),
-(23, 1, 'com_billing', '*', 'all');
+(NULL, 0, 'com_login', '*', 'own'),
+(NULL, 1, 'com_login', '*', 'all'),
+(NULL, 2, 'com_login', '*', 'all'),
+(NULL, 3, 'com_login', '*', 'own'),
+(NULL, 4, 'com_login', '*', 'own'),
+(NULL, 1, 'com_admin', '*', 'all'),
+(NULL, 1, 'com_dashboard', '*', 'own'),
+(NULL, 2, 'com_dashboard', '*', 'own'),
+(NULL, 3, 'com_dashboard', '*', 'own'),
+(NULL, 4, 'com_dashboard', '*', 'own'),
+(NULL, 0, 'com_users', 'reset_password', 'all'),
+(NULL, 1, 'com_users', '*', 'all'),
+(NULL, 2, 'com_users', '*', 'own'),
+(NULL, 3, 'com_users', '*', 'own'),
+(NULL, 4, 'com_users', '*', 'own'),
+(NULL, 1, 'com_projects', '*', 'all'),
+(NULL, 2, 'com_projects', '*', 'own'),
+(NULL, 3, 'com_projects', '*', 'own'),
+(NULL, 1, 'com_email', '*', 'own'),
+(NULL, 2, 'com_email', '*', 'own'),
+(NULL, 1, 'com_addressbook', '*', 'own'),
+(NULL, 2, 'com_addressbook', '*', 'own'),
+(NULL, 1, 'com_billing', '*', 'all');
 
 -- --------------------------------------------------------
 
@@ -130,14 +130,14 @@ CREATE TABLE IF NOT EXISTS `eo_components` (
 --
 
 INSERT INTO `eo_components` (`id`, `name`, `menu_name`, `author`, `version`, `enabled`, `system`, `ordering`) VALUES
-(1, 'dashboard', 'Dashboard', 'Luis Montero', '1.0.0', '1', '1', 1),
-(2, 'login', 'Logout', 'Luis Montero', '1.0.0', '1', '1', 99),
-(3, 'admin', 'Admin', 'Luis Montero', '1.0.0', '1', '1', 99),
-(4, 'email', 'Email', 'Luis Montero', '1.0.0', '1', '0', 2),
-(5, 'projects', 'Projects', 'Luis Montero', '1.0.0', '1', '0', 3),
-(6, 'users', 'Users', 'Luis Montero', '1.0.0', '1', '1', 99),
-(7, 'billing', 'Billing', 'Luis Montero', '1.0.0', '1', '0', 4),
-(8, 'addressbook', 'Address Book', 'Luis Montero', '1.0.0', '1', '0', 5);
+(NULL, 'login', 'Logout', 'Luis Montero', '1.0.0', '1', '1', 99),
+(NULL, 'users', 'Users', 'Luis Montero', '1.0.0', '1', '1', 99),
+(NULL, 'admin', 'Admin', 'Luis Montero', '1.0.0', '1', '1', 99),
+(NULL, 'dashboard', 'Dashboard', 'Luis Montero', '1.0.0', '1', '1', 1),
+(NULL, 'projects', 'Projects', 'Luis Montero', '1.0.0', '1', '0', 3),
+(NULL, 'addressbook', 'Address Book', 'Luis Montero', '1.0.0', '0', '0', 5),
+(NULL, 'email', 'Email', 'Luis Montero', '1.0.0', '0', '0', 2),
+(NULL, 'billing', 'Billing', 'Luis Montero', '1.0.0', '0', '0', 4);
 
 -- --------------------------------------------------------
 
