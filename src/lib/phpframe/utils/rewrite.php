@@ -19,7 +19,6 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 class phpFrame_Utils_Rewrite {
 	public static function rewriteRequest() {
-		//var_dump($_SERVER); exit;
 		// Get path to script
 		$path = substr($_SERVER['SCRIPT_NAME'], 0, (strrpos($_SERVER['SCRIPT_NAME'], '/')+1));
 		
@@ -31,6 +30,10 @@ class phpFrame_Utils_Rewrite {
 			// This gives us the component and action expressed as directories
 			if ($path != "/") {
 				$params = str_replace($path, "", $_SERVER['REQUEST_URI']);
+			}
+			else {
+				// If app is in web root we simply remove preceding slash
+				$params = substr($_SERVER['REQUEST_URI'], 1);
 			}
 			
 			//preg_match('/^([a-zA-Z]+)\/?([a-zA-Z_]+)?\/?.*$/', $params, $matches);
