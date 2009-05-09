@@ -92,6 +92,7 @@ class usersController extends phpFrame_Application_ActionController {
 		}
 		else {
 			$this->_sysevents->setSummary(_LANG_USER_SAVE_SUCCESS, "success");
+			$this->_success = true;
 		}
 		
 		$ret_url = phpFrame_Environment_Request::getVar('ret_url', 'index.php');

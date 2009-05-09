@@ -36,17 +36,33 @@ class testLoginController extends PHPUnit_Framework_TestCase {
      	phpFrame_Base_Singleton::destroyInstance('adminController');
     }
     
-    function test_save_user() {
-    	// Manually logut current CLI user
-    	$user = phpFrame::getUser();
-    	$user->id = 0;
-    	$user->groupid = 0;
-    	$session = phpFrame::getSession();
-    	$session->setUser($user);
-    	
+    function test_save_user_new() {
     	// Fake posted form data
     	phpFrame_Environment_Request::setAction('save_user');
-    	phpFrame_Environment_Request::setVar('username', 'admin');
+    	phpFrame_Environment_Request::setVar('id', '');
+    	phpFrame_Environment_Request::setVar('username', 'testuser');
+    	phpFrame_Environment_Request::setVar('email', 'testuser@extranetoffice.org');
+    	phpFrame_Environment_Request::setVar('firstname', 'test');
+    	phpFrame_Environment_Request::setVar('lastname', 'user');
+    	phpFrame_Environment_Request::setVar('groupid', '2');
+    	phpFrame_Environment_Request::setVar(phpFrame_Utils_Crypt::getToken(), '1');
+    	
+    	$frontcontroller = phpFrame::getFrontController();
+		$frontcontroller->run();
+    	    	
+    	$controller = phpFrame::getActionController('com_admin');
+    	$this->assertTrue($controller->getSuccess());
+    }
+    
+	function test_save_user_existing() {
+    	// Fake posted form data
+    	phpFrame_Environment_Request::setAction('save_user');
+    	phpFrame_Environment_Request::setVar('id', 62);
+    	phpFrame_Environment_Request::setVar('username', 'testuser');
+    	phpFrame_Environment_Request::setVar('email', 'testuser@extranetoffice.org');
+    	phpFrame_Environment_Request::setVar('firstname', 'test');
+    	phpFrame_Environment_Request::setVar('lastname', 'user');
+    	phpFrame_Environment_Request::setVar('groupid', '2');
     	phpFrame_Environment_Request::setVar(phpFrame_Utils_Crypt::getToken(), '1');
     	
     	$frontcontroller = phpFrame::getFrontController();
