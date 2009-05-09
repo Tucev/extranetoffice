@@ -29,7 +29,9 @@ class phpFrame_Utils_Rewrite {
 			&& $_SERVER['REQUEST_URI'] != $path."index.php") {
 			// Remove path from request uri. 
 			// This gives us the component and action expressed as directories
-			$params = str_replace($path, "", $_SERVER['REQUEST_URI']);
+			if ($path != "/") {
+				$params = str_replace($path, "", $_SERVER['REQUEST_URI']);
+			}
 			
 			//preg_match('/^([a-zA-Z]+)\/?([a-zA-Z_]+)?\/?.*$/', $params, $matches);
 			
