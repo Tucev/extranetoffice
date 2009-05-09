@@ -160,7 +160,7 @@ class phpFrame_Document_HTML extends phpFrame_Document {
 		
 		// add meta tags
 		$this->_metaTags[] = '<meta name="generator" content="Extranet Office" />';
-		$this->_metaTags[] = '<meta name="Content-Type" content="'.$this->_type.'" />';
+		$this->_metaTags[] = '<meta http-equiv="Content-Type" content="'.$this->_type.'" />';
 		
 		// print base url
 		echo '<base href="'.$this->base.'" />'.$this->_lineEnd;
