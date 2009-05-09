@@ -74,10 +74,10 @@ class phpFrame_Utils_Rewrite {
 		}
 	}
 	
-	public static function rewriteURL($url) {
+	public static function rewriteURL($url, $make_absolute=true) {
 		$uri = phpFrame::getURI();
 		
-		if (strpos($url, 'http') != 0) {
+		if (strpos($url, 'http') != 0 && $make_absolute === true) {
 			$url = $uri->getBase().$url;
 		}
 		
@@ -110,6 +110,10 @@ class phpFrame_Utils_Rewrite {
 			}
 		}
 		
-		return $uri->getBase().$rewritten_url;
+		if ($make_absolute === true) {
+			$rewritten_url = $uri->getBase().$rewritten_url;
+		}
+		
+		return $rewritten_url;
 	}
 }
