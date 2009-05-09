@@ -104,8 +104,8 @@ class phpFrame_Utils_Rewrite {
 			$rewritten_url .= "?";
 			$i=0;
 			foreach ($query_array as $key=>$value) {
-				if ($i>0) $rewritten_url .= "&"; 
-				$rewritten_url .= $key."=".$value;
+				if ($i>0) $rewritten_url .= "&amp;"; 
+				$rewritten_url .= $key."=".urlencode($value);
 				$i++;
 			}
 		}
