@@ -130,7 +130,7 @@ class phpFrame {
 	 */
 	public static function getTable($component_name, $table_name) {
 		$class_name = substr($component_name, 4)."Table".ucfirst($table_name);
-		return phpFrame_Base_Singleton::getInstance($class_name);
+		return phpFrame_Database_Table::getInstance($class_name);
 	}
 	
 	/**
@@ -170,7 +170,7 @@ class phpFrame {
 	 * @since 	1.0
 	 */
 	public static function getSession() {
-		return phpFrame_Base_Singleton::getInstance('phpFrame_Environment_Session');
+		return phpFrame_Database_Table::getInstance('phpFrame_Environment_Session');
 	}
 	
 	/**
