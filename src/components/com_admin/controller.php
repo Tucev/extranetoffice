@@ -101,14 +101,16 @@ class adminController extends phpFrame_Application_ActionController {
 		
 		// Get request vars
 		$tmpl = phpFrame_Environment_Request::getVar('tmpl', '');
+		$post = phpFrame_Environment_Request::getPost();
 		
 		$modelConfig = $this->getModel('config');
 		
-		if ($modelConfig->saveConfig() === false) {
+		if ($modelConfig->saveConfig($post) === false) {
 			$this->_sysevents->setSummary($modelConfig->getLastError());
 		}
 		else {
 			$this->_sysevents->setSummary(_LANG_CONFIG_SAVE_SUCCESS, "success");
+			$this->_success = true;
 		}
 		
 		if (!empty($tmpl)) $tmpl = "&tmpl=".$tmpl;

@@ -27,7 +27,7 @@ class adminModelConfig extends phpFrame_Application_Model {
 	 * 
 	 * @return bool
 	 */
-	function saveConfig() {
+	function saveConfig($post) {
 		$fname = _ABS_PATH.DS."inc".DS."config.php";
 		// Open file for reading first
 		if (!$fhandle = fopen($fname, "r")) {
@@ -41,10 +41,17 @@ class adminModelConfig extends phpFrame_Application_Model {
 			return false;
 		}
 		
+		// Use reflection API to get array of class constants
+		$reflection_config = new ReflectionClass(config);
+		$config_constants = $reflection_config->getConstants();
+		
 		// Loop through all config properties and build arrays with patterns and replacements for regex
-		foreach ($this->config as $key=>$value) {
-			$patterns[] = '/const '.$key.'=(.*);/';
-			$replacements[] = 'const $'.$key.'="'.phpFrame_Environment_Request::getVar($key, $value).'";';
+		foreach ($config_constants as $key=>$value) {
+			$lowercase_key = strtolower($key);
+			if (isset($post[$lowercase_key]) && !empty($post[$lowercase_key])) {
+				$patterns[] = '/const '.$key.'=(.*);/';
+				$replacements[] = 'const '.$key.'="'.$post[$lowercase_key].'";';	
+			}
 		}
 		
 		// Replace config vars in config file contents
