@@ -58,7 +58,11 @@ class phpFrame_HTML_Text {
 	public static function limit_chars($str, $max_chars, $add_trailing_dots=true) {
 		if (strlen($str) > $max_chars) {
 			$str = substr($str, 0, $max_chars);
-			if ($add_trailing_dots === true) $str .= " ...";
+			if ($add_trailing_dots === true) {
+				// Remove another 4 chars to replace with dots
+				$str = substr($str, 0, (strlen($str)-4));
+				$str .= " ...";
+			}
 		}
 		
 		return $str;
