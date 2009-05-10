@@ -74,7 +74,7 @@ class phpFrame_Utils_Rewrite {
 		}
 	}
 	
-	public static function rewriteURL($url) {
+	public static function rewriteURL($url, $xhtml=true) {
 		$uri = phpFrame::getURI();
 		
 		if (!preg_match('/^http/i', $url)) {
@@ -104,7 +104,7 @@ class phpFrame_Utils_Rewrite {
 			$rewritten_url .= "?";
 			$i=0;
 			foreach ($query_array as $key=>$value) {
-				if ($i>0) $rewritten_url .= "&amp;"; 
+				if ($i>0) $rewritten_url .= $xhtml ? "&amp;" : "&"; 
 				$rewritten_url .= $key."=".urlencode($value);
 				$i++;
 			}
