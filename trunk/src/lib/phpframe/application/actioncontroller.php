@@ -213,7 +213,7 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 * @since	1.0
 	 */
 	protected function setRedirect($url) {
-		$this->_redirect_url = phpFrame_Utils_Rewrite::rewriteURL($url);
+		$this->_redirect_url = phpFrame_Utils_Rewrite::rewriteURL($url, false);
 	}
 	
 	/**
