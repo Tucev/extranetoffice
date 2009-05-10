@@ -77,6 +77,14 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			</td>
 		</tr>
 		<tr>
+			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_TIMEZONE ); ?></td>
+			<td>
+				<select name="timezone">
+					<option value="Europe/London" <?php if (config::TIMEZONE == 'Europe/London') { echo 'selected'; } ?>>Europe/London</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_DEBUG ); ?></td>
 			<td>
 				<select name="debug">
@@ -85,6 +93,24 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 				</select>
 			</td>
 		</tr>
+		
+		<tr>
+			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_LOG_LEVEL ); ?></td>
+			<td>
+				<select name="log_level">
+					<option value="1" <?php if (config::LOG_LEVEL == "1") { echo 'selected'; } ?>>Errors only</option>
+					<option value="2" <?php if (config::LOG_LEVEL == "2") { echo 'selected'; } ?>>Warnings and errors</option>
+					<option value="3" <?php if (config::LOG_LEVEL == "3") { echo 'selected'; } ?>>Notices, warnings and errors</option>
+				</select>
+			</td>
+		</tr>
+		
+		
+		<tr>
+			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_LOG_FILE ); ?></td>
+			<td><input type="text" size="40" name="log_file" value="<?php echo config::LOG_FILE; ?>" /></td>
+		</tr>
+		
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_SECRET ); ?></td>
 			<td><input type="text" size="40" name="secret" value="<?php echo config::SECRET; ?>" /></td>
@@ -131,6 +157,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_FILESYSTEM ); ?></td>
 			<td><input type="text" size="40" name="filesystem" value="<?php echo config::FILESYSTEM; ?>" /></td>
 		</tr>
+		
+		<tr>
+			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_MAX_UPLOAD_SIZE ); ?></td>
+			<td><input type="text" size="6" name="max_upload_size" value="<?php echo config::MAX_UPLOAD_SIZE; ?>" /> Mb</td>
+		</tr>
+		
 		<tr>
 			<td><?php echo phpFrame_HTML_Text::_( _LANG_CONFIG_UPLOAD_ACCEPT ); ?></td>
 			<td><input type="text" size="40" name="upload_accept" value="<?php echo config::UPLOAD_ACCEPT; ?>" /></td>

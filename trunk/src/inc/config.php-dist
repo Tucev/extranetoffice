@@ -219,4 +219,3 @@ class config {
 	 */
 	const FROMNAME="Extranet Office Notifications";
 }
-?>
