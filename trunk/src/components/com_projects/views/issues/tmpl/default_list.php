@@ -119,16 +119,9 @@ $(document).ready(function() {
 	</div>
 	
 	<div class="thread_details">
-		<?php echo _LANG_POSTED_BY ?>: <?php echo $row->created_by_name; ?><br />
-		<?php echo _LANG_ASSIGNEES; ?>: 
-		<?php if (!empty($row->assignees)) : ?>
-    	<?php for ($j=0; $j<count($row->assignees); $j++) : ?>
-    		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$row->assignees[$j]['id']); ?>">
-    		<?php echo $row->assignees[$j]['name']; ?>
-    		</a>
-    	<?php endfor; ?>
-    	<?php endif; ?>
+		<?php echo _LANG_POSTED_BY ?>: <?php echo $row->created_by_name; ?>
+		<br />
+		<?php echo projectsViewHelper::printAssignees($row->assignees); ?>
     	<br />
     	<?php echo _LANG_DTSTART; ?>: <?php if ($row->dtstart != '0000-00-00') { echo date("d M Y", strtotime($row->dtstart)); } else { echo _LANG_NOT_SET; } ?> 
     	- 

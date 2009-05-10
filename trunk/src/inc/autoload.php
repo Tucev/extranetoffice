@@ -60,7 +60,13 @@ function __autoload($class_name) {
 					$file_path .= "models".DS.strtolower($matches[3]).".php";
 					break;
 				case 'View' : 
-					$file_path .= "views".DS.strtolower($matches[3]).DS."view.php";
+					if ($matches[3] == 'Helper') {
+						$file_path .= "views".DS.strtolower($matches[3]).".php";
+					}
+					else {
+						$file_path .= "views".DS.strtolower($matches[3]).DS."view.php";
+					}
+					
 					break;
 				case 'Helper' : 
 					$file_path .= "helpers".DS.strtolower($matches[3]).".helper.php";

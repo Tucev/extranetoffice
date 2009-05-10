@@ -69,17 +69,8 @@ phpFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECT
 	<div class="thread_details">
 	<?php echo _LANG_FILES_FILENAME.": ".$row->filename; ?> (Revision <?php echo $row->revision; ?>) 
 	Uploaded by: <?php echo $row->created_by_name; ?>
-	<?php if (!empty($row->assignees)) : ?>
-		<br />
-		<?php echo _LANG_ASSIGNEES; ?>: 
-    	<?php for ($j=0; $j<count($row->assignees); $j++) : ?>
-    		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$row->assignees[$j]['id']); ?>">
-    		<?php echo $row->assignees[$j]['name']; ?>
-    		</a>
-    	<?php endfor; ?>
-    <?php endif; ?>
-    	
+	<br />
+	<?php echo projectsViewHelper::printAssignees($row->assignees); ?>
 	</div>
 	
 	<?php if (!empty($row->changelog)) : ?>
