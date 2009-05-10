@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `eo_activitylog` (
   `userid` int(11) NOT NULL,
   `type` varchar(16) NOT NULL,
   `action` varchar(50) NOT NULL,
-  `title` varchar(50) NOT NULL,
+  `title` varchar(128) NOT NULL,
   `description` text NOT NULL,
   `url` varchar(256) NOT NULL,
   `ts` timestamp NOT NULL default CURRENT_TIMESTAMP,
