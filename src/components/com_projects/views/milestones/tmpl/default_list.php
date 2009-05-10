@@ -54,16 +54,9 @@ phpFrame_HTML::confirm('delete_milestone', _LANG_PROJECTS_MILESTONES_DELETE, _LA
 	</div>
 	
 	<div class="thread_details">
-		<?php echo _LANG_POSTED_BY ?>: <?php echo $row->created_by_name; ?><br />
-		<?php echo _LANG_ASSIGNEES; ?>: 
-		<?php if (!empty($row->assignees)) : ?>
-    	<?php for ($j=0; $j<count($row->assignees); $j++) : ?>
-    		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$row->assignees[$j]['id']); ?>">
-    		<?php echo $row->assignees[$j]['name']; ?>
-    		</a>
-    	<?php endfor; ?>
-    	<?php endif; ?>
+		<?php echo _LANG_POSTED_BY ?>: <?php echo $row->created_by_name; ?>
+		<br />
+		<?php echo projectsViewHelper::printAssignees($row->assignees); ?>
 	</div>
 	
 	<div class="<?php echo $row->due_date_class; ?> status">

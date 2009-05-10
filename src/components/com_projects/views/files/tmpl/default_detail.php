@@ -61,16 +61,8 @@ phpFrame_HTML::validate('commentsform');
 	<div class="thread_details">
 	<?php echo _LANG_FILES_FILENAME.": ".$data['row']->filename; ?> (Revision <?php echo $data['row']->revision; ?>) 
 	Uploaded by: <?php echo $data['row']->created_by_name; ?>
-	<?php if (!empty($data['row']->assignees)) : ?>
-		<br />
-		<?php echo _LANG_ASSIGNEES; ?>: 
-    	<?php for ($j=0; $j<count($data['row']->assignees); $j++) : ?>
-    		<?php if ($j>0) echo ', '; ?>
-    		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$data['row']->assignees[$j]['id']); ?>">
-    		<?php echo $data['row']->assignees[$j]['name']; ?>
-    		</a>
-    	<?php endfor; ?>
-    <?php endif; ?>
+	<br />
+	<?php echo projectsViewHelper::printAssignees($data['row']->assignees); ?>
 	</div>
 	
 	<?php if (!empty($data['row']->changelog)) : ?>

@@ -52,6 +52,7 @@ define("_LANG_HOURS", "Hours");
 define("_LANG_TITLE", "Title");
 define("_LANG_DESCRIPTION", "Description");
 define("_LANG_NOT_SET", "Not set");
+define("_LANG_NONE", "None");
 
 
 // com_admin
