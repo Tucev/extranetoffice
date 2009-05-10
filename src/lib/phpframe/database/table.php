@@ -12,9 +12,9 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * Table Class
  * 
- * This class implements the phpFrame_Base_Singleton design pattern. There will be many implementations 
+ * This class implements the singleton design pattern. There will be many implementations 
  * of the table class. The table class is an abstract class so it will be used to implement 
- * specific database tables and each of the child instances will need to be a phpFrame_Base_Singleton.
+ * specific database tables and each of the child instances will need to be a singleton.
  * 
  * @package		phpFrame
  * @subpackage 	database
@@ -22,7 +22,13 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @abstract 
  */
-abstract class phpFrame_Database_Table extends phpFrame_Base_Singleton {
+abstract class phpFrame_Database_Table extends phpFrame_Base_StdObject {
+	/**
+	 * Array containig instances of child classes.
+	 * 
+	 * @var array
+	 */
+	private static $_instances=array();
 	/**
 	 * Reference to the database object
 	 * 
@@ -71,35 +77,27 @@ abstract class phpFrame_Database_Table extends phpFrame_Base_Singleton {
 		$this->_getColumns();
 		
 		// If there are no columns it is probably because the table doesnt't exist.
-		if (count($this->_cols) > 0) {
-			return true;
-		}
-		else {
-			return false;
+		if (count($this->_cols) <= 0) {
+			throw new phpFrame_Exception("Could not initialise table ".$table_name);
 		}
 	}
 	
 	/**
-	 * Get columns for table in database and store column info in $this->_cols.
+	 * Get instance of a concrete child class
 	 * 
-	 * @access	private
-	 * @return	void
-	 * @since 	1.0
+	 * @param	$class_name
+	 * @return	object of type phpFrame_Database_Table
 	 */
-	private function _getColumns() {
-		$query = "SHOW COLUMNS FROM `".$this->_table_name."`";
-		$this->_db->setQuery($query);
-		$this->_cols = $this->_db->loadObjectList();
-		//var_dump($this->_cols); exit;
-		if ($this->_cols === false) {
-			throw new phpFrame_Exception_Database($this->_db->getLastError());
+	public static function getInstance($class_name) {
+		if (!isset(self::$_instances[$class_name])) {
+			self::$_instances[$class_name] = new $class_name();
+			
+			if (!self::$_instances[$class_name] instanceof phpFrame_Database_Table) {
+				throw new phpFrame_Exception("Table class ".$class_name." not supported.");
+			}
 		}
 		
-		// If no cols found set $this->_cols to empty array to avoid problems with 
-		// foreach loops in other methods that use this property.
-		if (!is_array($this->_cols)) {
-			$this->_cols = array();
-		}
+		return self::$_instances[$class_name];
 	}
 	
 	/**
@@ -211,81 +209,14 @@ abstract class phpFrame_Database_Table extends phpFrame_Base_Singleton {
 				continue;
 			}
 			else {
-				if ($this->checkDataType($row->$col_name, $col->Type) === false) {
-					$this->_error[] = 'phpFrame: table::check() failed. Column '.$col->Field.' '.$row->$col_name.' is not type '.$col->Type;
+				if ($this->_checkDataType($row->$col_name, $col->Type) === false) {
+					$this->_error[] = 'phpFrame: table::check() failed. Column '.$col->Field.' with value "'.$row->$col_name.'" is not of type '.$col->Type;
 					return false;
 				}	
 			}
 		}
 		
 		return true;
-	}
-	
-	/**
-	 * Check value is valid for a specific MySQL data type
-	 * 
-	 * @todo	This method is performing some basic checks but needs to check more specific data types.
-	 * @access	public
-	 * @param	string	$value The value to validate
-	 * @param	string	$type The MySQL data type (int(11), tinyint, varchar(16), ...)
-	 * @return	bool	Returns TRUE on success or FALSE on failure.
-	 * @since 	1.0
-	 */
-	public function checkDataType($value, $type) {
-		// Explode MySQL data type into type and length
-		$type_array = explode('(', $type);
-		$type = strtolower($type_array[0]); // make string lower case
-		if (sizeof($type_array) > 1) {
-			$length = substr($type_array[1], 0, strlen($type_array[1])-1);	
-		}
-		
-		// Make type variation prefix (ie: tinyint to int or longtext to long)
-		$prefixes = array('tiny', 'small', 'medium', 'big', 'long');
-		$type = str_replace($prefixes, '', $type);
-		
-		// Perform validation depending on data type
-		switch ($type) {
-			case 'int' : 
-				$isValid = phpFrame_Utils_Filter::validate($value, 'int');
-				break;
-				
-			case 'float' :
-			case 'double' :
-			case 'decimal' :
-				$isValid = phpFrame_Utils_Filter::validate($value, 'float');
-				break;
-				
-			case 'char' :
-			case 'varchar' :
-				if (strlen($value) <= $length) {
-					$isValid = phpFrame_Utils_Filter::validate($value);	
-				}
-				else {
-					$isValid = false;
-				}
-				break;
-			
-			case 'text' :
-			case 'blob' :
-			case 'enum' :
-			case 'datetime' :
-			case 'date' :
-			case 'time' :
-			case 'year' :
-			case 'timestamp' :
-			case 'binary' :
-			case 'bool' :
-			default : 
-				$isValid = phpFrame_Utils_Filter::validate($value);
-				break;
-		}
-		
-		if ($isValid !== false) {
-			return true;
-		}
-		else {
-			return false;
-		}
 	}
 	
 	/**
@@ -434,5 +365,95 @@ abstract class phpFrame_Database_Table extends phpFrame_Base_Singleton {
 			return false;
 		}
 	}
+	
+	/**
+	 * Get columns for table in database and store column info in $this->_cols.
+	 * 
+	 * @access	private
+	 * @return	void
+	 * @since 	1.0
+	 */
+	private function _getColumns() {
+		$query = "SHOW COLUMNS FROM `".$this->_table_name."`";
+		$this->_db->setQuery($query);
+		$this->_cols = $this->_db->loadObjectList();
+		
+		if ($this->_cols === false) {
+			throw new phpFrame_Exception_Database($this->_db->getLastError());
+		}
+		
+		// If no cols found set $this->_cols to empty array to avoid problems with 
+		// foreach loops in other methods that use this property.
+		if (!is_array($this->_cols)) {
+			$this->_cols = array();
+		}
+	}
+	
+	/**
+	 * Check value is valid for a specific MySQL data type
+	 * 
+	 * @todo	This method is performing some basic checks but needs to check more specific data types.
+	 * @access	public
+	 * @param	string	$value The value to validate
+	 * @param	string	$type The MySQL data type (int(11), tinyint, varchar(16), ...)
+	 * @return	bool	Returns TRUE on success or FALSE on failure.
+	 * @since 	1.0
+	 */
+	private function _checkDataType($value, $type) {
+		// Get type and length from input type string
+		preg_match('/([a-zA-Z]+)\((.+)\)/i', $type, $matches);
+
+		$type = strtolower($matches[1]); // make string lower case
+		if (isset($matches[2])) {
+			$length = $matches[2];	
+		}
+		
+		// Make type variation prefix (ie: tinyint to int or longtext to long)
+		$prefixes = array('tiny', 'small', 'medium', 'big', 'long');
+		$type = str_replace($prefixes, '', $type);
+		
+		// Perform validation depending on data type
+		switch ($type) {
+			case 'int' : 
+				$isValid = phpFrame_Utils_Filter::validate($value, 'int');
+				break;
+				
+			case 'float' :
+			case 'double' :
+			case 'decimal' :
+				$isValid = phpFrame_Utils_Filter::validate($value, 'float');
+				break;
+				
+			case 'char' :
+			case 'varchar' :
+				if (strlen($value) <= $length) {
+					$isValid = phpFrame_Utils_Filter::validate($value);	
+				}
+				else {
+					$isValid = false;
+				}
+				break;
+			
+			case 'text' :
+			case 'blob' :
+			case 'enum' :
+			case 'datetime' :
+			case 'date' :
+			case 'time' :
+			case 'year' :
+			case 'timestamp' :
+			case 'binary' :
+			case 'bool' :
+			default : 
+				$isValid = phpFrame_Utils_Filter::validate($value);
+				break;
+		}
+		
+		if ($isValid !== false) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }
-?>

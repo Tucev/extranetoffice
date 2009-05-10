@@ -62,13 +62,8 @@ class phpFrame_Environment_Session extends phpFrame_Database_Table {
 	 *
 	 */
 	protected function __construct() {
-		$status = parent::__construct('#__session', 'id');
-		if ($status === true) {
-			$this->_start();	
-		}
-		else {
-			throw new phpFrame_Exception('Session table (#__session) could not be initialised.', $this->getLastError());
-		}
+		parent::__construct('#__session', 'id');
+		$this->_start();
 	}
 	
 	/**
