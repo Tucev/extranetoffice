@@ -48,7 +48,7 @@ class adminModelConfig extends phpFrame_Application_Model {
 		// Loop through all config properties and build arrays with patterns and replacements for regex
 		foreach ($config_constants as $key=>$value) {
 			$lowercase_key = strtolower($key);
-			if (isset($post[$lowercase_key]) && !empty($post[$lowercase_key])) {
+			if (isset($post[$lowercase_key]) && $post[$lowercase_key] != "") {
 				$patterns[] = '/const '.$key.'=(.*);/';
 				$replacements[] = 'const '.$key.'="'.$post[$lowercase_key].'";';	
 			}
@@ -78,4 +78,3 @@ class adminModelConfig extends phpFrame_Application_Model {
 	}
 	
 }
-?>
