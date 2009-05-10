@@ -77,7 +77,7 @@ class phpFrame_Utils_Rewrite {
 	public static function rewriteURL($url) {
 		$uri = phpFrame::getURI();
 		
-		if (strpos($url, 'http') != 0) {
+		if (!preg_match('/^http/i', $url)) {
 			$url = $uri->getBase().$url;
 		}
 		
