@@ -79,7 +79,7 @@ phpFrame_HTML::validate('commentsform');
 		<img src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo !empty($this->settings->photo) ? $this->settings->photo : 'default.png'; ?>" />
 	</div>
 	<div style="margin-left: 95px;">
-		<form method="post" id="commentsform">
+		<form action="index.php" method="post" id="commentsform">
 		<a id="post-comment"></a>
 		<p><?php echo _LANG_COMMENTS_NEW; ?>:</p>
 		<textarea class="required" name="body" rows="10" cols="60"></textarea>
