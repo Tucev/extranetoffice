@@ -21,6 +21,14 @@ class config {
 	 */
 	const SITENAME="Extranet Office 1.0";
 	/**
+	 * Base URL used when cannot autodetect (mainly when running on command line)
+	 * 
+	 * Don't forget the trailing slash at the end
+	 * 
+	 * @var string
+	 */
+	const BASE_URL="http://myserver/path/to/extranetoffice/";
+	/**
 	 * Site template
 	 *
 	 * @const string
