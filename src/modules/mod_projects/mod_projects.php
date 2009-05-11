@@ -31,7 +31,7 @@ $views_available = $controller->getViewsAvailable();
 <?php foreach($views_available as $tool) : ?>
 <?php if ($tool != 'projects') : ?>
 <?php $access_property = "access_".$tool; ?>
-<?php if ($controller->project_permissions->roleid <= $controller->project->$access_property) : ?>
+<?php if (isset($controller->project->$access_property) && $controller->project_permissions->roleid <= $controller->project->$access_property) : ?>
 <li>
 	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=".phpFrame_Environment_Request::getComponentName()."&action=get_".$tool."&projectid=".phpFrame_Environment_Request::getVar('projectid')); ?>">
 	<?php 
