@@ -83,7 +83,7 @@ class projectsModelComments extends phpFrame_Application_Model {
 		//TODO: This function should also check permissions before deleting
 		
 		// Instantiate table object
-		$row =& phpFrame_Base_Singleton::getInstance("projectsTableComments");
+		$row = $this->getTable('comments');
 		
 		// Delete row from database
 		if (!$row->delete($commentid)) {

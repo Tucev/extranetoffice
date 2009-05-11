@@ -56,7 +56,7 @@ phpFrame_HTML::confirm('delete_milestone', _LANG_PROJECTS_MILESTONES_DELETE, _LA
 	<div class="thread_details">
 		<?php echo _LANG_POSTED_BY ?>: <?php echo $row->created_by_name; ?>
 		<br />
-		<?php echo projectsViewHelper::printAssignees($row->assignees); ?>
+		<?php echo projectsViewHelper::printAssignees("milestones", $row); ?>
 	</div>
 	
 	<div class="<?php echo $row->due_date_class; ?> status">

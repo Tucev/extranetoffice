@@ -70,7 +70,7 @@ phpFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECT
 	<?php echo _LANG_FILES_FILENAME.": ".$row->filename; ?> (Revision <?php echo $row->revision; ?>) 
 	Uploaded by: <?php echo $row->created_by_name; ?>
 	<br />
-	<?php echo projectsViewHelper::printAssignees($row->assignees); ?>
+	<?php echo projectsViewHelper::printAssignees("files", $row); ?>
 	</div>
 	
 	<?php if (!empty($row->changelog)) : ?>

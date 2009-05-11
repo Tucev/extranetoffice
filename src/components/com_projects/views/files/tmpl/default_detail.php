@@ -62,7 +62,7 @@ phpFrame_HTML::validate('commentsform');
 	<?php echo _LANG_FILES_FILENAME.": ".$data['row']->filename; ?> (Revision <?php echo $data['row']->revision; ?>) 
 	Uploaded by: <?php echo $data['row']->created_by_name; ?>
 	<br />
-	<?php echo projectsViewHelper::printAssignees($data['row']->assignees); ?>
+	<?php echo projectsViewHelper::printAssignees("files", $data['row']); ?>
 	</div>
 	
 	<?php if (!empty($data['row']->changelog)) : ?>
@@ -163,4 +163,4 @@ phpFrame_HTML::validate('commentsform');
 
 <div style="clear: left;"></div>
 
-<?php //echo '<pre>'; var_dump($this->row); echo '</pre>'; ?>
+<?php echo '<pre>'; var_dump($data); echo '</pre>'; ?>

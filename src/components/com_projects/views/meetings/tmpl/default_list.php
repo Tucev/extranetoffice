@@ -59,7 +59,7 @@ phpFrame_HTML::confirm('delete_meeting', _LANG_PROJECTS_MEETINGS_DELETE, _LANG_P
 	<div class="thread_details">
 		<?php echo _LANG_POSTED_BY ?>: <?php echo $row->created_by_name; ?>
 		<br />
-		<?php echo projectsViewHelper::printAssignees($row->assignees); ?>
+		<?php echo projectsViewHelper::printAssignees("meetings", $row); ?>
 	</div>
 	
 	<?php if (!empty($row->description)) : ?>

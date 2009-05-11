@@ -52,7 +52,7 @@ phpFrame_HTML::validate('commentsform');
 	<div class="thread_details">
 		<?php echo _LANG_POSTED_BY ?>: <?php echo $data['row']->created_by_name; ?>
 		<br />
-		<?php echo projectsViewHelper::printAssignees($data['row']->assignees); ?>
+		<?php echo projectsViewHelper::printAssignees("milestones", $data['row']); ?>
 	</div>
 	
 	<div class="<?php echo $data['row']->due_date_class; ?> status">
