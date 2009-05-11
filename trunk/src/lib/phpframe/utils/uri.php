@@ -115,11 +115,6 @@ class phpFrame_Utils_URI extends phpFrame_Base_StdObject {
 	 */
 	public function __construct($uri='') {
 		if (empty($uri)) {
-			// If client is command line we simply return
-			if (phpFrame_Environment_Request::getClientName() == 'cli') {
-				return;
-			}
-			
 			$uri = $this->_getRequestURI();
 		}
 		
@@ -140,6 +135,11 @@ class phpFrame_Utils_URI extends phpFrame_Base_StdObject {
 		} 
 		else {
 			$scheme = 'http';
+		}
+		
+		// If client is command line we use hardcoded value from config
+		if (phpFrame_Environment_Request::getClientName() == "cli") {
+			return config::BASE_URL;
 		}
 		
 		$uri = $scheme.'://'.$_SERVER['HTTP_HOST'];
