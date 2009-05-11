@@ -31,7 +31,7 @@ class phpFrame_HTML {
 	 * @return 	object	A standard object with the passed label and value as properties.
 	 * @since 	1.0
 	 */
-	static function selectOption($value, $label) {
+	public static function selectOption($value, $label) {
 		$option = new phpFrame_Base_StdObject();
 		$option->value = $value;
 		$option->label = $label;
@@ -49,7 +49,7 @@ class phpFrame_HTML {
 	 * @return	void
 	 * @since 	1.0
 	 */
-	static function selectGenericlist($options, $name, $attribs, $selected=NULL) {
+	public static function selectGenericlist($options, $name, $attribs, $selected=NULL) {
 		$html = '<select name="'.$name.'" '.$attribs.'>';
 		foreach ($options as $option) {
 			$html .= '<option value="'.$option->value.'"';
@@ -73,7 +73,7 @@ class phpFrame_HTML {
 	 * @return	void
 	 * @since	1.0
 	 */
-	static function validate($formid) {
+	public static function validate($formid) {
 		?>
 		
 		<script type="text/javascript">  
@@ -113,7 +113,7 @@ class phpFrame_HTML {
 	 * @return	void
 	 * @since 	1.0
 	 */
-	static function dialog($label, $target, $width=600, $height=560, $form=false, $ajax_container='') {
+	public static function dialog($label, $target, $width=600, $height=560, $form=false, $ajax_container='') {
 		$uid = uniqid();
 		?>
 		
@@ -211,7 +211,7 @@ class phpFrame_HTML {
 	 * @return	void
 	 * @since	1.0
 	 */
-	static function confirm($a_class, $title, $msg, $ajax_container='') {
+	public static function confirm($a_class, $title, $msg, $ajax_container='') {
 		$uid = uniqid();
 		?>
 		
@@ -312,7 +312,7 @@ class phpFrame_HTML {
 	 * @return	void
 	 * @since 	1.0
 	 */
-	static function calendar($name, $id='', $selected='', $format='dd/mm/yy', $attribs=array(), $show_format_hint=false) {
+	public static function calendar($name, $id='', $selected='', $format='dd/mm/yy', $attribs=array(), $show_format_hint=false) {
 		//set $id to $name if empty
 		if (empty($id)) {
 			$id = $name;
@@ -377,7 +377,7 @@ class phpFrame_HTML {
 	 * @return 	void
 	 * @since	1.0
 	 */
-	static function autocomplete($field_name, $attribs, $tokens, $matchContains=true) {
+	public static function autocomplete($field_name, $attribs, $tokens, $matchContains=true) {
 		$document = phpFrame::getDocument('html');
 		$document->addScript('lib/jquery/plugins/autocomplete/jquery.autocomplete.pack.js');
 		$document->addStyleSheet('lib/jquery/plugins/autocomplete/jquery.autocomplete.css');
@@ -428,7 +428,13 @@ class phpFrame_HTML {
 		<?php
 	}
 	
-	static function upload($data=array(), $name='userfile', $onComplete='', $action='index.php') {
+	public function dragAndDrop() {
+		?>
+		
+		<?php
+	}
+	
+	public static function upload($data=array(), $name='userfile', $onComplete='', $action='index.php') {
 		$document = phpFrame::getDocument('html');
 		$document->addScript('lib/jquery/plugins/ajax-upload/jquery.ajax-upload-2.6.js');
 		
@@ -508,7 +514,7 @@ class phpFrame_HTML {
 	 * @return 	void
 	 * @since 	1.0
 	 */
-	static function formToken() {
+	public static function formToken() {
 		?><input type="hidden" name="<?php echo phpFrame_Utils_Crypt::getToken(); ?>" value="1" /><?php
 	}
 	
@@ -521,7 +527,7 @@ class phpFrame_HTML {
 	 * @return	void
 	 * @since 	1.0
 	 */
-	static function button($type='button', $label='', $onclick='') {
+	public static function button($type='button', $label='', $onclick='') {
 		?><button type="<?php echo $type; ?>" onclick="<?php echo $onclick; ?>"><?php echo phpFrame_HTML_Text::_( $label ); ?></button><?php
 	}
 	
@@ -531,7 +537,7 @@ class phpFrame_HTML {
 	 * @return	void
 	 * @since 	1.0
 	 */
-	static function buttonBack() {
+	public static function buttonBack() {
 		?><button type="button" onclick="Javascript:window.history.back();"><?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?></button> 	<?php
 	}
 	
@@ -541,7 +547,7 @@ class phpFrame_HTML {
 	 * @return	void
 	 * @since 	1.0
 	 */
-	static function historyBack() {
+	public static function historyBack() {
 		?>
 		<script type="text/javascript">
 			window.history.back();
@@ -556,7 +562,7 @@ class phpFrame_HTML {
 	 * @return	void
 	 * @since 	1.0
 	 */
-	static function alert($msg) {
+	public static function alert($msg) {
 		?>
 		<script type="text/javascript">
 			alert('<?php echo $msg; ?>');
@@ -580,7 +586,7 @@ class phpFrame_HTML {
 	 * @return 	void
 	 * @since 	1.0
 	 */
-	static function _($str) {
+	public static function _($str) {
 		
 		$array = explode('.', $str);
 		$function_name = $array[0].ucfirst($array[1]);
@@ -596,4 +602,3 @@ class phpFrame_HTML {
 		
 	}
 }
-?>

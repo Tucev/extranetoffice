@@ -281,4 +281,3 @@ class phpFrame_User_Helper {
 		return $output;		
 	}
 }
-?>
