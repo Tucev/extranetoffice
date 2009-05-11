@@ -84,6 +84,14 @@ class projectsModelPermissions extends phpFrame_Application_Model {
 		return false;
 	}
 	
+	public function getUserId() {
+		return $this->_userid;
+	}
+	
+	public function getRoleId() {
+		return $this->_roleid;
+	}
+	
 	/**
 	 * Get user role
 	 * 
