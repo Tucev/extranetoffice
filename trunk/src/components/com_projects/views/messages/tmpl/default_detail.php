@@ -44,7 +44,7 @@ phpFrame_HTML::validate('commentsform');
 	<div class="thread_details">
 		<?php echo _LANG_POSTED_BY ?>: <?php echo $data['row']->created_by_name; ?>
 		<br />
-		<?php echo projectsViewHelper::printAssignees($data['row']->assignees); ?>
+		<?php echo projectsViewHelper::printAssignees("messages", $data['row']); ?>
 	</div>
 	
 	<?php if (!empty($data['row']->body)) : ?>

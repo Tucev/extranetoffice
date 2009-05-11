@@ -46,7 +46,7 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 	<div class="thread_details">
 		<?php echo _LANG_POSTED_BY ?>: <?php echo $data['row']->created_by_name; ?>
 		<br />
-		<?php echo projectsViewHelper::printAssignees($data['row']->assignees); ?>
+		<?php echo projectsViewHelper::printAssignees("meetings", $data['row']); ?>
     	<br />
     	<?php echo _LANG_DTSTART; ?>: <?php echo date("d M Y", strtotime($data['row']->dtstart)); ?><br /> 
     	<?php echo _LANG_DTEND; ?>: <?php echo date("d M Y", strtotime($data['row']->dtend)); ?>

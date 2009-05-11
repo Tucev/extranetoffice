@@ -56,7 +56,7 @@ phpFrame_HTML::confirm('delete_message', _LANG_PROJECTS_MESSAGES_DELETE, _LANG_P
 	<div class="thread_details">
 		<?php echo _LANG_POSTED_BY ?>: <?php echo $row->created_by_name; ?>
 		<br />
-		<?php echo projectsViewHelper::printAssignees($row->assignees); ?>
+		<?php echo projectsViewHelper::printAssignees("messages", $row); ?>
 	</div>
 	
 	<?php if (!empty($row->body)) : ?>

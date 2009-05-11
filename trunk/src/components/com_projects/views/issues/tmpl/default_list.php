@@ -121,7 +121,7 @@ $(document).ready(function() {
 	<div class="thread_details">
 		<?php echo _LANG_POSTED_BY ?>: <?php echo $row->created_by_name; ?>
 		<br />
-		<?php echo projectsViewHelper::printAssignees($row->assignees); ?>
+		<?php echo projectsViewHelper::printAssignees("issues", $row); ?>
     	<br />
     	<?php echo _LANG_DTSTART; ?>: <?php if ($row->dtstart != '0000-00-00') { echo date("d M Y", strtotime($row->dtstart)); } else { echo _LANG_NOT_SET; } ?> 
     	- 
