@@ -178,3 +178,20 @@ background-repeat: no-repeat;
 width: 220px;
 height: 19px;
 }
+
+/* JQuery UI Drag and Drop */
+#draggables_container { float: left; width: 55%; min-height: 12em; } * html #draggables_container { height: 12em; } /* IE6 */
+#draggables_container li { float: left; padding: 3px; margin: 0 3px 3px 0; text-align: center; }
+.draggables_container.custom-state-active { background: #eee; }
+	
+	
+.draggables_container li h5 { margin: 0 0 0.4em; cursor: move; }
+/* .draggables_container li a { float: right; } */
+/* .draggables_container li a.ui-icon-zoomin { float: left; } */
+.draggables_container li img { cursor: move; }
+
+#droppable_area { float: right; width: 40%; min-height: 24em; padding: 1%;} * html #droppable_area { height: 18em; } /* IE6 */
+#droppable_area h4 { line-height: 16px; margin: 0 0 0.4em; }
+/* #droppable_area h4 .ui-icon { float: left; } */
+#droppable_area .draggables_container h5 { font-size: 0.6em; }
+#droppable_area .draggables_container li { float: left; padding: 3px; margin: 0 2px 2px 0; text-align: center; }
