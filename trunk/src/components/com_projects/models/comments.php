@@ -139,7 +139,7 @@ class projectsModelComments extends phpFrame_Application_Model {
 			$data['fromaddress'] = $matches[1];
 			
 			// Only process messages from com_projects
-			if ($data['o'] == 'com_projects') {
+			if ($data['c'] == 'com_projects') {
 				$message->data = $data;
 				$comments_messages[] = $message;
 			}
