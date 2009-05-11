@@ -1227,6 +1227,38 @@ class projectsController extends phpFrame_Application_ActionController {
 		$this->setRedirect('index.php?component=com_projects&action=get_milestones&projectid='.$projectid);
 	}
 	
+	public function get_assignees_form() {
+		// Get request vars
+		$tool = phpFrame_Environment_Request::getVar('tool', '');
+		$itemid = phpFrame_Environment_Request::getVar('itemid', 0);
+		
+		// Get model depending on selected tool
+		$assignees = $this->getModel($tool)->getAssignees($itemid, false);
+		$members = $this->getModel('members')->getMembers($this->project->id);
+		
+		foreach ($members as $member) {
+			if (is_array($assignees) && in_array($member->userid, $assignees)) {
+				$selected_users[] = $member;
+			}
+			else {
+				$unselected_users[] = $member;
+			}
+		}
+		
+		// Get view
+		$view = $this->getView('assignees', '');
+		// Set view data
+		$view->addData('project', $this->project);
+		$view->addData('selected_users', $selected_users);
+		$view->addData('unselected_users', $unselected_users);
+		// Display view
+		$view->display();
+	}
+	
+	public function  save_assignees() {
+	
+	}
+	
 	public function process_incoming_email() {
 		// Get models
 		$modelComments = $this->getModel('comments');
@@ -1240,13 +1272,14 @@ class projectsController extends phpFrame_Application_ActionController {
 				if (!empty($message->data['p']) && !empty($message->data['fromaddress'])) {
 					// Set the project id
 					phpFrame_Environment_Request::setVar('projectid', $message->data['p']);
-					$this->projectid = $message->data['p'];
+					$projectid = $message->data['p'];
 					
+					// Get userid using email
 					$userid = phpFrame_User_Helper::email2id($message->data['fromaddress']);
 					
 					// Load the project data
 					$modelProjects = $this->getModel('projects');
-					$this->project = $modelProjects->getProjectsDetail($this->projectid, $userid);
+					$this->project = $modelProjects->getProjectsDetail($projectid, $userid);
 					
 					$modelMembers = $this->getModel('members');
 					$roleid = $modelMembers->isMember($message->data['p'], $userid);
@@ -1271,19 +1304,19 @@ class projectsController extends phpFrame_Application_ActionController {
 							$description = sprintf(_LANG_COMMENTS_ACTIVITYLOG_DESCRIPTION, $title, $row->body);
 							switch ($row->type) {
 								case 'files' : 
-									$url = "index.php?component=com_projects&view=files&layout=detail&projectid=".$row->projectid."&fileid=".$row->itemid;
+									$url = "index.php?component=com_projects&action=get_file_detail&projectid=".$row->projectid."&fileid=".$row->itemid;
 									break;
 								case 'issues' : 
-									$url = "index.php?component=com_projects&view=issues&layout=detail&projectid=".$row->projectid."&issueid=".$row->itemid;
+									$url = "index.php?component=com_projects&action=get_issue_detail&projectid=".$row->projectid."&issueid=".$row->itemid;
 									break;
 								case 'meetings' : 
-									$url = "index.php?component=com_projects&view=meetings&layout=detail&projectid=".$row->projectid."&meetingid=".$row->itemid;
+									$url = "index.php?component=com_projects&action=get_meeting_detail&projectid=".$row->projectid."&meetingid=".$row->itemid;
 									break;
 								case 'messages' : 
-									$url = "index.php?component=com_projects&view=messages&layout=detail&projectid=".$row->projectid."&messageid=".$row->itemid;
+									$url = "index.php?component=com_projects&action=get_message_detail&projectid=".$row->projectid."&messageid=".$row->itemid;
 									break;
 								case 'milestones' : 
-									$url = "index.php?component=com_projects&view=milestones&layout=detail&projectid=".$row->projectid."&milestoneid=".$row->itemid;
+									$url = "index.php?component=com_projects&action=get_milestone_detail&projectid=".$row->projectid."&milestoneid=".$row->itemid;
 									break;
 							}
 							

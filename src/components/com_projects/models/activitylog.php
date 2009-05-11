@@ -10,7 +10,7 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 
 /**
- * projectsModelProjects Class
+ * projectsModelActivitylog Class
  * 
  * @package		ExtranetOffice
  * @subpackage 	com_projects
@@ -88,7 +88,7 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 		}
 		
 		// Send notifications via email
-		if ($notify === true && sizeof($assignees) > 0 && $assignees[0] != $userid) {
+		if ($notify === true && sizeof($assignees) > 0) {
 			return $this->_notify($row, $assignees);
 		}
 		
@@ -112,15 +112,21 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 		$new_mail->Body = phpFrame_HTML_Text::_(sprintf(_LANG_ACTIVITYLOG_NOTIFY_BODY, 
 								 $this->project->name, 
 								 $row->action." by ".$user_name,
-								 phpFrame_Utils_Rewrite::rewriteURL($row->url), 
+								 phpFrame_Utils_Rewrite::rewriteURL($row->url, false), 
 								 $row->description)
 						);
 		
 		// Append message id suffix with data to be used when processing replies
 		parse_str($row->url, $url_array);
-		$pattern = "/".substr($url_array['view'], 0, (strlen($url_array['view'])-1))."id=([0-9]+)/i";
+		
+		// Find tool keyword (file, issue, message, ...)
+		preg_match('/action=get_([a-zA-Z]+)/i', $row->url, $tool_matches);
+		
+		// Find item id usings tool keyword + id (fileid, issueid, ...)
+		$pattern = '/'.$tool_matches[1].'id=([0-9]+)/i';
 		preg_match($pattern, $row->url, $matches);
-		$new_mail->setMessageIdSuffix('o='.phpFrame_Environment_Request::getComponentName().'&p='.$row->projectid.'&t='.$url_array['view'].'&i='.$matches[1]);
+		
+		$new_mail->setMessageIdSuffix('c='.phpFrame_Environment_Request::getComponentName().'&p='.$row->projectid.'&t='.$tool_matches[1].'s&i='.$matches[1]);
 		
 		// Get assignees email addresses and exclude the user triggering the notification
 		$query = "SELECT firstname, lastname, email ";
