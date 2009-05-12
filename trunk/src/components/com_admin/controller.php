@@ -54,7 +54,7 @@ class adminController extends phpFrame_Application_ActionController {
 		$search = phpFrame_Environment_Request::getVar('search', '');
 		
 		// Create list filter needed for getUsers()
-		$list_filter = new phpFrame_Database_Listfilter($orderby, $orderdir, $limit, $limitstart, $search);
+		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
 		
 		// Get users using model
 		$users = $this->getModel('users')->getUsers($list_filter);

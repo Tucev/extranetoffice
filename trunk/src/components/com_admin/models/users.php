@@ -25,11 +25,11 @@ class adminModelUsers extends phpFrame_Application_Model {
 	 * 
 	 * This method returns an array with row objects for each user
 	 * 
-	 * @param	object	$list_filter	Object of type phpFrame_Database_Listfilter
+	 * @param	object	$list_filter	Object of type phpFrame_Database_CollectionFilter
 	 * @param	boolean	$deleted		Indicates whether we want to include deleted users
 	 * @return	array
 	 */
-	function getUsers(phpFrame_Database_Listfilter $list_filter, $deleted=false) {
+	function getUsers(phpFrame_Database_CollectionFilter $list_filter, $deleted=false) {
 		// Build SQL query
 		$where = array();
 		
