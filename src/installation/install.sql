@@ -55,8 +55,7 @@ INSERT INTO `eo_acl_groups` (`id`, `groupid`, `component`, `action`, `value`) VA
 (NULL, 1, 'com_email', '*', 'own'),
 (NULL, 2, 'com_email', '*', 'own'),
 (NULL, 1, 'com_addressbook', '*', 'own'),
-(NULL, 2, 'com_addressbook', '*', 'own'),
-(NULL, 1, 'com_billing', '*', 'all');
+(NULL, 2, 'com_addressbook', '*', 'own');
 
 -- --------------------------------------------------------
 
@@ -136,8 +135,7 @@ INSERT INTO `eo_components` (`id`, `name`, `menu_name`, `author`, `version`, `en
 (NULL, 'dashboard', 'Dashboard', 'Luis Montero', '1.0.0', '1', '1', 1),
 (NULL, 'projects', 'Projects', 'Luis Montero', '1.0.0', '1', '0', 3),
 (NULL, 'addressbook', 'Address Book', 'Luis Montero', '1.0.0', '0', '0', 5),
-(NULL, 'email', 'Email', 'Luis Montero', '1.0.0', '0', '0', 2),
-(NULL, 'billing', 'Billing', 'Luis Montero', '1.0.0', '0', '0', 4);
+(NULL, 'email', 'Email', 'Luis Montero', '1.0.0', '0', '0', 2);
 
 -- --------------------------------------------------------
 
@@ -543,8 +541,7 @@ INSERT INTO `eo_modules` (`id`, `name`, `author`, `version`, `enabled`, `system`
 (2, 'projects', 'Luis Montero [e-noise.com]', '1.0.0', '1', '1', 'right', 1),
 (3, 'topmenu', 'Luis Montero [e-noise.com]', '1.0.0', '1', '1', 'topmenu', 1),
 (4, 'projectswitcher', 'Luis Montero [e-noise.com]', '1.0.0', '1', '1', 'topright', 1),
-(5, 'sysevents', 'Sven Lito [e-noise.com]', '1.0.0', '1', '1', 'sysevents', 1),
-(6, 'billing', 'Luis Montero [e-noise.com]', '1.0.0', '1', '0', 'right', 1);
+(5, 'sysevents', 'Sven Lito [e-noise.com]', '1.0.0', '1', '1', 'sysevents', 1);
 
 -- --------------------------------------------------------
 
@@ -569,8 +566,7 @@ INSERT INTO `eo_modules_options` (`id`, `moduleid`, `option`) VALUES
 (2, 2, 'com_projects'),
 (3, 3, '*'),
 (4, 4, '*'),
-(5, 5, '*'),
-(6, 6, 'com_billing');
+(5, 5, '*');
 
 -- --------------------------------------------------------
 
@@ -602,7 +598,7 @@ CREATE TABLE IF NOT EXISTS `eo_projects` (
   `name` varchar(128) NOT NULL,
   `project_type` tinyint(4) NOT NULL,
   `priority` tinyint(4) NOT NULL,
-  `company_id` int(11) default NULL,
+  `company_id` int(11) default '0',
   `description` text NOT NULL,
   `status` enum('-1','0','1','2','3') NOT NULL COMMENT '-1=Archived, 0=Planning, 1=In progress, 2=Paused, 3=Finished',
   `access` enum('0','1') NOT NULL default '1' COMMENT '0=Public, 1=Private',

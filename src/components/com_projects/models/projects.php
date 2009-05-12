@@ -115,30 +115,22 @@ class projectsModelProjects extends phpFrame_Application_Model {
 	 */
 	public function saveRow($post) {
 		// Instantiate table object
-		$row = $this->getTable('projects');
+		$row = new phpFrame_Database_Row('#__projects');
 		
 		// Bind the post data to the row array
 		if ($row->bind($post, 'created,created_by') === false) {
 			$this->_error[] = $row->getLastError();
 			return false;
 		}
-	
+		
+		// Manually set created by and created date for new records
 		if (empty($row->id)) {
-			$row->created = date("Y-m-d H:i:s");
-			$row->created_by = phpFrame::getUser()->id;
+			$row->set('created', date("Y-m-d H:i:s"));
+			$row->set('created_by', phpFrame::getSession()->getUserId());
 		}
 		
-		if (!$row->check()) {
-			$this->_error[] = $row->getLastError();
-			return false;
-		}
-		
-		if (!$row->store()) {
-			$this->_error[] = $row->getLastError();
-			return false;
-		}
-		
-		return $row->id;
+		// Store row and return row object
+		return $row->store();
 	}
 	
 	/**

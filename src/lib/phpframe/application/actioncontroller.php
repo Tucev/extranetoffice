@@ -37,12 +37,6 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 */
 	protected $_default_action=null;
 	/**
-	 * Array containing a list of with the available views
-	 * 
-	 * @var array
-	 */
-	protected $_views_available=null;
-	/**
 	 * A string containing a url to be redirected to. Leave empty for no redirection.
 	 *
 	 * @var string
@@ -74,9 +68,6 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 		
 		// Get reference to System Events object
 		$this->_sysevents = phpFrame::getSysevents();
-		
-		// Get available views
-		$this->_views_available = $this->getViewsAvailable();
 		
 		$components = phpFrame_Base_Singleton::getInstance('phpFrame_Application_Components');
 		$this->component_info = $components->loadByOption(phpFrame_Environment_Request::getComponentName());
@@ -142,43 +133,6 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 		
 		// Return action's output as string
 		return $action_output;
-	}
-	
-	/**
-	 * Get available views
-	 * 
-	 * This method scans the views directory for directories that may contain views 
-	 * and returns an array with the directory names. If no view directories found it 
-	 * returns false.
-	 * 
-	 * @return	array
-	 * @since	1.0
-	 */
-	public function getViewsAvailable() {
-		if (!is_null($this->_views_available)) { 
-			return $this->_views_available;
-		}
-		
-		$views_path = COMPONENT_PATH.DS."views";
-		$array = scandir($views_path);
-		
-		if (is_array($array) && count($array) > 0) {
-			// Filter out files and directories starting with a "."
-			foreach ($array as $item) {
-				if (is_dir($views_path.DS.$item) && strpos($item, '.') !== 0) {
-					$views_available[] = $item;
-				}
-			}
-			if (is_array($views_available) && count($views_available) > 0) {
-				return $views_available;	
-			}
-			else {
-				return false;
-			}
-		}
-		else {
-			return false;
-		}
 	}
 	
 	/**
