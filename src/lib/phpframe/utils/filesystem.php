@@ -19,6 +19,29 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 class phpFrame_Utils_Filesystem {
 	/**
+	 * Ensure that directory is writable
+	 * 
+	 * @param	string	$path	Path to directory to ensure that it is writable
+	 * @return	boolean	Returns TRUE on succes or throws exceptions on error.
+	 */
+	static function ensureWritableDir($path) {
+		$path = (string) $path;
+		
+		// If dir doesnt exist we try to create it
+		if (!is_dir($path)) {
+			if (!mkdir($path, 0771)) {
+				throw new phpFrame_Exception_Filesystem("Could not create directory ".$path.".");
+			}
+		}
+		
+		if (!is_writable($path)) {
+			throw new phpFrame_Exception_Filesystem("Directory ".$path." is not writable.");
+		}
+		
+		return true;
+	}
+	
+	/**
 	 * Upload file
 	 * 
 	 * @param	string	$fieldName
@@ -35,6 +58,9 @@ class phpFrame_Utils_Filesystem {
 		$file_size = $_FILES[$fieldName]['size']; // $file_size is size in bytes
 		$file_type = $_FILES[$fieldName]['type']; // $file_type is mime type e.g. image/gif
 		$file_error = $_FILES[$fieldName]['error']; // $file_error is any error encountered
+		
+		// Make sure that upload target is writable
+		self::ensureWritableDir($dir);
 		
 		// Declare array to be used for return
 		$array = array();
@@ -115,4 +141,3 @@ class phpFrame_Utils_Filesystem {
 		return $array;
 	}
 }
-?>
