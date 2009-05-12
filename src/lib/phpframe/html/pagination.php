@@ -21,17 +21,17 @@ class phpFrame_HTML_Pagination {
 	/**
 	 * The list filter object for which to provide pagination
 	 * 
-	 * @var	object	Object of type phpFrame_Database_Listfilter
+	 * @var	object	Object of type phpFrame_Database_CollectionFilter
 	 */
 	private $_list_filter=null;
 	
 	/**
 	 * Constructor
 	 * 
-	 * @param	object	$list_filter	Object of type phpFrame_Database_Listfilter
+	 * @param	object	$list_filter	Object of type phpFrame_Database_CollectionFilter
 	 * @return	void
 	 */
-	public function __construct(phpFrame_Database_Listfilter $list_filter) {
+	public function __construct(phpFrame_Database_CollectionFilter $list_filter) {
 		$this->_list_filter = $list_filter;
 	}
 	
