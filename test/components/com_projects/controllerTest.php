@@ -54,9 +54,11 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     function test_remove_project() {
     	// Add a project to db to then delete it
     	$db = phpFrame::getDB();
-    	$query = "INSERT INTO #__projects (id, name, project_type, priority) VALUES (NULL, 'another project', '2', '1')";
-		$db->setQuery($query);
-		$projectid = $db->query();
+    	$query = "INSERT INTO #__projects (id, name, project_type, priority, created_by) VALUES (NULL, 'another project', '2', '1', '1')";
+		$projectid = $db->setQuery($query)->query();
+		// Add project admin
+		$query = "INSERT INTO #__users_roles (id, userid, roleid, projectid) VALUES (NULL, '1', '1', '".$projectid."')";
+		$db->setQuery($query)->query();
 		
     	// Fake posted form data
     	phpFrame_Environment_Request::setAction('remove_project');

@@ -30,6 +30,10 @@ class testHelper {
 		if ($status == 1) {
 			throw new Exception('Could NOT reset database before running com_project controller tests.');
 		}
+		
+		// Add system user for tests to database table
+		$cmd = "mysql -u ".config::DB_USER." -p".config::DB_PASS." ".config::DB_NAME." < "._ABS_PATH_TEST.DS."testuser.sql";
+		passthru($cmd, $status);
 	}
 	
 	public static function resetFilesystem() {

@@ -86,7 +86,7 @@ class projectsModelProjects extends phpFrame_Application_Model {
 	
 	public function getRow($projectid) {
 		// Build SQL query to get row
-		$userid = phpFrame::getSession()->getUserId();;
+		$userid = phpFrame::getSession()->getUserId();
 		$where[] = "( p.access = '0' OR (".$userid." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 		$where[] = "p.id = ".$projectid;
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
@@ -99,9 +99,12 @@ class projectsModelProjects extends phpFrame_Application_Model {
 				  LEFT JOIN #__project_types pt ON pt.id = p.project_type "
 				  .$where. 
 				  " GROUP BY p.id ";
+
+		//echo str_replace("#__", "eo_", $query); exit;
 		
 		// Create instance of row
 		$row = new phpFrame_Database_Row('#__projects');
+		
 		// Load row data using query and return
 		return $row->loadByQuery($query, array('created_by_name', 'project_type_name'));
 	}
@@ -117,11 +120,8 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		// Instantiate table object
 		$row = new phpFrame_Database_Row('#__projects');
 		
-		// Bind the post data to the row array
-		if ($row->bind($post, 'created,created_by') === false) {
-			$this->_error[] = $row->getLastError();
-			return false;
-		}
+		// Bind the post data to the row array (exluding created and created_by)
+		$row->bind($post, 'created,created_by');
 		
 		// Manually set created by and created date for new records
 		if (empty($row->id)) {

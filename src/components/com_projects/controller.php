@@ -218,7 +218,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		// get model
 		$modelProjects = $this->getModel('projects');
 		
-		if ($modelProjects->deleteProject($this->_project->id) === true) {
+		if ($modelProjects->deleteRow($this->_project->id) === true) {
 			$this->_sysevents->setSummary(_LANG_PROJECT_DELETE_SUCCESS, "success");
 			$this->_success = true;
 		}
@@ -1398,8 +1398,8 @@ class projectsController extends phpFrame_Application_ActionController {
 	}
 	
 	private function _authorise($tool) {
-		$projectid = $this->_project->get('id');
-		if (!empty($projectid)) { 
+		
+		if (is_object($this->_project)) { 
 			if (!$this->_permissions->authorise($tool, phpFrame::getSession()->getUserId(), $this->_project)) {
 				$this->_sysevents->setSummary("Permission denied");
 				return false;
