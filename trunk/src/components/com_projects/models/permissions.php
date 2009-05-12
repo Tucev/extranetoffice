@@ -74,7 +74,7 @@ class projectsModelPermissions extends phpFrame_Application_Model {
 	 * @param	object	$project
 	 * @return	boolean
 	 */
-	public function authorise($tool, $userid=null, $project=null) {
+	public function authorise($tool, $userid, $project) {
 		// Get role id from db or cache
 		$roleid = $this->_getUserRole($userid, $project->id);
 		
@@ -86,7 +86,7 @@ class projectsModelPermissions extends phpFrame_Application_Model {
 		
 		// Check access for a specific tool
 		$access_property_name = "access_".$tool;
-		if (isset($project->$access_property_name)) {
+		if ($project->$access_property_name) {
 			if ($roleid !== false && $roleid <= $project->$access_property_name) {
 				return true;
 			}

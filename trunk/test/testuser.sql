@@ -1,0 +1,2 @@
+INSERT INTO `eo_users` (`id`, `groupid`, `username`, `password`, `email`, `firstname`, `lastname`, `photo`, `notifications`, `show_email`, `block`, `created`, `last_visit`, `activation`, `params`, `ts`, `deleted`) VALUES
+(1, 1, 'system', '59d0d3a4baecc0fe31a46fb5bd879cd1:kEuXamI4LBOIR405xh5tvq5vBmsr8mNp', 'system@example.com', 'Unit', 'Test', 'default.png', '1', '1', '0', '0000-00-00 00:00:00', NULL, NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
