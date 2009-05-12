@@ -18,8 +18,25 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  */
 class projectsController extends phpFrame_Application_ActionController {
-	public $project=null;
-	public $permissions=null;
+	/**
+	 * Array with available project tools
+	 * 
+	 * @todo	This need to be refactored so that tools are loaded polymorphically as plugins of a common interface.
+	 * @var		array
+	 */
+	private $_tools=array('admin', 'files', 'issues', 'meetings', 'messages', 'milestones', 'people');
+	/**
+	 * The selected project row object if any
+	 * 
+	 * @var	object
+	 */
+	private $_project=null;
+	/**
+	 * The project-wide permissions object
+	 * 
+	 * @var	object
+	 */
+	private $_permissions=null;
 	
 	/**
 	 * Constructor
@@ -34,23 +51,41 @@ class projectsController extends phpFrame_Application_ActionController {
 		parent::__construct('get_projects');
 		
 		// Get reference to custom permissions model for project tools
-		$this->permissions = projectsModelPermissions::getInstance();
+		$this->_permissions = projectsModelPermissions::getInstance();
 		
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		if (!empty($projectid)) {
 			// Load the project data
 			$modelProjects = $this->getModel('projects');
-			$this->project = $modelProjects->getRow($projectid);
+			$this->_project = $modelProjects->getRow($projectid);
 			
 			// Add pathway item
-			phpFrame::getPathway()->addItem($this->project->name, 'index.php?component=com_projects&action=get_project_detail&projectid='.$this->project->id);
+			phpFrame::getPathway()->addItem($this->_project->name, 'index.php?component=com_projects&action=get_project_detail&projectid='.$this->_project->id);
 			
 			// Append page component name to document title
 			$document = phpFrame::getDocument('html');
 			if (!empty($document->title)) $document->title .= ' - ';
-			$document->title .= $this->project->name;
+			$document->title .= $this->_project->name;
 		}
 	}
+	
+	public function getTools() {
+		return $this->_tools;
+	}
+	
+	public function getProject() {
+		return $this->_project;
+	}
+	
+	public function getProjectPermissions() {
+		return $this->_permissions;
+	}
+	
+	
+	/*
+	 * Controller actions below
+	 */
+	
 	
 	public function get_projects() {
 		// Get request data
@@ -84,21 +119,21 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Get overdue issues
 		$issues_filter = new phpFrame_Database_CollectionFilter('i.dtstart', 'DESC');
 		$overdue_issues = $this->getModel('issues')->getIssues($issues_filter, $projectid, true);
-			
+		
 		// Get upcoming milestones
 		
 		// Get project updates
 		$activitylog_filter = new phpFrame_Database_CollectionFilter('ts', 'DESC', 25);
-		$activitylog_model = $this->getModel('activitylog', array($this->project));
+		$activitylog_model = $this->getModel('activitylog', array($this->_project));
 		$activitylog = $activitylog_model->getCollection($activitylog_filter);
 		
 		// Get view
 		$view = $this->getView('projects', 'detail');
 		// Set view data
-		$view->addData('row', $this->project);
+		$view->addData('row', $this->_project);
 		$view->addData('overdue_issues', $overdue_issues);
 		$view->addData('activitylog', $activitylog);
-		$view->addData('roleid', $this->permissions->getRoleId());
+		$view->addData('roleid', $this->_permissions->getRoleId());
 		// Display view
 		$view->display();
 	}
@@ -122,7 +157,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$project->access_admin = '1';
 		}
 		else {
-			$project = $this->project;
+			$project = $this->_project;
 		}
 		
 		// Get view
@@ -140,34 +175,33 @@ class projectsController extends phpFrame_Application_ActionController {
 	 * @since 	1.0
 	 */
 	public function save_project() {
-		if (isset($this->project->id) && !$this->_authorise("admin")) return;
+		if (isset($this->_project->id) && !$this->_authorise("admin")) return;
 		
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
-		$user = phpFrame::getUser();
 		$post = phpFrame_Environment_Request::getPost();
 		
-		$modelProjects = $this->getModel('projects');
-		$projectid = $modelProjects->saveProject($post);
+		// Save project using model
+		$project = $this->getModel('projects')->saveRow($post);
 		
-		if ($projectid !== false) {
-			$this->_sysevents->setSummary(_LANG_PROJECT_SAVED, "success");
+		if ($project instanceof phpFrame_Database_Row && $project->get('id') > 0) {
+			$this->_sysevents->setSummary(_LANG_PROJECT_DELETE_SUCCESS, "success");
 			
 			// If NEW project saved correctly we now make project creator a project member
 			if (empty($post['id'])) {
 				$modelMembers = $this->getModel('members');
-				if (!$modelMembers->saveMember($projectid, $user->id, '1', false)) {
+				if (!$modelMembers->saveMember($project->get('id'), phpFrame::getSession()->getUserId(), '1', false)) {
 					$this->_sysevents->setSummary($modelMembers->getLastError());
 				}
 			}
 			
 			$this->_success = true;
 			
-			$this->setRedirect("index.php?component=com_projects&action=get_admin&projectid=".$projectid);
+			$this->setRedirect("index.php?component=com_projects&action=get_admin&projectid=".$project->get('id'));
 		}
 		else {
-			$this->_sysevents->setSummary($modelProjects->getLastError());
+			$this->_sysevents->setSummary(_LANG_PROJECT_SAVE_ERROR);
 			// Redirect back to form
 			$this->setRedirect("index.php?component=com_projects&action=get_project_form");
 		}
@@ -184,7 +218,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		// get model
 		$modelProjects = $this->getModel('projects');
 		
-		if ($modelProjects->deleteProject($this->project->id) === true) {
+		if ($modelProjects->deleteProject($this->_project->id) === true) {
 			$this->_sysevents->setSummary(_LANG_PROJECT_DELETE_SUCCESS, "success");
 			$this->_success = true;
 		}
@@ -205,8 +239,8 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Get view
 		$view = $this->getView('admin', 'list');
 		// Set view data
-		$view->addData('project', $this->project);
-		$view->addData('tools', $this->getViewsAvailable());
+		$view->addData('project', $this->_project);
+		$view->addData('tools', $this->_tools);
 		$view->addData('members', $members);
 		// Display view
 		$view->display();
@@ -218,7 +252,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Get view
 		$view = $this->getView('admin', 'member_form');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		// Display view
 		$view->display();
 	}
@@ -298,13 +332,13 @@ class projectsController extends phpFrame_Application_ActionController {
 		
 		if (!empty($userid)) {
 			$model = $this->getModel('members');
-			$members = $model->getMembers($this->project->id, $userid);	
+			$members = $model->getMembers($this->_project->id, $userid);	
 		}
 		
 		// Get view
 		$view = $this->getView('admin', 'member_role');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		$view->addData('members', $members);
 		// Display view
 		$view->display();
@@ -331,12 +365,12 @@ class projectsController extends phpFrame_Application_ActionController {
 	
 	public function get_people() {
 		
-		$members = $this->getModel('members')->getMembers($this->project->id);
+		$members = $this->getModel('members')->getMembers($this->_project->id);
 		
 		// Get view
 		$view = $this->getView('people', 'list');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		$view->addData('rows', $members);
 		// Display view
 		$view->display();
@@ -356,12 +390,12 @@ class projectsController extends phpFrame_Application_ActionController {
 		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
 		
 		// Get issues using model
-		$issues = $this->getModel('issues')->getIssues($list_filter, $this->project->id);
+		$issues = $this->getModel('issues')->getIssues($list_filter, $this->_project->id);
 		
 		// Get view
 		$view = $this->getView('issues', 'list');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		$view->addData('rows', $issues);
 		$view->addData('page_nav', new phpFrame_HTML_Pagination($list_filter));
 		// Display view
@@ -375,12 +409,12 @@ class projectsController extends phpFrame_Application_ActionController {
 		$issueid = phpFrame_Environment_Request::getVar('issueid', 0);
 		
 		// Get issue using model
-		$issue = $this->getModel('issues')->getIssuesDetail($this->project->id, $issueid);
+		$issue = $this->getModel('issues')->getIssuesDetail($this->_project->id, $issueid);
 		
 		// Get view
 		$view = $this->getView('issues', 'detail');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		$view->addData('row', $issue);
 		// Display view
 		$view->display();
@@ -395,11 +429,11 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Get view
 		$view = $this->getView('issues', 'form');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 			
 		if ($issueid != 0) {		
 			// Get issue using model
-			$issue = $this->getModel('issues')->getIssuesDetail($this->project->id, $issueid);
+			$issue = $this->getModel('issues')->getIssuesDetail($this->_project->id, $issueid);
 			$view->addData('row', $issue);
 		}
 		else {
@@ -439,7 +473,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
-			$modelActivityLog = $this->getModel('activitylog', array($this->project));
+			$modelActivityLog = $this->getModel('activitylog', array($this->_project));
 			if (!$modelActivityLog->insertRow('issues', $action, $title, $description, $url, $post['assignees'], $notify)) {
 				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}
@@ -550,7 +584,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Get view
 		$view = $this->getView('files', 'list');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		$view->addData('rows', $files);
 		$view->addData('page_nav', new phpFrame_HTML_Pagination($list_filter));
 		// Display view
@@ -562,12 +596,12 @@ class projectsController extends phpFrame_Application_ActionController {
 		
 		$fileid = phpFrame_Environment_Request::getVar('fileid', 0);
 		
-		$files = $this->getModel('files')->getFilesDetail($this->project->id, $fileid);
+		$files = $this->getModel('files')->getFilesDetail($this->_project->id, $fileid);
 		
 		// Get view
 		$view = $this->getView('files', 'detail');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		$view->addData('row', $files);
 		// Display view
 		$view->display();
@@ -579,13 +613,13 @@ class projectsController extends phpFrame_Application_ActionController {
 		$parentid = phpFrame_Environment_Request::getVar('parentid', 0);
 		
 		if ($parentid > 0) {
-			$files = $this->getModel('files')->getFilesDetail($this->project->id, $parentid);
+			$files = $this->getModel('files')->getFilesDetail($this->_project->id, $parentid);
 		}
 		
 		// Get view
 		$view = $this->getView('files', 'form');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		$view->addData('row', $files);
 		// Display view
 		$view->display();
@@ -675,7 +709,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Get view
 		$view = $this->getView('messages', 'list');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		$view->addData('rows', $messages);
 		$view->addData('page_nav', new phpFrame_HTML_Pagination($list_filter));
 		// Display view
@@ -689,12 +723,12 @@ class projectsController extends phpFrame_Application_ActionController {
 		$messageid = phpFrame_Environment_Request::getVar('messageid', 0);
 		
 		// Get message using model
-		$message = $this->getModel('messages')->getMessagesDetail($this->project->id, $messageid);
+		$message = $this->getModel('messages')->getMessagesDetail($this->_project->id, $messageid);
 		
 		// Get view
 		$view = $this->getView('messages', 'detail');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		$view->addData('row', $message);
 		// Display view
 		$view->display();
@@ -706,7 +740,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Get view
 		$view = $this->getView('messages', 'form');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		// Display view
 		$view->display();
 	}
@@ -837,12 +871,12 @@ class projectsController extends phpFrame_Application_ActionController {
 		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
 		
 		// Get meetings using model
-		$meetings = $this->getModel('meetings')->getMeetings($list_filter, $this->project->id);
+		$meetings = $this->getModel('meetings')->getMeetings($list_filter, $this->_project->id);
 		
 		// Get view
 		$view = $this->getView('meetings', 'list');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		$view->addData('rows', $meetings);
 		$view->addData('page_nav', new phpFrame_HTML_Pagination($list_filter));
 		// Display view
@@ -854,12 +888,12 @@ class projectsController extends phpFrame_Application_ActionController {
 		
 		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
 		
-		$meeting = $this->getModel('meetings')->getMeetingsDetail($this->project->id, $meetingid);
+		$meeting = $this->getModel('meetings')->getMeetingsDetail($this->_project->id, $meetingid);
 		
 		// Get view
 		$view = $this->getView('meetings', 'detail');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		$view->addData('row', $meeting);
 		// Display view
 		$view->display();
@@ -873,7 +907,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			
 		if ($meetingid != 0) {		
 			// Get issue using model
-			$meeting = $this->getModel('meetings')->getMeetingsDetail($this->project->id, $meetingid);
+			$meeting = $this->getModel('meetings')->getMeetingsDetail($this->_project->id, $meetingid);
 		}
 		else {
 			$meeting = new stdClass();
@@ -883,7 +917,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Get view
 		$view = $this->getView('meetings', 'form');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		$view->addData('row', $meeting);
 		// Display view
 		$view->display();
@@ -948,7 +982,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			
 		if ($slideshowid != 0) {		
 			// Get issue using model
-			$slideshow = $this->getModel('meetings')->getSlideshows($this->project->id, $meetingid, $slideshowid);
+			$slideshow = $this->getModel('meetings')->getSlideshows($this->_project->id, $meetingid, $slideshowid);
 		}
 		else {
 			$slideshow[0] = new stdClass();
@@ -957,7 +991,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Get view
 		$view = $this->getView('meetings', 'slideshows_form');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		$view->addData('row', $slideshow[0]);
 		// Display view
 		$view->display();
@@ -1066,9 +1100,9 @@ class projectsController extends phpFrame_Application_ActionController {
 		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
 		
 		if (!empty($meetingid)) {
-			$project_files = $this->getModel('files')->getFiles(new phpFrame_Database_CollectionFilter(), $this->project->id);
+			$project_files = $this->getModel('files')->getFiles(new phpFrame_Database_CollectionFilter(), $this->_project->id);
 			
-			$meeting_files = $this->getModel('meetings')->getFiles($this->project->id, $meetingid);
+			$meeting_files = $this->getModel('meetings')->getFiles($this->_project->id, $meetingid);
 			$meeting_files_ids = array();
 			for ($i=0; $i<count($meeting_files); $i++) {
 				$meeting_files_ids[] = $meeting_files[$i]->id;
@@ -1078,7 +1112,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Get view
 		$view = $this->getView('meetings', 'files_form');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		$view->addData('meetingid', $meetingid);
 		$view->addData('project_files', $project_files);
 		$view->addData('meeting_files_ids', $meeting_files_ids);
@@ -1125,12 +1159,12 @@ class projectsController extends phpFrame_Application_ActionController {
 		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
 		
 		// Get milestones using model
-		$milestones = $this->getModel('milestones')->getMilestones($list_filter, $this->project->id);
+		$milestones = $this->getModel('milestones')->getMilestones($list_filter, $this->_project->id);
 		
 		// Get view
 		$view = $this->getView('milestones', 'list');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		$view->addData('rows', $milestones);
 		$view->addData('page_nav', new phpFrame_HTML_Pagination($list_filter));
 		// Display view
@@ -1144,12 +1178,12 @@ class projectsController extends phpFrame_Application_ActionController {
 		$milestoneid = phpFrame_Environment_Request::getVar('milestoneid', 0);
 		
 		// Get milestone using model
-		$milestone = $this->getModel('milestones')->getMilestonesDetail($this->project->id, $milestoneid);
+		$milestone = $this->getModel('milestones')->getMilestonesDetail($this->_project->id, $milestoneid);
 		
 		// Get view
 		$view = $this->getView('milestones', 'detail');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		$view->addData('row', $milestone);
 		// Display view
 		$view->display();
@@ -1163,7 +1197,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			
 		if ($milestoneid != 0) {		
 			// Get milestone using model
-			$milestone = $this->getModel('milestones')->getMilestonesDetail($this->project->id, $milestoneid);
+			$milestone = $this->getModel('milestones')->getMilestonesDetail($this->_project->id, $milestoneid);
 		}
 		else {
 			$milestone = new stdClass();
@@ -1172,7 +1206,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Get view
 		$view = $this->getView('milestones', 'form');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		$view->addData('row', $milestone);
 		// Display view
 		$view->display();
@@ -1238,7 +1272,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		
 		// Get model depending on selected tool
 		$assignees = $this->getModel($tool)->getAssignees($itemid, false);
-		$members = $this->getModel('members')->getMembers($this->project->id);
+		$members = $this->getModel('members')->getMembers($this->_project->id);
 		
 		foreach ($members as $member) {
 			if (is_array($assignees) && in_array($member->userid, $assignees)) {
@@ -1252,7 +1286,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Get view
 		$view = $this->getView('assignees', '');
 		// Set view data
-		$view->addData('project', $this->project);
+		$view->addData('project', $this->_project);
 		$view->addData('selected_users', $selected_users);
 		$view->addData('unselected_users', $unselected_users);
 		// Display view
@@ -1292,7 +1326,7 @@ class projectsController extends phpFrame_Application_ActionController {
 					
 					// Load the project data
 					$modelProjects = $this->getModel('projects');
-					$this->project = $modelProjects->getRow($projectid);
+					$this->_project = $modelProjects->getRow($projectid);
 					
 					$modelMembers = $this->getModel('members');
 					$roleid = $modelMembers->isMember($message->data['p'], $userid);
@@ -1339,7 +1373,7 @@ class projectsController extends phpFrame_Application_ActionController {
 							
 							// Add entry in activity log
 							$modelActivityLog = $this->getModel('activitylog');
-							$modelActivityLog->project =& $this->project;
+							$modelActivityLog->project =& $this->_project;
 							$delete_uids = array();
 							if (!$modelActivityLog->insertRow($row->projectid, $row->userid, 'comments', $action, $title, $description, $url, $assignees, true)) {
 								$this->_sysevents->setSummary($modelActivityLog->getLastError());
@@ -1364,8 +1398,9 @@ class projectsController extends phpFrame_Application_ActionController {
 	}
 	
 	private function _authorise($tool) {
-		if (isset($this->project->id)) {
-			if (!$this->permissions->authorise($tool, phpFrame::getUser()->id, $this->project)) {
+		$projectid = $this->_project->get('id');
+		if (!empty($projectid)) { 
+			if (!$this->_permissions->authorise($tool, phpFrame::getSession()->getUserId(), $this->_project)) {
 				$this->_sysevents->setSummary("Permission denied");
 				return false;
 			}

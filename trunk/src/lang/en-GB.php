@@ -200,11 +200,10 @@ define("_LANG_PROJECTS_HOME", "Project home");
 
 define("_LANG_PROJECTS_SWITCHER", "Switch to project");
 
-define("_LANG_ERROR_NO_PROJECT_SELECTED", "Error. No project was selected");
-
 // admin
 define("_LANG_ADMIN", "Admin");
-define("_LANG_PROJECT_SAVED", "Project successfully saved");
+define("_LANG_PROJECT_SAVE_SUCCESS", "Project successfully saved");
+define("_LANG_PROJECT_SAVE_ERROR", "An error occurred while saving the project");
 define("_LANG_PROJECT_DELETE_CONFIRM", "Are you sure you want to delete project");
 define("_LANG_PROJECT_DELETE_SUCCESS", "Project successfully deleted");
 define("_LANG_PROJECT_DELETE_ERROR", "An error occurred while deleting the project");

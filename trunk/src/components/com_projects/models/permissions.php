@@ -48,7 +48,10 @@ class projectsModelPermissions extends phpFrame_Application_Model {
 	 * Private constructor to prevent instantiation and implement the singleton pattern.
 	 * @return unknown_type
 	 */
-	private function __construct() {}
+	private function __construct() {
+		// Get role id for session user and cache
+		$this->_userid = phpFrame::getSession()->getUserId();
+	}
 	
 	/**
 	 * Get instance
@@ -71,7 +74,7 @@ class projectsModelPermissions extends phpFrame_Application_Model {
 	 * @param	object	$project
 	 * @return	boolean
 	 */
-	public function authorise($tool, $userid, $project) {
+	public function authorise($tool, $userid=null, $project=null) {
 		// Get role id from db or cache
 		$roleid = $this->_getUserRole($userid, $project->id);
 		
@@ -116,10 +119,11 @@ class projectsModelPermissions extends phpFrame_Application_Model {
 		if (is_null($this->_roleid) 
 			|| $userid != $this->_userid 
 			|| $projectid != $this->_projectid) {
+				
 			$query = "SELECT roleid FROM #__users_roles ";
 			$query .= " WHERE userid = ".$userid." AND projectid = ".$projectid;
-			phpFrame::getDB()->setQuery($query);
-			$this->_roleid = phpFrame::getDB()->loadResult();
+			
+			$this->_roleid = phpFrame::getDB()->setQuery($query)->loadResult();
 			$this->_userid = $userid;
 			$this->_projectid = $projectid;
 		}
