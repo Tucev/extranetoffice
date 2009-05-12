@@ -30,7 +30,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			<?php echo date("D, d M Y", strtotime($issue->dtend)); ?>
 		</td>
 		<td>
-			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&view=issues&layout=detail&projectid=".$this->projectid."&issueid=".$issue->id); ?>">
+			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issue_detail&projectid=".$issue->projectid."&issueid=".$issue->id); ?>">
 			<?php echo $issue->title; ?>
 			</a>
 		</td>
@@ -39,7 +39,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			<?php if (!empty($issue->assignees)) : ?>
 	    	<?php for ($j=0; $j<count($issue->assignees); $j++) : ?>
 	    		<?php if ($j>0) echo ', '; ?>
-	    		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&view=users&layout=detail&userid=".$issue->assignees[$j]['id']); ?>">
+	    		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$issue->assignees[$j]['id']); ?>">
 	    		<?php echo $issue->assignees[$j]['name']; ?>
 	    		</a>
 	    	<?php endfor; ?>
@@ -59,7 +59,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <div class="main_col_module">
 	<h3 class="project_updates"><?php echo _LANG_PROJECTS_UPDATES; ?></h3>
 	
-	<?php if (is_array($data['activitylog']) && count($data['activitylog']) > 0) : ?>
+	<?php if (count($data['activitylog']) > 0) : ?>
 	<table>
 	<?php foreach ($data['activitylog'] as $log) : ?>
 	<tr>
@@ -75,6 +75,13 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 		</td>
 		<td><?php echo $log->action." by ".phpFrame_User_Helper::id2name($log->userid); ?></td>
 		<td><?php echo date("D, d M Y H:ia", strtotime($log->ts)); ?></td>
+		<td>
+		<?php if ($data['roleid'] == 1 || $log->userid == phpFrame::getUser()->id) : ?>
+			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_activitylog&projectid=".$log->projectid."&id=".$log->id); ?>">
+			Delete
+			</a>
+		<?php endif; ?>
+		</td>
 	</tr>
 	<?php endforeach; ?>
 	</table>
@@ -82,4 +89,4 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	
 </div>
 	
-<?php //echo '<pre>'; var_dump($this->projects); echo '</pre>'; ?>
+<?php //echo '<pre>'; var_dump($data); echo '</pre>'; ?>

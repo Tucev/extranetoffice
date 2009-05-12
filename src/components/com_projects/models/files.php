@@ -29,11 +29,11 @@ class projectsModelFiles extends phpFrame_Application_Model {
 	/**
 	 * Get files
 	 * 
-	 * @param	object	$list_filter	Object of type phpFrame_Database_Listfilter
+	 * @param	object	$list_filter	Object of type phpFrame_Database_CollectionFilter
 	 * @param	int		$projectid
 	 * @return	array
 	 */
-	public function getFiles(phpFrame_Database_Listfilter $list_filter, $projectid) {
+	public function getFiles(phpFrame_Database_CollectionFilter $list_filter, $projectid) {
 		// Build SQL query
 		$where = array();
 		

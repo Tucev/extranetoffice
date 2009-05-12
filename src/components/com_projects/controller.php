@@ -40,8 +40,8 @@ class projectsController extends phpFrame_Application_ActionController {
 		if (!empty($projectid)) {
 			// Load the project data
 			$modelProjects = $this->getModel('projects');
-			$this->project = $modelProjects->getProjectsDetail($projectid);
-		
+			$this->project = $modelProjects->getRow($projectid);
+			
 			// Add pathway item
 			phpFrame::getPathway()->addItem($this->project->name, 'index.php?component=com_projects&action=get_project_detail&projectid='.$this->project->id);
 			
@@ -54,17 +54,17 @@ class projectsController extends phpFrame_Application_ActionController {
 	
 	public function get_projects() {
 		// Get request data
-		$orderby = phpFrame_Environment_Request::getVar('orderby', 'c.family');
-		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'ASC');
+		$orderby = phpFrame_Environment_Request::getVar('orderby', 'p.created ');
+		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'DESC');
 		$limit = phpFrame_Environment_Request::getVar('limit', 25);
 		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
 		$search = phpFrame_Environment_Request::getVar('search', '');
 		
 		// Create list filter needed for getProjects()
-		$list_filter = new phpFrame_Database_Listfilter($orderby, $orderdir, $limit, $limitstart, $search);
+		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
 		
 		// Get projects using model
-		$projects = $this->getModel('projects')->getProjects($list_filter);
+		$projects = $this->getModel('projects')->getCollection($list_filter);
 		
 		// Get view
 		$view = $this->getView('projects', 'list');
@@ -76,17 +76,21 @@ class projectsController extends phpFrame_Application_ActionController {
 	}
 	
 	public function get_project_detail() {
+		if (!$this->_authorise("projects")) return;
+		
 		// Get request data
 		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
 		
 		// Get overdue issues
-		$list_filter = new phpFrame_Database_Listfilter('i.dtstart', 'DESC');
-		$overdue_issues = $this->getModel('issues')->getIssues($list_filter, $projectid, true);
+		$issues_filter = new phpFrame_Database_CollectionFilter('i.dtstart', 'DESC');
+		$overdue_issues = $this->getModel('issues')->getIssues($issues_filter, $projectid, true);
 			
 		// Get upcoming milestones
 		
 		// Get project updates
-		$activitylog = $this->getModel('activitylog')->getActivityLog($projectid);
+		$activitylog_filter = new phpFrame_Database_CollectionFilter('ts', 'DESC', 25);
+		$activitylog_model = $this->getModel('activitylog', array($this->project));
+		$activitylog = $activitylog_model->getCollection($activitylog_filter);
 		
 		// Get view
 		$view = $this->getView('projects', 'detail');
@@ -94,6 +98,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		$view->addData('row', $this->project);
 		$view->addData('overdue_issues', $overdue_issues);
 		$view->addData('activitylog', $activitylog);
+		$view->addData('roleid', $this->permissions->getRoleId());
 		// Display view
 		$view->display();
 	}
@@ -348,7 +353,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		$search = phpFrame_Environment_Request::getVar('search', '');
 		
 		// Create list filter needed for getIssues()
-		$list_filter = new phpFrame_Database_Listfilter($orderby, $orderdir, $limit, $limitstart, $search);
+		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
 		
 		// Get issues using model
 		$issues = $this->getModel('issues')->getIssues($list_filter, $this->project->id);
@@ -408,7 +413,6 @@ class projectsController extends phpFrame_Application_ActionController {
 	}
 	
 	public function save_issue() {
-		
 		if (!$this->_authorise("issues")) return;
 		
 		// Check for request forgeries
@@ -435,8 +439,8 @@ class projectsController extends phpFrame_Application_ActionController {
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
-			$modelActivityLog = $this->getModel('activitylog');
-			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->created_by, 'issues', $action, $title, $description, $url, $post['assignees'], $notify)) {
+			$modelActivityLog = $this->getModel('activitylog', array($this->project));
+			if (!$modelActivityLog->insertRow('issues', $action, $title, $description, $url, $post['assignees'], $notify)) {
 				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}
 			else {
@@ -487,7 +491,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
-			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, true)) {
+			if (!$modelActivityLog->insertRow($row->projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, true)) {
 				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}
 		}
@@ -518,7 +522,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
-			if (!$modelActivityLog->saveActivityLog($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, true)) {
+			if (!$modelActivityLog->insertRow($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, true)) {
 				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}
 		}
@@ -538,7 +542,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		$search = phpFrame_Environment_Request::getVar('search', '');
 		
 		// Create list filter needed for getFiles()
-		$list_filter = new phpFrame_Database_Listfilter($orderby, $orderdir, $limit, $limitstart, $search);
+		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
 		
 		// Get files using model
 		$files = $this->getModel('files')->getFiles($list_filter, $projectid);
@@ -615,7 +619,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
-			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->userid, 'files', $action, $title, $description, $url, $post['assignees'], $notify)) {
+			if (!$modelActivityLog->insertRow($row->projectid, $row->userid, 'files', $action, $title, $description, $url, $post['assignees'], $notify)) {
 				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}
 		}
@@ -663,7 +667,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		$search = phpFrame_Environment_Request::getVar('search', '');
 		
 		// Create list filter needed for getMessages()
-		$list_filter = new phpFrame_Database_Listfilter($orderby, $orderdir, $limit, $limitstart, $search);
+		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
 		
 		// Get messages using model
 		$messages = $this->getModel('messages')->getMessages($list_filter, $projectid);
@@ -734,7 +738,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
-			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->userid, 'messages', $action, $title, $description, $url, $post['assignees'], $notify)) {
+			if (!$modelActivityLog->insertRow($row->projectid, $row->userid, 'messages', $action, $title, $description, $url, $post['assignees'], $notify)) {
 				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}
 		}
@@ -804,7 +808,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
-			$modelActivityLog->saveActivityLog($row->projectid, $row->userid, 'comments', $action, $title, $description, $url, $post['assignees'], $notify);
+			$modelActivityLog->insertRow($row->projectid, $row->userid, 'comments', $action, $title, $description, $url, $post['assignees'], $notify);
 			
 			$close_issue = phpFrame_Environment_Request::getVar('close_issue', NULL);
 			if ($row->type == 'issues' && $close_issue == 'on') {
@@ -830,7 +834,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		$limit = phpFrame_Environment_Request::getVar('limit', 20);
 		
 		// Create list filter needed for getMeetings()
-		$list_filter = new phpFrame_Database_Listfilter($orderby, $orderdir, $limit, $limitstart, $search);
+		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
 		
 		// Get meetings using model
 		$meetings = $this->getModel('meetings')->getMeetings($list_filter, $this->project->id);
@@ -912,7 +916,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
-			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->created_by, 'meetings', $action, $title, $description, $url, $post['assignees'], $notify)) {
+			if (!$modelActivityLog->insertRow($row->projectid, $row->created_by, 'meetings', $action, $title, $description, $url, $post['assignees'], $notify)) {
 				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}	
 		}
@@ -1062,7 +1066,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
 		
 		if (!empty($meetingid)) {
-			$project_files = $this->getModel('files')->getFiles(new phpFrame_Database_Listfilter(), $this->project->id);
+			$project_files = $this->getModel('files')->getFiles(new phpFrame_Database_CollectionFilter(), $this->project->id);
 			
 			$meeting_files = $this->getModel('meetings')->getFiles($this->project->id, $meetingid);
 			$meeting_files_ids = array();
@@ -1118,7 +1122,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		$search = phpFrame_Environment_Request::getVar('search', '');
 		
 		// Create list filter needed for getIssues()
-		$list_filter = new phpFrame_Database_Listfilter($orderby, $orderdir, $limit, $limitstart, $search);
+		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
 		
 		// Get milestones using model
 		$milestones = $this->getModel('milestones')->getMilestones($list_filter, $this->project->id);
@@ -1201,7 +1205,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog');
-			if (!$modelActivityLog->saveActivityLog($row->projectid, $row->created_by, 'milestones', $action, $title, $description, $url, $post['assignees'], $notify)) {
+			if (!$modelActivityLog->insertRow($row->projectid, $row->created_by, 'milestones', $action, $title, $description, $url, $post['assignees'], $notify)) {
 				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}
 		}
@@ -1259,6 +1263,15 @@ class projectsController extends phpFrame_Application_ActionController {
 	
 	}
 	
+	public function remove_activitylog() {
+		// Get request vars
+		$id = phpFrame_Environment_Request::getVar('id', 0);
+		
+		// Get row before we remove
+		//$log = $this->getModel('activitylog')->
+		echo 'i have to remove an activitylog';
+	}
+	
 	public function process_incoming_email() {
 		// Get models
 		$modelComments = $this->getModel('comments');
@@ -1279,7 +1292,7 @@ class projectsController extends phpFrame_Application_ActionController {
 					
 					// Load the project data
 					$modelProjects = $this->getModel('projects');
-					$this->project = $modelProjects->getProjectsDetail($projectid, $userid);
+					$this->project = $modelProjects->getRow($projectid);
 					
 					$modelMembers = $this->getModel('members');
 					$roleid = $modelMembers->isMember($message->data['p'], $userid);
@@ -1328,7 +1341,7 @@ class projectsController extends phpFrame_Application_ActionController {
 							$modelActivityLog = $this->getModel('activitylog');
 							$modelActivityLog->project =& $this->project;
 							$delete_uids = array();
-							if (!$modelActivityLog->saveActivityLog($row->projectid, $row->userid, 'comments', $action, $title, $description, $url, $assignees, true)) {
+							if (!$modelActivityLog->insertRow($row->projectid, $row->userid, 'comments', $action, $title, $description, $url, $assignees, true)) {
 								$this->_sysevents->setSummary($modelActivityLog->getLastError());
 							}
 							else {

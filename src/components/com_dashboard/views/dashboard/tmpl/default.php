@@ -143,10 +143,10 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <div class="main_col_module">
 	<h3 class="project_updates"><?php echo _LANG_PROJECTS_UPDATES; ?></h3>
 	
-	<?php if (is_array($data['projects']) && count($data['projects']) > 0) : ?>
+	<?php if (count($data['projects']) > 0) : ?>
 	<?php foreach ($data['projects'] as $project) : ?>
 	
-	<?php if (is_array($project->activitylog) && count($project->activitylog) > 0) : ?>
+	<?php if (count($project->activitylog) > 0) : ?>
 	<h4>
 		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_detail&projectid=".$project->id); ?>">
 		<?php echo $project->name; ?>

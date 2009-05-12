@@ -38,7 +38,7 @@ class addressbookController extends phpFrame_Application_ActionController {
 		$search = phpFrame_Environment_Request::getVar('search', '');
 		
 		// Create list filter needed for getContacts()
-		$list_filter = new phpFrame_Database_Listfilter($orderby, $orderdir, $limit, $limitstart, $search);
+		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
 		
 		// Get contacts using model
 		$contacts = $this->getModel('contacts')->getContacts($list_filter);

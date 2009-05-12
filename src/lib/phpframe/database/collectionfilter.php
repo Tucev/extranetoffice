@@ -1,5 +1,23 @@
 <?php
-class phpFrame_Database_Listfilter {
+/**
+ * @version		$Id$
+ * @package		phpFrame
+ * @subpackage 	database
+ * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+ * @license		BSD revised. See LICENSE.
+ */
+
+defined( '_EXEC' ) or die( 'Restricted access' );
+
+/**
+ * Collection Filter Class
+ * 
+ * @package		phpFrame
+ * @subpackage 	database
+ * @author 		Luis Montero [e-noise.com]
+ * @since 		1.0
+ */
+class phpFrame_Database_CollectionFilter {
 	private $_orderby=null;
 	private $_orderdir=null;
 	private $_limit=null;

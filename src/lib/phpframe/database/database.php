@@ -114,6 +114,8 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 	 */
 	public function setQuery($query) {
 		$this->_query = str_replace('#__', config::DB_PREFIX, $query);
+		
+		return $this;
 	}
 	
 	/**
@@ -359,6 +361,12 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 			return false;
 		}
 		return $affected_rows;
+	}
+	
+	public function countRows($table_name) {
+		$query = "SELECT COUNT(id) FROM `".$table_name."`";
+		$this->setQuery($query);
+		return $this->loadResult();
 	}
 	
 	/**
