@@ -30,22 +30,23 @@ class dashboardController extends phpFrame_Application_ActionController {
 	
 	public function get_dashboard() {
 		// Create list filter needed for getProjects()
-		$list_filter = new phpFrame_Database_Listfilter('p.name', 'ASC');
+		$list_filter = new phpFrame_Database_CollectionFilter('p.name', 'ASC');
 		
 		// Get user's projects
 		$modelProjects = phpFrame::getModel("com_projects", "projects");
-		$projects = $modelProjects->getProjects($list_filter, phpFrame::getUser()->id);
+		$projects = $modelProjects->getCollection($list_filter);
 		
 		// Get project updates, overdue items and upcoming milestones
-		if (is_array($projects) && count($projects) > 0) {
-			foreach ($projects as $row) {
+		if (count($projects) > 0) {
+			foreach ($projects as $project) {
 				// Get project updates
-				$modelActivitylog = phpFrame::getModel("com_projects", "activitylog");
-				$row->activitylog = $modelActivitylog->getActivityLog($row->id);
+				$activitylog_filter = new phpFrame_Database_CollectionFilter('ts', 'DESC', 10);
+				$modelActivitylog = phpFrame::getModel("com_projects", "activitylog", array($project));
+				$project->activitylog = $modelActivitylog->getCollection($activitylog_filter);
 				
 				// Get overdue issues
 				$modelIssues = phpFrame::getModel("com_projects", "issues");
-				$row->overdue_issues = $modelIssues->getTotalIssues($row->id, true);
+				$project->overdue_issues = $modelIssues->getTotalIssues($project->id, true);
 			}
 		}
 		

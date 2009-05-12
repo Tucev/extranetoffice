@@ -29,11 +29,11 @@ class projectsModelMilestones extends phpFrame_Application_Model {
 	/**
 	 * Gets milestones list info
 	 * 
-	 * @param	object	$list_filter	Object of type phpFrame_Database_Listfilter
+	 * @param	object	$list_filter	Object of type phpFrame_Database_CollectionFilter
 	 * @param	int		$projectid
 	 * @return	array
 	 */
-	public function getMilestones(phpFrame_Database_Listfilter $list_filter, $projectid) {
+	public function getMilestones(phpFrame_Database_CollectionFilter $list_filter, $projectid) {
 		$where = array();
 		
 		// Show only public projects or projects where user has an assigned role

@@ -20,79 +20,76 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 class projectsModelActivitylog extends phpFrame_Application_Model {
 	/**
-	 * Project object
-	 *
-	 * @var object
+	 * A reference the project this activity log belongs to
+	 * 
+	 * @var	object
 	 */
-	var $project=null;
+	private $_project=null;
+	
 	/**
 	 * Constructor
 	 *
 	 * @since 1.0.1
 	 */
-	function __construct() {
-		$this->projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		
-		if (!empty($this->projectid)) {
-			// get project data from controller
-			$controller =& phpFrame_Base_Singleton::getInstance('projectsController');
-			$this->project =& $controller->project;
-		}
+	function __construct($project) {
+		$this->_project = $project;
 	}
 	
-	function getActivityLog($projectid=0) {
+	/**
+	 * Get a collection of activitylog rows
+	 * 
+	 * @param	object	$list_filter	Object of type phpFrame_Database_CollectionFilter
+	 * @return	object of type phpFrame_Database_RowCollection
+	 */
+	function getCollection(phpFrame_Database_CollectionFilter $list_filter) {
 		$query = "SELECT * ";
 		$query .= " FROM #__activitylog ";
-		$query .= " WHERE projectid = ".$projectid;
-		$query .= " ORDER BY ts DESC ";
-		$query .= " LIMIT 0,100";
-		phpFrame::getDB()->setQuery($query);
-		return phpFrame::getDB()->loadObjectList();
+		$query .= " WHERE projectid = ".$this->_project->id;
+		
+		// Get total number of rows before applying filter
+		phpFrame::getDB()->setQuery( $query );
+		phpFrame::getDB()->query();
+		// Set total number of record in list filter
+		$list_filter->setTotal(phpFrame::getDB()->getNumRows());
+		
+		$query .= $list_filter->getOrderByStmt();
+		$query .= $list_filter->getLimitStmt();
+		
+		return new phpFrame_Database_RowCollection($query);
 	}
 	
 	/**
 	 * This function stores a new activity log entry and notifies the assignees if necessary
 	 *
-	 * @param	int		$projectid
-	 * @param	int		$userid
 	 * @param	string	$type			Values = 'issues', 'files', 'messages', 'meetings', 'milestones'
 	 * @param	string	$description	The log message
 	 * @package	string	$url			The url to the item
 	 * @param	array	$assignees		An array containing the items assignees.
 	 * @return	bool	Returns TRUE on success or FALSE on failure.
 	 */
-	function saveActivityLog($projectid, $userid, $type, $action, $title, $description, $url, $assignees, $notify) {
+	function insertRow($type, $action, $title, $description, $url, $assignees, $notify) {
 		// Store notification in db
-		$row = $this->getTable('activitylog');
-		$row->projectid = $projectid;
-		$row->userid = $userid;
-		$row->type = $type;
-		$row->action = $action;
-		$row->title = $title;
-		$row->description = $description;
-		$row->url = $url;
-		
-		if (!$row->check()) {
-			$this->_error[] = $row->getLastError();
-			return false;
-		}
-		
-		if (!$row->store()) {
-			$this->_error[] = $row->getLastError();
-			return false;
-		}
-		
-		// Make sure assignees is an array
-		if (!is_array($assignees) && !is_null($assignees)) {
-			$assignees = array($assignees);
-		}
+		$row = new phpFrame_Database_Row('#__activitylog');
+		$row->set('projectid', $this->_project->id);
+		$row->set('userid', phpFrame::getUser()->id);
+		$row->set('type', $type);
+		$row->set('action', $action);
+		$row->set('title', $title);
+		$row->set('description', $description);
+		$row->set('url', $url);
+		// Store row in db (this will throw exceptions on errors)
+		$row->store();
 		
 		// Send notifications via email
-		if ($notify === true && sizeof($assignees) > 0) {
+		if ($notify === true && is_array($assignees) && sizeof($assignees) > 0) {
 			return $this->_notify($row, $assignees);
 		}
 		
 		return true;
+	}
+	
+	public function deleteRow() {
+		echo "I have to delete an activitylog row... Please finish me!!!"; exit;
 	}
 	
 	/**
@@ -108,9 +105,9 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 		$user_name = phpFrame_User_Helper::id2name($row->userid);
 		
 		$new_mail = new phpFrame_Mail_Mailer();
-		$new_mail->Subject = "[".$this->project->name."] ".$row->action." by ".$user_name;
+		$new_mail->Subject = "[".$this->_project->name."] ".$row->action." by ".$user_name;
 		$new_mail->Body = phpFrame_HTML_Text::_(sprintf(_LANG_ACTIVITYLOG_NOTIFY_BODY, 
-								 $this->project->name, 
+								 $this->_project->name, 
 								 $row->action." by ".$user_name,
 								 phpFrame_Utils_Rewrite::rewriteURL($row->url, false), 
 								 $row->description)

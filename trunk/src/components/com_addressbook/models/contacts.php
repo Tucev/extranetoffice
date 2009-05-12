@@ -29,10 +29,10 @@ class addressbookModelContacts extends phpFrame_Application_Model {
 	/**
 	 * Get Invoices
 	 * 
-	 * @param	object	$list_filter	An object of type phpFrame_Database_Listfilter
+	 * @param	object	$list_filter	An object of type phpFrame_Database_CollectionFilter
 	 * @return	array	Returns an asoc array containing the rows.
 	 */
-	function getContacts(phpFrame_Database_Listfilter $list_filter) {
+	function getContacts(phpFrame_Database_CollectionFilter $list_filter) {
 		// Build SQL query
 		$query = "SELECT * ";
 		$query .= " FROM #__contacts AS c ";

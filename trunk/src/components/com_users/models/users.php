@@ -22,10 +22,10 @@ class usersModelUsers extends phpFrame_Application_Model {
 	/**
 	 * Get users list
 	 * 
-	 * @param	object	$list_filter	Object if type phpFrame_Database_Listfilter
+	 * @param	object	$list_filter	Object if type phpFrame_Database_CollectionFilter
 	 * @return	array
 	 */
-	public function getUsers(phpFrame_Database_Listfilter $list_filter) {
+	public function getUsers(phpFrame_Database_CollectionFilter $list_filter) {
 		$where = array();
 		
 		if ($search) {
