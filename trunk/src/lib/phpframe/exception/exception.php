@@ -57,6 +57,10 @@ class phpFrame_Exception extends Exception {
 	const E_RECOVERABLE_ERROR=4096;
 	const E_DEPRECATED=8192;
 	const E_USER_DEPRECATED=16384;
+	const E_PHPFRAME_ERROR=32768;
+	const E_PHPFRAME_WARNING=65536;
+	const E_PHPFRAME_NOTICE=131072;
+	const E_PHPFRAME_DEPRECATED=262144;
 	
 	protected $_severity;
 
@@ -72,28 +76,32 @@ class phpFrame_Exception extends Exception {
 		switch ($code) {
 			case self::E_ERROR :
 			case self::E_USER_ERROR :
+			case self::E_PHPFRAME_ERROR :
 				$this->_severity = 'error';
-				echo '<pre>'.$this->__toString();
-				exit;
 				break;
 				
 			case self::E_WARNING :
 			case self::E_USER_WARNING :
+			case self::E_PHPFRAME_WARNING :
 				$this->_severity = 'warning';
 				break;
 				
 			case self::E_NOTICE :
 			case self::E_USER_NOTICE :
+			case self::E_PHPFRAME_NOTICE :
 				$this->_severity = 'notice';
 				break;
 				
 			case self::E_STRICT :
 			case self::E_DEPRECATED :
 			case self::E_USER_DEPRECATED :
+			case self::E_PHPFRAME_DEPRECATED :
 				$this->_severity = 'strict';
 				break;
 		}
 		
+		echo '<pre>'.$this->__toString();
+		exit;
 	}
 	
 	public function getSeverity() {
