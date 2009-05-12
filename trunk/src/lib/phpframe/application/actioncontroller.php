@@ -256,12 +256,18 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 		$class_name = strtolower(substr(phpFrame_Environment_Request::getComponentName(), 4));
 		$class_name .= "View".ucfirst($name);
 		
-		$reflectionObj = new ReflectionClass($class_name);
+		try {
+			$reflectionObj = new ReflectionClass($class_name);
+		}
+		catch (Exception $e) {
+			throw new phpFrame_Exception($e->getMessage());
+		}
+		
 		if ($reflectionObj->isSubclassOf( new ReflectionClass("phpFrame_Application_View") )) {
 			return new $class_name($layout);
 		}
 		else {
-			throw new phpFrame_Exception("Could not instantiate view ".$class_name);
+			throw new phpFrame_Exception("View class '".$class_name."' not supported.");
 		}
 	}
 }
