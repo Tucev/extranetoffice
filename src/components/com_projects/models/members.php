@@ -42,8 +42,9 @@ class projectsModelMembers extends phpFrame_Application_Model {
 	}
 	
 	function saveMember($projectid, $userid, $roleid, $notify=true) {
-		// Instantiate table object
+		// Create new row object
 		$row = new phpFrame_Database_Row("#__users_roles");
+		
 		// Load existing entry before we overwrite with new values
 		$query = "SELECT * FROM #__users_roles WHERE projectid = ".$projectid." AND userid = ".$userid;
 		$row->loadByQuery($query);
@@ -82,53 +83,32 @@ class projectsModelMembers extends phpFrame_Application_Model {
 	}
 	
 	function inviteNewUser($post, $projectid, $roleid) {
-		// Get user object
-		$user = phpFrame::getUser();
+		// Create new user object
+		$user = new phpFrame_User();
 		
-		// Create standard object to store user properties
-		// We do this because we dont want to overwrite the current user object.
-		// Remember the user object extends phpFrame_Database_Table, which in turn extends phpFrame_Base_Singleton.
-		$row = new stdClass();
-		
-		$row->block = '0';
-		$row->created = date("Y-m-d H:i:s");
+		$user->set('block', '0');
+		$user->set('created', date("Y-m-d H:i:s"));
 		// Generate random password and store in local variable to be used when sending email to user.
 		$password = phpFrame_Utils_Crypt::genRandomPassword();
 		// Assign newly generated password to row object (this password will be encrypted when stored).
-		$row->password = $password;
+		$user->set('password', $password);
 		
 		// Bind the post data to the row array
-		if ($user->bind($post, 'password', $row) === false) {
-			$this->_error[] = $user->getLastError();
-			return false;
-		}
+		$user->bind($post, 'password');
 		
-		if (!$user->check($row)) {
-			$this->_error[] = $user->getLastError();
-			return false;
-		}
-		
-		if (!$user->store($row)) {
+		if (!$user->store()) {
 			$this->_error[] = $user->getLastError();
 			return false;
 		}
 		
 		// add user to project
-		$row_users_roles = phpFrame_Base_Singleton::getInstance('projectsTableUsersRoles');
+		$row = new phpFrame_Database_Row("#__users_roles");
 		
-		$row_users_roles->userid = $row->id;
-		$row_users_roles->projectid = $projectid;
-		$row_users_roles->roleid = $roleid;
+		$row->set('userid', $user->id);
+		$row->set('projectid', $projectid);
+		$row->set('roleid', $roleid);
 		
-		if (!$row_users_roles->check()) {
-			$this->_error[] = $row_users_roles->getLastError();
-			return false;
-		}
-		
-		if (!$row_users_roles->store()) {
-			$this->_error[] = $row_users_roles->getLastError();
-			return false;
-		}
+		$row->store();
 		
 		// Send notification to new users
 		$project_name = projectsHelperProjects::id2name($projectid);
@@ -137,19 +117,19 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		$uri = phpFrame::getURI();
 		
 		$new_mail = new phpFrame_Mail_Mailer();
-		$new_mail->AddAddress($row->email, phpFrame_User_Helper::fullname_format($row->firstname, $row->lastname));
-		$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, phpFrame::getUser()->name, $project_name, $site_name);
+		$new_mail->AddAddress($user->email, phpFrame_User_Helper::fullname_format($user->firstname, $user->lastname));
+		$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, phpFrame::getUser()->firstname." ".phpFrame::getUser()->lastname, $project_name, $site_name);
 		$new_mail->Body = sprintf(_LANG_PROJECTS_INVITATION_NEW_USER_BODY, 
-								 phpFrame::getUser()->name,
+								 phpFrame::getUser()->firstname." ".phpFrame::getUser()->lastname,
 								 $project_name, 
 								 $role_name, 
-								 $row->username, 
+								 $user->username, 
 								 $password,
 								 $uri->getBase()
 						);
 								   
 		if ($new_mail->Send() !== true) {
-			$this->_error[] = sprintf(_LANG_EMAIL_NOT_SENT, $row->email);
+			$this->_error[] = sprintf(_LANG_EMAIL_NOT_SENT, $user->email);
 			return false;
 		}
 		
