@@ -76,7 +76,7 @@ class phpFrame_Application_FrontController {
 		// Set timezone
 		date_default_timezone_set(config::TIMEZONE);
 		
-		// Get session object
+		// Get/init session object
 		$session = phpFrame::getSession();
 		
 		// Check dependencies

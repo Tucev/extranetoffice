@@ -69,7 +69,7 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 		// Get reference to System Events object
 		$this->_sysevents = phpFrame::getSysevents();
 		
-		$components = phpFrame_Base_Singleton::getInstance('phpFrame_Application_Components');
+		$components = phpFrame::getComponents();
 		$this->component_info = $components->loadByOption(phpFrame::getRequest()->getComponentName());
 		
 		// Add pathway item

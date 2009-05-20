@@ -19,6 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 class phpFrame_User {
 	private $_row=null;
+	private $_error=array();
 	
 	/**
 	 * Constructor
@@ -62,6 +63,10 @@ class phpFrame_User {
 		}
 	}
 	
+	public function bind($array, $exclude='', $foreign_keys=array()) {
+		$this->_row->bind($array, $exclude, $foreign_keys);
+	}
+	
 	/**
 	 * Store user
 	 * 
@@ -73,20 +78,30 @@ class phpFrame_User {
 	 */
 	public function store() {
 		// Before we store new users we check whether email already exists in db
-		if (empty($row->id) && $this->_emailExists($row->email)) {
+		$id = $this->_row->get('id');
+		if (empty($id) && $this->_emailExists($this->_row->get('email'))) {
 			$this->_error[] = _PHPFRAME_LANG_EMAIL_ALREADY_REGISTERED;
 			return false;
 		}
 		
 		// Encrypt password for storage
-		if (property_exists($row, 'password') && !is_null($row->password)) {
+		if (!is_null($this->_row->get('password'))) {
 			$salt = phpFrame_Utils_Crypt::genRandomPassword(32);
-			$crypt = phpFrame_Utils_Crypt::getCryptedPassword($row->password, $salt);
-			$row->password = $crypt.':'.$salt;
+			$crypt = phpFrame_Utils_Crypt::getCryptedPassword($this->_row->get('password'), $salt);
+			$this->_row->set('password', $crypt.':'.$salt);
 		}
 		
 		// Invoke row store() method to store row in db
-		return $this->_row->store($row);
+		return $this->_row->store();
+	}
+	
+	public function getLastError() {
+		if (is_array($this->_error) && count($this->_error) > 0) {
+			return end($this->_error);
+		}
+		else {
+			return false;
+		}
 	}
 	
 	private function _emailExists($email) {

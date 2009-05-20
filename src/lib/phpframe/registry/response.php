@@ -2,7 +2,7 @@
 /**
  * @version		$Id$
  * @package		phpFrame
- * @subpackage 	environment
+ * @subpackage 	registry
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  */
@@ -13,11 +13,11 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * Response Class
  * 
  * @package		phpFrame
- * @subpackage 	environment
+ * @subpackage 	registry
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class phpFrame_Environment_Response {
+class phpFrame_Registry_Response {
 	private $_header=null;
 	private $_body=null;
 	

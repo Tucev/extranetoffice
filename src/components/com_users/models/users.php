@@ -81,11 +81,12 @@ class usersModelUsers extends phpFrame_Application_Model {
 	 * @return	bool	Returns TRUE on success or FALSE on failure.
 	 */
 	public function saveUser($post) {
-		$userid = phpFrame::getRequest()->get('id', null);
-		
 		// Get reference to user object
 		$user = phpFrame::getUser();
-		//$user->load($userid, 'password');
+		
+		if ($post['id']) {
+			$user->load($post['id'], 'password');
+		}
 		
 		// Upload image if photo sent in request
 		if (!empty($_FILES['photo']['name'])) {
@@ -112,17 +113,9 @@ class usersModelUsers extends phpFrame_Application_Model {
 		}
 		
 		// Bind the post data to the row array
-		if ($user->bind($post, $exclude) === false) {
-			$this->_error[] = $user->getLastError();
-			return false;
-		}
-		
-		if (!$user->check()) {
-			$this->_error[] = $user->getLastError();
-			return false;
-		}
-	
-		if (!$user->store()) {
+		$user->bind($post, $exclude);
+		// Store user in db
+		if ($user->store() === false) {
 			$this->_error[] = $user->getLastError();
 			return false;
 		}

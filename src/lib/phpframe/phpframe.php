@@ -160,6 +160,10 @@ class phpFrame {
 	 * Application Registry
 	 */
 	
+	public static function getApplicationRegistry() {
+		return phpFrame_Registry_Application::getInstance();
+	}
+	
 	/**
 	 * Get permissions object
 	 * 
@@ -167,7 +171,17 @@ class phpFrame {
 	 * @since 	1.0
 	 */
 	public static function getPermissions() {
-		return phpFrame_Application_Permissions::getInstance();
+		return self::getApplicationRegistry()->getPermissions();
+	}
+	
+	/**
+	 * Get modules
+	 * 
+	 * @return	object
+	 * @since 	1.0
+	 */
+	public static function getComponents() {
+		return self::getApplicationRegistry()->getComponents();
 	}
 	
 	/**
@@ -177,7 +191,7 @@ class phpFrame {
 	 * @since 	1.0
 	 */
 	public static function getModules() {
-		return phpFrame_Base_Singleton::getInstance('phpFrame_Application_Modules');
+		return self::getApplicationRegistry()->getModules();
 	}
 
 	

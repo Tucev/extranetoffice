@@ -19,41 +19,21 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 class phpFrame_Application_Permissions {
 	/**
-	 * Instance of itself
-	 * 
-	 * @var object
-	 */
-	private static $_instance=null;
-	/**
 	 * Access level list loaded from database.
 	 * 
 	 * @var array
 	 */
-	private static $_acl=null;
+	private $_acl=array();
 	
 	/**
 	 * Constructor
 	 * 
-	 * We declare a privae constructor to prevent multiple instantiation
-	 * 
-	 * @access	private
+	 * @access	public
 	 * @since 	1.0
 	 */
-	private function __construct() {}
-	
-	/**
-	 * Get instance of the permissions object
-	 * 
-	 * @access	public
-	 * @return	object of type phpFrame_Application_Permissions
-	 * @since	1.0
-	 */
-	public static function getInstance() {
-		if (!self::$_instance instanceof phpFrame_Application_Permissions) {
-			self::$_instance = new phpFrame_Application_Permissions();
-		}
-		
-		return self::$_instance;
+	public function __construct() {
+		// Load ACL from DB
+		$this->_acl = $this->_loadACL();
 	}
 	
 	/**
@@ -67,12 +47,7 @@ class phpFrame_Application_Permissions {
 	 * @since	1.0
 	 */
 	public function authorise($component, $action, $groupid) {
-		// Load ACL from DB if not loaded yet
-		if (is_null(self::$_acl)) {
-			self::$_acl = $this->_loadACL();
-		}
-		
-		foreach (self::$_acl as $acl) {
+		foreach ($this->_acl as $acl) {
 			if (
 				$acl->groupid == $groupid 
 				&& $acl->component == $component 
