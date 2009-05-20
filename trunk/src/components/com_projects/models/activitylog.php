@@ -123,7 +123,7 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 		$pattern = '/'.$tool_matches[1].'id=([0-9]+)/i';
 		preg_match($pattern, $row->url, $matches);
 		
-		$new_mail->setMessageIdSuffix('c='.phpFrame_Environment_Request::getComponentName().'&p='.$row->projectid.'&t='.$tool_matches[1].'s&i='.$matches[1]);
+		$new_mail->setMessageIdSuffix('c='.phpFrame::getRequest()->getComponentName().'&p='.$row->projectid.'&t='.$tool_matches[1].'s&i='.$matches[1]);
 		
 		// Get assignees email addresses and exclude the user triggering the notification
 		$query = "SELECT firstname, lastname, email ";

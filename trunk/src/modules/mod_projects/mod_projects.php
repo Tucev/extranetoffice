@@ -10,9 +10,9 @@
 
 defined( '_EXEC' ) or die( 'Restricted access' );
 
-$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
+$projectid = phpFrame::getRequest()->get('projectid', 0);
 
-$controller = phpFrame::getActionController(phpFrame_Environment_Request::getComponentName());
+$controller = phpFrame::getActionController(phpFrame::getRequest()->getComponentName());
 $project = $controller->getProject();
 $tools = $controller->getTools();
 $project_permissions = $controller->getProjectPermissions();
@@ -25,7 +25,7 @@ $project_permissions = $controller->getProjectPermissions();
 <ul>
 	
 <li>
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=".phpFrame_Environment_Request::getComponentName()."&action=get_project_detail&projectid=".phpFrame_Environment_Request::getVar('projectid')); ?>">
+	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=".phpFrame::getRequest()->getComponentName()."&action=get_project_detail&projectid=".phpFrame::getRequest()->get('projectid')); ?>">
 	Project Home
 	</a>
 </li>
@@ -34,7 +34,7 @@ $project_permissions = $controller->getProjectPermissions();
 <?php $access_property = "access_".$tool; ?>
 <?php if (!is_null($project->$access_property) && $project_permissions->getRoleId() <= $project->$access_property) : ?>
 <li>
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=".phpFrame_Environment_Request::getComponentName()."&action=get_".$tool."&projectid=".phpFrame_Environment_Request::getVar('projectid')); ?>">
+	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=".phpFrame::getRequest()->getComponentName()."&action=get_".$tool."&projectid=".phpFrame::getRequest()->get('projectid')); ?>">
 	<?php 
 	$tool_name = "_LANG_".strtoupper($tool);
 	eval("echo $tool_name;");

@@ -106,7 +106,7 @@ class phpFrame_Client_Default implements phpFrame_Client_IClient {
 		// If tmpl flag is set to component in request it means that
 		// we dont need to wrap the component output in the overall template
 		// so we just prepend the sytem events and return
-		if (phpFrame_Environment_Request::getVar('tmpl') == 'component') {
+		if (phpFrame::getRequest()->get('tmpl') == 'component') {
 			$sys_events = $modules->display('sysevents', '_sysevents');
 			$str = $sys_events.$str;
 			return;

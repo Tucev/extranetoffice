@@ -70,7 +70,7 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 		$this->_sysevents = phpFrame::getSysevents();
 		
 		$components = phpFrame_Base_Singleton::getInstance('phpFrame_Application_Components');
-		$this->component_info = $components->loadByOption(phpFrame_Environment_Request::getComponentName());
+		$this->component_info = $components->loadByOption(phpFrame::getRequest()->getComponentName());
 		
 		// Add pathway item
 		phpFrame::getPathway()->addItem(ucwords($this->component_info->name), 'index.php?component='.$this->component);
@@ -91,7 +91,7 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 */
 	public function execute() {
 		// Get action from the request
-		$request_action = phpFrame_Environment_Request::getAction();
+		$request_action = phpFrame::getRequest()->getAction();
 		//echo $request_action; exit;
 		// If no specific action has been requested we use default action
 		if (empty($request_action)) {
@@ -102,7 +102,7 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 		}
 		
 		// Check permissions before we execute
-		$component = phpFrame_Environment_Request::getComponentName();
+		$component = phpFrame::getRequest()->getComponentName();
 		$groupid = phpFrame::getSession()->getGroupId();
 		$permissions = phpFrame::getPermissions();
 		if ($permissions->authorise($component, $action, $groupid) === true) {
@@ -178,7 +178,7 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 * @since	1.0
 	 */
 	protected function redirect() {
-		if ($this->_redirect_url && phpFrame_Environment_Request::getClientName() != "cli") {
+		if ($this->_redirect_url && phpFrame::getSession()->getClientName() != "cli") {
 			header("Location: ".$this->_redirect_url);
 			exit;
 		}
@@ -194,7 +194,7 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 * @since	1.0
 	 */
 	protected function getModel($name, $args=array()) {
-		return phpFrame::getModel(phpFrame_Environment_Request::getComponentName(), $name, $args);
+		return phpFrame::getModel(phpFrame::getRequest()->getComponentName(), $name, $args);
 	}
 	
 	/**
@@ -207,7 +207,7 @@ abstract class phpFrame_Application_ActionController extends phpFrame_Base_Singl
 	 * @since	1.0
 	 */
 	protected function getView($name, $layout='') {
-		$class_name = strtolower(substr(phpFrame_Environment_Request::getComponentName(), 4));
+		$class_name = strtolower(substr(phpFrame::getRequest()->getComponentName(), 4));
 		$class_name .= "View".ucfirst($name);
 		
 		try {

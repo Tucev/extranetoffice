@@ -31,11 +31,11 @@ class addressbookController extends phpFrame_Application_ActionController {
 	
 	public function get_contacts() {
 		// Get request data
-		$orderby = phpFrame_Environment_Request::getVar('orderby', 'c.family');
-		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'ASC');
-		$limit = phpFrame_Environment_Request::getVar('limit', 25);
-		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
-		$search = phpFrame_Environment_Request::getVar('search', '');
+		$orderby = phpFrame::getRequest()->get('orderby', 'c.family');
+		$orderdir = phpFrame::getRequest()->get('orderdir', 'ASC');
+		$limit = phpFrame::getRequest()->get('limit', 25);
+		$limitstart = phpFrame::getRequest()->get('limitstart', 0);
+		$search = phpFrame::getRequest()->get('search', '');
 		
 		// Create list filter needed for getContacts()
 		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
@@ -57,7 +57,7 @@ class addressbookController extends phpFrame_Application_ActionController {
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame_Environment_Request::getPost();
+		$post = phpFrame::getRequest()->getPost();
 		
 		// Save issue using issues model
 		$modelContacts = $this->getModel('contacts');
@@ -76,7 +76,7 @@ class addressbookController extends phpFrame_Application_ActionController {
 	
 	public function export_contacts() {
 		// Get id from request
-		$id = phpFrame_Environment_Request::getVar('id', 0);
+		$id = phpFrame::getRequest()->get('id', 0);
 		
 		$modelContacts = $this->getModel('contacts');
 		$modelContacts->exportContacts($id);

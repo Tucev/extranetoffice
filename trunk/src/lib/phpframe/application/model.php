@@ -62,6 +62,6 @@ abstract class phpFrame_Application_Model {
 	 * @return	object
 	 */
 	protected function getTable($table_name) {
-		return phpFrame::getTable(phpFrame_Environment_Request::getComponentName(), $table_name);
+		return phpFrame::getTable(phpFrame::getRequest()->getComponentName(), $table_name);
 	}
 }

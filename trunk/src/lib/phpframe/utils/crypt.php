@@ -63,7 +63,7 @@ class phpFrame_Utils_Crypt {
      */
     static function checkToken() {
     	$token = phpFrame_Utils_Crypt::getToken();
-    	if (!phpFrame_Environment_Request::getVar($token, '')) {
+    	if (!phpFrame::getRequest()->get($token, '')) {
     		return false;
     		/*
     		$session = phpFrame::getSession();

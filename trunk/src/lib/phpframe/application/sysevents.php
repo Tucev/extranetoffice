@@ -17,7 +17,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class phpFrame_Application_Sysevents extends phpFrame_Base_Singleton {
+class phpFrame_Application_Sysevents {
 	/**
 	 * Events summary
 	 * 
@@ -34,24 +34,12 @@ class phpFrame_Application_Sysevents extends phpFrame_Base_Singleton {
 	private $_events_log=array();
 	
 	/**
-	 * Constructor is protected. This class has to be instantiated using phpFrame::getSysevents().
+	 * Constructor
 	 * 
 	 * @return	void
 	 * @since 	1.0
 	 */
-	protected function __construct() {
-		// Restore sys_events from session
-		$session = phpFrame::getSession();
-		$sys_events = $session->getVar('sys_events', array());
-		
-		if (is_array($sys_events) && array_key_exists('summary', $sys_events)) {
-			$this->_summary = $sys_events['summary'];
-		}
-			
-		if (is_array($sys_events) && array_key_exists('events_log', $sys_events)) {
-			$this->_events_log = $sys_events['events_log'];
-		}
-	}
+	public function __construct() {}
 	
 	/**
 	 * Set system events summary
@@ -64,7 +52,6 @@ class phpFrame_Application_Sysevents extends phpFrame_Base_Singleton {
 	public function setSummary($msg, $type=null) {
 		if (is_null($type)) $type = "error";
 		$this->_summary = array($type, $msg);
-		$this->_storeInSession();
 	}
 	
 	/**
@@ -78,7 +65,6 @@ class phpFrame_Application_Sysevents extends phpFrame_Base_Singleton {
 	public function addEventLog($msg, $type=null) {
 		if (is_null($type)) $type = "error";
 		$this->_events_log[] = array($type, $msg);
-		$this->_storeInSession();
 	}
 	
 	/**
@@ -127,21 +113,5 @@ class phpFrame_Application_Sysevents extends phpFrame_Base_Singleton {
 		// Clear private vars
 		$this->_summary = array();
 		$this->_events_log = array();
-		
-		// clear system events from session
-		$session = phpFrame::getSession();
-		$session->setVar('sys_events', null);
 	}
-	
-	/**
-	 * Store system messages in session
-	 * 
-	 * @return	void
-	 * @since 	1.0
-	 */
-	private function _storeInSession() {
-		// Store sys_events in session
-		$session = phpFrame::getSession();
-		$session->setVar('sys_events', $this->asArray());
-	} 
 }

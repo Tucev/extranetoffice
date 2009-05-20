@@ -131,7 +131,7 @@ class phpFrame_Database_RowCollection implements Iterator {
 	 */
 	private function _fetchTableName($query) {
 		// Figure out table name from query
-		$pattern = '/FROM #__([a-zA-Z]+)/';
+		$pattern = '/FROM #__([a-zA-Z_]+)/';
 		preg_match($pattern, $query, $matches);
 		
 		if (!isset($matches[1])) {

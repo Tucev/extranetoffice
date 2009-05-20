@@ -19,7 +19,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 			autoHeight: false
 		});
 
-		<?php if (phpFrame_Environment_Request::getVar('tmpl') == 'component') : ?>
+		<?php if (phpFrame::getRequest()->get('tmpl') == 'component') : ?>
 		$("#configform").submit(function() {
 			// bind form using 'ajaxForm'
 			var ajax_container = $("div#"+$sysadmin_selected_tab);
@@ -249,7 +249,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 <br />
 
 <?php 
-if (phpFrame_Environment_Request::getVar('tmpl') != 'component') {
+if (phpFrame::getRequest()->get('tmpl') != 'component') {
 	phpFrame_HTML::button('button', _LANG_BACK, "window.location = 'index.php?component=com_admin';");
 }
 else {

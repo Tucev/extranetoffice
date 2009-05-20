@@ -41,7 +41,7 @@ class loginModelLogin extends phpFrame_Application_Model {
 		
 		// User exists
 		if (is_object($credentials) && isset($credentials->id)) {
-			$user = phpFrame::getUser();
+			$user = new phpFrame_User();
 			$user->load($credentials->id);
 			
 			// check password
@@ -68,7 +68,7 @@ class loginModelLogin extends phpFrame_Application_Model {
 	}
 	
 	public function logout() {
-		session_regenerate_id(true); // this destroys the session and generates a new session id
+		phpFrame::getSession()->destroy();
 	}
 	
 	/**

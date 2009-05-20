@@ -36,8 +36,8 @@ class projectsModelIssues extends phpFrame_Application_Model {
 	 * @return	array
 	 */
 	public function getIssues(phpFrame_Database_CollectionFilter $list_filter, $projectid, $overdue=false) {
-		$filter_status = phpFrame_Environment_Request::getVar('filter_status', 'all');
-		$filter_assignees = phpFrame_Environment_Request::getVar('filter_assignees', 'me');
+		$filter_status = phpFrame::getRequest()->get('filter_status', 'all');
+		$filter_assignees = phpFrame::getRequest()->get('filter_assignees', 'me');
 
 		$where = array();
 		

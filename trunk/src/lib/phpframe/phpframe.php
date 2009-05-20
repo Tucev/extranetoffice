@@ -37,34 +37,18 @@ class phpFrame {
 		return self::VERSION;
 	}
 	
+	/*
+	 * Presentation layer
+	 */
+	
 	/**
-	 * Get application object
+	 * Get front controller object
 	 * 
 	 * @return	object
 	 * @since 	1.0
 	 */
 	public static function getFrontController() {
-		return phpFrame_Base_Singleton::getInstance('phpFrame_Application_FrontController');
-	}
-	
-	/**
-	 * Get response object
-	 * 
-	 * @return object
-	 * @since 	1.0
-	 */
-	public static function getResponse() {
-		return phpFrame_Base_Singleton::getInstance('phpFrame_Environment_Response');
-	}
-	
-	/**
-	 * Get permissions object
-	 * 
-	 * @return	object
-	 * @since 	1.0
-	 */
-	public static function getPermissions() {
-		return phpFrame_Application_Permissions::getInstance();
+		return phpFrame_Application_FrontController::getInstance();
 	}
 	
 	/**
@@ -120,6 +104,85 @@ class phpFrame {
 		throw new Exception($model_name." not supported. Could not get instance of ".$class_name);
 	}
 	
+	/*
+	 * Request Registry
+	 */
+	
+	public static function getRequest() {
+		return phpFrame_Registry_Request::getInstance();
+	}
+	
+	/**
+	 * Get response object
+	 * 
+	 * @return object
+	 * @since 	1.0
+	 */
+	public static function getResponse() {
+		return self::getRequest()->getResponse();
+	}
+	
+	/*
+	 * Session Registry
+	 */
+	
+	/**
+	 * Get session object
+	 * 
+	 * @return	object
+	 * @since 	1.0
+	 */
+	public static function getSession() {
+		return phpFrame_Registry_Session::getInstance();
+	}
+	
+	/**
+	 * Get user object
+	 * 
+	 * @return 	object
+	 * @since 	1.0
+	 */
+	public static function getUser() {
+		return self::getSession()->getUser();
+	}
+	
+	/**
+	 * Get system events object from session
+	 * 
+	 * @return	object
+	 * @since 	1.0
+	 */
+	public static function getSysevents() {
+		return self::getSession()->getSysevents();
+	}
+	
+	/*
+	 * Application Registry
+	 */
+	
+	/**
+	 * Get permissions object
+	 * 
+	 * @return	object
+	 * @since 	1.0
+	 */
+	public static function getPermissions() {
+		return phpFrame_Application_Permissions::getInstance();
+	}
+	
+	/**
+	 * Get modules
+	 * 
+	 * @return	object
+	 * @since 	1.0
+	 */
+	public static function getModules() {
+		return phpFrame_Base_Singleton::getInstance('phpFrame_Application_Modules');
+	}
+
+	
+
+	
 	/**
 	 * Get a table class.
 	 * 
@@ -134,16 +197,6 @@ class phpFrame {
 	}
 	
 	/**
-	 * Get modules
-	 * 
-	 * @return	object
-	 * @since 	1.0
-	 */
-	public static function getModules() {
-		return phpFrame_Base_Singleton::getInstance('phpFrame_Application_Modules');
-	}
-	
-	/**
 	 * Get database object
 	 * 
 	 * @return	object
@@ -151,36 +204,6 @@ class phpFrame {
 	 */
 	public static function getDB() {
 		return phpFrame_Base_Singleton::getInstance('phpFrame_Database');
-	}
-	
-	/**
-	 * Get user object
-	 * 
-	 * @return 	object
-	 * @since 	1.0
-	 */
-	public static function getUser() {
-		return phpFrame_Base_Singleton::getInstance('phpFrame_User');
-	}
-	
-	/**
-	 * Get session object
-	 * 
-	 * @return	object
-	 * @since 	1.0
-	 */
-	public static function getSession() {
-		return phpFrame_Database_Table::getInstance('phpFrame_Environment_Session');
-	}
-	
-	/**
-	 * Get system events object
-	 * 
-	 * @return	object
-	 * @since 	1.0
-	 */
-	public static function getSysevents() {
-		return phpFrame_Base_Singleton::getInstance('phpFrame_Application_Sysevents');
 	}
 	
 	/**

@@ -45,8 +45,8 @@ class loginController extends phpFrame_Application_ActionController {
 		// if user is not logged on we attemp to login
 		$session = phpFrame::getSession();
 		if (!$session->isAuth()) {
-			$username = phpFrame_Environment_Request::getVar('username', '');
-			$password = phpFrame_Environment_Request::getVar('password', '');
+			$username = phpFrame::getRequest()->get('username', '');
+			$password = phpFrame::getRequest()->get('password', '');
 			
 			// Get login model
 			$model = $this->getModel('login');
@@ -72,7 +72,7 @@ class loginController extends phpFrame_Application_ActionController {
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
-		$email = phpFrame_Environment_Request::getVar('email_forgot', '');
+		$email = phpFrame::getRequest()->get('email_forgot', '');
 		
 		// Push model into controller
 		$model = $this->getModel('login');

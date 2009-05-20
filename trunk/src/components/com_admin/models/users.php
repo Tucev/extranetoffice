@@ -105,7 +105,7 @@ class adminModelUsers extends phpFrame_Application_Model {
 	}
 	
 	function saveUser($post) {
-		$userid = phpFrame_Environment_Request::getVar('id', null);
+		$userid = phpFrame::getRequest()->get('id', null);
 		
 		// Get reference to user object
 		$user = phpFrame::getUser();

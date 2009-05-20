@@ -127,20 +127,19 @@ class phpFrame_Database_Row {
 	 * Load row data from database given a row id.
 	 * 
 	 * @param	mixed	$id Normally an integer, but could be a string
+	 * @param	string	$exclude 	A list of key names to exclude from binding process separated by commas.
 	 * @return	object of type phpFrame_Database_Row
 	 */
-	public function load($id) {
+	public function load($id, $exclude='') {
 		$query = "SELECT * FROM `".$this->_table_name;
 		$query .= "` WHERE `".self::$_primary_keys[$this->_table_name]."` = '".$id."'";
 		
 		$db = phpFrame::getDB();
-		$this->_db->setQuery($query);
-		$array = $this->_db->loadAssoc();
-		var_dump($array); exit;
+		$db->setQuery($query);
+		$array = $db->loadAssoc();
+		
 		if (is_array($array) && count($array) > 0) {
-			foreach ($array as $key=>$value) {
-			
-			}
+			$this->bind($array, $exclude);
 			
 			return $this;	
 		}

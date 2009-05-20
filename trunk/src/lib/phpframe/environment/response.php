@@ -17,7 +17,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class phpFrame_Environment_Response extends phpFrame_Base_Singleton {
+class phpFrame_Environment_Response {
 	private $_header=null;
 	private $_body=null;
 	
