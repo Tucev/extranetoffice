@@ -17,14 +17,13 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class phpFrame_Application_Components extends phpFrame_Database_Table {
-	var $name=null;
-	var $menu_name=null;
-	var $author=null;
-	var $version=null;
-	var $enabled=null;
-	var $system=null;
-	var $ordering=null;
+class phpFrame_Application_Components {
+	/**
+	 * Array containing the installed components
+	 * 
+	 * @var array
+	 */
+	private $_array=array();
 	
 	/**
 	 * Construct
@@ -33,7 +32,8 @@ class phpFrame_Application_Components extends phpFrame_Database_Table {
 	 * @since	1.0
 	 */
 	function __construct() {
-		parent::__construct('#__components', 'id');
+		$query = "SELECT * FROM #__components ";
+		$this->_array = phpFrame::getDB()->setQuery($query)->loadObjectList();
 	}
 	
 	/**
@@ -45,16 +45,13 @@ class phpFrame_Application_Components extends phpFrame_Database_Table {
 	 * @return	object
 	 */
 	public function loadByOption($option) {
-		$query = "SELECT * FROM #__components WHERE name = '".substr($option, 4)."'";
-		$this->_db->setQuery($query);
-		$row = $this->_db->loadObject();
-		foreach ($this->_cols as $col) {
-			$col_name = $col->Field;
-			$col_value = $row->$col_name;
-			$this->$col_name = $col_value;
+		foreach ($this->_array as $component) {
+			if ($component->name == substr($option, 4)) {
+				return $component;
+			}
 		}
 		
-		return $row;
+		return null;
 	}
 	
 	/**
@@ -65,15 +62,12 @@ class phpFrame_Application_Components extends phpFrame_Database_Table {
 	 * @return bool
 	 */
 	public static function isEnabled($name) {
-		$query = "SELECT enabled FROM #__users WHERE name = '".$name."'";
-		$this->_db->setQuery($query);
-		$enabled = $this->_db->getResult();
-		if ($enabled == '1') {
-			return true;
+		foreach ($this->_array as $component) {
+			if ($component->name == substr($name, 4) && $component->enabled == 1) {
+				return true;
+			}
 		}
-		else {
-			return false;
-		}
+		
+		return false;
 	}
 }
-?>

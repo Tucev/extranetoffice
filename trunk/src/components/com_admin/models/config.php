@@ -58,23 +58,9 @@ class adminModelConfig extends phpFrame_Application_Model {
 		$content = preg_replace($patterns, $replacements, $content);
 		
 		// Reopen file for writing
-		if (!$fhandle = fopen($fname,"w")) {
-			$this->_error[] = 'Error opening file '.$fname.' for writing.';
-			return false;
-		}
-		// Write contents into file
-		if (!fwrite($fhandle, $content)) {
-			$this->_error[] = 'Error writing file '.$fname.'.';
-			return false;
-		}
-		// Close file
-		if (!fclose($fhandle)) {
-			$this->_error[] = 'Error closing file '.$fname.' after writing.';
-			return false;
-		}
-		else {
-			return true;
-		}
+		phpFrame_Utils_Filesystem::write($fname, $content);
+
+		return true;
 	}
 	
 }

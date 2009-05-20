@@ -18,13 +18,31 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  */
 class phpFrame_Utils_Filesystem {
+	public static function write($fname, $content) {
+		// Open file for writing
+		if (!$fhandle = fopen($fname,"w")) {
+			throw new phpFrame_Exception_Filesystem('Error opening file '.$fname.' for writing.');
+		}
+		// Write contents into file
+		if (!fwrite($fhandle, $content)) {
+			throw new phpFrame_Exception_Filesystem('Error writing file '.$fname.'.');
+		}
+		// Close file
+		if (!fclose($fhandle)) {
+			throw new phpFrame_Exception_Filesystem('Error closing file '.$fname.' after writing.');
+		}
+		else {
+			return true;
+		}
+	}
+	
 	/**
 	 * Ensure that directory is writable
 	 * 
 	 * @param	string	$path	Path to directory to ensure that it is writable
 	 * @return	boolean	Returns TRUE on succes or throws exceptions on error.
 	 */
-	static function ensureWritableDir($path) {
+	public static function ensureWritableDir($path) {
 		$path = (string) $path;
 		
 		// If dir doesnt exist we try to create it
@@ -51,7 +69,7 @@ class phpFrame_Utils_Filesystem {
 	 * @param	bool	$overwrite
 	 * @return 	mixed	An assoc array containing file_name, file_size and file_type or an assoc array containing error on failure.
 	 */
-	static function uploadFile($fieldName, $dir, $accept="*", $max_upload_size=0, $overwrite=false) {
+	public static function uploadFile($fieldName, $dir, $accept="*", $max_upload_size=0, $overwrite=false) {
 		// Get file data from request
 		$file_tmp = $_FILES[$fieldName]['tmp_name']; // $file_tmp is where file went on webserver
 		$file_name = $_FILES[$fieldName]['name']; // $file_tmp_name is original file name

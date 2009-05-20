@@ -12,6 +12,9 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * Row Class
  * 
+ * Note that this class uses the Application Registry object to cache table structures 
+ * and primary keys in order to avoid unnecessary trips to the database.
+ * 
  * @package		phpFrame
  * @subpackage 	database
  * @author 		Luis Montero [e-noise.com]
@@ -19,19 +22,17 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  */
 class phpFrame_Database_Row {
 	/**
-	 * An assoc array used to cache table primary keys to avoid redundant queries to the database.
-	 * This array is shared by all instances at class scope.
+	 * Primary key
 	 * 
 	 * @var array
 	 */
-	private static $_primary_keys=array();
+	private $_primary_key=null;
 	/**
-	 * An assoc array used to cache table structures to avoid redundant queries to the database.
-	 * This array is shared by all instances at class scope.
+	 * Table structure
 	 * 
 	 * @var array
 	 */
-	private static $_structures=array();
+	private $_structure=null;
 	/**
 	 * The table name where the row object belongs
 	 * 
@@ -54,10 +55,8 @@ class phpFrame_Database_Row {
 	public function __construct($table_name) {
 		$this->_table_name = (string) $table_name;
 		
-		// Read table structure from db
-		if (!isset(self::$_structures[$table_name])) {
-			$this->_readStructure();
-		}
+		// Read table structure from application registry
+		$this->_readStructure();
 	}
 	
 	/**
@@ -82,13 +81,18 @@ class phpFrame_Database_Row {
 	 * @return	string
 	 */
 	public function get($key) {
-		if (!array_key_exists($key, $this->_data)) {
+		if (!$this->hasColumn($key)) {
 			throw new phpFrame_Exception("Tried to get column '".$key."' that doesn't exist in "
 										 .$this->_table_name, 
 										 phpFrame_Exception::E_PHPFRAME_WARNING);
 		}
 		
-		return $this->_data[$key];
+		if (isset($this->_data[$key])) {
+			return $this->_data[$key];
+		}
+		else {
+			return null;
+		}
 	}
 	
 	/**
@@ -116,7 +120,7 @@ class phpFrame_Database_Row {
 	 */
 	public function hasColumn($column_name) {
 		// Loop through table structure to find key
-		foreach (self::$_structures[$this->_table_name] as $structure) {
+		foreach ($this->_structure as $structure) {
 			if ($structure->Field == $column_name) return true;
 		}
 		
@@ -132,7 +136,7 @@ class phpFrame_Database_Row {
 	 */
 	public function load($id, $exclude='') {
 		$query = "SELECT * FROM `".$this->_table_name;
-		$query .= "` WHERE `".self::$_primary_keys[$this->_table_name]."` = '".$id."'";
+		$query .= "` WHERE `".$this->_primary_key."` = '".$id."'";
 		
 		$db = phpFrame::getDB();
 		$db->setQuery($query);
@@ -185,7 +189,7 @@ class phpFrame_Database_Row {
 		
 		if (count($array) > 0) {
 			// Rip values using known structure
-			foreach (self::$_structures[$this->_table_name] as $col) {
+			foreach ($this->_structure as $col) {
 				if (array_key_exists($col->Field, $array) && !in_array($col->Field, $exclude)) {
 					$this->_data[$col->Field] = $array[$col->Field];
 				}
@@ -212,7 +216,7 @@ class phpFrame_Database_Row {
 		$this->_check();
 		
 		// Do insert or update depending on whether primary key is set
-		$id = $this->get(self::$_primary_keys[$this->_table_name]);
+		$id = $this->get($this->_primary_key);
 		if (is_null($id)) {
 			// Insert new record
 			$this->_insert();
@@ -227,27 +231,44 @@ class phpFrame_Database_Row {
 	public function delete($id) {}
 	
 	/**
-	 * Read row structure from database
+	 * Read row structure from database and store in app registry
 	 * 
 	 * @access	private
 	 * @return	void
 	 * @since 	1.0
 	 */
 	private function _readStructure() {
-		$query = "SHOW COLUMNS FROM `".$this->_table_name."`";
-		phpFrame::getDB()->setQuery($query);
-		self::$_structures[$this->_table_name] = phpFrame::getDB()->loadObjectList();
+		$table_structures = phpFrame::getApplicationRegistry()->get('table_structures');
+		$table_primary_keys = phpFrame::getApplicationRegistry()->get('table_primary_keys');
 		
-		if (self::$_structures === false || !is_array(self::$_structures)) {
-			throw new phpFrame_Exception_Database($this->_db->getLastError());
-		}
-		
-		// Loop through structure array to find primary key
-		foreach (self::$_structures[$this->_table_name] as $structure) {
-			if ($structure->Key == 'PRI') {
-				self::$_primary_keys[$this->_table_name] = $structure->Field;
+		// Load structure from db if not in application registry already
+		if (!is_array($table_structures[$this->_table_name])) {
+			$query = "SHOW COLUMNS FROM `".$this->_table_name."`";
+			phpFrame::getDB()->setQuery($query);
+			$this->_structure = phpFrame::getDB()->loadObjectList();
+			
+			if ($this->_structure === false || !is_array($this->_structure)) {
+				throw new phpFrame_Exception_Database(phpFrame::getDB()->getLastError());
 			}
+			
+			// Loop through structure array to find primary key
+			foreach ($this->_structure as $col) {
+				if ($col->Key == 'PRI') {
+					$this->_primary_key = $col->Field;
+				}
+			}
+			
+			$table_structures[$this->_table_name] = $this->_structure;
+			$table_primary_keys[$this->_table_name] = $this->_primary_key;
+			phpFrame::getApplicationRegistry()->set('table_structures', $table_structures);
+			phpFrame::getApplicationRegistry()->set('table_primary_keys', $table_primary_keys);
 		}
+		else {
+			$this->_structure = $table_structures[$this->_table_name];
+			$this->_primary_key = $table_primary_keys[$this->_table_name];
+		}
+		
+		
 	}
 	
 	/**
@@ -257,7 +278,7 @@ class phpFrame_Database_Row {
 	 */
 	private function _check() {
 		// Loop through every column in the row
-		foreach (self::$_structures[$this->_table_name] as $structure) {
+		foreach ($this->_structure as $structure) {
 			
 			// If assigned value is empty
 			if (empty($this->_data[$structure->Field])) {
@@ -344,7 +365,7 @@ class phpFrame_Database_Row {
 			throw new phpFrame_Exception(phpFrame::getDB()->getLastError());
 		}
 		
-		$this->_data[self::$_primary_keys[$this->_table_name]] = $insert_id;
+		$this->_data[$this->_primary_key] = $insert_id;
 	}
 	
 	/**
@@ -353,6 +374,21 @@ class phpFrame_Database_Row {
 	 * @return	void
 	 */
 	private function _update() {
-		//$this->load($id);
+		// Build SQL insert query
+		$query = "UPDATE `".$this->_table_name."` SET ";
+		$i=0;
+		foreach ($this->_data as $key=>$value) {
+			if ($i>0) $query .= ", ";
+			$query .= " `".$key."` = '".$value."' ";
+			$i++;
+		}
+		$query .= " WHERE `".$this->_primary_key."` = '".$this->_data[$this->_primary_key]."'";
+		
+		if (phpFrame::getDB()->setQuery($query)->query() === false) {
+			throw new phpFrame_Exception("Error updating database row",
+										 phpFrame_Exception::E_PHPFRAME_WARNING,
+										 "Query: ".$query);
+		}
+		
 	}
 }

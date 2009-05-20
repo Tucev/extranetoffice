@@ -65,7 +65,7 @@ class phpFrame_Registry_Request extends phpFrame_Registry {
 		$this->_array['env'] = $_ENV;
 		$this->_array['server'] = $_SERVER;
 		
-		$this->_response = new phpFrame_Environment_Response();
+		$this->_response = new phpFrame_Registry_Response();
 	}
 	
 	/**
