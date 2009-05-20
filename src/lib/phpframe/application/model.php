@@ -19,9 +19,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * In most cases many models will be created for each component in order to represent
  * the different logical elements.
  * 
- * This class should be extended when creating component views as it is an 
- * abstract class. This class is used as a template for creating views when 
- * developing components. See the built in components (dashboard, user, admin, ...) 
+ * This class should be extended when creating component models as it is an 
+ * abstract class. See the built in components (dashboard, user, admin, ...) 
  * for examples.
  * 
  * @package		phpFrame
@@ -53,15 +52,5 @@ abstract class phpFrame_Application_Model {
 		else {
 			return false;
 		}
-	}
-	
-	/**
-	 * Get table class
-	 * 
-	 * @param	string	$table_name
-	 * @return	object
-	 */
-	protected function getTable($table_name) {
-		return phpFrame::getTable(phpFrame::getRequest()->getComponentName(), $table_name);
 	}
 }

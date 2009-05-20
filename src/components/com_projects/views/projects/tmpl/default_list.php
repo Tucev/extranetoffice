@@ -46,7 +46,7 @@ function submit_filter(reset) {
 
 <br />
 
-<?php if (count($data['rows']) > 0) : ?>
+<?php if ($data['rows']->countRows() > 0) : ?>
 <table class="data_list" width="100%" cellpadding="0" cellspacing="0">
   <thead>
   <tr>

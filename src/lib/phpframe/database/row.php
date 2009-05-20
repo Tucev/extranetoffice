@@ -81,14 +81,13 @@ class phpFrame_Database_Row {
 	 * @return	string
 	 */
 	public function get($key) {
-		if (!$this->hasColumn($key)) {
+		if (array_key_exists($key, $this->_data)) {
+			return $this->_data[$key];
+		}
+		elseif (!$this->hasColumn($key)) {
 			throw new phpFrame_Exception("Tried to get column '".$key."' that doesn't exist in "
 										 .$this->_table_name, 
 										 phpFrame_Exception::E_PHPFRAME_WARNING);
-		}
-		
-		if (isset($this->_data[$key])) {
-			return $this->_data[$key];
 		}
 		else {
 			return null;
@@ -159,12 +158,13 @@ class phpFrame_Database_Row {
 		$array = array();
 		
 		// Id result is valid we populate array
-		if ($rs !== false || phpFrame::getDB()->getNumRows() == 1) {
+		if ($rs !== false && phpFrame::getDB()->getNumRows() == 1) {
 			$array = mysql_fetch_assoc($rs);
+			// Bind result array to row passing foreign keys aliases to allow as valid keys
+			$this->bind($array, '', $foreign_keys);
 		}
 		
-		// Bind result array to row passing foreign keys aliases to allow as valid keys
-		return $this->bind($array, '', $foreign_keys);
+		return $this;
 	}
 	
 	/**
@@ -228,7 +228,11 @@ class phpFrame_Database_Row {
 		return $this;
 	}
 	
-	public function delete($id) {}
+	public function delete($id) {
+		$query = "DELETE FROM `".$this->_table_name."` ";
+		$query .= " WHERE `".$this->_primary_key."` = '".$id."'";
+		phpFrame::getDB()->setQuery($query)->query();
+	}
 	
 	/**
 	 * Read row structure from database and store in app registry

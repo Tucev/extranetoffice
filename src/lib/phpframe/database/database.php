@@ -36,7 +36,13 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class phpFrame_Database extends phpFrame_Base_Singleton {
+class phpFrame_Database {
+	/**
+	 * Instance of itself in order to implement the singleton pattern
+	 * 
+	 * @var object of type phpFrame_Application_FrontController
+	 */
+	private static $_instance=null;
 	/**
 	 * The MySQL link identifier on success, or FALSE on failure. 
 	 * 
@@ -58,13 +64,6 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 	 * @var		resource
 	 */
 	private $_rs=null;
-	/**
-	 * Array containing error messages if any
-	 * 
-	 * @access	private
-	 * @var		array
-	 */
-	private $_error=array();
     
 	/**
 	 * Constructor
@@ -72,14 +71,14 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 	 * The constructor connects to the MySQL server and selects the database.
 	 * 
 	 * 
-	 * @access	protected
+	 * @access	private
 	 * @param 	string 	$db_host 	The MySQL server hostname. It uses the value set in inc/config.php by default.
 	 * @param 	string 	$db_user 	The MySQL username. It uses the value set in inc/config.php by default.
 	 * @param 	string 	$db_pass 	The MySQL password. It uses the value set in inc/config.php by default.
 	 * @param 	string 	$db_name	The MySQL database name. It uses the value set in inc/config.php by default.
 	 * @since	1.0
 	 */
-	protected function __construct($db_host=config::DB_HOST, $db_user=config::DB_USER, $db_pass=config::DB_PASS, $db_name=config::DB_NAME) {
+	private function __construct($db_host, $db_user, $db_pass, $db_name) {
 		// Connect to database server
 		// We catch PHP errors (converted into exceptions) and rethrow them as database exceptions
 		try {
@@ -100,6 +99,22 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 			$this->_link = false;
 			throw new phpFrame_Exception_Database('Could not select database.');
 		}	
+	}
+	
+	/**
+	 * Get Instance
+	 * 
+	 * @return phpFrame_Application_FrontController
+	 */
+	public static function getInstance($db_host=null, $db_user=null, $db_pass=null, $db_name=null) {
+		if (!isset(self::$_instance)) {
+			if ($db_host==null || $db_user==null || $db_pass==null || $db_name==null) {
+				throw new phpFrame_Exception("db_host, db_user, db_pass and db_name are required to initialise database object");
+			}
+			self::$_instance = new self($db_host, $db_user, $db_pass, $db_name);
+		}
+		
+		return self::$_instance;
 	}
 	
 	/**
@@ -129,13 +144,8 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 	 * @since	1.0
 	 */
 	public function query() {
-		// Only run query if active link is valid
-		if ($this->_link === false) {
-			return false;
-		}
-		
 		// Run SQL query
-		$this->_rs = mysql_query($this->_query);
+		$this->_rs = @mysql_query($this->_query);
 		
 		// Check query result is valid
 		if ($this->_rs === false) {
@@ -338,8 +348,7 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 		$num_rows = mysql_num_rows($this->_rs);
 		// Check num_rows is valid
 		if ($num_rows === false) {
-			$this->_error[] = 'phpFrame: db::getNumRows(). MySQL Error: '.mysql_error();
-			return false;
+			throw new phpFrame_Exception_Database("MySQL error: Could not get the number of rows.");
 		}
 		
 		return $num_rows;
@@ -357,8 +366,7 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 		$affected_rows = mysql_affected_rows();
 		// Check affected rows is valid
 		if ($affected_rows == -1) {
-			$this->_error[] = 'phpFrame: db::getAffectedRows(). MySQL Error: '.mysql_error();
-			return false;
+			throw new phpFrame_Exception_Database("MySQL error: Could not get the number of affected rows.");
 		}
 		return $affected_rows;
 	}
@@ -385,22 +393,4 @@ class phpFrame_Database extends phpFrame_Base_Singleton {
 		// Closing connection
 		return mysql_close($this->_link);
 	}
-	
-	/**
-	 * Get last error in model
-	 * 
-	 * @access	public
-	 * @return	mixed	Returns a string with the last error message or FALSE if no errors.
-	 * @since	1.0
-	 */
-	public function getLastError() {
-		if (is_array($this->_error) && count($this->_error) > 0) {
-			return end($this->_error);
-		}
-		else {
-			return false;
-		}
-	}
-	
 }
-?>

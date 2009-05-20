@@ -67,12 +67,12 @@ class phpFrame_Client_Cli implements phpFrame_Client_IClient {
 	
 	public function preActionHook() {
 		// Automatically log in as system user
-		$user = phpFrame::getUser();
-		$user->id = 1;
-		$user->groupid = 1;
-		$user->username = 'system';
-		$user->firstname = 'System';
-		$user->lastname = 'User';
+		$user = new phpFrame_User();
+		$user->set('id', 1);
+		$user->set('groupid', 1);
+		$user->set('username', 'system');
+		$user->set('firstname', 'System');
+		$user->set('lastname', 'User');
 		
 		// Store user detailt in session
 		$session = phpFrame::getSession();

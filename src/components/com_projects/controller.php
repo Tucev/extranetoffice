@@ -53,7 +53,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Get reference to custom permissions model for project tools
 		$this->_permissions = projectsModelPermissions::getInstance();
 		
-		$projectid = phpFrame::getRequest()->get('projectid', 0);
+		$projectid = phpFrame::getRequest()->get('projectid');
 		if (!empty($projectid)) {
 			// Load the project data
 			$modelProjects = $this->getModel('projects');
@@ -218,11 +218,13 @@ class projectsController extends phpFrame_Application_ActionController {
 		// get model
 		$modelProjects = $this->getModel('projects');
 		
-		if ($modelProjects->deleteRow($this->_project->id) === true) {
+		try {
+			$modelProjects->deleteRow($this->_project->id);
 			$this->_sysevents->setSummary(_LANG_PROJECT_DELETE_SUCCESS, "success");
 			$this->_success = true;
 		}
-		else {
+		catch (phpFrame_Exception $e) {
+			var_dump($e);
 			$this->_sysevents->setSummary(_LANG_PROJECT_DELETE_ERROR);
 		}
 		

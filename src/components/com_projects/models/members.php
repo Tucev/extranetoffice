@@ -43,24 +43,16 @@ class projectsModelMembers extends phpFrame_Application_Model {
 	
 	function saveMember($projectid, $userid, $roleid, $notify=true) {
 		// Instantiate table object
-		$row = $this->getTable('usersRoles');
-		
+		$row = new phpFrame_Database_Row("#__users_roles");
 		// Load existing entry before we overwrite with new values
-		$row->load($userid, $projectid);
+		$query = "SELECT * FROM #__users_roles WHERE projectid = ".$projectid." AND userid = ".$userid;
+		$row->loadByQuery($query);
 		
-		$row->userid = $userid;
-		$row->projectid = $projectid;
-		$row->roleid = $roleid;
+		$row->set('userid', $userid);
+		$row->set('projectid', $projectid);
+		$row->set('roleid', $roleid);
 		
-		if (!$row->check()) {
-			$this->_error[] = $row->getLastError();
-			return false;
-		}
-		
-		if (!$row->store()) {
-			$this->_error[] = $row->getLastError();
-			return false;
-		}
+		$row->store();
 		
 		// Send notification via email
 		if ($notify) {
@@ -72,9 +64,9 @@ class projectsModelMembers extends phpFrame_Application_Model {
 			
 			$new_mail = new phpFrame_Mail_Mailer();
 			$new_mail->AddAddress($new_member_email, phpFrame_User_Helper::id2name($userid));
-			$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, phpFrame::getUser()->name, $project_name, $site_name);
+			$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, phpFrame::getUser()->firstname." ".phpFrame::getUser()->lastname, $project_name, $site_name);
 			$new_mail->Body = phpFrame_HTML_Text::_(sprintf(_LANG_PROJECTS_INVITATION_BODY,
-									 phpFrame::getUser()->name, 
+									 phpFrame::getUser()->firstname." ".phpFrame::getUser()->lastname, 
 									 $project_name, 
 									 $role_name, 
 									 $uri->getBase())
