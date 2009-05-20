@@ -138,19 +138,13 @@ class projectsModelProjects extends phpFrame_Application_Model {
 	 * 
 	 * @todo	Before deleting the project we need to delete all its tracker items, lists, files, ...
 	 * @param	int	$projectid
-	 * @return	bool
+	 * @return	void
 	 */
 	public function deleteRow($projectid) {
 		// Instantiate table object
-		$row = $this->getTable('projects');
+		$row = new phpFrame_Database_Row('#__projects');
 		
 		// Delete row from database
-		if ($row->delete($projectid) === false) {
-			$this->_error[] = $row->getLastError();
-			return false;
-		}
-		else {
-			return true;
-		}
+		$row->delete($projectid);
 	}
 }
