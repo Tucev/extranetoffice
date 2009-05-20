@@ -47,7 +47,7 @@ class phpFrame_Application_Modules extends phpFrame_Database_Table {
 		$db = phpFrame::getDB();
 		$query = "SELECT m.name AS name, mo.option AS `option` FROM #__modules AS m ";
 		$query .= " LEFT JOIN #__modules_options mo ON mo.moduleid = m.id ";
-		$query .= " WHERE m.position = '".$position."' AND m.enabled = '1' AND (mo.option ='".phpFrame_Environment_Request::getComponentName()."' OR mo.option = '*') ";
+		$query .= " WHERE m.position = '".$position."' AND m.enabled = '1' AND (mo.option ='".phpFrame::getRequest()->getComponentName()."' OR mo.option = '*') ";
 		$query .= " ORDER BY m.ordering ASC";
 		$db->setQuery($query);
 		$db->query();
@@ -76,7 +76,7 @@ class phpFrame_Application_Modules extends phpFrame_Database_Table {
 		$db = phpFrame::getDB();
 		$query = "SELECT m.name AS name, mo.option AS `option` FROM #__modules AS m ";
 		$query .= " LEFT JOIN #__modules_options mo ON mo.moduleid = m.id ";
-		$query .= " WHERE m.position = '".$position."' AND m.enabled = '1' AND (mo.option ='".phpFrame_Environment_Request::getComponentName()."' OR mo.option = '*') ";
+		$query .= " WHERE m.position = '".$position."' AND m.enabled = '1' AND (mo.option ='".phpFrame::getRequest()->getComponentName()."' OR mo.option = '*') ";
 		$query .= " ORDER BY m.ordering ASC";
 		$db->setQuery($query);
 		$modules = $db->loadObjectList();

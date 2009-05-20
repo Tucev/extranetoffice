@@ -83,7 +83,7 @@ class emailViewMessages extends phpFrame_Application_View {
 		phpFrame::getPathway()->addItem($this->page_title);
 		
 		if (empty($uid)) {
-			$uid = phpFrame_Environment_Request::getVar('uid', 0);
+			$uid = phpFrame::getRequest()->get('uid', 0);
 		}
 		
 		if (empty($uid)) {

@@ -31,11 +31,11 @@ class usersController extends phpFrame_Application_ActionController {
 	
 	public function get_users() {
 		// Get request data
-		$orderby = phpFrame_Environment_Request::getVar('orderby', 'u.lastname');
-		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'ASC');
-		$limit = phpFrame_Environment_Request::getVar('limit', 25);
-		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
-		$search = phpFrame_Environment_Request::getVar('search', '');
+		$orderby = phpFrame::getRequest()->get('orderby', 'u.lastname');
+		$orderdir = phpFrame::getRequest()->get('orderdir', 'ASC');
+		$limit = phpFrame::getRequest()->get('limit', 25);
+		$limitstart = phpFrame::getRequest()->get('limitstart', 0);
+		$search = phpFrame::getRequest()->get('search', '');
 		
 		// Create list filter needed for getUsers()
 		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
@@ -53,7 +53,7 @@ class usersController extends phpFrame_Application_ActionController {
 	}
 	
 	public function get_user() {
-		$userid = phpFrame_Environment_Request::getVar('userid', 0);
+		$userid = phpFrame::getRequest()->get('userid', 0);
 		
 		// Get users using model
 		$user = $this->getModel('users')->getUsersDetail($userid);
@@ -68,7 +68,7 @@ class usersController extends phpFrame_Application_ActionController {
 	
 	public function get_settings() {
 		// Get request vars
-		$ret_url = phpFrame_Environment_Request::getVar('ret_url', 'index.php');
+		$ret_url = phpFrame::getRequest()->get('ret_url', 'index.php');
 		
 		// Get view
 		$view = $this->getView('settings', '');
@@ -84,7 +84,7 @@ class usersController extends phpFrame_Application_ActionController {
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame_Environment_Request::getPost();
+		$post = phpFrame::getRequest()->getPost();
 		
 		$modelUser = $this->getModel('users');
 		if ($modelUser->saveUser($post) === false) {
@@ -95,7 +95,7 @@ class usersController extends phpFrame_Application_ActionController {
 			$this->_success = true;
 		}
 		
-		$ret_url = phpFrame_Environment_Request::getVar('ret_url', 'index.php');
+		$ret_url = phpFrame::getRequest()->get('ret_url', 'index.php');
 		$this->setRedirect($ret_url);
 	}
 }

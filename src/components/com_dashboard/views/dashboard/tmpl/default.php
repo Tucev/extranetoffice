@@ -33,7 +33,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	<?php //var_dump($this->_user); ?>
 	
 	<p style="font-size: 0.8em;">
-	Name: <br /> <?php echo phpFrame::getUser()->name; ?> <br />
+	Name: <br /> <?php echo phpFrame::getUser()->firstname; ?> <?php echo phpFrame::getUser()->lastname; ?> <br />
 	Username: <br /> <?php echo phpFrame::getUser()->username; ?> <br />
 	Email: <br /> <?php echo phpFrame::getUser()->email; ?>
 	</p>

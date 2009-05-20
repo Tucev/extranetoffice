@@ -53,7 +53,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Get reference to custom permissions model for project tools
 		$this->_permissions = projectsModelPermissions::getInstance();
 		
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
 		if (!empty($projectid)) {
 			// Load the project data
 			$modelProjects = $this->getModel('projects');
@@ -89,11 +89,11 @@ class projectsController extends phpFrame_Application_ActionController {
 	
 	public function get_projects() {
 		// Get request data
-		$orderby = phpFrame_Environment_Request::getVar('orderby', 'p.created ');
-		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'DESC');
-		$limit = phpFrame_Environment_Request::getVar('limit', 25);
-		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
-		$search = phpFrame_Environment_Request::getVar('search', '');
+		$orderby = phpFrame::getRequest()->get('orderby', 'p.created ');
+		$orderdir = phpFrame::getRequest()->get('orderdir', 'DESC');
+		$limit = phpFrame::getRequest()->get('limit', 25);
+		$limitstart = phpFrame::getRequest()->get('limitstart', 0);
+		$search = phpFrame::getRequest()->get('search', '');
 		
 		// Create list filter needed for getProjects()
 		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
@@ -114,7 +114,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		if (!$this->_authorise("projects")) return;
 		
 		// Get request data
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
 		
 		// Get overdue issues
 		$issues_filter = new phpFrame_Database_CollectionFilter('i.dtstart', 'DESC');
@@ -141,7 +141,7 @@ class projectsController extends phpFrame_Application_ActionController {
 	public function get_project_form() {
 		if (!$this->_authorise("admin")) return;
 		
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
 		// Set default values for tools access
 		if (empty($projectid)) {
 			$project = new stdClass();
@@ -180,7 +180,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
-		$post = phpFrame_Environment_Request::getPost();
+		$post = phpFrame::getRequest()->getPost();
 		
 		// Save project using model
 		$project = $this->getModel('projects')->saveRow($post);
@@ -232,7 +232,7 @@ class projectsController extends phpFrame_Application_ActionController {
 	public function get_admin() {
 		if (!$this->_authorise("admin")) return;
 		
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
 		// Push model into the view
 		$members = $this->getModel('members')->getMembers($projectid);
 		
@@ -263,10 +263,10 @@ class projectsController extends phpFrame_Application_ActionController {
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		$roleid = phpFrame_Environment_Request::getVar('roleid', 0);
-		$email = phpFrame_Environment_Request::getVar('email', '');
-		$post = phpFrame_Environment_Request::getPost();
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
+		$roleid = phpFrame::getRequest()->get('roleid', 0);
+		$email = phpFrame::getRequest()->get('email', '');
+		$post = phpFrame::getRequest()->getPost();
 		
 		// if an email address has been passed to invite a new member we do so
 		if (!empty($email)) {
@@ -282,7 +282,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		}
 		else {
 			// Add existing users to project
-			$userids = phpFrame_Environment_Request::getVar('userids', '');
+			$userids = phpFrame::getRequest()->get('userids', '');
 			if (empty($userids)) {
 				$this->_sysevents->setSummary(_LANG_USERS_NO_SELECTED);
 			}
@@ -310,8 +310,8 @@ class projectsController extends phpFrame_Application_ActionController {
 	public function remove_member() {
 		if (!$this->_authorise("admin")) return;
 		
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		$userid = phpFrame_Environment_Request::getVar('userid', 0);
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
+		$userid = phpFrame::getRequest()->get('userid', 0);
 		
 		$modelMembers = $this->getModel('members');
 		if ($modelMembers->deleteMember($projectid, $userid) === true) {
@@ -328,7 +328,7 @@ class projectsController extends phpFrame_Application_ActionController {
 	public function get_member_role_form() {
 		if (!$this->_authorise("admin")) return;
 		
-		$userid = phpFrame_Environment_Request::getVar('userid', 0);
+		$userid = phpFrame::getRequest()->get('userid', 0);
 		
 		if (!empty($userid)) {
 			$model = $this->getModel('members');
@@ -347,9 +347,9 @@ class projectsController extends phpFrame_Application_ActionController {
 	public function change_member_role() {
 		if (!$this->_authorise("admin")) return;
 		
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		$userid = phpFrame_Environment_Request::getVar('userid', 0);
-		$roleid = phpFrame_Environment_Request::getVar('roleid', 0);
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
+		$userid = phpFrame::getRequest()->get('userid', 0);
+		$roleid = phpFrame::getRequest()->get('roleid', 0);
 		
 		$modelMembers = $this->getModel('members');
 		if (!$modelMembers->changeMemberRole($projectid, $userid, $roleid)) {
@@ -380,11 +380,11 @@ class projectsController extends phpFrame_Application_ActionController {
 		if (!$this->_authorise("issues")) return;
 		
 		// Get request data
-		$orderby = phpFrame_Environment_Request::getVar('orderby', 'i.dtstart');
-		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'DESC');
-		$limit = phpFrame_Environment_Request::getVar('limit', 25);
-		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
-		$search = phpFrame_Environment_Request::getVar('search', '');
+		$orderby = phpFrame::getRequest()->get('orderby', 'i.dtstart');
+		$orderdir = phpFrame::getRequest()->get('orderdir', 'DESC');
+		$limit = phpFrame::getRequest()->get('limit', 25);
+		$limitstart = phpFrame::getRequest()->get('limitstart', 0);
+		$search = phpFrame::getRequest()->get('search', '');
 		
 		// Create list filter needed for getIssues()
 		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
@@ -406,7 +406,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		if (!$this->_authorise("issues")) return;
 		
 		// Get request data
-		$issueid = phpFrame_Environment_Request::getVar('issueid', 0);
+		$issueid = phpFrame::getRequest()->get('issueid', 0);
 		
 		// Get issue using model
 		$issue = $this->getModel('issues')->getIssuesDetail($this->_project->id, $issueid);
@@ -424,7 +424,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		if (!$this->_authorise("issues")) return;
 		
 		// Get request data
-		$issueid = phpFrame_Environment_Request::getVar('issueid', 0);
+		$issueid = phpFrame::getRequest()->get('issueid', 0);
 		
 		// Get view
 		$view = $this->getView('issues', 'form');
@@ -453,7 +453,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame_Environment_Request::getPost();
+		$post = phpFrame::getRequest()->getPost();
 		
 		// Save issue using issues model
 		$modelIssues = $this->getModel('issues');
@@ -488,8 +488,8 @@ class projectsController extends phpFrame_Application_ActionController {
 	public function remove_issue() {
 		if (!$this->_authorise("issues")) return;
 		
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		$issueid = phpFrame_Environment_Request::getVar('issueid', 0);
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
+		$issueid = phpFrame::getRequest()->get('issueid', 0);
 		
 		$modelIssues = &$this->getModel('issues');
 		if ($modelIssues->deleteIssue($projectid, $issueid) === true) {
@@ -505,8 +505,8 @@ class projectsController extends phpFrame_Application_ActionController {
 	public function close_issue() {
 		if (!$this->_authorise("issues")) return;
 		
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		$issueid = phpFrame_Environment_Request::getVar('issueid', 0);
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
+		$issueid = phpFrame::getRequest()->get('issueid', 0);
 		
 		$modelIssues = &$this->getModel('issues');
 		$row = $modelIssues->closeIssue($projectid, $issueid);
@@ -536,8 +536,8 @@ class projectsController extends phpFrame_Application_ActionController {
 	public function reopen_issue() {
 		if (!$this->_authorise("issues")) return;
 		
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		$issueid = phpFrame_Environment_Request::getVar('issueid', 0);
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
+		$issueid = phpFrame::getRequest()->get('issueid', 0);
 		
 		$modelIssues = &$this->getModel('issues');
 		$row = $modelIssues->reopenIssue($projectid, $issueid);
@@ -568,12 +568,12 @@ class projectsController extends phpFrame_Application_ActionController {
 		if (!$this->_authorise("files")) return;
 		
 		// Get request data
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		$orderby = phpFrame_Environment_Request::getVar('orderby', 'f.ts');
-		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'DESC');
-		$limit = phpFrame_Environment_Request::getVar('limit', 25);
-		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
-		$search = phpFrame_Environment_Request::getVar('search', '');
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
+		$orderby = phpFrame::getRequest()->get('orderby', 'f.ts');
+		$orderdir = phpFrame::getRequest()->get('orderdir', 'DESC');
+		$limit = phpFrame::getRequest()->get('limit', 25);
+		$limitstart = phpFrame::getRequest()->get('limitstart', 0);
+		$search = phpFrame::getRequest()->get('search', '');
 		
 		// Create list filter needed for getFiles()
 		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
@@ -594,7 +594,7 @@ class projectsController extends phpFrame_Application_ActionController {
 	public function get_file_detail() {
 		if (!$this->_authorise("files")) return;
 		
-		$fileid = phpFrame_Environment_Request::getVar('fileid', 0);
+		$fileid = phpFrame::getRequest()->get('fileid', 0);
 		
 		$files = $this->getModel('files')->getFilesDetail($this->_project->id, $fileid);
 		
@@ -610,7 +610,7 @@ class projectsController extends phpFrame_Application_ActionController {
 	public function get_file_form() {
 		if (!$this->_authorise("files")) return;
 		
-		$parentid = phpFrame_Environment_Request::getVar('parentid', 0);
+		$parentid = phpFrame::getRequest()->get('parentid', 0);
 		
 		if ($parentid > 0) {
 			$files = $this->getModel('files')->getFilesDetail($this->_project->id, $parentid);
@@ -632,7 +632,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame_Environment_Request::getPost();
+		$post = phpFrame::getRequest()->getPost();
 		
 		// Save file using files model
 		$modelFiles = $this->getModel('files');
@@ -664,8 +664,8 @@ class projectsController extends phpFrame_Application_ActionController {
 	public function remove_file() {
 		if (!$this->_authorise("files")) return;
 		
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		$fileid = phpFrame_Environment_Request::getVar('fileid', 0);
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
+		$fileid = phpFrame::getRequest()->get('fileid', 0);
 		
 		$modelFiles = &$this->getModel('files');
 		
@@ -682,8 +682,8 @@ class projectsController extends phpFrame_Application_ActionController {
 	public function download_file() {
 		if (!$this->_authorise("files")) return;
 		
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		$fileid = phpFrame_Environment_Request::getVar('fileid', 0);
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
+		$fileid = phpFrame::getRequest()->get('fileid', 0);
 		
 		$modelProjects = $this->getModel('files');
 		$modelProjects->downloadFile($projectid, $fileid);
@@ -693,12 +693,12 @@ class projectsController extends phpFrame_Application_ActionController {
 		if (!$this->_authorise("messages")) return;
 		
 		// Get request data
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		$orderby = phpFrame_Environment_Request::getVar('orderby', 'm.date_sent');
-		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'DESC');
-		$limit = phpFrame_Environment_Request::getVar('limit', 25);
-		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
-		$search = phpFrame_Environment_Request::getVar('search', '');
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
+		$orderby = phpFrame::getRequest()->get('orderby', 'm.date_sent');
+		$orderdir = phpFrame::getRequest()->get('orderdir', 'DESC');
+		$limit = phpFrame::getRequest()->get('limit', 25);
+		$limitstart = phpFrame::getRequest()->get('limitstart', 0);
+		$search = phpFrame::getRequest()->get('search', '');
 		
 		// Create list filter needed for getMessages()
 		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
@@ -720,7 +720,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		if (!$this->_authorise("messages")) return;
 		
 		// Get request data
-		$messageid = phpFrame_Environment_Request::getVar('messageid', 0);
+		$messageid = phpFrame::getRequest()->get('messageid', 0);
 		
 		// Get message using model
 		$message = $this->getModel('messages')->getMessagesDetail($this->_project->id, $messageid);
@@ -752,7 +752,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame_Environment_Request::getPost();
+		$post = phpFrame::getRequest()->getPost();
 		
 		// Save message using messages model
 		$modelMessages = $this->getModel('messages');
@@ -783,8 +783,8 @@ class projectsController extends phpFrame_Application_ActionController {
 	public function remove_message() {
 		if (!$this->_authorise("messages")) return;
 		
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		$messageid = phpFrame_Environment_Request::getVar('messageid', 0);
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
+		$messageid = phpFrame::getRequest()->get('messageid', 0);
 		
 		$modelMessages = &$this->getModel('messages');
 		
@@ -799,13 +799,13 @@ class projectsController extends phpFrame_Application_ActionController {
 	}
 	
 	public function save_comment() {
-		if (!$this->_authorise(phpFrame_Environment_Request::getVar('type'))) return;
+		if (!$this->_authorise(phpFrame::getRequest()->get('type'))) return;
 		
 		// Check for request forgeries
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame_Environment_Request::getPost();
+		$post = phpFrame::getRequest()->getPost();
 		
 		// Save comment using comments model
 		$modelComments = $this->getModel('comments');
@@ -844,7 +844,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$modelActivityLog = $this->getModel('activitylog');
 			$modelActivityLog->insertRow($row->projectid, $row->userid, 'comments', $action, $title, $description, $url, $post['assignees'], $notify);
 			
-			$close_issue = phpFrame_Environment_Request::getVar('close_issue', NULL);
+			$close_issue = phpFrame::getRequest()->get('close_issue', NULL);
 			if ($row->type == 'issues' && $close_issue == 'on') {
 				$modelIssues = $this->getModel('issues');
 				if (!$modelIssues->closeIssue($row->projectid, $row->itemid)) {
@@ -860,12 +860,12 @@ class projectsController extends phpFrame_Application_ActionController {
 		if (!$this->_authorise("meetings")) return;
 		
 		// Get request data
-		$orderby = phpFrame_Environment_Request::getVar('orderby', 'm.created');
-		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'DESC');
-		$search = phpFrame_Environment_Request::getVar('search', '');
+		$orderby = phpFrame::getRequest()->get('orderby', 'm.created');
+		$orderdir = phpFrame::getRequest()->get('orderdir', 'DESC');
+		$search = phpFrame::getRequest()->get('search', '');
 		$search = strtolower( $search );
-		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
-		$limit = phpFrame_Environment_Request::getVar('limit', 20);
+		$limitstart = phpFrame::getRequest()->get('limitstart', 0);
+		$limit = phpFrame::getRequest()->get('limit', 20);
 		
 		// Create list filter needed for getMeetings()
 		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
@@ -886,7 +886,7 @@ class projectsController extends phpFrame_Application_ActionController {
 	public function get_meeting_detail() {
 		if (!$this->_authorise("meetings")) return;
 		
-		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
+		$meetingid = phpFrame::getRequest()->get('meetingid', 0);
 		
 		$meeting = $this->getModel('meetings')->getMeetingsDetail($this->_project->id, $meetingid);
 		
@@ -903,7 +903,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		if (!$this->_authorise("meetings")) return;
 		
 		// Get request data
-		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
+		$meetingid = phpFrame::getRequest()->get('meetingid', 0);
 			
 		if ($meetingid != 0) {		
 			// Get issue using model
@@ -930,7 +930,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame_Environment_Request::getPost();
+		$post = phpFrame::getRequest()->getPost();
 		
 		// Save file using files model
 		$modelMeetings = $this->getModel('meetings');
@@ -961,8 +961,8 @@ class projectsController extends phpFrame_Application_ActionController {
 	public function remove_meeting() {
 		if (!$this->_authorise("meetings")) return;
 		
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
+		$meetingid = phpFrame::getRequest()->get('meetingid', 0);
 		
 		$modelMeetings = $this->getModel('meetings');
 		
@@ -977,8 +977,8 @@ class projectsController extends phpFrame_Application_ActionController {
 	}
 	
 	public function get_slideshow_form() {
-		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
-		$slideshowid = phpFrame_Environment_Request::getVar('slideshowid', 0);
+		$meetingid = phpFrame::getRequest()->get('meetingid', 0);
+		$slideshowid = phpFrame::getRequest()->get('slideshowid', 0);
 			
 		if ($slideshowid != 0) {		
 			// Get issue using model
@@ -1004,7 +1004,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame_Environment_Request::getPost();
+		$post = phpFrame::getRequest()->getPost();
 		
 		$modelMeetings = $this->getModel('meetings');
 		$row = $modelMeetings->saveSlideshow($post);
@@ -1025,9 +1025,9 @@ class projectsController extends phpFrame_Application_ActionController {
 	public function remove_slideshow() {
 		if (!$this->_authorise("meetings")) return;
 		
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
-		$slideshowid = phpFrame_Environment_Request::getVar('slideshowid', 0);
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
+		$meetingid = phpFrame::getRequest()->get('meetingid', 0);
+		$slideshowid = phpFrame::getRequest()->get('slideshowid', 0);
 		
 		$modelMeetings = $this->getModel('meetings');
 		
@@ -1048,12 +1048,12 @@ class projectsController extends phpFrame_Application_ActionController {
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame_Environment_Request::getPost();
+		$post = phpFrame::getRequest()->getPost();
 		
 		$modelMeetings = $this->getModel('meetings');
 		$row = $modelMeetings->uploadSlide($post);
 		
-		$tmpl = phpFrame_Environment_Request::getVar('tmpl', '');
+		$tmpl = phpFrame::getRequest()->get('tmpl', '');
 		if ($row === false) {
 			if ($tmpl == 'component') {
 				echo '0';
@@ -1079,10 +1079,10 @@ class projectsController extends phpFrame_Application_ActionController {
 	public function remove_slide() {
 		if (!$this->_authorise("meetings")) return;
 		
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		$slideid = phpFrame_Environment_Request::getVar('slideid', 0);
-		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
-		$slideshowid = phpFrame_Environment_Request::getVar('slideshowid', 0);
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
+		$slideid = phpFrame::getRequest()->get('slideid', 0);
+		$meetingid = phpFrame::getRequest()->get('meetingid', 0);
+		$slideshowid = phpFrame::getRequest()->get('slideshowid', 0);
 		
 		$modelMeetings = $this->getModel('meetings');
 		
@@ -1097,7 +1097,7 @@ class projectsController extends phpFrame_Application_ActionController {
 	}
 	
 	public function get_meeting_files_form() {
-		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
+		$meetingid = phpFrame::getRequest()->get('meetingid', 0);
 		
 		if (!empty($meetingid)) {
 			$project_files = $this->getModel('files')->getFiles(new phpFrame_Database_CollectionFilter(), $this->_project->id);
@@ -1123,9 +1123,9 @@ class projectsController extends phpFrame_Application_ActionController {
 	public function save_meetings_files() {
 		if (!$this->_authorise("meetings")) return;
 		
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		$meetingid = phpFrame_Environment_Request::getVar('meetingid', 0);
-		$fileids = phpFrame_Environment_Request::getVar('fileids', 0);
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
+		$meetingid = phpFrame::getRequest()->get('meetingid', 0);
+		$fileids = phpFrame::getRequest()->get('fileids', 0);
 		
 		if (is_array($fileids)) {
 			foreach ($fileids as $key=>$value) {
@@ -1149,11 +1149,11 @@ class projectsController extends phpFrame_Application_ActionController {
 		if (!$this->_authorise("milestones")) return;
 		
 		// Get request data
-		$orderby = phpFrame_Environment_Request::getVar('orderby', 'm.due_date');
-		$orderdir = phpFrame_Environment_Request::getVar('orderdir', 'DESC');
-		$limit = phpFrame_Environment_Request::getVar('limit', 25);
-		$limitstart = phpFrame_Environment_Request::getVar('limitstart', 0);
-		$search = phpFrame_Environment_Request::getVar('search', '');
+		$orderby = phpFrame::getRequest()->get('orderby', 'm.due_date');
+		$orderdir = phpFrame::getRequest()->get('orderdir', 'DESC');
+		$limit = phpFrame::getRequest()->get('limit', 25);
+		$limitstart = phpFrame::getRequest()->get('limitstart', 0);
+		$search = phpFrame::getRequest()->get('search', '');
 		
 		// Create list filter needed for getIssues()
 		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
@@ -1175,7 +1175,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		if (!$this->_authorise("milestones")) return;
 		
 		// Get request data
-		$milestoneid = phpFrame_Environment_Request::getVar('milestoneid', 0);
+		$milestoneid = phpFrame::getRequest()->get('milestoneid', 0);
 		
 		// Get milestone using model
 		$milestone = $this->getModel('milestones')->getMilestonesDetail($this->_project->id, $milestoneid);
@@ -1193,7 +1193,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		if (!$this->_authorise("milestones")) return;
 		
 		// Get request data
-		$milestoneid = phpFrame_Environment_Request::getVar('milestoneid', 0);
+		$milestoneid = phpFrame::getRequest()->get('milestoneid', 0);
 			
 		if ($milestoneid != 0) {		
 			// Get milestone using model
@@ -1219,7 +1219,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame_Environment_Request::getPost();
+		$post = phpFrame::getRequest()->getPost();
 		
 		// Save file using files model
 		$modelMilestones = $this->getModel('milestones');
@@ -1250,8 +1250,8 @@ class projectsController extends phpFrame_Application_ActionController {
 	public function remove_milestone() {
 		if (!$this->_authorise("milestones")) return;
 		
-		$projectid = phpFrame_Environment_Request::getVar('projectid', 0);
-		$milestoneid = phpFrame_Environment_Request::getVar('milestoneid', 0);
+		$projectid = phpFrame::getRequest()->get('projectid', 0);
+		$milestoneid = phpFrame::getRequest()->get('milestoneid', 0);
 		
 		$modelMilestones = $this->getModel('milestones');
 		
@@ -1267,8 +1267,8 @@ class projectsController extends phpFrame_Application_ActionController {
 	
 	public function get_assignees_form() {
 		// Get request vars
-		$tool = phpFrame_Environment_Request::getVar('tool', '');
-		$itemid = phpFrame_Environment_Request::getVar('itemid', 0);
+		$tool = phpFrame::getRequest()->get('tool', '');
+		$itemid = phpFrame::getRequest()->get('itemid', 0);
 		
 		// Get model depending on selected tool
 		$assignees = $this->getModel($tool)->getAssignees($itemid, false);
@@ -1299,7 +1299,7 @@ class projectsController extends phpFrame_Application_ActionController {
 	
 	public function remove_activitylog() {
 		// Get request vars
-		$id = phpFrame_Environment_Request::getVar('id', 0);
+		$id = phpFrame::getRequest()->get('id', 0);
 		
 		// Get row before we remove
 		//$log = $this->getModel('activitylog')->
@@ -1318,7 +1318,7 @@ class projectsController extends phpFrame_Application_ActionController {
 				// Check whether the email address belongs to a project member
 				if (!empty($message->data['p']) && !empty($message->data['fromaddress'])) {
 					// Set the project id
-					phpFrame_Environment_Request::setVar('projectid', $message->data['p']);
+					phpFrame::getRequest()->set('projectid', $message->data['p']);
 					$projectid = $message->data['p'];
 					
 					// Get userid using email

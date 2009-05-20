@@ -159,7 +159,7 @@ function add_attachment(path, size, type) {
 <input type="hidden" name="from_address" value="<?php echo $this->account->email_address; ?>" />
 <input type="hidden" name="fromname" value="<?php echo $this->account->fromname; ?>" />
 <input type="hidden" name="attachments" value="" />
-<input type="hidden" name="flag" value="<?php echo $this->message['uid']."|".phpFrame_Environment_Request::getVar('type', 'list'); ?>" />
+<input type="hidden" name="flag" value="<?php echo $this->message['uid']."|".phpFrame::getRequest()->get('type', 'list'); ?>" />
 <input type="hidden" name="folder" value="<?php echo $this->folder; ?>" />
 <input type="hidden" name="component" value="com_intranetoffice" />
 <input type="hidden" name="action" value="send_email" />

@@ -10,7 +10,7 @@
 defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
-<?php if (phpFrame_Environment_Request::getVar('tmpl') != 'component') : ?>
+<?php if (phpFrame::getRequest()->get('tmpl') != 'component') : ?>
 <h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 <?php endif; ?>
 
@@ -40,7 +40,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 </tr>
 </table>
 
-<?php if (phpFrame_Environment_Request::getVar('tmpl') != 'component') : ?>
+<?php if (phpFrame::getRequest()->get('tmpl') != 'component') : ?>
 <button type="submit" class="button">Change role</button>
 <?php endif; ?>
 

@@ -74,7 +74,7 @@ class emailViewAccounts extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayAccountsForm() {
-		$accountid = phpFrame_Environment_Request::getVar('accountid', 0);
+		$accountid = phpFrame::getRequest()->get('accountid', 0);
 		
 		if (!empty($accountid)) {
 			$modelAccounts = $this->getModel('accounts');

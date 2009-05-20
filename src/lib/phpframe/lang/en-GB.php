@@ -20,7 +20,7 @@ define("_PHPFRAME_LANG_UPLOAD_ERROR_MOVE", "ERROR: Could not move file to destin
 define("_PHPFRAME_LANG_UPLOAD_ERROR_ATTACK", "ERROR: Possible file attack!");
 
 // environment > request
-define("_PHPFRAME_LANG_REQUEST_ERROR_NO_CLIENT_HELPER", "ERROR: No client helper could be found!");
+define("_PHPFRAME_LANG_SESSION_ERROR_NO_CLIENT_DETECTED", "ERROR: No client could be found!");
 
 // User
 define("_PHPFRAME_LANG_EMAIL_ALREADY_REGISTERED", "Email is already registered");

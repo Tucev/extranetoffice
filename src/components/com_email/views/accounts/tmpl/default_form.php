@@ -22,7 +22,7 @@ phpFrame_HTML::validate('email_accountsform');
 			autoHeight: false
 		});
 
-		<?php if (phpFrame_Environment_Request::getVar('tmpl') == 'component') : ?>
+		<?php if (phpFrame::getRequest()->get('tmpl') == 'component') : ?>
 		$("#email_accountsform").submit(function() {
 			// bind form using 'ajaxForm'
 			var ajax_container = $("div#"+$sysadmin_selected_tab);

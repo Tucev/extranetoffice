@@ -81,7 +81,7 @@ class usersModelUsers extends phpFrame_Application_Model {
 	 * @return	bool	Returns TRUE on success or FALSE on failure.
 	 */
 	public function saveUser($post) {
-		$userid = phpFrame_Environment_Request::getVar('id', null);
+		$userid = phpFrame::getRequest()->get('id', null);
 		
 		// Get reference to user object
 		$user = phpFrame::getUser();

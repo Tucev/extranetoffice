@@ -100,7 +100,7 @@ phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 <h3 class="people">Members</h3>
 
 <div class="new">
-<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=".phpFrame_Environment_Request::getComponentName()."&action=get_member_form&projectid=".$data['project']->id); ?>">Add new member</a>
+<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=".phpFrame::getRequest()->getComponentName()."&action=get_member_form&projectid=".$data['project']->id); ?>">Add new member</a>
 </div>
 
 <br />

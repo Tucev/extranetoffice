@@ -28,11 +28,11 @@ require_once 'PHPUnit/Framework.php';
 
 class testLoginController extends PHPUnit_Framework_TestCase {
 	function setUp() {
-		phpFrame_Environment_Request::setComponentName('com_login');
+		phpFrame::getRequest()->setComponentName('com_login');
     }
     
 	function tearDown() {
-		phpFrame_Environment_Request::destroy();
+		phpFrame::getRequest()->destroy();
      	phpFrame_Base_Singleton::destroyInstance('loginController');
     }
     
@@ -45,10 +45,10 @@ class testLoginController extends PHPUnit_Framework_TestCase {
     	$session->setUser($user);
     	
     	// Fake posted form data
-    	phpFrame_Environment_Request::setAction('login');
-    	phpFrame_Environment_Request::setVar('username', 'admin');
-    	phpFrame_Environment_Request::setVar('password', 'Passw0rd');
-    	phpFrame_Environment_Request::setVar(phpFrame_Utils_Crypt::getToken(), '1');
+    	phpFrame::getRequest()->setAction('login');
+    	phpFrame::getRequest()->set('username', 'admin');
+    	phpFrame::getRequest()->set('password', 'Passw0rd');
+    	phpFrame::getRequest()->set(phpFrame_Utils_Crypt::getToken(), '1');
     	
     	$frontcontroller = phpFrame::getFrontController();
 		$frontcontroller->run();
@@ -65,9 +65,9 @@ class testLoginController extends PHPUnit_Framework_TestCase {
 		$db->query();
 		
     	// Fake posted form data
-    	phpFrame_Environment_Request::setAction('reset_password');
-    	phpFrame_Environment_Request::setVar('email_forgot', 'notifications.test@extranetoffice.org');
-    	phpFrame_Environment_Request::setVar(phpFrame_Utils_Crypt::getToken(), '1');
+    	phpFrame::getRequest()->setAction('reset_password');
+    	phpFrame::getRequest()->set('email_forgot', 'notifications.test@extranetoffice.org');
+    	phpFrame::getRequest()->set(phpFrame_Utils_Crypt::getToken(), '1');
     	
     	$frontcontroller = phpFrame::getFrontController();
     	$frontcontroller->run();

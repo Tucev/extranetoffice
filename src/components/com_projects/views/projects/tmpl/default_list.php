@@ -36,7 +36,7 @@ function submit_filter(reset) {
 </script>
 <div class="list_filter_container">
 <form action="index.php" id="listsearchform" name="listsearchform" method="post">
-<input type="text" name="search" id="search" value="<?php echo phpFrame_Environment_Request::getVar('search'); ?>">
+<input type="text" name="search" id="search" value="<?php echo phpFrame::getRequest()->get('search'); ?>">
 <button type="button" class="button" onclick="submit_filter(false);">Search</button>
 <button type="button" class="button" onclick="submit_filter(true);">Reset</button>
 <input type="hidden" name="component" value="com_projects" />

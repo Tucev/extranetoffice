@@ -65,14 +65,20 @@ class phpFrame_Application_Dependencies {
 	 * 
 	 * If dependencies are not met it throws an exception.
 	 * 
+	 * This method explicity requires a session object to work with. This is done on purpose in 
+	 * order to declare such dependency and promote loose coupling.
+	 * 
 	 * @static
 	 * @access	public
-	 * @return	void
+	 * @param	object	$session	The session object where to store a status flag to avoid running 
+	 * 								the dependency tests more than once in the same session.
+	 * @return	mixed	Returns TRUE on success or throws an exception if dependencies are not met.
 	 * @since	1.0
 	 */
-	public static function check() {
+	public static function check(phpFrame_Registry_Session $session) {
 		// If we already have a status flag we dont need to run check again
-		if (!is_null(self::$_status)) {
+		$status = $session->get('dependencies.status');
+		if (self::$_status === true || $status === true) {
 			return;
 		}
 		
@@ -113,8 +119,9 @@ class phpFrame_Application_Dependencies {
 		}
 		
 		// If now exceptions have been thrown we set the status to true
-		// This will prevent running the check twice within the same process
-		self::$_status = true;
+		// This will prevent running the check twice within the same process or session
+		$session->set('dependencies.status', true);
+		return self::$_status = true;
 	}
 	
 	/**

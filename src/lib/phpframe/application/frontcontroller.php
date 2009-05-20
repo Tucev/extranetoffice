@@ -48,7 +48,14 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  * @see			phpFrame
  */
-class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
+class phpFrame_Application_FrontController {
+	/**
+	 * Instance of itself in order to implement the singleton pattern
+	 * 
+	 * @var object of type phpFrame_Application_FrontController
+	 */
+	private static $_instance=null;
+	
 	/**
 	 * Constructor
 	 * 
@@ -56,7 +63,7 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 	 * @return 	void
 	 * @since	1.0
 	 */
-	protected function __construct() {
+	private function __construct() {
 		// Set profiler milestone
 		phpFrame_Debug_Profiler::setMilestone('Start');
 		
@@ -69,28 +76,37 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 		// Set timezone
 		date_default_timezone_set(config::TIMEZONE);
 		
-		// Check dependencies
-		phpFrame_Application_Dependencies::check();
+		// Get session object
+		$session = phpFrame::getSession();
 		
-		//
+		// Check dependencies
+		phpFrame_Application_Dependencies::check($session);
+		
+		// Rewrite Request URI
 		phpFrame_Utils_Rewrite::rewriteRequest();
 		
 		// Initialise request
-		phpFrame_Environment_Request::init();
-		
-		// get session object
-		$session = phpFrame::getSession();
-		if ($session->isAuth()) {
-			$user = phpFrame::getUser();
-			$user->load($session->getUserId());
-		}
+		$request = phpFrame::getRequest();
 		
 		// Give the client a chance to do something before we move on to run
-		$client = phpFrame_Environment_Request::getClient();
+		$client = $session->getClient();
 		$client->preActionHook();
 		
 		// Set profiler milestone
 		phpFrame_Debug_Profiler::setMilestone('Front controller constructed');
+	}
+	
+	/**
+	 * Get Instance
+	 * 
+	 * @return phpFrame_Application_FrontController
+	 */
+	public static function getInstance() {
+		if (!isset(self::$_instance)) {
+			self::$_instance = new self;
+		}
+		
+		return self::$_instance;
 	}
 	
 	/**
@@ -103,11 +119,13 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 	 * @since	1.0
 	 */
 	public function run() {
+		$component_name = phpFrame::getRequest()->getComponentName();
+		
 		// set the component path
-		define("COMPONENT_PATH", _ABS_PATH.DS."components".DS.phpFrame_Environment_Request::getComponentName());
+		define("COMPONENT_PATH", _ABS_PATH.DS."components".DS.$component_name);
 		
 		// Create the action controller
-		$controller = phpFrame::getActionController(phpFrame_Environment_Request::getComponentName());
+		$controller = phpFrame::getActionController($component_name);
 		// Check that action controller is of valid type and run it if it is
 		if ($controller instanceof phpFrame_Application_ActionController) {
 			// Execute task
@@ -121,7 +139,7 @@ class phpFrame_Application_FrontController extends phpFrame_Base_Singleton {
 		phpFrame_Debug_Profiler::setMilestone('Action controller executed');
 		
 		// Render output using client's template
-		$client = phpFrame_Environment_Request::getClient();
+		$client = phpFrame::getSession()->getClient();
 		$client->renderTemplate($output);
 		
 		// Set profiler milestone
