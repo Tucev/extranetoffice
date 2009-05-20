@@ -84,22 +84,15 @@ class loginModelLogin extends phpFrame_Application_Model {
 		$userid = phpFrame::getDB()->loadResult();
 		
 		if (!empty($userid)) {
-			// Create standard object to store user properties
-			// We do this because we dont want to overwrite the current user object.
-			$row = new phpFrame_Base_StdObject();
-			$user = phpFrame::getUser();
-			$user->load($userid, 'password', $row);
+			// Create user object
+			$user = new phpFrame_User();
+			$user->load($userid, 'password');
 			// Generate random password and store in local variable to be used when sending email to user.
 			$password = phpFrame_Utils_Crypt::genRandomPassword();
 			// Assign newly generated password to row object (this password will be encrypted when stored).
-			$row->password = $password;
+			$user->set('password', $password);
 			
-			if (!$user->check($row)) {
-				$this->_error[] = $user->getLastError();
-				return false;
-			}
-			
-			if (!$user->store($row)) {
+			if (!$user->store()) {
 				$this->_error[] = $user->getLastError();
 				return false;
 			}
@@ -108,17 +101,17 @@ class loginModelLogin extends phpFrame_Application_Model {
 			$uri = phpFrame::getURI();
 			
 			$new_mail = new phpFrame_Mail_Mailer();
-			$new_mail->AddAddress($row->email, phpFrame_User_Helper::fullname_format($row->firstname, $row->lastname));
+			$new_mail->AddAddress($user->email, phpFrame_User_Helper::fullname_format($user->firstname, $user->lastname));
 			$new_mail->Subject = _LANG_USER_RESET_PASS_NOTIFY_SUBJECT;
 			$new_mail->Body = sprintf(_LANG_USER_RESET_PASS_NOTIFY_BODY, 
-										 $row->firstname, 
+										 $user->firstname, 
 										 $uri->getBase(), 
-										 $row->username, 
+										 $user->username, 
 										 $password
 								);
 										   
 			if ($new_mail->Send() !== true) {
-				$this->_error[] = sprintf(_LANG_EMAIL_NOT_SENT, $row->email);
+				$this->_error[] = sprintf(_LANG_EMAIL_NOT_SENT, $user->email);
 				return false;
 			}
 			
@@ -131,4 +124,3 @@ class loginModelLogin extends phpFrame_Application_Model {
 	}
 	
 }
-?>

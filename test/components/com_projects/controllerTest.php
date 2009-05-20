@@ -155,7 +155,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	$controller = phpFrame::getActionController('com_projects');
     	$this->assertTrue($controller->getSuccess());
     }
-    
+    /*
     function test_save_issue() {
     	// Fake posted form data
     	phpFrame::getRequest()->setAction('save_issue');
@@ -172,4 +172,5 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	$controller = phpFrame::getActionController('com_projects');
     	$this->assertTrue($controller->getSuccess());
     }
+    */
 }
