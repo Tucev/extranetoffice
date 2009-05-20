@@ -87,7 +87,7 @@ phpFrame_HTML::validate('userform');
 		</label>
 	</td>
 	<td>
-		<?php if (!empty($data['row']->photo)) : ?>
+		<?php if (is_string($data['row']->photo)) : ?>
 			<img src="<?php echo config::UPLOAD_DIR.'/users/'.$data['row']->photo; ?>" alt="photo" vspace="5" />
 			<br />
 		<?php endif; ?>
@@ -138,3 +138,5 @@ phpFrame_HTML::validate('userform');
 <?php echo phpFrame_HTML::_( 'form.token' ); ?>
 
 </form>
+
+<?php //var_dump($data); exit; ?>
