@@ -38,9 +38,9 @@ class testLoginController extends PHPUnit_Framework_TestCase {
     
     function test_login() {
     	// Manually logut current CLI user
-    	$user = phpFrame::getUser();
-    	$user->id = 0;
-    	$user->groupid = 0;
+    	$user = new phpFrame_User();
+    	$user->set('id', 0);
+    	$user->set('groupid', 0);
     	$session = phpFrame::getSession();
     	$session->setUser($user);
     	
