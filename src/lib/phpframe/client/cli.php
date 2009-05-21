@@ -2,7 +2,7 @@
 /**
  * @version		$Id$
  * @package		phpFrame
- * @subpackage 	environment
+ * @subpackage 	client
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  */
@@ -12,11 +12,9 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * Client for Command Line Interface
  * 
- * @todo		
- * @package		
- * @subpackage 	
- * @author 		
- * @since 		
+ * @package		phpFrame
+ * @subpackage 	client
+ * @since 		1.0			
  */
 class phpFrame_Client_Cli implements phpFrame_Client_IClient {
 		
@@ -25,7 +23,7 @@ class phpFrame_Client_Cli implements phpFrame_Client_IClient {
 	 * 
 	 * @static
 	 * @access	public
-	 * @return	mixed object instance of this class if correct helper for client or false otherwise
+	 * @return	phpFrame_Client_IClient|boolean	Object instance of this class if correct helper for client or false otherwise.
 	 */
 	public static function detect() {
 		
@@ -40,7 +38,7 @@ class phpFrame_Client_Cli implements phpFrame_Client_IClient {
 	 * Populate the Unified Request array
 	 * 
 	 * @access	public
-	 * @return	Unified Request Array
+	 * @return	array	Unified Request Array
 	 */
 	public function populateURA() {
 
@@ -59,12 +57,21 @@ class phpFrame_Client_Cli implements phpFrame_Client_IClient {
 	 * Get helper name
 	 * 
 	 * @access	public
-	 * @return	string name to identify helper type
+	 * @return	string	Name to identify helper type
 	 */
 	public function getName() {
 		return "cli";
 	}
 	
+	/**
+	 * Pre action hook
+	 * 
+	 * This method is invoked by the front controller before invoking the requested
+	 * action in the action controller. It gives the client an opportunity to do 
+	 * something before the component is executed.
+	 * 
+	 * @return	void
+	 */
 	public function preActionHook() {
 		// Automatically log in as system user
 		$user = new phpFrame_User();
@@ -79,9 +86,24 @@ class phpFrame_Client_Cli implements phpFrame_Client_IClient {
 		$session->setUser($user);
 	}
 	
+	/**
+	 * Render component view
+	 * 
+	 * This method is invoked by the views and renders the ouput data in the format specified
+	 * by the client.
+	 * 
+	 * @param	array	$data	An array containing the output data
+	 * @return	void
+	 */
 	public function renderView($data) {
 		var_dump($data);
 	}
 	
+	/**
+	 * Render overall template
+	 *
+	 * @param	string	$str
+	 * @return	void
+	 */
 	public function renderTemplate(&$str) {}
 }

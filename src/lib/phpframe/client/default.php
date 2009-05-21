@@ -2,7 +2,7 @@
 /**
  * @version		$Id$
  * @package		phpFrame
- * @subpackage 	environment
+ * @subpackage 	client
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  */
@@ -12,11 +12,9 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * Client used by default (PC HTTP browsers or anything for which no helper exists) 
  * 
- * @todo		
- * @package		
- * @subpackage 	
- * @author 		
- * @since 		
+ * @package		phpFrame
+ * @subpackage 	client
+ * @since 		1.0	
  */
 class phpFrame_Client_Default implements phpFrame_Client_IClient {
 		
@@ -25,11 +23,10 @@ class phpFrame_Client_Default implements phpFrame_Client_IClient {
 	 * 
 	 * @static
 	 * @access	public
-	 * @return	object instance of this class  
+	 * @return	phpFrame_Client_IClient|boolean	Object instance of this class if correct helper for client or false otherwise.
 	 */
 	public static function detect() {
-		
-		//TODO test checking for $_SERVER.HTTP_USER_AGENT
+		//TODO test checking for $_SERVER['HTTP_USER_AGENT']
 		
 		//this is our last hope to find a helper, just return instance
 		return new self;
@@ -39,7 +36,7 @@ class phpFrame_Client_Default implements phpFrame_Client_IClient {
 	 * Populate the Unified Request array
 	 * 
 	 * @access	public
-	 * @return	Unified Request Array
+	 * @return	array	Unified Request Array
 	 */
 	public function populateURA() {
 	
@@ -64,12 +61,21 @@ class phpFrame_Client_Default implements phpFrame_Client_IClient {
 	 * Get helper name
 	 * 
 	 * @access	public
-	 * @return	string name to identify helper type
+	 * @return	string	Name to identify helper type
 	 */
 	public function getName() {
 		return "default";
 	}
 	
+	/**
+	 * Pre action hook
+	 * 
+	 * This method is invoked by the front controller before invoking the requested
+	 * action in the action controller. It gives the client an opportunity to do 
+	 * something before the component is executed.
+	 * 
+	 * @return	void
+	 */
 	public function preActionHook() {
 		// add the jQuery + jQuery UI libraries to the HTML document
 		// that we will use in the response. jQuery lib need to be loaded before 
@@ -82,6 +88,15 @@ class phpFrame_Client_Default implements phpFrame_Client_IClient {
 		$document->addStyleSheet('lib/jquery/css/extranetoffice/jquery-ui-1.7.custom.css');
 	}
 	
+	/**
+	 * Render component view
+	 * 
+	 * This method is invoked by the views and renders the ouput data in the format specified
+	 * by the client.
+	 * 
+	 * @param	array	$data	An array containing the output data
+	 * @return	void
+	 */
 	public function renderView($data) {
 		if (!empty($data['view'])) {
     		$tmpl_path = COMPONENT_PATH.DS."views".DS.$data['view'].DS."tmpl".DS.$this->getName();
@@ -99,6 +114,12 @@ class phpFrame_Client_Default implements phpFrame_Client_IClient {
     	}
 	}
 	
+	/**
+	 * Render overall template
+	 *
+	 * @param	string	$str
+	 * @return	void
+	 */
 	public function renderTemplate(&$str) {
 		// Make modules available to templates
 		$modules = phpFrame::getModules();

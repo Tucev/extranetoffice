@@ -2,7 +2,7 @@
 /**
  * @version		$Id$
  * @package		phpFrame
- * @subpackage 	environment
+ * @subpackage 	client
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  */
@@ -12,11 +12,9 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * Client Interface
  * 
- * @todo		
- * @package		
- * @subpackage 	
- * @author 		
- * @since 		
+ * @package		phpFrame
+ * @subpackage 	client
+ * @since 		1.0		
  */
 interface phpFrame_Client_IClient {
 		
@@ -25,7 +23,7 @@ interface phpFrame_Client_IClient {
 	 * 
 	 * @static
 	 * @access	public
-	 * @return	object instance of this class
+	 * @return	phpFrame_Client_IClient|boolean
 	 * @since	1.0
 	 */
 	public static function detect();
@@ -34,7 +32,7 @@ interface phpFrame_Client_IClient {
 	 * Populate a Unified Request Array to return
 	 * 
 	 * @access	public
-	 * @return	array generated to form unified request array
+	 * @return	array 	generated to form unified request array
 	 */
 	public function populateURA();
 	
@@ -42,7 +40,7 @@ interface phpFrame_Client_IClient {
 	 * Get helper name
 	 * 
 	 * @access	public
-	 * @return	string name to identify helper type
+	 * @return	string 	name to identify helper type
 	 */
 	public function getName();
 	
@@ -58,7 +56,7 @@ interface phpFrame_Client_IClient {
 	public function preActionHook();
 	
 	/**
-	 * Render output
+	 * Render component view
 	 * 
 	 * This method is invoked by the views and renders the ouput data in the format specified
 	 * by the client.
@@ -68,6 +66,11 @@ interface phpFrame_Client_IClient {
 	 */
 	public function renderView($data);
 	
+	/**
+	 * Render overall template
+	 *
+	 * @param	string	$str
+	 * @return	void
+	 */
 	public function renderTemplate(&$str);
 }
-
