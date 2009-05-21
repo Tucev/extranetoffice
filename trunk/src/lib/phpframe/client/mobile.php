@@ -105,7 +105,7 @@ class phpFrame_Client_Mobile implements phpFrame_Client_IClient {
 	 * This method is invoked by the views and renders the ouput data in the format specified
 	 * by the client.
 	 * 
-	 * @param	array	$data	An array containing the output data
+	 * @param	array	$data	An array containing the data assigned to the view.
 	 * @return	void
 	 */
 	public function renderView($data) {}
@@ -113,7 +113,7 @@ class phpFrame_Client_Mobile implements phpFrame_Client_IClient {
 	/**
 	 * Render overall template
 	 *
-	 * @param	string	$str
+	 * @param	string	&$str	A string containing the component output.
 	 * @return	void
 	 */
 	public function renderTemplate(&$str) {}
