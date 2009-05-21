@@ -58,7 +58,7 @@ class phpFrame_Registry_Session extends phpFrame_Registry {
 	 * 
 	 * @static
 	 * @access	public
-	 * @return 	object of type phpFrame_Application_FrontController
+	 * @return 	phpFrame_Registry_Session
 	 * @since	1.0
 	 */
 	public static function getInstance() {
@@ -75,7 +75,6 @@ class phpFrame_Registry_Session extends phpFrame_Registry {
 	 * @access	public
 	 * @param	string	$key
 	 * @return	mixed
-	 * @see src/lib/phpframe/registry/phpFrame_Registry#get()
 	 * @since	1.0
 	 */
 	public function get($key) {
@@ -89,7 +88,6 @@ class phpFrame_Registry_Session extends phpFrame_Registry {
 	 * @param	string	$key
 	 * @param	mixed	$value
 	 * @return	void
-	 * @see 	src/lib/phpframe/registry/phpFrame_Registry#set()
 	 * @since	1.0
 	 */
 	public function set($key, $value) {
@@ -100,7 +98,7 @@ class phpFrame_Registry_Session extends phpFrame_Registry {
 	 * Get client object
 	 * 
 	 * @access	public
-	 * @return	object of type phpFrame_Environment_IClient
+	 * @return	phpFrame_Environment_IClient
 	 * @since	1.0
 	 */
 	public static function getClient() {
@@ -135,7 +133,7 @@ class phpFrame_Registry_Session extends phpFrame_Registry {
 	 * Get session's user object
 	 * 
 	 * @access	public
-	 * @return object of type phpFrame_User
+	 * @return	phpFrame_User
 	 * @since	1.0
 	 */
 	public function getUser() {
@@ -190,7 +188,7 @@ class phpFrame_Registry_Session extends phpFrame_Registry {
 	 * Get system events object
 	 * 
 	 * @access	public
-	 * @return 	object of type phpFrame_Application_Sysevents
+	 * @return 	phpFrame_Application_Sysevents
 	 * @since	1.0
 	 */
 	public function getSysevents() {
@@ -274,8 +272,8 @@ class phpFrame_Registry_Session extends phpFrame_Registry {
 	 * Create a token-string
 	 * 
 	 * @access	private
-	 * @param	int			$length Lenght of string.
-	 * @return	string		$id Generated token.
+	 * @param	int			$length		Lenght of string.
+	 * @return	string		$id 		Generated token.
 	 * @since	1.0
 	 */
 	private function _createToken($length = 32) {
