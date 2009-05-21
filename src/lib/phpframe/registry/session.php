@@ -29,13 +29,13 @@ class phpFrame_Registry_Session extends phpFrame_Registry {
 	/**
 	 * Constructor
 	 * 
-	 * Invoke the parent (table) constructor and start the session.
-	 *
+	 * @access	protected
+	 * @return	void
+	 * @since	1.0
 	 */
 	protected function __construct() {
 		// start php session
 		session_start();
-		//$this->destroy();
 		
 		// If new session we set the id
 		if (!$_SESSION['id'] || $_SESSION['id'] != session_id()) {
@@ -56,7 +56,10 @@ class phpFrame_Registry_Session extends phpFrame_Registry {
 	/**
 	 * Get Instance
 	 * 
-	 * @return phpFrame_Application_FrontController
+	 * @static
+	 * @access	public
+	 * @return 	object of type phpFrame_Application_FrontController
+	 * @since	1.0
 	 */
 	public static function getInstance() {
 		if (!isset(self::$_instance)) {
@@ -66,10 +69,29 @@ class phpFrame_Registry_Session extends phpFrame_Registry {
 		return self::$_instance;
 	}
 	
+	/**
+	 * Get a session variable
+	 * 
+	 * @access	public
+	 * @param	string	$key
+	 * @return	mixed
+	 * @see src/lib/phpframe/registry/phpFrame_Registry#get()
+	 * @since	1.0
+	 */
 	public function get($key) {
 		return $_SESSION[$key];
 	}
 	
+	/**
+	 * Set a session variable
+	 * 
+	 * @access	public
+	 * @param	string	$key
+	 * @param	mixed	$value
+	 * @return	void
+	 * @see 	src/lib/phpframe/registry/phpFrame_Registry#set()
+	 * @since	1.0
+	 */
 	public function set($key, $value) {
 		$_SESSION[$key] = $value;
 	}
@@ -77,7 +99,9 @@ class phpFrame_Registry_Session extends phpFrame_Registry {
 	/**
 	 * Get client object
 	 * 
+	 * @access	public
 	 * @return	object of type phpFrame_Environment_IClient
+	 * @since	1.0
 	 */
 	public static function getClient() {
 		return $_SESSION['client'];
@@ -85,29 +109,35 @@ class phpFrame_Registry_Session extends phpFrame_Registry {
 	
 
 	/**	
-	 * Get $_client_helper->getName();
+	 * Get client object's name
 	 * 
-	 * @static
 	 * @access	public
-	 * @return	client helper name
+	 * @return	string
+	 * @since	1.0
 	 */
-	public static function getClientName() {
-		//initialise if  $_client_helper is null 
-		if ($_SESSION['client'] == null) $this->_detectClient();
-		
+	public function getClientName() {
 		return $_SESSION['client']->getName();
 	}
 	
 	/**
+	 * Set session user
 	 * 
+	 * @access	public
 	 * @param	object	$user	User object of type phpFrame_User
-	 * 
 	 * @return	void
+	 * @since	1.0
 	 */
 	public function setUser(phpFrame_User $user) {
 		$_SESSION['user'] = $user;
 	}
 	
+	/**
+	 * Get session's user object
+	 * 
+	 * @access	public
+	 * @return object of type phpFrame_User
+	 * @since	1.0
+	 */
 	public function getUser() {
 		return $_SESSION['user'];
 	}
@@ -115,19 +145,23 @@ class phpFrame_Registry_Session extends phpFrame_Registry {
 	/**
 	 * Get session user id
 	 * 
+	 * @access	public
 	 * @return	int
+	 * @since	1.0
 	 */
 	public function getUserId() {
-		return $_SESSION['user']->get('id');
+		return (int) $_SESSION['user']->get('id');
 	}
 	
 	/**
-	 * Get session group id
+	 * Get session user groupid
 	 * 
+	 * @access	public
 	 * @return	int
+	 * @since	1.0
 	 */
 	public function getGroupId() {
-		return $_SESSION['user']->get('groupid');
+		return (int) $_SESSION['user']->get('groupid');
 	}
 	
 	/**
@@ -138,28 +172,27 @@ class phpFrame_Registry_Session extends phpFrame_Registry {
 	 * @since	1.0
 	 */
 	public function isAuth() {
-		if ($_SESSION['user']->get('id') > 0) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return ($_SESSION['user']->get('id') > 0);
 	}
 	
 	/**
 	 * Is the current session an admin session?
 	 * 
+	 * @access	public
 	 * @return	boolean
+	 * @since	1.0
 	 */
 	public function isAdmin() {
-		if ($_SESSION['user']->get('groupid') == 1) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return ($_SESSION['user']->get('groupid') == 1);
 	}
 	
+	/**
+	 * Get system events object
+	 * 
+	 * @access	public
+	 * @return 	object of type phpFrame_Application_Sysevents
+	 * @since	1.0
+	 */
 	public function getSysevents() {
 		return $_SESSION['sysevents'];
 	}
@@ -185,20 +218,28 @@ class phpFrame_Registry_Session extends phpFrame_Registry {
 		return $_SESSION['token'];
 	}
 	
+	/**
+	 * Destroy session
+	 * 
+	 * @access	public
+	 * @return	void
+	 * @since	1.0
+	 */
 	public function destroy() {
 		unset($_SESSION);
 		unset($_COOKIE);
 		self::$_instance = null;
 		session_regenerate_id(true); // this destroys the session and generates a new session id
-		//var_dump($_SESSION); exit;
 	}
 	
 	/**
-	 * Detect and set helper object 
+	 * Detect and set client object 
 	 * 
+	 * @access	private
+	 * @return	void
+	 * @since	1.0
 	 */
 	private function _detectClient() {
-		
 		//scan through environment dir to find files
 		$clients_path = _ABS_PATH.DS."lib".DS."phpframe".DS."client";
 		$files = scandir($clients_path);
