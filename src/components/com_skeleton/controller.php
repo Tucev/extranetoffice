@@ -21,9 +21,6 @@ class skeletonController extends phpFrame_Application_ActionController {
 	/**
 	 * Constructor
 	 * 
-	 * This method overrides the parent constructor to avoid checking for permissions. 
-	 * It is the login component, so we do not need to check access levels.
-	 * 
 	 * @return void
 	 */
 	protected function __construct() {

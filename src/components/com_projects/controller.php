@@ -526,7 +526,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$url = "index.php?component=com_projects&action=get_issue_detail&projectid=".$row->projectid."&issueid=".$row->id;
 			
 			// Add entry in activity log
-			$modelActivityLog = $this->getModel('activitylog');
+			$modelActivityLog = $this->getModel('activitylog', array($this->_project));
 			if (!$modelActivityLog->insertRow($row->projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, true)) {
 				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}
@@ -557,7 +557,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$url = "index.php?component=com_projects&action=get_issue_detail&projectid=".$row->projectid."&issueid=".$row->id;
 			
 			// Add entry in activity log
-			$modelActivityLog = $this->getModel('activitylog');
+			$modelActivityLog = $this->getModel('activitylog', array($this->_project));
 			if (!$modelActivityLog->insertRow($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, true)) {
 				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}
@@ -637,8 +637,7 @@ class projectsController extends phpFrame_Application_ActionController {
 		$post = phpFrame::getRequest()->getPost();
 		
 		// Save file using files model
-		$modelFiles = $this->getModel('files');
-		$row = $modelFiles->saveFile($post);
+		$row = $this->getModel('files')->saveRow($post);
 		
 		if ($row === false) {
 			$this->_sysevents->setSummary($modelFiles->getLastError());
@@ -654,8 +653,8 @@ class projectsController extends phpFrame_Application_ActionController {
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
-			$modelActivityLog = $this->getModel('activitylog');
-			if (!$modelActivityLog->insertRow($row->projectid, $row->userid, 'files', $action, $title, $description, $url, $post['assignees'], $notify)) {
+			$modelActivityLog = $this->getModel('activitylog', array($this->_project));
+			if (!$modelActivityLog->insertRow('files', $action, $title, $description, $url, $post['assignees'], $notify)) {
 				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}
 		}
@@ -669,12 +668,15 @@ class projectsController extends phpFrame_Application_ActionController {
 		$projectid = phpFrame::getRequest()->get('projectid', 0);
 		$fileid = phpFrame::getRequest()->get('fileid', 0);
 		
-		$modelFiles = &$this->getModel('files');
+		$modelFiles = $this->getModel('files');
 		
-		if ($modelFiles->deleteFile($projectid, $fileid) === true) {
+		try {
+			$modelFiles->deleteRow($projectid, $fileid);
 			$this->_sysevents->setSummary(_LANG_FILE_DELETE_SUCCESS, "success");
+			$this->_success = true;
 		}
-		else {
+		catch (phpFrame_Exception $e) {
+			var_dump($e);
 			$this->_sysevents->setSummary(_LANG_FILE_DELETE_ERROR);
 		}
 		
@@ -773,7 +775,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
-			$modelActivityLog = $this->getModel('activitylog');
+			$modelActivityLog = $this->getModel('activitylog', array($this->_project));
 			if (!$modelActivityLog->insertRow($row->projectid, $row->userid, 'messages', $action, $title, $description, $url, $post['assignees'], $notify)) {
 				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}
@@ -843,7 +845,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
-			$modelActivityLog = $this->getModel('activitylog');
+			$modelActivityLog = $this->getModel('activitylog', array($this->_project));
 			$modelActivityLog->insertRow($row->projectid, $row->userid, 'comments', $action, $title, $description, $url, $post['assignees'], $notify);
 			
 			$close_issue = phpFrame::getRequest()->get('close_issue', NULL);
@@ -951,7 +953,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
-			$modelActivityLog = $this->getModel('activitylog');
+			$modelActivityLog = $this->getModel('activitylog', array($this->_project));
 			if (!$modelActivityLog->insertRow($row->projectid, $row->created_by, 'meetings', $action, $title, $description, $url, $post['assignees'], $notify)) {
 				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}	
@@ -1240,7 +1242,7 @@ class projectsController extends phpFrame_Application_ActionController {
 			$notify = $post['notify'] == 'on' ? true : false;
 			
 			// Add entry in activity log
-			$modelActivityLog = $this->getModel('activitylog');
+			$modelActivityLog = $this->getModel('activitylog', array($this->_project));
 			if (!$modelActivityLog->insertRow($row->projectid, $row->created_by, 'milestones', $action, $title, $description, $url, $post['assignees'], $notify)) {
 				$this->_sysevents->setSummary($modelActivityLog->getLastError());
 			}
@@ -1374,7 +1376,7 @@ class projectsController extends phpFrame_Application_ActionController {
 							$assignees = $itemModel->getAssignees($row->itemid, false);
 							
 							// Add entry in activity log
-							$modelActivityLog = $this->getModel('activitylog');
+							$modelActivityLog = $this->getModel('activitylog', array($this->_project));
 							$modelActivityLog->project =& $this->_project;
 							$delete_uids = array();
 							if (!$modelActivityLog->insertRow($row->projectid, $row->userid, 'comments', $action, $title, $description, $url, $assignees, true)) {

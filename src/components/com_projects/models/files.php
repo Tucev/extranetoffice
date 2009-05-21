@@ -129,23 +129,20 @@ class projectsModelFiles extends phpFrame_Application_Model {
 	 * @param	$post	The array to be used for binding to the row before storing it. Normally the HTTP_POST array.
 	 * @return	mixed	Returns the stored table row object on success or FALSE on failure
 	 */
-	public function saveFile($post) {
+	public function saveRow($post) {
 		// Check whether a project id is included in the post array
 		if (empty($post['projectid'])) {
 			$this->_error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
 			return false;
 		}
-			
-		$row = $this->getTable('files');
 		
-		if (!$row->bind($post)) {
-			$this->_error[] = $row->getLastError();
-			return false;
-		}
+		$row = new phpFrame_Database_Row("#__files");
+		
+		$row->bind($post);
 		
 		// Generate revision
 		if (empty($row->parentid)) {
-			$row->revision = 0;
+			$row->set('revision', 0);
 		}
 		else {
 			$query = "SELECT revision FROM #__files ";
@@ -153,7 +150,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 			$query .= " ORDER BY revision DESC LIMIT 0,1";
 			phpFrame::getDB()->setQuery($query);
 			$current_revision = phpFrame::getDB()->loadResult();
-			$row->revision = ($current_revision+1);
+			$row->set('revision', ($current_revision+1));
 		}
 		
 		// upload the file
@@ -171,29 +168,18 @@ class projectsModelFiles extends phpFrame_Application_Model {
 			return false;
 		}
 		
-		$row->filename = $file['file_name'];
-		$row->filesize = $file['file_size'];
-		$row->mimetype = $file['file_type'];
+		$row->set('filename', $file['file_name']);
+		$row->set('filesize', $file['file_size']);
+		$row->set('mimetype', $file['file_type']);
 		
-		$row->userid = phpFrame::getUser()->id;
+		$row->set('userid', phpFrame::getUser()->id);
 		
-		if (!$row->check()) {
-			$this->_error[] = $row->getLastError();
-			return false;
-		}
-	
-		if (!$row->store()) {
-			$this->_error[] = $row->getLastError();
-			return false;
-		}
+		$row->store();
 		
 		// Make parent files have their own id as their parentid
 		if (empty($row->parentid)) {
-			$row->parentid = $row->id;
-			if (!$row->store()) {
-				$this->_error[] = $row->getLastError();
-				return false;
-			}
+			$row->set('parentid', $row->id);
+			$row->store();
 		}
 		
 		// File assignees are stored with a reference to the parentid, 
@@ -220,13 +206,13 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		return $row;
 	}
 	
-	public function deleteFile($projectid, $fileid) {
+	public function deleteRow($projectid, $fileid) {
 		//TODO: This function should allow ids as either int or array of ints.
 		//TODO: This function should also check permissions before deleting
 		//TODO: This function should delete related items if any (comments, ...)
 		
 		// Instantiate table object	
-		$row =& phpFrame_Base_Singleton::getInstance("projectsTableFiles");
+		$row = new phpFrame_Database_Row("#__files");
 		
 		// Load row data
 		$row->load($fileid);
@@ -235,18 +221,12 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		unlink(config::FILESYSTEM.DS."projects".DS.$row->projectid.DS."files".DS.$row->filename);
 		
 		// Delete row from database
-		if (!$row->delete($fileid)) {
-			$this->_error[] = $row->getLastError();
-			return false;
-		}
-		else {
-			return true;
-		}
+		$row->delete($fileid);
 	}
 	
 	public function downloadFile($projectid, $fileid) {
 		//TODO: This function should also check permissions		
-		$row =& phpFrame_Base_Singleton::getInstance("projectsTableFiles");
+		$row = new phpFrame_Database_Row("#__files");
 		
 		// Load row data
 		$row->load($fileid);
