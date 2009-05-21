@@ -268,7 +268,7 @@ Log message:
 define("_LANG_PROJECTS_FILES_DELETE", "Delete file");
 define("_LANG_PROJECTS_FILES_DELETE_CONFIRM", "Are you sure you want to delete file");
 define("_LANG_FILE_DELETE_SUCCESS", "File has been successfully deleted");
-define("_LANG_FILE_DELETE_ERROR", "An error occurred while deleting issue");
+define("_LANG_FILE_DELETE_ERROR", "An error occurred while deleting file");
 
 // Issues
 define("_LANG_ISSUES", "Issues");
