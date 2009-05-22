@@ -637,7 +637,8 @@ class projectsController extends phpFrame_Application_ActionController {
 		$post = phpFrame::getRequest()->getPost();
 		
 		// Save file using files model
-		$row = $this->getModel('files')->saveRow($post);
+		$modelFiles = $this->getModel('files');
+		$row = $modelFiles->saveRow($post);
 		
 		if ($row === false) {
 			$this->_sysevents->setSummary($modelFiles->getLastError());

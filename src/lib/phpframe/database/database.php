@@ -145,6 +145,7 @@ class phpFrame_Database {
 	 */
 	public function query() {
 		// Run SQL query
+		//phpFrame_Debug_Log::write($this->_query);
 		$this->_rs = @mysql_query($this->_query);
 		
 		// Check query result is valid

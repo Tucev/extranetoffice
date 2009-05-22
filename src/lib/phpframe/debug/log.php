@@ -12,8 +12,6 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * Log Class
  * 
- * This class is still work in progress...
- * 
  * @package		phpFrame
  * @subpackage 	debug
  * @author 		Luis Montero [e-noise.com]
@@ -29,7 +27,16 @@ class phpFrame_Debug_Log {
 	 * @return	void
 	 */
 	public static function write($str) {
-		file_put_contents(config::LOG_FILE, $str, FILE_APPEND);
+		// Add log info
+		$info = "\n";
+		$info .= "---";
+		$info .= "\n";
+		$info .= "[".date("Y-m-d H:i:s")."]";
+		$info .= " [ip:".$_SERVER['REMOTE_ADDR']."]";
+		$info .= " [client: ".phpFrame::getSession()->getClientName()."]";
+		$info .= "\n";
+		
+		// Write log to filesystem using phpFrame's utility class
+		phpFrame_Utils_Filesystem::write(config::LOG_FILE, $info.$str, true);
 	}
 }
-?>

@@ -235,7 +235,7 @@ CREATE TABLE IF NOT EXISTS `eo_files` (
   `id` int(11) NOT NULL auto_increment,
   `projectid` int(11) NOT NULL,
   `userid` int(11) NOT NULL,
-  `parentid` int(11) default NULL,
+  `parentid` int(11) default '0',
   `title` varchar(64) NOT NULL,
   `revision` int(11) NOT NULL,
   `changelog` text NOT NULL,
