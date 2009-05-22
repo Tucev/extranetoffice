@@ -18,21 +18,32 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  */
 class phpFrame_Utils_Filesystem {
-	public static function write($fname, $content) {
+	/**
+	 * Write string to file
+	 * 
+	 * @param	string	$fname		The full path to the file
+	 * @param	string	$content	The content to store in the file
+	 * @param 	boolean	$append		Flag to indicate whether we want to append the content. 
+	 * 								Default is FALSE
+	 * @return	void
+	 */
+	public static function write($fname, $content, $append=false) {
+		// Set access type depending on append flag
+		$mode = $append ? "a" : "w";
+		
 		// Open file for writing
-		if (!$fhandle = fopen($fname,"w")) {
+		if (!$fhandle = fopen($fname, $mode)) {
 			throw new phpFrame_Exception_Filesystem('Error opening file '.$fname.' for writing.');
 		}
+		
 		// Write contents into file
 		if (!fwrite($fhandle, $content)) {
 			throw new phpFrame_Exception_Filesystem('Error writing file '.$fname.'.');
 		}
+		
 		// Close file
 		if (!fclose($fhandle)) {
 			throw new phpFrame_Exception_Filesystem('Error closing file '.$fname.' after writing.');
-		}
-		else {
-			return true;
 		}
 	}
 	
@@ -40,7 +51,7 @@ class phpFrame_Utils_Filesystem {
 	 * Ensure that directory is writable
 	 * 
 	 * @param	string	$path	Path to directory to ensure that it is writable
-	 * @return	boolean	Returns TRUE on succes or throws exceptions on error.
+	 * @return	void
 	 */
 	public static function ensureWritableDir($path) {
 		$path = (string) $path;
@@ -55,8 +66,6 @@ class phpFrame_Utils_Filesystem {
 		if (!is_writable($path)) {
 			throw new phpFrame_Exception_Filesystem("Directory ".$path." is not writable.");
 		}
-		
-		return true;
 	}
 	
 	/**

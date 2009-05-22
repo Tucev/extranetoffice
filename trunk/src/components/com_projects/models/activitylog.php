@@ -145,7 +145,7 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 					// Send email
 					if ($new_mail->Send() !== true) {
 						$failed_recipients[] = $recipient->email;
-						return false;
+						continue;
 					}
 					
 					$new_mail->ClearAllRecipients();
@@ -156,12 +156,12 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 				$this->_error[] = sprintf(_LANG_EMAIL_NOT_SENT, implode(',', $failed_recipients));
 				return false;
 			}
-			
-			return true;
 		}
 		else {
 			$this->_error[] = _LANG_ACTIVITYLOG_NO_RECIPIENTS;
 			return false;
 		}
+		
+		return true;
 	}
 }

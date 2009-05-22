@@ -203,11 +203,11 @@ class phpFrame_Registry_Session extends phpFrame_Registry {
 	 * it is present, if not it will invalidate the session.
 	 * 
 	 * @access	public
-	 * @param	boolean $forceNew If true, force a new token to be created
+	 * @param	boolean	$force_new	If true, force a new token to be created
 	 * @return	string
 	 * @since	1.0
 	 */
-	public function getToken($force_new = false) {
+	public function getToken($force_new=false) {
 		//create a token
 		if ($_SESSION['token'] === null || $force_new) {
 			$_SESSION['token'] = $this->_createToken(12);
