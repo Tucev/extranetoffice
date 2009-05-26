@@ -25,7 +25,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 	</label>
 </td>
 <td>
-	<?php echo $data['members'][0]->name; ?>
+	<?php echo $data['members'][0]->firstname." ".$data['members'][0]->lastname; ?>
 </td>
 </tr>
 <tr>

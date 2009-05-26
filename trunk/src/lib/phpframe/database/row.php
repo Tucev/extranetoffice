@@ -291,6 +291,11 @@ class phpFrame_Database_Row {
 					$this->_data[$structure->Field] = $structure->Default;
 				}
 				
+				// If column is timestamp and default value is CURRENT_TIMESTAMP replace with current date
+				if ($structure->Default == "CURRENT_TIMESTAMP") {
+					$this->_data[$structure->Field] = date("Y-m-d H:i:s");
+				}
+				
 				// If column is auto_increment we set to null
 				if ($structure->Extra == 'auto_increment') {
 					$this->_data[$structure->Field] = null;
