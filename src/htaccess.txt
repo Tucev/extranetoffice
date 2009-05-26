@@ -9,7 +9,7 @@ RewriteEngine on
 
 #RewriteBase /
 
-RewriteRule !\.(js|gif|jpg|png|css)$ index.php
+RewriteRule !\.(js|gif|jpg|png|css|swf)$ index.php
 
 #RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteCond %{REQUEST_FILENAME} !-d
