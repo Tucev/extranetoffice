@@ -46,8 +46,6 @@ class projectsController extends phpFrame_Application_ActionController {
 	 */
 	protected function __construct() {
 		// Invoke parent's constructor to set default action
-		// It is important we invoke the parent's constructor before 
-		// running permission check as we need the available views loaded first.
 		parent::__construct('get_projects');
 		
 		// Get reference to custom permissions model for project tools

@@ -130,7 +130,15 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		}
 		
 		// Store row and return row object
-		return $row->store();
+		$row->store();
+		
+		// Create filesystem directories if they don't exist yet
+		phpFrame_Utils_Filesystem::ensureWritableDir(config::FILESYSTEM.DS."projects");
+		phpFrame_Utils_Filesystem::ensureWritableDir(config::FILESYSTEM.DS."projects".DS.$row->id);
+		phpFrame_Utils_Filesystem::ensureWritableDir(config::UPLOAD_DIR.DS."projects");
+		phpFrame_Utils_Filesystem::ensureWritableDir(config::UPLOAD_DIR.DS."projects".DS.$row->id);
+		
+		return $row;
 	}
 	
 	/**

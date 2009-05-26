@@ -154,11 +154,8 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		}
 		
 		// upload the file
-		//TODO: Have to catch errors and look at file permissions
-		$upload_dir = config::FILESYSTEM.DS."projects".DS.$post['projectid'].DS."files".DS;
-		if (!is_dir($upload_dir)) {
-			mkdir($upload_dir, 0711);
-		}
+		$upload_dir = config::FILESYSTEM.DS."projects".DS.$post['projectid'].DS."files";
+		phpFrame_Utils_Filesystem::ensureWritableDir($upload_dir);
 		$accept = config::UPLOAD_ACCEPT; // mime types
 		$max_upload_size = config::MAX_UPLOAD_SIZE*(1024*1024); // Mb
 		$file = phpFrame_Utils_Filesystem::uploadFile('filename', $upload_dir, $accept, $max_upload_size);
