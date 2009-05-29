@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	application
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -25,9 +25,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * for examples.
  * 
  * @abstract
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	application
- * @author 		Luis Montero [e-noise.com]
  * @see			phpFrame_Application_ActionController, phpFrame_Application_Model 
  * @since 		1.0
  */

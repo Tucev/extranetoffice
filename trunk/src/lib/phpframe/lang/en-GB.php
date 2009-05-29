@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	lang
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.

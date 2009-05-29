@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	document
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -12,9 +12,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * HTML Document Class
  * 
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	document
- * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
 class phpFrame_Document_HTML extends phpFrame_Document {

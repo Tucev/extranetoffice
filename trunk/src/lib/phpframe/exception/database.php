@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	exception
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -12,9 +12,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * Database Exception Class
  * 
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	exception
- * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
 class phpFrame_Exception_Database extends phpFrame_Exception {
@@ -53,4 +52,3 @@ class phpFrame_Exception_Database extends phpFrame_Exception {
 		parent::__construct($message, $code, $verbose);
 	}
 }
-?>

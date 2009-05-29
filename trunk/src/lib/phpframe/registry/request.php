@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	registry
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -18,7 +18,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * the current session's client.
  * 
  * @todo		This class needs to be changed to use phpFrame_Utils_Filter instead of phpinputfilter
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	registry
  * @since 		1.0
  */

@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage	base
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -34,9 +34,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * $mySingletonObject3 = singletonClass::getInstance('singletonClass');
  * </code>
  * 
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	base
- * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  * @abstract 
  */
