@@ -46,7 +46,7 @@ class phpFrame_Registry_Request extends phpFrame_Registry {
 	private $_response=null;
 	
 	/**
-	 * Constructor prevents instantiation.
+	 * Constructor
 	 * 
 	 * @access	protected
 	 * @return	void
@@ -71,7 +71,10 @@ class phpFrame_Registry_Request extends phpFrame_Registry {
 	/**
 	 * Get Instance
 	 * 
-	 * @return phpFrame_Application_FrontController
+	 * @static
+	 * @access	public
+	 * @return 	phpFrame_Registry
+	 * @since	1.0
 	 */
 	public static function getInstance() {
 		if (!isset(self::$_instance)) {
@@ -81,6 +84,15 @@ class phpFrame_Registry_Request extends phpFrame_Registry {
 		return self::$_instance;
 	}
 	
+	/**
+	 * Get a request variable
+	 * 
+	 * @access	public
+	 * @param	string	$key
+	 * @param	mixed	$default_value
+	 * @return	mixed
+	 * @since	1.0
+	 */
 	public function get($key, $default_value=null) {
 		if (!isset($this->_array['request'][$key]) && !is_null($default_value)) {
 			$this->_array['request'][$key] = $default_value;
@@ -89,6 +101,15 @@ class phpFrame_Registry_Request extends phpFrame_Registry {
 		return $this->_array['request'][$key];
 	}
 	
+	/**
+	 * Set a request variable
+	 * 
+	 * @access	public
+	 * @param	string	$key
+	 * @param	mixed	$value
+	 * @return	void
+	 * @since	1.0
+	 */
 	public function set($key, $value) {
 		$this->_array['request'][$key] = self::$_inputfilter->process($value);
 	}

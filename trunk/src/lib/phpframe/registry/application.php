@@ -32,8 +32,9 @@ class phpFrame_Registry_Application extends phpFrame_Registry {
 	/**
 	 * Constructor
 	 * 
-	 * Invoke the parent (table) constructor and start the session.
-	 *
+	 * @access	protected
+	 * @return	void
+	 * @since	1.0
 	 */
 	protected function __construct() {
 		// Ensure that cache dir is writable
@@ -59,7 +60,10 @@ class phpFrame_Registry_Application extends phpFrame_Registry {
 	/**
 	 * Get Instance
 	 * 
-	 * @return phpFrame_Application_FrontController
+	 * @static
+	 * @access	public
+	 * @return 	phpFrame_Registry
+	 * @since	1.0
 	 */
 	public static function getInstance() {
 		if (!isset(self::$_instance)) {
@@ -69,6 +73,15 @@ class phpFrame_Registry_Application extends phpFrame_Registry {
 		return self::$_instance;
 	}
 	
+	/**
+	 * Get an application registry variable
+	 * 
+	 * @access	public
+	 * @param	string	$key
+	 * @param	mixed	$default_value
+	 * @return	mixed
+	 * @since	1.0
+	 */
 	public function get($key, $default_value=null) {
 		if (!isset($this->_array[$key]) && !is_null($default_value)) {
 			$this->_array[$key] = $default_value;
@@ -77,6 +90,15 @@ class phpFrame_Registry_Application extends phpFrame_Registry {
 		return $this->_array[$key];
 	}
 	
+	/**
+	 * Set a application registry variable
+	 * 
+	 * @access	public
+	 * @param	string	$key
+	 * @param	mixed	$value
+	 * @return	void
+	 * @since	1.0
+	 */
 	public function set($key, $value) {
 		if (array_key_exists($key, $this->_readonly)) {
 			throw new phpFrame_Exception("Tried to set a read-only key (".$key.") in Application Registry.");
