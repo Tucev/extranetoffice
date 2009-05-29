@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	database
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -16,11 +16,12 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * of the table class. The table class is an abstract class so it will be used to implement 
  * specific database tables and each of the child instances will need to be a singleton.
  * 
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	database
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @abstract 
+ * @abstract
+ * @deprecated
  */
 abstract class phpFrame_Database_Table extends phpFrame_Base_StdObject {
 	/**
