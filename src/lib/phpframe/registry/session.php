@@ -58,7 +58,7 @@ class phpFrame_Registry_Session extends phpFrame_Registry {
 	 * 
 	 * @static
 	 * @access	public
-	 * @return 	phpFrame_Registry_Session
+	 * @return 	phpFrame_Registry
 	 * @since	1.0
 	 */
 	public static function getInstance() {
@@ -74,6 +74,7 @@ class phpFrame_Registry_Session extends phpFrame_Registry {
 	 * 
 	 * @access	public
 	 * @param	string	$key
+	 * @param	mixed	$default_value
 	 * @return	mixed
 	 * @since	1.0
 	 */
