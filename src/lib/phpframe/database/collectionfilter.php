@@ -18,21 +18,51 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * @since 		1.0
  */
 class phpFrame_Database_CollectionFilter {
+	/**
+	 * Column to use for ordering
+	 * 
+	 * @var string
+	 */
 	private $_orderby=null;
+	/**
+	 * Order direction (either ASC or DESC)
+	 * 
+	 * @var string
+	 */
 	private $_orderdir=null;
+	/**
+	 * Number of rows per page
+	 * 
+	 * @var int
+	 */
 	private $_limit=null;
+	/**
+	 * Row number to start current page
+	 * 
+	 * @var int
+	 */
 	private $_limitstart=null;
+	/**
+	 * Search string
+	 * 
+	 * @var string
+	 */
 	private $_search=null;
+	/**
+	 * Total number of rows (in all pages)
+	 * 
+	 * @var int
+	 */
 	private $_total=null;
 	
 	/**
 	 * Constructor
 	 * 
-	 * @param	string	$_orderby
-	 * @param	string	$_orderdir
-	 * @param	int		$_limit
-	 * @param	int		$_limitstart
-	 * @param	string	$_search
+	 * @param	string	$_orderby		Column to use for ordering.
+	 * @param	string	$_orderdir		Order direction (either ASC or DESC).
+	 * @param	int		$_limit			Number of rows per page.
+	 * @param	int		$_limitstart	Row number to start current page.
+	 * @param	string	$_search		Search string.
 	 * @return	void
 	 */
 	public function __construct($_orderby="", $_orderdir="ASC", $_limit=-1, $_limitstart=0, $_search="") {
@@ -46,6 +76,7 @@ class phpFrame_Database_CollectionFilter {
 	/**
 	 * Set total number of records for the subset
 	 * 
+	 * @param	int		Total number of records in all pages.
 	 * @return	void
 	 */
 	public function setTotal($int) {
@@ -128,6 +159,11 @@ class phpFrame_Database_CollectionFilter {
 		return $stmt;
 	}
 	
+	/**
+	 * Get number of pages
+	 * 
+	 * @return int
+	 */
 	public function getPages() {
 		if ($this->_limit > 0 && !is_null($this->_total)) {
 			// Calculate number of pages
@@ -138,6 +174,11 @@ class phpFrame_Database_CollectionFilter {
 		}
 	}
 	
+	/**
+	 * Get current page number
+	 * 
+	 * @return int
+	 */
 	public function getCurrentPage() {
 		// Calculate current page
 		if ($this->_limit > 0) {
