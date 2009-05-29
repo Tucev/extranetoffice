@@ -12,17 +12,18 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * Collection Filter Class
  * 
- * The "Row collection filter" class is used to create objects that are then used 
- * when creating "row collections". Collection filter objects are responsible for 
- * encapsulating SQL select filtering conditions (ORDER BY and LIMIT clauses).
+ * Collection filter objects are responsible for encapsulating SQL select filtering 
+ * conditions (ORDER BY and LIMIT clauses).
+ * 
+ * "Collection filter" objects are used when creating "row collections".
  * 
  * This objects are also used by the pagination objects, as they will need to work 
- * with the "limit" properties (limit, limitstart, pages, curreny pages and so on).
+ * with the "limit" properties (limit, limitstart, pages, current pages and so on).
  * 
- * Collection filter objects are normally instantated passing them values coming 
- * from the request, so the natural place to instantiate them is in concrete action 
- * controller classes. Action controllers are responsible for brokering request data,
- * so they use this data to create  a list or collection filter that then will be 
+ * Collection filter objects are normally instantiated using values coming 
+ * from the request, so the natural place to instantiate them is in concrete "action 
+ * controller" classes. Action controllers are responsible for brokering request data.
+ * They use this data to create a list or collection filter that will be 
  * passed to a model method responsible for creating a "row collection".
  * 
  *  Example:
