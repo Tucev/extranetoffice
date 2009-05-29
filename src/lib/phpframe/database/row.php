@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	database
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -15,9 +15,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * Note that this class uses the Application Registry object to cache table structures 
  * and primary keys in order to avoid unnecessary trips to the database.
  * 
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	database
- * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
 class phpFrame_Database_Row {

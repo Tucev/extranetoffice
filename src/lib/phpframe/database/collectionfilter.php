@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	database
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -57,7 +57,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  *  }
  *  </code>
  * 
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	database
  * @see			phpFrame_Database_RowCollection, phpFrame_HTML_Pagination
  * @since 		1.0
