@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	utils
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -17,9 +17,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * 
  * All methods in this class are static.
  * 
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	utils
- * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
 class phpFrame_Utils_Crypt {
@@ -327,4 +326,3 @@ class phpFrame_Utils_Crypt {
 		return $bin;
 	}
 }
-?>

@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  * @author 		Luis Montero [e-noise.com]
@@ -16,7 +16,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * 
  * It also provides information about the installed phpFrame version.
  * 
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @since 		1.0
  */
 class phpFrame {

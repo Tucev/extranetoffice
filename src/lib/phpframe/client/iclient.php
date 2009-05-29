@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	client
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -12,7 +12,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * Client Interface
  * 
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	client
  * @since 		1.0		
  */

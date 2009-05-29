@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	user
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -12,9 +12,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * userOpenID Class
  * 
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	user
- * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
 class phpFrame_User_OpenID {
@@ -33,4 +32,3 @@ class phpFrame_User_OpenID {
 	# DetachOpenIDsByUser(user_id)
 	//delete from user_openids where user_id = user_id
 }
-?>

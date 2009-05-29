@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id: session.php 545 2009-05-20 02:41:31Z luis.montero@e-noise.com $
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	registry
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -14,7 +14,7 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * 
  * The Session class is responsible for detecting the client (default, mobile, cli or xmlrpc)
  * 
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	registry
  * @since 		1.0
  */

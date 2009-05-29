@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	utils
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -21,9 +21,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * scheme              authority
  * </pre>
  * 
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	utils
- * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
 class phpFrame_Utils_URI extends phpFrame_Base_StdObject {

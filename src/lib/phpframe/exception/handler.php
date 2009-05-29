@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	exception
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -12,9 +12,8 @@ defined( '_EXEC' ) or die( 'Restricted access' );
 /**
  * Exception and Error Handler Class
  * 
- * @package		phpFrame
+ * @package		phpFrame_lib
  * @subpackage 	exception
- * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
 class phpFrame_Exception_Handler {
@@ -91,4 +90,3 @@ class phpFrame_Exception_Handler {
 		phpFrame_Debug_Log::write($str);
 	}
 }
-?>
