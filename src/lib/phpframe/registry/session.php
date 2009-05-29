@@ -77,7 +77,11 @@ class phpFrame_Registry_Session extends phpFrame_Registry {
 	 * @return	mixed
 	 * @since	1.0
 	 */
-	public function get($key) {
+	public function get($key, $default_value=null) {
+		if (!isset($_SESSION[$key]) && !is_null($default_value)) {
+			$_SESSION[$key] = $default_value;
+		}
+		
 		return $_SESSION[$key];
 	}
 	

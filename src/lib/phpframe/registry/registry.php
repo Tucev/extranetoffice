@@ -22,7 +22,7 @@ abstract class phpFrame_Registry {
 	
 	abstract public static function getInstance();
 	
-	abstract public function get($key);
+	abstract public function get($key, $default_value=null);
 	
 	abstract public function set($key, $value);
 }

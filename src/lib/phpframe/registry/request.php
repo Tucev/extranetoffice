@@ -81,7 +81,11 @@ class phpFrame_Registry_Request extends phpFrame_Registry {
 		return self::$_instance;
 	}
 	
-	public function get($key) {
+	public function get($key, $default_value=null) {
+		if (!isset($this->_array['request'][$key]) && !is_null($default_value)) {
+			$this->_array['request'][$key] = $default_value;
+		}
+		
 		return $this->_array['request'][$key];
 	}
 	
