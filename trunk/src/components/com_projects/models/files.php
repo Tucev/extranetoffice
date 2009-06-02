@@ -14,7 +14,6 @@ defined( '_EXEC' ) or die( 'Restricted access' );
  * 
  * @package		ExtranetOffice
  * @subpackage 	com_projects
- * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  * @see 		phpFrame_Application_Model
  */
