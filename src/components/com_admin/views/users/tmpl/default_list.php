@@ -7,8 +7,6 @@
  * @license		BSD revised. See LICENSE.
  */
 
-defined( '_EXEC' ) or die( 'Restricted access' );
-
 phpFrame_HTML::confirm('delete_user', _LANG_ADMIN_USERS_DELETE, _LANG_ADMIN_USERS_DELETE_CONFIRM, "div[id^='ui-tabs']:has(a.delete_user)");
 ?>
 

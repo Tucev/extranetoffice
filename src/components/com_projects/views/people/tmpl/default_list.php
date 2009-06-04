@@ -6,8 +6,6 @@
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  */
-
-defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
 <h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>

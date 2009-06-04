@@ -6,8 +6,6 @@
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  */
-
-defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
 <script language="javascript" type="text/javascript">

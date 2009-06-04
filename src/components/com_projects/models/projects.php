@@ -7,8 +7,6 @@
  * @license		BSD revised. See LICENSE.
  */
 
-defined( '_EXEC' ) or die( 'Restricted access' );
-
 /**
  * projectsModelProjects Class
  * 
@@ -134,8 +132,8 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		// Create filesystem directories if they don't exist yet
 		phpFrame_Utils_Filesystem::ensureWritableDir(config::FILESYSTEM.DS."projects");
 		phpFrame_Utils_Filesystem::ensureWritableDir(config::FILESYSTEM.DS."projects".DS.$row->id);
-		phpFrame_Utils_Filesystem::ensureWritableDir(_ABS_PATH.DS.config::UPLOAD_DIR.DS."projects");
-		phpFrame_Utils_Filesystem::ensureWritableDir(_ABS_PATH.DS.config::UPLOAD_DIR.DS."projects".DS.$row->id);
+		phpFrame_Utils_Filesystem::ensureWritableDir(_ABS_PATH.DS."public".DS.config::UPLOAD_DIR.DS."projects");
+		phpFrame_Utils_Filesystem::ensureWritableDir(_ABS_PATH.DS."public".DS.config::UPLOAD_DIR.DS."projects".DS.$row->id);
 		
 		return $row;
 	}

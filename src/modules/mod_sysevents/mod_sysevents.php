@@ -8,8 +8,6 @@
  * @author 		Luis Montero [e-noise.com]
  */
 
-defined( '_EXEC' ) or die( 'Restricted access' );
-
 $sys_events_obj = phpFrame::getSysevents();
 $sys_events = $sys_events_obj->asArray();
 $sys_events_obj->clear();

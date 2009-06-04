@@ -8,10 +8,8 @@
  * @author 		Luis Montero [e-noise.com]
  */
 
-defined( '_EXEC' ) or die( 'Restricted access' );
-
 $projectid = phpFrame::getRequest()->get('projectid', 0);
-require_once _ABS_PATH.DS.'components'.DS.'com_projects'.DS.'helpers'.DS.'projects.helper.php';
+require_once _ABS_PATH.DS."src".DS."components".DS."com_projects".DS."helpers".DS."projects.helper.php";
 ?>
 
 <!-- Project switcher -->

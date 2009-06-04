@@ -8,8 +8,6 @@
  * @author 		Luis Montero [e-noise.com]
  */
 
-defined( '_EXEC' ) or die( 'Restricted access' );
-
 $option = phpFrame::getRequest()->getComponentName();
 $active_component = substr($option, 4);
 $db = phpFrame::getDB();

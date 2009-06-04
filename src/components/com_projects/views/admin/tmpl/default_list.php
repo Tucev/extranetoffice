@@ -7,8 +7,6 @@
  * @license		BSD revised. See LICENSE.
  */
 
-defined( '_EXEC' ) or die( 'Restricted access' );
-
 phpFrame_HTML::confirm('delete_project', _LANG_PROJECTS_DELETE, _LANG_PROJECT_DELETE_CONFIRM);
 phpFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJECT_MEMBER_DELETE_CONFIRM);
 ?>

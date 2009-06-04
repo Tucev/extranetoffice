@@ -8,8 +8,6 @@
  * 
  * @todo	The form in this file needs validation before submit.
  */
-
-defined( '_EXEC' ) or die( 'Restricted access' );
 ?>
 
 <!-- add jQuery accordion behaviour -->
