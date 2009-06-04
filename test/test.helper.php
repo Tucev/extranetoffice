@@ -10,13 +10,12 @@
 class testHelper {
 	public static function prepareApplication() {
 		// Set constants
-		define("_EXEC", true);
-		define('_ABS_PATH', str_replace(DS."test", DS."src",_ABS_PATH_TEST) );
+		define('_ABS_PATH', str_replace(DS."test", "", dirname(__FILE__) ));
 		
 		// Include test config
 		require_once _ABS_PATH_TEST.DS."inc".DS."config.php";
 		// Include autoloader
-		require_once _ABS_PATH.DS."inc".DS."autoload.php";
+		require_once _ABS_PATH.DS."src".DS."autoload.php";
 	}
 	
 	public static function freshInstall() {
