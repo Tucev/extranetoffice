@@ -81,7 +81,7 @@ class phpFrame_Application_Dependencies {
 		
 		// Load the dependency requirements from XML
 		if (is_null(self::$_xml)) {
-			self::$_xml = simplexml_load_file(_ABS_PATH.DS."inc".DS."dependencies.xml");
+			self::$_xml = simplexml_load_file(_ABS_PATH.DS."src".DS."dependencies.xml");
 		}
 		
 		// Get MySQL version if not loaded yet
