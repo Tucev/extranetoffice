@@ -8,8 +8,6 @@
  * @author 		Luis Montero [e-noise.com]
  */
 
-defined( '_EXEC' ) or die( 'Restricted access' );
-
 // Generic
 define("_LANG_BACK", "Back");
 define("_LANG_SAVE", "Save");

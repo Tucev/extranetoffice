@@ -7,8 +7,6 @@
  * @license		BSD revised. See LICENSE.
  */
 
-defined( '_EXEC' ) or die( 'Restricted access' );
-
 // Load jQuery validation behaviour for forms
 phpFrame_HTML::validate('form_login');
 phpFrame_HTML::validate('form_openid');

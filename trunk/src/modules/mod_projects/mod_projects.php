@@ -8,8 +8,6 @@
  * @author 		Luis Montero [e-noise.com]
  */
 
-defined( '_EXEC' ) or die( 'Restricted access' );
-
 $projectid = phpFrame::getRequest()->get('projectid', 0);
 
 $controller = phpFrame::getActionController(phpFrame::getRequest()->getComponentName());

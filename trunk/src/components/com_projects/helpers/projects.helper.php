@@ -7,8 +7,6 @@
  * @license		BSD revised. See LICENSE.
  */
 
-defined( '_EXEC' ) or die( 'Restricted access' );
-
 class projectsHelperProjects {
 	/**
 	 * Translate projectid to name

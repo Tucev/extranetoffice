@@ -7,8 +7,6 @@
  * @license		BSD revised. See LICENSE.
  */
 
-defined( '_EXEC' ) or die( 'Restricted access' );
-
 // Add confirm behaviour to delete links
 phpFrame_HTML::confirm('delete_meeting', _LANG_PROJECTS_MEETINGS_DELETE, _LANG_PROJECTS_MEETINGS_DELETE_CONFIRM);
 phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DELETE, _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DELETE_CONFIRM);

@@ -9,8 +9,6 @@
  * @todo	The form in this file needs validation before submit.
  */
 
-defined( '_EXEC' ) or die( 'Restricted access' );
-
 // Load jQuery validation behaviour for form
 phpFrame_HTML::validate('email_accountsform');
 ?>

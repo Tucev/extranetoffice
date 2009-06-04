@@ -8,8 +8,6 @@
  * @author 		Luis Montero [e-noise.com]
  */
 
-defined( '_EXEC' ) or die( 'Restricted access' );
-
 /**
  * adminModelUsers Class
  * 
