@@ -13,6 +13,11 @@
 	</fileset>
 	
 	<property name="report.dir" value="${project.basedir}/report"/>
+	<!-- <property name="tmp.dir" value="${project.basedir}/tmp"/> -->
+	
+	<target name="install">
+		<mkdir dir="../${project.basedir}/tmp/test"/>
+	</target>
 	
 	<target name="prepare">
 		<mkdir dir="${report.dir}"/>

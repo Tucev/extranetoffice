@@ -3,20 +3,23 @@
 	
 	<project name="ExtranetOffice-1.0">
 		
-		<property name="dir" value="${projectdir}/${project.name}" />
+		<property name="root_dir" value="${projectdir}/${project.name}" />
+		<property name="build_dir" value="${root_dir}/build" />
 		
 		<schedule interval="60" />
 		
+		
 		<modificationset>
-			<svn directory="${dir}" update="true" />
+			<svn directory="${root_dir}" update="true" />
+			<buildalways/>
 		</modificationset>
 		
 		<builders>
-			<phingbuilder buildfile="${dir}/build.xml" target="build" />
+			<phingbuilder buildfile="${build_dir}/build.xml" target="build" />
 		</builders>
 		
 		<publishers>
-			<phpUnitTestResults file="${dir}/report/logfile.xml" />
+			<phpUnitTestResults file="${build_dir}/report/logfile.xml" />
 			
 			<onfailure>
 				<email to="extranetoffice-dev@googlegroups.com" 
@@ -25,9 +28,9 @@
 			</onfailure>
 				
 			<onsuccess>
-				<phingPublisher buildfile="${dir}/publish.xml" target="build" />
-				<artifactspublisher file="${dir}/publish.xml" />
-				<deliverable file="${dir}/builds/${project.name}-${build.label}.tar.gz" 
+				<phingPublisher buildfile="${build_dir}/publish.xml" target="build" />
+				<artifactspublisher file="${build_dir}/publish.xml" />
+				<deliverable file="${build_dir}/builds/${project.name}-${build.label}.tar.gz" 
 							 alias="${project.name}.tar.gz" />
 				<email to="extranetoffice-dev@googlegroups.com" 
 					   subject="${project.name} build ${build.number} success" 
