@@ -1,7 +1,7 @@
 <?php
 /**
  * @version 	$Id$
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage	com_skeleton
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -10,12 +10,12 @@
 /**
  * skeletonController Class
  * 
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage 	com_skeleton
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class skeletonController extends phpFrame_Application_ActionController {
+class skeletonController extends PHPFrame_Application_ActionController {
 	/**
 	 * Constructor
 	 * 

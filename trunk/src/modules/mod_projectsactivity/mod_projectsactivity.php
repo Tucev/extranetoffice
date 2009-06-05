@@ -8,5 +8,5 @@
  * @author 		Luis Montero [e-noise.com]
  */
 
-$projectid = phpFrame::getRequest()->get('projectid', 0);
+$projectid = PHPFrame::getRequest()->get('projectid', 0);
 ?>

@@ -17,9 +17,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_View
+ * @see 		PHPFrame_Application_View
  */
-class projectsViewMilestones extends phpFrame_Application_View {
+class projectsViewMilestones extends PHPFrame_Application_View {
 	/**
 	 * Constructor
 	 * 
@@ -46,7 +46,7 @@ class projectsViewMilestones extends phpFrame_Application_View {
 		parent::display();
 		
 		// Append page title to document title
-		$document = phpFrame::getDocument('html');
+		$document = PHPFrame::getDocument('html');
 		$document->title .= ' - '._LANG_MILESTONES;
 	}
 	
@@ -56,20 +56,20 @@ class projectsViewMilestones extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayMilestonesList() {
-		phpFrame::getPathway()->addItem(_LANG_MILESTONES);
+		PHPFrame::getPathway()->addItem(_LANG_MILESTONES);
 	}
 	
 	function displayMilestonesDetail() {
 		$this->_data['page_title'] .= ' - '.$this->_data['row']->title;
-		phpFrame::getPathway()->addItem(_LANG_MILESTONES, "index.php?component=com_projects&action=get_milestones&projectid=".$this->_data['project']->id);
-		phpFrame::getPathway()->addItem($this->_data['row']->title);
+		PHPFrame::getPathway()->addItem(_LANG_MILESTONES, "index.php?component=com_projects&action=get_milestones&projectid=".$this->_data['project']->id);
+		PHPFrame::getPathway()->addItem($this->_data['row']->title);
 	}
 	
 	function displayMilestonesForm() {
 		$action = empty($this->_data['row']->id) ? _LANG_MILESTONES_NEW : _LANG_MILESTONES_EDIT;
 		$this->_data['page_title'] .= ' - '.$action;
-		phpFrame::getPathway()->addItem(_LANG_MILESTONES, "index.php?component=com_projects&action=get_milestones&projectid=".$this->_data['project']->id);
-		phpFrame::getPathway()->addItem($action);
+		PHPFrame::getPathway()->addItem(_LANG_MILESTONES, "index.php?component=com_projects&action=get_milestones&projectid=".$this->_data['project']->id);
+		PHPFrame::getPathway()->addItem($action);
 		
 		$this->addData('action', $action);
 	}

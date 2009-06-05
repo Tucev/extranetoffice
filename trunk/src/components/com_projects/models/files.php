@@ -13,9 +13,9 @@
  * @package		ExtranetOffice
  * @subpackage 	com_projects
  * @since 		1.0
- * @see 		phpFrame_Application_Model
+ * @see 		PHPFrame_Application_Model
  */
-class projectsModelFiles extends phpFrame_Application_Model {
+class projectsModelFiles extends PHPFrame_Application_Model {
 	/**
 	 * Constructor
 	 *
@@ -26,21 +26,21 @@ class projectsModelFiles extends phpFrame_Application_Model {
 	/**
 	 * Get files
 	 * 
-	 * @param	object	$list_filter	Object of type phpFrame_Database_CollectionFilter
+	 * @param	object	$list_filter	Object of type PHPFrame_Database_CollectionFilter
 	 * @param	int		$projectid
 	 * @return	array
 	 */
-	public function getFiles(phpFrame_Database_CollectionFilter $list_filter, $projectid) {
+	public function getFiles(PHPFrame_Database_CollectionFilter $list_filter, $projectid) {
 		// Build SQL query
 		$where = array();
 		
 		// Show only public projects or projects where user has an assigned role
 		//TODO: Have to apply access levels
-		//$where[] = "( p.access = '0' OR (".phpFrame::getUser()->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
+		//$where[] = "( p.access = '0' OR (".PHPFrame::getUser()->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 		
 		$search = $list_filter->getSearchStr();
 		if ($search) {
-			$where[] = "f.title LIKE '%".phpFrame::getDB()->getEscaped($search)."%'";
+			$where[] = "f.title LIKE '%".PHPFrame::getDB()->getEscaped($search)."%'";
 		}
 		
 		if (!empty($projectid)) {
@@ -60,19 +60,19 @@ class projectsModelFiles extends phpFrame_Application_Model {
 				  . $where;
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
-		phpFrame::getDB()->setQuery( $query );
-		phpFrame::getDB()->query();
+		PHPFrame::getDB()->setQuery( $query );
+		PHPFrame::getDB()->query();
 		
 		// Set total number of record in list filter
-		$list_filter->setTotal(phpFrame::getDB()->getNumRows());
+		$list_filter->setTotal(PHPFrame::getDB()->getNumRows());
 
 		// Add order by and limit statements for subset (based on filter)
 		$query .= $list_filter->getOrderByStmt();
 		$query .= $list_filter->getLimitStmt();
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
-		phpFrame::getDB()->setQuery($query);
-		$rows = phpFrame::getDB()->loadObjectList();
+		PHPFrame::getDB()->setQuery($query);
+		$rows = PHPFrame::getDB()->loadObjectList();
 		
 		// Prepare rows and add relevant data
 		if (is_array($rows) && count($rows) > 0) {
@@ -81,7 +81,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 				$row->assignees = $this->getAssignees($row->id);
 				
 				// get total comments
-				$modelComments = phpFrame::getModel('com_projects', 'comments');
+				$modelComments = PHPFrame::getModel('com_projects', 'comments');
 				$row->comments = $modelComments->getTotalComments($row->id, 'files');
 					
 				// Get older revisions
@@ -98,8 +98,8 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		$query .= " JOIN #__users u ON u.id = f.userid ";
 		$query .= " WHERE f.id = ".$fileid;
 		$query .= " ORDER BY f.ts DESC";
-		phpFrame::getDB()->setQuery($query);
-		$row = phpFrame::getDB()->loadObject();
+		PHPFrame::getDB()->setQuery($query);
+		$row = PHPFrame::getDB()->loadObject();
 		
 		if ($row === false) {
 			return false;
@@ -109,7 +109,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		$row->assignees = $this->getAssignees($fileid);
 		
 		// Get comments
-		$modelComments = phpFrame::getModel('com_projects', 'comments');
+		$modelComments = PHPFrame::getModel('com_projects', 'comments');
 		$row->comments = $modelComments->getComments($projectid, 'files', $fileid);
 		
 		// Get older revisions
@@ -133,7 +133,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 			return false;
 		}
 		
-		$row = new phpFrame_Database_Row("#__files");
+		$row = new PHPFrame_Database_Row("#__files");
 		
 		$row->bind($post);
 		
@@ -145,17 +145,17 @@ class projectsModelFiles extends phpFrame_Application_Model {
 			$query = "SELECT revision FROM #__files ";
 			$query .= " WHERE parentid = ".$row->parentid;
 			$query .= " ORDER BY revision DESC LIMIT 0,1";
-			phpFrame::getDB()->setQuery($query);
-			$current_revision = phpFrame::getDB()->loadResult();
+			PHPFrame::getDB()->setQuery($query);
+			$current_revision = PHPFrame::getDB()->loadResult();
 			$row->set('revision', ($current_revision+1));
 		}
 		
 		// upload the file
 		$upload_dir = config::FILESYSTEM.DS."projects".DS.$post['projectid'].DS."files";
-		phpFrame_Utils_Filesystem::ensureWritableDir($upload_dir);
+		PHPFrame_Utils_Filesystem::ensureWritableDir($upload_dir);
 		$accept = config::UPLOAD_ACCEPT; // mime types
 		$max_upload_size = config::MAX_UPLOAD_SIZE*(1024*1024); // Mb
-		$file = phpFrame_Utils_Filesystem::uploadFile('filename', $upload_dir, $accept, $max_upload_size);
+		$file = PHPFrame_Utils_Filesystem::uploadFile('filename', $upload_dir, $accept, $max_upload_size);
 		
 		if (!empty($file['error'])) {
 			$this->_error[] = $file['error'];
@@ -166,7 +166,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		$row->set('filesize', $file['file_size']);
 		$row->set('mimetype', $file['file_type']);
 		
-		$row->set('userid', phpFrame::getUser()->id);
+		$row->set('userid', PHPFrame::getUser()->id);
 		
 		$row->store();
 		
@@ -181,8 +181,8 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		// Delete existing assignees before we store new ones if editing existing issue
 		if ($row->revision > 0) {
 			$query = "DELETE FROM #__users_files WHERE fileid = ".$row->parentid;
-			phpFrame::getDB()->setQuery($query);
-			phpFrame::getDB()->query();
+			PHPFrame::getDB()->setQuery($query);
+			PHPFrame::getDB()->query();
 		}
 		
 		// Store assignees
@@ -193,8 +193,8 @@ class projectsModelFiles extends phpFrame_Application_Model {
 				if ($i>0) { $query .= ","; }
 				$query .= " (NULL, '".$post['assignees'][$i]."', '".$row->parentid."') ";
 			}
-			phpFrame::getDB()->setQuery($query);
-			phpFrame::getDB()->query();
+			PHPFrame::getDB()->setQuery($query);
+			PHPFrame::getDB()->query();
 		}
 		
 		return $row;
@@ -206,7 +206,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		//TODO: This function should delete related items if any (comments, ...)
 		
 		// Instantiate table object	
-		$row = new phpFrame_Database_Row("#__files");
+		$row = new PHPFrame_Database_Row("#__files");
 		
 		// Load row data
 		$row->load($fileid);
@@ -220,7 +220,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 	
 	public function downloadFile($projectid, $fileid) {
 		//TODO: This function should also check permissions		
-		$row = new phpFrame_Database_Row("#__files");
+		$row = new PHPFrame_Database_Row("#__files");
 		
 		// Load row data
 		$row->load($fileid);
@@ -252,8 +252,8 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		$query .= " FROM #__users_files AS uf ";
 		$query .= "LEFT JOIN #__users u ON u.id = uf.userid";
 		$query .= " WHERE uf.fileid = ".$fileid;
-		phpFrame::getDB()->setQuery($query);
-		$assignees = phpFrame::getDB()->loadObjectList();
+		PHPFrame::getDB()->setQuery($query);
+		$assignees = PHPFrame::getDB()->loadObjectList();
 		
 		// Prepare assignee data
 		for ($i=0; $i<count($assignees); $i++) {
@@ -262,7 +262,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 			}
 			else {
 				$new_assignees[$i]['id'] = $assignees[$i]->userid;
-				$new_assignees[$i]['name'] = phpFrame_User_Helper::fullname_format($assignees[$i]->firstname, $assignees[$i]->lastname);
+				$new_assignees[$i]['name'] = PHPFrame_User_Helper::fullname_format($assignees[$i]->firstname, $assignees[$i]->lastname);
 				$new_assignees[$i]['email'] = $assignees[$i]->email;
 			}
 		}
@@ -301,7 +301,7 @@ class projectsModelFiles extends phpFrame_Application_Model {
 		$query .= " JOIN #__users u ON u.id = f.userid";
 		$query .= " WHERE f.parentid = ".$parentid." AND f.id <> ".$id;
 		$query .= " ORDER BY f.ts DESC";
-		phpFrame::getDB()->setQuery($query);
-		return phpFrame::getDB()->loadObjectList();
+		PHPFrame::getDB()->setQuery($query);
+		return PHPFrame::getDB()->loadObjectList();
 	}
 }

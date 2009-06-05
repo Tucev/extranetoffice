@@ -1,13 +1,13 @@
 <?php
 /**
  * @version 	$Id$
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage	com_users
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  */
 
-phpFrame_HTML::validate('userform');
+PHPFrame_HTML::validate('userform');
 ?>
 
 
@@ -16,12 +16,12 @@ phpFrame_HTML::validate('userform');
 <form action="index.php" method="post" name="userform" id="userform" enctype="multipart/form-data">
 	
 <fieldset>
-<legend><?php echo phpFrame_HTML_Text::_( _LANG_USER_GENERAL_SETTINGS ); ?></legend>
+<legend><?php echo PHPFrame_HTML_Text::_( _LANG_USER_GENERAL_SETTINGS ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td>
 		<label for="username">
-			<?php echo phpFrame_HTML_Text::_( _LANG_USERNAME ); ?>:
+			<?php echo PHPFrame_HTML_Text::_( _LANG_USERNAME ); ?>:
 		</label>
 	</td>
 	<td>
@@ -31,7 +31,7 @@ phpFrame_HTML::validate('userform');
 <tr>
 	<td width="120">
 		<label for="email">
-			<?php echo phpFrame_HTML_Text::_( _LANG_EMAIL ); ?>:
+			<?php echo PHPFrame_HTML_Text::_( _LANG_EMAIL ); ?>:
 		</label>
 	</td>
 	<td>
@@ -41,7 +41,7 @@ phpFrame_HTML::validate('userform');
 <tr>
 	<td>
 		<label for="firstname">
-			<?php echo phpFrame_HTML_Text::_( _LANG_FIRSTNAME ); ?>:
+			<?php echo PHPFrame_HTML_Text::_( _LANG_FIRSTNAME ); ?>:
 		</label>
 	</td>
 	<td>
@@ -51,7 +51,7 @@ phpFrame_HTML::validate('userform');
 <tr>
 	<td>
 		<label for="lastname">
-			<?php echo phpFrame_HTML_Text::_( _LANG_LASTNAME ); ?>:
+			<?php echo PHPFrame_HTML_Text::_( _LANG_LASTNAME ); ?>:
 		</label>
 	</td>
 	<td>
@@ -61,7 +61,7 @@ phpFrame_HTML::validate('userform');
 <tr>
 	<td>
 		<label for="password">
-			<?php echo phpFrame_HTML_Text::_( _LANG_PASSWORD ); ?>:
+			<?php echo PHPFrame_HTML_Text::_( _LANG_PASSWORD ); ?>:
 		</label>
 	</td>
 	<td>
@@ -71,7 +71,7 @@ phpFrame_HTML::validate('userform');
 <tr>
 	<td>
 		<label for="password2">
-			<?php echo phpFrame_HTML_Text::_( _LANG_PASSWORD_VERIFY ); ?>:
+			<?php echo PHPFrame_HTML_Text::_( _LANG_PASSWORD_VERIFY ); ?>:
 		</label>
 	</td>
 	<td>
@@ -123,9 +123,9 @@ phpFrame_HTML::validate('userform');
 
 <div style="clear:both; margin-top:30px;"></div>
 
-<?php if (phpFrame::getRequest()->get('tmpl') != 'component') : ?>
-<button type="button" onclick="Javascript:window.history.back();"><?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?></button>
-<button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button>
+<?php if (PHPFrame::getRequest()->get('tmpl') != 'component') : ?>
+<button type="button" onclick="Javascript:window.history.back();"><?php echo PHPFrame_HTML_Text::_( _LANG_BACK ); ?></button>
+<button type="submit"><?php echo PHPFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 <?php endif; ?>
 
 <input type="hidden" name="id" value="<?php echo $data['row']->get('id'); ?>" />
@@ -133,7 +133,7 @@ phpFrame_HTML::validate('userform');
 <input type="hidden" name="component" value="com_users" />
 <input type="hidden" name="action" value="save_user" />
 <input type="hidden" name="ret_url" value="<?php echo $data['ret_url']; ?>">
-<?php echo phpFrame_HTML::_( 'form.token' ); ?>
+<?php echo PHPFrame_HTML::_( 'form.token' ); ?>
 
 </form>
 

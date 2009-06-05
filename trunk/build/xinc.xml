@@ -8,10 +8,8 @@
 		
 		<schedule interval="60" />
 		
-		
 		<modificationset>
 			<svn directory="${root_dir}" update="true" />
-			<buildalways/>
 		</modificationset>
 		
 		<builders>

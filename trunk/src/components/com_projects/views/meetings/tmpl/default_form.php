@@ -8,13 +8,13 @@
  */
 
 // Load jQuery validation behaviour for form
-phpFrame_HTML::validate('meetingsform');
+PHPFrame_HTML::validate('meetingsform');
 ?>
 
 <h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
 <h2 class="subheading <?php echo strtolower($data['view']); ?>">
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_meetings&projectid='.$data['project']->id); ?>">
+	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_meetings&projectid='.$data['project']->id); ?>">
 		<?php echo $data['view']; ?>
 	</a>
 </h2>
@@ -23,7 +23,7 @@ phpFrame_HTML::validate('meetingsform');
 <form action="index.php" method="post" id="meetingsform" name="meetingsform" enctype="multipart/form-data">
 
 <fieldset>
-<legend><?php echo phpFrame_HTML_Text::_( $data['action'] ); ?></legend>
+<legend><?php echo PHPFrame_HTML_Text::_( $data['action'] ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td width="30%">
@@ -42,7 +42,7 @@ phpFrame_HTML::validate('meetingsform');
 		</label>
 	</td>
 	<td>
-		<?php echo phpFrame_HTML::_('calendar', 'dtstart', 'dtstart', substr($data['row']->dtstart, 0, 10), 'dd/mm/yy', array('class'=>'required', 'size'=>'10', 'maxlength'=>'10')); ?>
+		<?php echo PHPFrame_HTML::_('calendar', 'dtstart', 'dtstart', substr($data['row']->dtstart, 0, 10), 'dd/mm/yy', array('class'=>'required', 'size'=>'10', 'maxlength'=>'10')); ?>
 	</td>
 </tr>
 <tr>
@@ -52,7 +52,7 @@ phpFrame_HTML::validate('meetingsform');
 		</label>
 	</td>
 	<td>
-		<?php echo phpFrame_HTML::_('calendar', 'dtend', 'dtend', substr($data['row']->dtend, 0, 10), 'dd/mm/yy', array('class'=>'required', 'size'=>'10', 'maxlength'=>'10')); ?>
+		<?php echo PHPFrame_HTML::_('calendar', 'dtend', 'dtend', substr($data['row']->dtend, 0, 10), 'dd/mm/yy', array('class'=>'required', 'size'=>'10', 'maxlength'=>'10')); ?>
 	</td>
 </tr>
 <tr>
@@ -73,7 +73,7 @@ phpFrame_HTML::validate('meetingsform');
 		</label>
 	</td>
 	<td>
-		<?php echo phpFrame_User_Helper::assignees($data['row']->assignees, '', 'assignees[]', $data['project']->id); ?>
+		<?php echo PHPFrame_User_Helper::assignees($data['row']->assignees, '', 'assignees[]', $data['project']->id); ?>
 	</td>
 </tr>
 <tr>
@@ -91,13 +91,13 @@ phpFrame_HTML::validate('meetingsform');
 
 <div style="clear:left; margin-top:30px;"></div>
 
-<button type="button" onclick="Javascript:window.history.back();"><?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?></button>
-<button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button>
+<button type="button" onclick="Javascript:window.history.back();"><?php echo PHPFrame_HTML_Text::_( _LANG_BACK ); ?></button>
+<button type="submit"><?php echo PHPFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 
 <input type="hidden" name="projectid" value="<?php echo $data['project']->id; ?>" />
 <input type="hidden" name="id" value="<?php echo $data['row']->id; ?>" />
 <input type="hidden" name="component" value="com_projects" />
 <input type="hidden" name="action" value="save_meeting" />
-<?php echo phpFrame_HTML::_( 'form.token' ); ?>
+<?php echo PHPFrame_HTML::_( 'form.token' ); ?>
 
 </form>

@@ -17,9 +17,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_View
+ * @see 		PHPFrame_Application_View
  */
-class projectsViewProjects extends phpFrame_Application_View {
+class projectsViewProjects extends PHPFrame_Application_View {
 	/**
 	 * Constructor
 	 * 
@@ -44,7 +44,7 @@ class projectsViewProjects extends phpFrame_Application_View {
 		
 		// Append page title to document title
 		if ($this->_layout != 'list') {
-			$document = phpFrame::getDocument('html');
+			$document = PHPFrame::getDocument('html');
 			$document->title .= ' - '.$this->_data['page_title'];
 		}
 	}
@@ -70,6 +70,6 @@ class projectsViewProjects extends phpFrame_Application_View {
 	function displayProjectsDetail() {
 		$this->_data['page_title'] = _LANG_PROJECTS_HOME;
 		$this->_data['page_heading'] = $this->_data['row']->name.' - '._LANG_PROJECTS_HOME;
-		phpFrame::getPathway()->addItem(_LANG_PROJECTS_HOME);
+		PHPFrame::getPathway()->addItem(_LANG_PROJECTS_HOME);
 	}
 }

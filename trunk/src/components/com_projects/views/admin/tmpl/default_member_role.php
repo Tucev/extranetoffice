@@ -8,7 +8,7 @@
  */
 ?>
 
-<?php if (phpFrame::getRequest()->get('tmpl') != 'component') : ?>
+<?php if (PHPFrame::getRequest()->get('tmpl') != 'component') : ?>
 <h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 <?php endif; ?>
 
@@ -38,7 +38,7 @@
 </tr>
 </table>
 
-<?php if (phpFrame::getRequest()->get('tmpl') != 'component') : ?>
+<?php if (PHPFrame::getRequest()->get('tmpl') != 'component') : ?>
 <button type="submit" class="button">Change role</button>
 <?php endif; ?>
 
@@ -48,6 +48,6 @@
 <input type="hidden" name="action" value="change_member_role" />
 <input type="hidden" name="projectid" value="<?php echo $data['project']->id; ?>" />
 <input type="hidden" name="userid" value="<?php echo $data['members'][0]->userid; ?>" />
-<?php echo phpFrame_HTML::_( 'form.token' ); ?>
+<?php echo PHPFrame_HTML::_( 'form.token' ); ?>
 
 </form>

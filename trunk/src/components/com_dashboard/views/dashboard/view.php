@@ -1,7 +1,7 @@
 <?php
 /**
  * @version 	$Id$
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage	com_dashboard
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -13,13 +13,13 @@
  * The methods in this class are invoked by its parent class. See display() 
  * method in 'view' class.
  * 
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage 	com_dashboard
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_View
+ * @see 		PHPFrame_Application_View
  */
-class dashboardViewDashboard extends phpFrame_Application_View {
+class dashboardViewDashboard extends PHPFrame_Application_View {
 	/**
 	 * Constructor
 	 * 
@@ -43,7 +43,7 @@ class dashboardViewDashboard extends phpFrame_Application_View {
 	function display() {
 		$this->_data['page_title'] = _LANG_DASHBOARD;
 		
-		$document = phpFrame::getDocument('html');
+		$document = PHPFrame::getDocument('html');
 		$document->title = _LANG_DASHBOARD;
 		
 		parent::display();

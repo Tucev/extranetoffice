@@ -1,7 +1,7 @@
 <?php
 /**
  * @version 	$Id$
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage	com_users
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -10,12 +10,12 @@
 /**
  * usersController Class
  * 
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage 	com_users
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class usersController extends phpFrame_Application_ActionController {
+class usersController extends PHPFrame_Application_ActionController {
 	/**
 	 * Constructor
 	 * 
@@ -29,14 +29,14 @@ class usersController extends phpFrame_Application_ActionController {
 	
 	public function get_users() {
 		// Get request data
-		$orderby = phpFrame::getRequest()->get('orderby', 'u.lastname');
-		$orderdir = phpFrame::getRequest()->get('orderdir', 'ASC');
-		$limit = phpFrame::getRequest()->get('limit', 25);
-		$limitstart = phpFrame::getRequest()->get('limitstart', 0);
-		$search = phpFrame::getRequest()->get('search', '');
+		$orderby = PHPFrame::getRequest()->get('orderby', 'u.lastname');
+		$orderdir = PHPFrame::getRequest()->get('orderdir', 'ASC');
+		$limit = PHPFrame::getRequest()->get('limit', 25);
+		$limitstart = PHPFrame::getRequest()->get('limitstart', 0);
+		$search = PHPFrame::getRequest()->get('search', '');
 		
 		// Create list filter needed for getUsers()
-		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
+		$list_filter = new PHPFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
 		
 		// Get users using model
 		$users = $this->getModel('users')->getUsers($list_filter);
@@ -45,13 +45,13 @@ class usersController extends phpFrame_Application_ActionController {
 		$view = $this->getView('users', 'list');
 		// Set view data
 		$view->addData('rows', $users);
-		$view->addData('page_nav', new phpFrame_HTML_Pagination($list_filter));
+		$view->addData('page_nav', new PHPFrame_HTML_Pagination($list_filter));
 		// Display view
 		$view->display();
 	}
 	
 	public function get_user() {
-		$userid = phpFrame::getRequest()->get('userid', 0);
+		$userid = PHPFrame::getRequest()->get('userid', 0);
 		
 		// Get users using model
 		$user = $this->getModel('users')->getUsersDetail($userid);
@@ -66,12 +66,12 @@ class usersController extends phpFrame_Application_ActionController {
 	
 	public function get_settings() {
 		// Get request vars
-		$ret_url = phpFrame::getRequest()->get('ret_url', 'index.php');
+		$ret_url = PHPFrame::getRequest()->get('ret_url', 'index.php');
 		
 		// Get view
 		$view = $this->getView('settings', '');
 		// Set view data
-		$view->addData('row', phpFrame::getUser());
+		$view->addData('row', PHPFrame::getUser());
 		$view->addData('ret_url', $ret_url);
 		// Display view
 		$view->display();
@@ -79,10 +79,10 @@ class usersController extends phpFrame_Application_ActionController {
 	
 	public function save_user() {
 		// Check for request forgeries
-		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
+		PHPFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame::getRequest()->getPost();
+		$post = PHPFrame::getRequest()->getPost();
 		
 		$modelUser = $this->getModel('users');
 		if ($modelUser->saveUser($post) === false) {
@@ -93,7 +93,7 @@ class usersController extends phpFrame_Application_ActionController {
 			$this->_success = true;
 		}
 		
-		$ret_url = phpFrame::getRequest()->get('ret_url', 'index.php');
+		$ret_url = PHPFrame::getRequest()->get('ret_url', 'index.php');
 		$this->setRedirect($ret_url);
 	}
 }

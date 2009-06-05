@@ -8,7 +8,7 @@
  * @author 		Luis Montero [e-noise.com]
  */
 
-$sys_events_obj = phpFrame::getSysevents();
+$sys_events_obj = PHPFrame::getSysevents();
 $sys_events = $sys_events_obj->asArray();
 $sys_events_obj->clear();
 ?>

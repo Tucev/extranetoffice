@@ -8,32 +8,32 @@
  */
 
 // Add confirm behaviour to delete links
-phpFrame_HTML::confirm('delete_meeting', _LANG_PROJECTS_MEETINGS_DELETE, _LANG_PROJECTS_MEETINGS_DELETE_CONFIRM);
-phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DELETE, _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DELETE_CONFIRM);
+PHPFrame_HTML::confirm('delete_meeting', _LANG_PROJECTS_MEETINGS_DELETE, _LANG_PROJECTS_MEETINGS_DELETE_CONFIRM);
+PHPFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DELETE, _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DELETE_CONFIRM);
 ?>
 
 <h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
 
 <h2 class="subheading <?php echo strtolower($data['view']); ?>">
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_meetings&projectid='.$data['project']->id); ?>">
+	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_meetings&projectid='.$data['project']->id); ?>">
 		<?php echo $data['view']; ?>
 	</a>
 </h2>
 
 <div class="thread_row0">
 
-	<?php if ($data['row']->created_by == phpFrame::getUser()->id) : ?>
+	<?php if ($data['row']->created_by == PHPFrame::getUser()->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_meeting" title="<?php echo phpFrame_HTML_Text::_($data['row']->name, true); ?>" href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_meeting&projectid=".$data['row']->projectid."&meetingid=".$data['row']->id); ?>">
-			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
+		<a class="delete_meeting" title="<?php echo PHPFrame_HTML_Text::_($data['row']->name, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_meeting&projectid=".$data['row']->projectid."&meetingid=".$data['row']->id); ?>">
+			<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
 	<div class="thread_edit">
-		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_meeting_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id); ?>">
-		<?php echo phpFrame_HTML_Text::_( _LANG_EDIT ); ?>
+		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_meeting_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id); ?>">
+		<?php echo PHPFrame_HTML_Text::_( _LANG_EDIT ); ?>
 		</a>
 	</div>
 	
@@ -58,7 +58,7 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 	
 
 	<div class="thread_new">
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_slideshow_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id); ?>">
+	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_slideshow_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id); ?>">
 	Add new slideshow
 	</a>
 	</div>
@@ -74,13 +74,13 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 		<div style="float:left;" class="thread_heading"><?php echo $data['row']->slideshows[$k]->name; ?></div>
 	
 		<div style="float:left; margin-left: 10px;" class="edit">
-		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_slideshow_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id."&slideshowid=".$data['row']->slideshows[$k]->id); ?>">
+		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_slideshow_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id."&slideshowid=".$data['row']->slideshows[$k]->id); ?>">
 			<?php echo _LANG_EDIT; ?>
 		</a>
 		</div>
 		
 		<div style="float:left;" class="delete">
-		<a class="delete_slideshow" title="<?php echo $data['row']->slideshows[$k]->name; ?>" href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_slideshow&projectid=".$data['project']->id."&meetingid=".$data['row']->id."&slideshowid=".$data['row']->slideshows[$k]->id); ?>">
+		<a class="delete_slideshow" title="<?php echo $data['row']->slideshows[$k]->name; ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_slideshow&projectid=".$data['project']->id."&meetingid=".$data['row']->id."&slideshowid=".$data['row']->slideshows[$k]->id); ?>">
 			<?php echo _LANG_DELETE; ?>
 		</a>
 		</div>
@@ -135,7 +135,7 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 	<div style="float:left;" class="thread_heading">Files</div>
 	
 	<div style="float:left; margin-left: 10px;" class="edit">
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_meeting_files_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id); ?>">
+	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_meeting_files_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id); ?>">
 	Manage files attached to this meeting
 	</a>
 	</div>
@@ -147,12 +147,12 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 	<?php foreach ($data['row']->files as $file) : ?>
 	<tr>
 		<td width="32">
-			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=download_file&fileid=".$file->id); ?>">
+			<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=download_file&fileid=".$file->id); ?>">
 			<img border="0" height="32" width="32" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($file->mimetype); ?>" />
 			</a>
 		</td>
 		<td>
-			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=download_file&fileid=".$file->id); ?>">
+			<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=download_file&fileid=".$file->id); ?>">
 			<?php echo $file->title; ?>
 			</a>
 		</td>
@@ -169,7 +169,7 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 	<?php foreach ($data['row']->comments as $comment) : ?>
 		<div class="comment_row">
 			<div style="float:left; margin-right: 10px;">
-				<img src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo phpFrame_User_Helper::id2photo($comment->userid); ?>" />
+				<img src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo PHPFrame_User_Helper::id2photo($comment->userid); ?>" />
 			</div>
 			<div style="margin-left: 95px;">
 				<div class="comment_details">
@@ -210,7 +210,7 @@ phpFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 		<input type="hidden" name="assignees[]" value="<?php echo $assignee['id']; ?>" />
 		<?php endforeach; ?>
 		<?php endif; ?>
-		<?php echo phpFrame_HTML::_( 'form.token' ); ?>
+		<?php echo PHPFrame_HTML::_( 'form.token' ); ?>
 		</form>
 	</div>
 </div>

@@ -14,9 +14,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_Model
+ * @see 		PHPFrame_Application_Model
  */
-class projectsModelActivitylog extends phpFrame_Application_Model {
+class projectsModelActivitylog extends PHPFrame_Application_Model {
 	/**
 	 * A reference the project this activity log belongs to
 	 * 
@@ -36,24 +36,24 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 	/**
 	 * Get a collection of activitylog rows
 	 * 
-	 * @param	object	$list_filter	Object of type phpFrame_Database_CollectionFilter
-	 * @return	object of type phpFrame_Database_RowCollection
+	 * @param	object	$list_filter	Object of type PHPFrame_Database_CollectionFilter
+	 * @return	object of type PHPFrame_Database_RowCollection
 	 */
-	function getCollection(phpFrame_Database_CollectionFilter $list_filter) {
+	function getCollection(PHPFrame_Database_CollectionFilter $list_filter) {
 		$query = "SELECT * ";
 		$query .= " FROM #__activitylog ";
 		$query .= " WHERE projectid = ".$this->_project->id;
 		
 		// Get total number of rows before applying filter
-		phpFrame::getDB()->setQuery( $query );
-		phpFrame::getDB()->query();
+		PHPFrame::getDB()->setQuery( $query );
+		PHPFrame::getDB()->query();
 		// Set total number of record in list filter
-		$list_filter->setTotal(phpFrame::getDB()->getNumRows());
+		$list_filter->setTotal(PHPFrame::getDB()->getNumRows());
 		
 		$query .= $list_filter->getOrderByStmt();
 		$query .= $list_filter->getLimitStmt();
 		
-		return new phpFrame_Database_RowCollection($query);
+		return new PHPFrame_Database_RowCollection($query);
 	}
 	
 	/**
@@ -67,9 +67,9 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 	 */
 	function insertRow($type, $action, $title, $description, $url, $assignees, $notify) {
 		// Store notification in db
-		$row = new phpFrame_Database_Row('#__activitylog');
+		$row = new PHPFrame_Database_Row('#__activitylog');
 		$row->set('projectid', $this->_project->id);
-		$row->set('userid', phpFrame::getUser()->id);
+		$row->set('userid', PHPFrame::getUser()->id);
 		$row->set('type', $type);
 		$row->set('action', $action);
 		$row->set('title', $title);
@@ -99,15 +99,15 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 	 * @todo	sanatise address, subject & body
 	 */
 	private function _notify($row, $assignees) {
-		$uri = phpFrame::getURI();
-		$user_name = phpFrame_User_Helper::id2name($row->userid);
+		$uri = PHPFrame::getURI();
+		$user_name = PHPFrame_User_Helper::id2name($row->userid);
 		
-		$new_mail = new phpFrame_Mail_Mailer();
+		$new_mail = new PHPFrame_Mail_Mailer();
 		$new_mail->Subject = "[".$this->_project->name."] ".$row->action." by ".$user_name;
-		$new_mail->Body = phpFrame_HTML_Text::_(sprintf(_LANG_ACTIVITYLOG_NOTIFY_BODY, 
+		$new_mail->Body = PHPFrame_HTML_Text::_(sprintf(_LANG_ACTIVITYLOG_NOTIFY_BODY, 
 								 $this->_project->name, 
 								 $row->action." by ".$user_name,
-								 phpFrame_Utils_Rewrite::rewriteURL($row->url, false), 
+								 PHPFrame_Utils_Rewrite::rewriteURL($row->url, false), 
 								 $row->description)
 						);
 		
@@ -121,24 +121,24 @@ class projectsModelActivitylog extends phpFrame_Application_Model {
 		$pattern = '/'.$tool_matches[1].'id=([0-9]+)/i';
 		preg_match($pattern, $row->url, $matches);
 		
-		$new_mail->setMessageIdSuffix('c='.phpFrame::getRequest()->getComponentName().'&p='.$row->projectid.'&t='.$tool_matches[1].'s&i='.$matches[1]);
+		$new_mail->setMessageIdSuffix('c='.PHPFrame::getRequest()->getComponentName().'&p='.$row->projectid.'&t='.$tool_matches[1].'s&i='.$matches[1]);
 		
 		// Get assignees email addresses and exclude the user triggering the notification
 		$query = "SELECT firstname, lastname, email ";
 		$query .= " FROM #__users ";
 		$query .= " WHERE id IN (".implode(',', $assignees).") AND id <> ".$row->userid;
-		phpFrame::getDB()->setQuery($query);
-		$recipients = phpFrame::getDB()->loadObjectList();
+		PHPFrame::getDB()->setQuery($query);
+		$recipients = PHPFrame::getDB()->loadObjectList();
 		
 		if (is_array($recipients) && count($recipients) > 0) {
 			$failed_recipients = array();
 			foreach ($recipients as $recipient) {
-				if (phpFrame_Utils_Filter::validate($recipient->email, 'email') === false ){
+				if (PHPFrame_Utils_Filter::validate($recipient->email, 'email') === false ){
 					$failed_recipients[] = $recipient->email;
 					continue;
 				}
 				else {
-					$new_mail->AddAddress($recipient->email, phpFrame_User_Helper::fullname_format($recipient->firstname, $recipient->lastname));
+					$new_mail->AddAddress($recipient->email, PHPFrame_User_Helper::fullname_format($recipient->firstname, $recipient->lastname));
 					
 					// Send email
 					if ($new_mail->Send() !== true) {

@@ -14,7 +14,7 @@
  * @subpackage 	com_projects
  * @since 		1.0
  */
-class projectsTableSlideshows extends phpFrame_Database_Table {
+class projectsTableSlideshows extends PHPFrame_Database_Table {
 	var $id=null; // int(11) auto_increment
 	var $projectid=null; // int(11)
 	var $meetingid=null; // int(11)
@@ -24,7 +24,7 @@ class projectsTableSlideshows extends phpFrame_Database_Table {
 	var $created=null; // datetime
   
 	function __construct() {
-		$db = phpFrame::getDB();
+		$db = PHPFrame::getDB();
 		parent::__construct( '#__slideshows', 'id' );
 	}
 }

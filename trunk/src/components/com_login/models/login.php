@@ -1,7 +1,7 @@
 <?php
 /**
  * @version 	$Id$
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage	com_login
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -10,13 +10,13 @@
 /**
  * loginModelLogin Class
  * 
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage 	com_login
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_Model
+ * @see 		PHPFrame_Application_Model
  */
-class loginModelLogin extends phpFrame_Application_Model {
+class loginModelLogin extends PHPFrame_Application_Model {
 	/**
 	 * Constructor
 	 * 
@@ -32,24 +32,24 @@ class loginModelLogin extends phpFrame_Application_Model {
 	 * @return	boolean
 	 */
 	public function login($username, $password) {
-		$db = phpFrame::getDB();
+		$db = PHPFrame::getDB();
 		$query = "SELECT id, password FROM #__users WHERE username = '".$username."'";
 		$db->setQuery($query);
 		$credentials = $db->loadObject();
 		
 		// User exists
 		if (is_object($credentials) && isset($credentials->id)) {
-			$user = new phpFrame_User();
+			$user = new PHPFrame_User();
 			$user->load($credentials->id);
 			
 			// check password
 			$parts	= explode( ':', $credentials->password );
 			$crypt	= $parts[0];
 			$salt	= @$parts[1];
-			$testcrypt = phpFrame_Utils_Crypt::getCryptedPassword($password, $salt);
+			$testcrypt = PHPFrame_Utils_Crypt::getCryptedPassword($password, $salt);
 			if ($crypt == $testcrypt) {
 				// Store user data in session
-				$session = phpFrame::getSession();
+				$session = PHPFrame::getSession();
 				$session->setUser($user);
 				return true;
 			} else {
@@ -66,7 +66,7 @@ class loginModelLogin extends phpFrame_Application_Model {
 	}
 	
 	public function logout() {
-		phpFrame::getSession()->destroy();
+		PHPFrame::getSession()->destroy();
 	}
 	
 	/**
@@ -78,15 +78,15 @@ class loginModelLogin extends phpFrame_Application_Model {
 	public function resetPassword($email) {
 		// First we check whether there is a user with the passed email address
 		$query = "SELECT id FROM #__users WHERE email = '".$email."'";
-		phpFrame::getDB()->setQuery($query);
-		$userid = phpFrame::getDB()->loadResult();
+		PHPFrame::getDB()->setQuery($query);
+		$userid = PHPFrame::getDB()->loadResult();
 		
 		if (!empty($userid)) {
 			// Create user object
-			$user = new phpFrame_User();
+			$user = new PHPFrame_User();
 			$user->load($userid, 'password');
 			// Generate random password and store in local variable to be used when sending email to user.
-			$password = phpFrame_Utils_Crypt::genRandomPassword();
+			$password = PHPFrame_Utils_Crypt::genRandomPassword();
 			// Assign newly generated password to row object (this password will be encrypted when stored).
 			$user->set('password', $password);
 			
@@ -96,10 +96,10 @@ class loginModelLogin extends phpFrame_Application_Model {
 			}
 			
 			// Send notification to new users
-			$uri = phpFrame::getURI();
+			$uri = PHPFrame::getURI();
 			
-			$new_mail = new phpFrame_Mail_Mailer();
-			$new_mail->AddAddress($user->email, phpFrame_User_Helper::fullname_format($user->firstname, $user->lastname));
+			$new_mail = new PHPFrame_Mail_Mailer();
+			$new_mail->AddAddress($user->email, PHPFrame_User_Helper::fullname_format($user->firstname, $user->lastname));
 			$new_mail->Subject = _LANG_USER_RESET_PASS_NOTIFY_SUBJECT;
 			$new_mail->Body = sprintf(_LANG_USER_RESET_PASS_NOTIFY_BODY, 
 										 $user->firstname, 

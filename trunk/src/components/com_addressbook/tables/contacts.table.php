@@ -14,7 +14,7 @@
  * @subpackage 	com_addressbook
  * @since 		1.0
  */
-class addressbookTableContacts extends phpFrame_Database_Table {
+class addressbookTableContacts extends PHPFrame_Database_Table {
 	/**
 	 * The issue id
 	 * 

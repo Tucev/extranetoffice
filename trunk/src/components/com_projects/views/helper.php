@@ -30,7 +30,7 @@ class projectsViewHelper {
     			
     			// Add link with user name to return string
     			$str .= '<a href="';
-    			$str .= phpFrame_Utils_Rewrite::rewriteURL($usr_url);
+    			$str .= PHPFrame_Utils_Rewrite::rewriteURL($usr_url);
     			$str .= '">';
     			$str .= $row->assignees[$j]['name'];
     			$str .= '</a>';
@@ -45,13 +45,13 @@ class projectsViewHelper {
     	// Add option to change assignees if user is creator or project admin
     	// First we get the projectsModelPermissions
     	/*
-    	$controller = phpFrame::getActionController('com_projects');
+    	$controller = PHPFrame::getActionController('com_projects');
     	$project = $controller->project;
     	$project_permissions = projectsModelPermissions::getInstance();
     	if ($project_permissions->getRoleId() || $created_by == $project_permissions->getUserId()) {
     		$form_url = "index.php?component=com_projects&action=get_assignees_form&projectid=".$project->id;
     		$form_url .= "&tool=".$tool."&itemid=".$itemid;
-    		phpFrame_HTML::dialog(_LANG_EDIT, $form_url, 650, 450, true);
+    		PHPFrame_HTML::dialog(_LANG_EDIT, $form_url, 650, 450, true);
     	}
     	*/
 	}

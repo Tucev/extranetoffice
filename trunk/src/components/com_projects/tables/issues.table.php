@@ -14,7 +14,7 @@
  * @subpackage 	com_projects
  * @since 		1.0
  */
-class projectsTableIssues extends phpFrame_Database_Table {
+class projectsTableIssues extends PHPFrame_Database_Table {
 	/**
 	 * The issue id
 	 * 

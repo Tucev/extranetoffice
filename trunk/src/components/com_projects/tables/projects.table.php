@@ -14,7 +14,7 @@
  * @subpackage 	com_projects
  * @since 		1.0
  */
-class projectsTableProjects extends phpFrame_Database_Table {
+class projectsTableProjects extends PHPFrame_Database_Table {
 	/**
 	 * The project id
 	 * 

@@ -17,9 +17,9 @@
  * @subpackage 	com_addressbook
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_View
+ * @see 		PHPFrame_Application_View
  */
-class addressbookViewContacts extends phpFrame_Application_View {
+class addressbookViewContacts extends PHPFrame_Application_View {
 	/**
 	 * Constructor
 	 * 
@@ -43,7 +43,7 @@ class addressbookViewContacts extends phpFrame_Application_View {
 		
 		// Append page title to document title
 		if ($this->_layout != 'list') {
-			$document = phpFrame::getDocument('html');
+			$document = PHPFrame::getDocument('html');
 			$document->title .= ' - '.$this->_data['page_title'];
 		}
 	}
@@ -55,6 +55,6 @@ class addressbookViewContacts extends phpFrame_Application_View {
 	function displayContactsForm() {
 		$this->_data['page_title'] = _LANG_ADDRESSBOOK_CONTACT_NEW;
 		// Add items to pathway object
-		phpFrame::getPathway()->addItem(_LANG_ADDRESSBOOK_CONTACT_NEW);
+		PHPFrame::getPathway()->addItem(_LANG_ADDRESSBOOK_CONTACT_NEW);
 	}
 }

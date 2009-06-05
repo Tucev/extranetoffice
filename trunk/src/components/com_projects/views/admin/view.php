@@ -17,9 +17,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_View
+ * @see 		PHPFrame_Application_View
  */
-class projectsViewAdmin extends phpFrame_Application_View {
+class projectsViewAdmin extends PHPFrame_Application_View {
 	/**
 	 * Constructor
 	 * 
@@ -43,7 +43,7 @@ class projectsViewAdmin extends phpFrame_Application_View {
 		parent::display();
 		
 		// Append page title to document title
-		$document = phpFrame::getDocument('html');
+		$document = PHPFrame::getDocument('html');
 		$document->title .= ' - '.$this->_data['page_title'];
 	}
 	
@@ -56,7 +56,7 @@ class projectsViewAdmin extends phpFrame_Application_View {
 	function displayAdminList() {
 		$this->_data['page_title'] = _LANG_ADMIN;
 		$this->_data['page_heading'] = $this->_data['project']->name.' - '._LANG_ADMIN;
-		phpFrame::getPathway()->addItem(_LANG_ADMIN);
+		PHPFrame::getPathway()->addItem(_LANG_ADMIN);
 	}
 	
 	/**
@@ -74,7 +74,7 @@ class projectsViewAdmin extends phpFrame_Application_View {
 			$this->_data['page_title'] = _LANG_PROJECTS_NEW;
 		}
 		
-		phpFrame::getPathway()->addItem($this->_data['page_title']);
+		PHPFrame::getPathway()->addItem($this->_data['page_title']);
 	}
 	
 	/**
@@ -82,7 +82,7 @@ class projectsViewAdmin extends phpFrame_Application_View {
 	 */
 	function displayAdminMemberRole() {
 		$this->_data['page_title'] = projectsHelperProjects::id2name($this->projectid).' - '. _LANG_ADMIN;
-		phpFrame::getPathway()->addItem(_LANG_PROJECTS_MEMBERS);
+		PHPFrame::getPathway()->addItem(_LANG_PROJECTS_MEMBERS);
 	}
 	
 	/**
@@ -94,7 +94,7 @@ class projectsViewAdmin extends phpFrame_Application_View {
 	function displayAdminMemberForm() {
 		$this->_data['page_title'] = _LANG_ADMIN.' - '._LANG_PROJECTS_ADD_MEMBER;
 		$this->_data['page_heading'] = $this->_data['project']->name.' - '._LANG_ADMIN;
-		phpFrame::getPathway()->addItem(_LANG_ADMIN, 'index.php?component=com_projects&view=admin&projectid='.$this->_data['project']->id);
-		phpFrame::getPathway()->addItem(_LANG_PROJECTS_ADD_MEMBER);
+		PHPFrame::getPathway()->addItem(_LANG_ADMIN, 'index.php?component=com_projects&view=admin&projectid='.$this->_data['project']->id);
+		PHPFrame::getPathway()->addItem(_LANG_PROJECTS_ADD_MEMBER);
 	}
 }

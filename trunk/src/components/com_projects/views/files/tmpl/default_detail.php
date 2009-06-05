@@ -8,15 +8,15 @@
  */
 
 // Add confirm behaviour to delete links
-phpFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECTS_FILES_DELETE_CONFIRM);
+PHPFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECTS_FILES_DELETE_CONFIRM);
 // Load jQuery validation behaviour for forms
-phpFrame_HTML::validate('commentsform');
+PHPFrame_HTML::validate('commentsform');
 ?>
 
 <h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
 <h2 class="subheading <?php echo strtolower($data['view']); ?>">
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_files&projectid='.$data['project']->id); ?>">
+	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_files&projectid='.$data['project']->id); ?>">
 		<?php echo $data['view']; ?>
 	</a>
 </h2>
@@ -24,21 +24,21 @@ phpFrame_HTML::validate('commentsform');
 
 <div class="thread_row0">
 
-	<?php if ($data['row']->userid == phpFrame::getUser()->id) : ?>
+	<?php if ($data['row']->userid == PHPFrame::getUser()->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_file" title="<?php echo phpFrame_HTML_Text::_($data['row']->title, true); ?>" href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_file&projectid=".$data['row']->projectid)."&fileid=".$data['row']->id; ?>">
-			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
+		<a class="delete_file" title="<?php echo PHPFrame_HTML_Text::_($data['row']->title, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_file&projectid=".$data['row']->projectid)."&fileid=".$data['row']->id; ?>">
+			<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	<div class="thread_download">
-		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=download_file&fileid=".$data['row']->id); ?>">
-			<?php echo phpFrame_HTML_Text::_( _LANG_DOWNLOAD ); ?>
+		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=download_file&fileid=".$data['row']->id); ?>">
+			<?php echo PHPFrame_HTML_Text::_( _LANG_DOWNLOAD ); ?>
 		</a> 
 	</div>
 	<div class="thread_upload">
-		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_file_form&projectid='.$data['project']->id."&parentid=".$data['row']->parentid); ?>">
-			<?php echo phpFrame_HTML_Text::_( _LANG_FILES_UPLOAD_NEW_VERSION ); ?>
+		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_file_form&projectid='.$data['project']->id."&parentid=".$data['row']->parentid); ?>">
+			<?php echo PHPFrame_HTML_Text::_( _LANG_FILES_UPLOAD_NEW_VERSION ); ?>
 		</a> 
 	</div>
 	
@@ -47,7 +47,7 @@ phpFrame_HTML::validate('commentsform');
 	</div>
 	
 	<div class="thread_heading">
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=download_file&fileid=".$data['row']->id); ?>">
+	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=download_file&fileid=".$data['row']->id); ?>">
 		<?php echo $data['row']->title; ?>
 	</a>
 	</div>
@@ -89,14 +89,14 @@ phpFrame_HTML::validate('commentsform');
 	<div id="oldrevisions<?php echo $data['row']->id; ?>" class="thread_oldrevisions">
 		<?php foreach ($data['row']->children as $child) : ?>
 			<div class="thread_oldrevision_entry">
-				<?php if ($data['row']->userid == phpFrame::getUser()->id) : ?>
+				<?php if ($data['row']->userid == PHPFrame::getUser()->id) : ?>
 				<div class="thread_delete">
-					<a class="delete_file" title="<?php echo phpFrame_HTML_Text::_($child->title, true); ?>" href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_file&projectid=".$data['row']->projectid)."&fileid=".$child->id; ?>">
-						<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
+					<a class="delete_file" title="<?php echo PHPFrame_HTML_Text::_($child->title, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_file&projectid=".$data['row']->projectid)."&fileid=".$child->id; ?>">
+						<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>
 					</a> 
 				</div>
 				<?php endif; ?>
-				<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=download_file&fileid=".$child->id); ?>">
+				<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=download_file&fileid=".$child->id); ?>">
 					<?php echo $child->title; ?>
 				</a> 
 				(Revision <?php echo $child->revision; ?> - <?php echo date("D, d M Y H:ia", strtotime($child->ts)); ?>) 
@@ -113,7 +113,7 @@ phpFrame_HTML::validate('commentsform');
 	<?php foreach ($data['row']->comments as $comment) : ?>
 		<div class="comment_row">
 			<div style="float:left; margin-right: 10px;">
-				<img src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo phpFrame_User_Helper::id2photo($comment->userid); ?>" />
+				<img src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo PHPFrame_User_Helper::id2photo($comment->userid); ?>" />
 			</div>
 			<div style="margin-left: 95px;">
 				<div class="comment_details">
@@ -154,7 +154,7 @@ phpFrame_HTML::validate('commentsform');
 		<input type="hidden" name="assignees[]" value="<?php echo $assignee['id']; ?>" />
 		<?php endforeach; ?>
 		<?php endif; ?>
-		<?php echo phpFrame_HTML::_( 'form.token' ); ?>
+		<?php echo PHPFrame_HTML::_( 'form.token' ); ?>
 		</form>
 	</div>
 </div>

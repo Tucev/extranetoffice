@@ -12,7 +12,7 @@
 
 
 <h2 class="subheading <?php echo strtolower($data['view']); ?>">
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_people&projectid='.$data['project']->id); ?>">
+	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_people&projectid='.$data['project']->id); ?>">
 		<?php echo $data['view']; ?>
 	</a>
 </h2>
@@ -23,16 +23,16 @@
 <?php foreach($data['rows'] as $row) : ?>
 <div class="row_icons">
 	
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$row->id); ?>">
+	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$row->id); ?>">
 	<img border="0" src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo !empty($row->photo) ? $row->photo : 'default.png'; ?>" alt="<?php echo $row->firstname." ".$row->lastname; ?>" />
 	</a>
 	
 	<div class="row_icons_heading">
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$row->id); ?>" title="<?php echo $row->firstname." ".$row->lastname; ?>">
+	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$row->id); ?>" title="<?php echo $row->firstname." ".$row->lastname; ?>">
 	
-		<?php $shortlastname = phpFrame_HTML_Text::limit_chars($row->lastname, 10); ?>
+		<?php $shortlastname = PHPFrame_HTML_Text::limit_chars($row->lastname, 10); ?>
 		
-		<?php echo phpFrame_User_Helper::fullname_format($row->firstname, $shortlastname); ?>
+		<?php echo PHPFrame_User_Helper::fullname_format($row->firstname, $shortlastname); ?>
 	</a>
 	</div>
 </div>
@@ -40,5 +40,5 @@
 <?php endforeach; ?>
 
 <?php else : ?>
-<?php echo phpFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
+<?php echo PHPFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>

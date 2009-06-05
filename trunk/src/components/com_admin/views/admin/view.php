@@ -1,7 +1,7 @@
 <?php
 /**
  * @version 	$Id$
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage	com_admin
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -13,13 +13,13 @@
  * The methods in this class are invoked by its parent class. See display() 
  * method in 'view' class.
  * 
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage 	com_admin
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_View
+ * @see 		PHPFrame_Application_View
  */
-class adminViewAdmin extends phpFrame_Application_View {
+class adminViewAdmin extends PHPFrame_Application_View {
 	/**
 	 * Constructor
 	 * 
@@ -43,7 +43,7 @@ class adminViewAdmin extends phpFrame_Application_View {
 		// Set tmpl request var in view so it can be used to append to urls when
 		// view is loaded with tmpl=component (that means no overall template).
 		// This is useful for views being loaded via ajax
-		$tmpl = phpFrame::getRequest()->get('tmpl', '');
+		$tmpl = PHPFrame::getRequest()->get('tmpl', '');
 		if (!empty($tmpl)) {
 			$tmpl = "&tmpl=".$tmpl;
 		}
@@ -52,7 +52,7 @@ class adminViewAdmin extends phpFrame_Application_View {
 		parent::display();
 		
 		// Append page title to document title
-		$document = phpFrame::getDocument('html');
+		$document = PHPFrame::getDocument('html');
 		$document->title .= ' - '.$this->_data['page_title'];
 	}
 	

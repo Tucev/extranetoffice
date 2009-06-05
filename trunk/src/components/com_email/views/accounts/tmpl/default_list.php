@@ -11,8 +11,8 @@
 <h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 <div class="new">
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=accounts&layout=form'); ?>">
-		<?php echo phpFrame_HTML_Text::_( _LANG_NEW ); ?>
+	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=accounts&layout=form'); ?>">
+		<?php echo PHPFrame_HTML_Text::_( _LANG_NEW ); ?>
 	</a>
 </div>
 
@@ -34,7 +34,7 @@
 	<tr>
 		<td><?php echo $row->fromname; ?></td>
 		<td>
-		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=accounts&layout=form&accountid=".$row->id); ?>">
+		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=accounts&layout=form&accountid=".$row->id); ?>">
 			<?php echo $row->email_address; ?>
 		</a>
 		</td>
@@ -45,14 +45,14 @@
 			<?php if ($row->default == '1') : ?>
 				Default
 			<?php else : ?>
-			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&action=make_default_account&accountid=".$row->id); ?>">
-				<?php echo phpFrame_HTML_Text::_(_LANG_EMAIL_ACCOUNTS_MAKE_DEFAULT); ?>
+			<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&action=make_default_account&accountid=".$row->id); ?>">
+				<?php echo PHPFrame_HTML_Text::_(_LANG_EMAIL_ACCOUNTS_MAKE_DEFAULT); ?>
 			</a>
 			<?php endif; ?>
 		</td>
 		<td>
-			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&action=remove_account&accountid=".$row->id); ?>">
-				<?php echo phpFrame_HTML_Text::_(_LANG_DELETE); ?>
+			<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&action=remove_account&accountid=".$row->id); ?>">
+				<?php echo PHPFrame_HTML_Text::_(_LANG_DELETE); ?>
 			</a>
 		</td>
 	</tr>
@@ -60,5 +60,5 @@
 	<?php endforeach; ?>
 </table>
 <?php else : ?>
-<?php echo phpFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
+<?php echo PHPFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>

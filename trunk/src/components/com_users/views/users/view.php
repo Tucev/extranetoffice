@@ -1,7 +1,7 @@
 <?php
 /**
  * @version 	$Id$
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage	com_users
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -13,13 +13,13 @@
  * The methods in this class are invoked by its parent class. See display() 
  * method in 'view' class.
  * 
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage 	com_users
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_View
+ * @see 		PHPFrame_Application_View
  */
-class usersViewUsers extends phpFrame_Application_View {
+class usersViewUsers extends PHPFrame_Application_View {
 	/**
 	 * Constructor
 	 * 
@@ -44,7 +44,7 @@ class usersViewUsers extends phpFrame_Application_View {
 		
 		// Append page title to document title
 		if ($this->_layout != 'list') {
-			$document = phpFrame::getDocument('html');
+			$document = PHPFrame::getDocument('html');
 			$document->title .= ' - '.$this->page_title;
 		}
 	}
@@ -65,6 +65,6 @@ class usersViewUsers extends phpFrame_Application_View {
 	 */
 	function displayUsersDetail() {
 		$this->_data['page_title'] = $this->_data['row']->firstname.' '.$this->_data['row']->lastname;
-		phpFrame::getPathway()->addItem($this->_data['row']->firstname.' '.$this->_data['row']->lastname);
+		PHPFrame::getPathway()->addItem($this->_data['row']->firstname.' '.$this->_data['row']->lastname);
 	}
 }

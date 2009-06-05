@@ -1,7 +1,7 @@
 <?php
 /**
  * @version 	$Id$
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage 	PHPUnit_test_suite
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -22,57 +22,57 @@ catch (Exception $e) {
 	throw $e; 
 }
 
-$frontcontroller = phpFrame::getFrontController();
+$frontcontroller = PHPFrame::getFrontController();
 
 require_once 'PHPUnit/Framework.php';
 
 class testLoginController extends PHPUnit_Framework_TestCase {
 	function setUp() {
-		phpFrame::getRequest()->setComponentName('com_login');
+		PHPFrame::getRequest()->setComponentName('com_login');
     }
     
 	function tearDown() {
-		phpFrame::getRequest()->destroy();
-     	phpFrame_Base_Singleton::destroyInstance('loginController');
+		PHPFrame::getRequest()->destroy();
+     	PHPFrame_Base_Singleton::destroyInstance('loginController');
     }
     
     function test_login() {
     	// Manually logut current CLI user
-    	$user = new phpFrame_User();
+    	$user = new PHPFrame_User();
     	$user->set('id', 0);
     	$user->set('groupid', 0);
-    	$session = phpFrame::getSession();
+    	$session = PHPFrame::getSession();
     	$session->setUser($user);
     	
     	// Fake posted form data
-    	phpFrame::getRequest()->setAction('login');
-    	phpFrame::getRequest()->set('username', 'admin');
-    	phpFrame::getRequest()->set('password', 'Passw0rd');
-    	phpFrame::getRequest()->set(phpFrame_Utils_Crypt::getToken(), '1');
+    	PHPFrame::getRequest()->setAction('login');
+    	PHPFrame::getRequest()->set('username', 'admin');
+    	PHPFrame::getRequest()->set('password', 'Passw0rd');
+    	PHPFrame::getRequest()->set(PHPFrame_Utils_Crypt::getToken(), '1');
     	
-    	$frontcontroller = phpFrame::getFrontController();
+    	$frontcontroller = PHPFrame::getFrontController();
 		$frontcontroller->run();
     	    	
-    	$controller = phpFrame::getActionController('com_login');
+    	$controller = PHPFrame::getActionController('com_login');
     	$this->assertTrue($controller->getSuccess());
     }
     
     function test_reset_password() {
     	// Add a project to db to then delete it
-    	$db = phpFrame::getDB();
+    	$db = PHPFrame::getDB();
     	$query = "UPDATE #__users SET email = 'notifications.test@extranetoffice.org' WHERE id = 62";
 		$db->setQuery($query);
 		$db->query();
 		
     	// Fake posted form data
-    	phpFrame::getRequest()->setAction('reset_password');
-    	phpFrame::getRequest()->set('email_forgot', 'notifications.test@extranetoffice.org');
-    	phpFrame::getRequest()->set(phpFrame_Utils_Crypt::getToken(), '1');
+    	PHPFrame::getRequest()->setAction('reset_password');
+    	PHPFrame::getRequest()->set('email_forgot', 'notifications.test@extranetoffice.org');
+    	PHPFrame::getRequest()->set(PHPFrame_Utils_Crypt::getToken(), '1');
     	
-    	$frontcontroller = phpFrame::getFrontController();
+    	$frontcontroller = PHPFrame::getFrontController();
     	$frontcontroller->run();
     	
-    	$controller = phpFrame::getActionController('com_login');
+    	$controller = PHPFrame::getActionController('com_login');
     	$this->assertTrue($controller->getSuccess());
     }
 }

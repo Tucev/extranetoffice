@@ -56,7 +56,7 @@ $module_positions['right'] = $this->modules->display('right');
 		
 		<div id="main_col_<?php echo $column_count; ?>">
 			<div id="main_col_inner">
-			<?php phpFrame_Application_Error::display(); ?>
+			<?php PHPFrame_Application_Error::display(); ?>
 			<?php echo $this->component_output; ?>
 			</div><!-- close #main_col_inner -->
 		</div><!-- close #main_col -->
@@ -67,11 +67,11 @@ $module_positions['right'] = $this->modules->display('right');
 <!-- End Content -->
 
 <div id="footer">
-Powered by Extranet Office 1.0 Alpha and phpFrame<br />
+Powered by Extranet Office 1.0 Alpha and PHPFrame<br />
 &copy; 2009 E-noise.com Limited
 <?php if (config::DEBUG) : ?>
 <br />
-Script Execution Time: <?php echo phpFrame_Debug_Profiler::getExecutionTime(); ?> seconds
+Script Execution Time: <?php echo PHPFrame_Debug_Profiler::getExecutionTime(); ?> seconds
 <?php endif; ?>
 </div>
 

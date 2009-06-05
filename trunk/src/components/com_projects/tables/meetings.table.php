@@ -14,7 +14,7 @@
  * @subpackage 	com_projects
  * @since 		1.0
  */
-class projectsTableMeetings extends phpFrame_Database_Table {
+class projectsTableMeetings extends PHPFrame_Database_Table {
 	var $id=null; // int(11) auto_increment
 	var $projectid=null; // int(11)
 	var $name=null; // varchar(64)

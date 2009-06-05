@@ -13,9 +13,9 @@
  * @package		ExtranetOffice
  * @subpackage 	com_projects
  * @since 		1.0
- * @see 		phpFrame_Application_Model
+ * @see 		PHPFrame_Application_Model
  */
-class projectsModelProjects extends phpFrame_Application_Model {
+class projectsModelProjects extends PHPFrame_Application_Model {
 	/**
 	 * Constructor
 	 *
@@ -27,21 +27,21 @@ class projectsModelProjects extends phpFrame_Application_Model {
 	/**
 	 * Get projects.
 	 * 
-	 * @param	object	$list_filter	Object of type phpFrame_Database_CollectionFilter
+	 * @param	object	$list_filter	Object of type PHPFrame_Database_CollectionFilter
 	 * @return	mixed	if no parameters returns array of objects if entries exist 
 	 */
-	public function getCollection(phpFrame_Database_CollectionFilter $filter) {
+	public function getCollection(PHPFrame_Database_CollectionFilter $filter) {
 		// Build WHERE SQL clauses
 		$where = array();
 		
 		// Show only public projects or projects where user has an assigned role
-		$userid = phpFrame::getSession()->getUserId();
+		$userid = PHPFrame::getSession()->getUserId();
 		$where[] = "( p.access = '0' OR (".$userid." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 		
 		// Add search filtering
 		$search = $filter->getSearchStr();
 		if ($search) {
-			$where[] = "p.name LIKE '%".phpFrame::getDB()->getEscaped($search)."%'";
+			$where[] = "p.name LIKE '%".PHPFrame::getDB()->getEscaped($search)."%'";
 		}
 		
 		// Transform where array to SQL string
@@ -58,9 +58,9 @@ class projectsModelProjects extends phpFrame_Application_Model {
 				  " GROUP BY p.id ";
 
 		// Run query to get total rows before applying filter
-		phpFrame::getDB()->setQuery($query)->query();
+		PHPFrame::getDB()->setQuery($query)->query();
 		// Set total number of record in list filter
-		$filter->setTotal(phpFrame::getDB()->getNumRows());
+		$filter->setTotal(PHPFrame::getDB()->getNumRows());
 		
 		// get the subset (based on limits) of required records
 		$query = "SELECT 
@@ -78,12 +78,12 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		$query .= $filter->getLimitStmt();
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
-		return new phpFrame_Database_RowCollection($query);
+		return new PHPFrame_Database_RowCollection($query);
 	}
 	
 	public function getRow($projectid) {
 		// Build SQL query to get row
-		$userid = phpFrame::getSession()->getUserId();
+		$userid = PHPFrame::getSession()->getUserId();
 		$where[] = "( p.access = '0' OR (".$userid." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 		$where[] = "p.id = ".$projectid;
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
@@ -100,7 +100,7 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		//echo str_replace("#__", "eo_", $query); exit;
 		
 		// Create instance of row
-		$row = new phpFrame_Database_Row('#__projects');
+		$row = new PHPFrame_Database_Row('#__projects');
 		
 		// Load row data using query and return
 		return $row->loadByQuery($query, array('created_by_name', 'project_type_name'));
@@ -115,7 +115,7 @@ class projectsModelProjects extends phpFrame_Application_Model {
 	 */
 	public function saveRow($post) {
 		// Instantiate table object
-		$row = new phpFrame_Database_Row('#__projects');
+		$row = new PHPFrame_Database_Row('#__projects');
 		
 		// Bind the post data to the row array (exluding created and created_by)
 		$row->bind($post, 'created,created_by');
@@ -123,17 +123,17 @@ class projectsModelProjects extends phpFrame_Application_Model {
 		// Manually set created by and created date for new records
 		if (empty($row->id)) {
 			$row->set('created', date("Y-m-d H:i:s"));
-			$row->set('created_by', phpFrame::getSession()->getUserId());
+			$row->set('created_by', PHPFrame::getSession()->getUserId());
 		}
 		
 		// Store row and return row object
 		$row->store();
 		
 		// Create filesystem directories if they don't exist yet
-		phpFrame_Utils_Filesystem::ensureWritableDir(config::FILESYSTEM.DS."projects");
-		phpFrame_Utils_Filesystem::ensureWritableDir(config::FILESYSTEM.DS."projects".DS.$row->id);
-		phpFrame_Utils_Filesystem::ensureWritableDir(_ABS_PATH.DS."public".DS.config::UPLOAD_DIR.DS."projects");
-		phpFrame_Utils_Filesystem::ensureWritableDir(_ABS_PATH.DS."public".DS.config::UPLOAD_DIR.DS."projects".DS.$row->id);
+		PHPFrame_Utils_Filesystem::ensureWritableDir(config::FILESYSTEM.DS."projects");
+		PHPFrame_Utils_Filesystem::ensureWritableDir(config::FILESYSTEM.DS."projects".DS.$row->id);
+		PHPFrame_Utils_Filesystem::ensureWritableDir(_ABS_PATH.DS."public".DS.config::UPLOAD_DIR.DS."projects");
+		PHPFrame_Utils_Filesystem::ensureWritableDir(_ABS_PATH.DS."public".DS.config::UPLOAD_DIR.DS."projects".DS.$row->id);
 		
 		return $row;
 	}
@@ -147,7 +147,7 @@ class projectsModelProjects extends phpFrame_Application_Model {
 	 */
 	public function deleteRow($projectid) {
 		// Instantiate table object
-		$row = new phpFrame_Database_Row('#__projects');
+		$row = new PHPFrame_Database_Row('#__projects');
 		
 		// Delete row from database
 		$row->delete($projectid);

@@ -17,9 +17,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_View
+ * @see 		PHPFrame_Application_View
  */
-class projectsViewAssignees extends phpFrame_Application_View {
+class projectsViewAssignees extends PHPFrame_Application_View {
 	/**
 	 * Constructor
 	 * 
@@ -41,7 +41,7 @@ class projectsViewAssignees extends phpFrame_Application_View {
 	 */
 	function display() {
 		// Append page title to document title
-		$document = phpFrame::getDocument('html');
+		$document = PHPFrame::getDocument('html');
 		$document->title .= ' - '.$this->_data['page_title'];
 		
 		parent::display();

@@ -1,7 +1,7 @@
 <?php
 /**
  * @version 	$Id$
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage	com_admin
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -11,23 +11,23 @@
 /**
  * adminModelUsers Class
  * 
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage 	com_admin
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  * @see 		model
  */
-class adminModelUsers extends phpFrame_Application_Model {
+class adminModelUsers extends PHPFrame_Application_Model {
 	/**
 	 * Get users
 	 * 
 	 * This method returns an array with row objects for each user
 	 * 
-	 * @param	object	$list_filter	Object of type phpFrame_Database_CollectionFilter
+	 * @param	object	$list_filter	Object of type PHPFrame_Database_CollectionFilter
 	 * @param	boolean	$deleted		Indicates whether we want to include deleted users
 	 * @return	array
 	 */
-	function getUsers(phpFrame_Database_CollectionFilter $list_filter, $deleted=false) {
+	function getUsers(PHPFrame_Database_CollectionFilter $list_filter, $deleted=false) {
 		// Build SQL query
 		$where = array();
 		
@@ -40,9 +40,9 @@ class adminModelUsers extends phpFrame_Application_Model {
 		}
 		
 		if ($search) {
-			$where[] = "(u.firstname LIKE '%".phpFrame::getDB()->getEscaped($list_filter->getSearchStr())."%' 
-						OR u.lastname LIKE '%".phpFrame::getDB()->getEscaped($list_filter->getSearchStr())."%' 
-						OR u.username LIKE '%".phpFrame::getDB()->getEscaped($list_filter->getSearchStr())."%')";
+			$where[] = "(u.firstname LIKE '%".PHPFrame::getDB()->getEscaped($list_filter->getSearchStr())."%' 
+						OR u.lastname LIKE '%".PHPFrame::getDB()->getEscaped($list_filter->getSearchStr())."%' 
+						OR u.username LIKE '%".PHPFrame::getDB()->getEscaped($list_filter->getSearchStr())."%')";
 		}
 
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
@@ -56,11 +56,11 @@ class adminModelUsers extends phpFrame_Application_Model {
 				  " GROUP BY u.id ";
 		
 		//echo str_replace('#__', 'eo_', $query); exit;
-		phpFrame::getDB()->setQuery($query);
-		phpFrame::getDB()->query();
+		PHPFrame::getDB()->setQuery($query);
+		PHPFrame::getDB()->query();
 		
 		// Set total number of record in list filter
-		$list_filter->setTotal(phpFrame::getDB()->getNumRows());
+		$list_filter->setTotal(PHPFrame::getDB()->getNumRows());
 		
 		// get the subset (based on limits) of required records
 		$query = "SELECT 
@@ -76,8 +76,8 @@ class adminModelUsers extends phpFrame_Application_Model {
 		$query .= $list_filter->getLimitStmt();
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
-		phpFrame::getDB()->setQuery($query);
-		return phpFrame::getDB()->loadObjectList();
+		PHPFrame::getDB()->setQuery($query);
+		return PHPFrame::getDB()->loadObjectList();
 	}
 	
 	/**
@@ -94,8 +94,8 @@ class adminModelUsers extends phpFrame_Application_Model {
 					  FROM #__users AS u 
 					  LEFT JOIN #__groups g ON u.groupid = g.id 
 					  WHERE u.id = '".$userid."'";
-			phpFrame::getDB()->setQuery($query);
-			return phpFrame::getDB()->loadObject();
+			PHPFrame::getDB()->setQuery($query);
+			return PHPFrame::getDB()->loadObject();
 		}
 		else {
 			return false;
@@ -104,14 +104,14 @@ class adminModelUsers extends phpFrame_Application_Model {
 	
 	function saveUser($post) {
 		// Create new user object
-		$user = new phpFrame_User();
+		$user = new PHPFrame_User();
 		
 		// if no userid passed in request we assume it is a new user
 		if (!isset($post['id']) || $post['id'] < 1) {
 			$user->set('block', '0');
 			$user->set('created', date("Y-m-d H:i:s"));
 			// Generate random password and store in local variable to be used when sending email to user.
-			$password = phpFrame_Utils_Crypt::genRandomPassword();
+			$password = PHPFrame_Utils_Crypt::genRandomPassword();
 			// Assign newly generated password to row object (this password will be encrypted when stored).
 			$user->set('password', $password);
 			$new_user = true;
@@ -138,10 +138,10 @@ class adminModelUsers extends phpFrame_Application_Model {
 		
 		// Send notification to new users
 		if ($new_user === true) {
-			$uri = phpFrame::getURI();
+			$uri = PHPFrame::getURI();
 		
-			$new_mail = new phpFrame_Mail_Mailer();
-			$new_mail->AddAddress($user->email, phpFrame_User_Helper::fullname_format($user->firstname, $user->lastname));
+			$new_mail = new PHPFrame_Mail_Mailer();
+			$new_mail->AddAddress($user->email, PHPFrame_User_Helper::fullname_format($user->firstname, $user->lastname));
 			$new_mail->Subject = _LANG_USER_NEW_NOTIFY_SUBJECT;
 			$new_mail->Body = sprintf(_LANG_USER_NEW_NOTIFY_BODY, 
 									 $user->firstname, 
@@ -161,9 +161,9 @@ class adminModelUsers extends phpFrame_Application_Model {
 	
 	function deleteUser($userid) {
 		$query = "UPDATE #__users SET `deleted` = '".date("Y-m-d H:i:s")."' WHERE id = ".$userid;
-		phpFrame::getDB()->setQuery($query);
-		if (phpFrame::getDB()->query() === false) {
-			$this->_error[] = phpFrame::getDB()->getLastError();
+		PHPFrame::getDB()->setQuery($query);
+		if (PHPFrame::getDB()->query() === false) {
+			$this->_error[] = PHPFrame::getDB()->getLastError();
 			return false;
 		}
 		else {

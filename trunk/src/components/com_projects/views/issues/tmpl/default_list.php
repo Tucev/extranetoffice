@@ -8,7 +8,7 @@
  */
 
 // Add confirm behaviour to delete links
-phpFrame_HTML::confirm('delete_issue', _LANG_PROJECTS_ISSUES_DELETE, _LANG_PROJECTS_ISSUES_DELETE_CONFIRM);
+PHPFrame_HTML::confirm('delete_issue', _LANG_PROJECTS_ISSUES_DELETE, _LANG_PROJECTS_ISSUES_DELETE_CONFIRM);
 ?>
 
 <!-- jquery slider for filter panel -->
@@ -27,13 +27,13 @@ $(document).ready(function() {
 <h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
 <div class="new">
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_issue_form&projectid='.$data['project']->id); ?>">
-		<?php echo phpFrame_HTML_Text::_( _LANG_NEW ); ?>
+	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_issue_form&projectid='.$data['project']->id); ?>">
+		<?php echo PHPFrame_HTML_Text::_( _LANG_NEW ); ?>
 	</a>
 </div>
 
 <h2 class="subheading <?php echo strtolower($data['view']); ?>">
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_issues&projectid='.$data['project']->id); ?>">
+	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_issues&projectid='.$data['project']->id); ?>">
 		<?php echo $data['view']; ?>
 	</a>
 </h2>
@@ -100,14 +100,14 @@ $(document).ready(function() {
 
 	<?php if ($row->created_by == $this->_user->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_issue" title="<?php echo phpFrame_HTML_Text::_($row->title, true); ?>" href="index.php?component=com_projects&action=remove_issue&projectid=<?php echo $row->projectid; ?>&issueid=<?php echo $row->id; ?>">
-			<?php echo phpFrame_HTML_Text::_( _LANG_DELETE ); ?>
+		<a class="delete_issue" title="<?php echo PHPFrame_HTML_Text::_($row->title, true); ?>" href="index.php?component=com_projects&action=remove_issue&projectid=<?php echo $row->projectid; ?>&issueid=<?php echo $row->id; ?>">
+			<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
 	<div class="thread_heading">
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issue_detail&projectid=".$row->projectid."&issueid=".$row->id); ?>">
+	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issue_detail&projectid=".$row->projectid."&issueid=".$row->id); ?>">
 		<?php echo $row->title; ?>
 	</a>
 	</div>
@@ -132,16 +132,16 @@ $(document).ready(function() {
 	
 	<?php if (!empty($row->description)) : ?>
 	<div class="thread_body">
-		<?php echo nl2br(phpFrame_HTML_Text::limit_words($row->description, 255)); ?>
+		<?php echo nl2br(PHPFrame_HTML_Text::limit_words($row->description, 255)); ?>
 	</div>
 	<?php endif; ?>
 	
 	<div class="comments_info">
-		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issue_detail&projectid=".$data['project']->id."&issueid=".$row->id); ?>">
+		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issue_detail&projectid=".$data['project']->id."&issueid=".$row->id); ?>">
 			<?php echo $row->comments; ?> <?php echo _LANG_COMMENTS; ?>
 		</a>
 		 - 
-		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issue_detail&projectid=".$data['project']->id."&issueid=".$row->id."#post-comment"); ?>">
+		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issue_detail&projectid=".$data['project']->id."&issueid=".$row->id."#post-comment"); ?>">
 			<?php echo _LANG_COMMENTS_NEW; ?>
 		</a>
 	</div>
@@ -155,7 +155,7 @@ $(document).ready(function() {
 <?php echo $data['page_nav']->getListFooter(); ?>
 
 <?php else : ?>
-<?php echo phpFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
+<?php echo PHPFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>
 
 <?php //echo '<pre>'; var_dump($data['rows']); echo '</pre>'; ?>

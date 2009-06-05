@@ -14,9 +14,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_Model
+ * @see 		PHPFrame_Application_Model
  */
-class projectsModelMeetings extends phpFrame_Application_Model {
+class projectsModelMeetings extends PHPFrame_Application_Model {
 	/**
 	 * Constructor
 	 *
@@ -27,20 +27,20 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 	/**
 	 * Get meetings
 	 * 
-	 * @param	object	$list_filter	Object of type phpFrame_Database_CollectionFilter
+	 * @param	object	$list_filter	Object of type PHPFrame_Database_CollectionFilter
 	 * @param	int		$projectid
 	 * @return	array
 	 */
-	public function getMeetings(phpFrame_Database_CollectionFilter $list_filter, $projectid) {
+	public function getMeetings(PHPFrame_Database_CollectionFilter $list_filter, $projectid) {
 		$where = array();
 		
 		// Show only public projects or projects where user has an assigned role
 		//TODO: Have to apply access levels
-		//$where[] = "( p.access = '0' OR (".phpFrame::getUser()->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
+		//$where[] = "( p.access = '0' OR (".PHPFrame::getUser()->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 		
 		$search = $list_filter->getSearchStr();
 		if ( $search ) {
-			$where[] = "m.name LIKE '%".phpFrame::getDB()->getEscaped($search)."%'";
+			$where[] = "m.name LIKE '%".PHPFrame::getDB()->getEscaped($search)."%'";
 		}
 		
 		if (!empty($projectid)) {
@@ -60,11 +60,11 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 				  " GROUP BY m.id ";
 		//echo str_replace('#__', 'eo_', $query); exit;
 			  
-		phpFrame::getDB()->setQuery( $query );
-		phpFrame::getDB()->query();
+		PHPFrame::getDB()->setQuery( $query );
+		PHPFrame::getDB()->query();
 		
 		// Set total number of records in list filter
-		$list_filter->setTotal(phpFrame::getDB()->getNumRows());
+		$list_filter->setTotal(PHPFrame::getDB()->getNumRows());
 
 		// Add order by and limit statements for subset (based on filter)
 		//$query .= $list_filter->getOrderByStmt();
@@ -72,8 +72,8 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
 		//echo $query; exit;
-		phpFrame::getDB()->setQuery($query);
-		$rows = phpFrame::getDB()->loadObjectList();
+		PHPFrame::getDB()->setQuery($query);
+		$rows = PHPFrame::getDB()->loadObjectList();
 		
 		// Prepare rows and add relevant data
 		if (is_array($rows) && count($rows) > 0) {
@@ -82,7 +82,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 				$row->assignees = $this->getAssignees($row->id);
 				
 				// get total comments
-				$modelComments = phpFrame::getModel('com_projects', 'comments');
+				$modelComments = PHPFrame::getModel('com_projects', 'comments');
 				$row->comments = $modelComments->getTotalComments($row->id, 'meetings');
 			}
 		}
@@ -96,8 +96,8 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$query .= " JOIN #__users u ON u.id = m.created_by ";
 		$query .= " WHERE m.id = ".$meetingid;
 		$query .= " ORDER BY m.created DESC";
-		phpFrame::getDB()->setQuery($query);
-		$row = phpFrame::getDB()->loadObject();
+		PHPFrame::getDB()->setQuery($query);
+		$row = PHPFrame::getDB()->loadObject();
 		
 		// Get assignees
 		$row->assignees = $this->getAssignees($meetingid);
@@ -109,7 +109,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$row->files = $this->getFiles($projectid, $meetingid);
 		
 		// Get comments
-		$modelComments = phpFrame::getModel('com_projects', 'comments');
+		$modelComments = PHPFrame::getModel('com_projects', 'comments');
 		$row->comments = $modelComments->getComments($projectid, 'meetings', $meetingid);
 		
 		return $row;
@@ -131,7 +131,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$row = $this->getTable('meetings');
 		
 		if (empty($post['id'])) {
-			$row->created_by = phpFrame::getUser()->id;
+			$row->created_by = PHPFrame::getUser()->id;
 			$row->created = date("Y-m-d H:i:s");
 		}
 		else {
@@ -156,8 +156,8 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		// Delete existing assignees before we store new ones if editing existing issue
 		if (!empty($post['id'])) {
 			$query = "DELETE FROM #__users_meetings WHERE meetingid = ".$row->id;
-			phpFrame::getDB()->setQuery($query);
-			phpFrame::getDB()->query();
+			PHPFrame::getDB()->setQuery($query);
+			PHPFrame::getDB()->query();
 		}
 		
 		// Store assignees
@@ -168,8 +168,8 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 				if ($i>0) { $query .= ","; }
 				$query .= " (NULL, '".$post['assignees'][$i]."', '".$row->id."') ";
 			}
-			phpFrame::getDB()->setQuery($query);
-			phpFrame::getDB()->query();
+			PHPFrame::getDB()->setQuery($query);
+			PHPFrame::getDB()->query();
 		}
 		
 		return $row;
@@ -191,25 +191,25 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		// Delete meetings comments
 		$query = "DELETE FROM #__comments ";
 		$query .= " WHERE projectid = ".$projectid." AND type = 'meetings' AND itemid = ".$meetingid;
-		phpFrame::getDB()->setQuery($query);
-		if (!phpFrame::getDB()->query()) {
-			$this->_error[] = phpFrame::getDB()->getLastError();
+		PHPFrame::getDB()->setQuery($query);
+		if (!PHPFrame::getDB()->query()) {
+			$this->_error[] = PHPFrame::getDB()->getLastError();
 			return false;
 		}
 		
 		// Delete meetings assignees
 		$query = "DELETE FROM #__users_meetings ";
 		$query .= " WHERE meetingid = ".$meetingid;
-		phpFrame::getDB()->setQuery($query);
-		if (!phpFrame::getDB()->query()) {
-			$this->_error[] = phpFrame::getDB()->getLastError();
+		PHPFrame::getDB()->setQuery($query);
+		if (!PHPFrame::getDB()->query()) {
+			$this->_error[] = PHPFrame::getDB()->getLastError();
 			return false;
 		}
 		
 		// Delete meeting slideshows
 		$query = "SELECT id FROM #__slideshows WHERE meetingid = ".$meetingid;
-		phpFrame::getDB()->setQuery($query);
-		$slideshows = phpFrame::getDB()->loadResultArray();
+		PHPFrame::getDB()->setQuery($query);
+		$slideshows = PHPFrame::getDB()->loadResultArray();
 		if (is_array($slideshows) && count($slideshows) > 0) {
 			foreach ($slideshows as $slideshowid) {
 				if (!$this->deleteSlideshow($projectid, $slideshowid)) {
@@ -219,7 +219,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		}
 		
 		// Instantiate table object
-		$row =& phpFrame_Base_Singleton::getInstance("projectsTableMeetings");
+		$row =& PHPFrame_Base_Singleton::getInstance("projectsTableMeetings");
 		
 		// Delete row from database
 		if (!$row->delete($meetingid)) {
@@ -236,16 +236,16 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$query .= " FROM #__slideshows ";
 		$query .= " WHERE projectid = ".$projectid." AND meetingid = ".$meetingid;
 		if (!empty($slideshowid)) $query .= " AND id = ".$slideshowid; 
-		phpFrame::getDB()->setQuery($query);
-		$slideshows = phpFrame::getDB()->loadObjectList();
+		PHPFrame::getDB()->setQuery($query);
+		$slideshows = PHPFrame::getDB()->loadObjectList();
 		
 		// Get slideshows slides
 		for ($i=0; $i<count($slideshows); $i++) {
 			$query = "SELECT * ";
 			$query .= " FROM #__slideshows_slides ";
 			$query .= " WHERE slideshowid = ".$slideshows[$i]->id;
-			phpFrame::getDB()->setQuery($query);
-			$slideshows[$i]->slides = phpFrame::getDB()->loadObjectList();
+			PHPFrame::getDB()->setQuery($query);
+			$slideshows[$i]->slides = PHPFrame::getDB()->loadObjectList();
 		}
 		
 		return $slideshows;
@@ -264,7 +264,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			$row->load($post['id']);
 		}
 		else {
-			$row->created_by = phpFrame::getUser()->id;
+			$row->created_by = PHPFrame::getUser()->id;
 			$row->created = date("Y-m-d H:i:s");
 		}
 		
@@ -295,8 +295,8 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$query = "SELECT * ";
 		$query .= " FROM #__slideshows_slides ";
 		$query .= " WHERE slideshowid = ".$slideshowid;
-		phpFrame::getDB()->setQuery($query);
-		$slides = phpFrame::getDB()->loadObjectList();
+		PHPFrame::getDB()->setQuery($query);
+		$slides = PHPFrame::getDB()->loadObjectList();
 		
 		if (is_array($slides) && count($slides) > 0) {
 			foreach ($slides as $slide) {
@@ -311,9 +311,9 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 					return false;
 				}
 				$query = "DELETE FROM #__slideshows_slides WHERE id = ".$slide->id;
-				phpFrame::getDB()->setQuery($query);
-				if (!phpFrame::getDB()->query()) {
-					$this->_error[] = phpFrame::getDB()->getLastError();
+				PHPFrame::getDB()->setQuery($query);
+				if (!PHPFrame::getDB()->query()) {
+					$this->_error[] = PHPFrame::getDB()->getLastError();
 					return false;
 				}
 			}
@@ -332,9 +332,9 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		
 		$query = "DELETE FROM #__slideshows ";
 		$query .= " WHERE id = ".$slideshowid;
-		phpFrame::getDB()->setQuery($query);
-		if (!phpFrame::getDB()->query()) {
-			$this->_error[] = phpFrame::getDB()->getLastError();
+		PHPFrame::getDB()->setQuery($query);
+		if (!PHPFrame::getDB()->query()) {
+			$this->_error[] = PHPFrame::getDB()->getLastError();
 			return false;
 		}
 		
@@ -376,7 +376,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		}
 		$accept = 'image/jpg,image/jpeg,image/png,image/gif'; // mime types
 		$max_upload_size = config::MAX_UPLOAD_SIZE*(1024*1024); // Mb
-		$file = phpFrame_Utils_Filesystem::uploadFile('filename', $upload_dir, $accept, $max_upload_size);
+		$file = PHPFrame_Utils_Filesystem::uploadFile('filename', $upload_dir, $accept, $max_upload_size);
 		
 		if (!empty($file['error'])) {
 			$this->_error[] = $file['error'];
@@ -384,7 +384,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		}
 		
 		// Resize image
-		$image = new phpFrame_Utils_Image();
+		$image = new PHPFrame_Utils_Image();
 		if (!$image->resize_image($upload_dir.$file['file_name'], $upload_dir.$file['file_name'], 764, 573)) {
 			$this->_error[] = _LANG_MEETINGS_SLIDE_RESIZE_ERROR;
 			return false;
@@ -428,9 +428,9 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		}
 		else {
 			$query = "DELETE FROM #__slideshows_slides WHERE id = ".$slideid;
-			phpFrame::getDB()->setQuery($query);
-			if (phpFrame::getDB()->query() === false) {
-				$this->_error[] = phpFrame::getDB()->getLastError();
+			PHPFrame::getDB()->setQuery($query);
+			if (PHPFrame::getDB()->query() === false) {
+				$this->_error[] = PHPFrame::getDB()->getLastError();
 				return false;
 			}
 			else {
@@ -443,8 +443,8 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$query = "SELECT fileid ";
 		$query .= " FROM #__meetings_files ";
 		$query .= " WHERE meetingid = ".$meetingid;
-		phpFrame::getDB()->setQuery($query);
-		$fileids = phpFrame::getDB()->loadResultArray();
+		PHPFrame::getDB()->setQuery($query);
+		$fileids = PHPFrame::getDB()->loadResultArray();
 		
 		// Get files data
 		$files = array();
@@ -452,8 +452,8 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			$query = "SELECT * ";
 			$query .= " FROM #__files ";
 			$query .= " WHERE id = ".$fileids[$i];
-			phpFrame::getDB()->setQuery($query);
-			$files[$i] = phpFrame::getDB()->loadObject();
+			PHPFrame::getDB()->setQuery($query);
+			$files[$i] = PHPFrame::getDB()->loadObject();
 		}
 		
 		return $files;
@@ -470,18 +470,18 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		}
 		
 		$query = "DELETE FROM #__meetings_files WHERE meetingid = ".$meetingid;
-		phpFrame::getDB()->setQuery($query);
-		if (!phpFrame::getDB()->query()) {
-			$this->_error[] = phpFrame::getDB()->getLastError();
+		PHPFrame::getDB()->setQuery($query);
+		if (!PHPFrame::getDB()->query()) {
+			$this->_error[] = PHPFrame::getDB()->getLastError();
 			return false;
 		}
 		
 		if (is_array($fileids) && count($fileids) > 0) {
 			foreach ($fileids as $fileid) {
 				$query = "INSERT INTO #__meetings_files (`id`, `meetingid`, `fileid`) VALUES (NULL, ".$meetingid.", ".$fileid.")";
-				phpFrame::getDB()->setQuery($query);
-				if (!phpFrame::getDB()->query()) {
-					$this->_error[] = phpFrame::getDB()->getLastError();
+				PHPFrame::getDB()->setQuery($query);
+				if (!PHPFrame::getDB()->query()) {
+					$this->_error[] = PHPFrame::getDB()->getLastError();
 					return false;
 				}
 			}
@@ -502,8 +502,8 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 		$query .= " FROM #__users_meetings AS um ";
 		$query .= "LEFT JOIN #__users u ON u.id = um.userid";
 		$query .= " WHERE um.meetingid = ".$meetingid;
-		phpFrame::getDB()->setQuery($query);
-		$assignees = phpFrame::getDB()->loadObjectList();
+		PHPFrame::getDB()->setQuery($query);
+		$assignees = PHPFrame::getDB()->loadObjectList();
 		
 		// Prepare assignee data
 		for ($i=0; $i<count($assignees); $i++) {
@@ -512,7 +512,7 @@ class projectsModelMeetings extends phpFrame_Application_Model {
 			}
 			else {
 				$new_assignees[$i]['id'] = $assignees[$i]->userid;
-				$new_assignees[$i]['name'] = phpFrame_User_Helper::fullname_format($assignees[$i]->firstname, $assignees[$i]->lastname);
+				$new_assignees[$i]['name'] = PHPFrame_User_Helper::fullname_format($assignees[$i]->firstname, $assignees[$i]->lastname);
 				$new_assignees[$i]['email'] = $assignees[$i]->email;
 			}
 		}

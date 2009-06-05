@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage 	com_dashboard
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -21,8 +21,8 @@
 	<div style="float:right;">
 		<?php 
 			$img = '<img style="float:right; margin: 5px 0 3px 3px;" src="' ;
-			$img .= config::UPLOAD_DIR."/users/".phpFrame::getUser()->photo . '" />'; 
-			phpFrame_HTML::dialog($img, 'index.php?component=com_users&action=get_settings', 600, 560, true);
+			$img .= config::UPLOAD_DIR."/users/".PHPFrame::getUser()->photo . '" />'; 
+			PHPFrame_HTML::dialog($img, 'index.php?component=com_users&action=get_settings', 600, 560, true);
 		?> 
 	</div>
 	
@@ -31,9 +31,9 @@
 	<?php //var_dump($this->_user); ?>
 	
 	<p style="font-size: 0.8em;">
-	Name: <br /> <?php echo phpFrame::getUser()->firstname; ?> <?php echo phpFrame::getUser()->lastname; ?> <br />
-	Username: <br /> <?php echo phpFrame::getUser()->username; ?> <br />
-	Email: <br /> <?php echo phpFrame::getUser()->email; ?>
+	Name: <br /> <?php echo PHPFrame::getUser()->firstname; ?> <?php echo PHPFrame::getUser()->lastname; ?> <br />
+	Username: <br /> <?php echo PHPFrame::getUser()->username; ?> <br />
+	Email: <br /> <?php echo PHPFrame::getUser()->email; ?>
 	</p>
 	
 	<div style="clear:right;"></div>
@@ -44,10 +44,10 @@
 	
 	<div class="ioffice_module">
 	
-	<?php if (phpFrame::getUser()->groupid == 1) : ?>
+	<?php if (PHPFrame::getUser()->groupid == 1) : ?>
 	<div style="float:right;" class="new">
-		 <a style="float:right;" href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_form"); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
-		<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>
+		 <a style="float:right;" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_form"); ?>" title="<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
+		<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>
 		</a>
 	</div>
 	<?php endif; ?>
@@ -57,7 +57,7 @@
 		<?php if ($data['projects']->countRows() > 0) : ?>
 		<?php foreach ($data['projects'] as $project) : ?>
 		<li>
-			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_detail&projectid=".$project->id); ?>">
+			<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_detail&projectid=".$project->id); ?>">
 				<?php echo $project->name; ?>
 			</a>
 		</li>
@@ -109,12 +109,12 @@
   	<?php echo $attachment_icon; ?>
   	</td>
 	<td>
-		<a class="bold" href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=messages&layout=detail&folder=INBOX&uid=".$email->uid); ?>">
+		<a class="bold" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=messages&layout=detail&folder=INBOX&uid=".$email->uid); ?>">
 		<?php echo substr($email->from, 0, 32); if (strlen($email->from) > 33) { echo '...'; } ?>
 		</a>
 	</td>
 	<td>
-		<a class="bold" href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=messages&layout=detail&folder=INBOX&uid=".$email->uid); ?>">
+		<a class="bold" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=messages&layout=detail&folder=INBOX&uid=".$email->uid); ?>">
 		<?php echo substr($email->subject, 0, 32); if (strlen($email->subject) > 33) { echo '...'; } ?>
 		</a>
 	</td>
@@ -127,7 +127,7 @@
 	</tbody>
 	</table>
 	<?php elseif ($this->emails) : ?>
-	<?php echo phpFrame_HTML_Text::_( _LANG_NO_EMAIL ); ?>
+	<?php echo PHPFrame_HTML_Text::_( _LANG_NO_EMAIL ); ?>
 	<?php else : ?>
 	No e-mail account.
 	<?php endif; ?>
@@ -146,18 +146,18 @@
 	
 	<?php if ($project->activitylog->countRows() > 0) : ?>
 	<h4>
-		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_detail&projectid=".$project->id); ?>">
+		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_detail&projectid=".$project->id); ?>">
 		<?php echo $project->name; ?>
 		</a>
 	</h4>
 	
 	<div class="overdue_issues_16">
-		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issues&projectid=".$project->id); ?>">
+		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issues&projectid=".$project->id); ?>">
 		<?php echo $project->overdue_issues." "._LANG_ISSUES_OVERDUE; ?>
 		</a>
 	</div>
 	<div class="upcoming_milestones_16">
-		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_milestones&projectid=".$project->id); ?>">
+		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_milestones&projectid=".$project->id); ?>">
 		<?php echo _LANG_MILESTONES_UPCOMING; ?>
 		</a>
 	</div>
@@ -172,11 +172,11 @@
 			</div>
 		</td>
 		<td>
-			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL($log->url); ?>">
+			<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL($log->url); ?>">
 			<?php echo $log->title; ?>
 			</a>
 		</td>
-		<td><?php echo $log->action." by ".phpFrame_User_Helper::id2name($log->userid); ?></td>
+		<td><?php echo $log->action." by ".PHPFrame_User_Helper::id2name($log->userid); ?></td>
 		<td><?php echo date("D, d M Y H:ia", strtotime($log->ts)); ?></td>
 	</tr>
 	<?php endforeach; ?>
