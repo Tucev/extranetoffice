@@ -14,9 +14,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_Model
+ * @see 		PHPFrame_Application_Model
  */
-class projectsModelPermissions extends phpFrame_Application_Model {
+class projectsModelPermissions extends PHPFrame_Application_Model {
 	/**
 	 * Instance of the permission object
 	 * 
@@ -48,7 +48,7 @@ class projectsModelPermissions extends phpFrame_Application_Model {
 	 */
 	private function __construct() {
 		// Get role id for session user and cache
-		$this->_userid = phpFrame::getSession()->getUserId();
+		$this->_userid = PHPFrame::getSession()->getUserId();
 	}
 	
 	/**
@@ -121,7 +121,7 @@ class projectsModelPermissions extends phpFrame_Application_Model {
 			$query = "SELECT roleid FROM #__users_roles ";
 			$query .= " WHERE userid = ".$userid." AND projectid = ".$projectid;
 			
-			$this->_roleid = phpFrame::getDB()->setQuery($query)->loadResult();
+			$this->_roleid = PHPFrame::getDB()->setQuery($query)->loadResult();
 			$this->_userid = $userid;
 			$this->_projectid = $projectid;
 		}

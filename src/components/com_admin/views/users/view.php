@@ -1,7 +1,7 @@
 <?php
 /**
  * @version 	$Id$
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage	com_admin
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -13,13 +13,13 @@
  * The methods in this class are invoked by its parent class. See display() 
  * method in 'view' class.
  * 
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage 	com_admin
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_View
+ * @see 		PHPFrame_Application_View
  */
-class adminViewUsers extends phpFrame_Application_View {
+class adminViewUsers extends PHPFrame_Application_View {
 	/**
 	 * Constructor
 	 * 
@@ -44,7 +44,7 @@ class adminViewUsers extends phpFrame_Application_View {
 		parent::display();
 		
 		// Append page title to document title
-		$document = phpFrame::getDocument('html');
+		$document = PHPFrame::getDocument('html');
 		$document->title .= ' - '.$this->_data['page_title'];
 	}
 	

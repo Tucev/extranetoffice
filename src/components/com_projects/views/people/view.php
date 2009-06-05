@@ -17,9 +17,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_View
+ * @see 		PHPFrame_Application_View
  */
-class projectsViewPeople extends phpFrame_Application_View {
+class projectsViewPeople extends PHPFrame_Application_View {
 	/**
 	 * Constructor
 	 * 
@@ -46,7 +46,7 @@ class projectsViewPeople extends phpFrame_Application_View {
 		parent::display();
 		
 		// Append page title to document title
-		$document = phpFrame::getDocument('html');
+		$document = PHPFrame::getDocument('html');
 		$document->title .= ' - '.$this->page_title;
 	}
 	
@@ -56,7 +56,7 @@ class projectsViewPeople extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayPeopleList() {
-		phpFrame::getPathway()->addItem($this->_data['view']);
+		PHPFrame::getPathway()->addItem($this->_data['view']);
 	}
 
 }

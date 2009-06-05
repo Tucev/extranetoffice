@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id$
- * @package		phpFrame
+ * @package		PHPFrame
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
  */
@@ -19,36 +19,37 @@ spl_autoload_register('__autoload');
  * @return	void
  */
 function __autoload($class_name) {
-	// phpFrame classes
-	if (strpos($class_name, 'phpFrame') !== false) {
+	// PHPFrame classes
+	if (strpos($class_name, 'PHPFrame') !== false) {
 		$array = explode('_', $class_name);
+		
 		if (sizeof($array) == 3) {
-			$file_path = "lib".DS."phpframe".DS.strtolower($array[1]).DS.strtolower($array[2]).".php";
+			$file_path = "PHPFrame".DS.$array[1].DS.$array[2].".php";
 		}
 		elseif (sizeof($array) == 2) {
-			$file_path = "lib".DS."phpframe".DS.strtolower($array[1]).DS.strtolower($array[1]).".php";
+			$file_path = "PHPFrame".DS.$array[1].DS.$array[1].".php";
 		}
 		elseif (sizeof($array) == 1) {
-			$file_path = "lib".DS."phpframe".DS."phpframe.php";
+			$file_path = "PHPFrame".DS."PHPFrame.php";
 		}
 	}
 	// PHPMailer
 	elseif ($class_name == 'PHPMailer') {
-		$file_path = "lib".DS."phpmailer".DS."phpmailer.php";
+		$file_path = _ABS_PATH.DS."lib".DS."phpmailer".DS."phpmailer.php";
 	}
 	// PHPInputFilter
 	elseif ($class_name == 'InputFilter') {
-		$file_path = "lib".DS."phpinputfilter".DS."inputfilter.php";
+		$file_path = _ABS_PATH.DS."lib".DS."phpinputfilter".DS."inputfilter.php";
 	}
 	elseif ($class_name == 'vCard') {
-		$file_path = "lib".DS."bitfolge".DS."vcard.php";
+		$file_path = _ABS_PATH.DS."lib".DS."bitfolge".DS."vcard.php";
 	}
 	
 	else {
 		// Components classes
 		preg_match('/^([a-z]+)([A-Z]{1}[a-z]+)([A-Z]{1}[a-z]+)?([A-Z]{1}[a-z]+)?$/', $class_name, $matches);
 		if (is_array($matches) && count($matches) > 1) {
-			$file_path = "src".DS."components".DS."com_".strtolower($matches[1]).DS;
+			$file_path = _ABS_PATH.DS."src".DS."components".DS."com_".strtolower($matches[1]).DS;
 			
 			switch ($matches[2]) {
 				case 'Controller' : 
@@ -80,11 +81,9 @@ function __autoload($class_name) {
 	}
 	
 	// require the file if it exists, otherwise we throw an exception
-	$file_path = _ABS_PATH.DS.$file_path;
-	if (is_file($file_path)) {
-		require $file_path;
-	}
-	else {
-		throw new phpFrame_Exception('Could not autoload class '.$class_name.'. File '.$file_path.' not found.');
+	if (!(@include_once $file_path)) {
+		trigger_error('Could not autoload class '.$class_name.'. File '.$file_path.' not found.',
+					   E_USER_ERROR);
+		exit;
 	}
 }

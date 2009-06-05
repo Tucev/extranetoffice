@@ -10,11 +10,14 @@
  * load the config file and include the autoloader.
  * 
  * @version 	$Id: index.php 46 2009-02-13 01:37:49Z luis.montero $
- * @package		phpFrame
+ * @package		PHPFrame
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
- * @see			phpFrame_Application_FrontController
+ * @see			PHPFrame_Application_FrontController
  */
+
+$PHPFrame_path = "/Users/lupomontero/Documents/workspace/PHPFrame";
+set_include_path(get_include_path() . PATH_SEPARATOR . $PHPFrame_path);
 
 /**
  * Set convenience DS constant (directory separator depends on server operating system).
@@ -45,5 +48,5 @@ else {
 require_once _ABS_PATH.DS."src".DS."autoload.php";
 
 // Instantiate front controller and fire the app
-$frontcontroller = phpFrame::getFrontController();
+$frontcontroller = PHPFrame::getFrontController();
 $frontcontroller->run();

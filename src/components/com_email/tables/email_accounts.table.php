@@ -15,7 +15,7 @@
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class emailTableAccounts extends phpFrame_Database_Table {
+class emailTableAccounts extends PHPFrame_Database_Table {
 	/**
 	 * The account id (int(11) auto_increment)
 	 * 

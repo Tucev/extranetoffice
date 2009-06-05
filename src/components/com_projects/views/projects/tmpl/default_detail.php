@@ -28,7 +28,7 @@
 			<?php echo date("D, d M Y", strtotime($issue->dtend)); ?>
 		</td>
 		<td>
-			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issue_detail&projectid=".$issue->projectid."&issueid=".$issue->id); ?>">
+			<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issue_detail&projectid=".$issue->projectid."&issueid=".$issue->id); ?>">
 			<?php echo $issue->title; ?>
 			</a>
 		</td>
@@ -37,7 +37,7 @@
 			<?php if (!empty($issue->assignees)) : ?>
 	    	<?php for ($j=0; $j<count($issue->assignees); $j++) : ?>
 	    		<?php if ($j>0) echo ', '; ?>
-	    		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$issue->assignees[$j]['id']); ?>">
+	    		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&action=get_user&userid=".$issue->assignees[$j]['id']); ?>">
 	    		<?php echo $issue->assignees[$j]['name']; ?>
 	    		</a>
 	    	<?php endfor; ?>
@@ -67,15 +67,15 @@
 			</div>
 		</td>
 		<td>
-			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL($log->url); ?>">
+			<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL($log->url); ?>">
 			<?php echo $log->title; ?>
 			</a>
 		</td>
-		<td><?php echo $log->action." by ".phpFrame_User_Helper::id2name($log->userid); ?></td>
+		<td><?php echo $log->action." by ".PHPFrame_User_Helper::id2name($log->userid); ?></td>
 		<td><?php echo date("D, d M Y H:ia", strtotime($log->ts)); ?></td>
 		<td>
-		<?php if ($data['roleid'] == 1 || $log->userid == phpFrame::getSession()->getUserId()) : ?>
-			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_activitylog&projectid=".$log->projectid."&id=".$log->id); ?>">
+		<?php if ($data['roleid'] == 1 || $log->userid == PHPFrame::getSession()->getUserId()) : ?>
+			<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_activitylog&projectid=".$log->projectid."&id=".$log->id); ?>">
 			Delete
 			</a>
 		<?php endif; ?>

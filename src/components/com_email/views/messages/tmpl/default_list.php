@@ -32,7 +32,7 @@ function select_row(el, uid) {
 }
 
 function confirm_delete(trash, uid, label) {
-	var remove_link = "index.php?component=com_email&action=remove_email&folder=<?php echo phpFrame_HTML_Text::_($this->folder, true); ?>";
+	var remove_link = "index.php?component=com_email&action=remove_email&folder=<?php echo PHPFrame_HTML_Text::_($this->folder, true); ?>";
 	if (trash) {
 		remove_link += "&amp;trash=1";
 	}
@@ -71,7 +71,7 @@ function confirm_delete(trash, uid, label) {
 function confirm_empty_deleted_items() {
 	var answer = confirm("Are you sure you want to empty deleted items in this mail folder?")
 	if (answer){
-		window.location = "index.php?component=com_email&action=empty_deleted_items&folder=<?php echo phpFrame_HTML_Text::_($this->folder, true); ?>";
+		window.location = "index.php?component=com_email&action=empty_deleted_items&folder=<?php echo PHPFrame_HTML_Text::_($this->folder, true); ?>";
 	}
 }
 
@@ -83,7 +83,7 @@ function confirm_empty_trash() {
 }
 
 function confirm_delete_folder(mailbox, label) {
-	var remove_link = "index.php?component=com_email&action=delete_mailbox&folder=<?php echo phpFrame_HTML_Text::_($this->folder, true); ?>";
+	var remove_link = "index.php?component=com_email&action=delete_mailbox&folder=<?php echo PHPFrame_HTML_Text::_($this->folder, true); ?>";
 	
 	var answer = confirm("Are you sure you want to delete email '"+label+"'?")
 	
@@ -100,8 +100,8 @@ function confirm_delete_folder(mailbox, label) {
 	<div class="module">
 	
 	<div>
-		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=accounts"); ?>">
-		<?php echo phpFrame_HTML_Text::_(_LANG_EMAIL_ACCOUNTS); ?>
+		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=accounts"); ?>">
+		<?php echo PHPFrame_HTML_Text::_(_LANG_EMAIL_ACCOUNTS); ?>
 		</a>
 	</div>
 	
@@ -115,7 +115,7 @@ function confirm_delete_folder(mailbox, label) {
 	
 	<div style="float:right;" class="new">
 		<a class="modal" href="index.php?component=com_email&amp;view=messages&amp;folder=<?php echo $this->folder; ?>&amp;layout=new_folder&tmpl=component" rel="{handler: 'iframe', size: {x: 400, y: 160}}">
-		<?php echo phpFrame_HTML_Text::_(_LANG_EMAIL_NEW_FOLDER); ?>
+		<?php echo PHPFrame_HTML_Text::_(_LANG_EMAIL_NEW_FOLDER); ?>
 		</a>
 	</div>
 	
@@ -146,7 +146,7 @@ function confirm_delete_folder(mailbox, label) {
 				</li>
 				
 				<li>
-				<a href="Javascript:confirm_delete_folder('<?php echo phpFrame_HTML_Text::_($box['nameX'], true); ?>', '<?php echo substr($box['nameX'], 0, 32); if (strlen($box['nameX']) > 33) { echo '...'; }; ?>');" title="<?php echo _LANG_DELETE; ?>">
+				<a href="Javascript:confirm_delete_folder('<?php echo PHPFrame_HTML_Text::_($box['nameX'], true); ?>', '<?php echo substr($box['nameX'], 0, 32); if (strlen($box['nameX']) > 33) { echo '...'; }; ?>');" title="<?php echo _LANG_DELETE; ?>">
 				<img border="0" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/email/16x16/mail_delete-16x16.png" alt="<?php echo _LANG_DELETE; ?>" />
 				 <?php echo _LANG_DELETE; ?>
 				</a>
@@ -159,7 +159,7 @@ function confirm_delete_folder(mailbox, label) {
 			
 			<?php endforeach;?>
 		<?php else : ?>
-		<?php echo phpFrame_HTML_Text::_( _LANG_NO_MAILBOXES ); ?>
+		<?php echo PHPFrame_HTML_Text::_( _LANG_NO_MAILBOXES ); ?>
 		<?php endif; ?>
 				
 	</ul>
@@ -172,12 +172,12 @@ function confirm_delete_folder(mailbox, label) {
 
 <div id="email_detail_actions">
 	<div>
-		<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&amp;view=messages&amp;layout=form"); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_NEW ); ?>">
-		<img border="0" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/generic/32x32/new.png" alt="<?php echo phpFrame_HTML_Text::_( _LANG_NEW ); ?>" />
+		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&amp;view=messages&amp;layout=form"); ?>" title="<?php echo PHPFrame_HTML_Text::_( _LANG_NEW ); ?>">
+		<img border="0" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/generic/32x32/new.png" alt="<?php echo PHPFrame_HTML_Text::_( _LANG_NEW ); ?>" />
 		</a>
 	</div>
 	<div>
-		<a class="modal" href="index.php?component=com_email&amp;view=messages&amp;folder=<?php echo phpFrame_HTML_Text::_($this->folder, true); ?>&amp;layout=move_email&tmpl=component" rel="{handler: 'iframe', size: {x: 400, y: 160}}" title="<?php echo _LANG_EMAIL_MOVE_TO_FOLDER; ?>">
+		<a class="modal" href="index.php?component=com_email&amp;view=messages&amp;folder=<?php echo PHPFrame_HTML_Text::_($this->folder, true); ?>&amp;layout=move_email&tmpl=component" rel="{handler: 'iframe', size: {x: 400, y: 160}}" title="<?php echo _LANG_EMAIL_MOVE_TO_FOLDER; ?>">
 		<img border="0" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/email/32x32/move_email.png" alt="<?php echo _LANG_EMAIL_MOVE_TO_FOLDER; ?>" />
 		</a>
 	</div>
@@ -212,7 +212,7 @@ function confirm_delete_folder(mailbox, label) {
 	<div>
 	Current system time: <?php echo $this->messages['check']->Date; ?><br />
   	Number of messages: <?php echo $this->messages['check']->Nmsgs; ?><br />
-	Mailbox Size: <?php echo phpFrame_HTML_Text::bytes($this->messages['check']->Size); ?>
+	Mailbox Size: <?php echo PHPFrame_HTML_Text::bytes($this->messages['check']->Size); ?>
 	</div>
 </div>
 <div id="mailbox-info-right">
@@ -273,7 +273,7 @@ function confirm_delete_folder(mailbox, label) {
     		</a>
     	</div>
     	<div class="ioffice_cell size">
-    		<?php echo phpFrame_HTML_Text::bytes($email->size); ?>
+    		<?php echo PHPFrame_HTML_Text::bytes($email->size); ?>
     	</div>
     	<div class="ioffice_cell date">
     		<?php echo date("d M Y H:i:s", strtotime($email->date)); ?>
@@ -353,7 +353,7 @@ function confirm_delete_folder(mailbox, label) {
 			for ($i=0; $i<$this->messages['pages']; $i++) {
 		      if ($i > 0) { echo ' - '; }
 			  if ($this->messages['current_page'] != ($i+1)) {
-			    echo '<a href="'.phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&page='.($i+1)).'&per_page='.$this->messages['per_page'].'">';
+			    echo '<a href="'.PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&page='.($i+1)).'&per_page='.$this->messages['per_page'].'">';
 			    echo ($i+1);
 			    echo '</a>';
 			  }
@@ -367,12 +367,12 @@ function confirm_delete_folder(mailbox, label) {
 		
 		<form name="form1">
 		  Messages per page: <select name="menu1" onChange="window.location = this.options[selectedIndex].value;">
-			<option value="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=5'); ?>" <?php if ($this->messages['per_page'] == '5') { echo 'selected'; } ?>>5</option>
-			<option value="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=10'); ?>" <?php if ($this->messages['per_page'] == '10') { echo 'selected'; } ?>>10</option>
-			<option value="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=20'); ?>" <?php if ($this->messages['per_page'] == '20') { echo 'selected'; } ?>>20</option>
-			<option value="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=25'); ?>" <?php if ($this->messages['per_page'] == '25') { echo 'selected'; } ?>>25</option>
-			<option value="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=50'); ?>" <?php if ($this->messages['per_page'] == '50') { echo 'selected'; } ?>>50</option>
-			<option value="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=100'); ?>" <?php if ($this->messages['per_page'] == '100') { echo 'selected'; } ?>>100</option>
+			<option value="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=5'); ?>" <?php if ($this->messages['per_page'] == '5') { echo 'selected'; } ?>>5</option>
+			<option value="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=10'); ?>" <?php if ($this->messages['per_page'] == '10') { echo 'selected'; } ?>>10</option>
+			<option value="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=20'); ?>" <?php if ($this->messages['per_page'] == '20') { echo 'selected'; } ?>>20</option>
+			<option value="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=25'); ?>" <?php if ($this->messages['per_page'] == '25') { echo 'selected'; } ?>>25</option>
+			<option value="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=50'); ?>" <?php if ($this->messages['per_page'] == '50') { echo 'selected'; } ?>>50</option>
+			<option value="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=messages&folder='.$this->folder.'&order_by='.$this->messages['sorting']['by'].'&order_direction='.$this->messages['sorting']['direction'].'&per_page=100'); ?>" <?php if ($this->messages['per_page'] == '100') { echo 'selected'; } ?>>100</option>
 		  </select>
 		</form>
 
@@ -381,7 +381,7 @@ function confirm_delete_folder(mailbox, label) {
 </table>
 
 <?php else : ?>
-<?php echo phpFrame_HTML_Text::_( _LANG_NO_EMAIL ); ?>
+<?php echo PHPFrame_HTML_Text::_( _LANG_NO_EMAIL ); ?>
 <?php endif; ?>
 
 </div><!-- close #ioffice_main_col -->

@@ -8,13 +8,13 @@
  */
 
 // Load jQuery validation behaviour for form
-phpFrame_HTML::validate('milestonesform');
+PHPFrame_HTML::validate('milestonesform');
 ?>
 
 <h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
 <h2 class="subheading <?php echo strtolower($data['view']); ?>">
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_milestones&projectid='.$data['project']->id); ?>">
+	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_milestones&projectid='.$data['project']->id); ?>">
 		<?php echo $data['view']; ?>
 	</a>
 </h2>
@@ -23,7 +23,7 @@ phpFrame_HTML::validate('milestonesform');
 <form action="index.php" method="post" name="milestonesform" id="milestonesform">
 
 <fieldset>
-<legend><?php echo phpFrame_HTML_Text::_( $data['action'] ); ?></legend>
+<legend><?php echo PHPFrame_HTML_Text::_( $data['action'] ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td width="30%">
@@ -42,7 +42,7 @@ phpFrame_HTML::validate('milestonesform');
 		</label>
 	</td>
 	<td>
-		<?php echo phpFrame_HTML::_('calendar', 'due_date', 'due_date', $data['row']->due_date, 'dd/mm/yy', array('size'=>'10', 'maxlength'=>'10', 'class'=>'required')); ?>
+		<?php echo PHPFrame_HTML::_('calendar', 'due_date', 'due_date', $data['row']->due_date, 'dd/mm/yy', array('size'=>'10', 'maxlength'=>'10', 'class'=>'required')); ?>
 	</td>
 </tr>
 <tr>
@@ -63,7 +63,7 @@ phpFrame_HTML::validate('milestonesform');
 		</label>
 	</td>
 	<td>
-		<?php echo phpFrame_User_Helper::assignees($data['row']->assignees, '', 'assignees[]', $data['project']->id); ?>
+		<?php echo PHPFrame_User_Helper::assignees($data['row']->assignees, '', 'assignees[]', $data['project']->id); ?>
 	</td>
 </tr>
 <tr>
@@ -85,7 +85,7 @@ phpFrame_HTML::validate('milestonesform');
 		</label>
 	</td>
 	<td>
-		<?php echo phpFrame_User_Helper::id2name($data['row']->created_by); ?>
+		<?php echo PHPFrame_User_Helper::id2name($data['row']->created_by); ?>
 	</td>
 </tr>
 <tr>
@@ -104,13 +104,13 @@ phpFrame_HTML::validate('milestonesform');
 
 <div style="clear:left; margin-top:30px;"></div>
 
-<button type="button" onclick="Javascript:window.history.back();"><?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?></button>
-<button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button>
+<button type="button" onclick="Javascript:window.history.back();"><?php echo PHPFrame_HTML_Text::_( _LANG_BACK ); ?></button>
+<button type="submit"><?php echo PHPFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 
 <input type="hidden" name="projectid" value="<?php echo $data['project']->id;?>" />
 <input type="hidden" name="id" value="<?php echo $data['row']->id;?>" />
 <input type="hidden" name="component" value="com_projects" />
 <input type="hidden" name="action" value="save_milestone" />
-<?php echo phpFrame_HTML::_( 'form.token' ); ?>
+<?php echo PHPFrame_HTML::_( 'form.token' ); ?>
 
 </form>

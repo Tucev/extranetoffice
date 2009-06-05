@@ -14,7 +14,7 @@
  * @subpackage 	com_projects
  * @since 		1.0
  */
-class projectsTableUsersRoles extends phpFrame_Database_Table {
+class projectsTableUsersRoles extends PHPFrame_Database_Table {
 	/**
 	 * Id
 	 * 
@@ -41,12 +41,12 @@ class projectsTableUsersRoles extends phpFrame_Database_Table {
 	var $roleid=null;
   
 	function __construct() {
-		$db = phpFrame::getDB();
+		$db = PHPFrame::getDB();
 		parent::__construct( '#__users_roles', 'id' );
 	}
 	
 	function load($userid, $projectid) {
-		$db = phpFrame::getDB();
+		$db = PHPFrame::getDB();
 		$query = "SELECT * FROM #__users_roles WHERE userid = ".$userid." AND projectid = ".$projectid;
 		$db->setQuery($query);	
 		$row = $db->loadAssoc();

@@ -17,7 +17,7 @@
  * @since 		1.0
  * @see 		model
  */
-class adminModelConfig extends phpFrame_Application_Model {
+class adminModelConfig extends PHPFrame_Application_Model {
 	/**
 	 * Update configuration file using data passed in request
 	 * 
@@ -56,7 +56,7 @@ class adminModelConfig extends phpFrame_Application_Model {
 		$content = preg_replace($patterns, $replacements, $content);
 		
 		// Reopen file for writing
-		phpFrame_Utils_Filesystem::write($fname, $content);
+		PHPFrame_Utils_Filesystem::write($fname, $content);
 
 		return true;
 	}

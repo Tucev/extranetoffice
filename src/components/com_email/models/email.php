@@ -16,9 +16,9 @@
  * @subpackage 	com_email
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_Model
+ * @see 		PHPFrame_Application_Model
  */
-class emailModelEmail extends phpFrame_Application_Model {
+class emailModelEmail extends PHPFrame_Application_Model {
 	/**
 	 * Object containing the email account settings
 	 * 
@@ -28,7 +28,7 @@ class emailModelEmail extends phpFrame_Application_Model {
 	/**
 	 * IMAP object
 	 * 
-	 * @var object of type phpFrame_Mail_IMAP
+	 * @var object of type PHPFrame_Mail_IMAP
 	 */
 	private $_imap=null;
 	
@@ -94,7 +94,7 @@ class emailModelEmail extends phpFrame_Application_Model {
 	        }
 	    }
 	    else {
-	    	phpFrame_Application_Error::raise(0, 'warning', imap_last_error() );
+	    	PHPFrame_Application_Error::raise(0, 'warning', imap_last_error() );
 	  		return false;
 	    }
 	    
@@ -114,7 +114,7 @@ class emailModelEmail extends phpFrame_Application_Model {
 	 */
 	function createMailbox($new_folder_name) {
 		if (!imap_createmailbox($this->stream, imap_utf7_encode($this->mbox_name.$new_folder_name))) {
-			phpFrame_Application_Error::raise(0, 'warning', imap_last_error() );
+			PHPFrame_Application_Error::raise(0, 'warning', imap_last_error() );
 	  		return false;
 		}
 		else {
@@ -131,7 +131,7 @@ class emailModelEmail extends phpFrame_Application_Model {
 	 */
 	function renameMailbox($old_box, $new_box) {
 		if (!imap_renamemailbox($this->stream, imap_utf7_encode($this->mbox_name.$old_box), imap_utf7_encode($this->mbox_name.$new_box))) {
-			phpFrame_Application_Error::raise(0, 'warning', imap_last_error() );
+			PHPFrame_Application_Error::raise(0, 'warning', imap_last_error() );
 	  		return false;
 		}
 		else {
@@ -146,7 +146,7 @@ class emailModelEmail extends phpFrame_Application_Model {
 	 */
 	function deleteMailbox() {
 		if (!imap_deletemailbox($this->stream, imap_utf7_encode($this->mbox_name))) {
-			phpFrame_Application_Error::raise(0, 'warning', imap_last_error() );
+			PHPFrame_Application_Error::raise(0, 'warning', imap_last_error() );
 	  		return false;
 		}
 		else {
@@ -179,15 +179,15 @@ class emailModelEmail extends phpFrame_Application_Model {
 	
 	function getMessageList() {
 		if (!$this->stream) {
-			phpFrame_Application_Error::raise('', 'warning', _LANG_EMAIL_ERROR_GETTING_MESSAGES_NO_STREAM);
+			PHPFrame_Application_Error::raise('', 'warning', _LANG_EMAIL_ERROR_GETTING_MESSAGES_NO_STREAM);
 			return false;
 		} 
 		
 	  	// Get request vars
-	  	$page = phpFrame::getRequest()->get('page', 1);
-	  	$per_page = phpFrame::getRequest()->get('per_page', 20);
-	  	$order_by = phpFrame::getRequest()->get('order_by', 'date');
-	  	$order_dir = phpFrame::getRequest()->get('order_dir', 'desc');
+	  	$page = PHPFrame::getRequest()->get('page', 1);
+	  	$per_page = PHPFrame::getRequest()->get('per_page', 20);
+	  	$order_by = PHPFrame::getRequest()->get('order_by', 'date');
+	  	$order_dir = PHPFrame::getRequest()->get('order_dir', 'desc');
 	  	
 	  	// Check messages 
 	  	$check = imap_mailboxmsginfo($this->stream);
@@ -312,7 +312,7 @@ class emailModelEmail extends phpFrame_Application_Model {
 				$recipient = trim($recipient);
 				if (!JMailHelper::isEmailAddress($recipient)) {
 					$error	= JText::sprintf('EMAIL_INVALID', $recipient);
-					phpFrame_Application_Error::raise(0, 'warning', $error );
+					PHPFrame_Application_Error::raise(0, 'warning', $error );
 				}
 				else {
 					$new_mail->addRecipient($recipient);	
@@ -323,7 +323,7 @@ class emailModelEmail extends phpFrame_Application_Model {
 		// Check sender email address
 		if ( !$sender || !JMailHelper::isEmailAddress($sender) ) {
 			$error	= JText::sprintf('EMAIL_INVALID', $sender);
-			phpFrame_Application_Error::raise(0, 'warning', $error );
+			PHPFrame_Application_Error::raise(0, 'warning', $error );
 		}
 
 		if ($error)	{
@@ -365,7 +365,7 @@ class emailModelEmail extends phpFrame_Application_Model {
 		//$new_mail->useSendmail();
 		
 		if ($new_mail->Send() !== true) {
-			phpFrame_Application_Error::raise( '', 'warning', 'EMAIL_NOT_SENT' );
+			PHPFrame_Application_Error::raise( '', 'warning', 'EMAIL_NOT_SENT' );
 			return false;
 		}
 		
@@ -400,11 +400,11 @@ class emailModelEmail extends phpFrame_Application_Model {
                  . $body."\r\n";
         
 		if (imap_append($this->stream, $this->mbox_name, $message, $options)) {
-			phpFrame_Application_Error::raiseNotice( '', _LANG_EMAIL_MESSAGE_SAVED );
+			PHPFrame_Application_Error::raiseNotice( '', _LANG_EMAIL_MESSAGE_SAVED );
 			return true;
 		}
 		else {
-			phpFrame_Application_Error::raise( '', 'warning', _LANG_EMAIL_MESSAGE_NOT_SAVED );
+			PHPFrame_Application_Error::raise( '', 'warning', _LANG_EMAIL_MESSAGE_NOT_SAVED );
 			return false;
 		}
 	}

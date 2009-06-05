@@ -15,7 +15,7 @@
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class addressbookController extends phpFrame_Application_ActionController {
+class addressbookController extends PHPFrame_Application_ActionController {
 	/**
 	 * Constructor
 	 * 
@@ -29,14 +29,14 @@ class addressbookController extends phpFrame_Application_ActionController {
 	
 	public function get_contacts() {
 		// Get request data
-		$orderby = phpFrame::getRequest()->get('orderby', 'c.family');
-		$orderdir = phpFrame::getRequest()->get('orderdir', 'ASC');
-		$limit = phpFrame::getRequest()->get('limit', 25);
-		$limitstart = phpFrame::getRequest()->get('limitstart', 0);
-		$search = phpFrame::getRequest()->get('search', '');
+		$orderby = PHPFrame::getRequest()->get('orderby', 'c.family');
+		$orderdir = PHPFrame::getRequest()->get('orderdir', 'ASC');
+		$limit = PHPFrame::getRequest()->get('limit', 25);
+		$limitstart = PHPFrame::getRequest()->get('limitstart', 0);
+		$search = PHPFrame::getRequest()->get('search', '');
 		
 		// Create list filter needed for getContacts()
-		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
+		$list_filter = new PHPFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
 		
 		// Get contacts using model
 		$contacts = $this->getModel('contacts')->getContacts($list_filter);
@@ -45,17 +45,17 @@ class addressbookController extends phpFrame_Application_ActionController {
 		$view = $this->getView('contacts', 'list');
 		// Set view data
 		$view->addData('rows', $contacts);
-		$view->addData('page_nav', new phpFrame_HTML_Pagination($list_filter));
+		$view->addData('page_nav', new PHPFrame_HTML_Pagination($list_filter));
 		// Display view
 		$view->display();
 	}
 	
 	public function save_contact() {
 		// Check for request forgeries
-		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
+		PHPFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = phpFrame::getRequest()->getPost();
+		$post = PHPFrame::getRequest()->getPost();
 		
 		// Save issue using issues model
 		$modelContacts = $this->getModel('contacts');
@@ -74,7 +74,7 @@ class addressbookController extends phpFrame_Application_ActionController {
 	
 	public function export_contacts() {
 		// Get id from request
-		$id = phpFrame::getRequest()->get('id', 0);
+		$id = PHPFrame::getRequest()->get('id', 0);
 		
 		$modelContacts = $this->getModel('contacts');
 		$modelContacts->exportContacts($id);

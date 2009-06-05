@@ -1,7 +1,7 @@
 <?php
 /**
  * @version 	$Id$
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage	com_admin
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -12,12 +12,12 @@
  * 
  * @todo		Handling of tmpl get var should be delegated to URL rewriter instead 
  * 				of appearing inside the required controler actions.
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage 	com_admin
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class adminController extends phpFrame_Application_ActionController {
+class adminController extends PHPFrame_Application_ActionController {
 	/**
 	 * Constructor
 	 * 
@@ -45,14 +45,14 @@ class adminController extends phpFrame_Application_ActionController {
 	
 	public function get_users() {
 		// Get request data
-		$orderby = phpFrame::getRequest()->get('orderby', 'u.lastname');
-		$orderdir = phpFrame::getRequest()->get('orderdir', 'ASC');
-		$limit = phpFrame::getRequest()->get('limit', 25);
-		$limitstart = phpFrame::getRequest()->get('limitstart', 0);
-		$search = phpFrame::getRequest()->get('search', '');
+		$orderby = PHPFrame::getRequest()->get('orderby', 'u.lastname');
+		$orderdir = PHPFrame::getRequest()->get('orderdir', 'ASC');
+		$limit = PHPFrame::getRequest()->get('limit', 25);
+		$limitstart = PHPFrame::getRequest()->get('limitstart', 0);
+		$search = PHPFrame::getRequest()->get('search', '');
 		
 		// Create list filter needed for getUsers()
-		$list_filter = new phpFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
+		$list_filter = new PHPFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
 		
 		// Get users using model
 		$users = $this->getModel('users')->getUsers($list_filter);
@@ -61,13 +61,13 @@ class adminController extends phpFrame_Application_ActionController {
 		$view = $this->getView('users', 'list');
 		// Set view data
 		$view->addData('rows', $users);
-		$view->addData('page_nav', new phpFrame_HTML_Pagination($list_filter));
+		$view->addData('page_nav', new PHPFrame_HTML_Pagination($list_filter));
 		// Display view
 		$view->display();
 	}
 	
 	public function get_user_form() {
-		$userid = phpFrame::getRequest()->get('userid', 0);
+		$userid = PHPFrame::getRequest()->get('userid', 0);
 		
 		// Get users using model
 		$user = $this->getModel('users')->getUsersDetail($userid);
@@ -95,11 +95,11 @@ class adminController extends phpFrame_Application_ActionController {
 	 */
 	public function save_config() {
 		// Check for request forgeries
-		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
+		PHPFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$tmpl = phpFrame::getRequest()->get('tmpl', '');
-		$post = phpFrame::getRequest()->getPost();
+		$tmpl = PHPFrame::getRequest()->get('tmpl', '');
+		$post = PHPFrame::getRequest()->getPost();
 		
 		$modelConfig = $this->getModel('config');
 		
@@ -117,11 +117,11 @@ class adminController extends phpFrame_Application_ActionController {
 	
 	public function save_user() {
 		// Check for request forgeries
-		phpFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
+		PHPFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$tmpl = phpFrame::getRequest()->get('tmpl', '');
-		$post = phpFrame::getRequest()->getPost();
+		$tmpl = PHPFrame::getRequest()->get('tmpl', '');
+		$post = PHPFrame::getRequest()->getPost();
 		
 		$modelUsers = $this->getModel('users');
 		
@@ -139,8 +139,8 @@ class adminController extends phpFrame_Application_ActionController {
 	
 	public function remove_user() {
 		// Get request vars
-		$tmpl = phpFrame::getRequest()->get('tmpl', '');
-		$userid = phpFrame::getRequest()->get('id', 0);
+		$tmpl = PHPFrame::getRequest()->get('tmpl', '');
+		$userid = PHPFrame::getRequest()->get('id', 0);
 		
 		$modelUsers = $this->getModel('users');
 		

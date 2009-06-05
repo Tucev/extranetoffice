@@ -14,7 +14,7 @@
  * @subpackage 	com_projects
  * @since 		1.0
  */
-class projectsTableProjectTypes extends phpFrame_Database_Table {
+class projectsTableProjectTypes extends PHPFrame_Database_Table {
 	var $id=null; // int(11) auto_increment
 	var $name=null; // varchar(50) NOT NULL
 	

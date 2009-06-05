@@ -14,9 +14,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_Model
+ * @see 		PHPFrame_Application_Model
  */
-class projectsModelMembers extends phpFrame_Application_Model {
+class projectsModelMembers extends PHPFrame_Application_Model {
 	/**
 	 * Constructor
 	 *
@@ -35,13 +35,13 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		
 		//echo str_replace('#__', 'eo_', $query); exit;
 
-		phpFrame::getDB()->setQuery($query);
-		return phpFrame::getDB()->loadObjectList();
+		PHPFrame::getDB()->setQuery($query);
+		return PHPFrame::getDB()->loadObjectList();
 	}
 	
 	function saveMember($projectid, $userid, $roleid, $notify=true) {
 		// Create new row object
-		$row = new phpFrame_Database_Row("#__users_roles");
+		$row = new PHPFrame_Database_Row("#__users_roles");
 		
 		// Load existing entry before we overwrite with new values
 		$query = "SELECT * FROM #__users_roles WHERE projectid = ".$projectid." AND userid = ".$userid;
@@ -58,14 +58,14 @@ class projectsModelMembers extends phpFrame_Application_Model {
 			$project_name = projectsHelperProjects::id2name($projectid);
 			$role_name = projectsHelperProjects::project_roleid2name($roleid);
 			$site_name = config::SITENAME;
-			$uri = phpFrame::getURI();
-			$new_member_email = phpFrame_User_Helper::id2email($userid);
+			$uri = PHPFrame::getURI();
+			$new_member_email = PHPFrame_User_Helper::id2email($userid);
 			
-			$new_mail = new phpFrame_Mail_Mailer();
-			$new_mail->AddAddress($new_member_email, phpFrame_User_Helper::id2name($userid));
-			$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, phpFrame::getUser()->firstname." ".phpFrame::getUser()->lastname, $project_name, $site_name);
-			$new_mail->Body = phpFrame_HTML_Text::_(sprintf(_LANG_PROJECTS_INVITATION_BODY,
-									 phpFrame::getUser()->firstname." ".phpFrame::getUser()->lastname, 
+			$new_mail = new PHPFrame_Mail_Mailer();
+			$new_mail->AddAddress($new_member_email, PHPFrame_User_Helper::id2name($userid));
+			$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, PHPFrame::getUser()->firstname." ".PHPFrame::getUser()->lastname, $project_name, $site_name);
+			$new_mail->Body = PHPFrame_HTML_Text::_(sprintf(_LANG_PROJECTS_INVITATION_BODY,
+									 PHPFrame::getUser()->firstname." ".PHPFrame::getUser()->lastname, 
 									 $project_name, 
 									 $role_name, 
 									 $uri->getBase())
@@ -82,12 +82,12 @@ class projectsModelMembers extends phpFrame_Application_Model {
 	
 	function inviteNewUser($post, $projectid, $roleid) {
 		// Create new user object
-		$user = new phpFrame_User();
+		$user = new PHPFrame_User();
 		
 		$user->set('block', '0');
 		$user->set('created', date("Y-m-d H:i:s"));
 		// Generate random password and store in local variable to be used when sending email to user.
-		$password = phpFrame_Utils_Crypt::genRandomPassword();
+		$password = PHPFrame_Utils_Crypt::genRandomPassword();
 		// Assign newly generated password to row object (this password will be encrypted when stored).
 		$user->set('password', $password);
 		
@@ -100,7 +100,7 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		}
 		
 		// add user to project
-		$row = new phpFrame_Database_Row("#__users_roles");
+		$row = new PHPFrame_Database_Row("#__users_roles");
 		
 		$row->set('userid', $user->id);
 		$row->set('projectid', $projectid);
@@ -112,13 +112,13 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		$project_name = projectsHelperProjects::id2name($projectid);
 		$role_name = projectsHelperProjects::project_roleid2name($roleid);
 		$site_name = config::SITENAME;
-		$uri = phpFrame::getURI();
+		$uri = PHPFrame::getURI();
 		
-		$new_mail = new phpFrame_Mail_Mailer();
-		$new_mail->AddAddress($user->email, phpFrame_User_Helper::fullname_format($user->firstname, $user->lastname));
-		$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, phpFrame::getUser()->firstname." ".phpFrame::getUser()->lastname, $project_name, $site_name);
+		$new_mail = new PHPFrame_Mail_Mailer();
+		$new_mail->AddAddress($user->email, PHPFrame_User_Helper::fullname_format($user->firstname, $user->lastname));
+		$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, PHPFrame::getUser()->firstname." ".PHPFrame::getUser()->lastname, $project_name, $site_name);
 		$new_mail->Body = sprintf(_LANG_PROJECTS_INVITATION_NEW_USER_BODY, 
-								 phpFrame::getUser()->firstname." ".phpFrame::getUser()->lastname,
+								 PHPFrame::getUser()->firstname." ".PHPFrame::getUser()->lastname,
 								 $project_name, 
 								 $role_name, 
 								 $user->username, 
@@ -143,8 +143,8 @@ class projectsModelMembers extends phpFrame_Application_Model {
 	 */
 	function deleteMember($projectid, $userid) {
 		$query = "DELETE FROM #__users_roles WHERE projectid = ".$projectid." AND userid = ".$userid;
-		phpFrame::getDB()->setQuery($query);
-		if (phpFrame::getDB()->query() === false) {
+		PHPFrame::getDB()->setQuery($query);
+		if (PHPFrame::getDB()->query() === false) {
 			return false;
 		}
 		else {
@@ -156,9 +156,9 @@ class projectsModelMembers extends phpFrame_Application_Model {
 		$query = "UPDATE #__users_roles ";
 		$query .= " SET roleid = ".$roleid;
 		$query .= " WHERE projectid = ".$projectid." AND userid = ".$userid;
-		phpFrame::getDB()->setQuery($query);
-		if (phpFrame::getDB()->query() === false) {
-			$this->_error[] = phpFrame::getDB()->getLastError();
+		PHPFrame::getDB()->setQuery($query);
+		if (PHPFrame::getDB()->query() === false) {
+			$this->_error[] = PHPFrame::getDB()->getLastError();
 			return false;
 		}
 		else {
@@ -168,8 +168,8 @@ class projectsModelMembers extends phpFrame_Application_Model {
 	
 	function isMember($projectid, $userid) {
 		$query = "SELECT roleid FROM #__users_roles WHERE projectid = ".$projectid." AND userid = ".$userid;
-		phpFrame::getDB()->setQuery($query);
-		$roleid = phpFrame::getDB()->loadResult();
+		PHPFrame::getDB()->setQuery($query);
+		$roleid = PHPFrame::getDB()->loadResult();
 		if (!empty($roleid)) {
 			return $roleid;
 		}

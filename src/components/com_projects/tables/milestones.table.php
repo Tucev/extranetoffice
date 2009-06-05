@@ -14,7 +14,7 @@
  * @subpackage 	com_projects
  * @since 		1.0
  */
-class projectsTableMilestones extends phpFrame_Database_Table {
+class projectsTableMilestones extends PHPFrame_Database_Table {
 	var $id=null; // int(11) auto_increment
 	var $projectid=null; // int(11)
 	var $title=null; // varchar(128) NOT NULL

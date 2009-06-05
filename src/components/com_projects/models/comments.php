@@ -14,9 +14,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_Model
+ * @see 		PHPFrame_Application_Model
  */
-class projectsModelComments extends phpFrame_Application_Model {
+class projectsModelComments extends PHPFrame_Application_Model {
 	/**
 	 * Constructor
 	 *
@@ -31,8 +31,8 @@ class projectsModelComments extends phpFrame_Application_Model {
 		$query .= " WHERE c.projectid = ".$projectid." AND c.type = '".$type."' AND c.itemid = ".$itemid;
 		$query .= " ORDER BY c.created DESC";
 		//echo $query; exit;	  
-		phpFrame::getDB()->setQuery($query);
-		$rows = phpFrame::getDB()->loadObjectList();
+		PHPFrame::getDB()->setQuery($query);
+		$rows = PHPFrame::getDB()->loadObjectList();
 		
 		return $rows;
 	}
@@ -58,7 +58,7 @@ class projectsModelComments extends phpFrame_Application_Model {
 		}
 		
 		if (empty($row->userid)) {
-			$row->userid = phpFrame::getUser()->id;	
+			$row->userid = PHPFrame::getUser()->id;	
 		}
 		
 		$row->created = date("Y-m-d H:i:s");
@@ -111,19 +111,19 @@ class projectsModelComments extends phpFrame_Application_Model {
 				$query = "SELECT title FROM #__milestones WHERE id = ".$itemid;
 				break;
 		}
-		phpFrame::getDB()->setQuery($query);
-		return phpFrame::getDB()->loadResult();
+		PHPFrame::getDB()->setQuery($query);
+		return PHPFrame::getDB()->loadResult();
 	}
 	
 	function getTotalComments($itemid, $type) {
 		$query = "SELECT COUNT(id) FROM #__comments ";
 		$query .= " WHERE itemid = ".$itemid." AND type = '".$type."'";
-		phpFrame::getDB()->setQuery($query);
-		return phpFrame::getDB()->loadResult();
+		PHPFrame::getDB()->setQuery($query);
+		return PHPFrame::getDB()->loadResult();
 	}
 	
 	function fetchCommentsFromEmail() {
-		$imap = new phpFrame_Mail_IMAP(config::IMAP_HOST, config::IMAP_PORT, config::IMAP_USER, config::IMAP_PASSWORD);
+		$imap = new PHPFrame_Mail_IMAP(config::IMAP_HOST, config::IMAP_PORT, config::IMAP_USER, config::IMAP_PASSWORD);
 		$messages = $imap->getMessages();
 		$imap->close();
 		

@@ -1,7 +1,7 @@
 <?php
 /**
  * @version 	$Id$
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage 	com_admin
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -32,22 +32,22 @@ $(function() {
 <div id="sysadmin_tabs">
 	<ul>
 		<li>
-			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&action=get_config".$data['tmpl']); ?>">
+			<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&action=get_config".$data['tmpl']); ?>">
 				Global Config
 			</a>
 		</li>
 		<li>
-			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&action=get_users".$data['tmpl']); ?>">
+			<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&action=get_users".$data['tmpl']); ?>">
 				Users
 			</a>
 		</li>
 		<li>
-			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&action=get_components".$data['tmpl']); ?>">
+			<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&action=get_components".$data['tmpl']); ?>">
 				Components
 			</a>
 		</li>
 		<li>
-			<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&action=get_modules".$data['tmpl']); ?>">
+			<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&action=get_modules".$data['tmpl']); ?>">
 				Modules
 			</a>
 		</li>

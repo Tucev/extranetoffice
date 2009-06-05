@@ -14,13 +14,13 @@
  * @subpackage 	com_projects
  * @since 		1.0
  */
-class projectsTableUsersMessages extends phpFrame_Database_Table {
+class projectsTableUsersMessages extends PHPFrame_Database_Table {
 	var $id=null; // int(11) auto_increment
 	var $userid=null;
 	var $messageid=null; // int(11)
   
 	function __construct() {
-		$db = phpFrame::getDB();
+		$db = PHPFrame::getDB();
 		parent::__construct( '#__users_messages', 'id' );
 	}
 }

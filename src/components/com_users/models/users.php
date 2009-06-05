@@ -1,7 +1,7 @@
 <?php
 /**
  * @version 	$Id$
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage	com_users
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -10,24 +10,24 @@
 /**
  * usersModelUsers Class
  * 
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage 	com_users
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_Model
+ * @see 		PHPFrame_Application_Model
  */
-class usersModelUsers extends phpFrame_Application_Model {
+class usersModelUsers extends PHPFrame_Application_Model {
 	/**
 	 * Get users list
 	 * 
-	 * @param	object	$list_filter	Object if type phpFrame_Database_CollectionFilter
+	 * @param	object	$list_filter	Object if type PHPFrame_Database_CollectionFilter
 	 * @return	array
 	 */
-	public function getUsers(phpFrame_Database_CollectionFilter $list_filter) {
+	public function getUsers(PHPFrame_Database_CollectionFilter $list_filter) {
 		$where = array();
 		
 		if ($search) {
-			$where[] = "u.lastname LIKE '%".phpFrame::getDB()->getEscaped($list_filter->getSearchStr())."%'";
+			$where[] = "u.lastname LIKE '%".PHPFrame::getDB()->getEscaped($list_filter->getSearchStr())."%'";
 		}
 		
 		$where[] = "(u.deleted = '0000-00-00 00:00:00' OR u.deleted IS NULL)";
@@ -40,11 +40,11 @@ class usersModelUsers extends phpFrame_Application_Model {
 				  FROM #__users AS u "
 				  . $where;
 				  
-		phpFrame::getDB()->setQuery($query);
-		phpFrame::getDB()->query();
+		PHPFrame::getDB()->setQuery($query);
+		PHPFrame::getDB()->query();
 		
 		// Set total number of record in list filter
-		$list_filter->setTotal(phpFrame::getDB()->getNumRows());
+		$list_filter->setTotal(PHPFrame::getDB()->getNumRows());
 		
 		// get the subset (based on limits) of required records
 		$query = "SELECT 
@@ -57,8 +57,8 @@ class usersModelUsers extends phpFrame_Application_Model {
 		$query .= $list_filter->getLimitStmt();
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
-		phpFrame::getDB()->setQuery($query);
-		return phpFrame::getDB()->loadObjectList();
+		PHPFrame::getDB()->setQuery($query);
+		return PHPFrame::getDB()->loadObjectList();
 	}
 	
 	/**
@@ -69,8 +69,8 @@ class usersModelUsers extends phpFrame_Application_Model {
 	 */
 	public function getUsersDetail($userid) {
 		$query = "SELECT * FROM #__users WHERE id = ".$userid;
-		phpFrame::getDB()->setQuery($query);
-		return phpFrame::getDB()->loadObject();
+		PHPFrame::getDB()->setQuery($query);
+		return PHPFrame::getDB()->loadObject();
 	}
 	
 	/**
@@ -80,7 +80,7 @@ class usersModelUsers extends phpFrame_Application_Model {
 	 */
 	public function saveUser($post) {
 		// Get reference to user object
-		$user = phpFrame::getUser();
+		$user = PHPFrame::getUser();
 		
 		if ($post['id']) {
 			$user->load($post['id'], 'password');
@@ -90,14 +90,14 @@ class usersModelUsers extends phpFrame_Application_Model {
 		if (!empty($_FILES['photo']['name'])) {
 			$dir = _ABS_PATH.DS.config::UPLOAD_DIR.DS."users";
 			$accept = 'image/jpeg,image/jpg,image/png,image/gif';
-			$upload = phpFrame_Utils_Filesystem::uploadFile('photo', $dir, $accept);
+			$upload = PHPFrame_Utils_Filesystem::uploadFile('photo', $dir, $accept);
 			if (!empty($upload['error'])) {
 				$this->_error[] = $upload['error'];
 				return false;
 			}
 			else {
 				// resize image
-				$image = new phpFrame_Utils_Image();
+				$image = new PHPFrame_Utils_Image();
 				$image->resize_image($dir.DS.$upload['file_name'], $dir.DS.$upload['file_name'], 80, 110);
 				// Store file name in post array
 				$post['photo'] = $upload['file_name'];

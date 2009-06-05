@@ -14,7 +14,7 @@
  * @subpackage 	com_projects
  * @since 		1.0
  */
-class projectsTableUsersFiles extends phpFrame_Database_Table {
+class projectsTableUsersFiles extends PHPFrame_Database_Table {
 	/**
 	 * The row id
 	 * 
@@ -47,7 +47,7 @@ class projectsTableUsersFiles extends phpFrame_Database_Table {
 	 * @since	1.0
 	 */
 	function __construct() {
-		$db = phpFrame::getDB();
+		$db = PHPFrame::getDB();
 		parent::__construct( '#__users_files', 'id' );
 	}
 }

@@ -17,9 +17,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_View
+ * @see 		PHPFrame_Application_View
  */
-class projectsViewIssues extends phpFrame_Application_View {
+class projectsViewIssues extends PHPFrame_Application_View {
 	/**
 	 * Constructor
 	 * 
@@ -46,7 +46,7 @@ class projectsViewIssues extends phpFrame_Application_View {
 		parent::display();
 		
 		// Append page title to document title
-		$document = phpFrame::getDocument('html');
+		$document = PHPFrame::getDocument('html');
 		$document->title .= ' - '.$this->_data['page_title'];
 	}
 	
@@ -56,19 +56,19 @@ class projectsViewIssues extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayIssuesList() {
-		phpFrame::getPathway()->addItem(_LANG_ISSUES);
+		PHPFrame::getPathway()->addItem(_LANG_ISSUES);
 	}
 	
 	function displayIssuesForm() {
 		$action = empty($this->_data['row']) ? _LANG_ISSUES_NEW : _LANG_ISSUES_EDIT;
 		$this->_data['page_title'] .= ' - '.$action;
-		phpFrame::getPathway()->addItem(_LANG_ISSUES, phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issues&projectid=".$this->_data['project']->id));
-		phpFrame::getPathway()->addItem($action);
+		PHPFrame::getPathway()->addItem(_LANG_ISSUES, PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issues&projectid=".$this->_data['project']->id));
+		PHPFrame::getPathway()->addItem($action);
 	}
 	
 	function displayIssuesDetail() {
 		$this->_data['page_title'] .= ' - '.$this->_data['row']->title;
-		phpFrame::getPathway()->addItem(_LANG_ISSUES, phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&view=issues&projectid=".$this->_data['project']->id));
-		phpFrame::getPathway()->addItem($this->_data['row']->title);
+		PHPFrame::getPathway()->addItem(_LANG_ISSUES, PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&view=issues&projectid=".$this->_data['project']->id));
+		PHPFrame::getPathway()->addItem($this->_data['row']->title);
 	}
 }

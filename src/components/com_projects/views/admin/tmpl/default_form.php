@@ -8,7 +8,7 @@
  */
 
 // Load jQuery validation behaviour for form
-phpFrame_HTML::validate('projectsform');
+PHPFrame_HTML::validate('projectsform');
 ?>
 
 <!-- jquery slider for show/hide project permissions -->
@@ -29,7 +29,7 @@ $(document).ready(function() {
 <form action="index.php" method="post" id="projectsform" name="projectsform">
 
 <fieldset>
-<legend><?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_DETAILS ); ?></legend>
+<legend><?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_DETAILS ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td width="30%">
@@ -100,7 +100,7 @@ $(document).ready(function() {
 		</label>
 	</td>
 	<td>
-		<?php echo phpFrame_User_Helper::id2name($data['project']->created_by); ?>
+		<?php echo PHPFrame_User_Helper::id2name($data['project']->created_by); ?>
 	</td>
 </tr>
 <tr>
@@ -124,7 +124,7 @@ $(document).ready(function() {
 <div id="project_permissions">
 
 <fieldset>
-<legend><?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_ADVANCED_ACCESS_SETTINGS ); ?></legend>
+<legend><?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_ADVANCED_ACCESS_SETTINGS ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td width="30%">
@@ -227,13 +227,13 @@ $(document).ready(function() {
 
 <div style="clear:left; margin-top:30px;"></div>
 
-<button type="button" onclick="window.history.back();"><?php echo phpFrame_HTML_Text::_( _LANG_BACK ); ?></button>
-<button type="submit"><?php echo phpFrame_HTML_Text::_(_LANG_SAVE); ?></button>
+<button type="button" onclick="window.history.back();"><?php echo PHPFrame_HTML_Text::_( _LANG_BACK ); ?></button>
+<button type="submit"><?php echo PHPFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 
 <input type="hidden" name="id" value="<?php echo $data['project']->id;?>" />
 <input type="hidden" name="component" value="com_projects" />
 <input type="hidden" name="action" value="save_project" />
 <input type="hidden" name="layout" value="" />
-<?php echo phpFrame_HTML::_( 'form.token' ); ?>
+<?php echo PHPFrame_HTML::_( 'form.token' ); ?>
 
 </form>

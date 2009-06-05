@@ -1,4 +1,4 @@
-<?php //phpFrame_HTML::dragAndDrop(); ?>
+<?php //PHPFrame_HTML::dragAndDrop(); ?>
 		
 		<script type="text/javascript">
 			$(document).ready(function() {
@@ -123,7 +123,7 @@
 				<?php if (is_array($data['selected_users']) && count($data['selected_users']) > 0) : ?>
 				<?php foreach ($data['selected_users'] as $selected_user) : ?>
 				<li id="<?php echo $count; ?>" title="<?php echo $selected_user->userid; ?>" class="ui-widget-content ui-corner-tr initially-selected">
-					<h5 class="ui-widget-header"><?php echo phpFrame_User_Helper::fullname_format($selected_user->firstname, $selected_user->lastname); ?></h5>
+					<h5 class="ui-widget-header"><?php echo PHPFrame_User_Helper::fullname_format($selected_user->firstname, $selected_user->lastname); ?></h5>
 					<img src="<?php echo config::UPLOAD_DIR; ?>/users/<?php echo $selected_user->photo; ?>" alt="<?php echo $selected_user->firstname." ".$selected_user->lastname; ?>" />
 					<a href="link/to/droppable_area/script/when/we/have/js/off" title="Move to droppable area" class="ui-icon ui-icon-droppable_area">Move to droppable area</a>
 					<!-- 
@@ -137,7 +137,7 @@
 				<?php if (is_array($data['unselected_users']) && count($data['unselected_users']) > 0) : ?>
 				<?php foreach ($data['unselected_users'] as $unselected_user) : ?>
 				<li id="<?php echo $count; ?>" title="<?php echo $unselected_user->userid; ?>" class="ui-widget-content ui-corner-tr">
-					<h5 class="ui-widget-header"><?php echo phpFrame_User_Helper::fullname_format($unselected_user->firstname, $unselected_user->lastname); ?></h5>
+					<h5 class="ui-widget-header"><?php echo PHPFrame_User_Helper::fullname_format($unselected_user->firstname, $unselected_user->lastname); ?></h5>
 					<img src="<?php echo config::UPLOAD_DIR; ?>/users/<?php echo $unselected_user->photo; ?>" alt="<?php echo $unselected_user->firstname." ".$unselected_user->lastname; ?>" />
 					<a href="link/to/droppable_area/script/when/we/have/js/off" title="Move to droppable area" class="ui-icon ui-icon-droppable_area">Move to droppable area</a>
 					<!-- 

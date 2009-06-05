@@ -14,9 +14,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_Model
+ * @see 		PHPFrame_Application_Model
  */
-class projectsModelMessages extends phpFrame_Application_Model {
+class projectsModelMessages extends PHPFrame_Application_Model {
 	/**
 	 * Constructor
 	 *
@@ -27,20 +27,20 @@ class projectsModelMessages extends phpFrame_Application_Model {
 	/**
 	 * Get messages
 	 * 
-	 * @param	object	$list_filter	Object of type phpFrame_Database_CollectionFilter
+	 * @param	object	$list_filter	Object of type PHPFrame_Database_CollectionFilter
 	 * @param	int		$projectid
 	 * @return	array
 	 */
-	public function getMessages(phpFrame_Database_CollectionFilter $list_filter, $projectid) {
+	public function getMessages(PHPFrame_Database_CollectionFilter $list_filter, $projectid) {
 		$where = array();
 		
 		// Show only public projects or projects where user has an assigned role
 		//TODO: Have to apply access levels
-		//$where[] = "( p.access = '0' OR (".phpFrame::getUser()->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
+		//$where[] = "( p.access = '0' OR (".PHPFrame::getUser()->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 		
 		$search = $list_filter->getSearchStr();
 		if ( $search ) {
-			$where[] = "m.subject LIKE '%".phpFrame::getDB()->getEscaped($search)."%'";
+			$where[] = "m.subject LIKE '%".PHPFrame::getDB()->getEscaped($search)."%'";
 		}
 		
 		if (!empty($projectid)) {
@@ -60,21 +60,21 @@ class projectsModelMessages extends phpFrame_Application_Model {
 				  " GROUP BY m.id ";
 		//echo str_replace('#__', 'eo_', $query); exit;
 		  
-		phpFrame::getDB()->setQuery( $query );
-		phpFrame::getDB()->query();
+		PHPFrame::getDB()->setQuery( $query );
+		PHPFrame::getDB()->query();
 		
-		$total = phpFrame::getDB()->getNumRows();
+		$total = PHPFrame::getDB()->getNumRows();
 
 		// Set total number of records in list filter
-		$list_filter->setTotal(phpFrame::getDB()->getNumRows());
+		$list_filter->setTotal(PHPFrame::getDB()->getNumRows());
 		
 		// Add order by and limit statements for subset (based on filter)
 		$query .= $list_filter->getOrderByStmt();
 		$query .= $list_filter->getLimitStmt();
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
-		phpFrame::getDB()->setQuery($query);
-		$rows = phpFrame::getDB()->loadObjectList();
+		PHPFrame::getDB()->setQuery($query);
+		$rows = PHPFrame::getDB()->loadObjectList();
 		
 		// Prepare rows and add relevant data
 		if (is_array($rows) && count($rows) > 0) {
@@ -83,7 +83,7 @@ class projectsModelMessages extends phpFrame_Application_Model {
 				$row->assignees = $this->getAssignees($row->id);
 				
 				// get total comments
-				$modelComments = phpFrame::getModel('com_projects', 'comments');
+				$modelComments = PHPFrame::getModel('com_projects', 'comments');
 				$row->comments = $modelComments->getTotalComments($row->id, 'messages');
 			}
 		}
@@ -97,14 +97,14 @@ class projectsModelMessages extends phpFrame_Application_Model {
 		$query .= " JOIN #__users u ON u.id = m.userid ";
 		$query .= " WHERE m.id = ".$messageid;
 		$query .= " ORDER BY m.date_sent DESC";
-		phpFrame::getDB()->setQuery($query);
-		$row = phpFrame::getDB()->loadObject();
+		PHPFrame::getDB()->setQuery($query);
+		$row = PHPFrame::getDB()->loadObject();
 		
 		// Get assignees
 		$row->assignees = $this->getAssignees($messageid);
 		
 		// Get comments
-		$modelComments = phpFrame::getModel('com_projects', 'comments');
+		$modelComments = PHPFrame::getModel('com_projects', 'comments');
 		$row->comments = $modelComments->getComments($projectid, 'messages', $messageid);
 		
 		return $row;
@@ -131,7 +131,7 @@ class projectsModelMessages extends phpFrame_Application_Model {
 		}
 		
 		if (empty($row->id)) {
-			$row->userid = phpFrame::getUser()->id;
+			$row->userid = PHPFrame::getUser()->id;
 			$row->date_sent = date("Y-m-d H:i:s");
 			$row->status = '1';
 		}
@@ -149,8 +149,8 @@ class projectsModelMessages extends phpFrame_Application_Model {
 		// Delete existing assignees before we store new ones if editing existing issue
 		if (!empty($post['id'])) {
 			$query = "DELETE FROM #__users_messages WHERE messageid = ".$row->id;
-			phpFrame::getDB()->setQuery($query);
-			phpFrame::getDB()->query();
+			PHPFrame::getDB()->setQuery($query);
+			PHPFrame::getDB()->query();
 		}
 		
 		// Store assignees
@@ -161,8 +161,8 @@ class projectsModelMessages extends phpFrame_Application_Model {
 				if ($i>0) { $query .= ","; }
 				$query .= " (NULL, '".$post['assignees'][$i]."', '".$row->id."') ";
 			}
-			phpFrame::getDB()->setQuery($query);
-			phpFrame::getDB()->query();
+			PHPFrame::getDB()->setQuery($query);
+			PHPFrame::getDB()->query();
 		}
 		
 		return $row;
@@ -175,14 +175,14 @@ class projectsModelMessages extends phpFrame_Application_Model {
 		// Delete message's comments
 		$query = "DELETE FROM #__comments ";
 		$query .= " WHERE projectid = ".$projectid." AND type = 'messages' AND itemid = ".$messageid;
-		phpFrame::getDB()->setQuery($query);
-		phpFrame::getDB()->query();
+		PHPFrame::getDB()->setQuery($query);
+		PHPFrame::getDB()->query();
 		
 		// Delete message's assignees
 		$query = "DELETE FROM #__users_messages ";
 		$query .= " WHERE messageid = ".$messageid;
-		phpFrame::getDB()->setQuery($query);
-		phpFrame::getDB()->query();
+		PHPFrame::getDB()->setQuery($query);
+		PHPFrame::getDB()->query();
 		
 		// Instantiate table object
 		$row = $this->getTable('messages');
@@ -209,8 +209,8 @@ class projectsModelMessages extends phpFrame_Application_Model {
 		$query .= " FROM #__users_messages AS um ";
 		$query .= "LEFT JOIN #__users u ON u.id = um.userid";
 		$query .= " WHERE um.messageid = ".$messageid;
-		phpFrame::getDB()->setQuery($query);
-		$assignees = phpFrame::getDB()->loadObjectList();
+		PHPFrame::getDB()->setQuery($query);
+		$assignees = PHPFrame::getDB()->loadObjectList();
 		
 		// Prepare assignee data
 		for ($i=0; $i<count($assignees); $i++) {
@@ -219,7 +219,7 @@ class projectsModelMessages extends phpFrame_Application_Model {
 			}
 			else {
 				$new_assignees[$i]['id'] = $assignees[$i]->userid;
-				$new_assignees[$i]['name'] = phpFrame_User_Helper::fullname_format($assignees[$i]->firstname, $assignees[$i]->lastname);
+				$new_assignees[$i]['name'] = PHPFrame_User_Helper::fullname_format($assignees[$i]->firstname, $assignees[$i]->lastname);
 				$new_assignees[$i]['email'] = $assignees[$i]->email;
 			}
 		}

@@ -17,9 +17,9 @@
  * @subpackage 	com_email
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_View
+ * @see 		PHPFrame_Application_View
  */
-class emailViewMessages extends phpFrame_Application_View {
+class emailViewMessages extends PHPFrame_Application_View {
 	/**
 	 * Constructor
 	 * 
@@ -44,7 +44,7 @@ class emailViewMessages extends phpFrame_Application_View {
 		
 		// Append page title to document title
 		if ($this->_layout != 'list') {
-			$document = phpFrame::getDocument('html');
+			$document = PHPFrame::getDocument('html');
 			$document->title .= ' - '.$this->_data['page_title'];
 		}
 	}
@@ -60,12 +60,12 @@ class emailViewMessages extends phpFrame_Application_View {
 		$this->_data['page_title'] = _LANG_EMAIL;
 		
 		// Attach scripts and stylesheets
-		$document = phpFrame::getDocument('html');
+		$document = PHPFrame::getDocument('html');
 		$document->addScript('lib/contextmenu/webtoolkit.contextmenu.js');
 		$document->addStyleSheet('lib/contextmenu/webtoolkit.contextmenu.css');
 			
 		// Set the page to auto refresh every set amount of time (in seconds)
-		//$document = phpFrame::getDocument('html');
+		//$document = PHPFrame::getDocument('html');
 		//$document->setMetaData('refresh', '120', true);
 	}
 	
@@ -78,14 +78,14 @@ class emailViewMessages extends phpFrame_Application_View {
 	 */
 	function displayMessagesDetail($uid=0) {
 		$this->_data['page_title'] = _LANG_EMAIL_MESSAGE_DETAIL;
-		phpFrame::getPathway()->addItem($this->page_title);
+		PHPFrame::getPathway()->addItem($this->page_title);
 		
 		if (empty($uid)) {
-			$uid = phpFrame::getRequest()->get('uid', 0);
+			$uid = PHPFrame::getRequest()->get('uid', 0);
 		}
 		
 		if (empty($uid)) {
-			phpFrame_Application_Error::raise('', 'error', 'No message was selected');
+			PHPFrame_Application_Error::raise('', 'error', 'No message was selected');
 			return false;
 		}
 		else {
@@ -115,7 +115,7 @@ class emailViewMessages extends phpFrame_Application_View {
 		$model->loadUserEmailAccount();
 		$this->account =& $model->account;
 		
-		phpFrame::getPathway()->addItem($this->page_title);
+		PHPFrame::getPathway()->addItem($this->page_title);
 	}
 }
 ?>

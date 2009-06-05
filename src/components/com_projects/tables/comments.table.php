@@ -14,7 +14,7 @@
  * @subpackage 	com_projects
  * @since 		1.0
  */
-class projectsTableComments extends phpFrame_Database_Table {
+class projectsTableComments extends PHPFrame_Database_Table {
 	var $id=null; // int(11) auto_increment
 	var $projectid=null; // int(11) NOT NULL
 	var $userid=null; // int(11) NOT NULL

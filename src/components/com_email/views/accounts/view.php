@@ -17,9 +17,9 @@
  * @subpackage 	com_email
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_View
+ * @see 		PHPFrame_Application_View
  */
-class emailViewAccounts extends phpFrame_Application_View {
+class emailViewAccounts extends PHPFrame_Application_View {
 	var $page_title=null;
 	
 	/**
@@ -45,7 +45,7 @@ class emailViewAccounts extends phpFrame_Application_View {
 		parent::display();
 		
 		// Append page title to document title
-		$document = phpFrame::getDocument('html');
+		$document = PHPFrame::getDocument('html');
 		$document->title .= ' - '.$this->page_title;
 	}
 	
@@ -61,7 +61,7 @@ class emailViewAccounts extends phpFrame_Application_View {
 		$this->rows = $modelAccounts->getAccounts($this->_user->id);
 		
 		$this->_data['page_title'] = _LANG_EMAIL_ACCOUNTS;
-		phpFrame::getPathway()->addItem(_LANG_EMAIL_ACCOUNTS);
+		PHPFrame::getPathway()->addItem(_LANG_EMAIL_ACCOUNTS);
 	}
 	
 	/**
@@ -72,7 +72,7 @@ class emailViewAccounts extends phpFrame_Application_View {
 	 * @return void
 	 */
 	function displayAccountsForm() {
-		$accountid = phpFrame::getRequest()->get('accountid', 0);
+		$accountid = PHPFrame::getRequest()->get('accountid', 0);
 		
 		if (!empty($accountid)) {
 			$modelAccounts = $this->getModel('accounts');
@@ -87,7 +87,7 @@ class emailViewAccounts extends phpFrame_Application_View {
 		}
 		
 		$this->_data['page_title'] = _LANG_EMAIL_ACCOUNTS;
-		phpFrame::getPathway()->addItem(_LANG_EMAIL_ACCOUNTS);
+		PHPFrame::getPathway()->addItem(_LANG_EMAIL_ACCOUNTS);
 	}
 }
 ?>

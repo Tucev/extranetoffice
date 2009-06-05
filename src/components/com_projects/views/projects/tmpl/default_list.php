@@ -10,10 +10,10 @@
 
 <h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
-<?php if (phpFrame::getUser()->groupid == 1) : ?>
+<?php if (PHPFrame::getUser()->groupid == 1) : ?>
 <div class="new">
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_project_form'); ?>" title="<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
-		<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>
+	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_project_form'); ?>" title="<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
+		<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>
 	</a>
 </div>
 <?php endif; ?>
@@ -34,7 +34,7 @@ function submit_filter(reset) {
 </script>
 <div class="list_filter_container">
 <form action="index.php" id="listsearchform" name="listsearchform" method="post">
-<input type="text" name="search" id="search" value="<?php echo phpFrame::getRequest()->get('search'); ?>">
+<input type="text" name="search" id="search" value="<?php echo PHPFrame::getRequest()->get('search'); ?>">
 <button type="button" class="button" onclick="submit_filter(false);">Search</button>
 <button type="button" class="button" onclick="submit_filter(true);">Reset</button>
 <input type="hidden" name="component" value="com_projects" />
@@ -60,7 +60,7 @@ function submit_filter(reset) {
   <?php foreach($data['rows'] as $row) : ?>
   <tr class="row<?php echo $k; ?>">
     <td valign="top">
-    <a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_detail&projectid=".$row->id); ?>">
+    <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_detail&projectid=".$row->id); ?>">
 	<?php echo $row->name; ?>
 	</a>
     </td>
@@ -87,5 +87,5 @@ function submit_filter(reset) {
 <?php echo $data['page_nav']->getListFooter(); ?>
 
 <?php else : ?>
-<?php echo phpFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
+<?php echo PHPFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>

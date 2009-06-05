@@ -1,7 +1,7 @@
 <?php
 /**
  * @version 	$Id$
- * @package		phpFrame
+ * @package		PHPFrame
  * @subpackage 	PHPUnit_test_suite
  * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
  * @license		BSD revised. See LICENSE.
@@ -22,35 +22,35 @@ catch (Exception $e) {
 	throw $e; 
 }
 
-$frontcontroller = phpFrame::getFrontController();
+$frontcontroller = PHPFrame::getFrontController();
 
 require_once 'PHPUnit/Framework.php';
 
 class testUsersController extends PHPUnit_Framework_TestCase {
 	function setUp() {
-		phpFrame::getRequest()->setComponentName('com_users');
+		PHPFrame::getRequest()->setComponentName('com_users');
     }
     
 	function tearDown() {
-		phpFrame::getRequest()->destroy();
-     	phpFrame_Base_Singleton::destroyInstance('usersController');
+		PHPFrame::getRequest()->destroy();
+     	PHPFrame_Base_Singleton::destroyInstance('usersController');
     }
     
     function test_save_user() {
     	// Fake posted form data
-    	phpFrame::getRequest()->setAction('save_user');
-    	phpFrame::getRequest()->set('id', 62);
-    	phpFrame::getRequest()->set('username', 'testuser');
-    	phpFrame::getRequest()->set('email', 'testuser@extranetoffice.org');
-    	phpFrame::getRequest()->set('firstname', 'test');
-    	phpFrame::getRequest()->set('lastname', 'user');
-    	phpFrame::getRequest()->set('groupid', '1');
-    	phpFrame::getRequest()->set(phpFrame_Utils_Crypt::getToken(), '1');
+    	PHPFrame::getRequest()->setAction('save_user');
+    	PHPFrame::getRequest()->set('id', 62);
+    	PHPFrame::getRequest()->set('username', 'testuser');
+    	PHPFrame::getRequest()->set('email', 'testuser@extranetoffice.org');
+    	PHPFrame::getRequest()->set('firstname', 'test');
+    	PHPFrame::getRequest()->set('lastname', 'user');
+    	PHPFrame::getRequest()->set('groupid', '1');
+    	PHPFrame::getRequest()->set(PHPFrame_Utils_Crypt::getToken(), '1');
     	
-    	$frontcontroller = phpFrame::getFrontController();
+    	$frontcontroller = PHPFrame::getFrontController();
 		$frontcontroller->run();
     	    	
-    	$controller = phpFrame::getActionController('com_users');
+    	$controller = PHPFrame::getActionController('com_users');
     	$this->assertTrue($controller->getSuccess());
     }
 }

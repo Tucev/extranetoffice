@@ -14,7 +14,7 @@
  * @subpackage 	com_projects
  * @since 		1.0
  */
-class projectsTableSlideshowsSlides extends phpFrame_Database_Table {
+class projectsTableSlideshowsSlides extends PHPFrame_Database_Table {
 	var $id=null; // int(11) auto_increment
 	var $slideshowid=null; // int(11)
 	var $title=null; // varchar(128)

@@ -14,7 +14,7 @@
  * @subpackage 	com_projects
  * @since 		1.0
  */
-class projectsTableFiles extends phpFrame_Database_Table {
+class projectsTableFiles extends PHPFrame_Database_Table {
 	/**
 	 * The row id
 	 * 

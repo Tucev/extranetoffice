@@ -74,7 +74,7 @@ $(document).ready(function() {
 <!-- End Content -->
 
 <div id="footer">
-Powered by Extranet Office and phpFrame <?php echo phpFrame::getVersion(); ?><br />
+Powered by Extranet Office and PHPFrame <?php echo PHPFrame::getVersion(); ?><br />
 &copy; 2009 E-noise.com Limited
 </div>
 

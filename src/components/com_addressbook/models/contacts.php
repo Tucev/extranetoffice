@@ -14,9 +14,9 @@
  * @subpackage 	com_addressbook
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		phpFrame_Application_Model
+ * @see 		PHPFrame_Application_Model
  */
-class addressbookModelContacts extends phpFrame_Application_Model {
+class addressbookModelContacts extends PHPFrame_Application_Model {
 	/**
 	 * Constructor
 	 * 
@@ -27,20 +27,20 @@ class addressbookModelContacts extends phpFrame_Application_Model {
 	/**
 	 * Get Invoices
 	 * 
-	 * @param	object	$list_filter	An object of type phpFrame_Database_CollectionFilter
+	 * @param	object	$list_filter	An object of type PHPFrame_Database_CollectionFilter
 	 * @return	array	Returns an asoc array containing the rows.
 	 */
-	function getContacts(phpFrame_Database_CollectionFilter $list_filter) {
+	function getContacts(PHPFrame_Database_CollectionFilter $list_filter) {
 		// Build SQL query
 		$query = "SELECT * ";
 		$query .= " FROM #__contacts AS c ";
 		
 		// get the total number of records
-		phpFrame::getDB()->setQuery($query);
-		phpFrame::getDB()->query();
+		PHPFrame::getDB()->setQuery($query);
+		PHPFrame::getDB()->query();
 		
 		// Set total number of record in list filter
-		$list_filter->setTotal(phpFrame::getDB()->getNumRows());
+		$list_filter->setTotal(PHPFrame::getDB()->getNumRows());
 		
 		// Add order by and limit statements for subset (based on filter)
 		$query .= $list_filter->getOrderByStmt();
@@ -48,8 +48,8 @@ class addressbookModelContacts extends phpFrame_Application_Model {
 		//echo str_replace('#__','eo_', $query); exit;
 		
 		// Get rows from database
-		phpFrame::getDB()->setQuery($query);
-		return phpFrame::getDB()->loadObjectList();
+		PHPFrame::getDB()->setQuery($query);
+		return PHPFrame::getDB()->loadObjectList();
 	}
 	
 	function getContactsDetail($id) {

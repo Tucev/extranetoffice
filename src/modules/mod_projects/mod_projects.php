@@ -8,9 +8,9 @@
  * @author 		Luis Montero [e-noise.com]
  */
 
-$projectid = phpFrame::getRequest()->get('projectid', 0);
+$projectid = PHPFrame::getRequest()->get('projectid', 0);
 
-$controller = phpFrame::getActionController(phpFrame::getRequest()->getComponentName());
+$controller = PHPFrame::getActionController(PHPFrame::getRequest()->getComponentName());
 $project = $controller->getProject();
 $tools = $controller->getTools();
 $project_permissions = $controller->getProjectPermissions();
@@ -23,7 +23,7 @@ $project_permissions = $controller->getProjectPermissions();
 <ul>
 	
 <li>
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=".phpFrame::getRequest()->getComponentName()."&action=get_project_detail&projectid=".phpFrame::getRequest()->get('projectid')); ?>">
+	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=".PHPFrame::getRequest()->getComponentName()."&action=get_project_detail&projectid=".PHPFrame::getRequest()->get('projectid')); ?>">
 	Project Home
 	</a>
 </li>
@@ -32,7 +32,7 @@ $project_permissions = $controller->getProjectPermissions();
 <?php $access_property = "access_".$tool; ?>
 <?php if (!is_null($project->$access_property) && $project_permissions->getRoleId() <= $project->$access_property) : ?>
 <li>
-	<a href="<?php echo phpFrame_Utils_Rewrite::rewriteURL("index.php?component=".phpFrame::getRequest()->getComponentName()."&action=get_".$tool."&projectid=".phpFrame::getRequest()->get('projectid')); ?>">
+	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=".PHPFrame::getRequest()->getComponentName()."&action=get_".$tool."&projectid=".PHPFrame::getRequest()->get('projectid')); ?>">
 	<?php 
 	$tool_name = "_LANG_".strtoupper($tool);
 	eval("echo $tool_name;");
@@ -50,13 +50,13 @@ $project_permissions = $controller->getProjectPermissions();
 <h3>Project details</h3>
 	
 <div class="project_details">
-	<?php echo phpFrame_HTML_Text::_( _LANG_DESCRIPTION ); ?>: <br />
+	<?php echo PHPFrame_HTML_Text::_( _LANG_DESCRIPTION ); ?>: <br />
 	<?php echo $project->description; ?> <br />
 	<br />
-	<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_PROJECT_TYPE ); ?>: <?php echo $project->project_type_name; ?> <br />
-	<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_PRIORITY ); ?>: <?php echo projectsHelperProjects::priorityid2name($project->priority); ?> <br />
-	<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_ACCESS ); ?>: <?php echo projectsHelperProjects::global_accessid2name($project->access); ?> <br />
-	<?php echo phpFrame_HTML_Text::_( _LANG_PROJECTS_STATUS ); ?>: <?php echo projectsHelperProjects::statusid2name($project->status); ?>
+	<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_PROJECT_TYPE ); ?>: <?php echo $project->project_type_name; ?> <br />
+	<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_PRIORITY ); ?>: <?php echo projectsHelperProjects::priorityid2name($project->priority); ?> <br />
+	<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_ACCESS ); ?>: <?php echo projectsHelperProjects::global_accessid2name($project->access); ?> <br />
+	<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_STATUS ); ?>: <?php echo projectsHelperProjects::statusid2name($project->status); ?>
 </div>
 
 <?php endif; ?>
