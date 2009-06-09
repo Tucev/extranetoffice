@@ -61,8 +61,7 @@ class testLoginController extends PHPUnit_Framework_TestCase {
     	// Add a project to db to then delete it
     	$db = PHPFrame::getDB();
     	$query = "UPDATE #__users SET email = 'notifications.test@extranetoffice.org' WHERE id = 62";
-		$db->setQuery($query);
-		$db->query();
+		$db->query($query);
 		
     	// Fake posted form data
     	PHPFrame::getRequest()->setAction('reset_password');

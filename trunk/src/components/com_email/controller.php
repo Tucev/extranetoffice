@@ -36,7 +36,7 @@ class emailController extends PHPFrame_Application_ActionController {
 		$account = $this->getModel('accounts')->getAccount($accountid);
 		
 		if ($account === false) {
-			$this->_sysevents->setSummary(_LANG_EMAIL_NO_ACCOUNT);
+			$this->sysevents->setSummary(_LANG_EMAIL_NO_ACCOUNT);
 			return;
 		}
 		
@@ -44,7 +44,7 @@ class emailController extends PHPFrame_Application_ActionController {
 		$emailModel = $this->getModel('email', array($account));
 		//var_dump($emailModel); exit;
 		if ($emailModel->openStream($folder) !== true) {
-			$this->_sysevents->setSummary($emailModel->getLastError());
+			$this->sysevents->setSummary($emailModel->getLastError());
 			return;
 		}
 		

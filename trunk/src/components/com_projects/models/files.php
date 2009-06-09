@@ -60,19 +60,15 @@ class projectsModelFiles extends PHPFrame_Application_Model {
 				  . $where;
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
-		PHPFrame::getDB()->setQuery( $query );
-		PHPFrame::getDB()->query();
-		
-		// Set total number of record in list filter
-		$list_filter->setTotal(PHPFrame::getDB()->getNumRows());
+		// Run query to get total rows before applying filter
+		$list_filter->setTotal(PHPFrame::getDB()->query($query)->rowCount());
 
 		// Add order by and limit statements for subset (based on filter)
 		$query .= $list_filter->getOrderByStmt();
 		$query .= $list_filter->getLimitStmt();
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
-		PHPFrame::getDB()->setQuery($query);
-		$rows = PHPFrame::getDB()->loadObjectList();
+		$rows = PHPFrame::getDB()->loadObjectList($query);
 		
 		// Prepare rows and add relevant data
 		if (is_array($rows) && count($rows) > 0) {
@@ -98,8 +94,8 @@ class projectsModelFiles extends PHPFrame_Application_Model {
 		$query .= " JOIN #__users u ON u.id = f.userid ";
 		$query .= " WHERE f.id = ".$fileid;
 		$query .= " ORDER BY f.ts DESC";
-		PHPFrame::getDB()->setQuery($query);
-		$row = PHPFrame::getDB()->loadObject();
+		
+		$row = PHPFrame::getDB()->loadObject($query);
 		
 		if ($row === false) {
 			return false;
@@ -145,8 +141,7 @@ class projectsModelFiles extends PHPFrame_Application_Model {
 			$query = "SELECT revision FROM #__files ";
 			$query .= " WHERE parentid = ".$row->parentid;
 			$query .= " ORDER BY revision DESC LIMIT 0,1";
-			PHPFrame::getDB()->setQuery($query);
-			$current_revision = PHPFrame::getDB()->loadResult();
+			$current_revision = PHPFrame::getDB()->loadResult($query);
 			$row->set('revision', ($current_revision+1));
 		}
 		
@@ -181,8 +176,7 @@ class projectsModelFiles extends PHPFrame_Application_Model {
 		// Delete existing assignees before we store new ones if editing existing issue
 		if ($row->revision > 0) {
 			$query = "DELETE FROM #__users_files WHERE fileid = ".$row->parentid;
-			PHPFrame::getDB()->setQuery($query);
-			PHPFrame::getDB()->query();
+			PHPFrame::getDB()->query($query);
 		}
 		
 		// Store assignees
@@ -193,8 +187,8 @@ class projectsModelFiles extends PHPFrame_Application_Model {
 				if ($i>0) { $query .= ","; }
 				$query .= " (NULL, '".$post['assignees'][$i]."', '".$row->parentid."') ";
 			}
-			PHPFrame::getDB()->setQuery($query);
-			PHPFrame::getDB()->query();
+			
+			PHPFrame::getDB()->query($query);
 		}
 		
 		return $row;
@@ -252,8 +246,8 @@ class projectsModelFiles extends PHPFrame_Application_Model {
 		$query .= " FROM #__users_files AS uf ";
 		$query .= "LEFT JOIN #__users u ON u.id = uf.userid";
 		$query .= " WHERE uf.fileid = ".$fileid;
-		PHPFrame::getDB()->setQuery($query);
-		$assignees = PHPFrame::getDB()->loadObjectList();
+		
+		$assignees = PHPFrame::getDB()->loadObjectList($query);
 		
 		// Prepare assignee data
 		for ($i=0; $i<count($assignees); $i++) {
@@ -301,7 +295,7 @@ class projectsModelFiles extends PHPFrame_Application_Model {
 		$query .= " JOIN #__users u ON u.id = f.userid";
 		$query .= " WHERE f.parentid = ".$parentid." AND f.id <> ".$id;
 		$query .= " ORDER BY f.ts DESC";
-		PHPFrame::getDB()->setQuery($query);
-		return PHPFrame::getDB()->loadObjectList();
+		
+		return PHPFrame::getDB()->loadObjectList($query);
 	}
 }

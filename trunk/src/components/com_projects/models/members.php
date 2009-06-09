@@ -34,9 +34,8 @@ class projectsModelMembers extends PHPFrame_Application_Model {
 		$query .= " ORDER BY ur.roleid ASC";
 		
 		//echo str_replace('#__', 'eo_', $query); exit;
-
-		PHPFrame::getDB()->setQuery($query);
-		return PHPFrame::getDB()->loadObjectList();
+		
+		return PHPFrame::getDB()->loadObjectList($query);
 	}
 	
 	function saveMember($projectid, $userid, $roleid, $notify=true) {
@@ -143,8 +142,7 @@ class projectsModelMembers extends PHPFrame_Application_Model {
 	 */
 	function deleteMember($projectid, $userid) {
 		$query = "DELETE FROM #__users_roles WHERE projectid = ".$projectid." AND userid = ".$userid;
-		PHPFrame::getDB()->setQuery($query);
-		if (PHPFrame::getDB()->query() === false) {
+		if (PHPFrame::getDB()->query($query) === false) {
 			return false;
 		}
 		else {
@@ -156,8 +154,7 @@ class projectsModelMembers extends PHPFrame_Application_Model {
 		$query = "UPDATE #__users_roles ";
 		$query .= " SET roleid = ".$roleid;
 		$query .= " WHERE projectid = ".$projectid." AND userid = ".$userid;
-		PHPFrame::getDB()->setQuery($query);
-		if (PHPFrame::getDB()->query() === false) {
+		if (PHPFrame::getDB()->query($query) === false) {
 			$this->_error[] = PHPFrame::getDB()->getLastError();
 			return false;
 		}
@@ -168,8 +165,7 @@ class projectsModelMembers extends PHPFrame_Application_Model {
 	
 	function isMember($projectid, $userid) {
 		$query = "SELECT roleid FROM #__users_roles WHERE projectid = ".$projectid." AND userid = ".$userid;
-		PHPFrame::getDB()->setQuery($query);
-		$roleid = PHPFrame::getDB()->loadResult();
+		$roleid = PHPFrame::getDB()->loadResult($query);
 		if (!empty($roleid)) {
 			return $roleid;
 		}

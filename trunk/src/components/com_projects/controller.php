@@ -182,13 +182,13 @@ class projectsController extends PHPFrame_Application_ActionController {
 		$project = $this->getModel('projects')->saveRow($post);
 		
 		if ($project instanceof PHPFrame_Database_Row && $project->get('id') > 0) {
-			$this->_sysevents->setSummary(_LANG_PROJECT_DELETE_SUCCESS, "success");
+			$this->sysevents->setSummary(_LANG_PROJECT_DELETE_SUCCESS, "success");
 			
 			// If NEW project saved correctly we now make project creator a project member
 			if (empty($post['id'])) {
 				$modelMembers = $this->getModel('members');
 				if (!$modelMembers->saveMember($project->get('id'), PHPFrame::getSession()->getUserId(), '1', false)) {
-					$this->_sysevents->setSummary($modelMembers->getLastError());
+					$this->sysevents->setSummary($modelMembers->getLastError());
 				}
 			}
 			
@@ -197,7 +197,7 @@ class projectsController extends PHPFrame_Application_ActionController {
 			$this->setRedirect("index.php?component=com_projects&action=get_admin&projectid=".$project->get('id'));
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_PROJECT_SAVE_ERROR);
+			$this->sysevents->setSummary(_LANG_PROJECT_SAVE_ERROR);
 			// Redirect back to form
 			$this->setRedirect("index.php?component=com_projects&action=get_project_form");
 		}
@@ -216,12 +216,12 @@ class projectsController extends PHPFrame_Application_ActionController {
 		
 		try {
 			$modelProjects->deleteRow($this->_project->id);
-			$this->_sysevents->setSummary(_LANG_PROJECT_DELETE_SUCCESS, "success");
+			$this->sysevents->setSummary(_LANG_PROJECT_DELETE_SUCCESS, "success");
 			$this->_success = true;
 		}
 		catch (PHPFrame_Exception $e) {
 			var_dump($e);
-			$this->_sysevents->setSummary(_LANG_PROJECT_DELETE_ERROR);
+			$this->sysevents->setSummary(_LANG_PROJECT_DELETE_ERROR);
 		}
 		
 		$this->setRedirect('index.php?component=com_projects');
@@ -271,10 +271,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 			$modelMembers = $this->getModel('members');
 			// Add the user to the system and add as a member of this project
 			if ($modelMembers->inviteNewUser($post, $projectid, $roleid) === false) {
-				$this->_sysevents->setSummary($modelMembers->getLastError());
+				$this->sysevents->setSummary($modelMembers->getLastError());
 			}
 			else {
-				$this->_sysevents->setSummary(_LANG_PROJECT_NEW_MEMBER_SAVED, "success");
+				$this->sysevents->setSummary(_LANG_PROJECT_NEW_MEMBER_SAVED, "success");
 				$this->_success = true;
 			}
 		}
@@ -282,7 +282,7 @@ class projectsController extends PHPFrame_Application_ActionController {
 			// Add existing users to project
 			$userids = PHPFrame::getRequest()->get('userids', '');
 			if (empty($userids)) {
-				$this->_sysevents->setSummary(_LANG_USERS_NO_SELECTED);
+				$this->sysevents->setSummary(_LANG_USERS_NO_SELECTED);
 			}
 			else {
 				$userids_array = explode(',', $userids);
@@ -291,12 +291,12 @@ class projectsController extends PHPFrame_Application_ActionController {
 				foreach ($userids_array as $userid) {
 					if ($modelMembers->saveMember($projectid, $userid, $roleid) === false) {
 						$error = true;
-						$this->_sysevents->setSummary($modelMembers->getLastError());
+						$this->sysevents->setSummary($modelMembers->getLastError());
 					}
 				}
 				
 				if ($error === false) {
-					$this->_sysevents->setSummary(_LANG_PROJECT_NEW_MEMBER_SAVED, "success");
+					$this->sysevents->setSummary(_LANG_PROJECT_NEW_MEMBER_SAVED, "success");
 					$this->_success = true;
 				}	
 			}
@@ -313,11 +313,11 @@ class projectsController extends PHPFrame_Application_ActionController {
 		
 		$modelMembers = $this->getModel('members');
 		if ($modelMembers->deleteMember($projectid, $userid) === true) {
-			$this->_sysevents->setSummary(_LANG_PROJECT_MEMBER_DELETE_SUCCESS, "success");
+			$this->sysevents->setSummary(_LANG_PROJECT_MEMBER_DELETE_SUCCESS, "success");
 			$this->_success = true;
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_PROJECT_MEMBER_DELETE_ERROR);	
+			$this->sysevents->setSummary(_LANG_PROJECT_MEMBER_DELETE_ERROR);	
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&action=get_admin&projectid='.$projectid);
@@ -351,10 +351,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 		
 		$modelMembers = $this->getModel('members');
 		if (!$modelMembers->changeMemberRole($projectid, $userid, $roleid)) {
-			$this->_sysevents->setSummary($modelMembers->getLastError());
+			$this->sysevents->setSummary($modelMembers->getLastError());
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_PROJECT_MEMBER_ROLE_SAVED, "success");
+			$this->sysevents->setSummary(_LANG_PROJECT_MEMBER_ROLE_SAVED, "success");
 			$this->_success = true;
 		}
 		
@@ -458,10 +458,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 		$row = $modelIssues->saveIssue($post);
 
 		if ($row === false) {
-			$this->_sysevents->setSummary($modelIssues->getLastError());
+			$this->sysevents->setSummary($modelIssues->getLastError());
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_ISSUE_SAVED, "success");
+			$this->sysevents->setSummary(_LANG_ISSUE_SAVED, "success");
 			
 			// Prepare data for activity log entry
 			$action = empty($post['id']) ? _LANG_ISSUES_ACTION_NEW : _LANG_ISSUES_ACTION_EDIT;
@@ -473,7 +473,7 @@ class projectsController extends PHPFrame_Application_ActionController {
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog', array($this->_project));
 			if (!$modelActivityLog->insertRow('issues', $action, $title, $description, $url, $post['assignees'], $notify)) {
-				$this->_sysevents->setSummary($modelActivityLog->getLastError());
+				$this->sysevents->setSummary($modelActivityLog->getLastError());
 			}
 			else {
 				$this->_success = true;
@@ -491,10 +491,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 		
 		$modelIssues = &$this->getModel('issues');
 		if ($modelIssues->deleteIssue($projectid, $issueid) === true) {
-			$this->_sysevents->setSummary(_LANG_ISSUE_DELETE_SUCCESS, "success");
+			$this->sysevents->setSummary(_LANG_ISSUE_DELETE_SUCCESS, "success");
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_ISSUE_DELETE_ERROR);
+			$this->sysevents->setSummary(_LANG_ISSUE_DELETE_ERROR);
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&action=get_issues&projectid='.$projectid);
@@ -509,10 +509,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 		$modelIssues = &$this->getModel('issues');
 		$row = $modelIssues->closeIssue($projectid, $issueid);
 		if ($row === false) {
-			$this->_sysevents->setSummary($modelIssues->getLastError());
+			$this->sysevents->setSummary($modelIssues->getLastError());
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_ISSUE_CLOSED, "success");
+			$this->sysevents->setSummary(_LANG_ISSUE_CLOSED, "success");
 			
 			// Prepare data for activity log entry
 			$assignees = $modelIssues->getAssignees($row->id, false);
@@ -524,7 +524,7 @@ class projectsController extends PHPFrame_Application_ActionController {
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog', array($this->_project));
 			if (!$modelActivityLog->insertRow($row->projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, true)) {
-				$this->_sysevents->setSummary($modelActivityLog->getLastError());
+				$this->sysevents->setSummary($modelActivityLog->getLastError());
 			}
 		}
 		
@@ -540,10 +540,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 		$modelIssues = &$this->getModel('issues');
 		$row = $modelIssues->reopenIssue($projectid, $issueid);
 		if ($row === false) {
-			$this->_sysevents->setSummary($modelIssues->getLastError());
+			$this->sysevents->setSummary($modelIssues->getLastError());
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_ISSUE_REOPENED, "success");
+			$this->sysevents->setSummary(_LANG_ISSUE_REOPENED, "success");
 			
 			// Prepare data for activity log entry
 			$assignees = $modelIssues->getAssignees($row->id, false);
@@ -555,7 +555,7 @@ class projectsController extends PHPFrame_Application_ActionController {
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog', array($this->_project));
 			if (!$modelActivityLog->insertRow($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, true)) {
-				$this->_sysevents->setSummary($modelActivityLog->getLastError());
+				$this->sysevents->setSummary($modelActivityLog->getLastError());
 			}
 		}
 		
@@ -637,10 +637,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 		$row = $modelFiles->saveRow($post);
 		
 		if ($row === false) {
-			$this->_sysevents->setSummary($modelFiles->getLastError());
+			$this->sysevents->setSummary($modelFiles->getLastError());
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_FILE_SAVED, "success");
+			$this->sysevents->setSummary(_LANG_FILE_SAVED, "success");
 			
 			// Prepare data for activity log entry
 			$action = _LANG_FILES_ACTION_NEW;
@@ -652,7 +652,7 @@ class projectsController extends PHPFrame_Application_ActionController {
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog', array($this->_project));
 			if (!$modelActivityLog->insertRow('files', $action, $title, $description, $url, $post['assignees'], $notify)) {
-				$this->_sysevents->setSummary($modelActivityLog->getLastError());
+				$this->sysevents->setSummary($modelActivityLog->getLastError());
 			}
 		}
 		
@@ -669,12 +669,12 @@ class projectsController extends PHPFrame_Application_ActionController {
 		
 		try {
 			$modelFiles->deleteRow($projectid, $fileid);
-			$this->_sysevents->setSummary(_LANG_FILE_DELETE_SUCCESS, "success");
+			$this->sysevents->setSummary(_LANG_FILE_DELETE_SUCCESS, "success");
 			$this->_success = true;
 		}
 		catch (PHPFrame_Exception $e) {
 			var_dump($e);
-			$this->_sysevents->setSummary(_LANG_FILE_DELETE_ERROR);
+			$this->sysevents->setSummary(_LANG_FILE_DELETE_ERROR);
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&action=get_files&projectid='.$projectid);
@@ -759,10 +759,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 		$modelMessages = $this->getModel('messages');
 		$row = $modelMessages->saveMessage($post);
 		if ($row === false) {
-			$this->_sysevents->setSummary($modelMessages->getLastError());
+			$this->sysevents->setSummary($modelMessages->getLastError());
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_MESSAGE_SAVED, "success");
+			$this->sysevents->setSummary(_LANG_MESSAGE_SAVED, "success");
 			
 			// Prepare data for activity log entry
 			$action = _LANG_MESSAGES_ACTION_NEW;
@@ -774,7 +774,7 @@ class projectsController extends PHPFrame_Application_ActionController {
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog', array($this->_project));
 			if (!$modelActivityLog->insertRow($row->projectid, $row->userid, 'messages', $action, $title, $description, $url, $post['assignees'], $notify)) {
-				$this->_sysevents->setSummary($modelActivityLog->getLastError());
+				$this->sysevents->setSummary($modelActivityLog->getLastError());
 			}
 		}
 		
@@ -790,10 +790,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 		$modelMessages = &$this->getModel('messages');
 		
 		if ($modelMessages->deleteMessage($projectid, $messageid) === true) {
-			$this->_sysevents->setSummary(_LANG_MESSAGE_DELETE_SUCCESS, "success");
+			$this->sysevents->setSummary(_LANG_MESSAGE_DELETE_SUCCESS, "success");
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_MESSAGE_DELETE_ERROR);
+			$this->sysevents->setSummary(_LANG_MESSAGE_DELETE_ERROR);
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&action=get_messages&projectid='.$projectid);
@@ -812,10 +812,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 		$modelComments = $this->getModel('comments');
 		$row = $modelComments->saveComment($post);
 		if ($row === false) {
-			$this->_sysevents->setSummary($modelComments->getLastError());
+			$this->sysevents->setSummary($modelComments->getLastError());
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_COMMENT_SAVED, "success");
+			$this->sysevents->setSummary(_LANG_COMMENT_SAVED, "success");
 			
 			// Prepare data for activity log entry
 			$action = _LANG_COMMENTS_ACTION_NEW;
@@ -849,7 +849,7 @@ class projectsController extends PHPFrame_Application_ActionController {
 			if ($row->type == 'issues' && $close_issue == 'on') {
 				$modelIssues = $this->getModel('issues');
 				if (!$modelIssues->closeIssue($row->projectid, $row->itemid)) {
-					$this->_sysevents->setSummary($modelIssues->getLastError());
+					$this->sysevents->setSummary($modelIssues->getLastError());
 				}
 			}	
 		}
@@ -937,10 +937,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 		$modelMeetings = $this->getModel('meetings');
 		$row = $modelMeetings->saveMeeting($post);
 		if ($row === false){
-			$this->_sysevents->setSummary($modelMeetings->getLastError());
+			$this->sysevents->setSummary($modelMeetings->getLastError());
 		}
 		else{
-			$this->_sysevents->setSummary(_LANG_MEETING_SAVED, "success");
+			$this->sysevents->setSummary(_LANG_MEETING_SAVED, "success");
 			
 			// Prepare data for activity log entry
 			$action = empty($post['id']) ? _LANG_MEETINGS_ACTION_NEW : _LANG_MEETINGS_ACTION_EDIT;
@@ -952,7 +952,7 @@ class projectsController extends PHPFrame_Application_ActionController {
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog', array($this->_project));
 			if (!$modelActivityLog->insertRow($row->projectid, $row->created_by, 'meetings', $action, $title, $description, $url, $post['assignees'], $notify)) {
-				$this->_sysevents->setSummary($modelActivityLog->getLastError());
+				$this->sysevents->setSummary($modelActivityLog->getLastError());
 			}	
 		}
 		
@@ -968,10 +968,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 		$modelMeetings = $this->getModel('meetings');
 		
 		if ($modelMeetings->deleteMeeting($projectid, $meetingid) === true) {
-			$this->_sysevents->setSummary(_LANG_MEETING_DELETE_SUCCESS, "success");
+			$this->sysevents->setSummary(_LANG_MEETING_DELETE_SUCCESS, "success");
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_MEETING_DELETE_ERROR);
+			$this->sysevents->setSummary(_LANG_MEETING_DELETE_ERROR);
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&action=get_meetings&projectid='.$projectid);
@@ -1013,10 +1013,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 		$redirect_url = 'index.php?component=com_projects&action=get_slideshow_form&projectid='.$post['projectid'].'&meetingid='.$post['meetingid'];
 		
 		if ($row === false) {
-			$this->_sysevents->setSummary($modelMeetings->getLastError());
+			$this->sysevents->setSummary($modelMeetings->getLastError());
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_MEETINGS_SLIDESHOW_SAVE_SUCCESS, "success");
+			$this->sysevents->setSummary(_LANG_MEETINGS_SLIDESHOW_SAVE_SUCCESS, "success");
 			$redirect_url .= '&slideshowid='.$row->id;
 		}
 		
@@ -1033,10 +1033,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 		$modelMeetings = $this->getModel('meetings');
 		
 		if (!$modelMeetings->deleteSlideshow($projectid, $slideshowid)) {
-			$this->_sysevents->setSummary($modelMeetings->getLastError());
+			$this->sysevents->setSummary($modelMeetings->getLastError());
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_MEETINGS_SLIDESHOW_DELETE_SUCCESS, "success");
+			$this->sysevents->setSummary(_LANG_MEETINGS_SLIDESHOW_DELETE_SUCCESS, "success");
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&action=get_meeting_detail&projectid='.$projectid.'&meetingid='.$meetingid);
@@ -1061,7 +1061,7 @@ class projectsController extends PHPFrame_Application_ActionController {
 				exit;
 			}
 			else {
-				$this->_sysevents->setSummary($modelMeetings->getLastError());
+				$this->sysevents->setSummary($modelMeetings->getLastError());
 			}
 		}
 		else {
@@ -1070,7 +1070,7 @@ class projectsController extends PHPFrame_Application_ActionController {
 				exit;
 			}
 			else {
-				$this->_sysevents->setSummary(_LANG_MEETINGS_SLIDE_UPLOAD_SUCCESS, "success");
+				$this->sysevents->setSummary(_LANG_MEETINGS_SLIDE_UPLOAD_SUCCESS, "success");
 			}
 		}
 		
@@ -1088,10 +1088,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 		$modelMeetings = $this->getModel('meetings');
 		
 		if (!$modelMeetings->deleteSlide($projectid, $slideid)) {
-			$this->_sysevents->setSummary($modelMeetings->getLastError());
+			$this->sysevents->setSummary($modelMeetings->getLastError());
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_MEETINGS_SLIDE_DELETE_SUCCESS, "success");
+			$this->sysevents->setSummary(_LANG_MEETINGS_SLIDE_DELETE_SUCCESS, "success");
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&action=get_slideshow_form&projectid='.$projectid.'&meetingid='.$meetingid.'&slideshowid='.$slideshowid);
@@ -1137,10 +1137,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 		$modelMeetings = $this->getModel('meetings');
 		
 		if (!$modelMeetings->saveFiles($meetingid, $fileids_array)) {
-			$this->_sysevents->setSummary($modelMeetings->getLastError());
+			$this->sysevents->setSummary($modelMeetings->getLastError());
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_MEETINGS_FILES_SAVE_SUCCESS, "success");
+			$this->sysevents->setSummary(_LANG_MEETINGS_FILES_SAVE_SUCCESS, "success");
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&action=get_meeting_detail&projectid='.$projectid.'&meetingid='.$meetingid);
@@ -1226,10 +1226,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 		$modelMilestones = $this->getModel('milestones');
 		$row = $modelMilestones->saveMilestone($post);
 		if ($row === false) {
-			$this->_sysevents->setSummary($modelMilestones->getLastError());
+			$this->sysevents->setSummary($modelMilestones->getLastError());
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_MILESTONE_SAVED, "success");
+			$this->sysevents->setSummary(_LANG_MILESTONE_SAVED, "success");
 			
 			// Prepare data for activity log entry
 			$action = empty($post['id']) ? _LANG_MILESTONES_ACTION_NEW : _LANG_MILESTONES_ACTION_EDIT;
@@ -1241,7 +1241,7 @@ class projectsController extends PHPFrame_Application_ActionController {
 			// Add entry in activity log
 			$modelActivityLog = $this->getModel('activitylog', array($this->_project));
 			if (!$modelActivityLog->insertRow($row->projectid, $row->created_by, 'milestones', $action, $title, $description, $url, $post['assignees'], $notify)) {
-				$this->_sysevents->setSummary($modelActivityLog->getLastError());
+				$this->sysevents->setSummary($modelActivityLog->getLastError());
 			}
 		}
 		
@@ -1257,10 +1257,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 		$modelMilestones = $this->getModel('milestones');
 		
 		if ($modelMilestones->deleteMilestone($projectid, $milestoneid) === true) {
-			$this->_sysevents->setSummary(_LANG_MILESTONE_DELETE_SUCCESS, "success");
+			$this->sysevents->setSummary(_LANG_MILESTONE_DELETE_SUCCESS, "success");
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_MILESTONE_DELETE_ERROR);
+			$this->sysevents->setSummary(_LANG_MILESTONE_DELETE_ERROR);
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&action=get_milestones&projectid='.$projectid);
@@ -1341,10 +1341,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 						
 						$row = $modelComments->saveComment($post);
 						if ($row === false) {
-							$this->_sysevents->setSummary($modelComments->getLastError());
+							$this->sysevents->setSummary($modelComments->getLastError());
 						}
 						else {
-							$this->_sysevents->setSummary(_LANG_COMMENT_SAVED, "success");
+							$this->sysevents->setSummary(_LANG_COMMENT_SAVED, "success");
 							
 							// Prepare data for activity log entry
 							$action = _LANG_COMMENTS_ACTION_NEW;
@@ -1377,7 +1377,7 @@ class projectsController extends PHPFrame_Application_ActionController {
 							$modelActivityLog->project =& $this->_project;
 							$delete_uids = array();
 							if (!$modelActivityLog->insertRow($row->projectid, $row->userid, 'comments', $action, $title, $description, $url, $assignees, true)) {
-								$this->_sysevents->setSummary($modelActivityLog->getLastError());
+								$this->sysevents->setSummary($modelActivityLog->getLastError());
 							}
 							else {
 								$delete_uids[] = $message->uid;
@@ -1402,7 +1402,7 @@ class projectsController extends PHPFrame_Application_ActionController {
 		
 		if (is_object($this->_project)) { 
 			if (!$this->_permissions->authorise($tool, PHPFrame::getSession()->getUserId(), $this->_project)) {
-				$this->_sysevents->setSummary("Permission denied");
+				$this->sysevents->setSummary("Permission denied");
 				return false;
 			}
 		}

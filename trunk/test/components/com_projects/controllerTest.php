@@ -55,10 +55,10 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	// Add a project to db to then delete it
     	$db = PHPFrame::getDB();
     	$query = "INSERT INTO #__projects (id, name, project_type, priority, created_by) VALUES (NULL, 'another project', '2', '1', '1')";
-		$projectid = $db->setQuery($query)->query();
+		$projectid = $db->query($query);
 		// Add project admin
 		$query = "INSERT INTO #__users_roles (id, userid, roleid, projectid) VALUES (NULL, '1', '1', '".$projectid."')";
-		$db->setQuery($query)->query();
+		$db->query($query);
 		
     	// Fake posted form data
     	PHPFrame::getRequest()->setAction('remove_project');
@@ -98,8 +98,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
 		$query .= ", `notifications`, `show_email`, `block`, `created`, `last_visit`, `activation`, `params`, `ts`, `deleted`)";
 		$query .= " VALUES (NULL, '2', 'testuser2', '', 'notifications.test@extranetoffice.org', 'test', 'user 2', 'default.png'";
 		$query .= ", '1', '1', '0', '', NULL , NULL , NULL , CURRENT_TIMESTAMP, NULL)";
-		$db->setQuery($query);
-		$userid = $db->query();
+		$userid = $db->query($query);
 		
     	// Fake posted form data
     	PHPFrame::getRequest()->setAction('save_member');
@@ -123,12 +122,10 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
 		$query .= ", `notifications`, `show_email`, `block`, `created`, `last_visit`, `activation`, `params`, `ts`, `deleted`)";
 		$query .= " VALUES (NULL, '2', 'testuser3', '', 'notifications.test@extranetoffice.org', 'test', 'user 3', 'default.png'";
 		$query .= ", '1', '1', '0', '', NULL , NULL , NULL , CURRENT_TIMESTAMP, NULL)";
-		$db->setQuery($query);
-		$userid = $db->query();
+		$userid = $db->query($query);
 		// make user a project member
 		$query = "INSERT INTO #__users_roles (id, userid, roleid, projectid) VALUES (NULL, '".$userid."', '2', '1')";
-		$db->setQuery($query);
-		$db->query();
+		$db->query($query);
 		
     	// Fake posted form data
     	PHPFrame::getRequest()->setAction('remove_member');

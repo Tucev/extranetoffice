@@ -18,8 +18,7 @@ class projectsHelperProjects {
 		if (!empty($id)) { // No category has been selected
 			$db = PHPFrame::getDB();
 			$query = "SELECT name FROM #__projects WHERE id = '".$id."'";
-			$db->setQuery($query);
-			return $db->loadResult();
+			return $db->loadResult($query);
 		}
 		else {
 			return false;
@@ -46,8 +45,7 @@ class projectsHelperProjects {
 		$query .= " WHERE ( p.access = '0' OR (".$user->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 		$query .= " ORDER BY p.name ASC";
 		
-		$db -> setQuery($query);
-		$rows = $db->loadObjectList();
+		$rows = $db->loadObjectList($query);
 		
 		foreach ($rows as $row) {
 			$options[] = PHPFrame_HTML::_('select.option', $row->id, $row->name );
@@ -61,8 +59,7 @@ class projectsHelperProjects {
 		if (!empty($id)) { // No category has been selected
 			$db = PHPFrame::getDB();
 			$query = "SELECT name FROM #__project_types WHERE id = '".$id."'";
-			$db -> setQuery($query);
-			return $db->loadResult();
+			return $db->loadResult($query);
 		}
 		else {
 			return false;
@@ -78,8 +75,7 @@ class projectsHelperProjects {
 		$db = PHPFrame::getDB();
 		$query = "SELECT id, name FROM #__project_types ";
 		$query .= " ORDER BY name";
-		$db -> setQuery($query);
-		$rows = $db->loadObjectList();
+		$rows = $db->loadObjectList($query);
 		
 		foreach ($rows as $row) {
 			$options[] = PHPFrame_HTML::_('select.option', $row->id, $row->name );
@@ -206,8 +202,8 @@ class projectsHelperProjects {
 		$query .= " IN (SELECT u.id FROM #__users AS u LEFT JOIN #__users_roles ur ON ur.userid = u.id WHERE ur.projectid = ".$projectid.")";
 		$query .= " AND (u.deleted = '0000-00-00 00:00:00' OR u.deleted IS NULL)";
 		$query .= " ORDER BY u.username";
-		$db -> setQuery($query);
-		if (!$rows = $db->loadObjectList()) {
+		
+		if (!$rows = $db->loadObjectList($query)) {
 		  return _LANG_PROJECTS_NO_EXISTING_MEMBERS;
 		}
 		
@@ -223,8 +219,7 @@ class projectsHelperProjects {
 		if (!empty($id)) { // No category has been selected
 			$db = PHPFrame::getDB();
 			$query = "SELECT name FROM #__roles WHERE id = '".$id."'";
-			$db->setQuery($query);
-			return $db->loadResult();
+			return $db->loadResult($query);
 		}
 		else {
 			return false;
@@ -240,8 +235,7 @@ class projectsHelperProjects {
 		$db = PHPFrame::getDB();
 		$query = "SELECT id, name FROM #__roles ";
 		$query .= " ORDER BY id ASC";
-		$db -> setQuery($query);
-		$rows = $db->loadObjectList();
+		$rows = $db->loadObjectList($query);
 		
 		foreach ($rows as $row) {
 			$options[] = PHPFrame_HTML::_('select.option', $row->id, $row->name );
@@ -255,8 +249,7 @@ class projectsHelperProjects {
 		if (!empty($id)) { // No category has been selected
 			$db = PHPFrame::getDB();
 			$query = "SELECT name FROM #__issue_types WHERE id = '".$id."'";
-			$db->setQuery($query);
-			return $db->loadResult();
+			return $db->loadResult($query);
 		}
 		else {
 			return false;
@@ -272,8 +265,8 @@ class projectsHelperProjects {
 		$db = PHPFrame::getDB();
 		$query = "SELECT id, name FROM #__issue_types ";
 		$query .= " ORDER BY id ASC";
-		$db->setQuery($query);
-		$rows = $db->loadObjectList();
+		
+		$rows = $db->loadObjectList($query);
 		
 		if (is_array($rows) && count($rows) > 0) {
 			foreach ($rows as $row) {
@@ -289,8 +282,7 @@ class projectsHelperProjects {
 		if (!empty($id)) { // No file has been selected
 			$db = PHPFrame::getDB();
 			$query = "SELECT title FROM #__files WHERE id = '".$id."'";
-			$db -> setQuery($query);
-			return $db->loadResult();
+			return $db->loadResult($query);
 		}
 		else {
 			return false;

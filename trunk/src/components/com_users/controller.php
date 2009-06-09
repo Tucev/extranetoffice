@@ -86,10 +86,10 @@ class usersController extends PHPFrame_Application_ActionController {
 		
 		$modelUser = $this->getModel('users');
 		if ($modelUser->saveUser($post) === false) {
-			$this->_sysevents->setSummary($modelUser->getLastError(), "error");
+			$this->sysevents->setSummary($modelUser->getLastError(), "error");
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_USER_SAVE_SUCCESS, "success");
+			$this->sysevents->setSummary(_LANG_USER_SAVE_SUCCESS, "success");
 			$this->_success = true;
 		}
 		

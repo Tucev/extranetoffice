@@ -31,8 +31,8 @@ class projectsModelComments extends PHPFrame_Application_Model {
 		$query .= " WHERE c.projectid = ".$projectid." AND c.type = '".$type."' AND c.itemid = ".$itemid;
 		$query .= " ORDER BY c.created DESC";
 		//echo $query; exit;	  
-		PHPFrame::getDB()->setQuery($query);
-		$rows = PHPFrame::getDB()->loadObjectList();
+		
+		$rows = PHPFrame::getDB()->loadObjectList($query);
 		
 		return $rows;
 	}
@@ -111,15 +111,15 @@ class projectsModelComments extends PHPFrame_Application_Model {
 				$query = "SELECT title FROM #__milestones WHERE id = ".$itemid;
 				break;
 		}
-		PHPFrame::getDB()->setQuery($query);
-		return PHPFrame::getDB()->loadResult();
+		
+		return PHPFrame::getDB()->loadResult($query);
 	}
 	
 	function getTotalComments($itemid, $type) {
 		$query = "SELECT COUNT(id) FROM #__comments ";
 		$query .= " WHERE itemid = ".$itemid." AND type = '".$type."'";
-		PHPFrame::getDB()->setQuery($query);
-		return PHPFrame::getDB()->loadResult();
+		
+		return PHPFrame::getDB()->loadResult($query);
 	}
 	
 	function fetchCommentsFromEmail() {

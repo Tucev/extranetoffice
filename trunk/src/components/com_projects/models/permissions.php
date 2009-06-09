@@ -121,7 +121,7 @@ class projectsModelPermissions extends PHPFrame_Application_Model {
 			$query = "SELECT roleid FROM #__users_roles ";
 			$query .= " WHERE userid = ".$userid." AND projectid = ".$projectid;
 			
-			$this->_roleid = PHPFrame::getDB()->setQuery($query)->loadResult();
+			$this->_roleid = PHPFrame::getDB()->loadResult($query);
 			$this->_userid = $userid;
 			$this->_projectid = $projectid;
 		}
