@@ -19,18 +19,21 @@ spl_autoload_register('__autoload');
  * @return	void
  */
 function __autoload($class_name) {
-	// PHPFrame classes
+    // PHPFrame classes
 	if (strpos($class_name, 'PHPFrame') !== false) {
 		$array = explode('_', $class_name);
 		
-		if (sizeof($array) == 3) {
+		if (sizeof($array) == 4) {
+			$file_path = "PHPFrame".DS.$array[1].DS.$array[2].DS.$array[3].".php";
+		}
+	    elseif (sizeof($array) == 3) {
 			$file_path = "PHPFrame".DS.$array[1].DS.$array[2].".php";
 		}
 		elseif (sizeof($array) == 2) {
 			$file_path = "PHPFrame".DS.$array[1].DS.$array[1].".php";
 		}
 		elseif (sizeof($array) == 1) {
-			$file_path = "PHPFrame".DS."PHPFrame.php";
+			$file_path = "PHPFrame.php";
 		}
 	}
 	// PHPMailer

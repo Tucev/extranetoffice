@@ -44,11 +44,8 @@ class projectsModelActivitylog extends PHPFrame_Application_Model {
 		$query .= " FROM #__activitylog ";
 		$query .= " WHERE projectid = ".$this->_project->id;
 		
-		// Get total number of rows before applying filter
-		PHPFrame::getDB()->setQuery( $query );
-		PHPFrame::getDB()->query();
-		// Set total number of record in list filter
-		$list_filter->setTotal(PHPFrame::getDB()->getNumRows());
+		// Run query to get total rows before applying filter
+		$list_filter->setTotal(PHPFrame::getDB()->query($query)->rowCount());
 		
 		$query .= $list_filter->getOrderByStmt();
 		$query .= $list_filter->getLimitStmt();
@@ -127,8 +124,7 @@ class projectsModelActivitylog extends PHPFrame_Application_Model {
 		$query = "SELECT firstname, lastname, email ";
 		$query .= " FROM #__users ";
 		$query .= " WHERE id IN (".implode(',', $assignees).") AND id <> ".$row->userid;
-		PHPFrame::getDB()->setQuery($query);
-		$recipients = PHPFrame::getDB()->loadObjectList();
+		$recipients = PHPFrame::getDB()->loadObjectList($query);
 		
 		if (is_array($recipients) && count($recipients) > 0) {
 			$failed_recipients = array();

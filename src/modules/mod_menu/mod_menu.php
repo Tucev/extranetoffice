@@ -13,8 +13,7 @@ $active_component = substr($option, 4);
 $db = PHPFrame::getDB();
 
 $query = "SELECT * FROM #__components WHERE system = '0' AND enabled = '1' ORDER BY ordering ASC";
-$db->setQuery($query);
-$components = $db->loadObjectList();
+$components = $db->loadObjectList($query);
 
 $permissions = PHPFrame::getPermissions();
 ?>

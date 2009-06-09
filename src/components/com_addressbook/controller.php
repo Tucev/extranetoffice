@@ -61,10 +61,10 @@ class addressbookController extends PHPFrame_Application_ActionController {
 		$modelContacts = $this->getModel('contacts');
 		$row = $modelContacts->saveContact($post);
 		if ($row === false) {
-			$this->_sysevents->setSummary($modelContacts->getLastError());
+			$this->sysevents->setSummary($modelContacts->getLastError());
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_CONTACT_SAVED, "success");
+			$this->sysevents->setSummary(_LANG_CONTACT_SAVED, "success");
 			// Set success flag for tests
 			$this->_success = true;
 		}

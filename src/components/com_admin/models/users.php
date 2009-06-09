@@ -56,8 +56,7 @@ class adminModelUsers extends PHPFrame_Application_Model {
 				  " GROUP BY u.id ";
 		
 		//echo str_replace('#__', 'eo_', $query); exit;
-		PHPFrame::getDB()->setQuery($query);
-		PHPFrame::getDB()->query();
+		PHPFrame::getDB()->query($query);
 		
 		// Set total number of record in list filter
 		$list_filter->setTotal(PHPFrame::getDB()->getNumRows());
@@ -76,8 +75,7 @@ class adminModelUsers extends PHPFrame_Application_Model {
 		$query .= $list_filter->getLimitStmt();
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
-		PHPFrame::getDB()->setQuery($query);
-		return PHPFrame::getDB()->loadObjectList();
+		return PHPFrame::getDB()->loadObjectList($query);
 	}
 	
 	/**
@@ -94,8 +92,8 @@ class adminModelUsers extends PHPFrame_Application_Model {
 					  FROM #__users AS u 
 					  LEFT JOIN #__groups g ON u.groupid = g.id 
 					  WHERE u.id = '".$userid."'";
-			PHPFrame::getDB()->setQuery($query);
-			return PHPFrame::getDB()->loadObject();
+			
+			return PHPFrame::getDB()->loadObject($query);
 		}
 		else {
 			return false;
@@ -161,8 +159,7 @@ class adminModelUsers extends PHPFrame_Application_Model {
 	
 	function deleteUser($userid) {
 		$query = "UPDATE #__users SET `deleted` = '".date("Y-m-d H:i:s")."' WHERE id = ".$userid;
-		PHPFrame::getDB()->setQuery($query);
-		if (PHPFrame::getDB()->query() === false) {
+		if (PHPFrame::getDB()->query($query) === false) {
 			$this->_error[] = PHPFrame::getDB()->getLastError();
 			return false;
 		}

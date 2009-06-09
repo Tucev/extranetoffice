@@ -36,8 +36,7 @@ class addressbookModelContacts extends PHPFrame_Application_Model {
 		$query .= " FROM #__contacts AS c ";
 		
 		// get the total number of records
-		PHPFrame::getDB()->setQuery($query);
-		PHPFrame::getDB()->query();
+		PHPFrame::getDB()->query($query);
 		
 		// Set total number of record in list filter
 		$list_filter->setTotal(PHPFrame::getDB()->getNumRows());
@@ -48,8 +47,7 @@ class addressbookModelContacts extends PHPFrame_Application_Model {
 		//echo str_replace('#__','eo_', $query); exit;
 		
 		// Get rows from database
-		PHPFrame::getDB()->setQuery($query);
-		return PHPFrame::getDB()->loadObjectList();
+		return PHPFrame::getDB()->loadObjectList($query);
 	}
 	
 	function getContactsDetail($id) {

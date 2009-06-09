@@ -104,10 +104,10 @@ class adminController extends PHPFrame_Application_ActionController {
 		$modelConfig = $this->getModel('config');
 		
 		if ($modelConfig->saveConfig($post) === false) {
-			$this->_sysevents->setSummary($modelConfig->getLastError());
+			$this->sysevents->setSummary($modelConfig->getLastError());
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_CONFIG_SAVE_SUCCESS, "success");
+			$this->sysevents->setSummary(_LANG_CONFIG_SAVE_SUCCESS, "success");
 			$this->_success = true;
 		}
 		
@@ -126,10 +126,10 @@ class adminController extends PHPFrame_Application_ActionController {
 		$modelUsers = $this->getModel('users');
 		
 		if ($modelUsers->saveUser($post) === false) {
-			$this->_sysevents->setSummary($modelUsers->getLastError());
+			$this->sysevents->setSummary($modelUsers->getLastError());
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_USER_SAVE_SUCCESS, "success");
+			$this->sysevents->setSummary(_LANG_USER_SAVE_SUCCESS, "success");
 			$this->_success = true;
 		}
 		
@@ -145,10 +145,10 @@ class adminController extends PHPFrame_Application_ActionController {
 		$modelUsers = $this->getModel('users');
 		
 		if ($modelUsers->deleteUser($userid) === false) {
-			$this->_sysevents->setSummary($modelUsers->getLastError());
+			$this->sysevents->setSummary($modelUsers->getLastError());
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_ADMIN_USERS_DELETE_SUCCESS, "success");
+			$this->sysevents->setSummary(_LANG_ADMIN_USERS_DELETE_SUCCESS, "success");
 		}
 		
 		if (!empty($tmpl)) $tmpl = "&tmpl=".$tmpl;

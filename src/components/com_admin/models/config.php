@@ -26,7 +26,7 @@ class adminModelConfig extends PHPFrame_Application_Model {
 	 * @return bool
 	 */
 	function saveConfig($post) {
-		$fname = _ABS_PATH.DS."inc".DS."config.php";
+		$fname = _ABS_PATH.DS."src".DS."config.php";
 		// Open file for reading first
 		if (!$fhandle = fopen($fname, "r")) {
 			$this->_error[] = 'Error opening file '.$fname.'.';

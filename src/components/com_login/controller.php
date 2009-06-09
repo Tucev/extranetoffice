@@ -46,7 +46,7 @@ class loginController extends PHPFrame_Application_ActionController {
 			// Get login model
 			$model = $this->getModel('login');
 			if (!$model->login($username, $password)) {
-				$this->_sysevents->setSummary($model->getLastError(), "warning");
+				$this->sysevents->setSummary($model->getLastError(), "warning");
 			}
 			
 			$this->_success = true;
@@ -72,10 +72,10 @@ class loginController extends PHPFrame_Application_ActionController {
 		// Push model into controller
 		$model = $this->getModel('login');
 		if (!$model->resetPassword($email)) {
-			$this->_sysevents->setSummary($model->getLastError(), "warning");
+			$this->sysevents->setSummary($model->getLastError(), "warning");
 		}
 		else {
-			$this->_sysevents->setSummary(_LANG_RESET_PASS_SUCCESS, "success");
+			$this->sysevents->setSummary(_LANG_RESET_PASS_SUCCESS, "success");
 			$this->_success = true;
 		}
 		

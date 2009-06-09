@@ -58,9 +58,7 @@ class projectsModelProjects extends PHPFrame_Application_Model {
 				  " GROUP BY p.id ";
 
 		// Run query to get total rows before applying filter
-		PHPFrame::getDB()->setQuery($query)->query();
-		// Set total number of record in list filter
-		$filter->setTotal(PHPFrame::getDB()->getNumRows());
+		$filter->setTotal(PHPFrame::getDB()->query($query)->rowCount());
 		
 		// get the subset (based on limits) of required records
 		$query = "SELECT 

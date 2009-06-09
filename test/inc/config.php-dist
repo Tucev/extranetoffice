@@ -84,26 +84,32 @@ class config {
     // DATABASE PROPERTIES
     /////////////////////////////////////////////////
     
+    /**
+	 * Database driver
+	 *
+	 * @const string
+	 */
+	const DB_DRIVER="MySQL";
 	/**
-	 * MySQL server
+	 * Database server
 	 *
 	 * @const string
 	 */
 	const DB_HOST="localhost";
 	/**
-	 * MySQL user
+	 * Database user
 	 *
 	 * @const string
 	 */
 	const DB_USER="xoffice_test";
 	/**
-	 * MySQL password
+	 * Database password
 	 *
 	 * @const string
 	 */
 	const DB_PASS="";
 	/**
-	 * MySQL database name
+	 * Database name
 	 *
 	 * @const string
 	 */

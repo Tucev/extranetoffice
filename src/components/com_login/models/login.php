@@ -34,8 +34,7 @@ class loginModelLogin extends PHPFrame_Application_Model {
 	public function login($username, $password) {
 		$db = PHPFrame::getDB();
 		$query = "SELECT id, password FROM #__users WHERE username = '".$username."'";
-		$db->setQuery($query);
-		$credentials = $db->loadObject();
+		$credentials = $db->loadObject($query);
 		
 		// User exists
 		if (is_object($credentials) && isset($credentials->id)) {
@@ -78,8 +77,7 @@ class loginModelLogin extends PHPFrame_Application_Model {
 	public function resetPassword($email) {
 		// First we check whether there is a user with the passed email address
 		$query = "SELECT id FROM #__users WHERE email = '".$email."'";
-		PHPFrame::getDB()->setQuery($query);
-		$userid = PHPFrame::getDB()->loadResult();
+		$userid = PHPFrame::getDB()->loadResult($query);
 		
 		if (!empty($userid)) {
 			// Create user object

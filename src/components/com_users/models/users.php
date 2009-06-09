@@ -39,12 +39,9 @@ class usersModelUsers extends PHPFrame_Application_Model {
 				  u.id
 				  FROM #__users AS u "
 				  . $where;
-				  
-		PHPFrame::getDB()->setQuery($query);
-		PHPFrame::getDB()->query();
 		
-		// Set total number of record in list filter
-		$list_filter->setTotal(PHPFrame::getDB()->getNumRows());
+		// Run query to get total rows before applying filter
+		$list_filter->setTotal(PHPFrame::getDB()->query($query)->rowCount());
 		
 		// get the subset (based on limits) of required records
 		$query = "SELECT 
@@ -57,8 +54,7 @@ class usersModelUsers extends PHPFrame_Application_Model {
 		$query .= $list_filter->getLimitStmt();
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
-		PHPFrame::getDB()->setQuery($query);
-		return PHPFrame::getDB()->loadObjectList();
+		return PHPFrame::getDB()->loadObjectList($query);
 	}
 	
 	/**
@@ -69,8 +65,7 @@ class usersModelUsers extends PHPFrame_Application_Model {
 	 */
 	public function getUsersDetail($userid) {
 		$query = "SELECT * FROM #__users WHERE id = ".$userid;
-		PHPFrame::getDB()->setQuery($query);
-		return PHPFrame::getDB()->loadObject();
+		return PHPFrame::getDB()->loadObject($query);
 	}
 	
 	/**
