@@ -3,13 +3,14 @@
 	
 	<project name="ExtranetOffice-1.0">
 		
-		<property name="root_dir" value="${projectdir}/${project.name}" />
-		<property name="build_dir" value="${root_dir}/build" />
+		<property name="dir" value="${projectdir}/${project.name}" />
+		<property name="build_dir" value="${dir}/build" />
 		
 		<schedule interval="3600" />
 		
 		<modificationset>
-			<svn directory="${root_dir}" update="true" />
+			<svn directory="${dir}" update="true" />
+			<buildalways/>
 		</modificationset>
 		
 		<builders>
@@ -28,7 +29,7 @@
 			<onsuccess>
 				<phingPublisher buildfile="${build_dir}/publish.xml" target="build" />
 				<artifactspublisher file="${build_dir}/publish.xml" />
-				<deliverable file="${build_dir}/builds/${project.name}-${build.label}.tar.gz" 
+				<deliverable file="${build_dir}/dist/${project.name}-${build.label}.tar.gz" 
 							 alias="${project.name}.tar.gz" />
 				<email to="extranetoffice-dev@googlegroups.com" 
 					   subject="${project.name} build ${build.number} success" 
@@ -42,6 +43,6 @@
 			</onrecovery>
 		</publishers>
 		
-		</project>
+	</project>
 
 </xinc>
