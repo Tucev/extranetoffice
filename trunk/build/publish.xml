@@ -1,12 +1,60 @@
 <?xml version="1.0"?>
-<project name="Extranet0ffice-1.0" basedir="." default="build">
+<project name="Extranet0ffice-1.0" basedir="../" default="build">
+	
+	<property name="build.dir" value="${project.basedir}/build"/>
+	<property name="dist.dir" value="${build.dir}/dist"/>
+	<property name="tmp.dir" value="${build.dir}/tmp"/>
 	
 	<target name="prepare">
-		<mkdir dir="${project.basedir}/builds"/>
+		<mkdir dir="${dist.dir}"/>
+		<mkdir dir="${tmp.dir}"/>
+		<mkdir dir="${tmp.dir}/tmp"/>
+		<mkdir dir="${tmp.dir}/var"/>
+		<mkdir dir="${tmp.dir}/var/cache"/>
+		<mkdir dir="${tmp.dir}/var/projects"/>
 	</target>
 	
-	<target name="build" depends="prepare">
-		<move file="${project.basedir}/${xinc.project.name}-${xinc.build.label}.tar.gz" todir="${project.basedir}/builds"/>
+	<!-- Create archive for distribution -->
+	<target name="tar">
+		
+		<copy todir="${tmp.dir}/installation" overwrite="true">
+			<fileset dir="${project.basedir}/installation">
+				<include name="**" />
+			</fileset>
+		</copy>
+		
+		<copy todir="${tmp.dir}/lib" overwrite="true">
+			<fileset dir="${project.basedir}/lib">
+				<include name="**" />
+			</fileset>
+		</copy>
+		
+		<copy todir="${tmp.dir}/public" overwrite="true">
+			<fileset dir="${project.basedir}/public">
+				<include name="**" />
+			</fileset>
+		</copy>
+		
+		<copy todir="${tmp.dir}/src" overwrite="true">
+			<fileset dir="${project.basedir}/src">
+				<include name="**" />
+			</fileset>
+		</copy>
+		
+		<copy file="${project.basedir}/FAQ" tofile="${tmp.dir}/FAQ" overwrite="true" />
+		<copy file="${project.basedir}/INSTALL" tofile="${tmp.dir}/INSTALL" overwrite="true" />
+		<copy file="${project.basedir}/LICENSE" tofile="${tmp.dir}/LICENSE" overwrite="true" />
+		<copy file="${project.basedir}/README" tofile="${tmp.dir}/README" overwrite="true" />
+		
+		<tar 
+			destfile="${dist.dir}/${xinc.project.name}-${xinc.build.label}.tar.gz" 
+			compression="gzip">
+			<fileset dir="${tmp.dir}">
+				<include name="**" />
+			</fileset>
+		</tar>
 	</target>
+	
+	<target name="build" depends="prepare, tar" />
 	
 </project>
