@@ -62,9 +62,9 @@ class projectsModelMembers extends PHPFrame_Application_Model {
 			
 			$new_mail = new PHPFrame_Mail_Mailer();
 			$new_mail->AddAddress($new_member_email, PHPFrame_User_Helper::id2name($userid));
-			$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, PHPFrame::getUser()->firstname." ".PHPFrame::getUser()->lastname, $project_name, $site_name);
+			$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, PHPFrame::Session()->getUser()->firstname." ".PHPFrame::Session()->getUser()->lastname, $project_name, $site_name);
 			$new_mail->Body = PHPFrame_HTML_Text::_(sprintf(_LANG_PROJECTS_INVITATION_BODY,
-									 PHPFrame::getUser()->firstname." ".PHPFrame::getUser()->lastname, 
+									 PHPFrame::Session()->getUser()->firstname." ".PHPFrame::Session()->getUser()->lastname, 
 									 $project_name, 
 									 $role_name, 
 									 $uri->getBase())
@@ -115,9 +115,9 @@ class projectsModelMembers extends PHPFrame_Application_Model {
 		
 		$new_mail = new PHPFrame_Mail_Mailer();
 		$new_mail->AddAddress($user->email, PHPFrame_User_Helper::fullname_format($user->firstname, $user->lastname));
-		$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, PHPFrame::getUser()->firstname." ".PHPFrame::getUser()->lastname, $project_name, $site_name);
+		$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, PHPFrame::Session()->getUser()->firstname." ".PHPFrame::Session()->getUser()->lastname, $project_name, $site_name);
 		$new_mail->Body = sprintf(_LANG_PROJECTS_INVITATION_NEW_USER_BODY, 
-								 PHPFrame::getUser()->firstname." ".PHPFrame::getUser()->lastname,
+								 PHPFrame::Session()->getUser()->firstname." ".PHPFrame::Session()->getUser()->lastname,
 								 $project_name, 
 								 $role_name, 
 								 $user->username, 

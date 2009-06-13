@@ -32,7 +32,7 @@ PHPFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECT
 <?php foreach($data['rows'] as $row) : ?>
 <div class="thread_row<?php echo $k; ?>">
 
-	<?php if ($row->userid == PHPFrame::getUser()->id) : ?>
+	<?php if ($row->userid == PHPFrame::Session()->getUser()->id) : ?>
 	<div class="thread_delete">
 		<a class="delete_file" title="<?php echo PHPFrame_HTML_Text::_($row->title, true); ?>" href="index.php?component=com_projects&action=remove_file&projectid=<?php echo $row->projectid; ?>&fileid=<?php echo $row->id; ?>">
 			<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>
@@ -97,7 +97,7 @@ PHPFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECT
 	<div id="oldrevisions<?php echo $row->id; ?>" class="thread_oldrevisions">
 		<?php foreach ($row->children as $child) : ?>
 			<div class="thread_oldrevision_entry">
-				<?php if ($row->userid == PHPFrame::getUser()->id) : ?>
+				<?php if ($row->userid == PHPFrame::Session()->getUser()->id) : ?>
 				<div class="thread_delete">
 					<a class="delete_file" title="<?php echo PHPFrame_HTML_Text::_($child->title, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_file&projectid=".$data['project']->id)."&fileid=".$child->id; ?>">
 						<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>

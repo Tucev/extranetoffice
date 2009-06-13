@@ -8,14 +8,14 @@
  * @author 		Luis Montero [e-noise.com]
  */
 
-$option = PHPFrame::getRequest()->getComponentName();
+$option = PHPFrame::Request()->getComponentName();
 $active_component = substr($option, 4);
 $db = PHPFrame::getDB();
 
 $query = "SELECT * FROM #__components WHERE system = '0' AND enabled = '1' ORDER BY ordering ASC";
 $components = $db->loadObjectList($query);
 
-$permissions = PHPFrame::getPermissions();
+$permissions = PHPFrame::AppRegistry()->getPermissions();
 ?>
 
 <ul id="menu">
@@ -23,7 +23,7 @@ $permissions = PHPFrame::getPermissions();
 		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_dashboard"); ?>">Dashboard</a>
 	</li>
 	<?php foreach ($components as $component) : ?>
-	<?php if ($permissions->authorise('com_'.$component->name, '', PHPFrame::getSession()->getGroupId())) : ?>
+	<?php if ($permissions->authorise('com_'.$component->name, '', PHPFrame::Session()->getGroupId())) : ?>
 	<li <?php if ($active_component == $component->name) { echo ' class="selected"'; } ?>>
 		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_".$component->name); ?>">
 			<?php echo $component->menu_name; ?>

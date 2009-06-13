@@ -39,7 +39,7 @@ class projectsHelperProjects {
 		
 		// get projects from db
 		$db = PHPFrame::getDB();
-		$user = PHPFrame::getUser();
+		$user = PHPFrame::Session()->getUser();
 		$query = "SELECT p.id, p.name ";
 		$query .= "FROM #__projects AS p ";
 		$query .= " WHERE ( p.access = '0' OR (".$user->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";

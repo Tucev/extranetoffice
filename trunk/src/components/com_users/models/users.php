@@ -26,6 +26,8 @@ class usersModelUsers extends PHPFrame_Application_Model {
 	public function getUsers(PHPFrame_Database_CollectionFilter $list_filter) {
 		$where = array();
 		
+		// Add search filtering
+		$search = $list_filter->getSearchStr();
 		if ($search) {
 			$where[] = "u.lastname LIKE '%".PHPFrame::getDB()->getEscaped($list_filter->getSearchStr())."%'";
 		}
@@ -75,7 +77,7 @@ class usersModelUsers extends PHPFrame_Application_Model {
 	 */
 	public function saveUser($post) {
 		// Get reference to user object
-		$user = PHPFrame::getUser();
+		$user = PHPFrame::Session()->getUser();
 		
 		if ($post['id']) {
 			$user->load($post['id'], 'password');

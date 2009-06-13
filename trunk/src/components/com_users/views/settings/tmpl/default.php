@@ -123,7 +123,7 @@ PHPFrame_HTML::validate('userform');
 
 <div style="clear:both; margin-top:30px;"></div>
 
-<?php if (PHPFrame::getRequest()->get('tmpl') != 'component') : ?>
+<?php if (PHPFrame::Request()->get('tmpl') != 'component') : ?>
 <button type="button" onclick="Javascript:window.history.back();"><?php echo PHPFrame_HTML_Text::_( _LANG_BACK ); ?></button>
 <button type="submit"><?php echo PHPFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 <?php endif; ?>

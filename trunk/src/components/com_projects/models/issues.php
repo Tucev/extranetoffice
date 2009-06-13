@@ -34,15 +34,17 @@ class projectsModelIssues extends PHPFrame_Application_Model {
 	 * @return	array
 	 */
 	public function getIssues(PHPFrame_Database_CollectionFilter $list_filter, $projectid, $overdue=false) {
-		$filter_status = PHPFrame::getRequest()->get('filter_status', 'all');
-		$filter_assignees = PHPFrame::getRequest()->get('filter_assignees', 'me');
+		$filter_status = PHPFrame::Request()->get('filter_status', 'all');
+		$filter_assignees = PHPFrame::Request()->get('filter_assignees', 'me');
 
 		$where = array();
 		
 		// Show only public projects or projects where user has an assigned role
-		$where[] = "( i.access = '0' OR (".PHPFrame::getUser()->id." IN (SELECT userid FROM #__users_issues WHERE issueid = i.id) ) )";
-
-		if ( $search ) {
+		$where[] = "( i.access = '0' OR (".PHPFrame::Session()->getUser()->id." IN (SELECT userid FROM #__users_issues WHERE issueid = i.id) ) )";
+		
+		// Add search filtering
+		$search = $list_filter->getSearchStr();
+		if ($search) {
 			$where[] = "i.title LIKE '%".PHPFrame::getDB()->getEscaped($list_filter->getSearchStr())."%'";
 		}
 		
@@ -157,7 +159,7 @@ class projectsModelIssues extends PHPFrame_Application_Model {
 		$row = $this->getTable('issues');
 		
 		if (empty($post['id'])) {
-			$row->created_by = PHPFrame::getUser()->id;
+			$row->created_by = PHPFrame::Session()->getUser()->id;
 			$row->created = date("Y-m-d H:i:s");
 		}
 		else {

@@ -25,7 +25,7 @@ PHPFrame_HTML::validate('commentsform');
 
 <div class="thread_row0">
 
-	<?php if ($data['row']->created_by == PHPFrame::getUser()->id) : ?>
+	<?php if ($data['row']->created_by == PHPFrame::Session()->getUser()->id) : ?>
 	<div class="thread_delete">
 		<a class="delete_milestone" title="<?php echo PHPFrame_HTML_Text::_($data['row']->title, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_milestone&projectid=".$data['row']->projectid."&milestoneid=".$data['row']->id); ?>">
 			<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>

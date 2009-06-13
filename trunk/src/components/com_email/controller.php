@@ -29,8 +29,8 @@ class emailController extends PHPFrame_Application_ActionController {
 	
 	public function get_messages() {
 		// Get request vars
-		$accountid = PHPFrame::getRequest()->get('accountid', 0);
-		$folder = PHPFrame::getRequest()->get('folder', 'INBOX');
+		$accountid = PHPFrame::Request()->get('accountid', 0);
+		$folder = PHPFrame::Request()->get('folder', 'INBOX');
 		
 		// Get account details
 		$account = $this->getModel('accounts')->getAccount($accountid);
@@ -64,10 +64,10 @@ class emailController extends PHPFrame_Application_ActionController {
 	}
 	
 	public function download_attachment() {
-		$folder = PHPFrame::getRequest()->get('folder', 'INBOX');
-		$msgno = PHPFrame::getRequest()->get('msgno', 0);
-		$strFileName = PHPFrame::getRequest()->get('file_name', '');
-		$file = PHPFrame::getRequest()->get('file', 0);
+		$folder = PHPFrame::Request()->get('folder', 'INBOX');
+		$msgno = PHPFrame::Request()->get('msgno', 0);
+		$strFileName = PHPFrame::Request()->get('file_name', '');
+		$file = PHPFrame::Request()->get('file', 0);
 		
 		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
@@ -82,22 +82,22 @@ class emailController extends PHPFrame_Application_ActionController {
 		$attachment = $modelEmail->addAttachment();
 		
 		// Save the attachment data in request array so that the view can access it
-		PHPFrame::getRequest()->set('attachment', $attachment);
+		PHPFrame::Request()->set('attachment', $attachment);
 		
 		parent::display();
 	}
 	
 	public function send_email() {
-		$recipients = PHPFrame::getRequest()->get('recipients', '');
-		$cc = PHPFrame::getRequest()->get('cc', '');
-		$bcc = PHPFrame::getRequest()->get('bcc', '');
-		$replyto = PHPFrame::getRequest()->get('replyto', '');
-		$subject = PHPFrame::getRequest()->get('subject', '');
-		$body = PHPFrame::getRequest()->get('body', '');
-		$attachments = PHPFrame::getRequest()->get('attachments');
-		$flag = PHPFrame::getRequest()->get('flag', '');
-		$folder = PHPFrame::getRequest()->get('folder', 'INBOX');
-		$save_in_sent = PHPFrame::getRequest()->get('save_in_sent', 0);
+		$recipients = PHPFrame::Request()->get('recipients', '');
+		$cc = PHPFrame::Request()->get('cc', '');
+		$bcc = PHPFrame::Request()->get('bcc', '');
+		$replyto = PHPFrame::Request()->get('replyto', '');
+		$subject = PHPFrame::Request()->get('subject', '');
+		$body = PHPFrame::Request()->get('body', '');
+		$attachments = PHPFrame::Request()->get('attachments');
+		$flag = PHPFrame::Request()->get('flag', '');
+		$folder = PHPFrame::Request()->get('folder', 'INBOX');
+		$save_in_sent = PHPFrame::Request()->get('save_in_sent', 0);
 		
 		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
@@ -137,9 +137,9 @@ class emailController extends PHPFrame_Application_ActionController {
 	}
 	
 	public function move_email() {
-		$folder = PHPFrame::getRequest()->get('folder', '');
-		$mailbox = PHPFrame::getRequest()->get('mailbox', '');
-		$uid = PHPFrame::getRequest()->get('uid', 0); // can contain a list of ids
+		$folder = PHPFrame::Request()->get('folder', '');
+		$mailbox = PHPFrame::Request()->get('mailbox', '');
+		$uid = PHPFrame::Request()->get('uid', 0); // can contain a list of ids
 		
 		if (empty($mailbox) || empty($uid)) {
 			JError::raiseNotice( '', JText::_( _INTRANETOFFICE_EMAIL_DELETED ) );
@@ -160,9 +160,9 @@ class emailController extends PHPFrame_Application_ActionController {
 	}
 	
 	public function remove_email() {
-		$folder = PHPFrame::getRequest()->get('folder', 'INBOX');
-		$uid = PHPFrame::getRequest()->get('uid', 0); // can contain a list of ids
-		$trash = PHPFrame::getRequest()->get('trash', 0);
+		$folder = PHPFrame::Request()->get('folder', 'INBOX');
+		$uid = PHPFrame::Request()->get('uid', 0); // can contain a list of ids
+		$trash = PHPFrame::Request()->get('trash', 0);
 		
 		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
@@ -189,7 +189,7 @@ class emailController extends PHPFrame_Application_ActionController {
 	}
 	
 	public function restore_email() {
-		$folder = PHPFrame::getRequest()->get('folder', 'INBOX');
+		$folder = PHPFrame::Request()->get('folder', 'INBOX');
 		$uid = PHPFrame_Environment_Request::getInt('uid');
 		
 		$modelEmail = $this->getModel('email');
@@ -202,7 +202,7 @@ class emailController extends PHPFrame_Application_ActionController {
 	}
 	
 	public function empty_deleted_items() {
-		$folder = PHPFrame::getRequest()->get('folder', 'INBOX');
+		$folder = PHPFrame::Request()->get('folder', 'INBOX');
 		
 		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
@@ -220,7 +220,7 @@ class emailController extends PHPFrame_Application_ActionController {
 	* It is different from empty_deleted_items() which only flags selected messages in any folder as deleted
 	*/
 	public function empty_email_trash() {
-		$folder = PHPFrame::getRequest()->get('folder', 'INBOX');
+		$folder = PHPFrame::Request()->get('folder', 'INBOX');
 		
 		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
@@ -235,9 +235,9 @@ class emailController extends PHPFrame_Application_ActionController {
 	}
 	
 	public function set_flags() {
-		$folder = PHPFrame::getRequest()->get('folder', 'INBOX');
+		$folder = PHPFrame::Request()->get('folder', 'INBOX');
 		$uid = PHPFrame_Environment_Request::getInt('uid');
-		$flag = PHPFrame::getRequest()->get('flag', '');
+		$flag = PHPFrame::Request()->get('flag', '');
 		
 		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
@@ -249,9 +249,9 @@ class emailController extends PHPFrame_Application_ActionController {
 	}
 	
 	public function clear_flags() {
-		$folder = PHPFrame::getRequest()->get('folder', 'INBOX');
+		$folder = PHPFrame::Request()->get('folder', 'INBOX');
 		$uid = PHPFrame_Environment_Request::getInt('uid');
-		$flag = PHPFrame::getRequest()->get('flag', '');
+		$flag = PHPFrame::Request()->get('flag', '');
 		
 		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
@@ -263,8 +263,8 @@ class emailController extends PHPFrame_Application_ActionController {
 	}
 	
 	public function create_mailbox() {
-		$new_folder_path = PHPFrame::getRequest()->get('new_folder_path', '');
-		$new_folder_name = PHPFrame::getRequest()->get('new_folder_name', '');
+		$new_folder_path = PHPFrame::Request()->get('new_folder_path', '');
+		$new_folder_name = PHPFrame::Request()->get('new_folder_name', '');
 		
 		if (!empty($new_folder_path)) {
 			$new_folder_name = $new_folder_path.".".$new_folder_name;
@@ -280,8 +280,8 @@ class emailController extends PHPFrame_Application_ActionController {
 	}
 	
 	public function rename_mailbox() {
-		$old_box = PHPFrame::getRequest()->get('old_box', '');
-		$new_box = PHPFrame::getRequest()->get('new_box', '');
+		$old_box = PHPFrame::Request()->get('old_box', '');
+		$new_box = PHPFrame::Request()->get('new_box', '');
 		
 		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
@@ -299,8 +299,8 @@ class emailController extends PHPFrame_Application_ActionController {
 	}
 	
 	public function delete_mailbox() {
-		$mailbox = PHPFrame::getRequest()->get('mailbox', '');
-		$folder = PHPFrame::getRequest()->get('folder', '');
+		$mailbox = PHPFrame::Request()->get('mailbox', '');
+		$folder = PHPFrame::Request()->get('folder', '');
 		
 		$modelEmail = $this->getModel('email');
 		$modelEmail->loadUserEmailAccount();
@@ -324,7 +324,7 @@ class emailController extends PHPFrame_Application_ActionController {
 		// Check for request forgeries
 		PHPFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
-		$post = PHPFrame::getRequest()->getPost();
+		$post = PHPFrame::Request()->getPost();
 		
 		$modelAccounts = $this->getModel('accounts');
 		$row = $modelAccounts->saveAccount($post);
@@ -340,7 +340,7 @@ class emailController extends PHPFrame_Application_ActionController {
 	}
 	
 	public function remove_account() {
-		$accountid = PHPFrame::getRequest()->get('accountid', 0);
+		$accountid = PHPFrame::Request()->get('accountid', 0);
 		
 		$modelAccounts = $this->getModel('accounts');
 		if (!$modelAccounts->deleteAccount($accountid)) {
@@ -354,7 +354,7 @@ class emailController extends PHPFrame_Application_ActionController {
 	}
 	
 	public function make_default_account() {
-		$accountid = PHPFrame::getRequest()->get('accountid', 0);
+		$accountid = PHPFrame::Request()->get('accountid', 0);
 		
 		$modelAccounts = $this->getModel('accounts');
 		if (!$modelAccounts->makeDefault($accountid)) {

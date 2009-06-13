@@ -35,7 +35,7 @@ class projectsModelProjects extends PHPFrame_Application_Model {
 		$where = array();
 		
 		// Show only public projects or projects where user has an assigned role
-		$userid = PHPFrame::getSession()->getUserId();
+		$userid = PHPFrame::Session()->getUserId();
 		$where[] = "( p.access = '0' OR (".$userid." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 		
 		// Add search filtering
@@ -81,7 +81,7 @@ class projectsModelProjects extends PHPFrame_Application_Model {
 	
 	public function getRow($projectid) {
 		// Build SQL query to get row
-		$userid = PHPFrame::getSession()->getUserId();
+		$userid = PHPFrame::Session()->getUserId();
 		$where[] = "( p.access = '0' OR (".$userid." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 		$where[] = "p.id = ".$projectid;
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
@@ -121,7 +121,7 @@ class projectsModelProjects extends PHPFrame_Application_Model {
 		// Manually set created by and created date for new records
 		if (empty($row->id)) {
 			$row->set('created', date("Y-m-d H:i:s"));
-			$row->set('created_by', PHPFrame::getSession()->getUserId());
+			$row->set('created_by', PHPFrame::Session()->getUserId());
 		}
 		
 		// Store row and return row object

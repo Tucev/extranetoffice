@@ -86,7 +86,7 @@ PHPFrame_HTML::validate('slideshowsform');
 <button type="submit"><?php echo PHPFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 
 <input type="hidden" name="projectid" value="<?php echo $data['project']->id; ?>" />
-<input type="hidden" name="meetingid" value="<?php echo PHPFrame::getRequest()->get('meetingid', 0); ?>" />
+<input type="hidden" name="meetingid" value="<?php echo PHPFrame::Request()->get('meetingid', 0); ?>" />
 <input type="hidden" name="id" value="<?php echo $data['row']->id; ?>" />
 <input type="hidden" name="component" value="com_projects" />
 <input type="hidden" name="action" value="save_slideshow" />

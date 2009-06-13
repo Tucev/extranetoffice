@@ -37,7 +37,7 @@
 <div class="loginbox"> 
 
 <?php 
-$sys_events_obj = PHPFrame::getSysevents();
+$sys_events_obj = PHPFrame::Session()->getSysevents();
 $sys_events = $sys_events_obj->asString();
 $sys_events_obj->clear();
 echo $sys_events;

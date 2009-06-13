@@ -23,7 +23,7 @@ PHPFrame_HTML::validate('commentsform');
 
 <div class="thread_row0">
 	
-	<?php if ($data['row']->created_by == PHPFrame::getUser()->id) : ?>
+	<?php if ($data['row']->created_by == PHPFrame::Session()->getUser()->id) : ?>
 	<div class="thread_delete">
 		<a class="delete_issue" title="<?php echo PHPFrame_HTML_Text::_($data['row']->title, true); ?>" href="index.php?component=com_projects&action=remove_issue&projectid=<?php echo $data['row']->projectid; ?>&issueid=<?php echo $data['row']->id; ?>">
 			<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>

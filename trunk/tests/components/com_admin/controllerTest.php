@@ -28,24 +28,24 @@ require_once 'PHPUnit/Framework.php';
 
 class testAdminController extends PHPUnit_Framework_TestCase {
 	function setUp() {
-		PHPFrame::getRequest()->setComponentName('com_admin');
+		PHPFrame::Request()->setComponentName('com_admin');
     }
     
 	function tearDown() {
-		PHPFrame::getRequest()->destroy();
+		PHPFrame::Request()->destroy();
      	PHPFrame_Base_Singleton::destroyInstance('adminController');
     }
     
     function test_save_user_new() {
     	// Fake posted form data
-    	PHPFrame::getRequest()->setAction('save_user');
-    	PHPFrame::getRequest()->set('id', '');
-    	PHPFrame::getRequest()->set('username', 'testuser');
-    	PHPFrame::getRequest()->set('email', 'anotheruser@extranetoffice.org');
-    	PHPFrame::getRequest()->set('firstname', 'test');
-    	PHPFrame::getRequest()->set('lastname', 'user');
-    	PHPFrame::getRequest()->set('groupid', '2');
-    	PHPFrame::getRequest()->set(PHPFrame_Utils_Crypt::getToken(), '1');
+    	PHPFrame::Request()->setAction('save_user');
+    	PHPFrame::Request()->set('id', '');
+    	PHPFrame::Request()->set('username', 'testuser');
+    	PHPFrame::Request()->set('email', 'anotheruser@extranetoffice.org');
+    	PHPFrame::Request()->set('firstname', 'test');
+    	PHPFrame::Request()->set('lastname', 'user');
+    	PHPFrame::Request()->set('groupid', '2');
+    	PHPFrame::Request()->set(PHPFrame_Utils_Crypt::getToken(), '1');
     	
     	$frontcontroller = PHPFrame::getFrontController();
 		$frontcontroller->run();
@@ -56,14 +56,14 @@ class testAdminController extends PHPUnit_Framework_TestCase {
     
 	function test_save_user_existing() {
     	// Fake posted form data
-    	PHPFrame::getRequest()->setAction('save_user');
-    	PHPFrame::getRequest()->set('id', 62);
-    	PHPFrame::getRequest()->set('username', 'testuser');
-    	PHPFrame::getRequest()->set('email', 'testuser@extranetoffice.org');
-    	PHPFrame::getRequest()->set('firstname', 'test');
-    	PHPFrame::getRequest()->set('lastname', 'user');
-    	PHPFrame::getRequest()->set('groupid', '2');
-    	PHPFrame::getRequest()->set(PHPFrame_Utils_Crypt::getToken(), '1');
+    	PHPFrame::Request()->setAction('save_user');
+    	PHPFrame::Request()->set('id', 62);
+    	PHPFrame::Request()->set('username', 'testuser');
+    	PHPFrame::Request()->set('email', 'testuser@extranetoffice.org');
+    	PHPFrame::Request()->set('firstname', 'test');
+    	PHPFrame::Request()->set('lastname', 'user');
+    	PHPFrame::Request()->set('groupid', '2');
+    	PHPFrame::Request()->set(PHPFrame_Utils_Crypt::getToken(), '1');
     	
     	$frontcontroller = PHPFrame::getFrontController();
 		$frontcontroller->run();

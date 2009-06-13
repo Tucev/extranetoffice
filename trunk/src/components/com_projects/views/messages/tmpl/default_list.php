@@ -33,7 +33,7 @@ PHPFrame_HTML::confirm('delete_message', _LANG_PROJECTS_MESSAGES_DELETE, _LANG_P
 <?php foreach($data['rows'] as $row) : ?>
 <div class="thread_row<?php echo $k; ?>">
 
-	<?php if ($row->userid == PHPFrame::getUser()->id) : ?>
+	<?php if ($row->userid == PHPFrame::Session()->getUser()->id) : ?>
 	<div class="thread_delete">
 		<a class="delete_message" title="<?php echo PHPFrame_HTML_Text::_($row->subject, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_message&projectid=".$row->projectid."&messageid=".$row->id); ?>">
 			<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>

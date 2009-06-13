@@ -8,7 +8,7 @@
  */
 ?>
 
-<?php if (PHPFrame::getRequest()->get('tmpl') != 'component') : ?>
+<?php if (PHPFrame::Request()->get('tmpl') != 'component') : ?>
 <h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 <?php endif; ?>
 
@@ -38,7 +38,7 @@
 </tr>
 </table>
 
-<?php if (PHPFrame::getRequest()->get('tmpl') != 'component') : ?>
+<?php if (PHPFrame::Request()->get('tmpl') != 'component') : ?>
 <button type="submit" class="button">Change role</button>
 <?php endif; ?>
 

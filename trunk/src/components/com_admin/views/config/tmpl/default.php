@@ -17,7 +17,7 @@
 			autoHeight: false
 		});
 
-		<?php if (PHPFrame::getRequest()->get('tmpl') == 'component') : ?>
+		<?php if (PHPFrame::Request()->get('tmpl') == 'component') : ?>
 		$("#configform").submit(function() {
 			// bind form using 'ajaxForm'
 			var ajax_container = $("div#"+$sysadmin_selected_tab);
@@ -247,7 +247,7 @@
 <br />
 
 <?php 
-if (PHPFrame::getRequest()->get('tmpl') != 'component') {
+if (PHPFrame::Request()->get('tmpl') != 'component') {
 	PHPFrame_HTML::button('button', _LANG_BACK, "window.location = 'index.php?component=com_admin';");
 }
 else {

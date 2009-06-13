@@ -29,11 +29,11 @@ class usersController extends PHPFrame_Application_ActionController {
 	
 	public function get_users() {
 		// Get request data
-		$orderby = PHPFrame::getRequest()->get('orderby', 'u.lastname');
-		$orderdir = PHPFrame::getRequest()->get('orderdir', 'ASC');
-		$limit = PHPFrame::getRequest()->get('limit', 25);
-		$limitstart = PHPFrame::getRequest()->get('limitstart', 0);
-		$search = PHPFrame::getRequest()->get('search', '');
+		$orderby = PHPFrame::Request()->get('orderby', 'u.lastname');
+		$orderdir = PHPFrame::Request()->get('orderdir', 'ASC');
+		$limit = PHPFrame::Request()->get('limit', 25);
+		$limitstart = PHPFrame::Request()->get('limitstart', 0);
+		$search = PHPFrame::Request()->get('search', '');
 		
 		// Create list filter needed for getUsers()
 		$list_filter = new PHPFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
@@ -51,7 +51,7 @@ class usersController extends PHPFrame_Application_ActionController {
 	}
 	
 	public function get_user() {
-		$userid = PHPFrame::getRequest()->get('userid', 0);
+		$userid = PHPFrame::Request()->get('userid', 0);
 		
 		// Get users using model
 		$user = $this->getModel('users')->getUsersDetail($userid);
@@ -66,12 +66,12 @@ class usersController extends PHPFrame_Application_ActionController {
 	
 	public function get_settings() {
 		// Get request vars
-		$ret_url = PHPFrame::getRequest()->get('ret_url', 'index.php');
+		$ret_url = PHPFrame::Request()->get('ret_url', 'index.php');
 		
 		// Get view
 		$view = $this->getView('settings', '');
 		// Set view data
-		$view->addData('row', PHPFrame::getUser());
+		$view->addData('row', PHPFrame::Session()->getUser());
 		$view->addData('ret_url', $ret_url);
 		// Display view
 		$view->display();
@@ -82,7 +82,7 @@ class usersController extends PHPFrame_Application_ActionController {
 		PHPFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = PHPFrame::getRequest()->getPost();
+		$post = PHPFrame::Request()->getPost();
 		
 		$modelUser = $this->getModel('users');
 		if ($modelUser->saveUser($post) === false) {
@@ -93,7 +93,7 @@ class usersController extends PHPFrame_Application_ActionController {
 			$this->_success = true;
 		}
 		
-		$ret_url = PHPFrame::getRequest()->get('ret_url', 'index.php');
+		$ret_url = PHPFrame::Request()->get('ret_url', 'index.php');
 		$this->setRedirect($ret_url);
 	}
 }
