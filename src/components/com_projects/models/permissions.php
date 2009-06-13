@@ -48,7 +48,7 @@ class projectsModelPermissions extends PHPFrame_Application_Model {
 	 */
 	private function __construct() {
 		// Get role id for session user and cache
-		$this->_userid = PHPFrame::getSession()->getUserId();
+		$this->_userid = PHPFrame::Session()->getUserId();
 	}
 	
 	/**

@@ -184,10 +184,10 @@ class emailModelEmail extends PHPFrame_Application_Model {
 		} 
 		
 	  	// Get request vars
-	  	$page = PHPFrame::getRequest()->get('page', 1);
-	  	$per_page = PHPFrame::getRequest()->get('per_page', 20);
-	  	$order_by = PHPFrame::getRequest()->get('order_by', 'date');
-	  	$order_dir = PHPFrame::getRequest()->get('order_dir', 'desc');
+	  	$page = PHPFrame::Request()->get('page', 1);
+	  	$per_page = PHPFrame::Request()->get('per_page', 20);
+	  	$order_by = PHPFrame::Request()->get('order_by', 'date');
+	  	$order_dir = PHPFrame::Request()->get('order_dir', 'desc');
 	  	
 	  	// Check messages 
 	  	$check = imap_mailboxmsginfo($this->stream);

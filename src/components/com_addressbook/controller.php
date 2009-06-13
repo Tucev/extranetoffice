@@ -29,11 +29,11 @@ class addressbookController extends PHPFrame_Application_ActionController {
 	
 	public function get_contacts() {
 		// Get request data
-		$orderby = PHPFrame::getRequest()->get('orderby', 'c.family');
-		$orderdir = PHPFrame::getRequest()->get('orderdir', 'ASC');
-		$limit = PHPFrame::getRequest()->get('limit', 25);
-		$limitstart = PHPFrame::getRequest()->get('limitstart', 0);
-		$search = PHPFrame::getRequest()->get('search', '');
+		$orderby = PHPFrame::Request()->get('orderby', 'c.family');
+		$orderdir = PHPFrame::Request()->get('orderdir', 'ASC');
+		$limit = PHPFrame::Request()->get('limit', 25);
+		$limitstart = PHPFrame::Request()->get('limitstart', 0);
+		$search = PHPFrame::Request()->get('search', '');
 		
 		// Create list filter needed for getContacts()
 		$list_filter = new PHPFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
@@ -55,7 +55,7 @@ class addressbookController extends PHPFrame_Application_ActionController {
 		PHPFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$post = PHPFrame::getRequest()->getPost();
+		$post = PHPFrame::Request()->getPost();
 		
 		// Save issue using issues model
 		$modelContacts = $this->getModel('contacts');
@@ -74,7 +74,7 @@ class addressbookController extends PHPFrame_Application_ActionController {
 	
 	public function export_contacts() {
 		// Get id from request
-		$id = PHPFrame::getRequest()->get('id', 0);
+		$id = PHPFrame::Request()->get('id', 0);
 		
 		$modelContacts = $this->getModel('contacts');
 		$modelContacts->exportContacts($id);

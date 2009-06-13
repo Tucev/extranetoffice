@@ -27,7 +27,7 @@ class emailModelAccounts extends PHPFrame_Application_Model {
 	public function getAccount($accountid=0) {
 		$query = "SELECT * ";
 		$query .= " FROM #__email_accounts ";
-		$query .= " WHERE userid = ".PHPFrame::getUser()->id;
+		$query .= " WHERE userid = ".PHPFrame::Session()->getUser()->id;
 		if (!empty($accountid)) {
 			$query .= " AND id = ".$accountid;
 		}

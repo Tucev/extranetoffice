@@ -28,11 +28,11 @@ require_once 'PHPUnit/Framework.php';
 
 class testLoginController extends PHPUnit_Framework_TestCase {
 	function setUp() {
-		PHPFrame::getRequest()->setComponentName('com_login');
+		PHPFrame::Request()->setComponentName('com_login');
     }
     
 	function tearDown() {
-		PHPFrame::getRequest()->destroy();
+		PHPFrame::Request()->destroy();
      	PHPFrame_Base_Singleton::destroyInstance('loginController');
     }
     
@@ -41,14 +41,14 @@ class testLoginController extends PHPUnit_Framework_TestCase {
     	$user = new PHPFrame_User();
     	$user->set('id', 0);
     	$user->set('groupid', 0);
-    	$session = PHPFrame::getSession();
+    	$session = PHPFrame::Session();
     	$session->setUser($user);
     	
     	// Fake posted form data
-    	PHPFrame::getRequest()->setAction('login');
-    	PHPFrame::getRequest()->set('username', 'admin');
-    	PHPFrame::getRequest()->set('password', 'Passw0rd');
-    	PHPFrame::getRequest()->set(PHPFrame_Utils_Crypt::getToken(), '1');
+    	PHPFrame::Request()->setAction('login');
+    	PHPFrame::Request()->set('username', 'admin');
+    	PHPFrame::Request()->set('password', 'Passw0rd');
+    	PHPFrame::Request()->set(PHPFrame_Utils_Crypt::getToken(), '1');
     	
     	$frontcontroller = PHPFrame::getFrontController();
 		$frontcontroller->run();
@@ -64,9 +64,9 @@ class testLoginController extends PHPUnit_Framework_TestCase {
 		$db->query($query);
 		
     	// Fake posted form data
-    	PHPFrame::getRequest()->setAction('reset_password');
-    	PHPFrame::getRequest()->set('email_forgot', 'notifications.test@extranetoffice.org');
-    	PHPFrame::getRequest()->set(PHPFrame_Utils_Crypt::getToken(), '1');
+    	PHPFrame::Request()->setAction('reset_password');
+    	PHPFrame::Request()->set('email_forgot', 'notifications.test@extranetoffice.org');
+    	PHPFrame::Request()->set(PHPFrame_Utils_Crypt::getToken(), '1');
     	
     	$frontcontroller = PHPFrame::getFrontController();
     	$frontcontroller->run();

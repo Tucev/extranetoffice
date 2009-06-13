@@ -36,7 +36,7 @@ class projectsModelFiles extends PHPFrame_Application_Model {
 		
 		// Show only public projects or projects where user has an assigned role
 		//TODO: Have to apply access levels
-		//$where[] = "( p.access = '0' OR (".PHPFrame::getUser()->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
+		//$where[] = "( p.access = '0' OR (".PHPFrame::Session()->getUser()->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 		
 		$search = $list_filter->getSearchStr();
 		if ($search) {
@@ -161,7 +161,7 @@ class projectsModelFiles extends PHPFrame_Application_Model {
 		$row->set('filesize', $file['file_size']);
 		$row->set('mimetype', $file['file_type']);
 		
-		$row->set('userid', PHPFrame::getUser()->id);
+		$row->set('userid', PHPFrame::Session()->getUser()->id);
 		
 		$row->store();
 		

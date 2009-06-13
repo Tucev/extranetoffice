@@ -28,21 +28,21 @@ require_once 'PHPUnit/Framework.php';
 
 class testProjectsController extends PHPUnit_Framework_TestCase {
 	function setUp() {
-		PHPFrame::getRequest()->setComponentName('com_projects');
+		PHPFrame::Request()->setComponentName('com_projects');
     }
     
 	function tearDown() {
-		PHPFrame::getRequest()->destroy();
+		PHPFrame::Request()->destroy();
      	PHPFrame_Base_Singleton::destroyInstance('projectsController');
     }
     
     function test_save_project() {
     	// Fake posted form data
-    	PHPFrame::getRequest()->setAction('save_project');
-    	PHPFrame::getRequest()->set('name', 'This is a test project');
-    	PHPFrame::getRequest()->set('project_type', '1');
-    	PHPFrame::getRequest()->set('priority', '1');
-    	PHPFrame::getRequest()->set(PHPFrame_Utils_Crypt::getToken(), '1');
+    	PHPFrame::Request()->setAction('save_project');
+    	PHPFrame::Request()->set('name', 'This is a test project');
+    	PHPFrame::Request()->set('project_type', '1');
+    	PHPFrame::Request()->set('priority', '1');
+    	PHPFrame::Request()->set(PHPFrame_Utils_Crypt::getToken(), '1');
     	
     	$frontcontroller = PHPFrame::getFrontController();
 		$frontcontroller->run();
@@ -61,8 +61,8 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
 		$db->query($query);
 		
     	// Fake posted form data
-    	PHPFrame::getRequest()->setAction('remove_project');
-    	PHPFrame::getRequest()->set('projectid', $projectid);
+    	PHPFrame::Request()->setAction('remove_project');
+    	PHPFrame::Request()->set('projectid', $projectid);
     	
     	$frontcontroller = PHPFrame::getFrontController();
     	$frontcontroller->run();
@@ -73,15 +73,15 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     
     function test_save_member_InviteNewUser() {
     	// Fake posted form data
-    	PHPFrame::getRequest()->setAction('save_member');
-    	PHPFrame::getRequest()->set('projectid', '1');
-    	PHPFrame::getRequest()->set('roleid', '1');
-    	PHPFrame::getRequest()->set('username', 'testuser');
-    	PHPFrame::getRequest()->set('firstname', 'Test');
-    	PHPFrame::getRequest()->set('lastname', 'User');
-    	PHPFrame::getRequest()->set('groupid', '2');
-    	PHPFrame::getRequest()->set('email', 'notifications.test@extranetoffice.org');
-    	PHPFrame::getRequest()->set(PHPFrame_Utils_Crypt::getToken(), '1');
+    	PHPFrame::Request()->setAction('save_member');
+    	PHPFrame::Request()->set('projectid', '1');
+    	PHPFrame::Request()->set('roleid', '1');
+    	PHPFrame::Request()->set('username', 'testuser');
+    	PHPFrame::Request()->set('firstname', 'Test');
+    	PHPFrame::Request()->set('lastname', 'User');
+    	PHPFrame::Request()->set('groupid', '2');
+    	PHPFrame::Request()->set('email', 'notifications.test@extranetoffice.org');
+    	PHPFrame::Request()->set(PHPFrame_Utils_Crypt::getToken(), '1');
     	
     	$frontcontroller = PHPFrame::getFrontController();
     	$frontcontroller->run();
@@ -101,11 +101,11 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
 		$userid = $db->query($query);
 		
     	// Fake posted form data
-    	PHPFrame::getRequest()->setAction('save_member');
-    	PHPFrame::getRequest()->set('projectid', '1');
-    	PHPFrame::getRequest()->set('roleid', '1');
-    	PHPFrame::getRequest()->set('userids', $userid);
-    	PHPFrame::getRequest()->set(PHPFrame_Utils_Crypt::getToken(), '1');
+    	PHPFrame::Request()->setAction('save_member');
+    	PHPFrame::Request()->set('projectid', '1');
+    	PHPFrame::Request()->set('roleid', '1');
+    	PHPFrame::Request()->set('userids', $userid);
+    	PHPFrame::Request()->set(PHPFrame_Utils_Crypt::getToken(), '1');
     	
     	$frontcontroller = PHPFrame::getFrontController();
     	$frontcontroller->run();
@@ -128,9 +128,9 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
 		$db->query($query);
 		
     	// Fake posted form data
-    	PHPFrame::getRequest()->setAction('remove_member');
-    	PHPFrame::getRequest()->set('projectid', '1');
-    	PHPFrame::getRequest()->set('userid', $userid);
+    	PHPFrame::Request()->setAction('remove_member');
+    	PHPFrame::Request()->set('projectid', '1');
+    	PHPFrame::Request()->set('userid', $userid);
     	
     	$frontcontroller = PHPFrame::getFrontController();
     	$frontcontroller->run();
@@ -141,10 +141,10 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     
     function test_change_member_role() {
     	// Fake posted form data
-    	PHPFrame::getRequest()->setAction('change_member_role');
-    	PHPFrame::getRequest()->set('projectid', '1');
-    	PHPFrame::getRequest()->set('userid', '63');
-    	PHPFrame::getRequest()->set('roleid', '3');
+    	PHPFrame::Request()->setAction('change_member_role');
+    	PHPFrame::Request()->set('projectid', '1');
+    	PHPFrame::Request()->set('userid', '63');
+    	PHPFrame::Request()->set('roleid', '3');
     	
     	$frontcontroller = PHPFrame::getFrontController();
     	$frontcontroller->run();
@@ -155,13 +155,13 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     /*
     function test_save_issue() {
     	// Fake posted form data
-    	PHPFrame::getRequest()->setAction('save_issue');
-    	PHPFrame::getRequest()->set('projectid', '1');
-    	PHPFrame::getRequest()->set('title', 'Test issue');
-    	PHPFrame::getRequest()->set('issue_type', '0');
-    	PHPFrame::getRequest()->set('priority', '1');
-    	PHPFrame::getRequest()->set('access', '1');
-    	PHPFrame::getRequest()->set(PHPFrame_Utils_Crypt::getToken(), '1');
+    	PHPFrame::Request()->setAction('save_issue');
+    	PHPFrame::Request()->set('projectid', '1');
+    	PHPFrame::Request()->set('title', 'Test issue');
+    	PHPFrame::Request()->set('issue_type', '0');
+    	PHPFrame::Request()->set('priority', '1');
+    	PHPFrame::Request()->set('access', '1');
+    	PHPFrame::Request()->set(PHPFrame_Utils_Crypt::getToken(), '1');
     	
     	$frontcontroller = PHPFrame::getFrontController();
     	$frontcontroller->run();

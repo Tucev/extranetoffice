@@ -45,11 +45,11 @@ class adminController extends PHPFrame_Application_ActionController {
 	
 	public function get_users() {
 		// Get request data
-		$orderby = PHPFrame::getRequest()->get('orderby', 'u.lastname');
-		$orderdir = PHPFrame::getRequest()->get('orderdir', 'ASC');
-		$limit = PHPFrame::getRequest()->get('limit', 25);
-		$limitstart = PHPFrame::getRequest()->get('limitstart', 0);
-		$search = PHPFrame::getRequest()->get('search', '');
+		$orderby = PHPFrame::Request()->get('orderby', 'u.lastname');
+		$orderdir = PHPFrame::Request()->get('orderdir', 'ASC');
+		$limit = PHPFrame::Request()->get('limit', 25);
+		$limitstart = PHPFrame::Request()->get('limitstart', 0);
+		$search = PHPFrame::Request()->get('search', '');
 		
 		// Create list filter needed for getUsers()
 		$list_filter = new PHPFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
@@ -67,7 +67,7 @@ class adminController extends PHPFrame_Application_ActionController {
 	}
 	
 	public function get_user_form() {
-		$userid = PHPFrame::getRequest()->get('userid', 0);
+		$userid = PHPFrame::Request()->get('userid', 0);
 		
 		// Get users using model
 		$user = $this->getModel('users')->getUsersDetail($userid);
@@ -98,8 +98,8 @@ class adminController extends PHPFrame_Application_ActionController {
 		PHPFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$tmpl = PHPFrame::getRequest()->get('tmpl', '');
-		$post = PHPFrame::getRequest()->getPost();
+		$tmpl = PHPFrame::Request()->get('tmpl', '');
+		$post = PHPFrame::Request()->getPost();
 		
 		$modelConfig = $this->getModel('config');
 		
@@ -120,8 +120,8 @@ class adminController extends PHPFrame_Application_ActionController {
 		PHPFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
 		
 		// Get request vars
-		$tmpl = PHPFrame::getRequest()->get('tmpl', '');
-		$post = PHPFrame::getRequest()->getPost();
+		$tmpl = PHPFrame::Request()->get('tmpl', '');
+		$post = PHPFrame::Request()->getPost();
 		
 		$modelUsers = $this->getModel('users');
 		
@@ -139,8 +139,8 @@ class adminController extends PHPFrame_Application_ActionController {
 	
 	public function remove_user() {
 		// Get request vars
-		$tmpl = PHPFrame::getRequest()->get('tmpl', '');
-		$userid = PHPFrame::getRequest()->get('id', 0);
+		$tmpl = PHPFrame::Request()->get('tmpl', '');
+		$userid = PHPFrame::Request()->get('id', 0);
 		
 		$modelUsers = $this->getModel('users');
 		

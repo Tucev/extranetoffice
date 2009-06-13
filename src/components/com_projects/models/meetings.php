@@ -36,7 +36,7 @@ class projectsModelMeetings extends PHPFrame_Application_Model {
 		
 		// Show only public projects or projects where user has an assigned role
 		//TODO: Have to apply access levels
-		//$where[] = "( p.access = '0' OR (".PHPFrame::getUser()->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
+		//$where[] = "( p.access = '0' OR (".PHPFrame::Session()->getUser()->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
 		
 		$search = $list_filter->getSearchStr();
 		if ( $search ) {
@@ -126,7 +126,7 @@ class projectsModelMeetings extends PHPFrame_Application_Model {
 		$row = $this->getTable('meetings');
 		
 		if (empty($post['id'])) {
-			$row->created_by = PHPFrame::getUser()->id;
+			$row->created_by = PHPFrame::Session()->getUser()->id;
 			$row->created = date("Y-m-d H:i:s");
 		}
 		else {
@@ -253,7 +253,7 @@ class projectsModelMeetings extends PHPFrame_Application_Model {
 			$row->load($post['id']);
 		}
 		else {
-			$row->created_by = PHPFrame::getUser()->id;
+			$row->created_by = PHPFrame::Session()->getUser()->id;
 			$row->created = date("Y-m-d H:i:s");
 		}
 		

@@ -22,7 +22,7 @@ PHPFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 		</a>
 	</div>
 	
-	<?php if ($data['project']->created_by == PHPFrame::getUser()->id) : ?>
+	<?php if ($data['project']->created_by == PHPFrame::Session()->getUser()->id) : ?>
 	<div style="float:right;" class="delete">
 		<a class="delete_project" title="<?php echo $data['project']->name; ?>" style="float:right;" href="index.php?component=com_projects&action=remove_project&projectid=<?php echo $data['project']->id; ?>">
 			<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?> &nbsp;&nbsp; 
@@ -98,7 +98,7 @@ PHPFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 <h3 class="people">Members</h3>
 
 <div class="new">
-<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=".PHPFrame::getRequest()->getComponentName()."&action=get_member_form&projectid=".$data['project']->id); ?>">Add new member</a>
+<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=".PHPFrame::Request()->getComponentName()."&action=get_member_form&projectid=".$data['project']->id); ?>">Add new member</a>
 </div>
 
 <br />
@@ -129,7 +129,7 @@ PHPFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
     	<?php echo $row->email; ?>
     </td>
 	<td>
-	<?php if ($row->userid != PHPFrame::getSession()->getUserId()) : ?>
+	<?php if ($row->userid != PHPFrame::Session()->getUserId()) : ?>
 	<?php PHPFrame_HTML::dialog(_LANG_PROJECTS_CHANGE_ROLE, 'index.php?component=com_projects&action=get_member_role_form&projectid='.$data['project']->id.'&userid='.$row->userid, 300, 150, true); ?> 
 	<a class="delete_member" title="<?php echo PHPFrame_HTML_Text::_($row->firstname." ". $row->lastname, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_member&projectid=".$data['project']->id."&userid=".$row->userid); ?>">
 		<img src="templates/<?php echo config::TEMPLATE; ?>/images/icons/generic/16x16/remove.png" alt="<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>" />

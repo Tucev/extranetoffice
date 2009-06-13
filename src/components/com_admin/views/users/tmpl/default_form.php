@@ -58,7 +58,7 @@ PHPFrame_HTML::validate('usersform');
 
 <div style="clear:both; margin-top:30px;"></div>
 
-<?php if (PHPFrame::getRequest()->get('tmpl') != 'component') : ?>
+<?php if (PHPFrame::Request()->get('tmpl') != 'component') : ?>
 <button type="button" onclick="Javascript:window.history.back();"><?php echo PHPFrame_HTML_Text::_( _LANG_BACK ); ?></button>
 <button type="submit"><?php echo PHPFrame_HTML_Text::_(_LANG_SAVE); ?></button>
 <?php endif; ?>
@@ -66,6 +66,6 @@ PHPFrame_HTML::validate('usersform');
 <input type="hidden" name="id" value="<?php echo $data['row']->id;?>" />
 <input type="hidden" name="component" value="com_admin" />
 <input type="hidden" name="action" value="save_user" />
-<input type="hidden" name="tmpl" value="<?php echo PHPFrame::getRequest()->get('tmpl', ''); ?>" />
+<input type="hidden" name="tmpl" value="<?php echo PHPFrame::Request()->get('tmpl', ''); ?>" />
 <?php echo PHPFrame_HTML::_( 'form.token' ); ?>
 </form>

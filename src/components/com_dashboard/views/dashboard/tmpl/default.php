@@ -21,7 +21,7 @@
 	<div style="float:right;">
 		<?php 
 			$img = '<img style="float:right; margin: 5px 0 3px 3px;" src="' ;
-			$img .= config::UPLOAD_DIR."/users/".PHPFrame::getUser()->photo . '" />'; 
+			$img .= config::UPLOAD_DIR."/users/".PHPFrame::Session()->getUser()->photo . '" />'; 
 			PHPFrame_HTML::dialog($img, 'index.php?component=com_users&action=get_settings', 600, 560, true);
 		?> 
 	</div>
@@ -31,9 +31,9 @@
 	<?php //var_dump($this->_user); ?>
 	
 	<p style="font-size: 0.8em;">
-	Name: <br /> <?php echo PHPFrame::getUser()->firstname; ?> <?php echo PHPFrame::getUser()->lastname; ?> <br />
-	Username: <br /> <?php echo PHPFrame::getUser()->username; ?> <br />
-	Email: <br /> <?php echo PHPFrame::getUser()->email; ?>
+	Name: <br /> <?php echo PHPFrame::Session()->getUser()->firstname; ?> <?php echo PHPFrame::Session()->getUser()->lastname; ?> <br />
+	Username: <br /> <?php echo PHPFrame::Session()->getUser()->username; ?> <br />
+	Email: <br /> <?php echo PHPFrame::Session()->getUser()->email; ?>
 	</p>
 	
 	<div style="clear:right;"></div>
@@ -44,7 +44,7 @@
 	
 	<div class="ioffice_module">
 	
-	<?php if (PHPFrame::getUser()->groupid == 1) : ?>
+	<?php if (PHPFrame::Session()->getUser()->groupid == 1) : ?>
 	<div style="float:right;" class="new">
 		 <a style="float:right;" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_form"); ?>" title="<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
 		<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>

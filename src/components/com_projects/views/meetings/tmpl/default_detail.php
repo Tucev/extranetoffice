@@ -23,7 +23,7 @@ PHPFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 
 <div class="thread_row0">
 
-	<?php if ($data['row']->created_by == PHPFrame::getUser()->id) : ?>
+	<?php if ($data['row']->created_by == PHPFrame::Session()->getUser()->id) : ?>
 	<div class="thread_delete">
 		<a class="delete_meeting" title="<?php echo PHPFrame_HTML_Text::_($data['row']->name, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_meeting&projectid=".$data['row']->projectid."&meetingid=".$data['row']->id); ?>">
 			<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>

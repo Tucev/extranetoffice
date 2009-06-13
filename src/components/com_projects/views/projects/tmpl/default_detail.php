@@ -74,7 +74,7 @@
 		<td><?php echo $log->action." by ".PHPFrame_User_Helper::id2name($log->userid); ?></td>
 		<td><?php echo date("D, d M Y H:ia", strtotime($log->ts)); ?></td>
 		<td>
-		<?php if ($data['roleid'] == 1 || $log->userid == PHPFrame::getSession()->getUserId()) : ?>
+		<?php if ($data['roleid'] == 1 || $log->userid == PHPFrame::Session()->getUserId()) : ?>
 			<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_activitylog&projectid=".$log->projectid."&id=".$log->id); ?>">
 			Delete
 			</a>

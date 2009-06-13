@@ -8,7 +8,7 @@
  * @author 		Luis Montero [e-noise.com]
  */
 
-$projectid = PHPFrame::getRequest()->get('projectid', 0);
+$projectid = PHPFrame::Request()->get('projectid', 0);
 require_once _ABS_PATH.DS."src".DS."components".DS."com_projects".DS."helpers".DS."projects.helper.php";
 ?>
 

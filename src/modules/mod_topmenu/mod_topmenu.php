@@ -8,7 +8,7 @@
  * @author 		Luis Montero [e-noise.com]
  */
 
-$user = PHPFrame::getUser();
+$user = PHPFrame::Session()->getUser();
 ?>
 		
 <div id="top">

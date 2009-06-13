@@ -10,7 +10,7 @@
 
 <h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
-<?php if (PHPFrame::getUser()->groupid == 1) : ?>
+<?php if (PHPFrame::Session()->getUser()->groupid == 1) : ?>
 <div class="new">
 	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_project_form'); ?>" title="<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
 		<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>
@@ -34,7 +34,7 @@ function submit_filter(reset) {
 </script>
 <div class="list_filter_container">
 <form action="index.php" id="listsearchform" name="listsearchform" method="post">
-<input type="text" name="search" id="search" value="<?php echo PHPFrame::getRequest()->get('search'); ?>">
+<input type="text" name="search" id="search" value="<?php echo PHPFrame::Request()->get('search'); ?>">
 <button type="button" class="button" onclick="submit_filter(false);">Search</button>
 <button type="button" class="button" onclick="submit_filter(true);">Reset</button>
 <input type="hidden" name="component" value="com_projects" />

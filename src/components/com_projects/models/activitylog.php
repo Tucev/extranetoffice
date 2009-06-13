@@ -66,7 +66,7 @@ class projectsModelActivitylog extends PHPFrame_Application_Model {
 		// Store notification in db
 		$row = new PHPFrame_Database_Row('#__activitylog');
 		$row->set('projectid', $this->_project->id);
-		$row->set('userid', PHPFrame::getUser()->id);
+		$row->set('userid', PHPFrame::Session()->getUser()->id);
 		$row->set('type', $type);
 		$row->set('action', $action);
 		$row->set('title', $title);
@@ -118,7 +118,7 @@ class projectsModelActivitylog extends PHPFrame_Application_Model {
 		$pattern = '/'.$tool_matches[1].'id=([0-9]+)/i';
 		preg_match($pattern, $row->url, $matches);
 		
-		$new_mail->setMessageIdSuffix('c='.PHPFrame::getRequest()->getComponentName().'&p='.$row->projectid.'&t='.$tool_matches[1].'s&i='.$matches[1]);
+		$new_mail->setMessageIdSuffix('c='.PHPFrame::Request()->getComponentName().'&p='.$row->projectid.'&t='.$tool_matches[1].'s&i='.$matches[1]);
 		
 		// Get assignees email addresses and exclude the user triggering the notification
 		$query = "SELECT firstname, lastname, email ";

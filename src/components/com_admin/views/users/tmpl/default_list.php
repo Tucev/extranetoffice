@@ -13,7 +13,7 @@ PHPFrame_HTML::confirm('delete_user', _LANG_ADMIN_USERS_DELETE, _LANG_ADMIN_USER
 <h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 
-<?php if (PHPFrame::getUser()->groupid == 1) : ?>
+<?php if (PHPFrame::Session()->getUser()->groupid == 1) : ?>
 <div class="new">
 	<?php PHPFrame_HTML::dialog(_LANG_ADMIN_USERS_NEW, 'index.php?component=com_admin&action=get_user_form', 550, 390, true, "div[id^='ui-tabs']:has(a.delete_user)"); ?>
 </div>

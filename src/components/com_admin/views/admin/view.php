@@ -43,7 +43,7 @@ class adminViewAdmin extends PHPFrame_Application_View {
 		// Set tmpl request var in view so it can be used to append to urls when
 		// view is loaded with tmpl=component (that means no overall template).
 		// This is useful for views being loaded via ajax
-		$tmpl = PHPFrame::getRequest()->get('tmpl', '');
+		$tmpl = PHPFrame::Request()->get('tmpl', '');
 		if (!empty($tmpl)) {
 			$tmpl = "&tmpl=".$tmpl;
 		}

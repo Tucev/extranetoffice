@@ -24,7 +24,7 @@ PHPFrame_HTML::validate('commentsform');
 
 <div class="thread_row0">
 
-	<?php if ($data['row']->userid == PHPFrame::getUser()->id) : ?>
+	<?php if ($data['row']->userid == PHPFrame::Session()->getUser()->id) : ?>
 	<div class="thread_delete">
 		<a class="delete_file" title="<?php echo PHPFrame_HTML_Text::_($data['row']->title, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_file&projectid=".$data['row']->projectid)."&fileid=".$data['row']->id; ?>">
 			<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>
@@ -89,7 +89,7 @@ PHPFrame_HTML::validate('commentsform');
 	<div id="oldrevisions<?php echo $data['row']->id; ?>" class="thread_oldrevisions">
 		<?php foreach ($data['row']->children as $child) : ?>
 			<div class="thread_oldrevision_entry">
-				<?php if ($data['row']->userid == PHPFrame::getUser()->id) : ?>
+				<?php if ($data['row']->userid == PHPFrame::Session()->getUser()->id) : ?>
 				<div class="thread_delete">
 					<a class="delete_file" title="<?php echo PHPFrame_HTML_Text::_($child->title, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_file&projectid=".$data['row']->projectid)."&fileid=".$child->id; ?>">
 						<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>

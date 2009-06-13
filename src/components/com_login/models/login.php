@@ -48,7 +48,7 @@ class loginModelLogin extends PHPFrame_Application_Model {
 			$testcrypt = PHPFrame_Utils_Crypt::getCryptedPassword($password, $salt);
 			if ($crypt == $testcrypt) {
 				// Store user data in session
-				$session = PHPFrame::getSession();
+				$session = PHPFrame::Session();
 				$session->setUser($user);
 				return true;
 			} else {
@@ -65,7 +65,7 @@ class loginModelLogin extends PHPFrame_Application_Model {
 	}
 	
 	public function logout() {
-		PHPFrame::getSession()->destroy();
+		PHPFrame::Session()->destroy();
 	}
 	
 	/**

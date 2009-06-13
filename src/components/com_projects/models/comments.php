@@ -58,7 +58,7 @@ class projectsModelComments extends PHPFrame_Application_Model {
 		}
 		
 		if (empty($row->userid)) {
-			$row->userid = PHPFrame::getUser()->id;	
+			$row->userid = PHPFrame::Session()->getUser()->id;	
 		}
 		
 		$row->created = date("Y-m-d H:i:s");
