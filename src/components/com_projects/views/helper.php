@@ -45,7 +45,7 @@ class projectsViewHelper {
     	// Add option to change assignees if user is creator or project admin
     	// First we get the projectsModelPermissions
     	/*
-    	$controller = PHPFrame::getActionController('com_projects');
+    	$controller = PHPFrame_MVC_ActionController::getInstance('com_projects');
     	$project = $controller->project;
     	$project_permissions = projectsModelPermissions::getInstance();
     	if ($project_permissions->getRoleId() || $created_by == $project_permissions->getUserId()) {

@@ -25,28 +25,28 @@ PHPFrame_HTML::validate('commentsform');
 	
 	<?php if ($data['row']->created_by == PHPFrame::Session()->getUser()->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_issue" title="<?php echo PHPFrame_HTML_Text::_($data['row']->title, true); ?>" href="index.php?component=com_projects&action=remove_issue&projectid=<?php echo $data['row']->projectid; ?>&issueid=<?php echo $data['row']->id; ?>">
-			<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>
+		<a class="delete_issue" title="<?php echo PHPFrame_Base_String::html($data['row']->title, true); ?>" href="index.php?component=com_projects&action=remove_issue&projectid=<?php echo $data['row']->projectid; ?>&issueid=<?php echo $data['row']->id; ?>">
+			<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
 	<div class="thread_edit">
 		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issue_form&projectid=".$data['project']->id."&issueid=".$data['row']->id); ?>">
-		<?php echo PHPFrame_HTML_Text::_( _LANG_EDIT ); ?>
+		<?php echo PHPFrame_Base_String::html( _LANG_EDIT ); ?>
 		</a>
 	</div>
 	
 	<?php if ($data['row']->closed == "0000-00-00 00:00:00") : ?>
 	<div class="thread_close">
 		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=close_issue&projectid=".$data['project']->id."&issueid=".$data['row']->id); ?>">
-		<?php echo PHPFrame_HTML_Text::_( _LANG_ISSUES_CLOSE ); ?>
+		<?php echo PHPFrame_Base_String::html( _LANG_ISSUES_CLOSE ); ?>
 		</a>
 	</div>
 	<?php else : ?>
 	<div class="thread_reopen">
 		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=reopen_issue&projectid=".$data['project']->id."&issueid=".$data['row']->id); ?>">
-		<?php echo PHPFrame_HTML_Text::_( _LANG_ISSUES_REOPEN ); ?>
+		<?php echo PHPFrame_Base_String::html( _LANG_ISSUES_REOPEN ); ?>
 		</a>
 	</div>
 	<?php endif; ?>

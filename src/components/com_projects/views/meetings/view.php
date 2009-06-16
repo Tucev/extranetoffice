@@ -17,9 +17,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_View
+ * @see 		PHPFrame_MVC_View
  */
-class projectsViewMeetings extends PHPFrame_Application_View {
+class projectsViewMeetings extends PHPFrame_MVC_View {
 	/**
 	 * Constructor
 	 * 
@@ -56,7 +56,7 @@ class projectsViewMeetings extends PHPFrame_Application_View {
 	 * @return void
 	 */
 	function displayMeetingsList() {
-		PHPFrame::getPathway()->addItem(_LANG_MEETINGS);
+		$this->getPathway()->addItem(_LANG_MEETINGS);
 	}
 	
 	function displayMeetingsDetail() {
@@ -66,8 +66,8 @@ class projectsViewMeetings extends PHPFrame_Application_View {
 		$document->addStyleSheet('lib/jquery/plugins/lightbox/css/jquery.lightbox-0.5.css');
 		
 		$this->_data['page_title'] .= ' - '.$this->_data['row']->name;
-		PHPFrame::getPathway()->addItem(_LANG_MEETINGS, "index.php?component=com_projects&action=get_meetings&projectid=".$this->_data['project']->id);
-		PHPFrame::getPathway()->addItem($this->_data['row']->name);
+		$this->getPathway()->addItem(_LANG_MEETINGS, "index.php?component=com_projects&action=get_meetings&projectid=".$this->_data['project']->id);
+		$this->getPathway()->addItem($this->_data['row']->name);
 	}
 	
 	/**
@@ -77,8 +77,8 @@ class projectsViewMeetings extends PHPFrame_Application_View {
 	function displayMeetingsForm() {
 		$action = empty($this->_data['row']->id) ? _LANG_MEETINGS_NEW : _LANG_MEETINGS_EDIT;
 		$this->_data['page_title'] .= ' - '.$action;
-		PHPFrame::getPathway()->addItem(_LANG_MEETINGS, "index.php?component=com_projects&action=get_meetings&projectid=".$this->_data['project']->id);
-		PHPFrame::getPathway()->addItem($action);
+		$this->getPathway()->addItem(_LANG_MEETINGS, "index.php?component=com_projects&action=get_meetings&projectid=".$this->_data['project']->id);
+		$this->getPathway()->addItem($action);
 		
 		$this->addData('action', $action);
 	}
@@ -86,8 +86,8 @@ class projectsViewMeetings extends PHPFrame_Application_View {
 	function displayMeetingsSlideshowsForm() {
 		$action = empty($this->_data['row']->id) ? _LANG_SLIDESHOWS_NEW : _LANG_SLIDESHOWS_EDIT;
 		$this->_data['page_title'] .= ' - '.$action;
-		PHPFrame::getPathway()->addItem(_LANG_MEETINGS, "index.php?component=com_projects&action=get_meetings&projectid=".$this->_data['project']->id);
-		PHPFrame::getPathway()->addItem($action);
+		$this->getPathway()->addItem(_LANG_MEETINGS, "index.php?component=com_projects&action=get_meetings&projectid=".$this->_data['project']->id);
+		$this->getPathway()->addItem($action);
 		
 		$this->addData('action', $action);
 	}
@@ -95,8 +95,8 @@ class projectsViewMeetings extends PHPFrame_Application_View {
 	function displayMeetingsFilesForm() {
 		$action = _LANG_PROJECTS_MEETINGS_FILES_ATTACH;
 		$this->_data['page_title'] .= ' - '.$action;
-		PHPFrame::getPathway()->addItem(_LANG_MEETINGS, "index.php?component=com_projects&action=get_meetings&projectid=".$this->_data['project']->id);
-		PHPFrame::getPathway()->addItem($action);
+		$this->getPathway()->addItem(_LANG_MEETINGS, "index.php?component=com_projects&action=get_meetings&projectid=".$this->_data['project']->id);
+		$this->getPathway()->addItem($action);
 		
 		$this->addData('action', $action);
 	}

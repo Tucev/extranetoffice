@@ -23,7 +23,7 @@ PHPFrame_HTML::validate('slideshowsform');
 <form action="index.php" method="post" id="slideshowsform" name="slideshowsform" enctype="multipart/form-data">
 
 <fieldset>
-<legend><?php echo PHPFrame_HTML_Text::_( $data['action'] ); ?></legend>
+<legend><?php echo PHPFrame_Base_String::html( $data['action'] ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td width="30%">
@@ -81,9 +81,9 @@ PHPFrame_HTML::validate('slideshowsform');
 <div style="clear:left; margin-top:30px;"></div>
 
 <button type="button" onclick="window.location = '<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_meeting_detail&projectid=".$data['project']->id."&meetingid=".$data['row']->meetingid); ?>';">
-	<?php echo PHPFrame_HTML_Text::_( _LANG_BACK ); ?>
+	<?php echo PHPFrame_Base_String::html( _LANG_BACK ); ?>
 </button>
-<button type="submit"><?php echo PHPFrame_HTML_Text::_(_LANG_SAVE); ?></button>
+<button type="submit"><?php echo PHPFrame_Base_String::html(_LANG_SAVE); ?></button>
 
 <input type="hidden" name="projectid" value="<?php echo $data['project']->id; ?>" />
 <input type="hidden" name="meetingid" value="<?php echo PHPFrame::Request()->get('meetingid', 0); ?>" />

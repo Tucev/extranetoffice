@@ -17,9 +17,9 @@
  * @subpackage 	com_users
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_View
+ * @see 		PHPFrame_MVC_View
  */
-class usersViewSettings extends PHPFrame_Application_View {
+class usersViewSettings extends PHPFrame_MVC_View {
 	/**
 	 * Constructor
 	 * 
@@ -41,9 +41,9 @@ class usersViewSettings extends PHPFrame_Application_View {
 	 */
 	function display() {
 		$this->_data['page_title'] = _LANG_USER_ACCOUNT;
+		
 		// Append page title to document title
-		$document = PHPFrame::getDocument('html');
-		$document->title .= ' - '._LANG_USER_ACCOUNT;
+		$this->_document->appendTitle(' - '._LANG_USER_ACCOUNT);
 		
 		parent::display();
 	}

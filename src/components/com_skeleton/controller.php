@@ -15,7 +15,7 @@
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class skeletonController extends PHPFrame_Application_ActionController {
+class skeletonController extends PHPFrame_MVC_ActionController {
 	/**
 	 * Constructor
 	 * 

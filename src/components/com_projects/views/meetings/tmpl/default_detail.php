@@ -25,15 +25,15 @@ PHPFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 
 	<?php if ($data['row']->created_by == PHPFrame::Session()->getUser()->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_meeting" title="<?php echo PHPFrame_HTML_Text::_($data['row']->name, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_meeting&projectid=".$data['row']->projectid."&meetingid=".$data['row']->id); ?>">
-			<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>
+		<a class="delete_meeting" title="<?php echo PHPFrame_Base_String::html($data['row']->name, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_meeting&projectid=".$data['row']->projectid."&meetingid=".$data['row']->id); ?>">
+			<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	
 	<div class="thread_edit">
 		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_meeting_form&projectid=".$data['project']->id."&meetingid=".$data['row']->id); ?>">
-		<?php echo PHPFrame_HTML_Text::_( _LANG_EDIT ); ?>
+		<?php echo PHPFrame_Base_String::html( _LANG_EDIT ); ?>
 		</a>
 	</div>
 	
@@ -148,7 +148,7 @@ PHPFrame_HTML::confirm('delete_slideshow', _LANG_PROJECTS_MEETINGS_SLIDESHOWS_DE
 	<tr>
 		<td width="32">
 			<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=download_file&fileid=".$file->id); ?>">
-			<img border="0" height="32" width="32" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($file->mimetype); ?>" />
+			<img border="0" height="32" width="32" src="templates/<?php echo config::THEME; ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($file->mimetype); ?>" />
 			</a>
 		</td>
 		<td>

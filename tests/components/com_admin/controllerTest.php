@@ -50,7 +50,7 @@ class testAdminController extends PHPUnit_Framework_TestCase {
     	$frontcontroller = PHPFrame::getFrontController();
 		$frontcontroller->run();
     	    	
-    	$controller = PHPFrame::getActionController('com_admin');
+    	$controller = PHPFrame_MVC_ActionController::getInstance('com_admin');
     	$this->assertTrue($controller->getSuccess());
     }
     
@@ -68,7 +68,7 @@ class testAdminController extends PHPUnit_Framework_TestCase {
     	$frontcontroller = PHPFrame::getFrontController();
 		$frontcontroller->run();
     	    	
-    	$controller = PHPFrame::getActionController('com_admin');
+    	$controller = PHPFrame_MVC_ActionController::getInstance('com_admin');
     	$this->assertTrue($controller->getSuccess());
     }
 }

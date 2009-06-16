@@ -16,7 +16,7 @@ PHPFrame_HTML::confirm('delete_meeting', _LANG_PROJECTS_MEETINGS_DELETE, _LANG_P
 
 <div class="new">
 	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_meeting_form&projectid='.$data['project']->id); ?>">
-		<?php echo PHPFrame_HTML_Text::_( _LANG_NEW ); ?>
+		<?php echo PHPFrame_Base_String::html( _LANG_NEW ); ?>
 	</a>
 </div>
 
@@ -34,8 +34,8 @@ PHPFrame_HTML::confirm('delete_meeting', _LANG_PROJECTS_MEETINGS_DELETE, _LANG_P
 
 	<?php if ($row->created_by == PHPFrame::Session()->getUser()->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_meeting" title="<?php echo PHPFrame_HTML_Text::_($row->name, true); ?>" href="index.php?component=com_projects&action=remove_meeting&projectid=<?php echo $row->projectid; ?>&meetingid=<?php echo $row->id; ?>">
-			<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>
+		<a class="delete_meeting" title="<?php echo PHPFrame_Base_String::html($row->name, true); ?>" href="index.php?component=com_projects&action=remove_meeting&projectid=<?php echo $row->projectid; ?>&meetingid=<?php echo $row->id; ?>">
+			<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
@@ -62,7 +62,7 @@ PHPFrame_HTML::confirm('delete_meeting', _LANG_PROJECTS_MEETINGS_DELETE, _LANG_P
 	
 	<?php if (!empty($row->description)) : ?>
 	<div class="thread_body">
-		<?php echo nl2br(PHPFrame_HTML_Text::limit_words($row->description, 255)); ?>
+		<?php echo nl2br(PHPFrame_Base_String::limitWords($row->description, 255)); ?>
 	</div>
 	<?php endif; ?>
 	
@@ -81,5 +81,5 @@ PHPFrame_HTML::confirm('delete_meeting', _LANG_PROJECTS_MEETINGS_DELETE, _LANG_P
 <?php endforeach; ?>
 
 <?php else : ?>
-<?php echo PHPFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
+<?php echo PHPFrame_Base_String::html( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>

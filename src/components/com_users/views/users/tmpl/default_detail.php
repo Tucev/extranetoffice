@@ -21,7 +21,7 @@
 	<div class="row_icons_heading">
 	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_users&view=users&layout=detail&userid=".$data['row']->id); ?>" >
 		
-		<?php $shortlastname = PHPFrame_HTML_Text::limit_chars($data['row']->lastname, 10); ?>
+		<?php $shortlastname = PHPFrame_Base_String::limitChars($data['row']->lastname, 10); ?>
 		
 		<?php echo PHPFrame_User_Helper::fullname_format($data['row']->firstname, $shortlastname); ?>
 	</a>
@@ -30,5 +30,5 @@
 </div>
 
 <?php else : ?>
-<?php echo PHPFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
+<?php echo PHPFrame_Base_String::html( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>

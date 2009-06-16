@@ -17,9 +17,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_View
+ * @see 		PHPFrame_MVC_View
  */
-class projectsViewIssues extends PHPFrame_Application_View {
+class projectsViewIssues extends PHPFrame_MVC_View {
 	/**
 	 * Constructor
 	 * 
@@ -56,19 +56,19 @@ class projectsViewIssues extends PHPFrame_Application_View {
 	 * @return void
 	 */
 	function displayIssuesList() {
-		PHPFrame::getPathway()->addItem(_LANG_ISSUES);
+		$this->getPathway()->addItem(_LANG_ISSUES);
 	}
 	
 	function displayIssuesForm() {
 		$action = empty($this->_data['row']) ? _LANG_ISSUES_NEW : _LANG_ISSUES_EDIT;
 		$this->_data['page_title'] .= ' - '.$action;
-		PHPFrame::getPathway()->addItem(_LANG_ISSUES, PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issues&projectid=".$this->_data['project']->id));
-		PHPFrame::getPathway()->addItem($action);
+		$this->getPathway()->addItem(_LANG_ISSUES, PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_issues&projectid=".$this->_data['project']->id));
+		$this->getPathway()->addItem($action);
 	}
 	
 	function displayIssuesDetail() {
 		$this->_data['page_title'] .= ' - '.$this->_data['row']->title;
-		PHPFrame::getPathway()->addItem(_LANG_ISSUES, PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&view=issues&projectid=".$this->_data['project']->id));
-		PHPFrame::getPathway()->addItem($this->_data['row']->title);
+		$this->getPathway()->addItem(_LANG_ISSUES, PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&view=issues&projectid=".$this->_data['project']->id));
+		$this->getPathway()->addItem($this->_data['row']->title);
 	}
 }

@@ -15,7 +15,7 @@
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class loginController extends PHPFrame_Application_ActionController {
+class loginController extends PHPFrame_MVC_ActionController {
 	/**
 	 * Constructor
 	 * 
@@ -28,7 +28,7 @@ class loginController extends PHPFrame_Application_ActionController {
 	
 	public function get_login_form() {
 		// Get view
-		$view = $this->getView('login', '');
+		$view = $this->getView('login');
 		// Display view
 		$view->display();
 	}

@@ -23,7 +23,7 @@ PHPFrame_HTML::validate('filesform');
 <form action="index.php" method="post" id="filesform" name="filesform" enctype="multipart/form-data">
 
 <fieldset>
-<legend><?php echo PHPFrame_HTML_Text::_( _LANG_FILES_NEW ); ?></legend>
+<legend><?php echo PHPFrame_Base_String::html( _LANG_FILES_NEW ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <?php if (!empty($data['row']->id)) : ?>
 <tr>
@@ -95,8 +95,8 @@ PHPFrame_HTML::validate('filesform');
 
 <div style="clear:left; margin-top:30px;"></div>
 
-<button type="button" onclick="Javascript:window.history.back();"><?php echo PHPFrame_HTML_Text::_( _LANG_BACK ); ?></button>
-<button type="submit"><?php echo PHPFrame_HTML_Text::_(_LANG_SAVE); ?></button>
+<button type="button" onclick="Javascript:window.history.back();"><?php echo PHPFrame_Base_String::html( _LANG_BACK ); ?></button>
+<button type="submit"><?php echo PHPFrame_Base_String::html(_LANG_SAVE); ?></button>
 
 <input type="hidden" name="projectid" value="<?php echo $data['project']->id;?>" />
 <input type="hidden" name="component" value="com_projects" />

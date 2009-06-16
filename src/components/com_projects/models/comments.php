@@ -14,9 +14,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_Model
+ * @see 		PHPFrame_MVC_Model
  */
-class projectsModelComments extends PHPFrame_Application_Model {
+class projectsModelComments extends PHPFrame_MVC_Model {
 	/**
 	 * Constructor
 	 *
@@ -32,7 +32,7 @@ class projectsModelComments extends PHPFrame_Application_Model {
 		$query .= " ORDER BY c.created DESC";
 		//echo $query; exit;	  
 		
-		$rows = PHPFrame::getDB()->loadObjectList($query);
+		$rows = PHPFrame::DB()->loadObjectList($query);
 		
 		return $rows;
 	}
@@ -112,14 +112,14 @@ class projectsModelComments extends PHPFrame_Application_Model {
 				break;
 		}
 		
-		return PHPFrame::getDB()->loadResult($query);
+		return PHPFrame::DB()->loadResult($query);
 	}
 	
 	function getTotalComments($itemid, $type) {
 		$query = "SELECT COUNT(id) FROM #__comments ";
 		$query .= " WHERE itemid = ".$itemid." AND type = '".$type."'";
 		
-		return PHPFrame::getDB()->loadResult($query);
+		return PHPFrame::DB()->loadResult($query);
 	}
 	
 	function fetchCommentsFromEmail() {

@@ -15,7 +15,7 @@
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class projectsController extends PHPFrame_Application_ActionController {
+class projectsController extends PHPFrame_MVC_ActionController {
 	/**
 	 * Array with available project tools
 	 * 
@@ -55,13 +55,10 @@ class projectsController extends PHPFrame_Application_ActionController {
 			$modelProjects = $this->getModel('projects');
 			$this->_project = $modelProjects->getRow($projectid);
 			
-			// Add pathway item
-			PHPFrame::getPathway()->addItem($this->_project->name, 'index.php?component=com_projects&action=get_project_detail&projectid='.$this->_project->id);
 			
 			// Append page component name to document title
-			$document = PHPFrame::getDocument('html');
-			if (!empty($document->title)) $document->title .= ' - ';
-			$document->title .= $this->_project->name;
+			$document = PHPFrame::Response()->getDocument();
+			$document->setTitle($this->_project->name);
 		}
 	}
 	

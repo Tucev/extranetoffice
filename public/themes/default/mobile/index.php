@@ -20,7 +20,7 @@ $module_positions['right'] = $this->modules->display('right');
 <head>
 <title><?php echo config::SITENAME; ?> - <?php echo $document->title; ?></title>
 <?php $document->printHead(); ?>
-<link rel="stylesheet" href="templates/<?php echo config::TEMPLATE ?>/mobile/css/styles.css" type="text/css" />
+<link rel="stylesheet" href="templates/<?php echo config::THEME ?>/mobile/css/styles.css" type="text/css" />
 </head>
 
 <body>

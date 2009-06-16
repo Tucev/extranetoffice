@@ -13,8 +13,8 @@
 <h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 <div class="new">
-	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_addressbook&view=contacts&layout=form'); ?>" title="<?php echo PHPFrame_HTML_Text::_( _LANG_ADDRESSBOOK_CONTACT_NEW ); ?>">
-		<?php echo PHPFrame_HTML_Text::_( _LANG_ADDRESSBOOK_CONTACT_NEW ); ?>
+	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_addressbook&view=contacts&layout=form'); ?>" title="<?php echo PHPFrame_Base_String::html( _LANG_ADDRESSBOOK_CONTACT_NEW ); ?>">
+		<?php echo PHPFrame_Base_String::html( _LANG_ADDRESSBOOK_CONTACT_NEW ); ?>
 	</a>
 </div>
 
@@ -96,12 +96,12 @@ function submit_filter(reset) {
 		</a>
 	</td>
 	<td>
-		<a href="index.php?option=com_intranetoffice&amp;view=contacts&amp;type=edit&amp;id=<?php echo $contact->id; ?>" title="<?php echo PHPFrame_HTML_Text::_( _LANG_EDIT ); ?>">
-			<img src="templates/<?php echo config::TEMPLATE; ?>/images/icons/generic/16x16/edit.png" alt="<?php echo PHPFrame_HTML_Text::_( _LANG_EDIT ); ?>" />
+		<a href="index.php?option=com_intranetoffice&amp;view=contacts&amp;type=edit&amp;id=<?php echo $contact->id; ?>" title="<?php echo PHPFrame_Base_String::html( _LANG_EDIT ); ?>">
+			<img src="templates/<?php echo config::THEME; ?>/images/icons/generic/16x16/edit.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_EDIT ); ?>" />
 		</a>
 		
-		<a href="Javascript:confirm_delete(<?php echo $contact->id; ?>, '<?php echo PHPFrame_HTML_Text::_($contact->fn, true); ?>');" title="<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>">
-			<img src="templates/<?php echo config::TEMPLATE; ?>/mages/icons/generic/16x16/remove.png" alt="<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>" />
+		<a href="Javascript:confirm_delete(<?php echo $contact->id; ?>, '<?php echo PHPFrame_Base_String::html($contact->fn, true); ?>');" title="<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>">
+			<img src="templates/<?php echo config::THEME; ?>/mages/icons/generic/16x16/remove.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>" />
 		</a>
 	</td>
   </tr>
@@ -115,5 +115,5 @@ function submit_filter(reset) {
 <?php echo $data['page_nav']->getListFooter(); ?>
 
 <?php else : ?>
-<?php echo PHPFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
+<?php echo PHPFrame_Base_String::html( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>

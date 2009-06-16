@@ -14,9 +14,9 @@
  * @subpackage 	com_login
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_Model
+ * @see 		PHPFrame_MVC_Model
  */
-class loginModelLogin extends PHPFrame_Application_Model {
+class loginModelLogin extends PHPFrame_MVC_Model {
 	/**
 	 * Constructor
 	 * 
@@ -32,7 +32,7 @@ class loginModelLogin extends PHPFrame_Application_Model {
 	 * @return	boolean
 	 */
 	public function login($username, $password) {
-		$db = PHPFrame::getDB();
+		$db = PHPFrame::DB();
 		$query = "SELECT id, password FROM #__users WHERE username = '".$username."'";
 		$credentials = $db->loadObject($query);
 		
@@ -77,7 +77,7 @@ class loginModelLogin extends PHPFrame_Application_Model {
 	public function resetPassword($email) {
 		// First we check whether there is a user with the passed email address
 		$query = "SELECT id FROM #__users WHERE email = '".$email."'";
-		$userid = PHPFrame::getDB()->loadResult($query);
+		$userid = PHPFrame::DB()->loadResult($query);
 		
 		if (!empty($userid)) {
 			// Create user object
@@ -94,7 +94,7 @@ class loginModelLogin extends PHPFrame_Application_Model {
 			}
 			
 			// Send notification to new users
-			$uri = PHPFrame::getURI();
+			$uri = new PHPFrame_Utils_URI();
 			
 			$new_mail = new PHPFrame_Mail_Mailer();
 			$new_mail->AddAddress($user->email, PHPFrame_User_Helper::fullname_format($user->firstname, $user->lastname));

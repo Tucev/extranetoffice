@@ -25,8 +25,8 @@ PHPFrame_HTML::validate('commentsform');
 
 	<?php if ($data['row']->userid == PHPFrame::Session()->getUser()->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_message" title="<?php echo PHPFrame_HTML_Text::_($data['row']->subject, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_message&projectid=".$data['row']->projectid."&messageid=".$data['row']->id); ?>">
-			<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>
+		<a class="delete_message" title="<?php echo PHPFrame_Base_String::html($data['row']->subject, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_message&projectid=".$data['row']->projectid."&messageid=".$data['row']->id); ?>">
+			<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>

@@ -17,9 +17,9 @@
  * @subpackage 	com_dashboard
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_View
+ * @see 		PHPFrame_MVC_View
  */
-class dashboardViewDashboard extends PHPFrame_Application_View {
+class dashboardViewDashboard extends PHPFrame_MVC_View {
 	/**
 	 * Constructor
 	 * 
@@ -43,8 +43,7 @@ class dashboardViewDashboard extends PHPFrame_Application_View {
 	function display() {
 		$this->_data['page_title'] = _LANG_DASHBOARD;
 		
-		$document = PHPFrame::getDocument('html');
-		$document->title = _LANG_DASHBOARD;
+		PHPFrame::Response()->setTitle(_LANG_DASHBOARD);
 		
 		parent::display();
 	}

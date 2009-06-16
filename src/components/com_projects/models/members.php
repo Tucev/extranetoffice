@@ -14,9 +14,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_Model
+ * @see 		PHPFrame_MVC_Model
  */
-class projectsModelMembers extends PHPFrame_Application_Model {
+class projectsModelMembers extends PHPFrame_MVC_Model {
 	/**
 	 * Constructor
 	 *
@@ -35,7 +35,7 @@ class projectsModelMembers extends PHPFrame_Application_Model {
 		
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
-		return PHPFrame::getDB()->loadObjectList($query);
+		return PHPFrame::DB()->loadObjectList($query);
 	}
 	
 	function saveMember($projectid, $userid, $roleid, $notify=true) {
@@ -57,13 +57,13 @@ class projectsModelMembers extends PHPFrame_Application_Model {
 			$project_name = projectsHelperProjects::id2name($projectid);
 			$role_name = projectsHelperProjects::project_roleid2name($roleid);
 			$site_name = config::SITENAME;
-			$uri = PHPFrame::getURI();
+			$uri = new PHPFrame_Utils_URI();
 			$new_member_email = PHPFrame_User_Helper::id2email($userid);
 			
 			$new_mail = new PHPFrame_Mail_Mailer();
 			$new_mail->AddAddress($new_member_email, PHPFrame_User_Helper::id2name($userid));
 			$new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, PHPFrame::Session()->getUser()->firstname." ".PHPFrame::Session()->getUser()->lastname, $project_name, $site_name);
-			$new_mail->Body = PHPFrame_HTML_Text::_(sprintf(_LANG_PROJECTS_INVITATION_BODY,
+			$new_mail->Body = PHPFrame_Base_String::html(sprintf(_LANG_PROJECTS_INVITATION_BODY,
 									 PHPFrame::Session()->getUser()->firstname." ".PHPFrame::Session()->getUser()->lastname, 
 									 $project_name, 
 									 $role_name, 
@@ -111,7 +111,7 @@ class projectsModelMembers extends PHPFrame_Application_Model {
 		$project_name = projectsHelperProjects::id2name($projectid);
 		$role_name = projectsHelperProjects::project_roleid2name($roleid);
 		$site_name = config::SITENAME;
-		$uri = PHPFrame::getURI();
+		$uri = new PHPFrame_Utils_URI();
 		
 		$new_mail = new PHPFrame_Mail_Mailer();
 		$new_mail->AddAddress($user->email, PHPFrame_User_Helper::fullname_format($user->firstname, $user->lastname));
@@ -142,7 +142,7 @@ class projectsModelMembers extends PHPFrame_Application_Model {
 	 */
 	function deleteMember($projectid, $userid) {
 		$query = "DELETE FROM #__users_roles WHERE projectid = ".$projectid." AND userid = ".$userid;
-		if (PHPFrame::getDB()->query($query) === false) {
+		if (PHPFrame::DB()->query($query) === false) {
 			return false;
 		}
 		else {
@@ -154,8 +154,8 @@ class projectsModelMembers extends PHPFrame_Application_Model {
 		$query = "UPDATE #__users_roles ";
 		$query .= " SET roleid = ".$roleid;
 		$query .= " WHERE projectid = ".$projectid." AND userid = ".$userid;
-		if (PHPFrame::getDB()->query($query) === false) {
-			$this->_error[] = PHPFrame::getDB()->getLastError();
+		if (PHPFrame::DB()->query($query) === false) {
+			$this->_error[] = PHPFrame::DB()->getLastError();
 			return false;
 		}
 		else {
@@ -165,7 +165,7 @@ class projectsModelMembers extends PHPFrame_Application_Model {
 	
 	function isMember($projectid, $userid) {
 		$query = "SELECT roleid FROM #__users_roles WHERE projectid = ".$projectid." AND userid = ".$userid;
-		$roleid = PHPFrame::getDB()->loadResult($query);
+		$roleid = PHPFrame::DB()->loadResult($query);
 		if (!empty($roleid)) {
 			return $roleid;
 		}

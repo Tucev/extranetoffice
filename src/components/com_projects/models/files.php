@@ -13,9 +13,9 @@
  * @package		ExtranetOffice
  * @subpackage 	com_projects
  * @since 		1.0
- * @see 		PHPFrame_Application_Model
+ * @see 		PHPFrame_MVC_Model
  */
-class projectsModelFiles extends PHPFrame_Application_Model {
+class projectsModelFiles extends PHPFrame_MVC_Model {
 	/**
 	 * Constructor
 	 *
@@ -40,7 +40,7 @@ class projectsModelFiles extends PHPFrame_Application_Model {
 		
 		$search = $list_filter->getSearchStr();
 		if ($search) {
-			$where[] = "f.title LIKE '%".PHPFrame::getDB()->getEscaped($search)."%'";
+			$where[] = "f.title LIKE '%".PHPFrame::DB()->getEscaped($search)."%'";
 		}
 		
 		if (!empty($projectid)) {
@@ -61,14 +61,14 @@ class projectsModelFiles extends PHPFrame_Application_Model {
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
 		// Run query to get total rows before applying filter
-		$list_filter->setTotal(PHPFrame::getDB()->query($query)->rowCount());
+		$list_filter->setTotal(PHPFrame::DB()->query($query)->rowCount());
 
 		// Add order by and limit statements for subset (based on filter)
-		$query .= $list_filter->getOrderByStmt();
-		$query .= $list_filter->getLimitStmt();
+		$query .= $list_filter->getOrderBySQL();
+		$query .= $list_filter->getLimitSQL();
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
-		$rows = PHPFrame::getDB()->loadObjectList($query);
+		$rows = PHPFrame::DB()->loadObjectList($query);
 		
 		// Prepare rows and add relevant data
 		if (is_array($rows) && count($rows) > 0) {
@@ -77,7 +77,7 @@ class projectsModelFiles extends PHPFrame_Application_Model {
 				$row->assignees = $this->getAssignees($row->id);
 				
 				// get total comments
-				$modelComments = PHPFrame::getModel('com_projects', 'comments');
+				$modelComments = PHPFrame_MVC_Factory::getModel('com_projects', 'comments');
 				$row->comments = $modelComments->getTotalComments($row->id, 'files');
 					
 				// Get older revisions
@@ -95,7 +95,7 @@ class projectsModelFiles extends PHPFrame_Application_Model {
 		$query .= " WHERE f.id = ".$fileid;
 		$query .= " ORDER BY f.ts DESC";
 		
-		$row = PHPFrame::getDB()->loadObject($query);
+		$row = PHPFrame::DB()->loadObject($query);
 		
 		if ($row === false) {
 			return false;
@@ -105,7 +105,7 @@ class projectsModelFiles extends PHPFrame_Application_Model {
 		$row->assignees = $this->getAssignees($fileid);
 		
 		// Get comments
-		$modelComments = PHPFrame::getModel('com_projects', 'comments');
+		$modelComments = PHPFrame_MVC_Factory::getModel('com_projects', 'comments');
 		$row->comments = $modelComments->getComments($projectid, 'files', $fileid);
 		
 		// Get older revisions
@@ -141,7 +141,7 @@ class projectsModelFiles extends PHPFrame_Application_Model {
 			$query = "SELECT revision FROM #__files ";
 			$query .= " WHERE parentid = ".$row->parentid;
 			$query .= " ORDER BY revision DESC LIMIT 0,1";
-			$current_revision = PHPFrame::getDB()->loadResult($query);
+			$current_revision = PHPFrame::DB()->loadResult($query);
 			$row->set('revision', ($current_revision+1));
 		}
 		
@@ -176,7 +176,7 @@ class projectsModelFiles extends PHPFrame_Application_Model {
 		// Delete existing assignees before we store new ones if editing existing issue
 		if ($row->revision > 0) {
 			$query = "DELETE FROM #__users_files WHERE fileid = ".$row->parentid;
-			PHPFrame::getDB()->query($query);
+			PHPFrame::DB()->query($query);
 		}
 		
 		// Store assignees
@@ -188,7 +188,7 @@ class projectsModelFiles extends PHPFrame_Application_Model {
 				$query .= " (NULL, '".$post['assignees'][$i]."', '".$row->parentid."') ";
 			}
 			
-			PHPFrame::getDB()->query($query);
+			PHPFrame::DB()->query($query);
 		}
 		
 		return $row;
@@ -247,7 +247,7 @@ class projectsModelFiles extends PHPFrame_Application_Model {
 		$query .= "LEFT JOIN #__users u ON u.id = uf.userid";
 		$query .= " WHERE uf.fileid = ".$fileid;
 		
-		$assignees = PHPFrame::getDB()->loadObjectList($query);
+		$assignees = PHPFrame::DB()->loadObjectList($query);
 		
 		// Prepare assignee data
 		for ($i=0; $i<count($assignees); $i++) {
@@ -296,6 +296,6 @@ class projectsModelFiles extends PHPFrame_Application_Model {
 		$query .= " WHERE f.parentid = ".$parentid." AND f.id <> ".$id;
 		$query .= " ORDER BY f.ts DESC";
 		
-		return PHPFrame::getDB()->loadObjectList($query);
+		return PHPFrame::DB()->loadObjectList($query);
 	}
 }

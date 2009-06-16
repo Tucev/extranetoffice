@@ -8,21 +8,6 @@
  */
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo config::DEFAULT_LANG; ?>" lang="<?php echo config::DEFAULT_LANG; ?>" >
-<head>
-<title><?php echo config::SITENAME; ?> - <?php echo $document->title; ?></title>
-<?php $document->printHead(); ?>
-<link rel="stylesheet" href="themes/<?php echo config::TEMPLATE ?>/css/styles.css" type="text/css" />
-<!--[if lte IE 6]>
-<link href="themes/<?php echo config::TEMPLATE; ?>/css/ie6only.css" rel="stylesheet" type="text/css" />
-<![endif]-->
-<!--[if lte IE 7]>
-<link href="themes/<?php echo config::TEMPLATE; ?>/css/ie7only.css" rel="stylesheet" type="text/css" />
-<![endif]-->
-</head>
-
-<body>
 <script type="text/javascript">
 $(document).ready(function() {
 	window.setTimeout("$(\"#error_msg\").fadeOut(\"slow\")", 3000);
@@ -74,9 +59,6 @@ $(document).ready(function() {
 <!-- End Content -->
 
 <div id="footer">
-Powered by Extranet Office and PHPFrame <?php echo PHPFrame::getVersion(); ?><br />
+Powered by Extranet Office and PHPFrame <?php echo PHPFrame::Version(); ?><br />
 &copy; 2009 E-noise.com Limited
 </div>
-
-</body>
-</html>

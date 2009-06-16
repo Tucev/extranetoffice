@@ -15,7 +15,7 @@ PHPFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECT
 
 <div class="new">
 	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_file_form&projectid='.$data['project']->id); ?>">
-		<?php echo PHPFrame_HTML_Text::_( _LANG_NEW ); ?>
+		<?php echo PHPFrame_Base_String::html( _LANG_NEW ); ?>
 	</a>
 </div>
 
@@ -34,24 +34,24 @@ PHPFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECT
 
 	<?php if ($row->userid == PHPFrame::Session()->getUser()->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_file" title="<?php echo PHPFrame_HTML_Text::_($row->title, true); ?>" href="index.php?component=com_projects&action=remove_file&projectid=<?php echo $row->projectid; ?>&fileid=<?php echo $row->id; ?>">
-			<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>
+		<a class="delete_file" title="<?php echo PHPFrame_Base_String::html($row->title, true); ?>" href="index.php?component=com_projects&action=remove_file&projectid=<?php echo $row->projectid; ?>&fileid=<?php echo $row->id; ?>">
+			<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	<div class="thread_download">
 		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=download_file&fileid=".$row->id); ?>">
-			<?php echo PHPFrame_HTML_Text::_( _LANG_DOWNLOAD ); ?>
+			<?php echo PHPFrame_Base_String::html( _LANG_DOWNLOAD ); ?>
 		</a> 
 	</div>
 	<div class="thread_upload">
 		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_file_form&projectid='.$data['project']->id."&parentid=".$row->parentid); ?>">
-			<?php echo PHPFrame_HTML_Text::_( _LANG_FILES_UPLOAD_NEW_VERSION ); ?>
+			<?php echo PHPFrame_Base_String::html( _LANG_FILES_UPLOAD_NEW_VERSION ); ?>
 		</a> 
 	</div>
 	
 	<div style="float: left; padding: 0 3px 0 0; ">
-		<img height="48" width="48" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($row->mimetype); ?>" alt="<?php echo $row->mimetype; ?>" />
+		<img height="48" width="48" src="templates/<?php echo config::THEME; ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($row->mimetype); ?>" alt="<?php echo $row->mimetype; ?>" />
 	</div>
 	
 	<div class="thread_heading">
@@ -73,7 +73,7 @@ PHPFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECT
 	
 	<?php if (!empty($row->changelog)) : ?>
 	<div class="thread_body">
-		<?php echo nl2br(PHPFrame_HTML_Text::limit_words($row->changelog, 255)); ?>
+		<?php echo nl2br(PHPFrame_Base_String::limitWords($row->changelog, 255)); ?>
 	</div>
 	<?php endif; ?>
 	
@@ -99,8 +99,8 @@ PHPFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECT
 			<div class="thread_oldrevision_entry">
 				<?php if ($row->userid == PHPFrame::Session()->getUser()->id) : ?>
 				<div class="thread_delete">
-					<a class="delete_file" title="<?php echo PHPFrame_HTML_Text::_($child->title, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_file&projectid=".$data['project']->id)."&fileid=".$child->id; ?>">
-						<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>
+					<a class="delete_file" title="<?php echo PHPFrame_Base_String::html($child->title, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_file&projectid=".$data['project']->id)."&fileid=".$child->id; ?>">
+						<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>
 					</a> 
 				</div>
 				<?php endif; ?>
@@ -110,7 +110,7 @@ PHPFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECT
 				(Revision <?php echo $child->revision; ?> - <?php echo date("D, d M Y H:ia", strtotime($child->ts)); ?>) 
 				Uploaded by: <?php echo $child->created_by_name; ?>
 				<br />
-				<?php echo nl2br(PHPFrame_HTML_Text::limit_words($child->changelog, 255)); ?>
+				<?php echo nl2br(PHPFrame_Base_String::limitWords($child->changelog, 255)); ?>
 			</div>
 		<?php endforeach; ?>
 	</div>
@@ -130,7 +130,7 @@ PHPFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECT
 <?php endforeach; ?>
 
 <?php else : ?>
-<?php echo PHPFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
+<?php echo PHPFrame_Base_String::html( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>
 
 <pre><?php //var_dump($data['rows']); ?></pre>

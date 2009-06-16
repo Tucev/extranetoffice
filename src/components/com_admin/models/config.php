@@ -17,7 +17,7 @@
  * @since 		1.0
  * @see 		model
  */
-class adminModelConfig extends PHPFrame_Application_Model {
+class adminModelConfig extends PHPFrame_MVC_Model {
 	/**
 	 * Update configuration file using data passed in request
 	 * 

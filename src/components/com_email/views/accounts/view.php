@@ -17,9 +17,9 @@
  * @subpackage 	com_email
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_View
+ * @see 		PHPFrame_MVC_View
  */
-class emailViewAccounts extends PHPFrame_Application_View {
+class emailViewAccounts extends PHPFrame_MVC_View {
 	var $page_title=null;
 	
 	/**
@@ -61,7 +61,7 @@ class emailViewAccounts extends PHPFrame_Application_View {
 		$this->rows = $modelAccounts->getAccounts($this->_user->id);
 		
 		$this->_data['page_title'] = _LANG_EMAIL_ACCOUNTS;
-		PHPFrame::getPathway()->addItem(_LANG_EMAIL_ACCOUNTS);
+		$this->getPathway()->addItem(_LANG_EMAIL_ACCOUNTS);
 	}
 	
 	/**
@@ -87,7 +87,7 @@ class emailViewAccounts extends PHPFrame_Application_View {
 		}
 		
 		$this->_data['page_title'] = _LANG_EMAIL_ACCOUNTS;
-		PHPFrame::getPathway()->addItem(_LANG_EMAIL_ACCOUNTS);
+		$this->getPathway()->addItem(_LANG_EMAIL_ACCOUNTS);
 	}
 }
 ?>

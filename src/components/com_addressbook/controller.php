@@ -15,7 +15,7 @@
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class addressbookController extends PHPFrame_Application_ActionController {
+class addressbookController extends PHPFrame_MVC_ActionController {
 	/**
 	 * Constructor
 	 * 

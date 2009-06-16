@@ -14,9 +14,9 @@
  * @subpackage 	com_skeleton
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_Model
+ * @see 		PHPFrame_MVC_Model
  */
-class skeletonModelSkeleton extends PHPFrame_Application_Model {
+class skeletonModelSkeleton extends PHPFrame_MVC_Model {
 	/**
 	 * Constructor
 	 * 

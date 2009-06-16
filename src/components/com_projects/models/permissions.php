@@ -14,9 +14,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_Model
+ * @see 		PHPFrame_MVC_Model
  */
-class projectsModelPermissions extends PHPFrame_Application_Model {
+class projectsModelPermissions extends PHPFrame_MVC_Model {
 	/**
 	 * Instance of the permission object
 	 * 
@@ -121,7 +121,7 @@ class projectsModelPermissions extends PHPFrame_Application_Model {
 			$query = "SELECT roleid FROM #__users_roles ";
 			$query .= " WHERE userid = ".$userid." AND projectid = ".$projectid;
 			
-			$this->_roleid = PHPFrame::getDB()->loadResult($query);
+			$this->_roleid = PHPFrame::DB()->loadResult($query);
 			$this->_userid = $userid;
 			$this->_projectid = $projectid;
 		}

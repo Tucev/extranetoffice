@@ -15,7 +15,7 @@
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class usersController extends PHPFrame_Application_ActionController {
+class usersController extends PHPFrame_MVC_ActionController {
 	/**
 	 * Constructor
 	 * 

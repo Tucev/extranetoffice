@@ -14,9 +14,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_Model
+ * @see 		PHPFrame_MVC_Model
  */
-class projectsModelMessages extends PHPFrame_Application_Model {
+class projectsModelMessages extends PHPFrame_MVC_Model {
 	/**
 	 * Constructor
 	 *
@@ -40,7 +40,7 @@ class projectsModelMessages extends PHPFrame_Application_Model {
 		
 		$search = $list_filter->getSearchStr();
 		if ( $search ) {
-			$where[] = "m.subject LIKE '%".PHPFrame::getDB()->getEscaped($search)."%'";
+			$where[] = "m.subject LIKE '%".PHPFrame::DB()->getEscaped($search)."%'";
 		}
 		
 		if (!empty($projectid)) {
@@ -61,14 +61,14 @@ class projectsModelMessages extends PHPFrame_Application_Model {
 		//echo str_replace('#__', 'eo_', $query); exit;
 
 		// Run query to get total rows before applying filter
-		$list_filter->setTotal(PHPFrame::getDB()->query($query)->rowCount());
+		$list_filter->setTotal(PHPFrame::DB()->query($query)->rowCount());
 		
 		// Add order by and limit statements for subset (based on filter)
-		$query .= $list_filter->getOrderByStmt();
-		$query .= $list_filter->getLimitStmt();
+		$query .= $list_filter->getOrderBySQL();
+		$query .= $list_filter->getLimitSQL();
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
-		$rows = PHPFrame::getDB()->loadObjectList($query);
+		$rows = PHPFrame::DB()->loadObjectList($query);
 		
 		// Prepare rows and add relevant data
 		if (is_array($rows) && count($rows) > 0) {
@@ -77,7 +77,7 @@ class projectsModelMessages extends PHPFrame_Application_Model {
 				$row->assignees = $this->getAssignees($row->id);
 				
 				// get total comments
-				$modelComments = PHPFrame::getModel('com_projects', 'comments');
+				$modelComments = PHPFrame_MVC_Factory::getModel('com_projects', 'comments');
 				$row->comments = $modelComments->getTotalComments($row->id, 'messages');
 			}
 		}
@@ -91,13 +91,13 @@ class projectsModelMessages extends PHPFrame_Application_Model {
 		$query .= " JOIN #__users u ON u.id = m.userid ";
 		$query .= " WHERE m.id = ".$messageid;
 		$query .= " ORDER BY m.date_sent DESC";
-		$row = PHPFrame::getDB()->loadObject($query);
+		$row = PHPFrame::DB()->loadObject($query);
 		
 		// Get assignees
 		$row->assignees = $this->getAssignees($messageid);
 		
 		// Get comments
-		$modelComments = PHPFrame::getModel('com_projects', 'comments');
+		$modelComments = PHPFrame_MVC_Factory::getModel('com_projects', 'comments');
 		$row->comments = $modelComments->getComments($projectid, 'messages', $messageid);
 		
 		return $row;
@@ -142,7 +142,7 @@ class projectsModelMessages extends PHPFrame_Application_Model {
 		// Delete existing assignees before we store new ones if editing existing issue
 		if (!empty($post['id'])) {
 			$query = "DELETE FROM #__users_messages WHERE messageid = ".$row->id;
-			PHPFrame::getDB()->query($query);
+			PHPFrame::DB()->query($query);
 		}
 		
 		// Store assignees
@@ -154,7 +154,7 @@ class projectsModelMessages extends PHPFrame_Application_Model {
 				$query .= " (NULL, '".$post['assignees'][$i]."', '".$row->id."') ";
 			}
 			
-			PHPFrame::getDB()->query($query);
+			PHPFrame::DB()->query($query);
 		}
 		
 		return $row;
@@ -167,12 +167,12 @@ class projectsModelMessages extends PHPFrame_Application_Model {
 		// Delete message's comments
 		$query = "DELETE FROM #__comments ";
 		$query .= " WHERE projectid = ".$projectid." AND type = 'messages' AND itemid = ".$messageid;
-		PHPFrame::getDB()->query($query);
+		PHPFrame::DB()->query($query);
 		
 		// Delete message's assignees
 		$query = "DELETE FROM #__users_messages ";
 		$query .= " WHERE messageid = ".$messageid;
-		PHPFrame::getDB()->query($query);
+		PHPFrame::DB()->query($query);
 		
 		// Instantiate table object
 		$row = $this->getTable('messages');
@@ -199,7 +199,7 @@ class projectsModelMessages extends PHPFrame_Application_Model {
 		$query .= " FROM #__users_messages AS um ";
 		$query .= "LEFT JOIN #__users u ON u.id = um.userid";
 		$query .= " WHERE um.messageid = ".$messageid;
-		$assignees = PHPFrame::getDB()->loadObjectList($query);
+		$assignees = PHPFrame::DB()->loadObjectList($query);
 		
 		// Prepare assignee data
 		for ($i=0; $i<count($assignees); $i++) {

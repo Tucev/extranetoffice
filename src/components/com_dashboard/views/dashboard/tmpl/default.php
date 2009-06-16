@@ -46,8 +46,8 @@
 	
 	<?php if (PHPFrame::Session()->getUser()->groupid == 1) : ?>
 	<div style="float:right;" class="new">
-		 <a style="float:right;" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_form"); ?>" title="<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
-		<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>
+		 <a style="float:right;" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_form"); ?>" title="<?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_NEW ); ?>">
+		<?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_NEW ); ?>
 		</a>
 	</div>
 	<?php endif; ?>
@@ -94,13 +94,13 @@
 	<?php foreach ($this->emails as $email) : ?>
 	<?php 
   	if ($email->answered == 1) { 
-  		$status_icon = '<img src="templates/'.config::TEMPLATE.'/images/icons/email/replied.png" alt="Unread" />';
+  		$status_icon = '<img src="templates/'.config::THEME.'/images/icons/email/replied.png" alt="Unread" />';
   	}
   	elseif ($email->seen == 0) {
-  		$status_icon = '<img src="templates/'.config::TEMPLATE.'/images/icons/email/new.png" alt="Unread" />';
+  		$status_icon = '<img src="templates/'.config::THEME.'/images/icons/email/new.png" alt="Unread" />';
   	}
   	else { 
-  		$status_icon = '<img src="templates/'.config::TEMPLATE.'/images/icons/email/read.png" alt="Read" />'; 
+  		$status_icon = '<img src="templates/'.config::THEME.'/images/icons/email/read.png" alt="Read" />'; 
   	}
     ?>
 	<tr class="row<?php echo $k; ?> seen<?php echo $email->seen; ?> <?php if ($email->deleted == 1) echo 'deleted'; ?>">
@@ -127,7 +127,7 @@
 	</tbody>
 	</table>
 	<?php elseif ($this->emails) : ?>
-	<?php echo PHPFrame_HTML_Text::_( _LANG_NO_EMAIL ); ?>
+	<?php echo PHPFrame_Base_String::html( _LANG_NO_EMAIL ); ?>
 	<?php else : ?>
 	No e-mail account.
 	<?php endif; ?>

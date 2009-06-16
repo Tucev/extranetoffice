@@ -18,37 +18,37 @@ PHPFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 
 	<div style="float:right;" class="edit">
 		<a style="float:right;" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_form&projectid=".$data['project']->id); ?>">
-		<?php echo PHPFrame_HTML_Text::_( _LANG_EDIT ); ?>
+		<?php echo PHPFrame_Base_String::html( _LANG_EDIT ); ?>
 		</a>
 	</div>
 	
 	<?php if ($data['project']->created_by == PHPFrame::Session()->getUser()->id) : ?>
 	<div style="float:right;" class="delete">
 		<a class="delete_project" title="<?php echo $data['project']->name; ?>" style="float:right;" href="index.php?component=com_projects&action=remove_project&projectid=<?php echo $data['project']->id; ?>">
-			<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?> &nbsp;&nbsp; 
+			<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?> &nbsp;&nbsp; 
 		</a>
 	</div>
 	<?php endif; ?>
 	
 	<h3 class="project_details">Project info</h3>
 
-	<?php echo PHPFrame_HTML_Text::_( _LANG_DESCRIPTION ); ?>: <br />
+	<?php echo PHPFrame_Base_String::html( _LANG_DESCRIPTION ); ?>: <br />
 	<?php echo $data['project']->description; ?> <br />
 	<br />
-	<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_PROJECT_TYPE ); ?>: <?php echo $data['project']->project_type_name; ?> <br />
-	<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_PRIORITY ); ?>: <?php echo projectsHelperProjects::priorityid2name($data['project']->priority); ?> <br />
-	<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_ACCESS ); ?>: <?php echo projectsHelperProjects::global_accessid2name($data['project']->access); ?> <br />
-	<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_STATUS ); ?>: <?php echo projectsHelperProjects::statusid2name($data['project']->status); ?> <br />
-	<?php echo PHPFrame_HTML_Text::_( _LANG_CREATED_BY ); ?>: <?php echo PHPFrame_User_Helper::id2name($data['project']->created_by); ?> <br />
-	<?php echo PHPFrame_HTML_Text::_( _LANG_CREATED ); ?>: <?php echo $data['project']->created; ?>
+	<?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_PROJECT_TYPE ); ?>: <?php echo $data['project']->project_type_name; ?> <br />
+	<?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_PRIORITY ); ?>: <?php echo projectsHelperProjects::priorityid2name($data['project']->priority); ?> <br />
+	<?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_ACCESS ); ?>: <?php echo projectsHelperProjects::global_accessid2name($data['project']->access); ?> <br />
+	<?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_STATUS ); ?>: <?php echo projectsHelperProjects::statusid2name($data['project']->status); ?> <br />
+	<?php echo PHPFrame_Base_String::html( _LANG_CREATED_BY ); ?>: <?php echo PHPFrame_User_Helper::id2name($data['project']->created_by); ?> <br />
+	<?php echo PHPFrame_Base_String::html( _LANG_CREATED ); ?>: <?php echo $data['project']->created; ?>
 	
 </div><!-- close .main_col_module_half -->
 
 <div class="main_col_module_half">
 	
 	<div style="float:right;" class="edit">
-		<a style="float:right;" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_form&projectid=".$data['project']->id); ?>" title="<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
-		<?php echo PHPFrame_HTML_Text::_( _LANG_EDIT ); ?>
+		<a style="float:right;" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_form&projectid=".$data['project']->id); ?>" title="<?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_NEW ); ?>">
+		<?php echo PHPFrame_Base_String::html( _LANG_EDIT ); ?>
 		</a>
 	</div>
 	
@@ -131,8 +131,8 @@ PHPFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 	<td>
 	<?php if ($row->userid != PHPFrame::Session()->getUserId()) : ?>
 	<?php PHPFrame_HTML::dialog(_LANG_PROJECTS_CHANGE_ROLE, 'index.php?component=com_projects&action=get_member_role_form&projectid='.$data['project']->id.'&userid='.$row->userid, 300, 150, true); ?> 
-	<a class="delete_member" title="<?php echo PHPFrame_HTML_Text::_($row->firstname." ". $row->lastname, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_member&projectid=".$data['project']->id."&userid=".$row->userid); ?>">
-		<img src="templates/<?php echo config::TEMPLATE; ?>/images/icons/generic/16x16/remove.png" alt="<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>" />
+	<a class="delete_member" title="<?php echo PHPFrame_Base_String::html($row->firstname." ". $row->lastname, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_member&projectid=".$data['project']->id."&userid=".$row->userid); ?>">
+		<img src="templates/<?php echo config::THEME; ?>/images/icons/generic/16x16/remove.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>" />
 	</a>
 	<?php else : ?>
 	<?php echo _LANG_PROJECTS_CANT_CHANGE_OWN_ROLE; ?>
@@ -145,7 +145,7 @@ PHPFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 </table>
 
 <?php else : ?>
-<?php echo PHPFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
+<?php echo PHPFrame_Base_String::html( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>
 
 </div><!-- close .dashboard_item -->
