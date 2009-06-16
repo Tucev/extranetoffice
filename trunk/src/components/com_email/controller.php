@@ -15,7 +15,7 @@
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class emailController extends PHPFrame_Application_ActionController {
+class emailController extends PHPFrame_MVC_ActionController {
 	/**
 	 * Constructor
 	 * 

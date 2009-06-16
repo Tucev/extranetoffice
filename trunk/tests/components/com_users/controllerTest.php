@@ -50,7 +50,7 @@ class testUsersController extends PHPUnit_Framework_TestCase {
     	$frontcontroller = PHPFrame::getFrontController();
 		$frontcontroller->run();
     	    	
-    	$controller = PHPFrame::getActionController('com_users');
+    	$controller = PHPFrame_MVC_ActionController::getInstance('com_users');
     	$this->assertTrue($controller->getSuccess());
     }
 }

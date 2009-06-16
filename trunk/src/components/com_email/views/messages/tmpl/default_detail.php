@@ -81,7 +81,7 @@ var selected_rows = new Array();
 selected_rows[<?php echo $this->message['uid']; ?>] = <?php echo $this->message['uid']; ?>;
 
 function confirm_delete(trash, uid, label) {
-	var remove_link = "index.php?component=com_email&action=remove_email&folder=<?php echo PHPFrame_HTML_Text::_($this->folder, true); ?>";
+	var remove_link = "index.php?component=com_email&action=remove_email&folder=<?php echo PHPFrame_Base_String::html($this->folder, true); ?>";
 	
 	if (trash) {
 		remove_link += "&trash=1";
@@ -115,39 +115,39 @@ function confirm_delete(trash, uid, label) {
 
 <div id="email_detail_actions">
 	<div>
-		<a href="Javascript:window.history.back();" title="<?php echo PHPFrame_HTML_Text::_( _LANG_BACK ); ?>">
-		<img border="0" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/generic/32x32/back.png" alt="<?php echo PHPFrame_HTML_Text::_( _LANG_BACK ); ?>" />
+		<a href="Javascript:window.history.back();" title="<?php echo PHPFrame_Base_String::html( _LANG_BACK ); ?>">
+		<img border="0" src="templates/<?php echo config::THEME; ?>/images/icons/generic/32x32/back.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_BACK ); ?>" />
 		</a>
 	</div>
 	<div>
 		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=email&type=reply&folder=".$this->folder."&uid=".$this->message['uid']); ?>" title="<?php echo _LANG_REPLY; ?>">
-		<img border="0" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/email/32x32/mail_reply-32x32.png" alt="<?php echo _LANG_REPLY; ?>" title="<?php echo _LANG_REPLY; ?>" />
+		<img border="0" src="templates/<?php echo config::THEME; ?>/images/icons/email/32x32/mail_reply-32x32.png" alt="<?php echo _LANG_REPLY; ?>" title="<?php echo _LANG_REPLY; ?>" />
 		</a>
 	</div>
 	<div>
 		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=email&type=reply_all&folder=".$this->folder."&uid=".$this->message['uid']); ?>" title="<?php echo _LANG_REPLY_TO_ALL; ?>">
-		<img border="0" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/email/32x32/mail_replyall-32x32.png" alt="<?php echo _LANG_REPLY_TO_ALL; ?>" title="<?php echo _LANG_REPLY_TO_ALL; ?>" />
+		<img border="0" src="templates/<?php echo config::THEME; ?>/images/icons/email/32x32/mail_replyall-32x32.png" alt="<?php echo _LANG_REPLY_TO_ALL; ?>" title="<?php echo _LANG_REPLY_TO_ALL; ?>" />
 		</a>
 	</div>
 	<div>
 		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=email&type=forward&folder=".$this->folder."&uid=".$this->message['uid']); ?>" title="<?php echo _LANG_FORWARD; ?>">
-		<img border="0" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/email/32x32/mail_forward-32x32.png" alt="<?php echo _LANG_FORWARD; ?>" title="<?php echo _LANG_FORWARD; ?>" />
+		<img border="0" src="templates/<?php echo config::THEME; ?>/images/icons/email/32x32/mail_forward-32x32.png" alt="<?php echo _LANG_FORWARD; ?>" title="<?php echo _LANG_FORWARD; ?>" />
 		</a>
 	</div>
 	<div>
 		<a id="move_email" title="<?php echo _LANG_EMAIL_MOVE_TO_FOLDER; ?>">
-		<img border="0" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/email/32x32/move_email.png" alt="<?php echo _LANG_EMAIL_MOVE_TO_FOLDER; ?>" />
+		<img border="0" src="templates/<?php echo config::THEME; ?>/images/icons/email/32x32/move_email.png" alt="<?php echo _LANG_EMAIL_MOVE_TO_FOLDER; ?>" />
 		</a>
 	</div>
 	<div>
 		<a href="Javascript:confirm_delete(1, <?php echo $this->message['uid']; ?>, '<?php echo $this->message['subject']; ?>');" title="<?php echo _LANG_EMAIL_MOVE_TO_TRASH; ?>">
-		<img border="0" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/email/32x32/move_to_trash.png" alt="<?php echo _LANG_EMAIL_MOVE_TO_TRASH; ?>" />
+		<img border="0" src="templates/<?php echo config::THEME; ?>/images/icons/email/32x32/move_to_trash.png" alt="<?php echo _LANG_EMAIL_MOVE_TO_TRASH; ?>" />
 		</a>
 	</div>
 	<!-- 
 	<div>
 		<a href="Javascript:confirm_delete(<?php echo $this->message['uid']; ?>, '<?php echo substr(imap_utf8($this->message['subject']), 0, 32); if (strlen($this->message['subject']) > 33) { echo '...'; }; ?>');" title="<?php echo _LANG_DELETE; ?>">
-		<img border="0" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/email/32x32/mail_delete-32x32.png" alt="<?php echo _LANG_DELETE; ?>" title="<?php echo _LANG_DELETE; ?>" />
+		<img border="0" src="templates/<?php echo config::THEME; ?>/images/icons/email/32x32/mail_delete-32x32.png" alt="<?php echo _LANG_DELETE; ?>" title="<?php echo _LANG_DELETE; ?>" />
 		</a>
 	</div>
 	 -->
@@ -186,7 +186,7 @@ function confirm_delete(trash, uid, label) {
 	<?php if (!empty($attachment['file_name'])) : ?>
 	<a href="index.php?component=com_email&amp;action=download_attachment&amp;view=email&folder=<?php echo $this->folder; ?>&amp;file_name=<?php echo $attachment['file_name']; ?>&amp;msgno=<?php echo $this->message['msgno'] ?>&amp;file=<?php echo $x; ?>">
 	<?php echo $attachment['file_name']; ?>
-	</a> - <?php echo PHPFrame_HTML_Text::bytes($attachment['file_size']); ?> <br />
+	</a> - <?php echo PHPFrame_Base_Number::bytes($attachment['file_size']); ?> <br />
 	<?php endif; ?>
 <?php endfor; ?>
 </td>

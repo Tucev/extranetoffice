@@ -16,12 +16,12 @@ PHPFrame_HTML::validate('userform');
 <form action="index.php" method="post" name="userform" id="userform" enctype="multipart/form-data">
 	
 <fieldset>
-<legend><?php echo PHPFrame_HTML_Text::_( _LANG_USER_GENERAL_SETTINGS ); ?></legend>
+<legend><?php echo PHPFrame_Base_String::html( _LANG_USER_GENERAL_SETTINGS ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td>
 		<label for="username">
-			<?php echo PHPFrame_HTML_Text::_( _LANG_USERNAME ); ?>:
+			<?php echo PHPFrame_Base_String::html( _LANG_USERNAME ); ?>:
 		</label>
 	</td>
 	<td>
@@ -31,7 +31,7 @@ PHPFrame_HTML::validate('userform');
 <tr>
 	<td width="120">
 		<label for="email">
-			<?php echo PHPFrame_HTML_Text::_( _LANG_EMAIL ); ?>:
+			<?php echo PHPFrame_Base_String::html( _LANG_EMAIL ); ?>:
 		</label>
 	</td>
 	<td>
@@ -41,7 +41,7 @@ PHPFrame_HTML::validate('userform');
 <tr>
 	<td>
 		<label for="firstname">
-			<?php echo PHPFrame_HTML_Text::_( _LANG_FIRSTNAME ); ?>:
+			<?php echo PHPFrame_Base_String::html( _LANG_FIRSTNAME ); ?>:
 		</label>
 	</td>
 	<td>
@@ -51,7 +51,7 @@ PHPFrame_HTML::validate('userform');
 <tr>
 	<td>
 		<label for="lastname">
-			<?php echo PHPFrame_HTML_Text::_( _LANG_LASTNAME ); ?>:
+			<?php echo PHPFrame_Base_String::html( _LANG_LASTNAME ); ?>:
 		</label>
 	</td>
 	<td>
@@ -61,7 +61,7 @@ PHPFrame_HTML::validate('userform');
 <tr>
 	<td>
 		<label for="password">
-			<?php echo PHPFrame_HTML_Text::_( _LANG_PASSWORD ); ?>:
+			<?php echo PHPFrame_Base_String::html( _LANG_PASSWORD ); ?>:
 		</label>
 	</td>
 	<td>
@@ -71,7 +71,7 @@ PHPFrame_HTML::validate('userform');
 <tr>
 	<td>
 		<label for="password2">
-			<?php echo PHPFrame_HTML_Text::_( _LANG_PASSWORD_VERIFY ); ?>:
+			<?php echo PHPFrame_Base_String::html( _LANG_PASSWORD_VERIFY ); ?>:
 		</label>
 	</td>
 	<td>
@@ -124,8 +124,8 @@ PHPFrame_HTML::validate('userform');
 <div style="clear:both; margin-top:30px;"></div>
 
 <?php if (PHPFrame::Request()->get('tmpl') != 'component') : ?>
-<button type="button" onclick="Javascript:window.history.back();"><?php echo PHPFrame_HTML_Text::_( _LANG_BACK ); ?></button>
-<button type="submit"><?php echo PHPFrame_HTML_Text::_(_LANG_SAVE); ?></button>
+<button type="button" onclick="Javascript:window.history.back();"><?php echo PHPFrame_Base_String::html( _LANG_BACK ); ?></button>
+<button type="submit"><?php echo PHPFrame_Base_String::html(_LANG_SAVE); ?></button>
 <?php endif; ?>
 
 <input type="hidden" name="id" value="<?php echo $data['row']->get('id'); ?>" />

@@ -17,9 +17,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_View
+ * @see 		PHPFrame_MVC_View
  */
-class projectsViewMessages extends PHPFrame_Application_View {
+class projectsViewMessages extends PHPFrame_MVC_View {
 	/**
 	 * Constructor
 	 * 
@@ -56,18 +56,18 @@ class projectsViewMessages extends PHPFrame_Application_View {
 	 * @return void
 	 */
 	function displayMessagesList() {
-		PHPFrame::getPathway()->addItem($this->_data['page_title']);
+		$this->getPathway()->addItem($this->_data['page_title']);
 	}
 	
 	function displayMessagesDetail() {
 		$this->_data['page_title'] .= ' - '.$this->_data['row']->subject;
-		PHPFrame::getPathway()->addItem(_LANG_MESSAGES, "index.php?component=com_projects&action=get_messages&projectid=".$this->_data['project']->id);
-		PHPFrame::getPathway()->addItem($this->_data['row']->subject);
+		$this->getPathway()->addItem(_LANG_MESSAGES, "index.php?component=com_projects&action=get_messages&projectid=".$this->_data['project']->id);
+		$this->getPathway()->addItem($this->_data['row']->subject);
 	}
 	
 	function displayMessagesForm() {
 		$this->_data['page_title'] .= ' - '._LANG_MESSAGES_NEW;
-		PHPFrame::getPathway()->addItem(_LANG_MESSAGES, "index.php?component=com_projects&action=get_messages&projectid=".$this->_data['project']->id);
-		PHPFrame::getPathway()->addItem(_LANG_MESSAGES_NEW);
+		$this->getPathway()->addItem(_LANG_MESSAGES, "index.php?component=com_projects&action=get_messages&projectid=".$this->_data['project']->id);
+		$this->getPathway()->addItem(_LANG_MESSAGES_NEW);
 	}
 }

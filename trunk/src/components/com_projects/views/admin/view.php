@@ -17,9 +17,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_View
+ * @see 		PHPFrame_MVC_View
  */
-class projectsViewAdmin extends PHPFrame_Application_View {
+class projectsViewAdmin extends PHPFrame_MVC_View {
 	/**
 	 * Constructor
 	 * 
@@ -56,7 +56,7 @@ class projectsViewAdmin extends PHPFrame_Application_View {
 	function displayAdminList() {
 		$this->_data['page_title'] = _LANG_ADMIN;
 		$this->_data['page_heading'] = $this->_data['project']->name.' - '._LANG_ADMIN;
-		PHPFrame::getPathway()->addItem(_LANG_ADMIN);
+		$this->getPathway()->addItem(_LANG_ADMIN);
 	}
 	
 	/**
@@ -74,7 +74,7 @@ class projectsViewAdmin extends PHPFrame_Application_View {
 			$this->_data['page_title'] = _LANG_PROJECTS_NEW;
 		}
 		
-		PHPFrame::getPathway()->addItem($this->_data['page_title']);
+		$this->getPathway()->addItem($this->_data['page_title']);
 	}
 	
 	/**
@@ -82,7 +82,7 @@ class projectsViewAdmin extends PHPFrame_Application_View {
 	 */
 	function displayAdminMemberRole() {
 		$this->_data['page_title'] = projectsHelperProjects::id2name($this->projectid).' - '. _LANG_ADMIN;
-		PHPFrame::getPathway()->addItem(_LANG_PROJECTS_MEMBERS);
+		$this->getPathway()->addItem(_LANG_PROJECTS_MEMBERS);
 	}
 	
 	/**
@@ -94,7 +94,7 @@ class projectsViewAdmin extends PHPFrame_Application_View {
 	function displayAdminMemberForm() {
 		$this->_data['page_title'] = _LANG_ADMIN.' - '._LANG_PROJECTS_ADD_MEMBER;
 		$this->_data['page_heading'] = $this->_data['project']->name.' - '._LANG_ADMIN;
-		PHPFrame::getPathway()->addItem(_LANG_ADMIN, 'index.php?component=com_projects&view=admin&projectid='.$this->_data['project']->id);
-		PHPFrame::getPathway()->addItem(_LANG_PROJECTS_ADD_MEMBER);
+		$this->getPathway()->addItem(_LANG_ADMIN, 'index.php?component=com_projects&view=admin&projectid='.$this->_data['project']->id);
+		$this->getPathway()->addItem(_LANG_PROJECTS_ADD_MEMBER);
 	}
 }

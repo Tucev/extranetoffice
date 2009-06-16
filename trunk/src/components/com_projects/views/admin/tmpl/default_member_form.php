@@ -14,23 +14,23 @@ function submitbutton() {
 	
 	// do field validation
 	if (form.roleid.value == '0') {
-		alert('<?php echo PHPFrame_HTML_Text::_(_LANG_PROJECTS_ROLE_REQUIRED, true); ?>');
+		alert('<?php echo PHPFrame_Base_String::html(_LANG_PROJECTS_ROLE_REQUIRED, true); ?>');
 		form.roleid.focus();
 	}
 	else if (form.userids.value == '' && form.email.value == '') {
-		alert('<?php echo PHPFrame_HTML_Text::_(_LANG_ADMIN_USER_REQUIRED, true); ?>');
+		alert('<?php echo PHPFrame_Base_String::html(_LANG_ADMIN_USER_REQUIRED, true); ?>');
 		form.email.focus();
 	}
 	else if (form.email.value != '' && form.username.value == '') {
-		alert('<?php echo PHPFrame_HTML_Text::_(_LANG_ADMIN_NEW_USERNAME_REQUIRED, true); ?>');
+		alert('<?php echo PHPFrame_Base_String::html(_LANG_ADMIN_NEW_USERNAME_REQUIRED, true); ?>');
 		form.username.focus();
 	}
 	else if (form.email.value != '' && form.firstname.value == '') {
-		alert('<?php echo PHPFrame_HTML_Text::_(_LANG_ADMIN_NAME_REQUIRED, true); ?>');
+		alert('<?php echo PHPFrame_Base_String::html(_LANG_ADMIN_NAME_REQUIRED, true); ?>');
 		form.firstname.focus();
 	}
 	else if (form.email.value != '' && form.groupid.value == '') {
-		alert('<?php echo PHPFrame_HTML_Text::_(_LANG_ADMIN_NAME_REQUIRED, true); ?>');
+		alert('<?php echo PHPFrame_Base_String::html(_LANG_ADMIN_NAME_REQUIRED, true); ?>');
 		form.groupid.focus();
 	}
 	else {
@@ -51,7 +51,7 @@ function submitbutton() {
 <form action="index.php" method="post" name="newmemberform">
 	
 	<fieldset>
-		<legend><?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_ADD_EXISTING_MEMBER ); ?></legend>
+		<legend><?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_ADD_EXISTING_MEMBER ); ?></legend>
 		
 		<table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 		<tr>
@@ -77,7 +77,7 @@ function submitbutton() {
 	<div style="padding:10px 5px 5px 5px; font-size: 1.4em;">or</div>
 	
 	<fieldset>
-		<legend><?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_INVITE_NEW_MEMBER ); ?></legend>
+		<legend><?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_INVITE_NEW_MEMBER ); ?></legend>
 		
 		<table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 		<tr>
@@ -121,7 +121,7 @@ function submitbutton() {
 			</td>
 		</tr>
 		<tr>
-			<td><?php echo PHPFrame_HTML_Text::_( _LANG_GROUP ); ?></td>
+			<td><?php echo PHPFrame_Base_String::html( _LANG_GROUP ); ?></td>
 			<td><?php echo PHPFrame_User_Helper::selectGroup(); ?></td>
 		</tr>
 		</table>
@@ -136,8 +136,8 @@ function submitbutton() {
 	
 	<div style="clear:left; margin-top:30px;"></div>
 	
-	<button type="button" onclick="Javascript:window.history.back();"><?php echo PHPFrame_HTML_Text::_( _LANG_BACK ); ?></button>
-	<button type="submit"><?php echo PHPFrame_HTML_Text::_(_LANG_SAVE); ?></button>
+	<button type="button" onclick="Javascript:window.history.back();"><?php echo PHPFrame_Base_String::html( _LANG_BACK ); ?></button>
+	<button type="submit"><?php echo PHPFrame_Base_String::html(_LANG_SAVE); ?></button>
 	
 	<input type="hidden" name="component" value="com_projects" />
 	<input type="hidden" name="action" value="save_member" />

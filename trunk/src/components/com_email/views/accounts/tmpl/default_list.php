@@ -12,7 +12,7 @@
 
 <div class="new">
 	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_email&view=accounts&layout=form'); ?>">
-		<?php echo PHPFrame_HTML_Text::_( _LANG_NEW ); ?>
+		<?php echo PHPFrame_Base_String::html( _LANG_NEW ); ?>
 	</a>
 </div>
 
@@ -46,13 +46,13 @@
 				Default
 			<?php else : ?>
 			<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&action=make_default_account&accountid=".$row->id); ?>">
-				<?php echo PHPFrame_HTML_Text::_(_LANG_EMAIL_ACCOUNTS_MAKE_DEFAULT); ?>
+				<?php echo PHPFrame_Base_String::html(_LANG_EMAIL_ACCOUNTS_MAKE_DEFAULT); ?>
 			</a>
 			<?php endif; ?>
 		</td>
 		<td>
 			<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&action=remove_account&accountid=".$row->id); ?>">
-				<?php echo PHPFrame_HTML_Text::_(_LANG_DELETE); ?>
+				<?php echo PHPFrame_Base_String::html(_LANG_DELETE); ?>
 			</a>
 		</td>
 	</tr>
@@ -60,5 +60,5 @@
 	<?php endforeach; ?>
 </table>
 <?php else : ?>
-<?php echo PHPFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
+<?php echo PHPFrame_Base_String::html( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>

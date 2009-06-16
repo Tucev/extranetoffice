@@ -14,10 +14,10 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_Model
+ * @see 		PHPFrame_MVC_Model
  * @todo		check for NULL values rather than 00-00-000 00:00
  */
-class projectsModelIssues extends PHPFrame_Application_Model {
+class projectsModelIssues extends PHPFrame_MVC_Model {
 	/**
 	 * Constructor
 	 *
@@ -45,7 +45,7 @@ class projectsModelIssues extends PHPFrame_Application_Model {
 		// Add search filtering
 		$search = $list_filter->getSearchStr();
 		if ($search) {
-			$where[] = "i.title LIKE '%".PHPFrame::getDB()->getEscaped($list_filter->getSearchStr())."%'";
+			$where[] = "i.title LIKE '%".PHPFrame::DB()->getEscaped($list_filter->getSearchStr())."%'";
 		}
 		
 		if (!empty($projectid)) {
@@ -82,14 +82,14 @@ class projectsModelIssues extends PHPFrame_Application_Model {
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
 		// Run query to get total rows before applying filter
-		$list_filter->setTotal(PHPFrame::getDB()->query($query)->rowCount());
+		$list_filter->setTotal(PHPFrame::DB()->query($query)->rowCount());
 
 		// Add order by and limit statements for subset (based on filter)
-		//$query .= $list_filter->getOrderByStmt();
-		$query .= $list_filter->getLimitStmt();
+		//$query .= $list_filter->getOrderBySQL();
+		$query .= $list_filter->getLimitSQL();
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
-		$rows = PHPFrame::getDB()->loadObjectList($query);
+		$rows = PHPFrame::DB()->loadObjectList($query);
 		
 		// Prepare rows and add relevant data
 		if (is_array($rows) && count($rows) > 0) {
@@ -98,7 +98,7 @@ class projectsModelIssues extends PHPFrame_Application_Model {
 				$row->assignees = $this->getAssignees($row->id);
 				
 				// get total comments
-				$modelComments = PHPFrame::getModel('com_projects', 'comments');
+				$modelComments = PHPFrame_MVC_Factory::getModel('com_projects', 'comments');
 				$row->comments = $modelComments->getTotalComments($row->id, 'issues');
 				
 				// set status
@@ -131,13 +131,13 @@ class projectsModelIssues extends PHPFrame_Application_Model {
 		$query .= " WHERE i.id = ".$issueid;
 		$query .= " ORDER BY i.created DESC";
 		
-		$row = PHPFrame::getDB()->loadObject($query);
+		$row = PHPFrame::DB()->loadObject($query);
 		
 		// Get assignees
 		$row->assignees = $this->getAssignees($issueid);
 		
 		// Get comments
-		$modelComments = PHPFrame::getModel('com_projects', 'comments');
+		$modelComments = PHPFrame_MVC_Factory::getModel('com_projects', 'comments');
 		$row->comments = $modelComments->getComments($projectid, 'issues', $issueid);
 		
 		return $row;
@@ -184,7 +184,7 @@ class projectsModelIssues extends PHPFrame_Application_Model {
 		// Delete existing assignees before we store new ones if editing existing issue
 		if (!empty($post['id'])) {
 			$query = "DELETE FROM #__users_issues WHERE issueid = ".$row->id;
-			PHPFrame::getDB()->query($query);
+			PHPFrame::DB()->query($query);
 		}
 		
 		// Store assignees
@@ -196,7 +196,7 @@ class projectsModelIssues extends PHPFrame_Application_Model {
 				$query .= " (NULL, '".$post['assignees'][$i]."', '".$row->id."') ";
 			}
 			
-			PHPFrame::getDB()->query($query);
+			PHPFrame::DB()->query($query);
 		}
 		
 		return $row;
@@ -216,16 +216,16 @@ class projectsModelIssues extends PHPFrame_Application_Model {
 		// Delete message's comments
 		$query = "DELETE FROM #__comments ";
 		$query .= " WHERE projectid = ".$projectid." AND type = 'issues' AND itemid = ".$issueid;
-		if (!PHPFrame::getDB()->query($query)) {
-			$this->_error[] = PHPFrame::getDB()->getLastError();
+		if (!PHPFrame::DB()->query($query)) {
+			$this->_error[] = PHPFrame::DB()->getLastError();
 			return false;
 		}
 		
 		// Delete message's assignees
 		$query = "DELETE FROM #__users_issues ";
 		$query .= " WHERE issueid = ".$issueid;
-		if (!PHPFrame::getDB()->query($query)) {
-			$this->_error[] = PHPFrame::getDB()->getLastError();
+		if (!PHPFrame::DB()->query($query)) {
+			$this->_error[] = PHPFrame::DB()->getLastError();
 			return false;
 		}
 		
@@ -252,8 +252,8 @@ class projectsModelIssues extends PHPFrame_Application_Model {
 	public function closeIssue($projectid, $issueid) {
 		$query = "UPDATE #__issues ";
 		$query .= " SET closed = '".date("Y-m-d H:i:s")."' WHERE id = ".$issueid;
-		if (!PHPFrame::getDB()->query($query)) {
-			$this->_error[] = PHPFrame::getDB()->getLastError();
+		if (!PHPFrame::DB()->query($query)) {
+			$this->_error[] = PHPFrame::DB()->getLastError();
 			return false;
 		}
 		
@@ -272,8 +272,8 @@ class projectsModelIssues extends PHPFrame_Application_Model {
 	public function reopenIssue($projectid, $issueid) {
 		$query = "UPDATE #__issues ";
 		$query .= " SET closed = '0000-00-00 00:00:00' WHERE id = ".$issueid;
-		if (!PHPFrame::getDB()->query($query)) {
-			$this->_error[] = PHPFrame::getDB()->getLastError();
+		if (!PHPFrame::DB()->query($query)) {
+			$this->_error[] = PHPFrame::DB()->getLastError();
 			return false;
 		}
 		
@@ -296,7 +296,7 @@ class projectsModelIssues extends PHPFrame_Application_Model {
 			$query .= " AND dtend < '".date("Y-m-d")." 23:59:59' AND closed = '0000-00-00 00:00:00'"; 
 		}
 		
-		return PHPFrame::getDB()->loadResult($query);
+		return PHPFrame::DB()->loadResult($query);
 	}
 	
 	/**
@@ -311,7 +311,7 @@ class projectsModelIssues extends PHPFrame_Application_Model {
 		$query .= " FROM #__users_issues AS ui ";
 		$query .= "LEFT JOIN #__users u ON u.id = ui.userid";
 		$query .= " WHERE ui.issueid = ".$issueid;
-		$assignees = PHPFrame::getDB()->loadObjectList($query);
+		$assignees = PHPFrame::DB()->loadObjectList($query);
 		
 		// Prepare assignee data
 		for ($i=0; $i<count($assignees); $i++) {

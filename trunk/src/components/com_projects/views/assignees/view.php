@@ -17,9 +17,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_View
+ * @see 		PHPFrame_MVC_View
  */
-class projectsViewAssignees extends PHPFrame_Application_View {
+class projectsViewAssignees extends PHPFrame_MVC_View {
 	/**
 	 * Constructor
 	 * 

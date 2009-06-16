@@ -26,24 +26,24 @@ PHPFrame_HTML::validate('commentsform');
 
 	<?php if ($data['row']->userid == PHPFrame::Session()->getUser()->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_file" title="<?php echo PHPFrame_HTML_Text::_($data['row']->title, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_file&projectid=".$data['row']->projectid)."&fileid=".$data['row']->id; ?>">
-			<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>
+		<a class="delete_file" title="<?php echo PHPFrame_Base_String::html($data['row']->title, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_file&projectid=".$data['row']->projectid)."&fileid=".$data['row']->id; ?>">
+			<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
 	<div class="thread_download">
 		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=download_file&fileid=".$data['row']->id); ?>">
-			<?php echo PHPFrame_HTML_Text::_( _LANG_DOWNLOAD ); ?>
+			<?php echo PHPFrame_Base_String::html( _LANG_DOWNLOAD ); ?>
 		</a> 
 	</div>
 	<div class="thread_upload">
 		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_file_form&projectid='.$data['project']->id."&parentid=".$data['row']->parentid); ?>">
-			<?php echo PHPFrame_HTML_Text::_( _LANG_FILES_UPLOAD_NEW_VERSION ); ?>
+			<?php echo PHPFrame_Base_String::html( _LANG_FILES_UPLOAD_NEW_VERSION ); ?>
 		</a> 
 	</div>
 	
 	<div style="float: left; padding: 0 3px 0 0; ">
-		<img height="48" width="48" src="templates/<?php echo config::TEMPLATE; ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($data['row']->mimetype); ?>" alt="<?php echo $data['row']->mimetype; ?>" />
+		<img height="48" width="48" src="templates/<?php echo config::THEME; ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($data['row']->mimetype); ?>" alt="<?php echo $data['row']->mimetype; ?>" />
 	</div>
 	
 	<div class="thread_heading">
@@ -91,8 +91,8 @@ PHPFrame_HTML::validate('commentsform');
 			<div class="thread_oldrevision_entry">
 				<?php if ($data['row']->userid == PHPFrame::Session()->getUser()->id) : ?>
 				<div class="thread_delete">
-					<a class="delete_file" title="<?php echo PHPFrame_HTML_Text::_($child->title, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_file&projectid=".$data['row']->projectid)."&fileid=".$child->id; ?>">
-						<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>
+					<a class="delete_file" title="<?php echo PHPFrame_Base_String::html($child->title, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_file&projectid=".$data['row']->projectid)."&fileid=".$child->id; ?>">
+						<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>
 					</a> 
 				</div>
 				<?php endif; ?>

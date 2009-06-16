@@ -15,42 +15,42 @@ PHPFrame_HTML::validate('usersform');
 <form action="index.php" method="post" id="usersform" name="usersform">
 
 	<fieldset>
-		<legend><?php echo PHPFrame_HTML_Text::_( _LANG_ADMIN_USER_DETAILS ); ?></legend>
+		<legend><?php echo PHPFrame_Base_String::html( _LANG_ADMIN_USER_DETAILS ); ?></legend>
 		
 		<table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 		<tr>
-			<td width="22%"><?php echo PHPFrame_HTML_Text::_( _LANG_USERNAME ); ?></td>
+			<td width="22%"><?php echo PHPFrame_Base_String::html( _LANG_USERNAME ); ?></td>
 			<td><input class="required" type="text" size="30" name="username" value="<?php echo $data['row']->username; ?>" /></td>
 		</tr>
 		<tr>
-			<td><?php echo PHPFrame_HTML_Text::_( _LANG_EMAIL ); ?></td>
+			<td><?php echo PHPFrame_Base_String::html( _LANG_EMAIL ); ?></td>
 			<td><input class="required email" type="text" size="30" name="email" value="<?php echo $data['row']->email; ?>" /></td>
 		</tr>
 		<tr>
-			<td><?php echo PHPFrame_HTML_Text::_( _LANG_FIRSTNAME ); ?></td>
+			<td><?php echo PHPFrame_Base_String::html( _LANG_FIRSTNAME ); ?></td>
 			<td><input class="required" type="text" size="30" name="firstname" value="<?php echo $data['row']->firstname; ?>" /></td>
 		</tr>
 		<tr>
-			<td><?php echo PHPFrame_HTML_Text::_( _LANG_LASTNAME ); ?></td>
+			<td><?php echo PHPFrame_Base_String::html( _LANG_LASTNAME ); ?></td>
 			<td><input class="required" type="text" size="30" name="lastname" value="<?php echo $data['row']->lastname; ?>" /></td>
 		</tr>
 		<tr>
-			<td><?php echo PHPFrame_HTML_Text::_( _LANG_GROUP ); ?></td>
+			<td><?php echo PHPFrame_Base_String::html( _LANG_GROUP ); ?></td>
 			<td><?php echo PHPFrame_User_Helper::selectGroup($data['row']->groupid); ?></td>
 		</tr>
 		<?php if (!empty($data['row']->id)) :?>
 		<tr>
-			<td><?php echo PHPFrame_HTML_Text::_( _LANG_PASSWORD ); ?></td>
+			<td><?php echo PHPFrame_Base_String::html( _LANG_PASSWORD ); ?></td>
 			<td><input type="password" size="30" name="password" id="password" value="" /></td>
 		</tr>
 		<tr>
-			<td><?php echo PHPFrame_HTML_Text::_( _LANG_PASSWORD_VERIFY ); ?></td>
+			<td><?php echo PHPFrame_Base_String::html( _LANG_PASSWORD_VERIFY ); ?></td>
 			<td><input type="password" size="30" name="password2" id="password2" value="" /></td>
 		</tr>
 		<?php else : ?>
 		<tr>
-			<td><?php echo PHPFrame_HTML_Text::_( _LANG_PASSWORD ); ?></td>
-			<td><?php echo PHPFrame_HTML_Text::_( _LANG_PASSWORD_AUTOGEN_INFO ); ?></td>
+			<td><?php echo PHPFrame_Base_String::html( _LANG_PASSWORD ); ?></td>
+			<td><?php echo PHPFrame_Base_String::html( _LANG_PASSWORD_AUTOGEN_INFO ); ?></td>
 		</tr>
 		<?php endif; ?>
 		</table>
@@ -59,8 +59,8 @@ PHPFrame_HTML::validate('usersform');
 <div style="clear:both; margin-top:30px;"></div>
 
 <?php if (PHPFrame::Request()->get('tmpl') != 'component') : ?>
-<button type="button" onclick="Javascript:window.history.back();"><?php echo PHPFrame_HTML_Text::_( _LANG_BACK ); ?></button>
-<button type="submit"><?php echo PHPFrame_HTML_Text::_(_LANG_SAVE); ?></button>
+<button type="button" onclick="Javascript:window.history.back();"><?php echo PHPFrame_Base_String::html( _LANG_BACK ); ?></button>
+<button type="submit"><?php echo PHPFrame_Base_String::html(_LANG_SAVE); ?></button>
 <?php endif; ?>
 
 <input type="hidden" name="id" value="<?php echo $data['row']->id;?>" />

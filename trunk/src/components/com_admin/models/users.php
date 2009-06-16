@@ -17,7 +17,7 @@
  * @since 		1.0
  * @see 		model
  */
-class adminModelUsers extends PHPFrame_Application_Model {
+class adminModelUsers extends PHPFrame_MVC_Model {
 	/**
 	 * Get users
 	 * 
@@ -40,9 +40,9 @@ class adminModelUsers extends PHPFrame_Application_Model {
 		}
 		
 		if ($search) {
-			$where[] = "(u.firstname LIKE '%".PHPFrame::getDB()->getEscaped($list_filter->getSearchStr())."%' 
-						OR u.lastname LIKE '%".PHPFrame::getDB()->getEscaped($list_filter->getSearchStr())."%' 
-						OR u.username LIKE '%".PHPFrame::getDB()->getEscaped($list_filter->getSearchStr())."%')";
+			$where[] = "(u.firstname LIKE '%".PHPFrame::DB()->getEscaped($list_filter->getSearchStr())."%' 
+						OR u.lastname LIKE '%".PHPFrame::DB()->getEscaped($list_filter->getSearchStr())."%' 
+						OR u.username LIKE '%".PHPFrame::DB()->getEscaped($list_filter->getSearchStr())."%')";
 		}
 
 		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
@@ -56,10 +56,10 @@ class adminModelUsers extends PHPFrame_Application_Model {
 				  " GROUP BY u.id ";
 		
 		//echo str_replace('#__', 'eo_', $query); exit;
-		PHPFrame::getDB()->query($query);
+		PHPFrame::DB()->query($query);
 		
 		// Set total number of record in list filter
-		$list_filter->setTotal(PHPFrame::getDB()->getNumRows());
+		$list_filter->setTotal(PHPFrame::DB()->getNumRows());
 		
 		// get the subset (based on limits) of required records
 		$query = "SELECT 
@@ -71,11 +71,11 @@ class adminModelUsers extends PHPFrame_Application_Model {
 				  " GROUP BY u.id ";
 			
 		// Add order by and limit statements for subset (based on filter)
-		$query .= $list_filter->getOrderByStmt();
-		$query .= $list_filter->getLimitStmt();
+		$query .= $list_filter->getOrderBySQL();
+		$query .= $list_filter->getLimitSQL();
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
-		return PHPFrame::getDB()->loadObjectList($query);
+		return PHPFrame::DB()->loadObjectList($query);
 	}
 	
 	/**
@@ -93,7 +93,7 @@ class adminModelUsers extends PHPFrame_Application_Model {
 					  LEFT JOIN #__groups g ON u.groupid = g.id 
 					  WHERE u.id = '".$userid."'";
 			
-			return PHPFrame::getDB()->loadObject($query);
+			return PHPFrame::DB()->loadObject($query);
 		}
 		else {
 			return false;
@@ -136,7 +136,7 @@ class adminModelUsers extends PHPFrame_Application_Model {
 		
 		// Send notification to new users
 		if ($new_user === true) {
-			$uri = PHPFrame::getURI();
+			$uri = new PHPFrame_Utils_URI();
 		
 			$new_mail = new PHPFrame_Mail_Mailer();
 			$new_mail->AddAddress($user->email, PHPFrame_User_Helper::fullname_format($user->firstname, $user->lastname));
@@ -159,8 +159,8 @@ class adminModelUsers extends PHPFrame_Application_Model {
 	
 	function deleteUser($userid) {
 		$query = "UPDATE #__users SET `deleted` = '".date("Y-m-d H:i:s")."' WHERE id = ".$userid;
-		if (PHPFrame::getDB()->query($query) === false) {
-			$this->_error[] = PHPFrame::getDB()->getLastError();
+		if (PHPFrame::DB()->query($query) === false) {
+			$this->_error[] = PHPFrame::DB()->getLastError();
 			return false;
 		}
 		else {

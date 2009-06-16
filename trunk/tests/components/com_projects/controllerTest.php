@@ -47,13 +47,13 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	$frontcontroller = PHPFrame::getFrontController();
 		$frontcontroller->run();
     	    	
-    	$controller = PHPFrame::getActionController('com_projects');
+    	$controller = PHPFrame_MVC_ActionController::getInstance('com_projects');
     	$this->assertTrue($controller->getSuccess());
     }
     
     function test_remove_project() {
     	// Add a project to db to then delete it
-    	$db = PHPFrame::getDB();
+    	$db = PHPFrame::DB();
     	$query = "INSERT INTO #__projects (id, name, project_type, priority, created_by) VALUES (NULL, 'another project', '2', '1', '1')";
 		$projectid = $db->query($query);
 		// Add project admin
@@ -67,7 +67,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	$frontcontroller = PHPFrame::getFrontController();
     	$frontcontroller->run();
     	
-    	$controller = PHPFrame::getActionController('com_projects');
+    	$controller = PHPFrame_MVC_ActionController::getInstance('com_projects');
     	$this->assertTrue($controller->getSuccess());
     }
     
@@ -86,14 +86,14 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	$frontcontroller = PHPFrame::getFrontController();
     	$frontcontroller->run();
     	
-    	$controller = PHPFrame::getActionController('com_projects');
+    	$controller = PHPFrame_MVC_ActionController::getInstance('com_projects');
     	$this->assertTrue($controller->getSuccess());
     	
     }
     
 	function test_save_member_ExistingUser() {
 		// Add an existing member to be able to assign to project
-		$db = PHPFrame::getDB();
+		$db = PHPFrame::DB();
 		$query = "INSERT INTO `#__users` (`id`, `groupid`, `username`, `password`, `email`, `firstname`, `lastname`,`photo`";
 		$query .= ", `notifications`, `show_email`, `block`, `created`, `last_visit`, `activation`, `params`, `ts`, `deleted`)";
 		$query .= " VALUES (NULL, '2', 'testuser2', '', 'notifications.test@extranetoffice.org', 'test', 'user 2', 'default.png'";
@@ -110,14 +110,14 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	$frontcontroller = PHPFrame::getFrontController();
     	$frontcontroller->run();
     	
-    	$controller = PHPFrame::getActionController('com_projects');
+    	$controller = PHPFrame_MVC_ActionController::getInstance('com_projects');
     	$this->assertTrue($controller->getSuccess());
     	
     }
     
     function test_remove_member() {
     	// Add an user to then delete it in this test
-		$db = PHPFrame::getDB();
+		$db = PHPFrame::DB();
 		$query = "INSERT INTO `#__users` (`id`, `groupid`, `username`, `password`, `email`, `firstname`, `lastname`,`photo`";
 		$query .= ", `notifications`, `show_email`, `block`, `created`, `last_visit`, `activation`, `params`, `ts`, `deleted`)";
 		$query .= " VALUES (NULL, '2', 'testuser3', '', 'notifications.test@extranetoffice.org', 'test', 'user 3', 'default.png'";
@@ -135,7 +135,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	$frontcontroller = PHPFrame::getFrontController();
     	$frontcontroller->run();
     	
-    	$controller = PHPFrame::getActionController('com_projects');
+    	$controller = PHPFrame_MVC_ActionController::getInstance('com_projects');
     	$this->assertTrue($controller->getSuccess());
     }
     
@@ -149,7 +149,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	$frontcontroller = PHPFrame::getFrontController();
     	$frontcontroller->run();
     	
-    	$controller = PHPFrame::getActionController('com_projects');
+    	$controller = PHPFrame_MVC_ActionController::getInstance('com_projects');
     	$this->assertTrue($controller->getSuccess());
     }
     /*
@@ -166,7 +166,7 @@ class testProjectsController extends PHPUnit_Framework_TestCase {
     	$frontcontroller = PHPFrame::getFrontController();
     	$frontcontroller->run();
     	
-    	$controller = PHPFrame::getActionController('com_projects');
+    	$controller = PHPFrame_MVC_ActionController::getInstance('com_projects');
     	$this->assertTrue($controller->getSuccess());
     }
     */

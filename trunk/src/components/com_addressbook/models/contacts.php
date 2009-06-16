@@ -14,9 +14,9 @@
  * @subpackage 	com_addressbook
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_Model
+ * @see 		PHPFrame_MVC_Model
  */
-class addressbookModelContacts extends PHPFrame_Application_Model {
+class addressbookModelContacts extends PHPFrame_MVC_Model {
 	/**
 	 * Constructor
 	 * 
@@ -36,18 +36,18 @@ class addressbookModelContacts extends PHPFrame_Application_Model {
 		$query .= " FROM #__contacts AS c ";
 		
 		// get the total number of records
-		PHPFrame::getDB()->query($query);
+		PHPFrame::DB()->query($query);
 		
 		// Set total number of record in list filter
-		$list_filter->setTotal(PHPFrame::getDB()->getNumRows());
+		$list_filter->setTotal(PHPFrame::DB()->getNumRows());
 		
 		// Add order by and limit statements for subset (based on filter)
-		$query .= $list_filter->getOrderByStmt();
-		$query .= $list_filter->getLimitStmt();
+		$query .= $list_filter->getOrderBySQL();
+		$query .= $list_filter->getLimitSQL();
 		//echo str_replace('#__','eo_', $query); exit;
 		
 		// Get rows from database
-		return PHPFrame::getDB()->loadObjectList($query);
+		return PHPFrame::DB()->loadObjectList($query);
 	}
 	
 	function getContactsDetail($id) {

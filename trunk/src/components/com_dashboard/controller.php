@@ -15,7 +15,7 @@
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class dashboardController extends PHPFrame_Application_ActionController {
+class dashboardController extends PHPFrame_MVC_ActionController {
 	/**
 	 * Constructor
 	 * 
@@ -27,11 +27,8 @@ class dashboardController extends PHPFrame_Application_ActionController {
 	}
 	
 	public function get_dashboard() {
-		// Create list filter needed for getProjects()
-		$list_filter = new PHPFrame_Database_CollectionFilter('p.name', 'ASC');
-		
 		// Get user's projects
-		$modelProjects = PHPFrame::getModel("com_projects", "projects");
+		$modelProjects = PHPFrame_MVC_Factory::getModel("com_projects", "projects");
 		$projects = $modelProjects->getCollection($list_filter);
 		
 		// Get project updates, overdue items and upcoming milestones
@@ -39,17 +36,17 @@ class dashboardController extends PHPFrame_Application_ActionController {
 			foreach ($projects as $project) {
 				// Get project updates
 				$activitylog_filter = new PHPFrame_Database_CollectionFilter('ts', 'DESC', 10);
-				$modelActivitylog = PHPFrame::getModel("com_projects", "activitylog", array($project));
+				$modelActivitylog = PHPFrame_MVC_Factory::getModel("com_projects", "activitylog", array($project));
 				$project->activitylog = $modelActivitylog->getCollection($activitylog_filter);
 				
 				// Get overdue issues
-				$modelIssues = PHPFrame::getModel("com_projects", "issues");
+				$modelIssues = PHPFrame_MVC_Factory::getModel("com_projects", "issues");
 				$project->overdue_issues = $modelIssues->getTotalIssues($project->id, true);
 			}
 		}
 		
 		// Get view
-		$view = $this->getView('dashboard', '');
+		$view = $this->getView('dashboard');
 		// Set view data
 		$view->addData('projects', $projects);
 		// Display view

@@ -29,7 +29,7 @@ $(document).ready(function() {
 <form action="index.php" method="post" id="projectsform" name="projectsform">
 
 <fieldset>
-<legend><?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_DETAILS ); ?></legend>
+<legend><?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_DETAILS ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td width="30%">
@@ -124,7 +124,7 @@ $(document).ready(function() {
 <div id="project_permissions">
 
 <fieldset>
-<legend><?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_ADVANCED_ACCESS_SETTINGS ); ?></legend>
+<legend><?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_ADVANCED_ACCESS_SETTINGS ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td width="30%">
@@ -227,8 +227,8 @@ $(document).ready(function() {
 
 <div style="clear:left; margin-top:30px;"></div>
 
-<button type="button" onclick="window.history.back();"><?php echo PHPFrame_HTML_Text::_( _LANG_BACK ); ?></button>
-<button type="submit"><?php echo PHPFrame_HTML_Text::_(_LANG_SAVE); ?></button>
+<button type="button" onclick="window.history.back();"><?php echo PHPFrame_Base_String::html( _LANG_BACK ); ?></button>
+<button type="submit"><?php echo PHPFrame_Base_String::html(_LANG_SAVE); ?></button>
 
 <input type="hidden" name="id" value="<?php echo $data['project']->id;?>" />
 <input type="hidden" name="component" value="com_projects" />

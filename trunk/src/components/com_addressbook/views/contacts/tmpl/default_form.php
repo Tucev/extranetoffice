@@ -32,7 +32,7 @@ $(function() {
 <div id="general">
 
 <fieldset>
-<legend><?php echo PHPFrame_HTML_Text::_( _LANG_CONTACTS_BASIC_DETAILS ); ?></legend>
+<legend><?php echo PHPFrame_Base_String::html( _LANG_CONTACTS_BASIC_DETAILS ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td width="30%">
@@ -89,7 +89,7 @@ $(function() {
 </fieldset>
 
 <fieldset>
-<legend><?php echo PHPFrame_HTML_Text::_( _LANG_CONTACTS_EMAIL_DETAILS ); ?></legend>
+<legend><?php echo PHPFrame_Base_String::html( _LANG_CONTACTS_EMAIL_DETAILS ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td width="30%">
@@ -125,7 +125,7 @@ $(function() {
 </fieldset>
 
 <fieldset>
-<legend><?php echo PHPFrame_HTML_Text::_( _LANG_CONTACTS_PHONE_DETAILS ); ?></legend>
+<legend><?php echo PHPFrame_Base_String::html( _LANG_CONTACTS_PHONE_DETAILS ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td width="30%">
@@ -166,7 +166,7 @@ $(function() {
 <div id="postal">
 
 <fieldset>
-<legend><?php echo PHPFrame_HTML_Text::_( _LANG_CONTACTS_HOME_ADDRESS_DETAILS ); ?></legend>
+<legend><?php echo PHPFrame_Base_String::html( _LANG_CONTACTS_HOME_ADDRESS_DETAILS ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td width="30%">
@@ -234,7 +234,7 @@ $(function() {
 
 
 <fieldset>
-<legend><?php echo PHPFrame_HTML_Text::_( _LANG_CONTACTS_WORK_ADDRESS_DETAILS ); ?></legend>
+<legend><?php echo PHPFrame_Base_String::html( _LANG_CONTACTS_WORK_ADDRESS_DETAILS ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td width="30%">
@@ -302,7 +302,7 @@ $(function() {
 
 
 <fieldset>
-<legend><?php echo PHPFrame_HTML_Text::_( _LANG_CONTACTS_OTHER_ADDRESS_DETAILS ); ?></legend>
+<legend><?php echo PHPFrame_Base_String::html( _LANG_CONTACTS_OTHER_ADDRESS_DETAILS ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td width="30%">
@@ -373,8 +373,8 @@ $(function() {
 
 <div style="clear:left; margin-top:30px;"></div>
 
-<button type="button" onclick="Javascript:window.history.back();"><?php echo PHPFrame_HTML_Text::_( _LANG_BACK ); ?></button>
-<button type="submit"><?php echo PHPFrame_HTML_Text::_(_LANG_SAVE); ?></button>
+<button type="button" onclick="Javascript:window.history.back();"><?php echo PHPFrame_Base_String::html( _LANG_BACK ); ?></button>
+<button type="submit"><?php echo PHPFrame_Base_String::html(_LANG_SAVE); ?></button>
 
 <input type="hidden" name="id" value="<?php echo $this->rows[0]->id;?>" />
 <input type="hidden" name="component" value="com_addressbook" />

@@ -34,7 +34,7 @@ class config {
 	 *
 	 * @const string
 	 */
-	const TEMPLATE="default";
+	const THEME="default";
 	/**
 	 * The default language to load
 	 *

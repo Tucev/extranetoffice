@@ -16,7 +16,7 @@ class projectsHelperProjects {
 	 */
 	static function id2name($id=0) {
 		if (!empty($id)) { // No category has been selected
-			$db = PHPFrame::getDB();
+			$db = PHPFrame::DB();
 			$query = "SELECT name FROM #__projects WHERE id = '".$id."'";
 			return $db->loadResult($query);
 		}
@@ -35,10 +35,10 @@ class projectsHelperProjects {
 	static function select($selected=0, $attribs='') {
 		// assemble projects into the array
 		$options = array();
-		$options[] = PHPFrame_HTML::_('select.option', '0', PHPFrame_HTML_Text::_( '-- Select a Project --' ) );
+		$options[] = PHPFrame_HTML::_('select.option', '0', PHPFrame_Base_String::html( '-- Select a Project --' ) );
 		
 		// get projects from db
-		$db = PHPFrame::getDB();
+		$db = PHPFrame::DB();
 		$user = PHPFrame::Session()->getUser();
 		$query = "SELECT p.id, p.name ";
 		$query .= "FROM #__projects AS p ";
@@ -57,7 +57,7 @@ class projectsHelperProjects {
 	
 	static function project_typeid2name($id=0) {
 		if (!empty($id)) { // No category has been selected
-			$db = PHPFrame::getDB();
+			$db = PHPFrame::DB();
 			$query = "SELECT name FROM #__project_types WHERE id = '".$id."'";
 			return $db->loadResult($query);
 		}
@@ -69,10 +69,10 @@ class projectsHelperProjects {
 	static function project_type_select($selected=0, $attribs='') {
 		// assemble project types into the array
 		$options = array();
-		$options[] = PHPFrame_HTML::_('select.option', '0', PHPFrame_HTML_Text::_( '-- Select a Project Type --' ) );
+		$options[] = PHPFrame_HTML::_('select.option', '0', PHPFrame_Base_String::html( '-- Select a Project Type --' ) );
 		
 		// get project_types from db
-		$db = PHPFrame::getDB();
+		$db = PHPFrame::DB();
 		$query = "SELECT id, name FROM #__project_types ";
 		$query .= " ORDER BY name";
 		$rows = $db->loadObjectList($query);
@@ -120,7 +120,7 @@ class projectsHelperProjects {
 	static function global_access_select($fieldname='access', $selected=1, $attribs='') {
 		// assemble access into the array
 		$options = array();
-		//$options[] = PHPFrame_HTML::_('select.option', '', PHPFrame_HTML_Text::_( '-- Select an Access Level --' ) );
+		//$options[] = PHPFrame_HTML::_('select.option', '', PHPFrame_Base_String::html( '-- Select an Access Level --' ) );
 		
 		$options[] = PHPFrame_HTML::_('select.option', 0, _LANG_PROJECTS_ACCESS_PUBLIC );
 		$options[] = PHPFrame_HTML::_('select.option', 1, _LANG_PROJECTS_ACCESS_PRIVATE );
@@ -145,7 +145,7 @@ class projectsHelperProjects {
 	static function access_select($fieldname='access', $selected=0, $attribs='') {
 		// assemble access into the array
 		$options = array();
-		$options[] = PHPFrame_HTML::_('select.option', '0', PHPFrame_HTML_Text::_( '-- Select an Access Level --' ) );
+		$options[] = PHPFrame_HTML::_('select.option', '0', PHPFrame_Base_String::html( '-- Select an Access Level --' ) );
 		
 		$options[] = PHPFrame_HTML::_('select.option', 1, _LANG_PROJECTS_ACCESS_ADMINS );
 		$options[] = PHPFrame_HTML::_('select.option', 2, _LANG_PROJECTS_ACCESS_WORKERS );
@@ -174,7 +174,7 @@ class projectsHelperProjects {
 	static function status_select($selected=0, $attribs='') {
 		// assemble access into the array
 		$options = array();
-		$options[] = PHPFrame_HTML::_('select.option', '0', PHPFrame_HTML_Text::_( '-- Select an Status --' ) );
+		$options[] = PHPFrame_HTML::_('select.option', '0', PHPFrame_Base_String::html( '-- Select an Status --' ) );
 		
 		$options[] = PHPFrame_HTML::_('select.option', '0', _LANG_PROJECTS_STATUS_PLANNING );
 		$options[] = PHPFrame_HTML::_('select.option', '1', _LANG_PROJECTS_STATUS_IN_PROGRESS );
@@ -194,7 +194,7 @@ class projectsHelperProjects {
 	 * @return	void
 	 */
 	static function autocompleteMembers($projectid, $members=true) {
-		$db = PHPFrame::getDB();
+		$db = PHPFrame::DB();
 		$query = "SELECT u.id, u.username, u.firstname, u.lastname ";
 		$query .= "FROM #__users AS u ";
 		$query .= " WHERE u.id ";
@@ -217,7 +217,7 @@ class projectsHelperProjects {
 	
 	static function project_roleid2name($id=0) {
 		if (!empty($id)) { // No category has been selected
-			$db = PHPFrame::getDB();
+			$db = PHPFrame::DB();
 			$query = "SELECT name FROM #__roles WHERE id = '".$id."'";
 			return $db->loadResult($query);
 		}
@@ -229,10 +229,10 @@ class projectsHelperProjects {
 	static function project_role_select($selected=0, $attribs='') {
 		// assemble project types into the array
 		$options = array();
-		//$options[] = PHPFrame_HTML::_('select.option', '0', PHPFrame_HTML_Text::_( '-- Select a Role --' ) );
+		//$options[] = PHPFrame_HTML::_('select.option', '0', PHPFrame_Base_String::html( '-- Select a Role --' ) );
 		
 		// get project_types from db
-		$db = PHPFrame::getDB();
+		$db = PHPFrame::DB();
 		$query = "SELECT id, name FROM #__roles ";
 		$query .= " ORDER BY id ASC";
 		$rows = $db->loadObjectList($query);
@@ -247,7 +247,7 @@ class projectsHelperProjects {
 	
 	static function issue_typeid2name($id=0) {
 		if (!empty($id)) { // No category has been selected
-			$db = PHPFrame::getDB();
+			$db = PHPFrame::DB();
 			$query = "SELECT name FROM #__issue_types WHERE id = '".$id."'";
 			return $db->loadResult($query);
 		}
@@ -259,10 +259,10 @@ class projectsHelperProjects {
 	static function issue_type_select($selected=0, $attribs='') {
 		// assemble project types into the array
 		$options = array();
-		$options[] = PHPFrame_HTML::_('select.option', '0', PHPFrame_HTML_Text::_( '-- Select an issue type (optional) --' ) );
+		$options[] = PHPFrame_HTML::_('select.option', '0', PHPFrame_Base_String::html( '-- Select an issue type (optional) --' ) );
 		
 		// get project_types from db
-		$db = PHPFrame::getDB();
+		$db = PHPFrame::DB();
 		$query = "SELECT id, name FROM #__issue_types ";
 		$query .= " ORDER BY id ASC";
 		
@@ -280,7 +280,7 @@ class projectsHelperProjects {
 	
 	static function fileid2name($id=0) {
 		if (!empty($id)) { // No file has been selected
-			$db = PHPFrame::getDB();
+			$db = PHPFrame::DB();
 			$query = "SELECT title FROM #__files WHERE id = '".$id."'";
 			return $db->loadResult($query);
 		}

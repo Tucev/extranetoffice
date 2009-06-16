@@ -49,6 +49,5 @@ else {
 // Include autoloader
 require_once _ABS_PATH.DS."src".DS."autoload.php";
 
-// Instantiate front controller and fire the app
-$frontcontroller = PHPFrame::getFrontController();
-$frontcontroller->run();
+// Fire up PHPFrame
+PHPFrame::Fire();

@@ -17,9 +17,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_View
+ * @see 		PHPFrame_MVC_View
  */
-class projectsViewFiles extends PHPFrame_Application_View {
+class projectsViewFiles extends PHPFrame_MVC_View {
 	/**
 	 * Constructor
 	 * 
@@ -56,19 +56,19 @@ class projectsViewFiles extends PHPFrame_Application_View {
 	 * @return void
 	 */
 	function displayFilesList() {
-		PHPFrame::getPathway()->addItem($this->_data['page_title']);
+		$this->getPathway()->addItem($this->_data['page_title']);
 	}
 	
 	function displayFilesForm() {
 		$this->_data['page_title'] .= ' - '._LANG_FILES_NEW;
-		PHPFrame::getPathway()->addItem($this->current_tool, PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&view=files&projectid=".$this->projectid));
-		PHPFrame::getPathway()->addItem(_LANG_FILES_NEW);
+		$this->getPathway()->addItem($this->current_tool, PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&view=files&projectid=".$this->projectid));
+		$this->getPathway()->addItem(_LANG_FILES_NEW);
 	}
 	
 	function displayFilesDetail() {
 		$this->_data['page_title'] .= ' - '.$this->row->title;
-		PHPFrame::getPathway()->addItem($this->current_tool, PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&view=files&projectid=".$this->projectid));
-		PHPFrame::getPathway()->addItem($this->row->title);
+		$this->getPathway()->addItem($this->current_tool, PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&view=files&projectid=".$this->projectid));
+		$this->getPathway()->addItem($this->row->title);
 	}
 	
 }

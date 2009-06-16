@@ -13,9 +13,9 @@
  * @package		ExtranetOffice
  * @subpackage 	com_projects
  * @since 		1.0
- * @see 		PHPFrame_Application_Model
+ * @see 		PHPFrame_MVC_Model
  */
-class projectsModelProjects extends PHPFrame_Application_Model {
+class projectsModelProjects extends PHPFrame_MVC_Model {
 	/**
 	 * Constructor
 	 *
@@ -27,38 +27,48 @@ class projectsModelProjects extends PHPFrame_Application_Model {
 	/**
 	 * Get projects.
 	 * 
-	 * @param	object	$list_filter	Object of type PHPFrame_Database_CollectionFilter
-	 * @return	mixed	if no parameters returns array of objects if entries exist 
+	 * @param string $search Object of type PHPFrame_Database_CollectionFilter
+	 * 
+	 * @access public
+	 * @return mixed if no parameters returns array of objects if entries exist
+	 * @since  1.0 
 	 */
-	public function getCollection(PHPFrame_Database_CollectionFilter $filter) {
-		// Build WHERE SQL clauses
-		$where = array();
+	public function getCollection($search=null)
+	{
+	    $userid = PHPFrame::Session()->getUserId();
 		
-		// Show only public projects or projects where user has an assigned role
-		$userid = PHPFrame::Session()->getUserId();
-		$where[] = "( p.access = '0' OR (".$userid." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
+		// Create Id object used to create collection
+		$id_obj = new PHPFrame_Database_IdObject();
 		
+		$id_obj->select("*")->from("#__projects")->where("id", "=", 1);
+		//$collection
+		var_dump($id_obj->__toString()); exit;
+		
+		$id_obj->select(array("p.*", 
+		                         "u.username AS created_by_name", 
+		                         "pt.name AS project_type_name"));
+		
+		$id_obj->from("#__projects AS p");
+		
+		$id_obj->join("JOIN #__users u ON u.id = p.created_by");
+		$id_obj->join("LEFT JOIN #__project_types pt ON pt.id = p.project_type");
+		
+	    // Show only public projects or projects where user has an assigned role
+		$id_obj->where("p.access = '0'", "OR", "(".$userid." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) )");
 		// Add search filtering
-		$search = $filter->getSearchStr();
 		if ($search) {
-			$where[] = "p.name LIKE '%".PHPFrame::getDB()->getEscaped($search)."%'";
+		    $id_obj->where("p.name", "LIKE", "'%".PHPFrame::DB()->getEscaped($search)."%'");
 		}
 		
-		// Transform where array to SQL string
-		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
+		$id_obj->groupBy("p.id");
 		
-		// get the total number of records
-		$query = "SELECT 
-				  p.id
-				  FROM #__projects AS p 
-				  JOIN #__users u ON u.id = p.created_by 
-				  LEFT JOIN #__project_types pt ON pt.id = p.project_type  
-				  LEFT JOIN #__users_roles ur ON p.id = ur.projectid "
-				  . $where . 
-				  " GROUP BY p.id ";
-
-		// Run query to get total rows before applying filter
-		$filter->setTotal(PHPFrame::getDB()->query($query)->rowCount());
+		var_dump($id_obj->__toString()); exit;
+		
+		// Create list filter needed for getProjects()
+		$filter = new PHPFrame_Database_CollectionFilter('p.name', 'ASC');
+		
+		// Transform where array to SQL string
+		//$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
 		
 		// get the subset (based on limits) of required records
 		$query = "SELECT 
@@ -72,8 +82,8 @@ class projectsModelProjects extends PHPFrame_Application_Model {
 				  " GROUP BY p.id ";
 		
 		// Add order by and limit statements for subset (based on filter)
-		$query .= $filter->getOrderByStmt();
-		$query .= $filter->getLimitStmt();
+		$query .= $filter->getOrderBySQL();
+		$query .= $filter->getLimitSQL();
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
 		return new PHPFrame_Database_RowCollection($query);

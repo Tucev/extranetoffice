@@ -28,7 +28,7 @@ $(document).ready(function() {
 
 <div class="new">
 	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_issue_form&projectid='.$data['project']->id); ?>">
-		<?php echo PHPFrame_HTML_Text::_( _LANG_NEW ); ?>
+		<?php echo PHPFrame_Base_String::html( _LANG_NEW ); ?>
 	</a>
 </div>
 
@@ -100,8 +100,8 @@ $(document).ready(function() {
 
 	<?php if ($row->created_by == $this->_user->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_issue" title="<?php echo PHPFrame_HTML_Text::_($row->title, true); ?>" href="index.php?component=com_projects&action=remove_issue&projectid=<?php echo $row->projectid; ?>&issueid=<?php echo $row->id; ?>">
-			<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>
+		<a class="delete_issue" title="<?php echo PHPFrame_Base_String::html($row->title, true); ?>" href="index.php?component=com_projects&action=remove_issue&projectid=<?php echo $row->projectid; ?>&issueid=<?php echo $row->id; ?>">
+			<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
@@ -132,7 +132,7 @@ $(document).ready(function() {
 	
 	<?php if (!empty($row->description)) : ?>
 	<div class="thread_body">
-		<?php echo nl2br(PHPFrame_HTML_Text::limit_words($row->description, 255)); ?>
+		<?php echo nl2br(PHPFrame_Base_String::limitWords($row->description, 255)); ?>
 	</div>
 	<?php endif; ?>
 	
@@ -155,7 +155,7 @@ $(document).ready(function() {
 <?php echo $data['page_nav']->getListFooter(); ?>
 
 <?php else : ?>
-<?php echo PHPFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
+<?php echo PHPFrame_Base_String::html( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>
 
 <?php //echo '<pre>'; var_dump($data['rows']); echo '</pre>'; ?>

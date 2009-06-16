@@ -16,7 +16,7 @@ PHPFrame_HTML::confirm('delete_message', _LANG_PROJECTS_MESSAGES_DELETE, _LANG_P
 
 <div class="new">
 	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_message_form&projectid='.$data['project']->id); ?>">
-		<?php echo PHPFrame_HTML_Text::_( _LANG_NEW ); ?>
+		<?php echo PHPFrame_Base_String::html( _LANG_NEW ); ?>
 	</a>
 </div>
 
@@ -35,8 +35,8 @@ PHPFrame_HTML::confirm('delete_message', _LANG_PROJECTS_MESSAGES_DELETE, _LANG_P
 
 	<?php if ($row->userid == PHPFrame::Session()->getUser()->id) : ?>
 	<div class="thread_delete">
-		<a class="delete_message" title="<?php echo PHPFrame_HTML_Text::_($row->subject, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_message&projectid=".$row->projectid."&messageid=".$row->id); ?>">
-			<?php echo PHPFrame_HTML_Text::_( _LANG_DELETE ); ?>
+		<a class="delete_message" title="<?php echo PHPFrame_Base_String::html($row->subject, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_message&projectid=".$row->projectid."&messageid=".$row->id); ?>">
+			<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>
 		</a> 
 	</div>
 	<?php endif; ?>
@@ -59,7 +59,7 @@ PHPFrame_HTML::confirm('delete_message', _LANG_PROJECTS_MESSAGES_DELETE, _LANG_P
 	
 	<?php if (!empty($row->body)) : ?>
 	<div class="thread_body">
-		<?php echo nl2br(PHPFrame_HTML_Text::limit_words($row->body, 255)); ?>
+		<?php echo nl2br(PHPFrame_Base_String::limitWords($row->body, 255)); ?>
 	</div>
 	<?php endif; ?>
 	
@@ -78,5 +78,5 @@ PHPFrame_HTML::confirm('delete_message', _LANG_PROJECTS_MESSAGES_DELETE, _LANG_P
 <?php endforeach; ?>
 
 <?php else : ?>
-<?php echo PHPFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
+<?php echo PHPFrame_Base_String::html( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>

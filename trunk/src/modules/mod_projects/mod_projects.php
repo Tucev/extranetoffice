@@ -10,7 +10,7 @@
 
 $projectid = PHPFrame::Request()->get('projectid', 0);
 
-$controller = PHPFrame::getActionController(PHPFrame::Request()->getComponentName());
+$controller = PHPFrame_MVC_ActionController::getInstance(PHPFrame::Request()->getComponentName());
 $project = $controller->getProject();
 $tools = $controller->getTools();
 $project_permissions = $controller->getProjectPermissions();
@@ -50,13 +50,13 @@ $project_permissions = $controller->getProjectPermissions();
 <h3>Project details</h3>
 	
 <div class="project_details">
-	<?php echo PHPFrame_HTML_Text::_( _LANG_DESCRIPTION ); ?>: <br />
+	<?php echo PHPFrame_Base_String::html( _LANG_DESCRIPTION ); ?>: <br />
 	<?php echo $project->description; ?> <br />
 	<br />
-	<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_PROJECT_TYPE ); ?>: <?php echo $project->project_type_name; ?> <br />
-	<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_PRIORITY ); ?>: <?php echo projectsHelperProjects::priorityid2name($project->priority); ?> <br />
-	<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_ACCESS ); ?>: <?php echo projectsHelperProjects::global_accessid2name($project->access); ?> <br />
-	<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_STATUS ); ?>: <?php echo projectsHelperProjects::statusid2name($project->status); ?>
+	<?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_PROJECT_TYPE ); ?>: <?php echo $project->project_type_name; ?> <br />
+	<?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_PRIORITY ); ?>: <?php echo projectsHelperProjects::priorityid2name($project->priority); ?> <br />
+	<?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_ACCESS ); ?>: <?php echo projectsHelperProjects::global_accessid2name($project->access); ?> <br />
+	<?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_STATUS ); ?>: <?php echo projectsHelperProjects::statusid2name($project->status); ?>
 </div>
 
 <?php endif; ?>

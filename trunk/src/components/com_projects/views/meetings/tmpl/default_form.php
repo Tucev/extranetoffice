@@ -23,7 +23,7 @@ PHPFrame_HTML::validate('meetingsform');
 <form action="index.php" method="post" id="meetingsform" name="meetingsform" enctype="multipart/form-data">
 
 <fieldset>
-<legend><?php echo PHPFrame_HTML_Text::_( $data['action'] ); ?></legend>
+<legend><?php echo PHPFrame_Base_String::html( $data['action'] ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 	<td width="30%">
@@ -91,8 +91,8 @@ PHPFrame_HTML::validate('meetingsform');
 
 <div style="clear:left; margin-top:30px;"></div>
 
-<button type="button" onclick="Javascript:window.history.back();"><?php echo PHPFrame_HTML_Text::_( _LANG_BACK ); ?></button>
-<button type="submit"><?php echo PHPFrame_HTML_Text::_(_LANG_SAVE); ?></button>
+<button type="button" onclick="Javascript:window.history.back();"><?php echo PHPFrame_Base_String::html( _LANG_BACK ); ?></button>
+<button type="submit"><?php echo PHPFrame_Base_String::html(_LANG_SAVE); ?></button>
 
 <input type="hidden" name="projectid" value="<?php echo $data['project']->id; ?>" />
 <input type="hidden" name="id" value="<?php echo $data['row']->id; ?>" />

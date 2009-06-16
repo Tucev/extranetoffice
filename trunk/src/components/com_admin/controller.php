@@ -17,7 +17,7 @@
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class adminController extends PHPFrame_Application_ActionController {
+class adminController extends PHPFrame_MVC_ActionController {
 	/**
 	 * Constructor
 	 * 

@@ -17,9 +17,9 @@
  * @subpackage 	com_email
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_View
+ * @see 		PHPFrame_MVC_View
  */
-class emailViewMessages extends PHPFrame_Application_View {
+class emailViewMessages extends PHPFrame_MVC_View {
 	/**
 	 * Constructor
 	 * 
@@ -78,7 +78,7 @@ class emailViewMessages extends PHPFrame_Application_View {
 	 */
 	function displayMessagesDetail($uid=0) {
 		$this->_data['page_title'] = _LANG_EMAIL_MESSAGE_DETAIL;
-		PHPFrame::getPathway()->addItem($this->page_title);
+		$this->getPathway()->addItem($this->page_title);
 		
 		if (empty($uid)) {
 			$uid = PHPFrame::Request()->get('uid', 0);
@@ -115,7 +115,7 @@ class emailViewMessages extends PHPFrame_Application_View {
 		$model->loadUserEmailAccount();
 		$this->account =& $model->account;
 		
-		PHPFrame::getPathway()->addItem($this->page_title);
+		$this->getPathway()->addItem($this->page_title);
 	}
 }
 ?>

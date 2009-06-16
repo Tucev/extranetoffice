@@ -68,17 +68,17 @@ function submit_filter(reset) {
   		<input type="checkbox" name="ids[]" value="<?php echo $row->id; ?>" />
   	</td>
     <td valign="top">
-    <?php $username = PHPFrame_HTML_Text::limit_chars($row->username, 10); ?>
+    <?php $username = PHPFrame_Base_String::limitChars($row->username, 10); ?>
     <?php PHPFrame_HTML::dialog($username, 'index.php?component=com_admin&action=get_user_form&userid='.$row->id, 550, 390, true, "div[id^='ui-tabs']:has(a.delete_user)"); ?>
     </td>
     <td>
     	<?php echo $row->email; ?>
     </td>
     <td>
-    	<?php echo PHPFrame_HTML_Text::limit_chars($row->firstname, 10); ?>
+    	<?php echo PHPFrame_Base_String::limitChars($row->firstname, 10); ?>
     </td>
     <td>
-    	<?php echo PHPFrame_HTML_Text::limit_chars($row->lastname, 10); ?>
+    	<?php echo PHPFrame_Base_String::limitChars($row->lastname, 10); ?>
     </td>
     <td>
     	<?php echo $row->block; ?>
@@ -87,7 +87,7 @@ function submit_filter(reset) {
     	<?php echo $row->group_name; ?>
     </td>
     <td>
-    	<a class="delete_user" title="<?php echo PHPFrame_HTML_Text::_($row->firstname.' '.$row->lastname, true); ?>" href="index.php?component=com_admin&action=remove_user&id=<?php echo $row->id; ?>">
+    	<a class="delete_user" title="<?php echo PHPFrame_Base_String::html($row->firstname.' '.$row->lastname, true); ?>" href="index.php?component=com_admin&action=remove_user&id=<?php echo $row->id; ?>">
     		<?php echo _LANG_DELETE; ?>
     	</a>
     </td>
@@ -102,5 +102,5 @@ function submit_filter(reset) {
 <?php echo $data['page_nav']->getListFooter(); ?>
 
 <?php else : ?>
-<?php echo PHPFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
+<?php echo PHPFrame_Base_String::html( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>

@@ -14,7 +14,7 @@
 <head>
 <title><?php echo config::SITENAME; ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<link rel="stylesheet" href="templates/<?php echo config::TEMPLATE ?>/mobile/css/styles.css" type="text/css" />
+<link rel="stylesheet" href="templates/<?php echo config::THEME ?>/mobile/css/styles.css" type="text/css" />
 </head>
 
 <body>

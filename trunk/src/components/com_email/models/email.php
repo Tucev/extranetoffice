@@ -16,9 +16,9 @@
  * @subpackage 	com_email
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_Model
+ * @see 		PHPFrame_MVC_Model
  */
-class emailModelEmail extends PHPFrame_Application_Model {
+class emailModelEmail extends PHPFrame_MVC_Model {
 	/**
 	 * Object containing the email account settings
 	 * 

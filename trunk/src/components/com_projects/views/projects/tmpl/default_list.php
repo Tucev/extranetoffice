@@ -12,8 +12,8 @@
 
 <?php if (PHPFrame::Session()->getUser()->groupid == 1) : ?>
 <div class="new">
-	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_project_form'); ?>" title="<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>">
-		<?php echo PHPFrame_HTML_Text::_( _LANG_PROJECTS_NEW ); ?>
+	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_project_form'); ?>" title="<?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_NEW ); ?>">
+		<?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_NEW ); ?>
 	</a>
 </div>
 <?php endif; ?>
@@ -87,5 +87,5 @@ function submit_filter(reset) {
 <?php echo $data['page_nav']->getListFooter(); ?>
 
 <?php else : ?>
-<?php echo PHPFrame_HTML_Text::_( _LANG_NO_ENTRIES ); ?>
+<?php echo PHPFrame_Base_String::html( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>

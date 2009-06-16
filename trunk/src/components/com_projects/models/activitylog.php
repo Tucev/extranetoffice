@@ -14,9 +14,9 @@
  * @subpackage 	com_projects
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_Model
+ * @see 		PHPFrame_MVC_Model
  */
-class projectsModelActivitylog extends PHPFrame_Application_Model {
+class projectsModelActivitylog extends PHPFrame_MVC_Model {
 	/**
 	 * A reference the project this activity log belongs to
 	 * 
@@ -45,10 +45,10 @@ class projectsModelActivitylog extends PHPFrame_Application_Model {
 		$query .= " WHERE projectid = ".$this->_project->id;
 		
 		// Run query to get total rows before applying filter
-		$list_filter->setTotal(PHPFrame::getDB()->query($query)->rowCount());
+		$list_filter->setTotal(PHPFrame::DB()->query($query)->rowCount());
 		
-		$query .= $list_filter->getOrderByStmt();
-		$query .= $list_filter->getLimitStmt();
+		$query .= $list_filter->getOrderBySQL();
+		$query .= $list_filter->getLimitSQL();
 		
 		return new PHPFrame_Database_RowCollection($query);
 	}
@@ -96,12 +96,12 @@ class projectsModelActivitylog extends PHPFrame_Application_Model {
 	 * @todo	sanatise address, subject & body
 	 */
 	private function _notify($row, $assignees) {
-		$uri = PHPFrame::getURI();
+		$uri = new PHPFrame_Utils_URI();
 		$user_name = PHPFrame_User_Helper::id2name($row->userid);
 		
 		$new_mail = new PHPFrame_Mail_Mailer();
 		$new_mail->Subject = "[".$this->_project->name."] ".$row->action." by ".$user_name;
-		$new_mail->Body = PHPFrame_HTML_Text::_(sprintf(_LANG_ACTIVITYLOG_NOTIFY_BODY, 
+		$new_mail->Body = PHPFrame_Base_String::html(sprintf(_LANG_ACTIVITYLOG_NOTIFY_BODY, 
 								 $this->_project->name, 
 								 $row->action." by ".$user_name,
 								 PHPFrame_Utils_Rewrite::rewriteURL($row->url, false), 
@@ -124,7 +124,7 @@ class projectsModelActivitylog extends PHPFrame_Application_Model {
 		$query = "SELECT firstname, lastname, email ";
 		$query .= " FROM #__users ";
 		$query .= " WHERE id IN (".implode(',', $assignees).") AND id <> ".$row->userid;
-		$recipients = PHPFrame::getDB()->loadObjectList($query);
+		$recipients = PHPFrame::DB()->loadObjectList($query);
 		
 		if (is_array($recipients) && count($recipients) > 0) {
 			$failed_recipients = array();

@@ -10,7 +10,7 @@
 
 $option = PHPFrame::Request()->getComponentName();
 $active_component = substr($option, 4);
-$db = PHPFrame::getDB();
+$db = PHPFrame::DB();
 
 $query = "SELECT * FROM #__components WHERE system = '0' AND enabled = '1' ORDER BY ordering ASC";
 $components = $db->loadObjectList($query);

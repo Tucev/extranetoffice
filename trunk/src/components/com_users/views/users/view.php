@@ -17,9 +17,9 @@
  * @subpackage 	com_users
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_View
+ * @see 		PHPFrame_MVC_View
  */
-class usersViewUsers extends PHPFrame_Application_View {
+class usersViewUsers extends PHPFrame_MVC_View {
 	/**
 	 * Constructor
 	 * 
@@ -65,6 +65,6 @@ class usersViewUsers extends PHPFrame_Application_View {
 	 */
 	function displayUsersDetail() {
 		$this->_data['page_title'] = $this->_data['row']->firstname.' '.$this->_data['row']->lastname;
-		PHPFrame::getPathway()->addItem($this->_data['row']->firstname.' '.$this->_data['row']->lastname);
+		$this->getPathway()->addItem($this->_data['row']->firstname.' '.$this->_data['row']->lastname);
 	}
 }

@@ -53,13 +53,13 @@ class testLoginController extends PHPUnit_Framework_TestCase {
     	$frontcontroller = PHPFrame::getFrontController();
 		$frontcontroller->run();
     	    	
-    	$controller = PHPFrame::getActionController('com_login');
+    	$controller = PHPFrame_MVC_ActionController::getInstance('com_login');
     	$this->assertTrue($controller->getSuccess());
     }
     
     function test_reset_password() {
     	// Add a project to db to then delete it
-    	$db = PHPFrame::getDB();
+    	$db = PHPFrame::DB();
     	$query = "UPDATE #__users SET email = 'notifications.test@extranetoffice.org' WHERE id = 62";
 		$db->query($query);
 		
@@ -71,7 +71,7 @@ class testLoginController extends PHPUnit_Framework_TestCase {
     	$frontcontroller = PHPFrame::getFrontController();
     	$frontcontroller->run();
     	
-    	$controller = PHPFrame::getActionController('com_login');
+    	$controller = PHPFrame_MVC_ActionController::getInstance('com_login');
     	$this->assertTrue($controller->getSuccess());
     }
 }

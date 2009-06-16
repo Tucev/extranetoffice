@@ -14,9 +14,9 @@
  * @subpackage 	com_users
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
- * @see 		PHPFrame_Application_Model
+ * @see 		PHPFrame_MVC_Model
  */
-class usersModelUsers extends PHPFrame_Application_Model {
+class usersModelUsers extends PHPFrame_MVC_Model {
 	/**
 	 * Get users list
 	 * 
@@ -29,7 +29,7 @@ class usersModelUsers extends PHPFrame_Application_Model {
 		// Add search filtering
 		$search = $list_filter->getSearchStr();
 		if ($search) {
-			$where[] = "u.lastname LIKE '%".PHPFrame::getDB()->getEscaped($list_filter->getSearchStr())."%'";
+			$where[] = "u.lastname LIKE '%".PHPFrame::DB()->getEscaped($list_filter->getSearchStr())."%'";
 		}
 		
 		$where[] = "(u.deleted = '0000-00-00 00:00:00' OR u.deleted IS NULL)";
@@ -43,7 +43,7 @@ class usersModelUsers extends PHPFrame_Application_Model {
 				  . $where;
 		
 		// Run query to get total rows before applying filter
-		$list_filter->setTotal(PHPFrame::getDB()->query($query)->rowCount());
+		$list_filter->setTotal(PHPFrame::DB()->query($query)->rowCount());
 		
 		// get the subset (based on limits) of required records
 		$query = "SELECT 
@@ -52,11 +52,11 @@ class usersModelUsers extends PHPFrame_Application_Model {
 				  . $where;
 			
 		// Add order by and limit statements for subset (based on filter)
-		$query .= $list_filter->getOrderByStmt();
-		$query .= $list_filter->getLimitStmt();
+		$query .= $list_filter->getOrderBySQL();
+		$query .= $list_filter->getLimitSQL();
 		//echo str_replace('#__', 'eo_', $query); exit;
 		
-		return PHPFrame::getDB()->loadObjectList($query);
+		return PHPFrame::DB()->loadObjectList($query);
 	}
 	
 	/**
@@ -67,7 +67,7 @@ class usersModelUsers extends PHPFrame_Application_Model {
 	 */
 	public function getUsersDetail($userid) {
 		$query = "SELECT * FROM #__users WHERE id = ".$userid;
-		return PHPFrame::getDB()->loadObject($query);
+		return PHPFrame::DB()->loadObject($query);
 	}
 	
 	/**
