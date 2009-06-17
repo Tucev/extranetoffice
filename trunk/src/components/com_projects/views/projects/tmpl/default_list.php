@@ -84,7 +84,7 @@ function submit_filter(reset) {
 
 <br />
 
-<?php echo $data['page_nav']->getListFooter(); ?>
+<?php echo $this->renderPagination($data['rows']); ?>
 
 <?php else : ?>
 <?php echo PHPFrame_Base_String::html( _LANG_NO_ENTRIES ); ?>

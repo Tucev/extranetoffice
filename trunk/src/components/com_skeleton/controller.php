@@ -15,20 +15,28 @@
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class skeletonController extends PHPFrame_MVC_ActionController {
+class skeletonController extends PHPFrame_MVC_ActionController
+{
 	/**
 	 * Constructor
 	 * 
 	 * @return void
 	 */
-	protected function __construct() {
+	protected function __construct()
+	{
 		// Invoke parent's constructor to set default action
 		parent::__construct('dispatch');
 	}
 	
-	public function dispatch() {
+	public function dispatch()
+	{
+	    // Get user rows using model
+	    $rows = $this->getModel("skeleton")->getCollection();
+	    
 		// Get view
-		$view = $this->getView('default', '');
+		$view = $this->getView('default');
+		// Add rows data to view
+		$view->addData('rows', $rows);
 		// Display view
 		$view->display();
 	}
