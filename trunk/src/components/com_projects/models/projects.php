@@ -1,21 +1,32 @@
 <?php
 /**
- * @version     $Id$
- * @package        ExtranetOffice
- * @subpackage    com_projects
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_projects/models/projects.php
+ * 
+ * PHP version 5
+ * 
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/extranetoffice/source/browse
  */
 
 /**
  * projectsModelProjects Class
  * 
- * @package        ExtranetOffice
- * @subpackage     com_projects
- * @since         1.0
- * @see         PHPFrame_MVC_Model
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @link       http://code.google.com/p/extranetoffice/source/browse
+ * @since      1.0
  */
-class projectsModelProjects extends PHPFrame_MVC_Model {
+class projectsModelProjects extends PHPFrame_MVC_Model
+{
     /**
      * Constructor
      *
@@ -27,10 +38,14 @@ class projectsModelProjects extends PHPFrame_MVC_Model {
     /**
      * Get projects.
      * 
-     * @param string $search Object of type PHPFrame_Database_CollectionFilter
+     * @param string $orderby
+     * @param string $orderdir
+     * @param int    $limit
+     * @param int    $limitstart
+     * @param string $search
      * 
      * @access public
-     * @return mixed if no parameters returns array of objects if entries exist
+     * @return PHPFrame_Database_RowCollection
      * @since  1.0 
      */
     public function getCollection(
@@ -73,7 +88,8 @@ class projectsModelProjects extends PHPFrame_MVC_Model {
         return $rows;
     }
     
-    public function getRow($projectid) {
+    public function getRow($projectid)
+    {
         // Build SQL query to get row
         $userid = PHPFrame::Session()->getUserId();
         $where[] = "( p.access = '0' OR (".$userid." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
@@ -105,7 +121,8 @@ class projectsModelProjects extends PHPFrame_MVC_Model {
      * @param    $post    The array to be used for binding to the row before storing it. Normally the HTTP_POST array.
      * @return    mixed    Returns the project id or FALSE on failure.
      */
-    public function saveRow($post) {
+    public function saveRow($post)
+    {
         // Instantiate table object
         $row = new PHPFrame_Database_Row('#__projects');
         
@@ -137,7 +154,8 @@ class projectsModelProjects extends PHPFrame_MVC_Model {
      * @param    int    $projectid
      * @return    void
      */
-    public function deleteRow($projectid) {
+    public function deleteRow($projectid)
+    {
         // Instantiate table object
         $row = new PHPFrame_Database_Row('#__projects');
         

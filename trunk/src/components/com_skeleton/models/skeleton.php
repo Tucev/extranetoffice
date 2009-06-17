@@ -32,7 +32,7 @@ class skeletonModelSkeleton extends PHPFrame_MVC_Model {
          */
         
         // Create RowCollection object
-        $rows = new PHPFrame_Database_RowCollection(array("select"=>"email", 
+        $rows = new PHPFrame_Database_RowCollection(array("select"=>"*", 
                                                            "from"=>"#__users", 
                                                            "where"=>array("id", "=", "62")
                                                           )
@@ -40,7 +40,7 @@ class skeletonModelSkeleton extends PHPFrame_MVC_Model {
         // Load the selection
         $rows->load();
         // Print results
-        echo $rows; exit;
+        //echo $rows;
         
         /*
          * 2. Using separate options array for clarity options

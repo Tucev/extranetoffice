@@ -1,19 +1,29 @@
 <?php
 /**
- * @version     $Id$
- * @package        ExtranetOffice
- * @subpackage    com_projects
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_projects/controller.php
+ * 
+ * PHP version 5
+ * 
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/extranetoffice/source/browse
  */
 
 /**
  * projectsController Class
  * 
- * @package        ExtranetOffice
- * @subpackage     com_projects
- * @author         Luis Montero [e-noise.com]
- * @since         1.0
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @link       http://code.google.com/p/extranetoffice/source/browse
+ * @since      1.0
  */
 class projectsController extends PHPFrame_MVC_ActionController
 {
@@ -34,21 +44,22 @@ class projectsController extends PHPFrame_MVC_ActionController
     /**
      * The selected project row object if any
      * 
-     * @var    object
+     * @var object
      */
     private $_project=null;
     /**
      * The project-wide permissions object
      * 
-     * @var    object
+     * @var object
      */
     private $_permissions=null;
     
     /**
      * Constructor
      * 
-     * @return    void
-     * @since     1.0
+     * @access protected
+     * @return void
+     * @since  1.0
      */
     protected function __construct()
     {
@@ -58,7 +69,7 @@ class projectsController extends PHPFrame_MVC_ActionController
         // Get reference to custom permissions model for project tools
         $this->_permissions = projectsModelPermissions::getInstance();
         
-        $projectid = PHPFrame::Request()->get('projectid');
+        $projectid = PHPFrame::Request()->get('projectid', 0);
         if (!empty($projectid)) {
             // Load the project data
             $modelProjects = $this->getModel('projects');
@@ -71,16 +82,37 @@ class projectsController extends PHPFrame_MVC_ActionController
         }
     }
     
+    /**
+     * Get tools array
+     * 
+     * @access public
+     * @return array
+     * @since  1.0
+     */
     public function getTools()
     {
         return $this->_tools;
     }
     
+    /**
+     * Get project object
+     * 
+     * @access public
+     * @return object
+     * @since  1.0
+     */
     public function getProject()
     {
         return $this->_project;
     }
     
+    /**
+     * Get project permissions object
+     * 
+     * @access public
+     * @return object
+     * @since  1.0
+     */
     public function getProjectPermissions()
     {
         return $this->_permissions;
@@ -127,23 +159,28 @@ class projectsController extends PHPFrame_MVC_ActionController
         $view->display();
     }
     
-    public function get_project_detail()
+    /**
+     * Get project detail
+     * 
+     * @param int $projectid The project id
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function get_project_detail($projectid)
     {
         if (!$this->_authorise("projects")) return;
         
-        // Get request data
-        $projectid = PHPFrame::Request()->get('projectid', 0);
-        
         // Get overdue issues
-        $issues_filter = new PHPFrame_Database_CollectionFilter('i.dtstart', 'DESC');
-        $overdue_issues = $this->getModel('issues')->getIssues($issues_filter, $projectid, true);
+        $issues_model = $this->getModel('issues', array($this->_project));
+        $overdue_issues = $issues_model->getCollection('i.dtstart','DESC',25,0,"",true);
         
         // Get upcoming milestones
         
         // Get project updates
-        $activitylog_filter = new PHPFrame_Database_CollectionFilter('ts', 'DESC', 25);
         $activitylog_model = $this->getModel('activitylog', array($this->_project));
-        $activitylog = $activitylog_model->getCollection($activitylog_filter);
+        $activitylog = $activitylog_model->getCollection();
         
         // Get view
         $view = $this->getView('projects', 'detail');
@@ -398,29 +435,41 @@ class projectsController extends PHPFrame_MVC_ActionController
         $view->display();
     }
     
-    public function get_issues()
-    {
+    /**
+     * Get issues list
+     * 
+     * @param string $orderby
+     * @param string $orderdir
+     * @param int    $limit
+     * @param int    $limitstart
+     * @param string $search
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function get_issues(
+        $orderby="i.dtstart", 
+        $orderdir="DESC", 
+        $limit=25, 
+        $limitstart=0, 
+        $search=""
+    ) {
         if (!$this->_authorise("issues")) return;
         
-        // Get request data
-        $orderby = PHPFrame::Request()->get('orderby', 'i.dtstart');
-        $orderdir = PHPFrame::Request()->get('orderdir', 'DESC');
-        $limit = PHPFrame::Request()->get('limit', 25);
-        $limitstart = PHPFrame::Request()->get('limitstart', 0);
-        $search = PHPFrame::Request()->get('search', '');
-        
-        // Create list filter needed for getIssues()
-        $list_filter = new PHPFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
-        
         // Get issues using model
-        $issues = $this->getModel('issues')->getIssues($list_filter, $this->_project->id);
+        $issues_model = $this->getModel('issues', array($this->_project));
+        $issues = $issues_model->getCollection($orderby, 
+                                               $orderdir, 
+                                               $limit, 
+                                               $limitstart, 
+                                               $search);
         
         // Get view
         $view = $this->getView('issues', 'list');
         // Set view data
         $view->addData('project', $this->_project);
         $view->addData('rows', $issues);
-        $view->addData('page_nav', new PHPFrame_HTML_Pagination($list_filter));
         // Display view
         $view->display();
     }
@@ -433,7 +482,8 @@ class projectsController extends PHPFrame_MVC_ActionController
         $issueid = PHPFrame::Request()->get('issueid', 0);
         
         // Get issue using model
-        $issue = $this->getModel('issues')->getIssuesDetail($this->_project->id, $issueid);
+        $issues_model = $this->getModel('issues', array($this->_project));
+        $issue = $issues_model->getIssuesDetail($this->_project->id, $issueid);
         
         // Get view
         $view = $this->getView('issues', 'detail');
@@ -458,7 +508,8 @@ class projectsController extends PHPFrame_MVC_ActionController
             
         if ($issueid != 0) {        
             // Get issue using model
-            $issue = $this->getModel('issues')->getIssuesDetail($this->_project->id, $issueid);
+            $issues_model = $this->getModel('issues', array($this->_project));
+            $issue = $issues_model->getIssuesDetail($this->_project->id, $issueid);
             $view->addData('row', $issue);
         } else {
             $issue = new stdClass();
@@ -481,7 +532,7 @@ class projectsController extends PHPFrame_MVC_ActionController
         $post = PHPFrame::Request()->getPost();
         
         // Save issue using issues model
-        $modelIssues = $this->getModel('issues');
+        $modelIssues = $this->getModel('issues', array($this->_project));
         $row = $modelIssues->saveIssue($post);
 
         if ($row === false) {
@@ -515,7 +566,7 @@ class projectsController extends PHPFrame_MVC_ActionController
         $projectid = PHPFrame::Request()->get('projectid', 0);
         $issueid = PHPFrame::Request()->get('issueid', 0);
         
-        $modelIssues = &$this->getModel('issues');
+        $modelIssues = &$this->getModel('issues', array($this->_project));
         if ($modelIssues->deleteIssue($projectid, $issueid) === true) {
             $this->sysevents->setSummary(_LANG_ISSUE_DELETE_SUCCESS, "success");
         } else {
@@ -532,7 +583,7 @@ class projectsController extends PHPFrame_MVC_ActionController
         $projectid = PHPFrame::Request()->get('projectid', 0);
         $issueid = PHPFrame::Request()->get('issueid', 0);
         
-        $modelIssues = &$this->getModel('issues');
+        $modelIssues = &$this->getModel('issues', array($this->_project));
         $row = $modelIssues->closeIssue($projectid, $issueid);
         if ($row === false) {
             $this->sysevents->setSummary($modelIssues->getLastError());
@@ -563,7 +614,7 @@ class projectsController extends PHPFrame_MVC_ActionController
         $projectid = PHPFrame::Request()->get('projectid', 0);
         $issueid = PHPFrame::Request()->get('issueid', 0);
         
-        $modelIssues = &$this->getModel('issues');
+        $modelIssues = $this->getModel('issues', array($this->_project));
         $row = $modelIssues->reopenIssue($projectid, $issueid);
         if ($row === false) {
             $this->sysevents->setSummary($modelIssues->getLastError());

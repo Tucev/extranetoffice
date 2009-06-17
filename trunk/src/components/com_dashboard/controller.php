@@ -1,19 +1,29 @@
 <?php
 /**
- * @version     $Id$
- * @package        PHPFrame
- * @subpackage    com_dashboard
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_dashboard/controller.php
+ * 
+ * PHP version 5
+ * 
+ * @category   MVC_Framework
+ * @package    PHPFrame_Scaffold
+ * @subpackage com_dashboard
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
  */
 
 /**
  * dashboardController Class
  * 
- * @package        PHPFrame
- * @subpackage     com_dashboard
- * @author         Luis Montero [e-noise.com]
- * @since         1.0
+ * @category   MVC_Framework
+ * @package    PHPFrame_Scaffold
+ * @subpackage com_dashboard
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
+ * @since      1.0
  */
 class dashboardController extends PHPFrame_MVC_ActionController
 {
@@ -34,18 +44,21 @@ class dashboardController extends PHPFrame_MVC_ActionController
     {
         // Get user's projects
         $modelProjects = PHPFrame_MVC_Factory::getModel("com_projects", "projects");
-        $projects = $modelProjects->getCollection($list_filter);
+        $projects = $modelProjects->getCollection("p.created", "DESC");
         
         // Get project updates, overdue items and upcoming milestones
         if (count($projects) > 0) {
             foreach ($projects as $project) {
                 // Get project updates
-                $activitylog_filter = new PHPFrame_Database_CollectionFilter('ts', 'DESC', 10);
-                $modelActivitylog = PHPFrame_MVC_Factory::getModel("com_projects", "activitylog", array($project));
-                $project->activitylog = $modelActivitylog->getCollection($activitylog_filter);
+                $modelActivitylog = PHPFrame_MVC_Factory::getModel("com_projects", 
+                                                                   "activitylog",
+                                                                   array($project));
+                $project->activitylog = $modelActivitylog->getCollection('ts', 'DESC', 10);
                 
                 // Get overdue issues
-                $modelIssues = PHPFrame_MVC_Factory::getModel("com_projects", "issues");
+                $modelIssues = PHPFrame_MVC_Factory::getModel("com_projects", 
+                                                              "issues", 
+                                                              array($project));
                 $project->overdue_issues = $modelIssues->getTotalIssues($project->id, true);
             }
         }

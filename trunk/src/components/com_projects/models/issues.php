@@ -1,98 +1,112 @@
 <?php
 /**
- * @version     $Id$
- * @package        ExtranetOffice
- * @subpackage    com_projects
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_projects/models/issues.php
+ * 
+ * PHP version 5
+ * 
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/extranetoffice/source/browse
  */
 
 /**
  * projectsModelIssues Class
  * 
- * @package        ExtranetOffice
- * @subpackage     com_projects
- * @author         Luis Montero [e-noise.com]
- * @since         1.0
- * @see         PHPFrame_MVC_Model
- * @todo        check for NULL values rather than 00-00-000 00:00
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @link       http://code.google.com/p/extranetoffice/source/browse
+ * @since      1.0
  */
-class projectsModelIssues extends PHPFrame_MVC_Model {
+class projectsModelIssues extends PHPFrame_MVC_Model
+{
+    /**
+     * A reference to the project this issues belongs to
+     * 
+     * @var object
+     */
+    private $_project=null;
+    
     /**
      * Constructor
      *
-     * @since    1.0
+     * @access public
+     * @return void
+     * @since  1.0
      */
-    function __construct() {}
+    public function __construct($project) {
+        $this->_project = $project;
+    }
     
     /**
      * This method gets issues for specified project
      * 
-     * @param    object    $list_filter    Object of type PHPFrame_Database_CollectionFilter
-     * @param     int     $projectid
-     * @param     bool    $overdue        If set to true it only returns overdue issues
-     * @return    array
+     * @param string $orderby
+     * @param string $orderdir
+     * @param int    $limit
+     * @param int    $limitstart
+     * @param string $search
+     * @param bool   $overdue    If set to true it only returns overdue issues
+     * 
+     * @access public
+     * @return PHPFrame_Database_RowCollection
+     * @since  1.0
      */
-    public function getIssues(PHPFrame_Database_CollectionFilter $list_filter, $projectid, $overdue=false) {
+    public function getCollection(
+        $orderby="i.dtstart", 
+        $orderdir="DESC", 
+        $limit=25, 
+        $limitstart=0, 
+        $search="",
+        $overdue=false
+    ) {
         $filter_status = PHPFrame::Request()->get('filter_status', 'all');
         $filter_assignees = PHPFrame::Request()->get('filter_assignees', 'me');
-
-        $where = array();
+        $userid = PHPFrame::Session()->getUserId();
         
-        // Show only public projects or projects where user has an assigned role
-        $where[] = "( i.access = '0' OR (".PHPFrame::Session()->getUser()->id." IN (SELECT userid FROM #__users_issues WHERE issueid = i.id) ) )";
-        
+        $rows = new PHPFrame_Database_RowCollection();
+        $rows->select(array("i.*", "u.username AS created_by_name"))
+             ->from("#__issues AS i")
+             ->join("JOIN #__users u ON u.id = i.created_by")
+             ->where("i.projectid", "=", $this->_project->id)
+             ->where("i.access = '0'", 
+                     "OR", 
+                     "(".$userid
+                        ." IN (SELECT userid FROM #__users_issues WHERE issueid = i.id))")
+             ->groupby("i.id")
+             ->orderby($orderby, $orderdir)
+             ->limit($limit, $limitstart);
+             
         // Add search filtering
-        $search = $list_filter->getSearchStr();
         if ($search) {
-            $where[] = "i.title LIKE '%".PHPFrame::DB()->getEscaped($list_filter->getSearchStr())."%'";
+            $rows->where("i.title", "LIKE", ":search")
+                 ->params(":search", "%".$search."%");
         }
         
-        if (!empty($projectid)) {
-            $where[] = "i.projectid = ".$projectid;    
-        }
-        
+        // Filter overdue only
         if ($overdue === true) {
-            $where[] = "i.dtend < '".date("Y-m-d")." 23:59:59'";
-            $where[] = "i.closed = '0000-00-00 00:00:00'";    
+            $rows->where("i.dtend", "<", "'".date("Y-m-d")." 23:59:59'")
+                 ->where("i.closed", "=", "'0000-00-00 00:00:00'");   
         }
         
+        // Filter by status
         if ($filter_status == 'open' && $overdue !== true) {
-            $where[] = "i.closed = '0000-00-00 00:00:00'";    
+            $rows->where("i.closed", "=", "'0000-00-00 00:00:00'");  
+        } elseif ($filter_status == 'closed' && $overdue !== true) {
+            $rows->where("i.closed", "<>", "'0000-00-00 00:00:00'");    
         }
-        elseif ($filter_status == 'closed' && $overdue !== true) {
-            $where[] = "i.closed <> '0000-00-00 00:00:00'";    
-        } 
         
-        if ($filter_assignees) {
-            //$where[] = "i.projectid = "
-        }
-
-        $where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
-
-        // get the total number of records
-        // This query groups the files by parentid so and retireves the latest revision for each file in current project
-        $query = "SELECT 
-                  i.*, 
-                  u.username AS created_by_name 
-                  FROM #__issues AS i 
-                  JOIN #__users u ON u.id = i.created_by "
-                  . $where . 
-                  " GROUP BY i.id ";
-        //echo str_replace('#__', 'eo_', $query); exit;
-        
-        // Run query to get total rows before applying filter
-        $list_filter->setTotal(PHPFrame::DB()->query($query)->rowCount());
-
-        // Add order by and limit statements for subset (based on filter)
-        //$query .= $list_filter->getOrderBySQL();
-        $query .= $list_filter->getLimitSQL();
-        //echo str_replace('#__', 'eo_', $query); exit;
-        
-        $rows = PHPFrame::DB()->loadObjectList($query);
+        $rows->load();
         
         // Prepare rows and add relevant data
-        if (is_array($rows) && count($rows) > 0) {
+        if ($rows->countRows() > 0) {
             foreach ($rows as $row) {
                 // Get assignees
                 $row->assignees = $this->getAssignees($row->id);
@@ -104,11 +118,9 @@ class projectsModelIssues extends PHPFrame_MVC_Model {
                 // set status
                 if ($row->closed != "0000-00-00 00:00:00") {
                     $row->status = "closed";
-                }
-                elseif ($row->dtend < date("Y-m-d")." 23:59:59") {
+                } elseif ($row->dtend < date("Y-m-d")." 23:59:59") {
                     $row->status = "overdue";
-                }
-                else {
+                } else {
                     $row->status = "open";
                 }
             }
@@ -124,7 +136,8 @@ class projectsModelIssues extends PHPFrame_MVC_Model {
      * @param int $issueid
      * @return mixed returns $row on success and FALSE on failure
      */
-    public function getIssuesDetail($projectid, $issueid) {
+    public function getIssuesDetail($projectid, $issueid)
+    {
         $query = "SELECT i.*, u.username AS created_by_name ";
         $query .= " FROM #__issues AS i ";
         $query .= " JOIN #__users u ON u.id = i.created_by ";
@@ -146,40 +159,35 @@ class projectsModelIssues extends PHPFrame_MVC_Model {
     /**
      * Save a project issue
      * 
-     * @param    $post    The array to be used for binding to the row before storing it. Normally the HTTP_POST array.
-     * @return    mixed    Returns the stored table row object on success or FALSE on failure
+     * @param $post The array to be used for binding to the row before storing it. 
+     *              Normally the HTTP_POST array.
+     * 
+     * @access public
+     * @return mixed  Returns the stored table row object on success or FALSE on failure
+     * @since  1.0
      */
-    public function saveIssue($post) {
+    public function saveIssue($post)
+    {
         // Check whether a project id is included in the post array
         if (empty($post['projectid'])) {
             $this->_error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
             return false;
         }
             
-        $row = $this->getTable('issues');
+        $row = new PHPFrame_Database_Row("#__issues");
         
         if (empty($post['id'])) {
-            $row->created_by = PHPFrame::Session()->getUser()->id;
-            $row->created = date("Y-m-d H:i:s");
-        }
-        else {
+            $row->set("created_by", PHPFrame::Session()->getUserId());
+            $row->set("created", date("Y-m-d H:i:s"));
+        } else {
             $row->load($post['id']);
         }
         
-        if (!$row->bind($post)) {
-            $this->_error[] = $row->getLastError();
-            return false;
-        }
+        // Bind the post data to the row array (exluding created and created_by)
+        $row->bind($post, 'created,created_by');
         
-        if (!$row->check()) {
-            $this->_error[] = $row->getLastError();
-            return false;
-        }
-    
-        if (!$row->store()) {
-            $this->_error[] = $row->getLastError();
-            return false;
-        }
+        // Store row
+        $row->store();
         
         // Delete existing assignees before we store new ones if editing existing issue
         if (!empty($post['id'])) {
@@ -209,7 +217,8 @@ class projectsModelIssues extends PHPFrame_MVC_Model {
      * @param    int        $issueid    The id of the issue we want to delete.
      * @return    bool    Returns TRUE on success or FALSE on error
      */
-    public function deleteIssue($projectid, $issueid) {
+    public function deleteIssue($projectid, $issueid)
+    {
         //TODO: This function should allow ids as either int or array of ints.
         //TODO: This function should also check permissions before deleting
         
@@ -236,8 +245,7 @@ class projectsModelIssues extends PHPFrame_MVC_Model {
         if (!$row->delete($issueid)) {
             $this->_error[] = $row->getLastError();
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
@@ -249,7 +257,8 @@ class projectsModelIssues extends PHPFrame_MVC_Model {
      * @param    int        $issueid
      * @return    mixed    Returns issues row object or FALSE on failure.
      */
-    public function closeIssue($projectid, $issueid) {
+    public function closeIssue($projectid, $issueid)
+    {
         $query = "UPDATE #__issues ";
         $query .= " SET closed = '".date("Y-m-d H:i:s")."' WHERE id = ".$issueid;
         if (!PHPFrame::DB()->query($query)) {
@@ -269,7 +278,8 @@ class projectsModelIssues extends PHPFrame_MVC_Model {
      * @param    int        $issueid
      * @return    mixed    Returns issues row object or FALSE on failure.
      */
-    public function reopenIssue($projectid, $issueid) {
+    public function reopenIssue($projectid, $issueid)
+    {
         $query = "UPDATE #__issues ";
         $query .= " SET closed = '0000-00-00 00:00:00' WHERE id = ".$issueid;
         if (!PHPFrame::DB()->query($query)) {
@@ -289,7 +299,8 @@ class projectsModelIssues extends PHPFrame_MVC_Model {
      * @param    bool    $overdue
      * @return    mixed    Returns numeric resource or FALSE on failure.
      */
-    public function getTotalIssues($projectid, $overdue=false) {
+    public function getTotalIssues($projectid, $overdue=false)
+    {
         $query = "SELECT COUNT(id) FROM #__issues ";
         $query .= " WHERE projectid = ".$projectid;
         if ($overdue === true) { 
@@ -306,7 +317,8 @@ class projectsModelIssues extends PHPFrame_MVC_Model {
      * @param    bool    $asoc
      * @return    array    Array containing assignees ids or asociative array with id, name and email if asoc is true.
      */
-    public function getAssignees($issueid, $asoc=true) {
+    public function getAssignees($issueid, $asoc=true)
+    {
         $query = "SELECT ui.userid, u.firstname, u.lastname, u.email";
         $query .= " FROM #__users_issues AS ui ";
         $query .= "LEFT JOIN #__users u ON u.id = ui.userid";
@@ -317,8 +329,7 @@ class projectsModelIssues extends PHPFrame_MVC_Model {
         for ($i=0; $i<count($assignees); $i++) {
             if ($asoc === false) {
                 $new_assignees[$i] = $assignees[$i]->userid;
-            }
-            else {
+            } else {
                 $new_assignees[$i]['id'] = $assignees[$i]->userid;
                 $new_assignees[$i]['name'] = PHPFrame_User_Helper::fullname_format($assignees[$i]->firstname, $assignees[$i]->lastname);
                 $new_assignees[$i]['email'] = $assignees[$i]->email;
