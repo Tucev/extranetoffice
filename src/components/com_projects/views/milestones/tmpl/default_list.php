@@ -1,10 +1,10 @@
 <?php
 /**
- * @version 	$Id$
- * @package		ExtranetOffice
- * @subpackage 	com_projects
- * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license		BSD revised. See LICENSE.
+ * @version     $Id$
+ * @package        ExtranetOffice
+ * @subpackage     com_projects
+ * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+ * @license        BSD revised. See LICENSE.
  */
 
 // Add confirm behaviour to delete links
@@ -15,15 +15,15 @@ PHPFrame_HTML::confirm('delete_milestone', _LANG_PROJECTS_MILESTONES_DELETE, _LA
 
 
 <div class="new">
-	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_milestone_form&projectid='.$data['project']->id); ?>">
-		<?php echo PHPFrame_Base_String::html( _LANG_NEW ); ?>
-	</a>
+    <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_milestone_form&projectid='.$data['project']->id); ?>">
+        <?php echo PHPFrame_Base_String::html( _LANG_NEW ); ?>
+    </a>
 </div>
 
 <h2 class="subheading <?php echo strtolower($data['view']); ?>">
-	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_milestones&projectid='.$data['project']->id); ?>">
-		<?php echo $data['view']; ?>
-	</a>
+    <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_milestones&projectid='.$data['project']->id); ?>">
+        <?php echo $data['view']; ?>
+    </a>
 </h2>
 
 
@@ -33,56 +33,56 @@ PHPFrame_HTML::confirm('delete_milestone', _LANG_PROJECTS_MILESTONES_DELETE, _LA
 <?php foreach($data['rows'] as $row) : ?>
 <div class="thread_row<?php echo $k; ?>">
 
-	<?php if ($row->created_by == PHPFrame::Session()->getUser()->id) : ?>
-	<div class="thread_delete">
-		<a class="delete_milestone" title="<?php echo PHPFrame_Base_String::html($row->title, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_milestone&projectid=".$row->projectid."&milestoneid=".$row->id); ?>">
-			<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>
-		</a> 
-	</div>
-	<?php endif; ?>
-	
-	<div class="thread_heading">
-	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_milestone_detail&projectid='.$row->projectid.'&milestoneid='.$row->id); ?>">
-		<?php echo $row->title; ?>
-	</a>
-	</div>
-	
-	<div class="thread_date">
-	<?php echo date("D, d M Y H:ia", strtotime($row->created)); ?>
-	</div>
-	
-	<div class="thread_details">
-		<?php echo _LANG_POSTED_BY ?>: <?php echo $row->created_by_name; ?>
-		<br />
-		<?php echo projectsViewHelper::printAssignees("milestones", $row); ?>
-	</div>
-	
-	<div class="<?php echo $row->due_date_class; ?> status">
-    	<span>
-    		<?php echo strtoupper($row->status); ?> &gt; 
-			<?php echo _LANG_MILESTONES_DUEDATE; ?>: 
-			<?php echo date("l, d M Y", strtotime($row->due_date)); ?>
-    	</span>
+    <?php if ($row->created_by == PHPFrame::Session()->getUser()->id) : ?>
+    <div class="thread_delete">
+        <a class="delete_milestone" title="<?php echo PHPFrame_Base_String::html($row->title, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_milestone&projectid=".$row->projectid."&milestoneid=".$row->id); ?>">
+            <?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>
+        </a> 
     </div>
-	
-	<br />
-	
-	<?php if (!empty($row->description)) : ?>
-	<div class="thread_body">
-		<?php echo nl2br(PHPFrame_Base_String::limitWords($row->description, 255)); ?>
-	</div>
-	<?php endif; ?>
-	
-	
-	<div class="comments_info">
-		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_milestone_detail&projectid='.$data['project']->id.'&milestoneid='.$row->id); ?>">
-			<?php echo $row->comments; ?> <?php echo _LANG_COMMENTS; ?>
-		</a>
-		 - 
-		<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_milestone_detail&projectid='.$data['project']->id.'&milestoneid='.$row->id."#post-comment"); ?>">
-			<?php echo _LANG_COMMENTS_NEW; ?>
-		</a>
-	</div>
+    <?php endif; ?>
+    
+    <div class="thread_heading">
+    <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_milestone_detail&projectid='.$row->projectid.'&milestoneid='.$row->id); ?>">
+        <?php echo $row->title; ?>
+    </a>
+    </div>
+    
+    <div class="thread_date">
+    <?php echo date("D, d M Y H:ia", strtotime($row->created)); ?>
+    </div>
+    
+    <div class="thread_details">
+        <?php echo _LANG_POSTED_BY ?>: <?php echo $row->created_by_name; ?>
+        <br />
+        <?php echo projectsViewHelper::printAssignees("milestones", $row); ?>
+    </div>
+    
+    <div class="<?php echo $row->due_date_class; ?> status">
+        <span>
+            <?php echo strtoupper($row->status); ?> &gt; 
+            <?php echo _LANG_MILESTONES_DUEDATE; ?>: 
+            <?php echo date("l, d M Y", strtotime($row->due_date)); ?>
+        </span>
+    </div>
+    
+    <br />
+    
+    <?php if (!empty($row->description)) : ?>
+    <div class="thread_body">
+        <?php echo nl2br(PHPFrame_Base_String::limitWords($row->description, 255)); ?>
+    </div>
+    <?php endif; ?>
+    
+    
+    <div class="comments_info">
+        <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_milestone_detail&projectid='.$data['project']->id.'&milestoneid='.$row->id); ?>">
+            <?php echo $row->comments; ?> <?php echo _LANG_COMMENTS; ?>
+        </a>
+         - 
+        <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_milestone_detail&projectid='.$data['project']->id.'&milestoneid='.$row->id."#post-comment"); ?>">
+            <?php echo _LANG_COMMENTS_NEW; ?>
+        </a>
+    </div>
 
 </div>
 <?php $k = 1 - $k; ?>

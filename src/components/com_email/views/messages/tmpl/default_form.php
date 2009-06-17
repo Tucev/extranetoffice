@@ -1,27 +1,27 @@
 <?php
 /**
- * @version 	$Id$
- * @package		ExtranetOffice
- * @subpackage	com_email
- * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license		BSD revised. See LICENSE.
+ * @version     $Id$
+ * @package        ExtranetOffice
+ * @subpackage    com_email
+ * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+ * @license        BSD revised. See LICENSE.
  */
 ?>
 
 <!-- initialize squeezebox (lightbox) -->
 <script type="text/javascript">
 window.addEvent('domready', function() {
-	
-	/* Lighbox iframe for new PHPFrame_Mail_IMAP folders form */
-	SqueezeBox.initialize({});
+    
+    /* Lighbox iframe for new PHPFrame_Mail_IMAP folders form */
+    SqueezeBox.initialize({});
 
-	$$('a.modal').each(function(el) {
-		el.addEvent('click', function(e) {
-			new Event(e).stop();
-			SqueezeBox.fromElement(el);
-		});
-	});
-	
+    $$('a.modal').each(function(el) {
+        el.addEvent('click', function(e) {
+            new Event(e).stop();
+            SqueezeBox.fromElement(el);
+        });
+    });
+    
 });
 </script>
 
@@ -29,78 +29,78 @@ window.addEvent('domready', function() {
 var attachments = new Array();
 
 function submitbutton() {
-	var form = document.iofficemailform;
+    var form = document.iofficemailform;
 
-	// do field validation
-	if (form.recipients.value == "") {
-		alert('<?php echo PHPFrame_Base_String::html( _LANG_EMAIL_TO_REQUIRED , true); ?>');
-		return;
-	}
-	
-	storeAttachmentsInForm();
-	
-	form.submit();
+    // do field validation
+    if (form.recipients.value == "") {
+        alert('<?php echo PHPFrame_Base_String::html( _LANG_EMAIL_TO_REQUIRED , true); ?>');
+        return;
+    }
+    
+    storeAttachmentsInForm();
+    
+    form.submit();
 }
 
 function storeAttachmentsInForm() {
-	var form = document.iofficemailform;
-	var paths_array = new Array();
-	
-	for (var i=0; i<attachments.length; i++) {
-		paths_array[i] = attachments[i][0];
-	}
-	
-	form.attachments.value = paths_array;
+    var form = document.iofficemailform;
+    var paths_array = new Array();
+    
+    for (var i=0; i<attachments.length; i++) {
+        paths_array[i] = attachments[i][0];
+    }
+    
+    form.attachments.value = paths_array;
 }
 
 function add_attachment(path, size, type) {
-	// Build array with new attachment data
-	var attachment = new Array();
-	attachment[0] = path;
-	attachment[1] = size;
-	attachment[2] = type;
-	
-	// Add attachment to global attachments array
-	var i = attachments.length;
-	attachments[i] = attachment;
-	//alert(attachments.length);
-	
-	// Update td showing attachments
-	var attachments_td = document.getElementById('attachments_td');
-	var attachments_html = '';
-	for (var k=0; k<attachments.length; k++) {
-		if (k>0) {
-			attachments_html += "<br />";
-		}
-		attachments_html += attachments[k][0]+" ("+attachments[k][1]+" Bytes)";
-	}
-	attachments_td.innerHTML = attachments_html;
+    // Build array with new attachment data
+    var attachment = new Array();
+    attachment[0] = path;
+    attachment[1] = size;
+    attachment[2] = type;
+    
+    // Add attachment to global attachments array
+    var i = attachments.length;
+    attachments[i] = attachment;
+    //alert(attachments.length);
+    
+    // Update td showing attachments
+    var attachments_td = document.getElementById('attachments_td');
+    var attachments_html = '';
+    for (var k=0; k<attachments.length; k++) {
+        if (k>0) {
+            attachments_html += "<br />";
+        }
+        attachments_html += attachments[k][0]+" ("+attachments[k][1]+" Bytes)";
+    }
+    attachments_td.innerHTML = attachments_html;
 }
 </script>
 
 <div class="componentheading"><?php echo $data['page_title']; ?></div>
 
 <div id="email_detail_actions">
-	<div>
-		<a href="Javascript:window.history.back();" title="<?php echo PHPFrame_Base_String::html( _LANG_BACK ); ?>">
-		<img border="0" src="templates/<?php echo config::THEME; ?>/images/icons/generic/32x32/back.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_BACK ); ?>" />
-		</a>
-	</div>
-	<div>
-		<a href="Javascript:submitbutton();" title="<?php echo PHPFrame_Base_String::html( _LANG_SEND ); ?>">
-		<img border="0" src="templates/<?php echo config::THEME; ?>/images/icons/email/32x32/mail_send-32x32.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_SEND ); ?>" />
-		</a>
-	</div>
-	<div>
-		<a class="modal" href="index.php?component=com_intranetoffice&amp;view=email&amp;folder=<?php echo $this->folder; ?>&amp;type=new_attachment&tmpl=component" rel="{handler: 'iframe', size: {x: 340, y: 160}}">
-		<img border="0" src="templates/<?php echo config::THEME; ?>/images/icons/email/32x32/attach.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_ATTACH ); ?>" />
-		</a>
-	</div>
-	<div>
-		<a href="#" title="<?php echo PHPFrame_Base_String::html( _LANG_SAVE_DRAFT ); ?>">
-		<img border="0" src="templates/<?php echo config::THEME; ?>/images/icons/generic/32x32/save.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_SAVE_DRAFT ); ?>" />
-		</a>
-	</div>
+    <div>
+        <a href="Javascript:window.history.back();" title="<?php echo PHPFrame_Base_String::html( _LANG_BACK ); ?>">
+        <img border="0" src="templates/<?php echo config::THEME; ?>/images/icons/generic/32x32/back.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_BACK ); ?>" />
+        </a>
+    </div>
+    <div>
+        <a href="Javascript:submitbutton();" title="<?php echo PHPFrame_Base_String::html( _LANG_SEND ); ?>">
+        <img border="0" src="templates/<?php echo config::THEME; ?>/images/icons/email/32x32/mail_send-32x32.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_SEND ); ?>" />
+        </a>
+    </div>
+    <div>
+        <a class="modal" href="index.php?component=com_intranetoffice&amp;view=email&amp;folder=<?php echo $this->folder; ?>&amp;type=new_attachment&tmpl=component" rel="{handler: 'iframe', size: {x: 340, y: 160}}">
+        <img border="0" src="templates/<?php echo config::THEME; ?>/images/icons/email/32x32/attach.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_ATTACH ); ?>" />
+        </a>
+    </div>
+    <div>
+        <a href="#" title="<?php echo PHPFrame_Base_String::html( _LANG_SAVE_DRAFT ); ?>">
+        <img border="0" src="templates/<?php echo config::THEME; ?>/images/icons/generic/32x32/save.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_SAVE_DRAFT ); ?>" />
+        </a>
+    </div>
 </div>
 <div style="clear:both;"></div>
 
@@ -135,8 +135,8 @@ function add_attachment(path, size, type) {
 </tr>
 <tr>
 <td colspan="2">
-	<?php echo _LANG_EMAIL_SAVE_COPY_IN_SENT_FOLDER; ?>: 
-	<input type="checkbox" name="save_in_sent" value="1" />
+    <?php echo _LANG_EMAIL_SAVE_COPY_IN_SENT_FOLDER; ?>: 
+    <input type="checkbox" name="save_in_sent" value="1" />
 </td>
 </tr>
 </table>

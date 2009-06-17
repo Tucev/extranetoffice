@@ -1,10 +1,10 @@
 <?php
 /**
- * @version 	$Id$
- * @package		ExtranetOffice
- * @subpackage 	com_email
- * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license		BSD revised. See LICENSE.
+ * @version     $Id$
+ * @package        ExtranetOffice
+ * @subpackage     com_email
+ * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+ * @license        BSD revised. See LICENSE.
  */
 
 /**
@@ -12,13 +12,13 @@
  * 
  * This class is used to sort IMAP mailboxes
  * 
- * @package		ExtranetOffice
- * @subpackage 	com_email
- * @author 		Luis Montero [e-noise.com]
- * @since 		1.0
+ * @package        ExtranetOffice
+ * @subpackage     com_email
+ * @author         Luis Montero [e-noise.com]
+ * @since         1.0
  */
 class emailHelperIMAP_Sort {
- 	/**
+     /**
      * The delimiter character to use.
      *
      * @var string
@@ -81,8 +81,8 @@ class emailHelperIMAP_Sort {
      * @return integer  See usort().
      */
     function _mbox_cmp($a, $b) {
-    	$a = $a['nameX']; // Added to work with intranet office
-    	$b = $b['nameX']; // Added to work with intranet office
+        $a = $a['nameX']; // Added to work with intranet office
+        $b = $b['nameX']; // Added to work with intranet office
         /* Always return INBOX as "smaller". */
         if ($this->_sortinbox) {
             if (strcasecmp($a, 'INBOX') == 0) {
@@ -94,12 +94,12 @@ class emailHelperIMAP_Sort {
         }
         
         // Hack to place Trash folde right after Inbox
-    	if (strcasecmp($a, 'Trash') == 0) {
-    		return -1;
-    	} 
-    	elseif (strcasecmp($b, 'Trash') == 0) {
-        	return 1;
-    	}
+        if (strcasecmp($a, 'Trash') == 0) {
+            return -1;
+        } 
+        elseif (strcasecmp($b, 'Trash') == 0) {
+            return 1;
+        }
 
         $a_parts = explode($this->_delimiter, $a);
         $b_parts = explode($this->_delimiter, $b);

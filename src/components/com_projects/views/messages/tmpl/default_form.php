@@ -1,10 +1,10 @@
 <?php
 /**
- * @version 	$Id$
- * @package		ExtranetOffice
- * @subpackage 	com_projects
- * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license		BSD revised. See LICENSE.
+ * @version     $Id$
+ * @package        ExtranetOffice
+ * @subpackage     com_projects
+ * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+ * @license        BSD revised. See LICENSE.
  */
 
 // Load jQuery validation behaviour for form
@@ -14,9 +14,9 @@ PHPFrame_HTML::validate('messagesform');
 <h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
 
 <h2 class="subheading <?php echo strtolower($data['view']); ?>">
-	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_messages&projectid='.$data['project']->id); ?>">
-		<?php echo $data['view']; ?>
-	</a>
+    <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_messages&projectid='.$data['project']->id); ?>">
+        <?php echo $data['view']; ?>
+    </a>
 </h2>
 
 <form action="index.php" method="post" name="messagesform" id="messagesform" enctype="multipart/form-data">
@@ -25,45 +25,45 @@ PHPFrame_HTML::validate('messagesform');
 <legend><?php echo PHPFrame_Base_String::html( _LANG_MESSAGES_NEW ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
-	<td width="30%">
-		<label id="subjectmsg" for="subject">
-			<?php echo _LANG_MESSAGES_SUBJECT; ?>:
-		</label>
-	</td>
-	<td>
-		<input class="required" type="text" id="subject" name="subject" size="32" maxlength="64" value="" />
-	</td>
+    <td width="30%">
+        <label id="subjectmsg" for="subject">
+            <?php echo _LANG_MESSAGES_SUBJECT; ?>:
+        </label>
+    </td>
+    <td>
+        <input class="required" type="text" id="subject" name="subject" size="32" maxlength="64" value="" />
+    </td>
 </tr>
 <tr>
-	<td width="30%">
-		<label id="bodymsg" for="body">
-			<?php echo _LANG_MESSAGES_BODY; ?>:
-		</label>
-	</td>
-	<td>
-		<textarea class="required" id="body" name="body" cols="80" rows="10"></textarea>
-	</td>
+    <td width="30%">
+        <label id="bodymsg" for="body">
+            <?php echo _LANG_MESSAGES_BODY; ?>:
+        </label>
+    </td>
+    <td>
+        <textarea class="required" id="body" name="body" cols="80" rows="10"></textarea>
+    </td>
 </tr>
 
 <tr>
-	<td>
-		<label id="assigneesmsg" for="assignees">
-			<?php echo _LANG_ASSIGNEES; ?>:
-		</label>
-	</td>
-	<td>
-		<?php echo PHPFrame_User_Helper::assignees('', '', 'assignees[]', $data['project']->id); ?>
-	</td>
+    <td>
+        <label id="assigneesmsg" for="assignees">
+            <?php echo _LANG_ASSIGNEES; ?>:
+        </label>
+    </td>
+    <td>
+        <?php echo PHPFrame_User_Helper::assignees('', '', 'assignees[]', $data['project']->id); ?>
+    </td>
 </tr>
 <tr>
-	<td>
-		<label id="notifymsg" for="notify">
-			<?php echo _LANG_NOTIFY_ASSIGNEES; ?>:
-		</label>
-	</td>
-	<td>
-		<input type="checkbox" name="notify" checked />
-	</td>
+    <td>
+        <label id="notifymsg" for="notify">
+            <?php echo _LANG_NOTIFY_ASSIGNEES; ?>:
+        </label>
+    </td>
+    <td>
+        <input type="checkbox" name="notify" checked />
+    </td>
 </tr>
 </table>
 </fieldset>

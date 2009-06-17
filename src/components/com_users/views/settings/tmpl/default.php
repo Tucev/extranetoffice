@@ -1,10 +1,10 @@
 <?php
 /**
- * @version 	$Id$
- * @package		PHPFrame
- * @subpackage	com_users
- * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license		BSD revised. See LICENSE.
+ * @version     $Id$
+ * @package        PHPFrame
+ * @subpackage    com_users
+ * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+ * @license        BSD revised. See LICENSE.
  */
 
 PHPFrame_HTML::validate('userform');
@@ -14,109 +14,109 @@ PHPFrame_HTML::validate('userform');
 <h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 <form action="index.php" method="post" name="userform" id="userform" enctype="multipart/form-data">
-	
+    
 <fieldset>
 <legend><?php echo PHPFrame_Base_String::html( _LANG_USER_GENERAL_SETTINGS ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
-	<td>
-		<label for="username">
-			<?php echo PHPFrame_Base_String::html( _LANG_USERNAME ); ?>:
-		</label>
-	</td>
-	<td>
-		<input class="required" type="text" id="username" name="username" value="<?php echo $data['row']->get('username');?>" size="40" />
-	</td>
+    <td>
+        <label for="username">
+            <?php echo PHPFrame_Base_String::html( _LANG_USERNAME ); ?>:
+        </label>
+    </td>
+    <td>
+        <input class="required" type="text" id="username" name="username" value="<?php echo $data['row']->get('username');?>" size="40" />
+    </td>
 </tr>
 <tr>
-	<td width="120">
-		<label for="email">
-			<?php echo PHPFrame_Base_String::html( _LANG_EMAIL ); ?>:
-		</label>
-	</td>
-	<td>
-		<input class="required" type="text" id="email" name="email" value="<?php echo $data['row']->get('email');?>" size="40" />
-	</td>
+    <td width="120">
+        <label for="email">
+            <?php echo PHPFrame_Base_String::html( _LANG_EMAIL ); ?>:
+        </label>
+    </td>
+    <td>
+        <input class="required" type="text" id="email" name="email" value="<?php echo $data['row']->get('email');?>" size="40" />
+    </td>
 </tr>
 <tr>
-	<td>
-		<label for="firstname">
-			<?php echo PHPFrame_Base_String::html( _LANG_FIRSTNAME ); ?>:
-		</label>
-	</td>
-	<td>
-		<input type="text" id="firstname" name="firstname" value="<?php echo $data['row']->get('firstname');?>" size="40" />
-	</td>
+    <td>
+        <label for="firstname">
+            <?php echo PHPFrame_Base_String::html( _LANG_FIRSTNAME ); ?>:
+        </label>
+    </td>
+    <td>
+        <input type="text" id="firstname" name="firstname" value="<?php echo $data['row']->get('firstname');?>" size="40" />
+    </td>
 </tr>
 <tr>
-	<td>
-		<label for="lastname">
-			<?php echo PHPFrame_Base_String::html( _LANG_LASTNAME ); ?>:
-		</label>
-	</td>
-	<td>
-		<input type="text" id="lastname" name="lastname" value="<?php echo $data['row']->get('lastname');?>" size="40" />
-	</td>
+    <td>
+        <label for="lastname">
+            <?php echo PHPFrame_Base_String::html( _LANG_LASTNAME ); ?>:
+        </label>
+    </td>
+    <td>
+        <input type="text" id="lastname" name="lastname" value="<?php echo $data['row']->get('lastname');?>" size="40" />
+    </td>
 </tr>
 <tr>
-	<td>
-		<label for="password">
-			<?php echo PHPFrame_Base_String::html( _LANG_PASSWORD ); ?>:
-		</label>
-	</td>
-	<td>
-		<input type="password" id="password" name="password" value="" size="40" />
-	</td>
+    <td>
+        <label for="password">
+            <?php echo PHPFrame_Base_String::html( _LANG_PASSWORD ); ?>:
+        </label>
+    </td>
+    <td>
+        <input type="password" id="password" name="password" value="" size="40" />
+    </td>
 </tr>
 <tr>
-	<td>
-		<label for="password2">
-			<?php echo PHPFrame_Base_String::html( _LANG_PASSWORD_VERIFY ); ?>:
-		</label>
-	</td>
-	<td>
-		<input type="password" id="password2" name="password2" size="40" />
-	</td>
+    <td>
+        <label for="password2">
+            <?php echo PHPFrame_Base_String::html( _LANG_PASSWORD_VERIFY ); ?>:
+        </label>
+    </td>
+    <td>
+        <input type="password" id="password2" name="password2" size="40" />
+    </td>
 </tr>
 <tr>
-	<td width="30%">
-		<label id="photomsg" for="photo">
-			<?php echo _LANG_USER_PHOTO; ?>:
-		</label>
-	</td>
-	<td>
-		<?php if (is_string($data['row']->photo)) : ?>
-			<img src="<?php echo config::UPLOAD_DIR.'/users/'.$data['row']->photo; ?>" alt="photo" vspace="5" />
-			<br />
-		<?php endif; ?>
-		<input type="file" name="photo" id="photo" />
-	</td>
+    <td width="30%">
+        <label id="photomsg" for="photo">
+            <?php echo _LANG_USER_PHOTO; ?>:
+        </label>
+    </td>
+    <td>
+        <?php if (is_string($data['row']->photo)) : ?>
+            <img src="<?php echo config::UPLOAD_DIR.'/users/'.$data['row']->photo; ?>" alt="photo" vspace="5" />
+            <br />
+        <?php endif; ?>
+        <input type="file" name="photo" id="photo" />
+    </td>
 </tr>
 <tr>
-	<td width="30%">
-		<label id="notificationsmsg" for="notifications">
-			<?php echo _LANG_USER_EMAIL_NOTIFICATIONS; ?>:
-		</label>
-	</td>
-	<td>
-		<select id="notifications" name="notifications">
-			<option value="0" <?php if ($data['row']->notifications == 0) echo 'selected'; ?>>No</option>
-			<option value="1" <?php if ($data['row']->notifications == 1) echo 'selected'; ?>>Yes</option>
-		</select>
-	</td>
+    <td width="30%">
+        <label id="notificationsmsg" for="notifications">
+            <?php echo _LANG_USER_EMAIL_NOTIFICATIONS; ?>:
+        </label>
+    </td>
+    <td>
+        <select id="notifications" name="notifications">
+            <option value="0" <?php if ($data['row']->notifications == 0) echo 'selected'; ?>>No</option>
+            <option value="1" <?php if ($data['row']->notifications == 1) echo 'selected'; ?>>Yes</option>
+        </select>
+    </td>
 </tr>
 <tr>
-	<td width="30%">
-		<label id="show_emailmsg" for="show_email">
-			<?php echo _LANG_USER_SHOW_EMAIL; ?>:
-		</label>
-	</td>
-	<td>
-		<select id="show_email" name="show_email">
-			<option value="0" <?php if ($data['row']->show_email == 0) echo 'selected'; ?>>No</option>
-			<option value="1" <?php if ($data['row']->show_email == 1) echo 'selected'; ?>>Yes</option>
-		</select>
-	</td>
+    <td width="30%">
+        <label id="show_emailmsg" for="show_email">
+            <?php echo _LANG_USER_SHOW_EMAIL; ?>:
+        </label>
+    </td>
+    <td>
+        <select id="show_email" name="show_email">
+            <option value="0" <?php if ($data['row']->show_email == 0) echo 'selected'; ?>>No</option>
+            <option value="1" <?php if ($data['row']->show_email == 1) echo 'selected'; ?>>Yes</option>
+        </select>
+    </td>
 </tr>
 </table>
 </fieldset>
