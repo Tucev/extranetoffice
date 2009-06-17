@@ -1,10 +1,10 @@
 <?php
 /**
- * @version 	$Id$
- * @package		ExtranetOffice
- * @subpackage 	com_projects
- * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license		BSD revised. See LICENSE.
+ * @version     $Id$
+ * @package        ExtranetOffice
+ * @subpackage     com_projects
+ * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+ * @license        BSD revised. See LICENSE.
  */
 ?>
 
@@ -12,9 +12,9 @@
 
 <?php if (PHPFrame::Session()->getUser()->groupid == 1) : ?>
 <div class="new">
-	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_project_form'); ?>" title="<?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_NEW ); ?>">
-		<?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_NEW ); ?>
-	</a>
+    <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_project_form'); ?>" title="<?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_NEW ); ?>">
+        <?php echo PHPFrame_Base_String::html( _LANG_PROJECTS_NEW ); ?>
+    </a>
 </div>
 <?php endif; ?>
 
@@ -23,13 +23,13 @@
 
 <script language="javascript" type="text/javascript">
 function submit_filter(reset) {
-	var form = document.forms['listsearchform'];
-	
-	if (reset){
-		form.search.value = '';
-	}
-	
-	form.submit();
+    var form = document.forms['listsearchform'];
+    
+    if (reset){
+        form.search.value = '';
+    }
+    
+    form.submit();
 }
 </script>
 <div class="list_filter_container">
@@ -61,20 +61,20 @@ function submit_filter(reset) {
   <tr class="row<?php echo $k; ?>">
     <td valign="top">
     <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=get_project_detail&projectid=".$row->id); ?>">
-	<?php echo $row->name; ?>
-	</a>
+    <?php echo $row->name; ?>
+    </a>
     </td>
     <td>
-    	<?php echo projectsHelperProjects::statusid2name($row->status); ?>
+        <?php echo projectsHelperProjects::statusid2name($row->status); ?>
     </td>
     <td>
-    	<?php echo projectsHelperProjects::project_typeid2name($row->project_type); ?>
+        <?php echo projectsHelperProjects::project_typeid2name($row->project_type); ?>
     </td>
     <td>
-    	<?php echo projectsHelperProjects::priorityid2name($row->priority); ?>
+        <?php echo projectsHelperProjects::priorityid2name($row->priority); ?>
     </td>
     <td>
-    	<?php echo projectsHelperProjects::global_accessid2name($row->access); ?>
+        <?php echo projectsHelperProjects::global_accessid2name($row->access); ?>
     </td>
   </tr>
   <?php $k = 1 - $k; ?>

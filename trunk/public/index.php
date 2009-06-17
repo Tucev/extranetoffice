@@ -9,11 +9,11 @@
  * In order to instantiate the Front Controller we first set a few useful constants, 
  * load the config file and include the autoloader.
  * 
- * @version 	$Id: index.php 46 2009-02-13 01:37:49Z luis.montero $
- * @package		PHPFrame
- * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license		BSD revised. See LICENSE.
- * @see			PHPFrame_Application_FrontController
+ * @version     $Id: index.php 46 2009-02-13 01:37:49Z luis.montero $
+ * @package        PHPFrame
+ * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+ * @license        BSD revised. See LICENSE.
+ * @see            PHPFrame_Application_FrontController
  */
 
 //TODO: This needs to be removed. It is temporarily here to make up for the
@@ -40,10 +40,10 @@ $config_file_path = _ABS_PATH.DS."src".DS."config.php";
  * If there is no config file we redirect to installation directory
  */
 if (!file_exists($config_file_path)) {
-	header("Location: installation/index.php");
+    header("Location: installation/index.php");
 }
 else {
-	require_once $config_file_path;	
+    require_once $config_file_path;    
 }
 
 // Include autoloader

@@ -16,10 +16,10 @@ and that it meets the recommended minimum requirements:
 - MySQL 5.x or higher
 - PHP 5.2.0 or higher
 - PHP Extensions:
-	- MySQL
-	- Filter
-	- GD
-	- IMAP
+    - MySQL
+    - Filter
+    - GD
+    - IMAP
 
 You can check this by looking at the output of phpinfo() in a php script. Simply create 
 a text file in your web server, add the following code and save it with a .php extension 
@@ -35,77 +35,77 @@ Command line installation
 
 1. Download source from repository
 
-	Browse to the directory where you want to install Extranet Office. This will have to be 
-	inside the web root (ie: /var/www or /home/sites/mysite/public_html).
-	
-	Use this command to anonymously check out the latest project source code to the current 
-	working directory:
-	
-	svn checkout http://extranetoffice.googlecode.com/svn/trunk/src/ ./
-	
-	* Developers with commit access remember to checkout using HTTPS and authentication to be 
-	able to make changes. 
+    Browse to the directory where you want to install Extranet Office. This will have to be 
+    inside the web root (ie: /var/www or /home/sites/mysite/public_html).
+    
+    Use this command to anonymously check out the latest project source code to the current 
+    working directory:
+    
+    svn checkout http://extranetoffice.googlecode.com/svn/trunk/src/ ./
+    
+    * Developers with commit access remember to checkout using HTTPS and authentication to be 
+    able to make changes. 
 
 
 2. Create database and database user
 
-	To do this you will need access to the mysql server with a user with privileges to create 
-	new users, databases and grant privileges to other users. We will use the MySQL root user 
-	in this example.
+    To do this you will need access to the mysql server with a user with privileges to create 
+    new users, databases and grant privileges to other users. We will use the MySQL root user 
+    in this example.
 
-	mysql -u root -p
-	mysql> CREATE USER 'extranetoffice'@'localhost' IDENTIFIED BY 'ChangeMe' ; 
-	mysql> GRANT USAGE ON * . * TO 'extranetoffice'@'localhost' IDENTIFIED BY 'ChangeMe' ; 
-	mysql> CREATE DATABASE `extranetoffice` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ; 
-	mysql> GRANT ALL PRIVILEGES ON `extranetoffice` . * TO 'extranetoffice'@'localhost' ;
-	mysql> quit
-	
+    mysql -u root -p
+    mysql> CREATE USER 'extranetoffice'@'localhost' IDENTIFIED BY 'ChangeMe' ; 
+    mysql> GRANT USAGE ON * . * TO 'extranetoffice'@'localhost' IDENTIFIED BY 'ChangeMe' ; 
+    mysql> CREATE DATABASE `extranetoffice` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ; 
+    mysql> GRANT ALL PRIVILEGES ON `extranetoffice` . * TO 'extranetoffice'@'localhost' ;
+    mysql> quit
+    
 
 3. Import database structure and initial data
-	
-	mysql -u root -p extranetoffice < installation/install.sql
-	
-	
+    
+    mysql -u root -p extranetoffice < installation/install.sql
+    
+    
 4. Filesystem settings
 
-	Create "filesystem" folder outside of web root, but make sure the webserver has both read 
-	and write access.
-	
-	For example:
-	mkdir /var/extranet_fs
+    Create "filesystem" folder outside of web root, but make sure the webserver has both read 
+    and write access.
+    
+    For example:
+    mkdir /var/extranet_fs
 
-	Give web server user write access to uploads folder. By default this is a directory named 
-	"uploads".
-	
-	Check overall filesystem permissions. Make sure the webserver has read access to the whole 
-	site, but only write access on the directories mentioned above.
+    Give web server user write access to uploads folder. By default this is a directory named 
+    "uploads".
+    
+    Check overall filesystem permissions. Make sure the webserver has read access to the whole 
+    site, but only write access on the directories mentioned above.
 
 
 5. Create configuration file
 
-	Rename or duplicate config.php-dist to config.php and fill in all parameters as described 
-	in the document's comments. This document can be found under the "inc/" directory.
-	
-	cp inc/config.php-dist inc/config.php
-	nano inc/config.php
+    Rename or duplicate config.php-dist to config.php and fill in all parameters as described 
+    in the document's comments. This document can be found under the "inc/" directory.
+    
+    cp inc/config.php-dist inc/config.php
+    nano inc/config.php
 
 
 6. Delete installation directory
 
-	rm -rf installation
+    rm -rf installation
 
 7. Log in to web interface and change the default admin details
 
-	Now you should be able to browse the site with your web browser. If you installed it locally 
-	in your web root you should be able to access your site at http://localhost.
-	
-	The install.sql script creates a default admin user that you will use the first time you log 
-	in. The credentials for this user are:
-	
-	username: admin
-	password: Passw0rd
-	
+    Now you should be able to browse the site with your web browser. If you installed it locally 
+    in your web root you should be able to access your site at http://localhost.
+    
+    The install.sql script creates a default admin user that you will use the first time you log 
+    in. The credentials for this user are:
+    
+    username: admin
+    password: Passw0rd
+    
 If you have any questions or problems regarding the installation process please feel free to ask 
 in the developers discussion group at http://groups.google.com/group/extranetoffice-dev or 
 directly via email at extranetoffice-dev@googlegroups.com.
-	
+    

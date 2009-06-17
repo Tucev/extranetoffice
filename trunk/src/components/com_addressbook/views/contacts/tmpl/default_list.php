@@ -1,10 +1,10 @@
 <?php
 /**
- * @version 	$Id$
- * @package		ExtranetOffice
- * @subpackage 	com_addressbook
- * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license		BSD revised. See LICENSE.
+ * @version     $Id$
+ * @package        ExtranetOffice
+ * @subpackage     com_addressbook
+ * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+ * @license        BSD revised. See LICENSE.
  */
 
 //var_dump($data); exit;
@@ -13,22 +13,22 @@
 <h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 <div class="new">
-	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_addressbook&view=contacts&layout=form'); ?>" title="<?php echo PHPFrame_Base_String::html( _LANG_ADDRESSBOOK_CONTACT_NEW ); ?>">
-		<?php echo PHPFrame_Base_String::html( _LANG_ADDRESSBOOK_CONTACT_NEW ); ?>
-	</a>
+    <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_addressbook&view=contacts&layout=form'); ?>" title="<?php echo PHPFrame_Base_String::html( _LANG_ADDRESSBOOK_CONTACT_NEW ); ?>">
+        <?php echo PHPFrame_Base_String::html( _LANG_ADDRESSBOOK_CONTACT_NEW ); ?>
+    </a>
 </div>
 
 <br />
 
 <script language="javascript" type="text/javascript">
 function submit_filter(reset) {
-	var form = document.forms['listsearchform'];
-	
-	if (reset){
-		form.search.value = '';
-	}
-	
-	form.submit();
+    var form = document.forms['listsearchform'];
+    
+    if (reset){
+        form.search.value = '';
+    }
+    
+    form.submit();
 }
 </script>
 <div class="list_filter_container">
@@ -61,49 +61,49 @@ function submit_filter(reset) {
   <tr class="row<?php echo $k; ?>">
     <td valign="top">
     <a href="index.php?option=com_addressbook&view=contacts&layout=form&id=<?php echo $contact->id; ?>">
-	<?php echo $contact->fn; ?>
-	</a>
+    <?php echo $contact->fn; ?>
+    </a>
     </td>
     <td>
     
-    	<?php if (!empty($contact->home_email)) : ?>
-    	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=messages&layout=form&to=".$contact->home_email); ?>">
-    		<?php echo $contact->home_email;  ?>
-    	</a><br />
-    	<?php endif; ?>
-    	
-    	<?php if (!empty($contact->work_email)) : ?>
-    	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=messages&layout=form&to=".$contact->work_email); ?>">
-    	<?php echo $contact->work_email; ?>
-    	</a><br />
-    	<?php endif; ?>
-    	
-    	<?php if (!empty($contact->other_email)) : ?>
-    	<a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=messages&layout=form&to=".$contact->other_email); ?>">
-    	<?php echo $contact->other_email; ?>
-    	</a><br />
-    	<?php endif; ?>
-    	
+        <?php if (!empty($contact->home_email)) : ?>
+        <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=messages&layout=form&to=".$contact->home_email); ?>">
+            <?php echo $contact->home_email;  ?>
+        </a><br />
+        <?php endif; ?>
+        
+        <?php if (!empty($contact->work_email)) : ?>
+        <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=messages&layout=form&to=".$contact->work_email); ?>">
+        <?php echo $contact->work_email; ?>
+        </a><br />
+        <?php endif; ?>
+        
+        <?php if (!empty($contact->other_email)) : ?>
+        <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_email&view=messages&layout=form&to=".$contact->other_email); ?>">
+        <?php echo $contact->other_email; ?>
+        </a><br />
+        <?php endif; ?>
+        
     </td>
     <td>
-    	<?php if (!empty($contact->home_phone)) echo $contact->home_phone.'<br />'; ?>
-    	<?php if (!empty($contact->work_phone)) echo $contact->work_phone.'<br />'; ?>
-    	<?php if (!empty($contact->cell_phone)) echo $contact->cell_phone.'<br />'; ?>
+        <?php if (!empty($contact->home_phone)) echo $contact->home_phone.'<br />'; ?>
+        <?php if (!empty($contact->work_phone)) echo $contact->work_phone.'<br />'; ?>
+        <?php if (!empty($contact->cell_phone)) echo $contact->cell_phone.'<br />'; ?>
     </td>
-	<td>
-		<a href="index.php?component=com_addressbook&action=export_contacts&id=<?php echo $contact->id; ?>">
-		<?php echo _LANG_EXPORT_VCARD; ?>
-		</a>
-	</td>
-	<td>
-		<a href="index.php?option=com_intranetoffice&amp;view=contacts&amp;type=edit&amp;id=<?php echo $contact->id; ?>" title="<?php echo PHPFrame_Base_String::html( _LANG_EDIT ); ?>">
-			<img src="templates/<?php echo config::THEME; ?>/images/icons/generic/16x16/edit.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_EDIT ); ?>" />
-		</a>
-		
-		<a href="Javascript:confirm_delete(<?php echo $contact->id; ?>, '<?php echo PHPFrame_Base_String::html($contact->fn, true); ?>');" title="<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>">
-			<img src="templates/<?php echo config::THEME; ?>/mages/icons/generic/16x16/remove.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>" />
-		</a>
-	</td>
+    <td>
+        <a href="index.php?component=com_addressbook&action=export_contacts&id=<?php echo $contact->id; ?>">
+        <?php echo _LANG_EXPORT_VCARD; ?>
+        </a>
+    </td>
+    <td>
+        <a href="index.php?option=com_intranetoffice&amp;view=contacts&amp;type=edit&amp;id=<?php echo $contact->id; ?>" title="<?php echo PHPFrame_Base_String::html( _LANG_EDIT ); ?>">
+            <img src="templates/<?php echo config::THEME; ?>/images/icons/generic/16x16/edit.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_EDIT ); ?>" />
+        </a>
+        
+        <a href="Javascript:confirm_delete(<?php echo $contact->id; ?>, '<?php echo PHPFrame_Base_String::html($contact->fn, true); ?>');" title="<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>">
+            <img src="templates/<?php echo config::THEME; ?>/mages/icons/generic/16x16/remove.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>" />
+        </a>
+    </td>
   </tr>
   <?php $k = 1 - $k; ?>
   <?php endforeach; ?>

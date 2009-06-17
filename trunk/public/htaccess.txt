@@ -1,8 +1,8 @@
 ##
-# @version		$Id$
-# @package		phpFrame
-# @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
-# @license		BSD revised. See LICENSE.
+# @version        $Id$
+# @package        phpFrame
+# @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+# @license        BSD revised. See LICENSE.
 ##
 
 RewriteEngine on

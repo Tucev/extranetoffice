@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dependencies>
 
-	<mysqlversion>5</mysqlversion>
-	<phpversion>5.2.0</phpversion>
-	
-	<phpextension>
-		<package>mysql</package>
-		<testmethod>mysql_connect</testmethod>
-		<required>yes</required>
-		<since>4</since>
-		<man>http://www.php.net/manual/en/book.mysql.php</man>
-		<description>
-			These functions allow you to access MySQL database servers. 
-			More information about MySQL can be found at http://www.mysql.com/.
-		</description>
-	</phpextension>
-	
-	<phpextension>
-		<package>filter</package>
-		<testmethod>filter_list</testmethod>
-		<required>yes</required>
-		<since>5.2.0</since>
-		<man>http://www.php.net/manual/en/book.filter.php</man>
-		<description>
-			This extension serves to validate and filter data coming from some insecure source, such as user input.
-		</description>
-	</phpextension>
-	
-	<phpextension>
-		<package>gd</package>
-		<testmethod>gd_info</testmethod>
-		<required>yes</required>
-		<since>4.3.0</since>
-		<man>http://www.php.net/manual/en/book.image.php</man>
-		<description>
-			This extension allows to manipulate images.
-		</description>
-	</phpextension>
-	
-	<phpextension>
-		<package>imap</package>
-		<testmethod>imap_open</testmethod>
-		<required>yes</required>
-		<since>4</since>
-		<man>http://www.php.net/manual/en/book.imap.php</man>
-		<description>
-			These functions enable you to operate with the IMAP protocol, as well as the NNTP, POP3 and local mailbox access methods.
-		</description>
-	</phpextension>
-	
+    <mysqlversion>5</mysqlversion>
+    <phpversion>5.2.0</phpversion>
+    
+    <phpextension>
+        <package>mysql</package>
+        <testmethod>mysql_connect</testmethod>
+        <required>yes</required>
+        <since>4</since>
+        <man>http://www.php.net/manual/en/book.mysql.php</man>
+        <description>
+            These functions allow you to access MySQL database servers. 
+            More information about MySQL can be found at http://www.mysql.com/.
+        </description>
+    </phpextension>
+    
+    <phpextension>
+        <package>filter</package>
+        <testmethod>filter_list</testmethod>
+        <required>yes</required>
+        <since>5.2.0</since>
+        <man>http://www.php.net/manual/en/book.filter.php</man>
+        <description>
+            This extension serves to validate and filter data coming from some insecure source, such as user input.
+        </description>
+    </phpextension>
+    
+    <phpextension>
+        <package>gd</package>
+        <testmethod>gd_info</testmethod>
+        <required>yes</required>
+        <since>4.3.0</since>
+        <man>http://www.php.net/manual/en/book.image.php</man>
+        <description>
+            This extension allows to manipulate images.
+        </description>
+    </phpextension>
+    
+    <phpextension>
+        <package>imap</package>
+        <testmethod>imap_open</testmethod>
+        <required>yes</required>
+        <since>4</since>
+        <man>http://www.php.net/manual/en/book.imap.php</man>
+        <description>
+            These functions enable you to operate with the IMAP protocol, as well as the NNTP, POP3 and local mailbox access methods.
+        </description>
+    </phpextension>
+    
 </dependencies>

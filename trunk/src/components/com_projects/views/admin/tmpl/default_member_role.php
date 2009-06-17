@@ -1,10 +1,10 @@
 <?php
 /**
- * @version 	$Id$
- * @package		ExtranetOffice
- * @subpackage 	com_projects
- * @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license		BSD revised. See LICENSE.
+ * @version     $Id$
+ * @package        ExtranetOffice
+ * @subpackage     com_projects
+ * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+ * @license        BSD revised. See LICENSE.
  */
 ?>
 
@@ -18,22 +18,22 @@
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
 <tr>
 <td>
-	<label id="namemsg" for="name">
-		<?php echo _LANG_NAME; ?>:
-	</label>
+    <label id="namemsg" for="name">
+        <?php echo _LANG_NAME; ?>:
+    </label>
 </td>
 <td>
-	<?php echo $data['members'][0]->firstname." ".$data['members'][0]->lastname; ?>
+    <?php echo $data['members'][0]->firstname." ".$data['members'][0]->lastname; ?>
 </td>
 </tr>
 <tr>
 <td>
-	<label id="roleidmsg" for="roleid">
-		<?php echo _LANG_PROJECTS_ROLE; ?>:
-	</label>
+    <label id="roleidmsg" for="roleid">
+        <?php echo _LANG_PROJECTS_ROLE; ?>:
+    </label>
 </td>
 <td>
-	<?php echo projectsHelperProjects::project_role_select($data['members'][0]->roleid); ?>
+    <?php echo projectsHelperProjects::project_role_select($data['members'][0]->roleid); ?>
 </td>
 </tr>
 </table>

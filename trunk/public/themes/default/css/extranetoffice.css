@@ -1,10 +1,10 @@
 /**
-* @version 		$Id:
-* @package		ExtranetOffice
-* @subpackage 	tmpl_default
-* @copyright	Copyright (C) 2009 E-noise.com Limited. All rights reserved.
-* @license		BSD revised. See LICENSE.
-* @author 		Luis Montero [e-noise.com]
+* @version         $Id:
+* @package        ExtranetOffice
+* @subpackage     tmpl_default
+* @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+* @license        BSD revised. See LICENSE.
+* @author         Luis Montero [e-noise.com]
 */
 
 
@@ -183,8 +183,8 @@ height: 19px;
 #draggables_container { float: left; width: 55%; min-height: 12em; } * html #draggables_container { height: 12em; } /* IE6 */
 #draggables_container li { float: left; padding: 3px; margin: 0 3px 3px 0; text-align: center; }
 .draggables_container.custom-state-active { background: #eee; }
-	
-	
+    
+    
 .draggables_container li h5 { margin: 0 0 0.4em; cursor: move; }
 /* .draggables_container li a { float: right; } */
 /* .draggables_container li a.ui-icon-zoomin { float: left; } */
