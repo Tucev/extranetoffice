@@ -15,14 +15,22 @@
  * @author 		Luis Montero [e-noise.com]
  * @since 		1.0
  */
-class projectsController extends PHPFrame_MVC_ActionController {
+class projectsController extends PHPFrame_MVC_ActionController
+{
 	/**
 	 * Array with available project tools
 	 * 
-	 * @todo	This need to be refactored so that tools are loaded polymorphically as plugins of a common interface.
-	 * @var		array
+	 * @todo This need to be refactored so that tools are loaded polymorphically 
+	 *       as plugins of a common interface.
+	 * @var array
 	 */
-	private $_tools=array('admin', 'files', 'issues', 'meetings', 'messages', 'milestones', 'people');
+	private $_tools=array('admin', 
+	                      'files', 
+	                      'issues', 
+	                      'meetings', 
+	                      'messages', 
+	                      'milestones', 
+	                      'people');
 	/**
 	 * The selected project row object if any
 	 * 
@@ -42,7 +50,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 	 * @return	void
 	 * @since 	1.0
 	 */
-	protected function __construct() {
+	protected function __construct()
+	{
 		// Invoke parent's constructor to set default action
 		parent::__construct('get_projects');
 		
@@ -62,15 +71,18 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		}
 	}
 	
-	public function getTools() {
+	public function getTools()
+	{
 		return $this->_tools;
 	}
 	
-	public function getProject() {
+	public function getProject()
+	{
 		return $this->_project;
 	}
 	
-	public function getProjectPermissions() {
+	public function getProjectPermissions()
+	{
 		return $this->_permissions;
 	}
 	
@@ -79,31 +91,44 @@ class projectsController extends PHPFrame_MVC_ActionController {
 	 * Controller actions below
 	 */
 	
-	
-	public function get_projects() {
-		// Get request data
-		$orderby = PHPFrame::Request()->get('orderby', 'p.created ');
-		$orderdir = PHPFrame::Request()->get('orderdir', 'DESC');
-		$limit = PHPFrame::Request()->get('limit', 25);
-		$limitstart = PHPFrame::Request()->get('limitstart', 0);
-		$search = PHPFrame::Request()->get('search', '');
-		
-		// Create list filter needed for getProjects()
-		$list_filter = new PHPFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
-		
+	/**
+	 * Get projects list
+	 * 
+	 * @param string $orderby
+	 * @param string $orderdir
+	 * @param int    $limit
+	 * @param int    $limitstart
+	 * @param string $search
+	 * 
+	 * @access public
+	 * @return void
+	 * @since  1.0
+	 */
+	public function get_projects(
+	    $orderby="p.created", 
+	    $orderdir="DESC", 
+	    $limit=25, 
+	    $limitstart=0, 
+	    $search=""
+	) {
 		// Get projects using model
-		$projects = $this->getModel('projects')->getCollection($list_filter);
+		$model = $this->getModel('projects');
+		$projects = $model->getCollection($orderby, 
+		                                  $orderdir, 
+		                                  $limit, 
+		                                  $limitstart, 
+		                                  $search);
 		
 		// Get view
 		$view = $this->getView('projects', 'list');
 		// Set view data
 		$view->addData('rows', $projects);
-		$view->addData('page_nav', new PHPFrame_HTML_Pagination($list_filter));
 		// Display view
 		$view->display();
 	}
 	
-	public function get_project_detail() {
+	public function get_project_detail()
+	{
 		if (!$this->_authorise("projects")) return;
 		
 		// Get request data
@@ -131,7 +156,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function get_project_form() {
+	public function get_project_form()
+	{
 		if (!$this->_authorise("admin")) return;
 		
 		$projectid = PHPFrame::Request()->get('projectid', 0);
@@ -148,8 +174,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 			$project->access_reports = '1';
 			$project->access_people = '3';
 			$project->access_admin = '1';
-		}
-		else {
+		} else {
 			$project = $this->_project;
 		}
 		
@@ -167,7 +192,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 	 * @return void
 	 * @since 	1.0
 	 */
-	public function save_project() {
+	public function save_project()
+	{
 		if (isset($this->_project->id) && !$this->_authorise("admin")) return;
 		
 		// Check for request forgeries
@@ -192,8 +218,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 			$this->_success = true;
 			
 			$this->setRedirect("index.php?component=com_projects&action=get_admin&projectid=".$project->get('id'));
-		}
-		else {
+		} else {
 			$this->sysevents->setSummary(_LANG_PROJECT_SAVE_ERROR);
 			// Redirect back to form
 			$this->setRedirect("index.php?component=com_projects&action=get_project_form");
@@ -205,7 +230,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 	 * 
 	 * @return void
 	 */
-	public function remove_project() {
+	public function remove_project()
+	{
 		if (!$this->_authorise("admin")) return;
 		
 		// get model
@@ -215,8 +241,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 			$modelProjects->deleteRow($this->_project->id);
 			$this->sysevents->setSummary(_LANG_PROJECT_DELETE_SUCCESS, "success");
 			$this->_success = true;
-		}
-		catch (PHPFrame_Exception $e) {
+		} catch (PHPFrame_Exception $e) {
 			var_dump($e);
 			$this->sysevents->setSummary(_LANG_PROJECT_DELETE_ERROR);
 		}
@@ -224,7 +249,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$this->setRedirect('index.php?component=com_projects');
 	}
 	
-	public function get_admin() {
+	public function get_admin()
+	{
 		if (!$this->_authorise("admin")) return;
 		
 		$projectid = PHPFrame::Request()->get('projectid', 0);
@@ -241,7 +267,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function get_member_form() {
+	public function get_member_form()
+	{
 		if (!$this->_authorise("admin")) return;
 		
 		// Get view
@@ -252,7 +279,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function save_member() {
+	public function save_member()
+	{
 		if (!$this->_authorise("admin")) return;
 		
 		// Check for request forgeries
@@ -269,19 +297,16 @@ class projectsController extends PHPFrame_MVC_ActionController {
 			// Add the user to the system and add as a member of this project
 			if ($modelMembers->inviteNewUser($post, $projectid, $roleid) === false) {
 				$this->sysevents->setSummary($modelMembers->getLastError());
-			}
-			else {
+			} else {
 				$this->sysevents->setSummary(_LANG_PROJECT_NEW_MEMBER_SAVED, "success");
 				$this->_success = true;
 			}
-		}
-		else {
+		} else {
 			// Add existing users to project
 			$userids = PHPFrame::Request()->get('userids', '');
 			if (empty($userids)) {
 				$this->sysevents->setSummary(_LANG_USERS_NO_SELECTED);
-			}
-			else {
+			} else {
 				$userids_array = explode(',', $userids);
 				$modelMembers = $this->getModel('members');
 				$error = false; // initialise var to flag model errors
@@ -302,7 +327,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$this->setRedirect('index.php?component=com_projects&action=get_admin&projectid='.$projectid);
 	}
 	
-	public function remove_member() {
+	public function remove_member()
+	{
 		if (!$this->_authorise("admin")) return;
 		
 		$projectid = PHPFrame::Request()->get('projectid', 0);
@@ -312,15 +338,15 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		if ($modelMembers->deleteMember($projectid, $userid) === true) {
 			$this->sysevents->setSummary(_LANG_PROJECT_MEMBER_DELETE_SUCCESS, "success");
 			$this->_success = true;
-		}
-		else {
+		} else {
 			$this->sysevents->setSummary(_LANG_PROJECT_MEMBER_DELETE_ERROR);	
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&action=get_admin&projectid='.$projectid);
 	}
 	
-	public function get_member_role_form() {
+	public function get_member_role_form()
+	{
 		if (!$this->_authorise("admin")) return;
 		
 		$userid = PHPFrame::Request()->get('userid', 0);
@@ -339,7 +365,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function change_member_role() {
+	public function change_member_role()
+	{
 		if (!$this->_authorise("admin")) return;
 		
 		$projectid = PHPFrame::Request()->get('projectid', 0);
@@ -349,8 +376,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$modelMembers = $this->getModel('members');
 		if (!$modelMembers->changeMemberRole($projectid, $userid, $roleid)) {
 			$this->sysevents->setSummary($modelMembers->getLastError());
-		}
-		else {
+		} else {
 			$this->sysevents->setSummary(_LANG_PROJECT_MEMBER_ROLE_SAVED, "success");
 			$this->_success = true;
 		}
@@ -358,7 +384,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$this->setRedirect('index.php?component=com_projects&action=get_admin&projectid='.$projectid);
 	}
 	
-	public function get_people() {
+	public function get_people()
+	{
 		
 		$members = $this->getModel('members')->getMembers($this->_project->id);
 		
@@ -371,7 +398,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function get_issues() {
+	public function get_issues()
+	{
 		if (!$this->_authorise("issues")) return;
 		
 		// Get request data
@@ -397,7 +425,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function get_issue_detail() {
+	public function get_issue_detail()
+	{
 		if (!$this->_authorise("issues")) return;
 		
 		// Get request data
@@ -415,7 +444,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function get_issue_form() {
+	public function get_issue_form()
+	{
 		if (!$this->_authorise("issues")) return;
 		
 		// Get request data
@@ -430,8 +460,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 			// Get issue using model
 			$issue = $this->getModel('issues')->getIssuesDetail($this->_project->id, $issueid);
 			$view->addData('row', $issue);
-		}
-		else {
+		} else {
 			$issue = new stdClass();
 			$issue->access = 1;
 			$view->addData('row', $issue);
@@ -441,7 +470,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function save_issue() {
+	public function save_issue()
+	{
 		if (!$this->_authorise("issues")) return;
 		
 		// Check for request forgeries
@@ -456,8 +486,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 
 		if ($row === false) {
 			$this->sysevents->setSummary($modelIssues->getLastError());
-		}
-		else {
+		} else {
 			$this->sysevents->setSummary(_LANG_ISSUE_SAVED, "success");
 			
 			// Prepare data for activity log entry
@@ -471,8 +500,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 			$modelActivityLog = $this->getModel('activitylog', array($this->_project));
 			if (!$modelActivityLog->insertRow('issues', $action, $title, $description, $url, $post['assignees'], $notify)) {
 				$this->sysevents->setSummary($modelActivityLog->getLastError());
-			}
-			else {
+			} else {
 				$this->_success = true;
 			}
 		}
@@ -480,7 +508,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$this->setRedirect("index.php?component=com_projects&action=get_issue_detail&projectid=".$post['projectid']."&issueid=".$row->id);
 	}
 	
-	public function remove_issue() {
+	public function remove_issue()
+	{
 		if (!$this->_authorise("issues")) return;
 		
 		$projectid = PHPFrame::Request()->get('projectid', 0);
@@ -489,15 +518,15 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$modelIssues = &$this->getModel('issues');
 		if ($modelIssues->deleteIssue($projectid, $issueid) === true) {
 			$this->sysevents->setSummary(_LANG_ISSUE_DELETE_SUCCESS, "success");
-		}
-		else {
+		} else {
 			$this->sysevents->setSummary(_LANG_ISSUE_DELETE_ERROR);
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&action=get_issues&projectid='.$projectid);
 	}
 	
-	public function close_issue() {
+	public function close_issue()
+	{
 		if (!$this->_authorise("issues")) return;
 		
 		$projectid = PHPFrame::Request()->get('projectid', 0);
@@ -507,8 +536,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$row = $modelIssues->closeIssue($projectid, $issueid);
 		if ($row === false) {
 			$this->sysevents->setSummary($modelIssues->getLastError());
-		}
-		else {
+		} else {
 			$this->sysevents->setSummary(_LANG_ISSUE_CLOSED, "success");
 			
 			// Prepare data for activity log entry
@@ -528,7 +556,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$this->setRedirect('index.php?component=com_projects&action=get_issue_detail&projectid='.$projectid."&issueid=".$issueid);
 	}
 	
-	public function reopen_issue() {
+	public function reopen_issue()
+	{
 		if (!$this->_authorise("issues")) return;
 		
 		$projectid = PHPFrame::Request()->get('projectid', 0);
@@ -538,8 +567,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$row = $modelIssues->reopenIssue($projectid, $issueid);
 		if ($row === false) {
 			$this->sysevents->setSummary($modelIssues->getLastError());
-		}
-		else {
+		} else {
 			$this->sysevents->setSummary(_LANG_ISSUE_REOPENED, "success");
 			
 			// Prepare data for activity log entry
@@ -559,7 +587,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$this->setRedirect('index.php?component=com_projects&action=get_issue_detail&projectid='.$projectid."&issueid=".$issueid);
 	}
 	
-	public function get_files() {
+	public function get_files()
+	{
 		if (!$this->_authorise("files")) return;
 		
 		// Get request data
@@ -586,7 +615,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function get_file_detail() {
+	public function get_file_detail()
+	{
 		if (!$this->_authorise("files")) return;
 		
 		$fileid = PHPFrame::Request()->get('fileid', 0);
@@ -602,7 +632,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function get_file_form() {
+	public function get_file_form()
+	{
 		if (!$this->_authorise("files")) return;
 		
 		$parentid = PHPFrame::Request()->get('parentid', 0);
@@ -620,7 +651,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function save_file() {
+	public function save_file()
+	{
 		if (!$this->_authorise("files")) return;
 		
 		// Check for request forgeries
@@ -635,8 +667,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		
 		if ($row === false) {
 			$this->sysevents->setSummary($modelFiles->getLastError());
-		}
-		else {
+		} else {
 			$this->sysevents->setSummary(_LANG_FILE_SAVED, "success");
 			
 			// Prepare data for activity log entry
@@ -656,7 +687,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$this->setRedirect('index.php?component=com_projects&action=get_files&projectid='.$post['projectid']);
 	}
 	
-	public function remove_file() {
+	public function remove_file()
+	{
 		if (!$this->_authorise("files")) return;
 		
 		$projectid = PHPFrame::Request()->get('projectid', 0);
@@ -668,8 +700,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 			$modelFiles->deleteRow($projectid, $fileid);
 			$this->sysevents->setSummary(_LANG_FILE_DELETE_SUCCESS, "success");
 			$this->_success = true;
-		}
-		catch (PHPFrame_Exception $e) {
+		} catch (PHPFrame_Exception $e) {
 			var_dump($e);
 			$this->sysevents->setSummary(_LANG_FILE_DELETE_ERROR);
 		}
@@ -677,7 +708,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$this->setRedirect('index.php?component=com_projects&action=get_files&projectid='.$projectid);
 	}
 	
-	public function download_file() {
+	public function download_file()
+	{
 		if (!$this->_authorise("files")) return;
 		
 		$projectid = PHPFrame::Request()->get('projectid', 0);
@@ -687,7 +719,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$modelProjects->downloadFile($projectid, $fileid);
 	}
 	
-	public function get_messages() {
+	public function get_messages()
+	{
 		if (!$this->_authorise("messages")) return;
 		
 		// Get request data
@@ -714,7 +747,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function get_message_detail() {
+	public function get_message_detail()
+	{
 		if (!$this->_authorise("messages")) return;
 		
 		// Get request data
@@ -732,7 +766,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function get_message_form() {
+	public function get_message_form()
+	{
 		if (!$this->_authorise("messages")) return;
 		
 		// Get view
@@ -743,7 +778,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function save_message() {
+	public function save_message()
+	{
 		if (!$this->_authorise("messages")) return;
 		
 		// Check for request forgeries
@@ -757,8 +793,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$row = $modelMessages->saveMessage($post);
 		if ($row === false) {
 			$this->sysevents->setSummary($modelMessages->getLastError());
-		}
-		else {
+		} else {
 			$this->sysevents->setSummary(_LANG_MESSAGE_SAVED, "success");
 			
 			// Prepare data for activity log entry
@@ -778,7 +813,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$this->setRedirect('index.php?component=com_projects&action=get_messages&projectid='.$post['projectid']);
 	}
 	
-	public function remove_message() {
+	public function remove_message()
+	{
 		if (!$this->_authorise("messages")) return;
 		
 		$projectid = PHPFrame::Request()->get('projectid', 0);
@@ -788,15 +824,15 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		
 		if ($modelMessages->deleteMessage($projectid, $messageid) === true) {
 			$this->sysevents->setSummary(_LANG_MESSAGE_DELETE_SUCCESS, "success");
-		}
-		else {
+		} else {
 			$this->sysevents->setSummary(_LANG_MESSAGE_DELETE_ERROR);
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&action=get_messages&projectid='.$projectid);
 	}
 	
-	public function save_comment() {
+	public function save_comment()
+	{
 		if (!$this->_authorise(PHPFrame::Request()->get('type'))) return;
 		
 		// Check for request forgeries
@@ -810,8 +846,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$row = $modelComments->saveComment($post);
 		if ($row === false) {
 			$this->sysevents->setSummary($modelComments->getLastError());
-		}
-		else {
+		} else {
 			$this->sysevents->setSummary(_LANG_COMMENT_SAVED, "success");
 			
 			// Prepare data for activity log entry
@@ -854,7 +889,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$this->setRedirect($url);
 	}
 	
-	public function get_meetings() {
+	public function get_meetings()
+	{
 		if (!$this->_authorise("meetings")) return;
 		
 		// Get request data
@@ -881,7 +917,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function get_meeting_detail() {
+	public function get_meeting_detail()
+	{
 		if (!$this->_authorise("meetings")) return;
 		
 		$meetingid = PHPFrame::Request()->get('meetingid', 0);
@@ -897,7 +934,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function get_meeting_form() {
+	public function get_meeting_form()
+	{
 		if (!$this->_authorise("meetings")) return;
 		
 		// Get request data
@@ -906,8 +944,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		if ($meetingid != 0) {		
 			// Get issue using model
 			$meeting = $this->getModel('meetings')->getMeetingsDetail($this->_project->id, $meetingid);
-		}
-		else {
+		} else {
 			$meeting = new stdClass();
 			$meeting->access = 1;
 		}
@@ -921,7 +958,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function save_meeting() {
+	public function save_meeting()
+	{
 		if (!$this->_authorise("meetings")) return;
 		
 		// Check for request forgeries
@@ -935,8 +973,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$row = $modelMeetings->saveMeeting($post);
 		if ($row === false){
 			$this->sysevents->setSummary($modelMeetings->getLastError());
-		}
-		else{
+		} else {
 			$this->sysevents->setSummary(_LANG_MEETING_SAVED, "success");
 			
 			// Prepare data for activity log entry
@@ -956,7 +993,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$this->setRedirect('index.php?component=com_projects&action=get_meeting_detail&projectid='.$post['projectid']."&meetingid=".$row->id);
 	}
 	
-	public function remove_meeting() {
+	public function remove_meeting()
+	{
 		if (!$this->_authorise("meetings")) return;
 		
 		$projectid = PHPFrame::Request()->get('projectid', 0);
@@ -966,23 +1004,22 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		
 		if ($modelMeetings->deleteMeeting($projectid, $meetingid) === true) {
 			$this->sysevents->setSummary(_LANG_MEETING_DELETE_SUCCESS, "success");
-		}
-		else {
+		} else {
 			$this->sysevents->setSummary(_LANG_MEETING_DELETE_ERROR);
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&action=get_meetings&projectid='.$projectid);
 	}
 	
-	public function get_slideshow_form() {
+	public function get_slideshow_form()
+	{
 		$meetingid = PHPFrame::Request()->get('meetingid', 0);
 		$slideshowid = PHPFrame::Request()->get('slideshowid', 0);
 			
 		if ($slideshowid != 0) {		
 			// Get issue using model
 			$slideshow = $this->getModel('meetings')->getSlideshows($this->_project->id, $meetingid, $slideshowid);
-		}
-		else {
+		} else {
 			$slideshow[0] = new stdClass();
 		}
 		
@@ -995,7 +1032,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function save_slideshow() {
+	public function save_slideshow()
+	{
 		if (!$this->_authorise("meetings")) return;
 		
 		// Check for request forgeries
@@ -1011,8 +1049,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		
 		if ($row === false) {
 			$this->sysevents->setSummary($modelMeetings->getLastError());
-		}
-		else {
+		} else {
 			$this->sysevents->setSummary(_LANG_MEETINGS_SLIDESHOW_SAVE_SUCCESS, "success");
 			$redirect_url .= '&slideshowid='.$row->id;
 		}
@@ -1020,7 +1057,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$this->setRedirect($redirect_url);
 	}
 	
-	public function remove_slideshow() {
+	public function remove_slideshow()
+	{
 		if (!$this->_authorise("meetings")) return;
 		
 		$projectid = PHPFrame::Request()->get('projectid', 0);
@@ -1031,15 +1069,15 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		
 		if (!$modelMeetings->deleteSlideshow($projectid, $slideshowid)) {
 			$this->sysevents->setSummary($modelMeetings->getLastError());
-		}
-		else {
+		} else {
 			$this->sysevents->setSummary(_LANG_MEETINGS_SLIDESHOW_DELETE_SUCCESS, "success");
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&action=get_meeting_detail&projectid='.$projectid.'&meetingid='.$meetingid);
 	}
 	
-	public function upload_slide() {
+	public function upload_slide()
+	{
 		if (!$this->_authorise("meetings")) return;
 		
 		// Check for request forgeries
@@ -1056,17 +1094,14 @@ class projectsController extends PHPFrame_MVC_ActionController {
 			if ($tmpl == 'component') {
 				echo '0';
 				exit;
-			}
-			else {
+			} else {
 				$this->sysevents->setSummary($modelMeetings->getLastError());
 			}
-		}
-		else {
+		} else {
 			if ($tmpl == 'component') {
 				echo $row->id;
 				exit;
-			}
-			else {
+			} else {
 				$this->sysevents->setSummary(_LANG_MEETINGS_SLIDE_UPLOAD_SUCCESS, "success");
 			}
 		}
@@ -1074,7 +1109,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$this->setRedirect('index.php?component=com_projects&action=get_meetings&projectid='.$projectid);
 	}
 	
-	public function remove_slide() {
+	public function remove_slide()
+	{
 		if (!$this->_authorise("meetings")) return;
 		
 		$projectid = PHPFrame::Request()->get('projectid', 0);
@@ -1086,15 +1122,15 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		
 		if (!$modelMeetings->deleteSlide($projectid, $slideid)) {
 			$this->sysevents->setSummary($modelMeetings->getLastError());
-		}
-		else {
+		} else {
 			$this->sysevents->setSummary(_LANG_MEETINGS_SLIDE_DELETE_SUCCESS, "success");
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&action=get_slideshow_form&projectid='.$projectid.'&meetingid='.$meetingid.'&slideshowid='.$slideshowid);
 	}
 	
-	public function get_meeting_files_form() {
+	public function get_meeting_files_form()
+	{
 		$meetingid = PHPFrame::Request()->get('meetingid', 0);
 		
 		if (!empty($meetingid)) {
@@ -1118,7 +1154,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function save_meetings_files() {
+	public function save_meetings_files()
+	{
 		if (!$this->_authorise("meetings")) return;
 		
 		$projectid = PHPFrame::Request()->get('projectid', 0);
@@ -1135,15 +1172,15 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		
 		if (!$modelMeetings->saveFiles($meetingid, $fileids_array)) {
 			$this->sysevents->setSummary($modelMeetings->getLastError());
-		}
-		else {
+		} else {
 			$this->sysevents->setSummary(_LANG_MEETINGS_FILES_SAVE_SUCCESS, "success");
 		}
 		
 		$this->setRedirect('index.php?component=com_projects&action=get_meeting_detail&projectid='.$projectid.'&meetingid='.$meetingid);
 	}
 	
-	public function get_milestones() {
+	public function get_milestones()
+	{
 		if (!$this->_authorise("milestones")) return;
 		
 		// Get request data
@@ -1169,7 +1206,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function get_milestone_detail() {
+	public function get_milestone_detail()
+	{
 		if (!$this->_authorise("milestones")) return;
 		
 		// Get request data
@@ -1187,7 +1225,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function get_milestone_form() {
+	public function get_milestone_form()
+	{
 		if (!$this->_authorise("milestones")) return;
 		
 		// Get request data
@@ -1196,8 +1235,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		if ($milestoneid != 0) {		
 			// Get milestone using model
 			$milestone = $this->getModel('milestones')->getMilestonesDetail($this->_project->id, $milestoneid);
-		}
-		else {
+		} else {
 			$milestone = new stdClass();
 		}
 		
@@ -1210,7 +1248,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function save_milestone() {
+	public function save_milestone()
+	{
 		if (!$this->_authorise("milestones")) return;
 		
 		// Check for request forgeries
@@ -1224,8 +1263,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$row = $modelMilestones->saveMilestone($post);
 		if ($row === false) {
 			$this->sysevents->setSummary($modelMilestones->getLastError());
-		}
-		else {
+		} else {
 			$this->sysevents->setSummary(_LANG_MILESTONE_SAVED, "success");
 			
 			// Prepare data for activity log entry
@@ -1245,7 +1283,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$this->setRedirect('index.php?component=com_projects&action=get_milestones&projectid='.$post['projectid']);
 	}
 	
-	public function remove_milestone() {
+	public function remove_milestone()
+	{
 		if (!$this->_authorise("milestones")) return;
 		
 		$projectid = PHPFrame::Request()->get('projectid', 0);
@@ -1263,7 +1302,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$this->setRedirect('index.php?component=com_projects&action=get_milestones&projectid='.$projectid);
 	}
 	
-	public function get_assignees_form() {
+	public function get_assignees_form()
+	{
 		// Get request vars
 		$tool = PHPFrame::Request()->get('tool', '');
 		$itemid = PHPFrame::Request()->get('itemid', 0);
@@ -1275,8 +1315,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		foreach ($members as $member) {
 			if (is_array($assignees) && in_array($member->userid, $assignees)) {
 				$selected_users[] = $member;
-			}
-			else {
+			} else {
 				$unselected_users[] = $member;
 			}
 		}
@@ -1291,11 +1330,13 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		$view->display();
 	}
 	
-	public function  save_assignees() {
+	public function  save_assignees()
+	{
 	
 	}
 	
-	public function remove_activitylog() {
+	public function remove_activitylog()
+	{
 		// Get request vars
 		$id = PHPFrame::Request()->get('id', 0);
 		
@@ -1304,7 +1345,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		echo 'i have to remove an activitylog';
 	}
 	
-	public function process_incoming_email() {
+	public function process_incoming_email()
+	{
 		// Get models
 		$modelComments = $this->getModel('comments');
 		
@@ -1339,8 +1381,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 						$row = $modelComments->saveComment($post);
 						if ($row === false) {
 							$this->sysevents->setSummary($modelComments->getLastError());
-						}
-						else {
+						} else {
 							$this->sysevents->setSummary(_LANG_COMMENT_SAVED, "success");
 							
 							// Prepare data for activity log entry
@@ -1375,8 +1416,7 @@ class projectsController extends PHPFrame_MVC_ActionController {
 							$delete_uids = array();
 							if (!$modelActivityLog->insertRow($row->projectid, $row->userid, 'comments', $action, $title, $description, $url, $assignees, true)) {
 								$this->sysevents->setSummary($modelActivityLog->getLastError());
-							}
-							else {
+							} else {
 								$delete_uids[] = $message->uid;
 							}
 						}
@@ -1395,8 +1435,8 @@ class projectsController extends PHPFrame_MVC_ActionController {
 		}
 	}
 	
-	private function _authorise($tool) {
-		
+	private function _authorise($tool)
+	{
 		if (is_object($this->_project)) { 
 			if (!$this->_permissions->authorise($tool, PHPFrame::Session()->getUserId(), $this->_project)) {
 				$this->sysevents->setSummary("Permission denied");

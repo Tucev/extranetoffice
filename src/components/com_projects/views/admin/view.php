@@ -43,8 +43,7 @@ class projectsViewAdmin extends PHPFrame_MVC_View {
 		parent::display();
 		
 		// Append page title to document title
-		$document = PHPFrame::getDocument('html');
-		$document->title .= ' - '.$this->_data['page_title'];
+		$this->_document->appendTitle(' - '.$this->_data['page_title']);
 	}
 	
 	/**
