@@ -1,68 +1,101 @@
 <?php
 /**
- * @version     $Id$
- * @package        ExtranetOffice
- * @subpackage    com_projects
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_projects/models/activity.php
+ * 
+ * PHP version 5
+ * 
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/extranetoffice/source/browse
  */
 
 /**
  * projectsModelActivitylog Class
  * 
- * @package        ExtranetOffice
- * @subpackage     com_projects
- * @author         Luis Montero [e-noise.com]
- * @since         1.0
- * @see         PHPFrame_MVC_Model
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @link       http://code.google.com/p/extranetoffice/source/browse
+ * @since      1.0
  */
-class projectsModelActivitylog extends PHPFrame_MVC_Model {
+class projectsModelActivitylog extends PHPFrame_MVC_Model
+{
     /**
-     * A reference the project this activity log belongs to
+     * A reference to the project this activity log belongs to
      * 
-     * @var    object
+     * @var object
      */
     private $_project=null;
     
     /**
      * Constructor
      *
-     * @since 1.0.1
+     * @access public
+     * @return void
+     * @since  1.0
      */
-    function __construct($project) {
+    public function __construct($project)
+    {
         $this->_project = $project;
     }
     
     /**
      * Get a collection of activitylog rows
      * 
-     * @param    object    $list_filter    Object of type PHPFrame_Database_CollectionFilter
-     * @return    object of type PHPFrame_Database_RowCollection
+     * @access public
+     * @return PHPFrame_Database_RowCollection
+     * @since  1.0
      */
-    function getCollection(PHPFrame_Database_CollectionFilter $list_filter) {
-        $query = "SELECT * ";
-        $query .= " FROM #__activitylog ";
-        $query .= " WHERE projectid = ".$this->_project->id;
+    public function getCollection(
+        $orderby="ts", 
+        $orderdir="DESC", 
+        $limit=25, 
+        $limitstart=0
+    ) {
+        $rows = new PHPFrame_Database_RowCollection();
+        $rows->select("*")
+             ->from("#__activitylog")
+             ->where("projectid", "=", $this->_project->id)
+             ->orderby($orderby, $orderdir)
+             ->limit($limit, $limitstart);
         
-        // Run query to get total rows before applying filter
-        $list_filter->setTotal(PHPFrame::DB()->query($query)->rowCount());
+        $rows->load();
         
-        $query .= $list_filter->getOrderBySQL();
-        $query .= $list_filter->getLimitSQL();
-        
-        return new PHPFrame_Database_RowCollection($query);
+        return $rows;
     }
     
     /**
-     * This function stores a new activity log entry and notifies the assignees if necessary
+     * This function stores a new activity log entry and notifies the assignees 
+     * if necessary
      *
-     * @param    string    $type            Values = 'issues', 'files', 'messages', 'meetings', 'milestones'
-     * @param    string    $description    The log message
-     * @package    string    $url            The url to the item
-     * @param    array    $assignees        An array containing the items assignees.
-     * @return    bool    Returns TRUE on success or FALSE on failure.
+     * @param string $type        Values = 'issues', 'files', 'messages', 
+     *                            'meetings', 'milestones'
+     * @param string $description The log message
+     * @param string $url         The url to the item
+     * @param array  $assignees   An array containing the items assignees.
+     * @param bool   $notify      Boolean to indicate whether we want to send a 
+     *                            notification via email or not.
+     * 
+     * @access public
+     * @return bool   Returns TRUE on success or FALSE on failure.
+     * @since  1.0
      */
-    function insertRow($type, $action, $title, $description, $url, $assignees, $notify) {
+    public function insertRow(
+        $type, 
+        $action, 
+        $title, 
+        $description, 
+        $url, 
+        $assignees, 
+        $notify
+    ) {
         // Store notification in db
         $row = new PHPFrame_Database_Row('#__activitylog');
         $row->set('projectid', $this->_project->id);
@@ -83,19 +116,24 @@ class projectsModelActivitylog extends PHPFrame_MVC_Model {
         return true;
     }
     
-    public function deleteRow() {
+    public function deleteRow()
+    {
         echo "I have to delete an activitylog row... Please finish me!!!"; exit;
     }
     
     /**
      * This function is called when we save an activity log
      *
-     * @param    object    $row
-     * @param    array    $assignees
-     * @return    bool    Returns TRUE on success or FALSE on failure
-     * @todo    sanatise address, subject & body
+     * @param object $row
+     * @param array  $assignees
+     * 
+     * @access private
+     * @return bool    Returns TRUE on success or FALSE on failure
+     * @since  1.0
+     * @todo   sanatise address, subject & body
      */
-    private function _notify($row, $assignees) {
+    private function _notify($row, $assignees)
+    {
         $uri = new PHPFrame_Utils_URI();
         $user_name = PHPFrame_User_Helper::id2name($row->userid);
         
@@ -132,8 +170,7 @@ class projectsModelActivitylog extends PHPFrame_MVC_Model {
                 if (PHPFrame_Utils_Filter::validate($recipient->email, 'email') === false ){
                     $failed_recipients[] = $recipient->email;
                     continue;
-                }
-                else {
+                } else {
                     $new_mail->AddAddress($recipient->email, PHPFrame_User_Helper::fullname_format($recipient->firstname, $recipient->lastname));
                     
                     // Send email
@@ -150,8 +187,7 @@ class projectsModelActivitylog extends PHPFrame_MVC_Model {
                 $this->_error[] = sprintf(_LANG_EMAIL_NOT_SENT, implode(',', $failed_recipients));
                 return false;
             }
-        }
-        else {
+        } else {
             $this->_error[] = _LANG_ACTIVITYLOG_NO_RECIPIENTS;
             return false;
         }
