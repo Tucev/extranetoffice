@@ -1,10 +1,17 @@
 <?php
 /**
- * @version     $Id: default.php 29 2009-01-28 15:14:15Z luis.montero $
- * @package        PHPFrame
- * @subpackage     com_login
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_login/views/login/tmpl/default.php
+ * 
+ * PHP version 5
+ * 
+ * @category   MVC_Framework
+ * @package    PHPFrame_Scaffold
+ * @subpackage com_login
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
  */
 
 // Load jQuery validation behaviour for forms
