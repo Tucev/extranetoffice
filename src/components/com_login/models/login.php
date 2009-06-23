@@ -1,50 +1,77 @@
 <?php
 /**
- * @version     $Id$
- * @package        PHPFrame
- * @subpackage    com_login
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_login/models/login.php
+ * 
+ * PHP version 5
+ * 
+ * @category   MVC_Framework
+ * @package    PHPFrame_Scaffold
+ * @subpackage com_login
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
  */
 
 /**
- * loginModelLogin Class
+ * Login Model Class
  * 
- * @package        PHPFrame
- * @subpackage     com_login
- * @author         Luis Montero [e-noise.com]
- * @since         1.0
- * @see         PHPFrame_MVC_Model
+ * @category   MVC_Framework
+ * @package    PHPFrame_Scaffold
+ * @subpackage com_login
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
+ * @see        PHPFrame_MVC_Model
+ * @since      1.0
  */
-class loginModelLogin extends PHPFrame_MVC_Model {
+class loginModelLogin extends PHPFrame_MVC_Model
+{
     /**
      * Constructor
      * 
-     * @return    void
+     * @access public
+     * @return void
+     * @since  1.0
      */
     public function __construct() {}
     
     /**
-     * Log in
+     * Process log in
      * 
-     * @param    string    $username
-     * @param    string    $password
-     * @return    boolean
+     * @param string $username The username to login.
+     * @param string $password The password to identify the given user.
+     * 
+     * @access public
+     * @return bool
+     * @since  1.0
      */
-    public function login($username, $password) {
-        $db = PHPFrame::DB();
-        $query = "SELECT id, password FROM #__users WHERE username = '".$username."'";
-        $credentials = $db->loadObject($query);
+    public function login($username, $password)
+    {
+        // We use an IdObject to build the query to search for the user
+        // It is essential for security that the username is passed as
+        // a query parameter to avoid SQL injection.
+        $id_obj = new PHPFrame_Database_IdObject();
+        $id_obj->select(array("id", "password"))
+               ->from("#__users")
+               ->where("username", "=", ":username")
+               ->params(":username", $username);
+               
+        $credentials = new PHPFrame_Database_Row("#__users");
+        $credentials->load($id_obj);
         
         // User exists
-        if (is_object($credentials) && isset($credentials->id)) {
+        if ($credentials instanceof PHPFrame_Database_Row 
+            && !is_null($credentials->id)
+        ) {
             $user = new PHPFrame_User();
             $user->load($credentials->id);
             
             // check password
-            $parts    = explode( ':', $credentials->password );
-            $crypt    = $parts[0];
-            $salt    = @$parts[1];
+            $parts = explode( ':', $credentials->password );
+            $crypt = $parts[0];
+            $salt = @$parts[1];
             $testcrypt = PHPFrame_Utils_Crypt::getCryptedPassword($password, $salt);
             if ($crypt == $testcrypt) {
                 // Store user data in session
@@ -56,25 +83,36 @@ class loginModelLogin extends PHPFrame_MVC_Model {
                 $this->_error[] = "Authorisation failed: Wrong password";
                 return false;
             }
-        }
-        else {
+        } else {
             // Username not found
             $this->_error[] = "Authorisation failed: Username not found";
             return false;
         }
     }
     
-    public function logout() {
+    /**
+     * Log out
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function logout()
+    {
         PHPFrame::Session()->destroy();
     }
     
     /**
      * Reset password for user with given email address
      * 
-     * @param    string    $email    The email address used to select the user.
-     * @return    boolean    Returns TRUE on success or FALSE on failure
+     * @param string $email The email address used to select the user.
+     * 
+     * @access public
+     * @return bool   Returns TRUE on success or FALSE on failure
+     * @since  1.0
      */
-    public function resetPassword($email) {
+    public function resetPassword($email)
+    {
         // First we check whether there is a user with the passed email address
         $query = "SELECT id FROM #__users WHERE email = '".$email."'";
         $userid = PHPFrame::DB()->loadResult($query);
@@ -112,8 +150,7 @@ class loginModelLogin extends PHPFrame_MVC_Model {
             }
             
             return true;
-        }
-        else {
+        } else {
             $this->_error[] = _LANG_RESET_PASS_EMAIL_NOT_FOUND;
             return false;
         }
