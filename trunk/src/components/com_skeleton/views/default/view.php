@@ -24,6 +24,9 @@ class skeletonViewDefault extends PHPFrame_MVC_View {
      * @since    1.0
      */
     function __construct($layout) {
+        $document = PHPFrame::Response()->getDocument();
+        $document->addScript("lib/jquery/plugins/lightbox/jquery.lightbox-0.5.js");
+        
         // Invoke the parent to set the view name and default layout
         parent::__construct('default', $layout);
     }

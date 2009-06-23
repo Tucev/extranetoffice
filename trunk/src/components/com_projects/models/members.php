@@ -43,8 +43,15 @@ class projectsModelMembers extends PHPFrame_MVC_Model {
         $row = new PHPFrame_Database_Row("#__users_roles");
         
         // Load existing entry before we overwrite with new values
-        $query = "SELECT * FROM #__users_roles WHERE projectid = ".$projectid." AND userid = ".$userid;
-        $row->loadByQuery($query);
+        $id_obj = new PHPFrame_Database_IdObject();
+        $id_obj->select("*")
+               ->from("#__users_roles")
+               ->where("projectid", "=", ":projectid")
+               ->where("userid", "=", ":userid")
+               ->params(":projectid", $projectid)
+               ->params(":userid", $userid);
+               
+        $row->load($id_obj);
         
         $row->set('userid', $userid);
         $row->set('projectid', $projectid);

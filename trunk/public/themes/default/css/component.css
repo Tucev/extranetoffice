@@ -42,11 +42,30 @@ font-style: italic;
 
 /* data list filter */
 
-div.list_filter_container {
+div.row_collection_filter {
 border: 1px solid #CCCCCC;
 padding: 10px 8px;
 margin: 5px 10px 10px 0;
 background-color: #F0F0F0;
+}
+
+div.row_collection_filter div.subset_info {
+float:right;
+padding: 4px 20px 4px 0;
+}
+
+div.row_collection_filter div.subset_limit {
+float:right;
+}
+
+/* Pagination */
+div.pagination ul {
+padding: 0;
+margin: 0;
+}
+div.pagination ul li {
+display: inline;
+padding: 3px 6px 3px 0;
 }
 
 /* Data tables */

@@ -46,7 +46,7 @@ class projectsModelProjects extends PHPFrame_MVC_Model
      * 
      * @access public
      * @return PHPFrame_Database_RowCollection
-     * @since  1.0 
+     * @since  1.0
      */
     public function getCollection(
         $orderby="p.created", 
@@ -90,7 +90,30 @@ class projectsModelProjects extends PHPFrame_MVC_Model
     
     public function getRow($projectid)
     {
+        $userid = PHPFrame::Session()->getUserId();
+        
+        // Build SQL query to get row using IdObject
+        $id_obj = new PHPFrame_Database_IdObject();
+        $id_obj->select(array("p.*", "u.username AS created_by_name", "pt.name AS project_type_name"))
+               ->from("#__projects AS p")
+               ->join("JOIN #__users u ON u.id = p.created_by")
+               ->join("LEFT JOIN #__project_types pt ON pt.id = p.project_type")
+               ->where("p.id", "=", ":projectid")
+               ->where("p.access = '0'", 
+                       "OR", "(:userid"
+                                ." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) )")
+               ->params(":projectid", $projectid)
+               ->params(":userid", $userid)
+               ->groupby("p.id");
+        
+        // Create instance of row
+        $row = new PHPFrame_Database_Row('#__projects');
+        
+        // Load row data using query and return
+        return $row->load($id_obj, "", array("created_by_name", "project_type_name"));
+        
         // Build SQL query to get row
+        /*
         $userid = PHPFrame::Session()->getUserId();
         $where[] = "( p.access = '0' OR (".$userid." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
         $where[] = "p.id = ".$projectid;
@@ -112,6 +135,7 @@ class projectsModelProjects extends PHPFrame_MVC_Model
         
         // Load row data using query and return
         return $row->loadByQuery($query, array('created_by_name', 'project_type_name'));
+        */
     }
     
     
