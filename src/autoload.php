@@ -1,9 +1,16 @@
 <?php
 /**
- * @version        $Id$
- * @package        PHPFrame
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/autoload.php
+ * 
+ * PHP version 5
+ * 
+ * @category   MVC_Framework
+ * @package    PHPFrame_Scaffold
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
  */
 
 spl_autoload_register('__autoload');
@@ -15,8 +22,8 @@ spl_autoload_register('__autoload');
  * hasn't been defined yet. By calling this function the scripting engine is given a last 
  * chance to load the class before PHP fails with an error. 
  * 
- * @param    string    $class_name
- * @return    void
+ * @param  string $class_name The class name to load.
+ * @return void
  */
 function __autoload($class_name) {
     // PHPFrame classes
