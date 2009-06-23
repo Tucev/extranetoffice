@@ -1,19 +1,22 @@
 <?php
 /**
+ * public/index.php
+ * 
+ * PHP version 5
+ * 
  * The web application index / bootstrap file
  * 
  * This is the file that we browse to access the web application.
  * 
- * This file instantiates and runs the Front Controller object.
+ * This is reponsible for firing up the application.
  * 
- * In order to instantiate the Front Controller we first set a few useful constants, 
- * load the config file and include the autoloader.
- * 
- * @version     $Id: index.php 46 2009-02-13 01:37:49Z luis.montero $
- * @package        PHPFrame
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
- * @see            PHPFrame_Application_FrontController
+ * @category   MVC_Framework
+ * @package    PHPFrame_Scaffold
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
  */
 
 //TODO: This needs to be removed. It is temporarily here to make up for the
