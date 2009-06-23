@@ -1,79 +1,117 @@
 <?php
 /**
- * @version     $Id$
- * @package        PHPFrame
- * @subpackage    com_users
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_users/models/users.php
+ * 
+ * PHP version 5
+ * 
+ * @category   MVC_Framework
+ * @package    PHPFrame_Scaffold
+ * @subpackage com_users
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
  */
 
 /**
  * usersModelUsers Class
  * 
- * @package        PHPFrame
- * @subpackage     com_users
- * @author         Luis Montero [e-noise.com]
- * @since         1.0
- * @see         PHPFrame_MVC_Model
+ * @category   MVC_Framework
+ * @package    PHPFrame_Scaffold
+ * @subpackage com_users
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
+ * @see        PHPFrame_MVC_Model
+ * @since      1.0
  */
-class usersModelUsers extends PHPFrame_MVC_Model {
+class usersModelUsers extends PHPFrame_MVC_Model
+{
     /**
      * Get users list
      * 
-     * @param    object    $list_filter    Object if type PHPFrame_Database_CollectionFilter
-     * @return    array
+     * @param string $orderby
+     * @param string $orderdir
+     * @param int    $limit
+     * @param int    $limitstart
+     * @param string $search
+     * 
+     * @access public
+     * @return PHPFrame_Database_RowCollection
+     * @since  1.0
      */
-    public function getUsers(PHPFrame_Database_CollectionFilter $list_filter) {
-        $where = array();
+    public function getCollection(
+        $orderby="u.lastname", 
+        $orderdir="ASC", 
+        $limit=-1, 
+        $limitstart=0, 
+        $search=""
+    ) {
+        $rows = new PHPFrame_Database_RowCollection();
+        
+        $rows->select("*")
+             ->from("#__users")
+             ->where("deleted = '0000-00-00 00:00:00'", "OR", "deleted IS NULL");
         
         // Add search filtering
-        $search = $list_filter->getSearchStr();
         if ($search) {
-            $where[] = "u.lastname LIKE '%".PHPFrame::DB()->getEscaped($list_filter->getSearchStr())."%'";
+            $rows->where("lastname", "LIKE", ":search")
+                 ->params(":search", "%".$search."%");
         }
         
-        $where[] = "(u.deleted = '0000-00-00 00:00:00' OR u.deleted IS NULL)";
-
-        $where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
+        $rows->load();
         
-        // get the total number of records
-        $query = "SELECT 
-                  u.id
-                  FROM #__users AS u "
-                  . $where;
-        
-        // Run query to get total rows before applying filter
-        $list_filter->setTotal(PHPFrame::DB()->query($query)->rowCount());
-        
-        // get the subset (based on limits) of required records
-        $query = "SELECT 
-                  u.*
-                  FROM #__users AS u "
-                  . $where;
+        // Process row data before returning
+        foreach ($rows as $row) {
+            // Translate photo field to valid URL for frontend
+            $photo = $row->photo;
+            $photo_url = config::UPLOAD_DIR.'/users/';
+            $photo_url .= !empty($photo) ? $photo : 'default.png';
+            $row->set('photo', $photo_url);
             
-        // Add order by and limit statements for subset (based on filter)
-        $query .= $list_filter->getOrderBySQL();
-        $query .= $list_filter->getLimitSQL();
-        //echo str_replace('#__', 'eo_', $query); exit;
+            // Add url to detail page
+            $detail_url = "index.php?component=com_users&action=get_user";
+            $detail_url .= "&userid=".$row->id;
+            $detail_url = PHPFrame_Utils_Rewrite::rewriteURL($detail_url);
+            $row->detail_url = $detail_url;
+        }
         
-        return PHPFrame::DB()->loadObjectList($query);
+        return $rows;
     }
     
     /**
      * Get a single user's details
      * 
-     * @param    int    $userid
-     * @return    object
+     * @param int $userid
+     * 
+     * @access public
+     * @return PHPFrame_User
+     * @since  1.0
      */
-    public function getUsersDetail($userid) {
-        $query = "SELECT * FROM #__users WHERE id = ".$userid;
-        return PHPFrame::DB()->loadObject($query);
+    public function getUser($userid) {
+        // Instantiate user object
+        $user = new PHPFrame_User();
+        
+        // Load user by id
+        $user->load($userid);
+        
+        // Translate photo field to valid URL for frontend
+        $photo = $user->photo;
+        $photo_url = config::UPLOAD_DIR.'/users/';
+        $photo_url .= !empty($photo) ? $photo : 'default.png';
+        $user->set('photo', $photo_url);
+        
+        // Return user object
+        return $user;
     }
     
     /**
      * Save user
      * 
-     * @return    bool    Returns TRUE on success or FALSE on failure.
+     * @access public
+     * @return PHPFrame_User
+     * @since  1.0
      */
     public function saveUser($post) {
         // Get reference to user object
@@ -85,7 +123,7 @@ class usersModelUsers extends PHPFrame_MVC_Model {
         
         // Upload image if photo sent in request
         if (!empty($_FILES['photo']['name'])) {
-            $dir = _ABS_PATH.DS.config::UPLOAD_DIR.DS."users";
+            $dir = _ABS_PATH.DS."public".DS.config::UPLOAD_DIR.DS."users";
             $accept = 'image/jpeg,image/jpg,image/png,image/gif';
             $upload = PHPFrame_Utils_Filesystem::uploadFile('photo', $dir, $accept);
             if (!empty($upload['error'])) {
@@ -95,7 +133,8 @@ class usersModelUsers extends PHPFrame_MVC_Model {
             else {
                 // resize image
                 $image = new PHPFrame_Utils_Image();
-                $image->resize_image($dir.DS.$upload['file_name'], $dir.DS.$upload['file_name'], 80, 110);
+                $img_path = $dir.DS.$upload['file_name'];
+                $image->resize_image($img_path, $img_path, 80, 110);
                 // Store file name in post array
                 $post['photo'] = $upload['file_name'];
             }
@@ -110,11 +149,8 @@ class usersModelUsers extends PHPFrame_MVC_Model {
         // Bind the post data to the row array
         $user->bind($post, $exclude);
         // Store user in db
-        if ($user->store() === false) {
-            $this->_error[] = $user->getLastError();
-            return false;
-        }
+        $user->store();
         
-        return true;
+        return $user;
     }
 }

@@ -100,6 +100,7 @@ define("_LANG_ADMIN_USERS_DELETE", "Delete user");
 define("_LANG_ADMIN_USER_DETAILS", "User details");
 define("_LANG_PASSWORD_AUTOGEN_INFO", "A password will be automatically generated and sent via email to the new user.");
 define("_LANG_USER_SAVE_SUCCESS", "User successfully saved");
+define("_LANG_USER_SAVE_ERROR", "An error ocurred while saving user details");
 define("_LANG_USER_NEW_NOTIFY_SUBJECT", "New user account");
 define("_LANG_USER_NEW_NOTIFY_BODY", "Hello %s,
 

@@ -1,60 +1,93 @@
 <?php
 /**
- * @version     $Id$
- * @package        PHPFrame
- * @subpackage    com_users
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_users/controller.php
+ * 
+ * PHP version 5
+ * 
+ * @category   MVC_Framework
+ * @package    PHPFrame_Scaffold
+ * @subpackage com_users
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
  */
 
 /**
  * usersController Class
  * 
- * @package        PHPFrame
- * @subpackage     com_users
- * @author         Luis Montero [e-noise.com]
- * @since         1.0
+ * @category   MVC_Framework
+ * @package    PHPFrame_Scaffold
+ * @subpackage com_users
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
+ * @since      1.0
  */
-class usersController extends PHPFrame_MVC_ActionController {
+class usersController extends PHPFrame_MVC_ActionController
+{
     /**
      * Constructor
      * 
-     * @return    void
-     * @since     1.0
+     * @access protected
+     * @return void
+     * @since  1.0
      */
-    protected function __construct() {
+    protected function __construct()
+    {
         // Invoke parent's constructor to set default action
         parent::__construct('get_users');
     }
     
-    public function get_users() {
-        // Get request data
-        $orderby = PHPFrame::Request()->get('orderby', 'u.lastname');
-        $orderdir = PHPFrame::Request()->get('orderdir', 'ASC');
-        $limit = PHPFrame::Request()->get('limit', 25);
-        $limitstart = PHPFrame::Request()->get('limitstart', 0);
-        $search = PHPFrame::Request()->get('search', '');
-        
-        // Create list filter needed for getUsers()
-        $list_filter = new PHPFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
-        
+    /**
+     * Get users list
+     * 
+     * @param string $orderby
+     * @param string $orderdir
+     * @param int    $limit
+     * @param int    $limitstart
+     * @param string $search
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function get_users(
+        $orderby="u.lastname", 
+        $orderdir="ASC", 
+        $limit=-1, 
+        $limitstart=0, 
+        $search=""
+    ) {
         // Get users using model
-        $users = $this->getModel('users')->getUsers($list_filter);
+        $users = $this->getModel('users')->getCollection($orderby, 
+                                                         $orderdir, 
+                                                         $limit, 
+                                                         $limitstart, 
+                                                         $search);
         
         // Get view
         $view = $this->getView('users', 'list');
         // Set view data
         $view->addData('rows', $users);
-        $view->addData('page_nav', new PHPFrame_HTML_Pagination($list_filter));
         // Display view
         $view->display();
     }
     
-    public function get_user() {
-        $userid = PHPFrame::Request()->get('userid', 0);
-        
+    /**
+     * Get user detail
+     * 
+     * @param int $projectid The user id
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function get_user($userid)
+    {
         // Get users using model
-        $user = $this->getModel('users')->getUsersDetail($userid);
+        $user = $this->getModel('users')->getUser($userid);
         
         // Get view
         $view = $this->getView('users', 'detail');
@@ -64,36 +97,56 @@ class usersController extends PHPFrame_MVC_ActionController {
         $view->display();
     }
     
-    public function get_settings() {
-        // Get request vars
-        $ret_url = PHPFrame::Request()->get('ret_url', 'index.php');
+    /**
+     * Display user
+     * 
+     * @param string $ret_url A string with the URL to return to after saving user settings.
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function get_settings($ret_url='index.php')
+    {
+        $user = PHPFrame::Session()->getUser();
         
         // Get view
-        $view = $this->getView('settings', '');
+        $view = $this->getView('settings');
         // Set view data
-        $view->addData('row', PHPFrame::Session()->getUser());
+        $view->addData('row', $user);
         $view->addData('ret_url', $ret_url);
         // Display view
         $view->display();
     }
     
-    public function save_user() {
+    /**
+     * Save user
+     * 
+     * @param $ret_url A string with the URL to return to after saving user settings.
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function save_user($ret_url='index.php')
+    {
         // Check for request forgeries
         PHPFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
         
         // Get request vars
         $post = PHPFrame::Request()->getPost();
         
-        $modelUser = $this->getModel('users');
-        if ($modelUser->saveUser($post) === false) {
-            $this->sysevents->setSummary($modelUser->getLastError(), "error");
-        }
-        else {
+        
+        // Save user using model
+        $user = $this->getModel('users')->saveUser($post);
+        
+        if ($user instanceof PHPFrame_User && $user->get('id') > 0) {
             $this->sysevents->setSummary(_LANG_USER_SAVE_SUCCESS, "success");
             $this->_success = true;
+        } else {
+            $this->sysevents->setSummary(_LANG_USER_SAVE_ERROR);
         }
         
-        $ret_url = PHPFrame::Request()->get('ret_url', 'index.php');
         $this->setRedirect($ret_url);
     }
 }

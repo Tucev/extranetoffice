@@ -75,7 +75,6 @@ class projectsController extends PHPFrame_MVC_ActionController
             $modelProjects = $this->getModel('projects');
             $this->_project = $modelProjects->getRow($projectid);
             
-            
             // Append page component name to document title
             $document = PHPFrame::Response()->getDocument();
             $document->setTitle($this->_project->name);
@@ -193,14 +192,13 @@ class projectsController extends PHPFrame_MVC_ActionController
         $view->display();
     }
     
-    public function get_project_form()
+    public function get_project_form($projectid)
     {
         if (!$this->_authorise("admin")) return;
         
-        $projectid = PHPFrame::Request()->get('projectid', 0);
         // Set default values for tools access
         if (empty($projectid)) {
-            $project = new stdClass();
+            $project = new PHPFrame_Database_Row("#__projects");
             $project->access = '1';
             $project->access_issues = '2';
             $project->access_messages = '2';

@@ -1,10 +1,17 @@
 <?php
 /**
- * @version     $Id$
- * @package        ExtranetOffice
- * @subpackage     com_projects
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_projects/views/projects/tmpl/default_list.php
+ * 
+ * PHP version 5
+ * 
+ * @category   MVC_Framework
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/extranetoffice/source/browse
  */
 ?>
 
@@ -20,27 +27,7 @@
 
 <br />
 
-
-<script language="javascript" type="text/javascript">
-function submit_filter(reset) {
-    var form = document.forms['listsearchform'];
-    
-    if (reset){
-        form.search.value = '';
-    }
-    
-    form.submit();
-}
-</script>
-<div class="list_filter_container">
-<form action="index.php" id="listsearchform" name="listsearchform" method="post">
-<input type="text" name="search" id="search" value="<?php echo PHPFrame::Request()->get('search'); ?>">
-<button type="button" class="button" onclick="submit_filter(false);">Search</button>
-<button type="button" class="button" onclick="submit_filter(true);">Reset</button>
-<input type="hidden" name="component" value="com_projects" />
-<input type="hidden" name="action" value="get_projects" />
-</form>
-</div>
+<?php echo $this->renderRowCollectionFilter($data['rows']); ?>
 
 <br />
 
