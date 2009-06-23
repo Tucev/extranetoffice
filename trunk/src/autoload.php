@@ -1,6 +1,6 @@
 <?php
 /**
- * src/components/autoload.php
+ * src/autoload.php
  * 
  * PHP version 5
  * 

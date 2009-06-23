@@ -1,8 +1,13 @@
 ##
-# @version        $Id$
-# @package        phpFrame
-# @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
-# @license        BSD revised. See LICENSE.
+# public/htaccess.txt
+# 
+# @category   MVC_Framework
+# @package    PHPFrame_Scaffold
+# @author     Luis Montero <luis.montero@e-noise.com>
+# @copyright  2009 E-noise.com Limited
+# @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+# @version    SVN: $Id$
+# @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
 ##
 
 RewriteEngine on
