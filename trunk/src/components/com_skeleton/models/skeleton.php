@@ -1,29 +1,49 @@
 <?php
 /**
- * @version     $Id$
- * @package        PHPFrame
- * @subpackage    com_skeleton
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_skeleton/models/skeleton.php
+ * 
+ * PHP version 5
+ * 
+ * @category   MVC_Framework
+ * @package    PHPFrame_Scaffold
+ * @subpackage com_skeleton
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
  */
 
 /**
  * skeletonModelSkeleton Class
  * 
- * @package        PHPFrame
- * @subpackage     com_skeleton
- * @author         Luis Montero [e-noise.com]
- * @since         1.0
- * @see         PHPFrame_MVC_Model
+ * @category   MVC_Framework
+ * @package    PHPFrame_Scaffold
+ * @subpackage com_skeleton
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
+ * @see        PHPFrame_MVC_Model
+ * @since      1.0
  */
-class skeletonModelSkeleton extends PHPFrame_MVC_Model {
+class skeletonModelSkeleton extends PHPFrame_MVC_Model
+{
     /**
      * Constructor
      * 
-     * @return    void
+     * @access public
+     * @return void
+     * @since  1.0
      */
     public function __construct() {}
     
+    /**
+     * Get a collection of row objects...
+     * 
+     * @access public
+     * @return PHPFrame_Database_RowCollection
+     * @since  1.0
+     */
     public function getCollection()
     {
         /*
