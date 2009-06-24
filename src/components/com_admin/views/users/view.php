@@ -58,18 +58,18 @@ class adminViewUsers extends PHPFrame_MVC_View
         parent::display();
         
         // Append page title to document title
-        $document = PHPFrame::getDocument('html');
+        $document = PHPFrame::Response()->getDocument();
         $document->title .= ' - '.$this->_data['page_title'];
     }
     
     /**
      * Custom display method triggered by list layout.
      * 
-     * @access public
+     * @access protected
      * @return void
      * @since  1.0
      */
-    public function displayUsersList()
+    protected function displayUsersList()
     {
         $this->_data['page_title'] = _LANG_ADMIN_USERS;
     }
@@ -77,11 +77,11 @@ class adminViewUsers extends PHPFrame_MVC_View
     /**
      * Custom display method triggered by form layout.
      * 
-     * @access public
+     * @access protected
      * @return void
      * @since  1.0
      */
-    public function displayUsersForm()
+    protected function displayUsersForm()
     {
         if (empty($this->_data['row']->id)) {
             $this->_data['page_title'] = _LANG_ADMIN_USERS_NEW;

@@ -1,44 +1,142 @@
 <?php
 /**
- * @version     $Id$
- * @package        ExtranetOffice
- * @subpackage    com_projects
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_projects/models/members.php
+ * 
+ * PHP version 5
+ * 
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/extranetoffice/source/browse
  */
 
 /**
  * projectsModelMembers Class
  * 
- * @package        ExtranetOffice
- * @subpackage     com_projects
- * @author         Luis Montero [e-noise.com]
- * @since         1.0
- * @see         PHPFrame_MVC_Model
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @link       http://code.google.com/p/extranetoffice/source/browse
+ * @since      1.0
  */
-class projectsModelMembers extends PHPFrame_MVC_Model {
+class projectsModelMembers extends PHPFrame_MVC_Model
+{
+    /**
+     * A reference to the project this activity log belongs to
+     * 
+     * @var object
+     */
+    private $_project=null;
+    
     /**
      * Constructor
+     * 
+     * @param PHPFrame_Database_Row $project The project row this activity 
+     *                                       log belongs to.
      *
-     * @since    1.0
+     * @access public
+     * @return void
+     * @since  1.0
      */
-    function __construct() {}
-    
-    function getMembers($projectid, $userid=0) {
-        $query = "SELECT ur.userid, ur.roleid, r.name AS rolename";
-        $query .= ", u.id AS id, u.username, u.firstname AS firstname, u.lastname AS lastname, u.email, u.photo ";
-        $query .= " FROM #__users_roles AS ur, #__users AS u, #__roles AS r ";
-        $query .= " WHERE u.id = ur.userid AND r.id = ur.roleid AND ur.projectid = ".$projectid;
-        $query .= " AND (u.deleted = '0000-00-00 00:00:00' OR u.deleted IS NULL)";
-        if (!empty($userid)) $query .= " AND ur.userid = ".$userid;
-        $query .= " ORDER BY ur.roleid ASC";
-        
-        //echo str_replace('#__', 'eo_', $query); exit;
-        
-        return PHPFrame::DB()->loadObjectList($query);
+    public function __construct(PHPFrame_Database_Row $project)
+    {
+        $this->_project = $project;
     }
     
-    function saveMember($projectid, $userid, $roleid, $notify=true) {
+    /**
+     * Get project members as a row collection
+     * 
+     * @access public
+     * @return PHPFrame_Database_RowCollection
+     * @since  1.0
+     */
+    public function getCollection()
+    {
+        $rows = new PHPFrame_Database_RowCollection();
+        $rows->select(array("ur.id AS id",
+                            "ur.userid", 
+                            "ur.roleid", 
+                            "r.name AS rolename", 
+                            "u.username", 
+                            "u.firstname AS firstname", 
+                            "u.lastname AS lastname", 
+                            "u.email",
+                            "u.photo"))
+             ->from("#__users_roles AS ur")
+             ->join("JOIN #__users u ON u.id = ur.userid")
+             ->join("JOIN #__roles r ON r.id = ur.roleid")
+             ->where("u.deleted = '0000-00-00 00:00:00'", "OR", "u.deleted IS NULL")
+             ->where("ur.projectid", "=", ":projectid")
+             ->params(":projectid", $this->_project->id)
+             ->orderby("ur.roleid", "ASC");
+        
+        // Add array with foreign field names to allow as row columns
+        $foreign_fields = array("rolename","username","firstname","lastname","email","photo");
+        $rows->load(null, null, $foreign_fields);
+        
+        // Process row data before returning
+        foreach ($rows as $row) {
+            // Translate photo field to valid URL for frontend
+            $photo = $row->photo;
+            $photo_url = config::UPLOAD_DIR.'/users/';
+            $photo_url .= !empty($photo) ? $photo : 'default.png';
+            $row->set('photo', $photo_url);
+            
+            // Add url to detail page
+            $detail_url = "index.php?component=com_users&action=get_user";
+            $detail_url .= "&userid=".$row->id;
+            $detail_url = PHPFrame_Utils_Rewrite::rewriteURL($detail_url);
+            $row->detail_url = $detail_url;
+        }
+        
+        return $rows;
+    }
+    
+    /**
+     * Get a single project member as a row
+     * 
+     * @param int $userid
+     * 
+     * @access public
+     * @return PHPFrame_Database_Row
+     * @since  1.0
+     */
+    public function getMember($userid)
+    {
+        $id_obj = new PHPFrame_Database_IdObject();
+        $id_obj->select(array("ur.*", 
+                              "r.name AS rolename", 
+                              "u.username", 
+                              "u.firstname AS firstname", 
+                              "u.lastname AS lastname", 
+                              "u.email", 
+                              "u.photo"))
+               ->from("#__users_roles AS ur")
+               ->join("JOIN #__users u ON u.id = ur.userid")
+               ->join("JOIN #__roles r ON r.id = ur.roleid")
+               ->where("u.deleted = '0000-00-00 00:00:00'", "OR", "u.deleted IS NULL")
+               ->where("ur.projectid", "=", ":projectid")
+               ->params(":projectid", $this->_project->id)
+               ->where("ur.userid", "=", ":userid")
+               ->params(":userid", $userid);
+       
+        $row = new PHPFrame_Database_Row("#__users_roles");
+        
+        // Add array with foreign field names to allow as row columns
+        $foreign_fields = array("rolename","username","firstname","lastname","email","photo");
+        $row->load($id_obj, null, $foreign_fields);
+        
+        return $row;
+    }
+    
+    public function saveMember($projectid, $userid, $roleid, $notify=true)
+    {
         // Create new row object
         $row = new PHPFrame_Database_Row("#__users_roles");
         
@@ -86,7 +184,19 @@ class projectsModelMembers extends PHPFrame_MVC_Model {
         return true;
     }
     
-    function inviteNewUser($post, $projectid, $roleid) {
+    /**
+     * Invite new user to the system and make them a project member
+     * 
+     * @param array $post
+     * @param int   $projectid
+     * @param int   $roleid
+     * 
+     * @access public
+     * @return unknown_type
+     * @since  1.0
+     */
+    public function inviteNewUser($post, $projectid, $roleid)
+    {
         // Create new user object
         $user = new PHPFrame_User();
         
@@ -100,10 +210,7 @@ class projectsModelMembers extends PHPFrame_MVC_Model {
         // Bind the post data to the row array
         $user->bind($post, 'password');
         
-        if (!$user->store()) {
-            $this->_error[] = $user->getLastError();
-            return false;
-        }
+        $user->store();
         
         // add user to project
         $row = new PHPFrame_Database_Row("#__users_roles");
@@ -143,40 +250,72 @@ class projectsModelMembers extends PHPFrame_MVC_Model {
     /**
      * Delete project member
      * 
-     * @param    int        $projectid
-     * @param    int        $userid
-     * @return    bool    Returns TRUE on success or FALSE on failure.
+     * @param int $userid The userid of the user to remove as member of the 
+     *                    current project.
+     * 
+     * @access public
+     * @return bool   Returns TRUE on success or FALSE on failure.
+     * @since  1.0
      */
-    function deleteMember($projectid, $userid) {
-        $query = "DELETE FROM #__users_roles WHERE projectid = ".$projectid." AND userid = ".$userid;
-        if (PHPFrame::DB()->query($query) === false) {
+    public function deleteMember($userid)
+    {
+        $sql = "DELETE FROM #__users_roles ";
+        $sql .= " WHERE projectid = :projectid AND userid = :userid";
+        
+        $params = array(":projectid"=>$this->_project->id, 
+                        ":userid"=>$userid);
+        
+        $stmt = PHPFrame::DB()->prepare($sql);
+        $stmt->execute($params);
+        
+        $error_info = $stmt->errorInfo();
+        if (is_array($error_info) && count($error_info) > 1) {
+            $this->_error[] = $error_info[2];
             return false;
         }
-        else {
-            return true;
-        }
+        
+        return true;
     }
     
-    function changeMemberRole($projectid, $userid, $roleid) {
+    /**
+     * Change member's role in given project
+     * 
+     * @param $userid
+     * @param $roleid
+     * 
+     * @access public
+     * @return bool   Returns TRUE on success or FALSE on failure
+     * @since  1.0
+     */
+    public function changeMemberRole($userid, $roleid)
+    {
         $query = "UPDATE #__users_roles ";
-        $query .= " SET roleid = ".$roleid;
-        $query .= " WHERE projectid = ".$projectid." AND userid = ".$userid;
-        if (PHPFrame::DB()->query($query) === false) {
-            $this->_error[] = PHPFrame::DB()->getLastError();
+        $query .= " SET roleid = :roleid";
+        $query .= " WHERE projectid = :projectid AND userid = :userid";
+        
+        $params = array(":roleid"=>$roleid, 
+                        ":projectid"=>$this->_project->id, 
+                        ":userid"=>$userid);
+        
+        $stmt = PHPFrame::DB()->prepare($query);
+        $stmt->execute($params);
+        
+        $error_info = $stmt->errorInfo();
+        if (is_array($error_info) && count($error_info) > 1) {
+            $this->_error[] = $error_info[2];
             return false;
         }
-        else {
-            return true;
-        }
+        
+        return true;
     }
     
-    function isMember($projectid, $userid) {
+    public function isMember($projectid, $userid)
+    {
         $query = "SELECT roleid FROM #__users_roles WHERE projectid = ".$projectid." AND userid = ".$userid;
         $roleid = PHPFrame::DB()->loadResult($query);
         if (!empty($roleid)) {
             return $roleid;
-        }
-        else {
+        } else {
             return false;
         }
     }

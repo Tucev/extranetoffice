@@ -23,7 +23,7 @@
     </label>
 </td>
 <td>
-    <?php echo $data['members'][0]->firstname." ".$data['members'][0]->lastname; ?>
+    <?php echo $data['member']->firstname." ".$data['member']->lastname; ?>
 </td>
 </tr>
 <tr>
@@ -33,7 +33,7 @@
     </label>
 </td>
 <td>
-    <?php echo projectsHelperProjects::project_role_select($data['members'][0]->roleid); ?>
+    <?php echo projectsHelperProjects::project_role_select($data['member']->roleid); ?>
 </td>
 </tr>
 </table>
@@ -47,7 +47,7 @@
 <input type="hidden" name="component" value="com_projects" />
 <input type="hidden" name="action" value="change_member_role" />
 <input type="hidden" name="projectid" value="<?php echo $data['project']->id; ?>" />
-<input type="hidden" name="userid" value="<?php echo $data['members'][0]->userid; ?>" />
+<input type="hidden" name="userid" value="<?php echo $data['member']->userid; ?>" />
 <?php echo PHPFrame_HTML::_( 'form.token' ); ?>
 
 </form>

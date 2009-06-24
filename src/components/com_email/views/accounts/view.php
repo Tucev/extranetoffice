@@ -45,7 +45,7 @@ class emailViewAccounts extends PHPFrame_MVC_View {
         parent::display();
         
         // Append page title to document title
-        $document = PHPFrame::getDocument('html');
+        $document = PHPFrame::Response()->getDocument();
         $document->title .= ' - '.$this->page_title;
     }
     

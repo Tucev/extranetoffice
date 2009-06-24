@@ -1,32 +1,42 @@
 <?php
 /**
- * @version     $Id$
- * @package        ExtranetOffice
- * @subpackage    com_projects
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_projects/views/admin/view.php
+ * 
+ * PHP version 5
+ * 
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/extranetoffice/source/browse
  */
 
 /**
  * projectsViewAdmin Class
  * 
- * The methods in this class are invoked by its parent class. See display() 
- * method in 'view' class.
- * 
- * @package        ExtranetOffice
- * @subpackage     com_projects
- * @author         Luis Montero [e-noise.com]
- * @since         1.0
- * @see         PHPFrame_MVC_View
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @link       http://code.google.com/p/extranetoffice/source/browse
+ * @see        PHPFrame_MVC_View
+ * @since      1.0
  */
-class projectsViewAdmin extends PHPFrame_MVC_View {
+class projectsViewAdmin extends PHPFrame_MVC_View
+{
     /**
      * Constructor
      * 
-     * @return     void
-     * @since    1.0
+     * @access public
+     * @return void
+     * @since  1.0
      */
-    function __construct($layout) {
+    public function __construct($layout)
+    {
         // Invoke the parent to set the view name and default layout
         parent::__construct('admin', $layout);
     }
@@ -34,12 +44,15 @@ class projectsViewAdmin extends PHPFrame_MVC_View {
     /**
      * Override view display method
      * 
-     * This method overrides the parent display() method and appends the page title to the document title.
+     * This method overrides the parent display() method and appends the page 
+     * title to the document title.
      * 
-     * @return    void
-     * @since    1.0
+     * @access public
+     * @return void
+     * @since  1.0
      */
-    function display() {
+    public function display()
+    {
         parent::display();
         
         // Append page title to document title
@@ -49,10 +62,12 @@ class projectsViewAdmin extends PHPFrame_MVC_View {
     /**
      * Custom display method triggered by list layout.
      * 
-     * @return    void
-     * @since    1.0
+     * @access protected
+     * @return void
+     * @since  1.0
      */
-    function displayAdminList() {
+    protected function displayAdminList()
+    {
         $this->_data['page_title'] = _LANG_ADMIN;
         $this->_data['page_heading'] = $this->_data['project']->name.' - '._LANG_ADMIN;
         $this->getPathway()->addItem(_LANG_ADMIN);
@@ -63,9 +78,12 @@ class projectsViewAdmin extends PHPFrame_MVC_View {
      * 
      * This method is a custom display method triggered by detail layout.
      * 
+     * @access protected
      * @return void
+     * @since  1.0
      */
-    function displayAdminForm() {
+    protected function displayAdminForm()
+    {
         if (!empty($this->projectid)) {
             $this->_data['page_title'] = _LANG_PROJECTS_EDIT;
         }
@@ -77,23 +95,36 @@ class projectsViewAdmin extends PHPFrame_MVC_View {
     }
     
     /**
-     * @todo This method needs to be ported to extranetoffice from intranetoffice
+     * Display project member role layout
+     * 
+     * @access protected
+     * @return void
+     * @since  1.0
      */
-    function displayAdminMemberRole() {
-        $this->_data['page_title'] = projectsHelperProjects::id2name($this->projectid).' - '. _LANG_ADMIN;
+    protected function displayAdminMemberRole()
+    {
+        $page_title = $this->_data['project']->get("name");
+        $page_title .= ' - '. _LANG_ADMIN;
+        $this->_data['page_title'] = $page_title;
+        
         $this->getPathway()->addItem(_LANG_PROJECTS_MEMBERS);
     }
     
     /**
      * Set view properties for new project members form
      * 
-     * @return    void
-     * @since    1.0
+     * @access protected
+     * @return void
+     * @since  1.0
      */
-    function displayAdminMemberForm() {
+    protected function displayAdminMemberForm()
+    {
         $this->_data['page_title'] = _LANG_ADMIN.' - '._LANG_PROJECTS_ADD_MEMBER;
         $this->_data['page_heading'] = $this->_data['project']->name.' - '._LANG_ADMIN;
-        $this->getPathway()->addItem(_LANG_ADMIN, 'index.php?component=com_projects&view=admin&projectid='.$this->_data['project']->id);
+        
+        $pathway_url = 'index.php?component=com_projects&view=admin&projectid=';
+        $pathway_url .= $this->_data['project']->id;
+        $this->getPathway()->addItem(_LANG_ADMIN, $pathway_url);
         $this->getPathway()->addItem(_LANG_PROJECTS_ADD_MEMBER);
     }
 }

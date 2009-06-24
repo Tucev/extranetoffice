@@ -41,7 +41,7 @@ class projectsViewAssignees extends PHPFrame_MVC_View {
      */
     function display() {
         // Append page title to document title
-        $document = PHPFrame::getDocument('html');
+        $document = PHPFrame::Response()->getDocument();
         $document->title .= ' - '.$this->_data['page_title'];
         
         parent::display();

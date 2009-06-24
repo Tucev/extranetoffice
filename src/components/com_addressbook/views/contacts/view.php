@@ -43,7 +43,7 @@ class addressbookViewContacts extends PHPFrame_MVC_View {
         
         // Append page title to document title
         if ($this->_layout != 'list') {
-            $document = PHPFrame::getDocument('html');
+            $document = PHPFrame::Response()->getDocument();
             $document->title .= ' - '.$this->_data['page_title'];
         }
     }

@@ -192,7 +192,16 @@ class projectsController extends PHPFrame_MVC_ActionController
         $view->display();
     }
     
-    public function get_project_form($projectid)
+    /**
+     * Display project insert/edit form
+     * 
+     * @param int $projectid Optional parameter to prepolate form when editing entries.
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function get_project_form($projectid=0)
     {
         if (!$this->_authorise("admin")) return;
         
@@ -224,10 +233,11 @@ class projectsController extends PHPFrame_MVC_ActionController
     /**
      * Save project using model and set redirect
      * 
+     * @access public
      * @return void
-     * @since     1.0
+     * @since  1.0
      */
-    public function save_project()
+    public function save_project($projectid=0)
     {
         if (isset($this->_project->id) && !$this->_authorise("admin")) return;
         
@@ -244,7 +254,7 @@ class projectsController extends PHPFrame_MVC_ActionController
             
             // If NEW project saved correctly we now make project creator a project member
             if (empty($post['id'])) {
-                $modelMembers = $this->getModel('members');
+                $modelMembers = $this->getModel('members', array($project));
                 if (!$modelMembers->saveMember($project->get('id'), PHPFrame::Session()->getUserId(), '1', false)) {
                     $this->sysevents->setSummary($modelMembers->getLastError());
                 }
@@ -263,9 +273,11 @@ class projectsController extends PHPFrame_MVC_ActionController
     /**
      * Delete project and all its associated data.
      * 
+     * @access public
      * @return void
+     * @since  1.0
      */
-    public function remove_project()
+    public function remove_project($projectid)
     {
         if (!$this->_authorise("admin")) return;
         
@@ -277,20 +289,28 @@ class projectsController extends PHPFrame_MVC_ActionController
             $this->sysevents->setSummary(_LANG_PROJECT_DELETE_SUCCESS, "success");
             $this->_success = true;
         } catch (PHPFrame_Exception $e) {
-            var_dump($e);
             $this->sysevents->setSummary(_LANG_PROJECT_DELETE_ERROR);
         }
         
         $this->setRedirect('index.php?component=com_projects');
     }
     
-    public function get_admin()
+    /**
+     * Display project admin page
+     * 
+     * @param int $projectid The project id
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function get_admin($projectid)
     {
         if (!$this->_authorise("admin")) return;
         
-        $projectid = PHPFrame::Request()->get('projectid', 0);
-        // Push model into the view
-        $members = $this->getModel('members')->getMembers($projectid);
+        // Get members using model
+        $model = $this->getModel('members', array($this->_project));
+        $members = $model->getCollection();
         
         // Get view
         $view = $this->getView('admin', 'list');
@@ -302,7 +322,14 @@ class projectsController extends PHPFrame_MVC_ActionController
         $view->display();
     }
     
-    public function get_member_form()
+    /**
+     * Display form to add new project members
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function get_member_form($projectid)
     {
         if (!$this->_authorise("admin")) return;
         
@@ -314,21 +341,29 @@ class projectsController extends PHPFrame_MVC_ActionController
         $view->display();
     }
     
-    public function save_member()
+    /**
+     * Save project member
+     * 
+     * @param int    $projectid
+     * @param int    $roleid
+     * @param string $email
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function save_member($projectid, $roleid, $email)
     {
         if (!$this->_authorise("admin")) return;
         
         // Check for request forgeries
         PHPFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
         
-        $projectid = PHPFrame::Request()->get('projectid', 0);
-        $roleid = PHPFrame::Request()->get('roleid', 0);
-        $email = PHPFrame::Request()->get('email', '');
         $post = PHPFrame::Request()->getPost();
         
         // if an email address has been passed to invite a new member we do so
         if (!empty($email)) {
-            $modelMembers = $this->getModel('members');
+            $modelMembers = $this->getModel('members', array($this->_project));
             // Add the user to the system and add as a member of this project
             if ($modelMembers->inviteNewUser($post, $projectid, $roleid) === false) {
                 $this->sysevents->setSummary($modelMembers->getLastError());
@@ -343,7 +378,7 @@ class projectsController extends PHPFrame_MVC_ActionController
                 $this->sysevents->setSummary(_LANG_USERS_NO_SELECTED);
             } else {
                 $userids_array = explode(',', $userids);
-                $modelMembers = $this->getModel('members');
+                $modelMembers = $this->getModel('members', array($this->_project));
                 $error = false; // initialise var to flag model errors
                 foreach ($userids_array as $userid) {
                     if ($modelMembers->saveMember($projectid, $userid, $roleid) === false) {
@@ -359,70 +394,109 @@ class projectsController extends PHPFrame_MVC_ActionController
             }
         }
         
-        $this->setRedirect('index.php?component=com_projects&action=get_admin&projectid='.$projectid);
+        $redirect_url = 'index.php?component=com_projects&action=get_admin';
+        $redirect_url .= '&projectid='.$projectid;
+        $this->setRedirect($redirect_url);
     }
     
-    public function remove_member()
+    /**
+     * Remove a project member
+     * 
+     * @param int $projectid
+     * @param int $userid The userid of the user to remove from project
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function remove_member($projectid, $userid)
     {
         if (!$this->_authorise("admin")) return;
         
-        $projectid = PHPFrame::Request()->get('projectid', 0);
-        $userid = PHPFrame::Request()->get('userid', 0);
+        // Get members model
+        $model = $this->getModel('members', array($this->_project));
         
-        $modelMembers = $this->getModel('members');
-        if ($modelMembers->deleteMember($projectid, $userid) === true) {
+        if ($model->deleteMember($userid) === true) {
             $this->sysevents->setSummary(_LANG_PROJECT_MEMBER_DELETE_SUCCESS, "success");
             $this->_success = true;
         } else {
             $this->sysevents->setSummary(_LANG_PROJECT_MEMBER_DELETE_ERROR);    
         }
         
-        $this->setRedirect('index.php?component=com_projects&action=get_admin&projectid='.$projectid);
+        $redirect_url = 'index.php?component=com_projects&action=get_admin';
+        $redirect_url .= '&projectid='.$projectid;
+        $this->setRedirect($redirect_url);
     }
     
-    public function get_member_role_form()
+    /**
+     * Display form to change a project member's role
+     * 
+     * @param int $projectid
+     * @param int $userid    The userid of the user for whom we want to change role.
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function get_member_role_form($projectid, $userid)
     {
         if (!$this->_authorise("admin")) return;
         
-        $userid = PHPFrame::Request()->get('userid', 0);
-        
-        if (!empty($userid)) {
-            $model = $this->getModel('members');
-            $members = $model->getMembers($this->_project->id, $userid);    
-        }
+        $model = $this->getModel('members', array($this->_project));
+        $member = $model->getMember($userid);    
         
         // Get view
         $view = $this->getView('admin', 'member_role');
         // Set view data
         $view->addData('project', $this->_project);
-        $view->addData('members', $members);
+        $view->addData('member', $member);
         // Display view
         $view->display();
     }
     
-    public function change_member_role()
+    /**
+     * Change a project member's role
+     * 
+     * @param int $projectid
+     * @param int $userid    The userid of the user for whom we want to change role.
+     * @param int $roleid    The new roleid.
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function change_member_role($projectid, $userid, $roleid)
     {
         if (!$this->_authorise("admin")) return;
         
-        $projectid = PHPFrame::Request()->get('projectid', 0);
-        $userid = PHPFrame::Request()->get('userid', 0);
-        $roleid = PHPFrame::Request()->get('roleid', 0);
+        // Get members model
+        $model = $this->getModel('members', array($this->_project));
         
-        $modelMembers = $this->getModel('members');
-        if (!$modelMembers->changeMemberRole($projectid, $userid, $roleid)) {
-            $this->sysevents->setSummary($modelMembers->getLastError());
+        if (!$model->changeMemberRole($userid, $roleid)) {
+            $this->sysevents->setSummary($model->getLastError());
         } else {
             $this->sysevents->setSummary(_LANG_PROJECT_MEMBER_ROLE_SAVED, "success");
             $this->_success = true;
         }
         
-        $this->setRedirect('index.php?component=com_projects&action=get_admin&projectid='.$projectid);
+        $redirect_url = 'index.php?component=com_projects&action=get_admin';
+        $redirect_url .= '&projectid='.$projectid;
+        $this->setRedirect($redirect_url);
     }
     
-    public function get_people()
+    /**
+     * Display project members
+     * 
+     * @param int $projectid
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function get_people($projectid)
     {
-        
-        $members = $this->getModel('members')->getMembers($this->_project->id);
+        $model = $this->getModel('members', array($this->_project));
+        $members = $model->getCollection();
         
         // Get view
         $view = $this->getView('people', 'list');
@@ -1359,7 +1433,7 @@ class projectsController extends PHPFrame_MVC_ActionController
         
         // Get model depending on selected tool
         $assignees = $this->getModel($tool)->getAssignees($itemid, false);
-        $members = $this->getModel('members')->getMembers($this->_project->id);
+        $members = $this->getModel('members', array($this->_project))->getMembers($this->_project->id);
         
         foreach ($members as $member) {
             if (is_array($assignees) && in_array($member->userid, $assignees)) {
@@ -1417,7 +1491,7 @@ class projectsController extends PHPFrame_MVC_ActionController
                     $modelProjects = $this->getModel('projects');
                     $this->_project = $modelProjects->getRow($projectid);
                     
-                    $modelMembers = $this->getModel('members');
+                    $modelMembers = $this->getModel('members', array($this->_project));
                     $roleid = $modelMembers->isMember($message->data['p'], $userid);
                     if (!empty($roleid)) {
                         $post = array();

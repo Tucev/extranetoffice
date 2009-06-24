@@ -46,7 +46,7 @@ class projectsViewMeetings extends PHPFrame_MVC_View {
         parent::display();
         
         // Append page title to document title
-        $document = PHPFrame::getDocument('html');
+        $document = PHPFrame::Response()->getDocument();
         $document->title .= ' - '.$this->_data['page_title'];
     }
     
@@ -61,7 +61,7 @@ class projectsViewMeetings extends PHPFrame_MVC_View {
     
     function displayMeetingsDetail() {
         // Add jQuery lightbox plugin
-        $document = PHPFrame::getDocument('html');
+        $document = PHPFrame::Response()->getDocument();
         $document->addScript('lib/jquery/plugins/lightbox/jquery.lightbox-0.5.pack.js');
         $document->addStyleSheet('lib/jquery/plugins/lightbox/css/jquery.lightbox-0.5.css');
         
