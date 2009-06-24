@@ -1,49 +1,87 @@
 <?php
 /**
- * @version     $Id$
- * @package        PHPFrame
- * @subpackage    com_admin
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_admin/controller.php
+ * 
+ * PHP version 5
+ * 
+ * @category   MVC_Framework
+ * @package    PHPFrame_Scaffold
+ * @subpackage com_admin
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
  */
 
 /**
  * adminController Class
  * 
- * @todo        Handling of tmpl get var should be delegated to URL rewriter instead 
- *                 of appearing inside the required controler actions.
- * @package        PHPFrame
- * @subpackage     com_admin
- * @author         Luis Montero [e-noise.com]
- * @since         1.0
+ * @todo Handling of tmpl get var should be delegated to URL rewriter instead 
+ *       of appearing inside the required controler actions.
+ *                 
+ * @category   MVC_Framework
+ * @package    PHPFrame_Scaffold
+ * @subpackage com_admin
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
+ * @since      1.0
  */
-class adminController extends PHPFrame_MVC_ActionController {
+class adminController extends PHPFrame_MVC_ActionController
+{
     /**
      * Constructor
      * 
-     * @return    void
-     * @since     1.0
+     * @access protected
+     * @return void
+     * @since  1.0
      */
-    protected function __construct() {
+    protected function __construct()
+    {
         // Invoke parent's constructor to set default action
         parent::__construct('get_admin');
     }
     
-    public function get_admin() {
+    /**
+     * Display admin panel
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function get_admin()
+    {
         // Get view
         $view = $this->getView('admin', '');
         // Display view
         $view->display();
     }
     
-    public function get_config() {
+    /**
+     * Display config form
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function get_config()
+    {
         // Get view
         $view = $this->getView('config', '');
         // Display view
         $view->display();
     }
     
-    public function get_users() {
+    /**
+     * Display users list
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */    
+    public function get_users()
+    {
         // Get request data
         $orderby = PHPFrame::Request()->get('orderby', 'u.lastname');
         $orderdir = PHPFrame::Request()->get('orderdir', 'ASC');
@@ -66,7 +104,15 @@ class adminController extends PHPFrame_MVC_ActionController {
         $view->display();
     }
     
-    public function get_user_form() {
+    /**
+     * Display users form
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */ 
+    public function get_user_form()
+    {
         $userid = PHPFrame::Request()->get('userid', 0);
         
         // Get users using model
@@ -80,20 +126,39 @@ class adminController extends PHPFrame_MVC_ActionController {
         $view->display();
     }
     
-    public function get_components() {
+    /**
+     * Display components list
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */ 
+    public function get_components()
+    {
     
     }
-    
-    public function get_modules() {
+
+    /**
+     * Display widgets list
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */ 
+    public function get_widgets()
+    {
     
     }
     
     /**
      * Save global configuration
      * 
+     * @access public
      * @return void
+     * @since  1.0
      */
-    public function save_config() {
+    public function save_config()
+    {
         // Check for request forgeries
         PHPFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
         
@@ -105,8 +170,7 @@ class adminController extends PHPFrame_MVC_ActionController {
         
         if ($modelConfig->saveConfig($post) === false) {
             $this->sysevents->setSummary($modelConfig->getLastError());
-        }
-        else {
+        } else {
             $this->sysevents->setSummary(_LANG_CONFIG_SAVE_SUCCESS, "success");
             $this->_success = true;
         }
@@ -115,7 +179,15 @@ class adminController extends PHPFrame_MVC_ActionController {
         $this->setRedirect('index.php?component=com_admin&action=get_config'.$tmpl);
     }
     
-    public function save_user() {
+    /**
+     * Save user
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function save_user()
+    {
         // Check for request forgeries
         PHPFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
         
@@ -127,8 +199,7 @@ class adminController extends PHPFrame_MVC_ActionController {
         
         if ($modelUsers->saveUser($post) === false) {
             $this->sysevents->setSummary($modelUsers->getLastError());
-        }
-        else {
+        } else {
             $this->sysevents->setSummary(_LANG_USER_SAVE_SUCCESS, "success");
             $this->_success = true;
         }
@@ -137,7 +208,15 @@ class adminController extends PHPFrame_MVC_ActionController {
         $this->setRedirect('index.php?component=com_admin&action=get_users'.$tmpl);
     }
     
-    public function remove_user() {
+    /**
+     * Remove user
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function remove_user()
+    {
         // Get request vars
         $tmpl = PHPFrame::Request()->get('tmpl', '');
         $userid = PHPFrame::Request()->get('id', 0);
@@ -146,8 +225,7 @@ class adminController extends PHPFrame_MVC_ActionController {
         
         if ($modelUsers->deleteUser($userid) === false) {
             $this->sysevents->setSummary($modelUsers->getLastError());
-        }
-        else {
+        } else {
             $this->sysevents->setSummary(_LANG_ADMIN_USERS_DELETE_SUCCESS, "success");
         }
         

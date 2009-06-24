@@ -31,6 +31,8 @@ class skeletonViewDefault extends PHPFrame_MVC_View
     /**
      * Constructor
      * 
+     * @param string $layout String to specify a specific layout.
+     * 
      * @access public
      * @return void
      * @since  1.0

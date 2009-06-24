@@ -1,31 +1,44 @@
 <?php
 /**
- * @version     $Id$
- * @package        ExtranetOffice
- * @subpackage    com_admin
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
- * @author         Luis Montero [e-noise.com]
+ * src/components/com_admin/models/config.php
+ * 
+ * PHP version 5
+ * 
+ * @category   MVC_Framework
+ * @package    PHPFrame_Scaffold
+ * @subpackage com_admin
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
  */
 
 /**
  * adminModelConfig Class
  * 
- * @package        ExtranetOffice
- * @subpackage     com_admin
- * @author         Luis Montero [e-noise.com]
- * @since         1.0
- * @see         model
+ * @category   MVC_Framework
+ * @package    PHPFrame_Scaffold
+ * @subpackage com_admin
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
+ * @see        PHPFrame_MVC_Model
+ * @since      1.0
  */
-class adminModelConfig extends PHPFrame_MVC_Model {
+class adminModelConfig extends PHPFrame_MVC_Model
+{
     /**
      * Update configuration file using data passed in request
      * 
-     * Returns TRUE on success or FALSE if it fails.
+     * @param array $post The post array with the config data to save.
      * 
-     * @return bool
+     * @access public
+     * @return bool Returns TRUE on success or FALSE if it fails.
+     * @since  1.0
      */
-    function saveConfig($post) {
+    function saveConfig($post)
+    {
         $fname = _ABS_PATH.DS."src".DS."config.php";
         // Open file for reading first
         if (!$fhandle = fopen($fname, "r")) {
@@ -43,7 +56,8 @@ class adminModelConfig extends PHPFrame_MVC_Model {
         $reflection_config = new ReflectionClass(config);
         $config_constants = $reflection_config->getConstants();
         
-        // Loop through all config properties and build arrays with patterns and replacements for regex
+        // Loop through all config properties and build arrays with 
+        // patterns and replacements for regex
         foreach ($config_constants as $key=>$value) {
             $lowercase_key = strtolower($key);
             if (isset($post[$lowercase_key]) && $post[$lowercase_key] != "") {
@@ -60,5 +74,4 @@ class adminModelConfig extends PHPFrame_MVC_Model {
 
         return true;
     }
-    
 }

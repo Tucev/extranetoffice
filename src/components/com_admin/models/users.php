@@ -1,23 +1,33 @@
 <?php
 /**
- * @version     $Id$
- * @package        PHPFrame
- * @subpackage    com_admin
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
- * @author         Luis Montero [e-noise.com]
+ * src/components/com_admin/models/users.php
+ * 
+ * PHP version 5
+ * 
+ * @category   MVC_Framework
+ * @package    PHPFrame_Scaffold
+ * @subpackage com_admin
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
  */
 
 /**
  * adminModelUsers Class
  * 
- * @package        PHPFrame
- * @subpackage     com_admin
- * @author         Luis Montero [e-noise.com]
- * @since         1.0
- * @see         model
+ * @category   MVC_Framework
+ * @package    PHPFrame_Scaffold
+ * @subpackage com_admin
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
+ * @see        PHPFrame_MVC_Model
+ * @since      1.0
  */
-class adminModelUsers extends PHPFrame_MVC_Model {
+class adminModelUsers extends PHPFrame_MVC_Model
+{
     /**
      * Get users
      * 
@@ -27,15 +37,15 @@ class adminModelUsers extends PHPFrame_MVC_Model {
      * @param    boolean    $deleted        Indicates whether we want to include deleted users
      * @return    array
      */
-    function getUsers(PHPFrame_Database_CollectionFilter $list_filter, $deleted=false) {
+    function getUsers(PHPFrame_Database_CollectionFilter $list_filter, $deleted=false)
+    {
         // Build SQL query
         $where = array();
         
         if ($deleted === true) {
             $where[] = "`deleted` <> '0000-00-00 00:00:00'";
             $where[] = "`deleted` IS NOT NULL";
-        }
-        else {
+        } else {
             $where[] = "(`deleted` = '0000-00-00 00:00:00' OR `deleted` IS NULL)";
         }
         
@@ -84,7 +94,8 @@ class adminModelUsers extends PHPFrame_MVC_Model {
      * @param    int        $userid
      * @return     mixed    An object containing the user data or FALSE on failure.
      */
-    function getUsersDetail($userid=0) {
+    function getUsersDetail($userid=0)
+    {
         if (!empty($userid)) {
             $query = "SELECT 
                       u.*, 
@@ -94,13 +105,13 @@ class adminModelUsers extends PHPFrame_MVC_Model {
                       WHERE u.id = '".$userid."'";
             
             return PHPFrame::DB()->loadObject($query);
-        }
-        else {
+        } else {
             return false;
         }
     }
     
-    function saveUser($post) {
+    function saveUser($post)
+    {
         // Create new user object
         $user = new PHPFrame_User();
         
@@ -113,9 +124,8 @@ class adminModelUsers extends PHPFrame_MVC_Model {
             // Assign newly generated password to row object (this password will be encrypted when stored).
             $user->set('password', $password);
             $new_user = true;
-        }
         // if a userid is passed in the request we assume we are updating an existing user
-        else {
+        } else {
             $user->load($post['id'], 'password');
             $new_user = false;
         }
@@ -157,13 +167,13 @@ class adminModelUsers extends PHPFrame_MVC_Model {
         return true;
     }
     
-    function deleteUser($userid) {
+    function deleteUser($userid)
+    {
         $query = "UPDATE #__users SET `deleted` = '".date("Y-m-d H:i:s")."' WHERE id = ".$userid;
         if (PHPFrame::DB()->query($query) === false) {
             $this->_error[] = PHPFrame::DB()->getLastError();
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }

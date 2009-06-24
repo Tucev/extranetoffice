@@ -46,7 +46,8 @@ class dashboardViewDashboard extends PHPFrame_MVC_View
     /**
      * Override view display method
      * 
-     * This method overrides the parent display() method and appends the page title to the document title.
+     * This method overrides the parent display() method and appends the page 
+     * title to the document title.
      * 
      * @todo This method needs to be re-written to treat dashboard items as modules.
      * 
