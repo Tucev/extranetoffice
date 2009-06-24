@@ -24,9 +24,8 @@ $(document).ready(function() {
     </a>
 </div>
 
-<div id="breadcrumb">
-    <?php $pathway->display(); ?>
-</div>
+<?php echo $this->renderPathway($pathway); ?>
+
 <div style="clear:both;"></div>
  
 <!-- Content -->

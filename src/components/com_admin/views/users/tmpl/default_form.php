@@ -45,7 +45,7 @@ PHPFrame_HTML::validate('usersform');
             <td><?php echo PHPFrame_Base_String::html( _LANG_GROUP ); ?></td>
             <td><?php echo PHPFrame_User_Helper::selectGroup($data['row']->groupid); ?></td>
         </tr>
-        <?php if (!empty($data['row']->id)) :?>
+        <?php if (!is_null($data['row']->id)) :?>
         <tr>
             <td><?php echo PHPFrame_Base_String::html( _LANG_PASSWORD ); ?></td>
             <td><input type="password" size="30" name="password" id="password" value="" /></td>

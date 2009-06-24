@@ -76,47 +76,52 @@ class adminController extends PHPFrame_MVC_ActionController
     /**
      * Display users list
      * 
+     * @param string $orderby
+     * @param string $orderdir
+     * @param int    $limit
+     * @param int    $limitstart
+     * @param string $search
+     * 
      * @access public
      * @return void
      * @since  1.0
      */    
-    public function get_users()
-    {
-        // Get request data
-        $orderby = PHPFrame::Request()->get('orderby', 'u.lastname');
-        $orderdir = PHPFrame::Request()->get('orderdir', 'ASC');
-        $limit = PHPFrame::Request()->get('limit', 25);
-        $limitstart = PHPFrame::Request()->get('limitstart', 0);
-        $search = PHPFrame::Request()->get('search', '');
-        
-        // Create list filter needed for getUsers()
-        $list_filter = new PHPFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
-        
+    public function get_users(
+        $orderby="u.lastname", 
+        $orderdir="ASC", 
+        $limit=25, 
+        $limitstart=0, 
+        $search=""
+    ) {
         // Get users using model
-        $users = $this->getModel('users')->getUsers($list_filter);
+        $users = $this->getModel('users')->getCollection($orderby, 
+                                                         $orderdir, 
+                                                         $limit, 
+                                                         $limitstart, 
+                                                         $search);
         
         // Get view
         $view = $this->getView('users', 'list');
         // Set view data
         $view->addData('rows', $users);
-        $view->addData('page_nav', new PHPFrame_HTML_Pagination($list_filter));
         // Display view
         $view->display();
     }
     
     /**
-     * Display users form
+     * Display user form
+     * 
+     * @param int $userid The user id of the user used to pre-populate the form 
+     *                    when editing exiting users.
      * 
      * @access public
      * @return void
      * @since  1.0
      */ 
-    public function get_user_form()
+    public function get_user_form($userid)
     {
-        $userid = PHPFrame::Request()->get('userid', 0);
-        
         // Get users using model
-        $user = $this->getModel('users')->getUsersDetail($userid);
+        $user = $this->getModel('users')->getUser($userid);
         
         // Get view
         $view = $this->getView('users', 'form');

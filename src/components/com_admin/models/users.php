@@ -33,84 +33,71 @@ class adminModelUsers extends PHPFrame_MVC_Model
      * 
      * This method returns an array with row objects for each user
      * 
-     * @param    object    $list_filter    Object of type PHPFrame_Database_CollectionFilter
-     * @param    boolean    $deleted        Indicates whether we want to include deleted users
-     * @return    array
+     * @param string $orderby
+     * @param string $orderdir
+     * @param int    $limit
+     * @param int    $limitstart
+     * @param string $search
+     * @param bool   $deleted Indicates whether we want to include deleted users
+     * 
+     * @access public
+     * @return PHPFrame_Database_RowCollection
+     * @since  1.0
      */
-    function getUsers(PHPFrame_Database_CollectionFilter $list_filter, $deleted=false)
-    {
-        // Build SQL query
-        $where = array();
+    function getCollection(
+        $orderby="u.lastname", 
+        $orderdir="ASC", 
+        $limit=-1, 
+        $limitstart=0, 
+        $search="",
+        $deleted=false
+    ) {
+        $rows = new PHPFrame_Database_RowCollection();
+        
+        $rows->select(array("u.*", "g.id AS groupid", "g.name AS group_name"))
+             ->from("#__users AS u")
+             ->join("LEFT JOIN #__groups g ON u.groupid = g.id")
+             ->groupby("u.id");
+        
+        // Add search filtering
+        if ($search) {
+            $rows->where("u.firstname LIKE :search", "OR", "u.lastname LIKE :search")
+                 ->params(":search", "%".$search."%");
+        }
         
         if ($deleted === true) {
-            $where[] = "`deleted` <> '0000-00-00 00:00:00'";
-            $where[] = "`deleted` IS NOT NULL";
+            $rows->where("u.deleted", "<>", "'0000-00-00 00:00:00'");
+            $rows->where("u.deleted", "IS NOT", "NULL");
         } else {
-            $where[] = "(`deleted` = '0000-00-00 00:00:00' OR `deleted` IS NULL)";
-        }
-        
-        if ($search) {
-            $where[] = "(u.firstname LIKE '%".PHPFrame::DB()->getEscaped($list_filter->getSearchStr())."%' 
-                        OR u.lastname LIKE '%".PHPFrame::DB()->getEscaped($list_filter->getSearchStr())."%' 
-                        OR u.username LIKE '%".PHPFrame::DB()->getEscaped($list_filter->getSearchStr())."%')";
+            $rows->where("u.deleted = '0000-00-00 00:00:00'", "OR", "u.deleted IS NULL");
         }
 
-        $where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
+        $rows->load(null, '', array("groupid", "group_name"));
         
-        // get the total number of records
-        $query = "SELECT 
-                  u.id
-                  FROM #__users AS u 
-                  LEFT JOIN #__groups g ON u.groupid = g.id "
-                  . $where . 
-                  " GROUP BY u.id ";
-        
-        //echo str_replace('#__', 'eo_', $query); exit;
-        PHPFrame::DB()->query($query);
-        
-        // Set total number of record in list filter
-        $list_filter->setTotal(PHPFrame::DB()->getNumRows());
-        
-        // get the subset (based on limits) of required records
-        $query = "SELECT 
-                  u.*, 
-                  g.id AS groupid, g.name AS group_name 
-                  FROM #__users AS u 
-                  LEFT JOIN #__groups g ON u.groupid = g.id "
-                  . $where . 
-                  " GROUP BY u.id ";
-            
-        // Add order by and limit statements for subset (based on filter)
-        $query .= $list_filter->getOrderBySQL();
-        $query .= $list_filter->getLimitSQL();
-        //echo str_replace('#__', 'eo_', $query); exit;
-        
-        return PHPFrame::DB()->loadObjectList($query);
+        return $rows;
     }
     
     /**
      * Get details for a single user
      * 
-     * @param    int        $userid
+     * @param int $userid
+     * 
+     * @access public
      * @return     mixed    An object containing the user data or FALSE on failure.
      */
-    function getUsersDetail($userid=0)
+    public function getUser($userid=0)
     {
-        if (!empty($userid)) {
-            $query = "SELECT 
-                      u.*, 
-                      g.id AS groupid, g.name AS group_name 
-                      FROM #__users AS u 
-                      LEFT JOIN #__groups g ON u.groupid = g.id 
-                      WHERE u.id = '".$userid."'";
-            
-            return PHPFrame::DB()->loadObject($query);
-        } else {
-            return false;
-        }
+        // Instantiate user object
+        $user = new PHPFrame_User();
+        
+        // Load user by id
+        $user->load($userid);
+        
+        // Return user object
+        return $user;
     }
     
-    function saveUser($post)
+    public function saveUser($post)
     {
         // Create new user object
         $user = new PHPFrame_User();
@@ -167,7 +154,7 @@ class adminModelUsers extends PHPFrame_MVC_Model
         return true;
     }
     
-    function deleteUser($userid)
+    public function deleteUser($userid)
     {
         $query = "UPDATE #__users SET `deleted` = '".date("Y-m-d H:i:s")."' WHERE id = ".$userid;
         if (PHPFrame::DB()->query($query) === false) {
