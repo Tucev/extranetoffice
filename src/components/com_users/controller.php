@@ -136,7 +136,6 @@ class usersController extends PHPFrame_MVC_ActionController
         // Get request vars
         $post = PHPFrame::Request()->getPost();
         
-        
         // Save user using model
         $user = $this->getModel('users')->saveUser($post);
         

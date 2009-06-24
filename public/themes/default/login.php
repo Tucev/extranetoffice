@@ -23,7 +23,7 @@
 
 <div class="loginbox"> 
 
-<?php echo $modules->display('sysevents', '_sysevents'); ?>
+<?php echo $widgets->display('sysevents', '_sysevents'); ?>
 
 <?php echo $component_output; ?>
 
