@@ -103,7 +103,7 @@ PHPFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
 
 <br />
 
-<?php if (is_array($data['members']) && count($data['members']) > 0) : ?>
+<?php if ($data['members']->countRows() > 0) : ?>
 <table class="list" width="100%" cellpadding="0" cellspacing="0">
   <thead>
   <tr>

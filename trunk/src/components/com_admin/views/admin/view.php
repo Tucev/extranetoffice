@@ -65,18 +65,18 @@ class adminViewAdmin extends PHPFrame_MVC_View
         parent::display();
         
         // Append page title to document title
-        $document = PHPFrame::getDocument('html');
+        $document = PHPFrame::Response()->getDocument();
         $document->title .= ' - '.$this->_data['page_title'];
     }
     
     /**
      * Custom display method triggered by list layout.
      * 
-     * @access public
+     * @access protected
      * @return void
      * @since  1.0
      */
-    public function displayAdmin()
+    protected function displayAdmin()
     {
         $this->_data['page_title'] = _LANG_ADMIN;
     }

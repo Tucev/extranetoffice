@@ -59,7 +59,7 @@ class usersViewUsers extends PHPFrame_MVC_View
         
         // Append page title to document title
         if ($this->_layout != 'list') {
-            $document = PHPFrame::getDocument('html');
+            $document = PHPFrame::Response()->getDocument();
             $document->title .= ' - '.$this->page_title;
         }
     }
@@ -67,11 +67,11 @@ class usersViewUsers extends PHPFrame_MVC_View
     /**
      * Custom display method triggered by list layout.
      * 
-     * @access public
+     * @access protected
      * @return void
      * @since  1.0
      */
-    public function displayUsersList()
+    protected function displayUsersList()
     {
         $this->_data['page_title'] = _LANG_USERS;
     }
@@ -79,11 +79,11 @@ class usersViewUsers extends PHPFrame_MVC_View
     /**
      * Custom display method triggered by detail layout.
      * 
-     * @access public
+     * @access protected
      * @return void
      * @since  1.0
      */
-    public function displayUsersDetail()
+    protected function displayUsersDetail()
     {
         $name = $this->_data['row']->firstname.' '.$this->_data['row']->lastname;
         // Set page title

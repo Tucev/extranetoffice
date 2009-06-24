@@ -36,12 +36,15 @@ class projectsModelActivitylog extends PHPFrame_MVC_Model
     
     /**
      * Constructor
+     * 
+     * @param PHPFrame_Database_Row $project The project row this activity 
+     *                                       log belongs to.
      *
      * @access public
      * @return void
      * @since  1.0
      */
-    public function __construct($project)
+    public function __construct(PHPFrame_Database_Row $project)
     {
         $this->_project = $project;
     }

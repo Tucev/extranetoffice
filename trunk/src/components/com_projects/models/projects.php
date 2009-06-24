@@ -110,32 +110,7 @@ class projectsModelProjects extends PHPFrame_MVC_Model
         $row = new PHPFrame_Database_Row('#__projects');
         
         // Load row data using query and return
-        return $row->load($id_obj, "", array("created_by_name", "project_type_name"));
-        
-        // Build SQL query to get row
-        /*
-        $userid = PHPFrame::Session()->getUserId();
-        $where[] = "( p.access = '0' OR (".$userid." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
-        $where[] = "p.id = ".$projectid;
-        $where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
-        
-        $query = "SELECT p.*,
-                  u.username AS created_by_name, 
-                  pt.name AS project_type_name 
-                  FROM #__projects AS p 
-                  JOIN #__users u ON u.id = p.created_by 
-                  LEFT JOIN #__project_types pt ON pt.id = p.project_type "
-                  .$where. 
-                  " GROUP BY p.id ";
-
-        //echo str_replace("#__", "eo_", $query); exit;
-        
-        // Create instance of row
-        $row = new PHPFrame_Database_Row('#__projects');
-        
-        // Load row data using query and return
-        return $row->loadByQuery($query, array('created_by_name', 'project_type_name'));
-        */
+        return $row->load($id_obj);
     }
     
     
