@@ -97,6 +97,15 @@ class adminModelUsers extends PHPFrame_MVC_Model
         return $user;
     }
     
+    /**
+     * Save user
+     * 
+     * @param array $post The post array
+     * 
+     * @access public
+     * @return PHPFrame_User
+     * @since  1.0
+     */
     public function saveUser($post)
     {
         // Create new user object
@@ -126,10 +135,7 @@ class adminModelUsers extends PHPFrame_MVC_Model
         // Bind the post data to the row array
         $user->bind($post, $exclude);
         
-        if (!$user->store()) {
-            $this->_error[] = $user->getLastError();
-            return false;
-        }
+        $user->store();
         
         // Send notification to new users
         if ($new_user === true) {

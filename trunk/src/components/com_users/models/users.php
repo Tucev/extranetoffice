@@ -109,6 +109,8 @@ class usersModelUsers extends PHPFrame_MVC_Model
     /**
      * Save user
      * 
+     * @param array $post The post array
+     * 
      * @access public
      * @return PHPFrame_User
      * @since  1.0

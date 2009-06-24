@@ -16,7 +16,7 @@ $(document).ready(function() {
 
 <a name="up" id="up"></a>
 
-<?php echo $modules->display('topmenu', '_topmenu'); ?>
+<?php echo $widgets->display('topmenu', '_topmenu'); ?>
 
 <div id="sitename">
     <a href="index.php">
@@ -31,22 +31,22 @@ $(document).ready(function() {
 <!-- Content -->
 <div id="wrapper_outer">
     
-    <?php echo $modules->display('topright', '_topright'); ?>
-    <?php echo $modules->display('mainmenu', '_mainmenu'); ?>
+    <?php echo $widgets->display('topright', '_topright'); ?>
+    <?php echo $widgets->display('mainmenu', '_mainmenu'); ?>
     
     <div id="wrapper">
         <?php $column_count = 1; ?>
         
-        <?php $modules_right = $modules->display('right'); ?>
-        <?php if (!empty($modules_right)) : ?>
+        <?php $widgets_right = $widgets->display('right'); ?>
+        <?php if (!empty($widgets_right)) : ?>
             <div id="right_col">
-                <?php echo $modules_right; ?>
+                <?php echo $widgets_right; ?>
             </div><!-- close #right_col -->
             <?php $column_count++; ?>
         <?php endif; ?>
         
         <div id="main_col_<?php echo $column_count; ?>">
-            <?php echo $modules->display('sysevents', '_sysevents'); ?>
+            <?php echo $widgets->display('sysevents', '_sysevents'); ?>
             <div id="main_col_inner">
             <?php echo $component_output; ?>
             </div><!-- close #main_col_inner -->
