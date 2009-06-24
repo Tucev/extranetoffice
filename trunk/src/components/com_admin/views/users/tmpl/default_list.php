@@ -28,32 +28,11 @@ PHPFrame_HTML::confirm('delete_user', _LANG_ADMIN_USERS_DELETE, _LANG_ADMIN_USER
 
 <br />
 
-
-<script language="javascript" type="text/javascript">
-function submit_filter(reset) {
-    var form = document.forms['listsearchform'];
-    
-    if (reset){
-        form.search.value = '';
-    }
-    
-    form.submit();
-}
-</script>
-<div class="list_filter_container">
-<form action="index.php" id="listsearchform" name="listsearchform" method="post">
-<input type="text" name="search" id="search" value="<?php echo $this->lists['search']; ?>">
-<button type="button" class="button" onclick="submit_filter(false);">Search</button>
-<button type="button" class="button" onclick="submit_filter(true);">Reset</button>
-<input type="hidden" name="component" value="com_admin" />
-<input type="hidden" name="view" value="users" />
-<input type="hidden" name="layout" value="list" />
-</form>
-</div>
+<?php echo $this->renderRowCollectionFilter($data['rows']); ?>
 
 <br />
 
-<?php if (is_array($data['rows']) && count($data['rows']) > 0) : ?>
+<?php if ($data['rows']->countRows() > 0) : ?>
 <table class="data_list" width="100%" cellpadding="0" cellspacing="0">
   <thead>
   <tr>
@@ -106,7 +85,7 @@ function submit_filter(reset) {
 
 <br />
 
-<?php echo $data['page_nav']->getListFooter(); ?>
+<?php echo $this->renderPagination($data['rows']); ?>
 
 <?php else : ?>
 <?php echo PHPFrame_Base_String::html( _LANG_NO_ENTRIES ); ?>

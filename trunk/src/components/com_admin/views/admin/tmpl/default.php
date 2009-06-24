@@ -54,8 +54,8 @@ $(function() {
             </a>
         </li>
         <li>
-            <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&action=get_modules".$data['tmpl']); ?>">
-                Modules
+            <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&action=get_widgets".$data['tmpl']); ?>">
+                Widgets
             </a>
         </li>
     </ul>
