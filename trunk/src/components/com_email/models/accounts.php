@@ -50,7 +50,7 @@ class emailModelAccounts extends PHPFrame_MVC_Model {
                 $query .= " AND `default` = '1'";
             }
             
-            return PHPFrame::DB()->loadObjectList($query);    
+            return PHPFrame::DB()->fetchObjectList($query);    
         }
         else {
             return false;

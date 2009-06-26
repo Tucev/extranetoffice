@@ -15,7 +15,8 @@
  * @since         1.0
  * @see         PHPFrame_MVC_Model
  */
-class projectsModelFiles extends PHPFrame_MVC_Model {
+class projectsModelFiles extends PHPFrame_MVC_Model
+{
     /**
      * Constructor
      *
@@ -30,7 +31,8 @@ class projectsModelFiles extends PHPFrame_MVC_Model {
      * @param    int        $projectid
      * @return    array
      */
-    public function getFiles(PHPFrame_Database_CollectionFilter $list_filter, $projectid) {
+    public function getFiles(PHPFrame_Database_CollectionFilter $list_filter, $projectid)
+    {
         // Build SQL query
         $where = array();
         
@@ -68,7 +70,7 @@ class projectsModelFiles extends PHPFrame_MVC_Model {
         $query .= $list_filter->getLimitSQL();
         //echo str_replace('#__', 'eo_', $query); exit;
         
-        $rows = PHPFrame::DB()->loadObjectList($query);
+        $rows = PHPFrame::DB()->fetchObjectList($query);
         
         // Prepare rows and add relevant data
         if (is_array($rows) && count($rows) > 0) {
@@ -88,7 +90,8 @@ class projectsModelFiles extends PHPFrame_MVC_Model {
         return $rows;
     }
     
-    public function getFilesDetail($projectid, $fileid) {
+    public function getFilesDetail($projectid, $fileid)
+    {
         $query = "SELECT f.*, u.username AS created_by_name ";
         $query .= " FROM #__files AS f ";
         $query .= " JOIN #__users u ON u.id = f.userid ";
@@ -122,7 +125,8 @@ class projectsModelFiles extends PHPFrame_MVC_Model {
      * @param    $post    The array to be used for binding to the row before storing it. Normally the HTTP_POST array.
      * @return    mixed    Returns the stored table row object on success or FALSE on failure
      */
-    public function saveRow($post) {
+    public function saveRow($post)
+    {
         // Check whether a project id is included in the post array
         if (empty($post['projectid'])) {
             $this->_error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
@@ -138,10 +142,15 @@ class projectsModelFiles extends PHPFrame_MVC_Model {
             $row->set('revision', 0);
         }
         else {
-            $query = "SELECT revision FROM #__files ";
-            $query .= " WHERE parentid = ".$row->parentid;
-            $query .= " ORDER BY revision DESC LIMIT 0,1";
-            $current_revision = PHPFrame::DB()->loadResult($query);
+            $sql = "SELECT revision FROM #__files ";
+            $sql .= " WHERE parentid = :parentid";
+            $sql .= " ORDER BY revision DESC LIMIT 0,1";
+            
+            $params = array(":parentid"=>$row->parentid);
+            
+            $db = PHPFrame::DB();
+            $current_revision = $db->fetchColumn($sql, $params);
+            
             $row->set('revision', ($current_revision+1));
         }
         
@@ -194,7 +203,8 @@ class projectsModelFiles extends PHPFrame_MVC_Model {
         return $row;
     }
     
-    public function deleteRow($projectid, $fileid) {
+    public function deleteRow($projectid, $fileid)
+    {
         //TODO: This function should allow ids as either int or array of ints.
         //TODO: This function should also check permissions before deleting
         //TODO: This function should delete related items if any (comments, ...)
@@ -212,7 +222,8 @@ class projectsModelFiles extends PHPFrame_MVC_Model {
         $row->delete($fileid);
     }
     
-    public function downloadFile($projectid, $fileid) {
+    public function downloadFile($projectid, $fileid)
+    {
         //TODO: This function should also check permissions        
         $row = new PHPFrame_Database_Row("#__files");
         
@@ -241,13 +252,14 @@ class projectsModelFiles extends PHPFrame_MVC_Model {
      * @param    bool    $asoc
      * @return    array    Asociative array with userid, name and email of assignees
      */
-    public function getAssignees($fileid, $asoc=true) {
+    public function getAssignees($fileid, $asoc=true)
+    {
         $query = "SELECT uf.userid, u.firstname, u.lastname, u.email";
         $query .= " FROM #__users_files AS uf ";
         $query .= "LEFT JOIN #__users u ON u.id = uf.userid";
         $query .= " WHERE uf.fileid = ".$fileid;
         
-        $assignees = PHPFrame::DB()->loadObjectList($query);
+        $assignees = PHPFrame::DB()->fetchObjectList($query);
         
         // Prepare assignee data
         for ($i=0; $i<count($assignees); $i++) {
@@ -264,7 +276,8 @@ class projectsModelFiles extends PHPFrame_MVC_Model {
         return $new_assignees;
     }
     
-    private function _readfile_chunked($filename, $retbytes=true) {
+    private function _readfile_chunked($filename, $retbytes=true)
+    {
        $chunksize = 1*(1024*1024); // how many bytes per chunk
        $buffer = '';
        $cnt =0;
@@ -288,7 +301,8 @@ class projectsModelFiles extends PHPFrame_MVC_Model {
        return $status;
     }
     
-    private function _getOlderRevisions($parentid, $id) {
+    private function _getOlderRevisions($parentid, $id)
+    {
         // get children (older revisions)
         $query = "SELECT f.*, u.username AS created_by_name ";
         $query .= " FROM #__files AS f ";
@@ -296,6 +310,6 @@ class projectsModelFiles extends PHPFrame_MVC_Model {
         $query .= " WHERE f.parentid = ".$parentid." AND f.id <> ".$id;
         $query .= " ORDER BY f.ts DESC";
         
-        return PHPFrame::DB()->loadObjectList($query);
+        return PHPFrame::DB()->fetchObjectList($query);
     }
 }

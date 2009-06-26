@@ -114,8 +114,8 @@ class loginModelLogin extends PHPFrame_MVC_Model
     public function resetPassword($email)
     {
         // First we check whether there is a user with the passed email address
-        $query = "SELECT id FROM #__users WHERE email = '".$email."'";
-        $userid = PHPFrame::DB()->loadResult($query);
+        $sql = "SELECT id FROM #__users WHERE email = :email";
+        $userid = PHPFrame::DB()->fetchColumn($sql, array(":email"=>$email));
         
         if (!empty($userid)) {
             // Create user object

@@ -69,7 +69,7 @@ class projectsModelMeetings extends PHPFrame_MVC_Model {
         //echo str_replace('#__', 'eo_', $query); exit;
         
         //echo $query; exit;
-        $rows = PHPFrame::DB()->loadObjectList($query);
+        $rows = PHPFrame::DB()->fetchObjectList($query);
         
         // Prepare rows and add relevant data
         if (is_array($rows) && count($rows) > 0) {
@@ -227,14 +227,14 @@ class projectsModelMeetings extends PHPFrame_MVC_Model {
         $query .= " FROM #__slideshows ";
         $query .= " WHERE projectid = ".$projectid." AND meetingid = ".$meetingid;
         if (!empty($slideshowid)) $query .= " AND id = ".$slideshowid; 
-        $slideshows = PHPFrame::DB()->loadObjectList($query);
+        $slideshows = PHPFrame::DB()->fetchObjectList($query);
         
         // Get slideshows slides
         for ($i=0; $i<count($slideshows); $i++) {
             $query = "SELECT * ";
             $query .= " FROM #__slideshows_slides ";
             $query .= " WHERE slideshowid = ".$slideshows[$i]->id;
-            $slideshows[$i]->slides = PHPFrame::DB()->loadObjectList($query);
+            $slideshows[$i]->slides = PHPFrame::DB()->fetchObjectList($query);
         }
         
         return $slideshows;
@@ -284,7 +284,7 @@ class projectsModelMeetings extends PHPFrame_MVC_Model {
         $query = "SELECT * ";
         $query .= " FROM #__slideshows_slides ";
         $query .= " WHERE slideshowid = ".$slideshowid;
-        $slides = PHPFrame::DB()->loadObjectList($query);
+        $slides = PHPFrame::DB()->fetchObjectList($query);
         
         if (is_array($slides) && count($slides) > 0) {
             foreach ($slides as $slide) {
@@ -483,7 +483,7 @@ class projectsModelMeetings extends PHPFrame_MVC_Model {
         $query .= " FROM #__users_meetings AS um ";
         $query .= "LEFT JOIN #__users u ON u.id = um.userid";
         $query .= " WHERE um.meetingid = ".$meetingid;
-        $assignees = PHPFrame::DB()->loadObjectList($query);
+        $assignees = PHPFrame::DB()->fetchObjectList($query);
         
         // Prepare assignee data
         for ($i=0; $i<count($assignees); $i++) {

@@ -47,7 +47,7 @@ class addressbookModelContacts extends PHPFrame_MVC_Model {
         //echo str_replace('#__','eo_', $query); exit;
         
         // Get rows from database
-        return PHPFrame::DB()->loadObjectList($query);
+        return PHPFrame::DB()->fetchObjectList($query);
     }
     
     function getContactsDetail($id) {
