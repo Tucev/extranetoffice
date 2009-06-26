@@ -69,7 +69,7 @@ class loginModelLogin extends PHPFrame_MVC_Model
             $user->load($credentials->id);
             
             // check password
-            $parts = explode( ':', $credentials->password );
+            $parts = explode(':', $credentials->password);
             $crypt = $parts[0];
             $salt = @$parts[1];
             $testcrypt = PHPFrame_Utils_Crypt::getCryptedPassword($password, $salt);
