@@ -301,13 +301,13 @@ class projectsModelIssues extends PHPFrame_MVC_Model
      */
     public function getTotalIssues($projectid, $overdue=false)
     {
-        $query = "SELECT COUNT(id) FROM #__issues ";
-        $query .= " WHERE projectid = ".$projectid;
+        $sql = "SELECT COUNT(id) FROM #__issues ";
+        $sql .= " WHERE projectid = :projectid";
         if ($overdue === true) { 
-            $query .= " AND dtend < '".date("Y-m-d")." 23:59:59' AND closed = '0000-00-00 00:00:00'"; 
+            $sql .= " AND dtend < '".date("Y-m-d")." 23:59:59' AND closed = '0000-00-00 00:00:00'"; 
         }
         
-        return PHPFrame::DB()->loadResult($query);
+        return PHPFrame::DB()->fetchColumn($sql, array(":projectid"=>$projectid));
     }
     
     /**
@@ -323,7 +323,7 @@ class projectsModelIssues extends PHPFrame_MVC_Model
         $query .= " FROM #__users_issues AS ui ";
         $query .= "LEFT JOIN #__users u ON u.id = ui.userid";
         $query .= " WHERE ui.issueid = ".$issueid;
-        $assignees = PHPFrame::DB()->loadObjectList($query);
+        $assignees = PHPFrame::DB()->fetchObjectList($query);
         
         // Prepare assignee data
         for ($i=0; $i<count($assignees); $i++) {

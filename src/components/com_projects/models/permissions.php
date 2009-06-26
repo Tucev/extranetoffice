@@ -16,7 +16,8 @@
  * @since         1.0
  * @see         PHPFrame_MVC_Model
  */
-class projectsModelPermissions extends PHPFrame_MVC_Model {
+class projectsModelPermissions extends PHPFrame_MVC_Model
+{
     /**
      * Instance of the permission object
      * 
@@ -46,7 +47,8 @@ class projectsModelPermissions extends PHPFrame_MVC_Model {
      * Private constructor to prevent instantiation and implement the singleton pattern.
      * @return unknown_type
      */
-    private function __construct() {
+    private function __construct()
+    {
         // Get role id for session user and cache
         $this->_userid = PHPFrame::Session()->getUserId();
     }
@@ -56,7 +58,8 @@ class projectsModelPermissions extends PHPFrame_MVC_Model {
      * 
      * @return    object of type projectsModelPermissions
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (!self::$_instance instanceof projectsModelPermissions) {
             self::$_instance = new projectsModelPermissions();
         }
@@ -72,7 +75,8 @@ class projectsModelPermissions extends PHPFrame_MVC_Model {
      * @param    object    $project
      * @return    boolean
      */
-    public function authorise($tool, $userid, $project) {
+    public function authorise($tool, $userid, $project)
+    {
         // Get role id from db or cache
         $roleid = $this->_getUserRole($userid, $project->id);
         
@@ -93,15 +97,18 @@ class projectsModelPermissions extends PHPFrame_MVC_Model {
         return false;
     }
     
-    public function getUserId() {
+    public function getUserId()
+    {
         return $this->_userid;
     }
     
-    public function getRoleId() {
+    public function getRoleId()
+    {
         return $this->_roleid;
     }
     
-    public function isProjectAdmin() {
+    public function isProjectAdmin()
+    {
         return ($this->_roleid == 1);
     }
     
@@ -112,16 +119,19 @@ class projectsModelPermissions extends PHPFrame_MVC_Model {
      * @param    int    $projectid
      * @return    mixed    Returns an integer on success or FALSE on failure.
      */
-    private function _getUserRole($userid, $projectid) {
+    private function _getUserRole($userid, $projectid)
+    {
         // Get user role from database if cached one needs refreshing
         if (is_null($this->_roleid) 
             || $userid != $this->_userid 
             || $projectid != $this->_projectid) {
                 
-            $query = "SELECT roleid FROM #__users_roles ";
-            $query .= " WHERE userid = ".$userid." AND projectid = ".$projectid;
+            $sql = "SELECT roleid FROM #__users_roles ";
+            $sql .= " WHERE userid = :userid AND projectid = :projectid";
             
-            $this->_roleid = PHPFrame::DB()->loadResult($query);
+            $params = array(":userid"=>$userid, ":projectid"=>$projectid);
+            
+            $this->_roleid = PHPFrame::DB()->fetchColumn($sql, $params);
             $this->_userid = $userid;
             $this->_projectid = $projectid;
         }

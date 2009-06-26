@@ -68,7 +68,7 @@ class projectsModelMessages extends PHPFrame_MVC_Model {
         $query .= $list_filter->getLimitSQL();
         //echo str_replace('#__', 'eo_', $query); exit;
         
-        $rows = PHPFrame::DB()->loadObjectList($query);
+        $rows = PHPFrame::DB()->fetchObjectList($query);
         
         // Prepare rows and add relevant data
         if (is_array($rows) && count($rows) > 0) {
@@ -199,7 +199,7 @@ class projectsModelMessages extends PHPFrame_MVC_Model {
         $query .= " FROM #__users_messages AS um ";
         $query .= "LEFT JOIN #__users u ON u.id = um.userid";
         $query .= " WHERE um.messageid = ".$messageid;
-        $assignees = PHPFrame::DB()->loadObjectList($query);
+        $assignees = PHPFrame::DB()->fetchObjectList($query);
         
         // Prepare assignee data
         for ($i=0; $i<count($assignees); $i++) {

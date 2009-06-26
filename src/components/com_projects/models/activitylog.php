@@ -165,7 +165,7 @@ class projectsModelActivitylog extends PHPFrame_MVC_Model
         $query = "SELECT firstname, lastname, email ";
         $query .= " FROM #__users ";
         $query .= " WHERE id IN (".implode(',', $assignees).") AND id <> ".$row->userid;
-        $recipients = PHPFrame::DB()->loadObjectList($query);
+        $recipients = PHPFrame::DB()->fetchObjectList($query);
         
         if (is_array($recipients) && count($recipients) > 0) {
             $failed_recipients = array();

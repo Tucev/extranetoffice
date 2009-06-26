@@ -16,7 +16,8 @@
  * @since         1.0
  * @see         PHPFrame_MVC_Model
  */
-class projectsModelComments extends PHPFrame_MVC_Model {
+class projectsModelComments extends PHPFrame_MVC_Model
+{
     /**
      * Constructor
      *
@@ -24,7 +25,8 @@ class projectsModelComments extends PHPFrame_MVC_Model {
      */
     function __construct() {}
     
-    function getComments($projectid, $type, $itemid) {
+    function getComments($projectid, $type, $itemid)
+    {
         $query = "SELECT c.*, u.username AS created_by_name";
         $query .= " FROM #__comments AS c ";
         $query .= " JOIN #__users u ON u.id = c.userid ";
@@ -32,7 +34,7 @@ class projectsModelComments extends PHPFrame_MVC_Model {
         $query .= " ORDER BY c.created DESC";
         //echo $query; exit;      
         
-        $rows = PHPFrame::DB()->loadObjectList($query);
+        $rows = PHPFrame::DB()->fetchObjectList($query);
         
         return $rows;
     }
@@ -43,7 +45,8 @@ class projectsModelComments extends PHPFrame_MVC_Model {
      * @param    $post    The array to be used for binding to the row before storing it. Normally the HTTP_POST array.
      * @return    mixed    Returns the stored table row object on success or FALSE on failure
      */
-    function saveComment($post) {
+    function saveComment($post)
+    {
         // Check whether a project id is included in the post array
         if (empty($post['projectid'])) {
             $this->_error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
@@ -76,7 +79,8 @@ class projectsModelComments extends PHPFrame_MVC_Model {
         return $row;
     }
     
-    function deleteComment($projectid, $commentid) {
+    function deleteComment($projectid, $commentid)
+    {
         //TODO: This function should allow ids as either int or array of ints.
         //TODO: This function should also check permissions before deleting
         
@@ -93,36 +97,41 @@ class projectsModelComments extends PHPFrame_MVC_Model {
         }
     }
     
-    function itemid2title($itemid, $type) {
+    function itemid2title($itemid, $type)
+    {
         switch ($type) {
             case 'files' :
-                $query = "SELECT title FROM #__files WHERE id = ".$itemid;
+                $sql = "SELECT title FROM #__files";;
                 break;
             case 'issues' :
-                $query = "SELECT title FROM #__issues WHERE id = ".$itemid;
+                $sql = "SELECT title FROM #__issues";
                 break;
             case 'meetings' :
-                $query = "SELECT name FROM #__meetings WHERE id = ".$itemid;
+                $sql = "SELECT name FROM #__meetings";
                 break;
             case 'messages' :
-                $query = "SELECT subject FROM #__messages WHERE id = ".$itemid;
+                $sql = "SELECT subject FROM #__messages";
                 break;
             case 'milestones' :
-                $query = "SELECT title FROM #__milestones WHERE id = ".$itemid;
+                $sql = "SELECT title FROM #__milestones";
                 break;
         }
         
-        return PHPFrame::DB()->loadResult($query);
-    }
-    
-    function getTotalComments($itemid, $type) {
-        $query = "SELECT COUNT(id) FROM #__comments ";
-        $query .= " WHERE itemid = ".$itemid." AND type = '".$type."'";
+        $sql .= " WHERE id = :id";
         
-        return PHPFrame::DB()->loadResult($query);
+        return PHPFrame::DB()->fetchColumn($sql, array(":id"=>$itemid));
     }
     
-    function fetchCommentsFromEmail() {
+    function getTotalComments($itemid, $type)
+    {
+        $sql = "SELECT COUNT(id) FROM #__comments ";
+        $sql .= " WHERE itemid = :itemid AND type = :type";
+        
+        return PHPFrame::DB()->fetchColumn($sql, array(":itemid"=>$itemid, ":type"=>$type));
+    }
+    
+    function fetchCommentsFromEmail()
+    {
         $imap = new PHPFrame_Mail_IMAP(config::IMAP_HOST, config::IMAP_PORT, config::IMAP_USER, config::IMAP_PASSWORD);
         $messages = $imap->getMessages();
         $imap->close();

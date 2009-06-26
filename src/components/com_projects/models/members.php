@@ -311,8 +311,13 @@ class projectsModelMembers extends PHPFrame_MVC_Model
     
     public function isMember($projectid, $userid)
     {
-        $query = "SELECT roleid FROM #__users_roles WHERE projectid = ".$projectid." AND userid = ".$userid;
-        $roleid = PHPFrame::DB()->loadResult($query);
+        $sql = "SELECT roleid FROM #__users_roles ";
+        $sql .= " WHERE projectid = :projectid AND userid = :userid";
+        
+        $params = array(":projectid"=>$projectid, ":userid"=>$userid);
+        
+        $roleid = PHPFrame::DB()->fetchColumn($sql, $params);
+        
         if (!empty($roleid)) {
             return $roleid;
         } else {
