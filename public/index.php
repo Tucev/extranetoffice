@@ -25,20 +25,17 @@ $PHPFrame_path = "/Users/lupomontero/Documents/workspace/PHPFrame/src";
 set_include_path(get_include_path() . PATH_SEPARATOR . $PHPFrame_path);
 
 /**
- * Set convenience DS constant (directory separator depends on server operating system).
- */
-define( 'DS', DIRECTORY_SEPARATOR );
-/**
  * Set constant containing absolute path to application
  */
-define('_ABS_PATH', str_replace(DS."public", "", dirname(__FILE__) ));
+define('_ABS_PATH', str_replace(DIRECTORY_SEPARATOR."public", "", dirname(__FILE__)));
 
 /**
  * Path to configuration file
  * 
  * @var string
  */
-$config_file_path = _ABS_PATH.DS."src".DS."config.php";
+$config_file_path = _ABS_PATH.DIRECTORY_SEPARATOR."src".DIRECTORY_SEPARATOR."config.php";
+
 /**
  * If there is no config file we redirect to installation directory
  */
@@ -49,8 +46,11 @@ else {
     require_once $config_file_path;    
 }
 
+// Include PHPFrame main file
+require_once "PHPFrame.php";
+
 // Include autoloader
-require_once _ABS_PATH.DS."src".DS."autoload.php";
+require_once _ABS_PATH.DIRECTORY_SEPARATOR."src".DIRECTORY_SEPARATOR."autoload.php";
 
 // Fire up PHPFrame
 PHPFrame::Fire();
