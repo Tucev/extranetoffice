@@ -68,7 +68,7 @@ class usersModelUsers extends PHPFrame_MVC_Model
             $photo = $row->photo;
             $photo_url = config::UPLOAD_DIR.'/users/';
             $photo_url .= !empty($photo) ? $photo : 'default.png';
-            $row->set('photo', $photo_url);
+            $row->photo = $photo_url;
             
             // Add url to detail page
             $detail_url = "index.php?component=com_users&action=get_user";
@@ -100,7 +100,7 @@ class usersModelUsers extends PHPFrame_MVC_Model
         $photo = $user->photo;
         $photo_url = config::UPLOAD_DIR.'/users/';
         $photo_url .= !empty($photo) ? $photo : 'default.png';
-        $user->set('photo', $photo_url);
+        $user->photo = $photo_url;
         
         // Return user object
         return $user;
