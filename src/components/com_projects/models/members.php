@@ -133,6 +133,18 @@ class projectsModelMembers extends PHPFrame_MVC_Model
         return $row;
     }
     
+    /**
+     * Add a user as a project member
+     * 
+     * @param int  $projectid
+     * @param int  $userid
+     * @param int  $roleid
+     * @param bool $notify
+     * 
+     * @access public
+     * @return bool
+     * @since  1.0
+     */
     public function saveMember($projectid, $userid, $roleid, $notify=true)
     {
         // Create new row object
@@ -157,22 +169,41 @@ class projectsModelMembers extends PHPFrame_MVC_Model
         
         // Send notification via email
         if ($notify) {
-            $project_name = projectsHelperProjects::id2name($projectid);
+            // Prepare project data
+            $project_name = $this->_project->name;
             $role_name = projectsHelperProjects::project_roleid2name($roleid);
-            $site_name = config::SITENAME;
-            $uri = new PHPFrame_Utils_URI();
-            $new_member_email = PHPFrame_User_Helper::id2email($userid);
             
+            // Prepare new member data
+            $new_member_email = PHPFrame_User_Helper::id2email($userid);
+            $new_member_name = PHPFrame_User_Helper::id2name($userid);
+            
+            // Prepare "inviting" user's full name
+            $name = PHPFrame::Session()->getUser()->firstname;
+            $name .= " ".PHPFrame::Session()->getUser()->lastname;
+            
+            // Get base url
+            $uri = new PHPFrame_Utils_URI();
+            $base_url = $uri->getBase();
+            
+            // Create new email
             $new_mail = new PHPFrame_Mail_Mailer();
-            $new_mail->AddAddress($new_member_email, PHPFrame_User_Helper::id2name($userid));
-            $new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, PHPFrame::Session()->getUser()->firstname." ".PHPFrame::Session()->getUser()->lastname, $project_name, $site_name);
-            $new_mail->Body = PHPFrame_Base_String::html(sprintf(_LANG_PROJECTS_INVITATION_BODY,
-                                     PHPFrame::Session()->getUser()->firstname." ".PHPFrame::Session()->getUser()->lastname, 
+            $new_mail->AddAddress($new_member_email, $new_member_name);
+            $new_mail->Subject = sprintf(
+                                     _LANG_PROJECTS_INVITATION_SUBJECT, 
+                                     $name, 
                                      $project_name, 
-                                     $role_name, 
-                                     $uri->getBase())
+                                     config::SITENAME
+                                 );
+                                 
+            $new_mail->Body = sprintf(
+                                  _LANG_PROJECTS_INVITATION_BODY,
+                                  $name, 
+                                  $project_name, 
+                                  $role_name, 
+                                  $base_url
                               );
-                                         
+
+            // Send email
             if ($new_mail->Send() !== true) {
                 $this->_error[] = sprintf(_LANG_EMAIL_NOT_SENT, $new_member_email);
                 return false;
@@ -200,9 +231,11 @@ class projectsModelMembers extends PHPFrame_MVC_Model
         
         $user->set('block', '0');
         $user->set('created', date("Y-m-d H:i:s"));
-        // Generate random password and store in local variable to be used when sending email to user.
+        // Generate random password and store in local variable to be used 
+        // when sending email to user.
         $password = PHPFrame_Utils_Crypt::genRandomPassword();
-        // Assign newly generated password to row object (this password will be encrypted when stored).
+        // Assign newly generated password to row object (this password will 
+        // be encrypted when stored).
         $user->set('password', $password);
         
         // Bind the post data to the row array
@@ -220,23 +253,40 @@ class projectsModelMembers extends PHPFrame_MVC_Model
         $row->store();
         
         // Send notification to new users
-        $project_name = projectsHelperProjects::id2name($projectid);
+        // Prepare project data
+        $project_name = $this->_project->name;
         $role_name = projectsHelperProjects::project_roleid2name($roleid);
-        $site_name = config::SITENAME;
+        
+        // Prepare new member data
+        $new_member_name = $user->firstname." ".$user->lastname;
+        
+        // Prepare "inviting" user's full name
+        $name = PHPFrame::Session()->getUser()->firstname;
+        $name .= " ".PHPFrame::Session()->getUser()->lastname;
+        
+        // Get base url
         $uri = new PHPFrame_Utils_URI();
+        $base_url = $uri->getBase();
         
         $new_mail = new PHPFrame_Mail_Mailer();
-        $new_mail->AddAddress($user->email, PHPFrame_User_Helper::fullname_format($user->firstname, $user->lastname));
-        $new_mail->Subject = sprintf(_LANG_PROJECTS_INVITATION_SUBJECT, PHPFrame::Session()->getUser()->firstname." ".PHPFrame::Session()->getUser()->lastname, $project_name, $site_name);
-        $new_mail->Body = sprintf(_LANG_PROJECTS_INVITATION_NEW_USER_BODY, 
-                                 PHPFrame::Session()->getUser()->firstname." ".PHPFrame::Session()->getUser()->lastname,
+        $new_mail->AddAddress($user->email, $new_member_name);
+        $new_mail->Subject = sprintf(
+                                 _LANG_PROJECTS_INVITATION_SUBJECT, 
+                                 $name, 
                                  $project_name, 
-                                 $role_name, 
-                                 $user->username, 
-                                 $password,
-                                 $uri->getBase()
-                        );
-                                   
+                                 config::SITENAME
+                             );
+        $new_mail->Body = sprintf(
+                              _LANG_PROJECTS_INVITATION_NEW_USER_BODY, 
+                              $name,
+                              $project_name, 
+                              $role_name, 
+                              $user->username, 
+                              $password,
+                              $base_url
+                          );
+                          
+        // Send email           
         if ($new_mail->Send() !== true) {
             $this->_error[] = sprintf(_LANG_EMAIL_NOT_SENT, $user->email);
             return false;
@@ -248,11 +298,13 @@ class projectsModelMembers extends PHPFrame_MVC_Model
     /**
      * Delete project member
      * 
+     * This method will throw an exception if the SQL query fails
+     * 
      * @param int $userid The userid of the user to remove as member of the 
      *                    current project.
      * 
      * @access public
-     * @return bool   Returns TRUE on success or FALSE on failure.
+     * @return void
      * @since  1.0
      */
     public function deleteMember($userid)
@@ -263,23 +315,17 @@ class projectsModelMembers extends PHPFrame_MVC_Model
         $params = array(":projectid"=>$this->_project->id, 
                         ":userid"=>$userid);
         
-        $stmt = PHPFrame::DB()->prepare($sql);
-        $stmt->execute($params);
-        
-        $error_info = $stmt->errorInfo();
-        if (is_array($error_info) && count($error_info) > 1) {
-            $this->_error[] = $error_info[2];
-            return false;
-        }
-        
-        return true;
+        // Run the SQL query
+        PHPFrame::DB()->query($sql, $params);
     }
     
     /**
      * Change member's role in given project
      * 
-     * @param $userid
-     * @param $roleid
+     * This method will throw an exception if the SQL query fails
+     * 
+     * @param int $userid
+     * @param int $roleid
      * 
      * @access public
      * @return bool   Returns TRUE on success or FALSE on failure
@@ -287,26 +333,28 @@ class projectsModelMembers extends PHPFrame_MVC_Model
      */
     public function changeMemberRole($userid, $roleid)
     {
-        $query = "UPDATE #__users_roles ";
-        $query .= " SET roleid = :roleid";
-        $query .= " WHERE projectid = :projectid AND userid = :userid";
+        $sql = "UPDATE #__users_roles ";
+        $sql .= " SET roleid = :roleid";
+        $sql .= " WHERE projectid = :projectid AND userid = :userid";
         
         $params = array(":roleid"=>$roleid, 
                         ":projectid"=>$this->_project->id, 
                         ":userid"=>$userid);
         
-        $stmt = PHPFrame::DB()->prepare($query);
-        $stmt->execute($params);
-        
-        $error_info = $stmt->errorInfo();
-        if (is_array($error_info) && count($error_info) > 1) {
-            $this->_error[] = $error_info[2];
-            return false;
-        }
-        
-        return true;
+        // Run the SQL query
+        PHPFrame::DB()->query($sql, $params);
     }
     
+    /**
+     * Check if given user is a member of the specified project
+     * 
+     * @param int $projectid
+     * @param int $userid
+     * 
+     * @access public
+     * @return bool
+     * @since  1.0
+     */
     public function isMember($projectid, $userid)
     {
         $sql = "SELECT roleid FROM #__users_roles ";
