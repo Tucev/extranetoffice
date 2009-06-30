@@ -87,7 +87,7 @@ class projectsModelActivitylog extends PHPFrame_MVC_Model
      *                            notification via email or not.
      * 
      * @access public
-     * @return bool   Returns TRUE on success or FALSE on failure.
+     * @return PHPFrame_Database_Row
      * @since  1.0
      */
     public function insertRow(
@@ -108,20 +108,21 @@ class projectsModelActivitylog extends PHPFrame_MVC_Model
         $row->set('title', $title);
         $row->set('description', $description);
         $row->set('url', $url);
+        $row->set('ts', date("Y-m-d H:i:s"));
         // Store row in db (this will throw exceptions on errors)
         $row->store();
         
         // Send notifications via email
         if ($notify === true && is_array($assignees) && sizeof($assignees) > 0) {
-            return $this->_notify($row, $assignees);
+            $this->_notify($row, $assignees);
         }
         
-        return true;
+        return $row;
     }
     
     public function deleteRow()
     {
-        echo "I have to delete an activitylog row... Please finish me!!!"; exit;
+        throw new Exception("I have to delete an activitylog row... Please finish me!!!");
     }
     
     /**
@@ -138,16 +139,20 @@ class projectsModelActivitylog extends PHPFrame_MVC_Model
     private function _notify($row, $assignees)
     {
         $uri = new PHPFrame_Utils_URI();
-        $user_name = PHPFrame_User_Helper::id2name($row->userid);
+        $user = PHPFrame::Session()->getUser();
+        
+        $subject = "[".$this->_project->name."] ";
+        $subject .= $row->action." by ".$user->firstname." ".$user->lastname;
         
         $new_mail = new PHPFrame_Mail_Mailer();
-        $new_mail->Subject = "[".$this->_project->name."] ".$row->action." by ".$user_name;
-        $new_mail->Body = PHPFrame_Base_String::html(sprintf(_LANG_ACTIVITYLOG_NOTIFY_BODY, 
-                                 $this->_project->name, 
-                                 $row->action." by ".$user_name,
-                                 PHPFrame_Utils_Rewrite::rewriteURL($row->url, false), 
-                                 $row->description)
-                        );
+        $new_mail->Subject = $subject;
+        $new_mail->Body = sprintf(
+                              _LANG_ACTIVITYLOG_NOTIFY_BODY, 
+                              $this->_project->name, 
+                              $row->action." by ".$user_name,
+                              PHPFrame_Utils_Rewrite::rewriteURL($row->url, false), 
+                              $row->description
+                          );
         
         // Append message id suffix with data to be used when processing replies
         parse_str($row->url, $url_array);
@@ -159,7 +164,10 @@ class projectsModelActivitylog extends PHPFrame_MVC_Model
         $pattern = '/'.$tool_matches[1].'id=([0-9]+)/i';
         preg_match($pattern, $row->url, $matches);
         
-        $new_mail->setMessageIdSuffix('c='.PHPFrame::Request()->getComponentName().'&p='.$row->projectid.'&t='.$tool_matches[1].'s&i='.$matches[1]);
+        $msg_id_suffix = 'c='.PHPFrame::Request()->getComponentName();
+        $msg_id_suffix .= '&p='.$row->projectid.'&t='.$tool_matches[1];
+        $msg_id_suffix .= 's&i='.$matches[1];
+        $new_mail->setMessageIdSuffix($msg_id_suffix);
         
         // Get assignees email addresses and exclude the user triggering the notification
         $query = "SELECT firstname, lastname, email ";
@@ -174,7 +182,11 @@ class projectsModelActivitylog extends PHPFrame_MVC_Model
                     $failed_recipients[] = $recipient->email;
                     continue;
                 } else {
-                    $new_mail->AddAddress($recipient->email, PHPFrame_User_Helper::fullname_format($recipient->firstname, $recipient->lastname));
+                    $to_name = PHPFrame_User_Helper::fullname_format(
+                                                         $recipient->firstname, 
+                                                         $recipient->lastname
+                                                     );
+                    $new_mail->AddAddress($recipient->email, $to_name);
                     
                     // Send email
                     if ($new_mail->Send() !== true) {
@@ -187,14 +199,11 @@ class projectsModelActivitylog extends PHPFrame_MVC_Model
             }
             
             if (count($failed_recipients) > 0) {
-                $this->_error[] = sprintf(_LANG_EMAIL_NOT_SENT, implode(',', $failed_recipients));
-                return false;
+                $msg = sprintf(_LANG_EMAIL_NOT_SENT, implode(',', $failed_recipients));
+                throw new PHPFrame_Exception($msg);
             }
         } else {
-            $this->_error[] = _LANG_ACTIVITYLOG_NO_RECIPIENTS;
-            return false;
+            throw new PHPFrame_Exception(_LANG_ACTIVITYLOG_NO_RECIPIENTS);
         }
-        
-        return true;
     }
 }

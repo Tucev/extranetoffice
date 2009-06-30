@@ -713,70 +713,107 @@ class projectsController extends PHPFrame_MVC_ActionController
         $this->setRedirect('index.php?component=com_projects&action=get_issue_detail&projectid='.$projectid."&issueid=".$issueid);
     }
     
-    public function get_files()
-    {
+    /**
+     * Get project files
+     * 
+     * @param string $orderby
+     * @param string $orderdir
+     * @param int    $limit
+     * @param int    $limitstart
+     * @param string $search
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function get_files(
+        $projectid=0,
+        $orderby='f.ts',
+        $orderdir='DESC',
+        $limit=25,
+        $limitstart=0,
+        $search=''
+    ) {
         if (!$this->_authorise("files")) return;
         
-        // Get request data
-        $projectid = PHPFrame::Request()->get('projectid', 0);
-        $orderby = PHPFrame::Request()->get('orderby', 'f.ts');
-        $orderdir = PHPFrame::Request()->get('orderdir', 'DESC');
-        $limit = PHPFrame::Request()->get('limit', 25);
-        $limitstart = PHPFrame::Request()->get('limitstart', 0);
-        $search = PHPFrame::Request()->get('search', '');
-        
-        // Create list filter needed for getFiles()
-        $list_filter = new PHPFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
-        
-        // Get files using model
-        $files = $this->getModel('files')->getFiles($list_filter, $projectid);
+        // Get issues using model
+        $model = $this->getModel('files', array($this->_project));
+        $files = $model->getCollection($orderby, 
+                                       $orderdir, 
+                                       $limit, 
+                                       $limitstart, 
+                                       $search);
         
         // Get view
         $view = $this->getView('files', 'list');
         // Set view data
         $view->addData('project', $this->_project);
         $view->addData('rows', $files);
-        $view->addData('page_nav', new PHPFrame_HTML_Pagination($list_filter));
         // Display view
         $view->display();
     }
     
-    public function get_file_detail()
+    /**
+     * Get details of a given project file
+     * 
+     * @param int $fileid The id of the file for which we want to get the details
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function get_file_detail($fileid)
     {
         if (!$this->_authorise("files")) return;
         
-        $fileid = PHPFrame::Request()->get('fileid', 0);
-        
-        $files = $this->getModel('files')->getFilesDetail($this->_project->id, $fileid);
+        $model = $this->getModel('files', array($this->_project));
+        $file = $model->getRow($fileid);
         
         // Get view
         $view = $this->getView('files', 'detail');
         // Set view data
         $view->addData('project', $this->_project);
-        $view->addData('row', $files);
+        $view->addData('row', $file);
         // Display view
         $view->display();
     }
     
-    public function get_file_form()
+    /**
+     * Get form to upload new project file
+     * 
+     * @param int $parentid The id of the parent file if any.
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function get_file_form($parentid=0)
     {
         if (!$this->_authorise("files")) return;
         
-        $parentid = PHPFrame::Request()->get('parentid', 0);
-        
         if ($parentid > 0) {
-            $files = $this->getModel('files')->getFilesDetail($this->_project->id, $parentid);
+            $model = $this->getModel('files', array($this->_project));
+            $file = $model->getRow($parentid);
+        } else {
+            $file = null;
         }
         
         // Get view
         $view = $this->getView('files', 'form');
         // Set view data
         $view->addData('project', $this->_project);
-        $view->addData('row', $files);
+        $view->addData('row', $file);
         // Display view
         $view->display();
     }
     
+    /**
+     * Save file
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
     public function save_file()
     {
         if (!$this->_authorise("files")) return;
@@ -788,61 +825,96 @@ class projectsController extends PHPFrame_MVC_ActionController
         $post = PHPFrame::Request()->getPost();
         
         // Save file using files model
-        $modelFiles = $this->getModel('files');
-        $row = $modelFiles->saveRow($post);
+        $modelFiles = $this->getModel('files', array($this->_project));
         
-        if ($row === false) {
-            $this->sysevents->setSummary($modelFiles->getLastError());
-        } else {
+        try {
+            $row = $modelFiles->saveRow($post);
+            
             $this->sysevents->setSummary(_LANG_FILE_SAVED, "success");
             
             // Prepare data for activity log entry
             $action = _LANG_FILES_ACTION_NEW;
             $title = $row->title;
-            $description = sprintf(_LANG_FILES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->filename, $row->revision, $row->changelog);
-            $url = "index.php?component=com_projects&action=get_file_detail&projectid=".$row->projectid."&fileid=".$row->id;
+            $description = sprintf(
+                               _LANG_FILES_ACTIVITYLOG_DESCRIPTION, 
+                               $row->title, 
+                               $row->filename, 
+                               $row->revision, 
+                               $row->changelog
+                           );
+            $url = "index.php?component=com_projects&action=get_file_detail";
+            $url .= "&projectid=".$row->projectid."&fileid=".$row->id;
             $notify = $post['notify'] == 'on' ? true : false;
             
             // Add entry in activity log
             $modelActivityLog = $this->getModel('activitylog', array($this->_project));
-            if (!$modelActivityLog->insertRow('files', $action, $title, $description, $url, $post['assignees'], $notify)) {
-                $this->sysevents->setSummary($modelActivityLog->getLastError());
+            try {
+                $modelActivityLog->insertRow(
+                                       'files', 
+                                       $action, 
+                                       $title, 
+                                       $description, 
+                                       $url, 
+                                       $post['assignees'], 
+                                       $notify
+                                   );
+            } catch (Exception $e) {
+                $this->sysevents->setSummary($e->getMessage());
             }
+        } catch (Exception $e) {
+            $this->sysevents->setSummary(_LANG_FILE_SAVE_ERROR);
         }
         
-        $this->setRedirect('index.php?component=com_projects&action=get_files&projectid='.$post['projectid']);
+        $redirect_url = "index.php?component=com_projects&action=get_files";
+        $redirect_url .= "&projectid=".$post["projectid"];
+        $this->setRedirect($redirect_url);
     }
     
-    public function remove_file()
+    /**
+     * Remove a project file
+     * 
+     * @param int $projectid The project id
+     * @param int $fileid    The id of the file we want to download
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function remove_file($projectid, $fileid)
     {
         if (!$this->_authorise("files")) return;
         
-        $projectid = PHPFrame::Request()->get('projectid', 0);
-        $fileid = PHPFrame::Request()->get('fileid', 0);
-        
-        $modelFiles = $this->getModel('files');
+        $modelFiles = $this->getModel('files', array($this->_project));
         
         try {
-            $modelFiles->deleteRow($projectid, $fileid);
+            $modelFiles->deleteRow($fileid);
             $this->sysevents->setSummary(_LANG_FILE_DELETE_SUCCESS, "success");
             $this->_success = true;
         } catch (PHPFrame_Exception $e) {
-            var_dump($e);
             $this->sysevents->setSummary(_LANG_FILE_DELETE_ERROR);
         }
         
-        $this->setRedirect('index.php?component=com_projects&action=get_files&projectid='.$projectid);
+        $redirect_url = "index.php?component=com_projects&action=get_files";
+        $redirect_url .= "&projectid=".$projectid;
+        $this->setRedirect($redirect_url);
     }
     
-    public function download_file()
+    /**
+     * Download a given project file
+     * 
+     * @param int $projectid The project id
+     * @param int $fileid    The id of the file we want to download
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function download_file($projectid, $fileid)
     {
         if (!$this->_authorise("files")) return;
         
-        $projectid = PHPFrame::Request()->get('projectid', 0);
-        $fileid = PHPFrame::Request()->get('fileid', 0);
-        
-        $modelProjects = $this->getModel('files');
-        $modelProjects->downloadFile($projectid, $fileid);
+        $model = $this->getModel('files', array($this->_project));
+        $model->downloadFile($fileid);
     }
     
     public function get_messages()
@@ -957,6 +1029,13 @@ class projectsController extends PHPFrame_MVC_ActionController
         $this->setRedirect('index.php?component=com_projects&action=get_messages&projectid='.$projectid);
     }
     
+    /**
+     * Save comment
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
     public function save_comment()
     {
         if (!$this->_authorise(PHPFrame::Request()->get('type'))) return;
@@ -968,48 +1047,54 @@ class projectsController extends PHPFrame_MVC_ActionController
         $post = PHPFrame::Request()->getPost();
         
         // Save comment using comments model
-        $modelComments = $this->getModel('comments');
-        $row = $modelComments->saveComment($post);
-        if ($row === false) {
-            $this->sysevents->setSummary($modelComments->getLastError());
-        } else {
+        $modelComments = $this->getModel('comments', array($this->_project));
+        
+        try {
+            $row = $modelComments->saveRow($post);
+            
             $this->sysevents->setSummary(_LANG_COMMENT_SAVED, "success");
             
             // Prepare data for activity log entry
             $action = _LANG_COMMENTS_ACTION_NEW;
             $title = 'RE: '.$modelComments->itemid2title($row->itemid, $row->type);
             $description = sprintf(_LANG_COMMENTS_ACTIVITYLOG_DESCRIPTION, $title, $row->body);
-            switch ($row->type) {
-                case 'files' : 
-                    $url = "index.php?component=com_projects&action=get_file_detail&projectid=".$row->projectid."&fileid=".$row->itemid;
-                    break;
-                case 'issues' : 
-                    $url = "index.php?component=com_projects&action=get_issue_detail&projectid=".$row->projectid."&issueid=".$row->itemid;
-                    break;
-                case 'meetings' : 
-                    $url = "index.php?component=com_projects&action=get_meeting_detail&projectid=".$row->projectid."&meetingid=".$row->itemid;
-                    break;
-                case 'messages' : 
-                    $url = "index.php?component=com_projects&action=get_message_detail&projectid=".$row->projectid."&messageid=".$row->itemid;
-                    break;
-                case 'milestones' : 
-                    $url = "index.php?component=com_projects&action=get_milestone_detail&projectid=".$row->projectid."&milestoneid=".$row->itemid;
-                    break;
-            }
+            // Remove last "s" from type
+            $type = strtolower(substr($row->type, 0, (strlen($row->type)-1)));
+            $url = "index.php?component=com_projects&action=get_";
+            $url .= $type."_detail";
+            $url .= "&projectid=".$row->projectid."&".$type."id=".$row->itemid;
             
             $notify = $post['notify'] == 'on' ? true : false;
             
             // Add entry in activity log
             $modelActivityLog = $this->getModel('activitylog', array($this->_project));
-            $modelActivityLog->insertRow($row->projectid, $row->userid, 'comments', $action, $title, $description, $url, $post['assignees'], $notify);
+            
+            try {
+                $modelActivityLog->insertRow( 
+                                       'comments', 
+                                       $action, 
+                                       $title, 
+                                       $description, 
+                                       $url, 
+                                       $post['assignees'], 
+                                       $notify
+                                   );
+            } catch (Exception $e) {
+                $this->sysevents->addEventLog($e->getMessage());
+            }
             
             $close_issue = PHPFrame::Request()->get('close_issue', NULL);
             if ($row->type == 'issues' && $close_issue == 'on') {
-                $modelIssues = $this->getModel('issues');
-                if (!$modelIssues->closeIssue($row->projectid, $row->itemid)) {
-                    $this->sysevents->setSummary($modelIssues->getLastError());
+                $modelIssues = $this->getModel('issues', array($this->_project));
+                try {
+                    $modelIssues->closeIssue($row->itemid);
+                } catch (Exception $e) {
+                    $this->sysevents->addEventLog($e->getMessage());
                 }
-            }    
+            }
+            
+        } catch (Exception $e) {
+            $this->sysevents->setSummary(_LANG_COMMENT_SAVE_ERROR);
         }
         
         $this->setRedirect($url);

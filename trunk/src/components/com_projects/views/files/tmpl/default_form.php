@@ -1,21 +1,32 @@
 <?php
 /**
- * @version     $Id$
- * @package        ExtranetOffice
- * @subpackage     com_projects
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_projects/views/files/tmpl/default_form.php
+ * 
+ * PHP version 5
+ * 
+ * @category   MVC_Framework
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/extranetoffice/source/browse
  */
 
 // Load jQuery validation behaviour for form
 PHPFrame_HTML::validate('filesform');
 ?>
 
-<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
+<h2 class="componentheading">
+    <a href="<?php echo $data['project_url']?>">
+    <?php echo $data['page_title']; ?>
+    </a>
+</h2>
 
-<h2 class="subheading <?php echo strtolower($data['view']); ?>">
-    <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_files&projectid='.$data['project']->id); ?>">
-        <?php echo $data['view']; ?>
+<h2 class="subheading <?php echo strtolower($view->getName()); ?>">
+    <a href="<?php echo $data["tool_url"]; ?>">
+        <?php echo $view->getName(); ?>
     </a>
 </h2>
 
@@ -25,7 +36,7 @@ PHPFrame_HTML::validate('filesform');
 <fieldset>
 <legend><?php echo PHPFrame_Base_String::html( _LANG_FILES_NEW ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
-<?php if (!empty($data['row']->id)) : ?>
+<?php if (isset($data['row']) && !empty($data['row']->id)) : ?>
 <tr>
     <td width="30%">
         <label id="parentidmsg" for="parentid">
@@ -33,8 +44,8 @@ PHPFrame_HTML::validate('filesform');
         </label>
     </td>
     <td>
-        <?php echo $data['row']->title; ?>
-        <input type="hidden" id="parentid" name="parentid" value="<?php echo $data['row']->id; ?>" />
+        <?php if (isset($data['row'])) echo $data['row']->title; ?>
+        <input type="hidden" id="parentid" name="parentid" value="<?php if (isset($data['row'])) echo $data['row']->id; ?>" />
     </td>
 </tr>
 <?php endif; ?>
@@ -46,7 +57,7 @@ PHPFrame_HTML::validate('filesform');
         </label>
     </td>
     <td>
-        <input class="required" type="text" id="title" name="title" size="32" maxlength="64" value="<?php echo $data['row']->title; ?>" />
+        <input class="required" type="text" id="title" name="title" size="32" maxlength="64" value="<?php if (isset($data['row'])) echo $data['row']->title; ?>" />
     </td>
 </tr>
 <tr>
@@ -77,7 +88,20 @@ PHPFrame_HTML::validate('filesform');
         </label>
     </td>
     <td>
-        <?php echo PHPFrame_User_Helper::assignees($data['row']->assignees, '', 'assignees[]', $data['project']->id); ?>
+        <?php
+        if (isset($data['row'])) {
+            $assignees = $data['row']->assignees;
+        } else {
+            $assignees = null;
+        }
+        
+        echo PHPFrame_User_Helper::assignees(
+                                       $assignees, 
+                                       '', 
+                                       'assignees[]', 
+                                       $data["project"]->id
+                                   ); 
+        ?>
     </td>
 </tr>
 <tr>

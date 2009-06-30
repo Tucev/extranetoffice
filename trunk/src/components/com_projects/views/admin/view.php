@@ -67,6 +67,12 @@ class projectsViewAdmin extends PHPFrame_MVC_View
             $url = "index.php?component=com_projects&action=get_project_detail";
             $url .= "&projectid=".$project->id;
             $this->getPathway()->addItem($project->name, $url);
+            
+            // Add url to project home
+            $project_url = "index.php?component=com_projects&action=get_project_detail";
+            $project_url .= "&projectid=".$project->id;
+            $project_url = PHPFrame_Utils_Rewrite::rewriteURL($project_url);
+            $this->addData("project_url", $project_url);
         }
         
         parent::display();

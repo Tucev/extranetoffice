@@ -1,40 +1,78 @@
 <?php
 /**
- * @version     $Id$
- * @package        ExtranetOffice
- * @subpackage    com_projects
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_projects/models/comments.php
+ * 
+ * PHP version 5
+ * 
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/extranetoffice/source/browse
  */
 
 /**
  * projectsModelComments Class
  * 
- * @package        ExtranetOffice
- * @subpackage     com_projects
- * @author         Luis Montero [e-noise.com]
- * @since         1.0
- * @see         PHPFrame_MVC_Model
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @link       http://code.google.com/p/extranetoffice/source/browse
+ * @since      1.0
  */
 class projectsModelComments extends PHPFrame_MVC_Model
 {
     /**
-     * Constructor
-     *
-     * @since 1.0.1
+     * A reference to the project this comments belong to
+     * 
+     * @var object
      */
-    function __construct() {}
+    private $_project=null;
     
-    function getComments($projectid, $type, $itemid)
+    /**
+     * Constructor
+     * 
+     * @param object $project
+     *
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function __construct($project)
     {
-        $query = "SELECT c.*, u.username AS created_by_name";
-        $query .= " FROM #__comments AS c ";
-        $query .= " JOIN #__users u ON u.id = c.userid ";
-        $query .= " WHERE c.projectid = ".$projectid." AND c.type = '".$type."' AND c.itemid = ".$itemid;
-        $query .= " ORDER BY c.created DESC";
-        //echo $query; exit;      
+        $this->_project = $project;
+    }
+    
+    /**
+     * Get collection of comment rows from database
+     * 
+     * @param string $type
+     * @param int    $itemid
+     * 
+     * @access public
+     * @return PHPFrame_Database_RowCollection
+     * @since  1.0
+     */
+    function getCollection($type, $itemid)
+    {
+        $rows = new PHPFrame_Database_RowCollection();
+        $rows->select(array("c.*", "u.username AS created_by_name"))
+             ->from("#__comments AS c")
+             ->join("JOIN #__users u ON u.id = c.userid")
+             ->where("c.projectid", "=", ":projectid")
+             ->params(":projectid", $this->_project->id)
+             ->where("c.type", "=", ":type")
+             ->params(":type", $type)
+             ->where("c.itemid", "=", ":itemid")
+             ->params(":itemid", $itemid)
+             ->orderby("c.created", "DESC"); 
         
-        $rows = PHPFrame::DB()->fetchObjectList($query);
+        $rows->load();
         
         return $rows;
     }
@@ -42,10 +80,14 @@ class projectsModelComments extends PHPFrame_MVC_Model
     /**
      * Save a project comment
      * 
-     * @param    $post    The array to be used for binding to the row before storing it. Normally the HTTP_POST array.
-     * @return    mixed    Returns the stored table row object on success or FALSE on failure
+     * @param  $post The array to be used for binding to the row before storing it. 
+     *               Normally the HTTP_POST array.
+     * 
+     * @access public
+     * @return PHPFrame_Database_Row
+     * @since  1.0
      */
-    function saveComment($post)
+    public function saveRow($post)
     {
         // Check whether a project id is included in the post array
         if (empty($post['projectid'])) {
@@ -53,28 +95,14 @@ class projectsModelComments extends PHPFrame_MVC_Model
             return false;
         }
         
-        $row = $this->getTable('comments');
+        $row = new PHPFrame_Database_Row("#__comments");
         
-        if (!$row->bind($post)) {
-            $this->_error[] = $row->getLastError();
-            return false;
-        }
+        $row->bind($post);
         
-        if (empty($row->userid)) {
-            $row->userid = PHPFrame::Session()->getUser()->id;    
-        }
-        
-        $row->created = date("Y-m-d H:i:s");
-        
-        if (!$row->check()) {
-            $this->_error[] = $row->getLastError();
-            return false;
-        }
+        $row->set("userid", PHPFrame::Session()->getUserId());
+        $row->set("created", date("Y-m-d H:i:s"));
     
-        if (!$row->store()) {
-            $this->_error[] = $row->getLastError();
-            return false;
-        }
+        $row->store();
         
         return $row;
     }

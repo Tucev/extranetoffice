@@ -15,7 +15,11 @@
  */
 ?>
 
-<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
+<h2 class="componentheading">
+    <a href="<?php echo $data['project_url']?>">
+    <?php echo $data['page_title']; ?>
+    </a>
+</h2>
 
 <h2 class="subheading <?php echo strtolower($data['tool']); ?>">
     <a href="<?php echo $data['tool_url']; ?>">

@@ -1,32 +1,46 @@
 <?php
 /**
- * @version     $Id$
- * @package        ExtranetOffice
- * @subpackage     com_projects
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_projects/views/files/tmpl/default_list.php
+ * 
+ * PHP version 5
+ * 
+ * @category   MVC_Framework
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/extranetoffice/source/browse
  */
 
 // Add confirm behaviour to delete links
-PHPFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECTS_FILES_DELETE_CONFIRM);
+PHPFrame_HTML::confirm('delete_file', 
+                       _LANG_PROJECTS_FILES_DELETE, 
+                       _LANG_PROJECTS_FILES_DELETE_CONFIRM
+               );
 ?>
 
-<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
+<h2 class="componentheading">
+    <a href="<?php echo $data['project_url']; ?>">
+    <?php echo $data['page_title']; ?>
+    </a>
+</h2>
 
 <div class="new">
-    <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_file_form&projectid='.$data['project']->id); ?>">
+    <a href="<?php echo $data["new_file_url"]; ?>">
         <?php echo PHPFrame_Base_String::html( _LANG_NEW ); ?>
     </a>
 </div>
 
-<h2 class="subheading <?php echo strtolower($data['view']); ?>">
-    <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_files&projectid='.$data['project']->id); ?>">
-        <?php echo $data['view']; ?>
+<h2 class="subheading <?php echo strtolower($view->getName()); ?>">
+    <a href="<?php echo $data["tool_url"]; ?>">
+        <?php echo $view->getName(); ?>
     </a>
 </h2>
 
 
-<?php if (is_array($data['rows']) && count($data['rows']) > 0) : ?>
+<?php if (isset($data['rows']) && $data['rows']->countRows() > 0) : ?>
 
 <?php $k = 0; ?>
 <?php foreach($data['rows'] as $row) : ?>
@@ -51,7 +65,7 @@ PHPFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECT
     </div>
     
     <div style="float: left; padding: 0 3px 0 0; ">
-        <img height="48" width="48" src="templates/<?php echo config::THEME; ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($row->mimetype); ?>" alt="<?php echo $row->mimetype; ?>" />
+        <img height="48" width="48" src="themes/<?php echo config::THEME; ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($row->mimetype); ?>" alt="<?php echo $row->mimetype; ?>" />
     </div>
     
     <div class="thread_heading">
@@ -132,5 +146,3 @@ PHPFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECT
 <?php else : ?>
 <?php echo PHPFrame_Base_String::html( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>
-
-<pre><?php //var_dump($data['rows']); ?></pre>

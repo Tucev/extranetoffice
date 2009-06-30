@@ -55,11 +55,11 @@ class projectsViewMeetings extends PHPFrame_MVC_View {
      * 
      * @return void
      */
-    function displayMeetingsList() {
+    protected function displayMeetingsList() {
         $this->getPathway()->addItem(_LANG_MEETINGS);
     }
     
-    function displayMeetingsDetail() {
+    protected function displayMeetingsDetail() {
         // Add jQuery lightbox plugin
         $document = PHPFrame::Response()->getDocument();
         $document->addScript('lib/jquery/plugins/lightbox/jquery.lightbox-0.5.pack.js');
@@ -74,7 +74,7 @@ class projectsViewMeetings extends PHPFrame_MVC_View {
      * @todo Asignees ... sort them out
      *
      */
-    function displayMeetingsForm() {
+    protected function displayMeetingsForm() {
         $action = empty($this->_data['row']->id) ? _LANG_MEETINGS_NEW : _LANG_MEETINGS_EDIT;
         $this->_data['page_title'] .= ' - '.$action;
         $this->getPathway()->addItem(_LANG_MEETINGS, "index.php?component=com_projects&action=get_meetings&projectid=".$this->_data['project']->id);
@@ -83,7 +83,7 @@ class projectsViewMeetings extends PHPFrame_MVC_View {
         $this->addData('action', $action);
     }
     
-    function displayMeetingsSlideshowsForm() {
+    protected function displayMeetingsSlideshowsForm() {
         $action = empty($this->_data['row']->id) ? _LANG_SLIDESHOWS_NEW : _LANG_SLIDESHOWS_EDIT;
         $this->_data['page_title'] .= ' - '.$action;
         $this->getPathway()->addItem(_LANG_MEETINGS, "index.php?component=com_projects&action=get_meetings&projectid=".$this->_data['project']->id);
@@ -92,7 +92,7 @@ class projectsViewMeetings extends PHPFrame_MVC_View {
         $this->addData('action', $action);
     }
     
-    function displayMeetingsFilesForm() {
+    protected function displayMeetingsFilesForm() {
         $action = _LANG_PROJECTS_MEETINGS_FILES_ATTACH;
         $this->_data['page_title'] .= ' - '.$action;
         $this->getPathway()->addItem(_LANG_MEETINGS, "index.php?component=com_projects&action=get_meetings&projectid=".$this->_data['project']->id);

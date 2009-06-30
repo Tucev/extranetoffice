@@ -55,17 +55,17 @@ class projectsViewMilestones extends PHPFrame_MVC_View {
      * 
      * @return void
      */
-    function displayMilestonesList() {
+    protected function displayMilestonesList() {
         $this->getPathway()->addItem(_LANG_MILESTONES);
     }
     
-    function displayMilestonesDetail() {
+    protected function displayMilestonesDetail() {
         $this->_data['page_title'] .= ' - '.$this->_data['row']->title;
         $this->getPathway()->addItem(_LANG_MILESTONES, "index.php?component=com_projects&action=get_milestones&projectid=".$this->_data['project']->id);
         $this->getPathway()->addItem($this->_data['row']->title);
     }
     
-    function displayMilestonesForm() {
+    protected function displayMilestonesForm() {
         $action = empty($this->_data['row']->id) ? _LANG_MILESTONES_NEW : _LANG_MILESTONES_EDIT;
         $this->_data['page_title'] .= ' - '.$action;
         $this->getPathway()->addItem(_LANG_MILESTONES, "index.php?component=com_projects&action=get_milestones&projectid=".$this->_data['project']->id);
