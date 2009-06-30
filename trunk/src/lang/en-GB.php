@@ -246,6 +246,7 @@ URL: %s
 define("_LANG_PROJECTS_CHANGE_ROLE", "Change role");
 define("_LANG_PROJECTS_CANT_CHANGE_OWN_ROLE", "You can not change your own role");
 define("_LANG_PROJECT_MEMBER_ROLE_SAVED", "Member role in this project has been updated");
+define("_LANG_PROJECT_MEMBER_ROLE_SAVE_ERROR", "An error occurred while changing member's role");
 
 define("_LANG_COMMENTS_NEW", "Post new comment");
 

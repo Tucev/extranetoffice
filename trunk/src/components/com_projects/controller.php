@@ -412,11 +412,14 @@ class projectsController extends PHPFrame_MVC_ActionController
         // Get members model
         $model = $this->getModel('members', array($this->_project));
         
-        if ($model->deleteMember($userid) === true) {
+        try {
+            // Delete member using model
+            $model->deleteMember($userid);
+            
             $this->sysevents->setSummary(_LANG_PROJECT_MEMBER_DELETE_SUCCESS, "success");
             $this->_success = true;
-        } else {
-            $this->sysevents->setSummary(_LANG_PROJECT_MEMBER_DELETE_ERROR);    
+        } catch (Exception $e) {
+            $this->sysevents->setSummary(_LANG_PROJECT_MEMBER_DELETE_ERROR);
         }
         
         $redirect_url = 'index.php?component=com_projects&action=get_admin';
@@ -468,11 +471,15 @@ class projectsController extends PHPFrame_MVC_ActionController
         // Get members model
         $model = $this->getModel('members', array($this->_project));
         
-        if (!$model->changeMemberRole($userid, $roleid)) {
-            $this->sysevents->setSummary($model->getLastError());
-        } else {
+        
+        try {
+            // Change role using model
+            $model->changeMemberRole($userid, $roleid);
+            
             $this->sysevents->setSummary(_LANG_PROJECT_MEMBER_ROLE_SAVED, "success");
             $this->_success = true;
+        } catch (Exception $e) {
+            $this->sysevents->setSummary(_LANG_PROJECT_MEMBER_ROLE_SAVE_ERROR);
         }
         
         $redirect_url = 'index.php?component=com_projects&action=get_admin';
