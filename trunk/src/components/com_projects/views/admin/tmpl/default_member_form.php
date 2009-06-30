@@ -39,7 +39,7 @@ function submitbutton() {
 }
 </script>
 
-<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 <h2 class="subheading people">
     <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_people&projectid='.$data['project']->id); ?>">

@@ -53,10 +53,23 @@ class projectsViewAdmin extends PHPFrame_MVC_View
      */
     public function display()
     {
-        parent::display();
+        // Set title in response document
+        $this->getDocument()->setTitle(_LANG_PROJECTS);
         
-        // Append page title to document title
-        $this->_document->appendTitle(' - '.$this->_data['page_title']);
+        // Add component wide pathway item
+        $url = "index.php?component=com_projects";
+        $this->getPathway()->addItem(_LANG_PROJECTS, $url);
+        
+        // Add project specific pathway item
+        $project = $this->_data['project'];
+        $projectid = $project->id;
+        if (!empty($projectid)) {
+            $url = "index.php?component=com_projects&action=get_project_detail";
+            $url .= "&projectid=".$project->id;
+            $this->getPathway()->addItem($project->name, $url);
+        }
+        
+        parent::display();
     }
     
     /**
@@ -68,9 +81,16 @@ class projectsViewAdmin extends PHPFrame_MVC_View
      */
     protected function displayAdminList()
     {
-        $this->_data['page_title'] = _LANG_ADMIN;
-        $this->_data['page_heading'] = $this->_data['project']->name.' - '._LANG_ADMIN;
+        $project = $this->_data['project'];
+        $page_title = $project->name.' - '._LANG_ADMIN;
+        
+        $this->addData('page_title', $page_title);
+        
+        // Add pathway item
         $this->getPathway()->addItem(_LANG_ADMIN);
+        
+        // Append page title to document title
+        $this->getDocument()->appendTitle(" - ".$page_title);
     }
     
     /**
@@ -84,14 +104,24 @@ class projectsViewAdmin extends PHPFrame_MVC_View
      */
     protected function displayAdminForm()
     {
-        if (!empty($this->projectid)) {
-            $this->_data['page_title'] = _LANG_PROJECTS_EDIT;
-        }
-        else {
-            $this->_data['page_title'] = _LANG_PROJECTS_NEW;
+        $project = $this->_data['project'];
+        $projectid = $project->id;
+        
+        if (!empty($projectid)) {
+            $page_title = _LANG_PROJECTS_EDIT;
+            $document_title = $project->name." - ".$page_title;
+        } else {
+            $page_title = _LANG_PROJECTS_NEW;
+            $document_title = $page_title;
         }
         
-        $this->getPathway()->addItem($this->_data['page_title']);
+        $this->addData('page_title', $page_title);
+        
+        // Add pathway item
+        $this->getPathway()->addItem($page_title);
+        
+        // Append page title to document title
+        $this->getDocument()->appendTitle(" - ".$document_title);
     }
     
     /**
@@ -103,11 +133,17 @@ class projectsViewAdmin extends PHPFrame_MVC_View
      */
     protected function displayAdminMemberRole()
     {
-        $page_title = $this->_data['project']->get("name");
-        $page_title .= ' - '. _LANG_ADMIN;
-        $this->_data['page_title'] = $page_title;
+        $project = $this->_data['project'];
         
+        $page_title = $project->name." - ". _LANG_ADMIN;
+        
+        $this->addData('page_title', $page_title);
+        
+        // Add pathway item
         $this->getPathway()->addItem(_LANG_PROJECTS_MEMBERS);
+        
+        // Append page title to document title
+        $this->getDocument()->appendTitle(" - ".$page_title);
     }
     
     /**
@@ -119,12 +155,17 @@ class projectsViewAdmin extends PHPFrame_MVC_View
      */
     protected function displayAdminMemberForm()
     {
-        $this->_data['page_title'] = _LANG_ADMIN.' - '._LANG_PROJECTS_ADD_MEMBER;
-        $this->_data['page_heading'] = $this->_data['project']->name.' - '._LANG_ADMIN;
+        $project = $this->_data['project'];
+        $page_title = $project->name." - "._LANG_ADMIN;
+         
+        $this->addData("page_title", $page_title);
         
-        $pathway_url = 'index.php?component=com_projects&view=admin&projectid=';
-        $pathway_url .= $this->_data['project']->id;
+        $pathway_url = "index.php?component=com_projects&action=get_admin&projectid=";
+        $pathway_url .= $project->id;
         $this->getPathway()->addItem(_LANG_ADMIN, $pathway_url);
         $this->getPathway()->addItem(_LANG_PROJECTS_ADD_MEMBER);
+        
+        // Append page title to document title
+        $this->getDocument()->appendTitle(" - ".$page_title);
     }
 }

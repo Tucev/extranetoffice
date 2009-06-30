@@ -14,7 +14,7 @@
     </a>
 </div>
 
-<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 
 <div class="main_col_module">

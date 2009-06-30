@@ -11,7 +11,7 @@ PHPFrame_HTML::confirm('delete_project', _LANG_PROJECTS_DELETE, _LANG_PROJECT_DE
 PHPFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJECT_MEMBER_DELETE_CONFIRM);
 ?>
 
-<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
+<h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
 
 
 <div class="main_col_module_half">
