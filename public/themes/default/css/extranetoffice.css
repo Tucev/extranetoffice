@@ -59,6 +59,12 @@ margin: 0 0 10px 0;
 border-bottom: 1px solid #CCCCCC;
 font-weight: normal;
 }
+.componentheading a {
+color: #333333;
+}
+.componentheading a:hover {
+color: #336699;
+}
 
 div.main_col_module {
 border:1px dotted #CCCCCC;

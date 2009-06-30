@@ -53,8 +53,29 @@ class projectsViewPeople extends PHPFrame_MVC_View
      */
     public function display()
     {
-        $this->_data['page_title'] = _LANG_PEOPLE;
-        $this->_data['page_heading'] = $this->_data['project']->name;
+        // Set title in response document
+        $this->getDocument()->setTitle(_LANG_PROJECTS);
+        
+        // Add component wide pathway item
+        $url = "index.php?component=com_projects";
+        $this->getPathway()->addItem(_LANG_PROJECTS, $url);
+        
+        // Add project specific pathway item
+        $project = $this->_data['project'];
+        $projectid = $project->id;
+        if (!empty($projectid)) {
+            $url = "index.php?component=com_projects&action=get_project_detail";
+            $url .= "&projectid=".$project->id;
+            $this->getPathway()->addItem($project->name, $url);
+            
+            // Add url to project home
+            $project_url = "index.php?component=com_projects&action=get_project_detail";
+            $project_url .= "&projectid=".$project->id;
+            $project_url = PHPFrame_Utils_Rewrite::rewriteURL($project_url);
+            $this->addData("project_url", $project_url);
+        }
+        
+        $this->addData('page_title', $project->name);
         
         // Set tool data
         $this->_data['tool'] = $this->getName();
@@ -62,23 +83,23 @@ class projectsViewPeople extends PHPFrame_MVC_View
         $tool_url .= '&projectid='.$this->_data['project']->id;
         $this->_data['tool_url'] = PHPFrame_Utils_Rewrite::rewriteURL($tool_url);
         
-        parent::display();
+        $this->getDocument()->appendTitle(" - ".$project->name." - "._LANG_PEOPLE);
         
-        // Append page title to document title
-        $document = PHPFrame::Response()->getDocument();
-        $document->title .= ' - '.$this->page_title;
+        parent::display();
     }
     
     /**
      * Custom display method triggered by list layout.
      * 
-     * @access public
+     * @access protected
      * @return void
      * @since  1.0
      */
-    public function displayPeopleList()
+    protected function displayPeopleList()
     {
-        $this->getPathway()->addItem($this->getName());
+        $project = $this->_data['project'];
+        
+        $this->getPathway()->addItem(ucfirst($this->getName()));
     }
 
 }

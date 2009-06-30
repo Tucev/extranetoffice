@@ -67,11 +67,11 @@ class projectsViewProjects extends PHPFrame_MVC_View
      * 
      * Custom display method triggered by list layout.
      * 
-     * @access public
+     * @access protected
      * @return void
      * @since  1.0
      */
-    public function displayProjectsList()
+    protected function displayProjectsList()
     {
         // Set page title in data array
         $this->addData('page_title', _LANG_PROJECTS);
@@ -82,11 +82,11 @@ class projectsViewProjects extends PHPFrame_MVC_View
      * 
      * This method is a custom display method triggered by detail layout.
      * 
-     * @access public
+     * @access protected
      * @return void
      * @since  1.0
      */
-    public function displayProjectsDetail()
+    protected function displayProjectsDetail()
     {
         // Get project from data array (this has been set by the controller action
         $project = $this->_data['row'];

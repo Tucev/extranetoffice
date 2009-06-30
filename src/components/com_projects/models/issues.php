@@ -36,12 +36,15 @@ class projectsModelIssues extends PHPFrame_MVC_Model
     
     /**
      * Constructor
+     * 
+     * @param object $project
      *
      * @access public
      * @return void
      * @since  1.0
      */
-    public function __construct($project) {
+    public function __construct($project)
+    {
         $this->_project = $project;
     }
     
@@ -253,42 +256,38 @@ class projectsModelIssues extends PHPFrame_MVC_Model
     /**
      * Close an issue
      *
-     * @param    int        $projectid
-     * @param    int        $issueid
-     * @return    mixed    Returns issues row object or FALSE on failure.
+     * @param int $issueid The id of the issue we want to close
+     * 
+     * @access public
+     * @return PHPFrame_Database_Row
+     * @since  1.0
      */
-    public function closeIssue($projectid, $issueid)
+    public function closeIssue($issueid)
     {
-        $query = "UPDATE #__issues ";
-        $query .= " SET closed = '".date("Y-m-d H:i:s")."' WHERE id = ".$issueid;
-        if (!PHPFrame::DB()->query($query)) {
-            $this->_error[] = PHPFrame::DB()->getLastError();
-            return false;
-        }
-        
-        $row =& PHPFrame_Base_Singleton::getInstance("projectsTableIssues");
+        $row = new PHPFrame_Database_Row("#__issues");
         $row->load($issueid);
+        $row->set("closed", date("Y-m-d H:i:s"));
+        $row->store();
+        
         return $row;
     }
     
     /**
      * Reopen an issue
      *
-     * @param    int        $projectid
-     * @param    int        $issueid
-     * @return    mixed    Returns issues row object or FALSE on failure.
+     * @param int $issueid The id of the issue we want to close
+     * 
+     * @access public
+     * @return PHPFrame_Database_Row
+     * @since  1.0
      */
-    public function reopenIssue($projectid, $issueid)
+    public function reopenIssue($issueid)
     {
-        $query = "UPDATE #__issues ";
-        $query .= " SET closed = '0000-00-00 00:00:00' WHERE id = ".$issueid;
-        if (!PHPFrame::DB()->query($query)) {
-            $this->_error[] = PHPFrame::DB()->getLastError();
-            return false;
-        }
-        
-        $row =& PHPFrame_Base_Singleton::getInstance("projectsTableIssues");
+        $row = new PHPFrame_Database_Row("#__issues");
         $row->load($issueid);
+        $row->set("closed", "0000-00-00 00:00:00");
+        $row->store();
+        
         return $row;
     }
     

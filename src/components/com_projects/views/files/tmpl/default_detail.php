@@ -1,23 +1,39 @@
 <?php
 /**
- * @version     $Id$
- * @package        ExtranetOffice
- * @subpackage     com_projects
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_projects/views/files/tmpl/default_detail.php
+ * 
+ * PHP version 5
+ * 
+ * @category   MVC_Framework
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/extranetoffice/source/browse
  */
 
 // Add confirm behaviour to delete links
-PHPFrame_HTML::confirm('delete_file', _LANG_PROJECTS_FILES_DELETE, _LANG_PROJECTS_FILES_DELETE_CONFIRM);
+PHPFrame_HTML::confirm(
+			       'delete_file', 
+                   _LANG_PROJECTS_FILES_DELETE, 
+                   _LANG_PROJECTS_FILES_DELETE_CONFIRM
+               );
+
 // Load jQuery validation behaviour for forms
 PHPFrame_HTML::validate('commentsform');
 ?>
 
-<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
+<h2 class="componentheading">
+    <a href="<?php echo $data['project_url']; ?>">
+    <?php echo $data['page_title']; ?>
+    </a>
+</h2>
 
-<h2 class="subheading <?php echo strtolower($data['view']); ?>">
-    <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_files&projectid='.$data['project']->id); ?>">
-        <?php echo $data['view']; ?>
+<h2 class="subheading <?php echo strtolower($view->getName()); ?>">
+    <a href="<?php echo $data["tool_url"]; ?>">
+        <?php echo $view->getName(); ?>
     </a>
 </h2>
 
@@ -43,7 +59,7 @@ PHPFrame_HTML::validate('commentsform');
     </div>
     
     <div style="float: left; padding: 0 3px 0 0; ">
-        <img height="48" width="48" src="templates/<?php echo config::THEME; ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($data['row']->mimetype); ?>" alt="<?php echo $data['row']->mimetype; ?>" />
+        <img height="48" width="48" src="themes/<?php echo config::THEME; ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($data['row']->mimetype); ?>" alt="<?php echo $data['row']->mimetype; ?>" />
     </div>
     
     <div class="thread_heading">
@@ -108,7 +124,7 @@ PHPFrame_HTML::validate('commentsform');
     </div>
     <?php endif; ?>
     
-    <?php if (is_array($data['row']->comments) && count($data['row']->comments) > 0) : ?>
+    <?php if (isset($data['row']->comments) && $data['row']->comments->countRows() > 0) : ?>
     <h3><?php echo _LANG_COMMENTS; ?></h3>
     <?php foreach ($data['row']->comments as $comment) : ?>
         <div class="comment_row">
@@ -131,7 +147,11 @@ PHPFrame_HTML::validate('commentsform');
 
 <div>
     <div style="float:left; margin-right: 10px;">
-        <img src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo !empty($this->settings->photo) ? $this->settings->photo : 'default.png'; ?>" />
+    	<?php 
+    	$user = PHPFrame::Session()->getUser();
+    	$photo = $user->photo;
+    	?>
+        <img src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo !empty($photo) ? $photo : 'default.png'; ?>" />
     </div>
     <div style="margin-left: 95px;">
         <form action="index.php" method="post" id="commentsform">
@@ -160,5 +180,3 @@ PHPFrame_HTML::validate('commentsform');
 </div>
 
 <div style="clear: left;"></div>
-
-<?php //echo '<pre>'; var_dump($data); echo '</pre>'; ?>

@@ -260,6 +260,7 @@ define("_LANG_FILES_UPLOAD_NEW_VERSION", "Upload new version");
 define("_LANG_FILES_ACTION_NEW", "New file uploaded");
 define("_LANG_FILES_NEW_VERSION_OF", "New version of file");
 define("_LANG_FILE_SAVED", "File uploaded successfully");
+define("_LANG_FILE_SAVE_ERROR", "An error occurred while saving file");
 define("_LANG_FILES_ACTIVITYLOG_DESCRIPTION", "Title: %s
 File name: %s
 Revision: %s
@@ -365,6 +366,7 @@ define("_LANG_MILESTONE_DELETE_ERROR", "An error occurred while deleting milesto
 // Comments
 define("_LANG_COMMENTS", "Comments");
 define("_LANG_COMMENT_SAVED", "Comment saved");
+define("_LANG_COMMENT_SAVE_ERROR", "An error occurred while saving comment");
 define("_LANG_COMMENTS_ACTION_NEW", "New comment");
 define("_LANG_COMMENTS_ACTIVITYLOG_DESCRIPTION", "Title: %s
 Body:

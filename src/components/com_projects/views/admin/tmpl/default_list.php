@@ -1,18 +1,28 @@
 <?php
 /**
- * @version     $Id$
- * @package        ExtranetOffice
- * @subpackage     com_projects
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_projects/views/admin/tmpl/default_list.php
+ * 
+ * PHP version 5
+ * 
+ * @category   MVC_Framework
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/extranetoffice/source/browse
  */
 
 PHPFrame_HTML::confirm('delete_project', _LANG_PROJECTS_DELETE, _LANG_PROJECT_DELETE_CONFIRM);
 PHPFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJECT_MEMBER_DELETE_CONFIRM);
 ?>
 
-<h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
-
+<h2 class="componentheading">
+    <a href="<?php echo $data['project_url']?>">
+    <?php echo $data['page_title']; ?>
+    </a>
+</h2>
 
 <div class="main_col_module_half">
 

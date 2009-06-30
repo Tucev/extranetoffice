@@ -30,8 +30,9 @@ class projectsModelProjects extends PHPFrame_MVC_Model
     /**
      * Constructor
      *
-     * @return    void
-     * @since    1.0
+     * @access public
+     * @return void
+     * @since  1.0
      */
     public function __construct() {}
     
@@ -88,6 +89,15 @@ class projectsModelProjects extends PHPFrame_MVC_Model
         return $rows;
     }
     
+    /**
+     * Get project as database row
+     * 
+     * @param int $projectid The id of the project we want to get from the db
+     * 
+     * @access public
+     * @return PHPFrame_Database_Row
+     * @since  1.0
+     */
     public function getRow($projectid)
     {
         $userid = PHPFrame::Session()->getUserId();
@@ -117,8 +127,12 @@ class projectsModelProjects extends PHPFrame_MVC_Model
     /**
      * Save a project sent in the request.
      * 
-     * @param    $post    The array to be used for binding to the row before storing it. Normally the HTTP_POST array.
-     * @return    mixed    Returns the project id or FALSE on failure.
+     * @param array $post The array to be used for binding to the row before storing it.
+     *                    Normally the HTTP_POST array.
+     * 
+     * @access public
+     * @return PHPFrame_Database_Row
+     * @since  1.0
      */
     public function saveRow($post)
     {
@@ -149,9 +163,13 @@ class projectsModelProjects extends PHPFrame_MVC_Model
     /**
      * Delete a project by id
      * 
-     * @todo    Before deleting the project we need to delete all its tracker items, lists, files, ...
-     * @param    int    $projectid
-     * @return    void
+     * @todo Before deleting the project we need to delete all its issue, files, ...
+     * 
+     * @param int $projectid The id of the project we want to delete
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
      */
     public function deleteRow($projectid)
     {

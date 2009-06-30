@@ -88,7 +88,7 @@ class projectsModelMembers extends PHPFrame_MVC_Model
             
             // Add url to detail page
             $detail_url = "index.php?component=com_users&action=get_user";
-            $detail_url .= "&userid=".$row->id;
+            $detail_url .= "&userid=".$row->userid;
             $detail_url = PHPFrame_Utils_Rewrite::rewriteURL($detail_url);
             $row->detail_url = $detail_url;
         }

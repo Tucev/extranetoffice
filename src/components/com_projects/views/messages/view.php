@@ -55,17 +55,17 @@ class projectsViewMessages extends PHPFrame_MVC_View {
      * 
      * @return void
      */
-    function displayMessagesList() {
+    protected function displayMessagesList() {
         $this->getPathway()->addItem($this->_data['page_title']);
     }
     
-    function displayMessagesDetail() {
+    protected function displayMessagesDetail() {
         $this->_data['page_title'] .= ' - '.$this->_data['row']->subject;
         $this->getPathway()->addItem(_LANG_MESSAGES, "index.php?component=com_projects&action=get_messages&projectid=".$this->_data['project']->id);
         $this->getPathway()->addItem($this->_data['row']->subject);
     }
     
-    function displayMessagesForm() {
+    protected function displayMessagesForm() {
         $this->_data['page_title'] .= ' - '._LANG_MESSAGES_NEW;
         $this->getPathway()->addItem(_LANG_MESSAGES, "index.php?component=com_projects&action=get_messages&projectid=".$this->_data['project']->id);
         $this->getPathway()->addItem(_LANG_MESSAGES_NEW);

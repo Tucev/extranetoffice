@@ -1,85 +1,101 @@
 <?php
 /**
- * @version     $Id$
- * @package        ExtranetOffice
- * @subpackage    com_projects
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_projects/models/files.php
+ * 
+ * PHP version 5
+ * 
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/extranetoffice/source/browse
  */
 
 /**
  * projectsModelFiles Class
  * 
- * @package        ExtranetOffice
- * @subpackage     com_projects
- * @since         1.0
- * @see         PHPFrame_MVC_Model
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @link       http://code.google.com/p/extranetoffice/source/browse
+ * @since      1.0
  */
 class projectsModelFiles extends PHPFrame_MVC_Model
 {
     /**
-     * Constructor
-     *
-     * @since 1.0.1
+     * A reference to the project this files belong to
+     * 
+     * @var object
      */
-    function __construct() {}
+    private $_project=null;
     
     /**
-     * Get files
+     * Constructor
      * 
-     * @param    object    $list_filter    Object of type PHPFrame_Database_CollectionFilter
-     * @param    int        $projectid
-     * @return    array
+     * @param object $project
+     *
+     * @access public
+     * @return void
+     * @since  1.0
      */
-    public function getFiles(PHPFrame_Database_CollectionFilter $list_filter, $projectid)
+    public function __construct($project)
     {
-        // Build SQL query
-        $where = array();
+        $this->_project = $project;
+    }
+    
+    /**
+     * 
+     * @param string $orderby
+     * @param string $orderdir
+     * @param int    $limit
+     * @param int    $limitstart
+     * @param string $search
+     * 
+     * @access public
+     * @return PHPFrame_Database_RowCollection
+     * @since  1.0
+     */
+    public function getCollection(
+        $orderby='f.ts',
+        $orderdir='DESC',
+        $limit=25,
+        $limitstart=0,
+        $search=''
+    ) {
+        $rows = new PHPFrame_Database_RowCollection();
+        $rows->select(array("f.*", "u.username AS created_by_name"))
+             ->from("#__files AS f")
+             ->join("JOIN #__users u ON u.id = f.userid")
+             ->join("INNER JOIN (SELECT MAX(id) AS id FROM #__files GROUP BY parentid) ids ON f.id = ids.id")
+             ->where("f.projectid", "=", ":projectid")
+             ->params(":projectid", $this->_project->id)
+             ->orderby($orderby, $orderdir)
+             ->limit($limit, $limitstart);
         
-        // Show only public projects or projects where user has an assigned role
-        //TODO: Have to apply access levels
-        //$where[] = "( p.access = '0' OR (".PHPFrame::Session()->getUser()->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
-        
-        $search = $list_filter->getSearchStr();
         if ($search) {
-            $where[] = "f.title LIKE '%".PHPFrame::DB()->getEscaped($search)."%'";
+            $rows->where("f.title", "LIKE", ":search")
+                 ->params(":search", "%".$search."%");
         }
         
-        if (!empty($projectid)) {
-            $where[] = "f.projectid = ".$projectid;    
-        }
-
-        $where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
-
-        // get the total number of records
-        // This query groups the files by parentid so and retireves the latest revision for each file in current project
-        $query = "SELECT 
-                  f.*, 
-                  u.username AS created_by_name
-                  FROM #__files AS f 
-                  JOIN #__users u ON u.id = f.userid 
-                  INNER JOIN (SELECT MAX(id) AS id FROM #__files GROUP BY parentid) ids ON f.id = ids.id "
-                  . $where;
-        //echo str_replace('#__', 'eo_', $query); exit;
-        
-        // Run query to get total rows before applying filter
-        $list_filter->setTotal(PHPFrame::DB()->query($query)->rowCount());
-
-        // Add order by and limit statements for subset (based on filter)
-        $query .= $list_filter->getOrderBySQL();
-        $query .= $list_filter->getLimitSQL();
-        //echo str_replace('#__', 'eo_', $query); exit;
-        
-        $rows = PHPFrame::DB()->fetchObjectList($query);
+        $rows->load();
         
         // Prepare rows and add relevant data
-        if (is_array($rows) && count($rows) > 0) {
+        if ($rows->countRows() > 0) {
             foreach ($rows as $row) {
                 // Get assignees
                 $row->assignees = $this->getAssignees($row->id);
                 
                 // get total comments
-                $modelComments = PHPFrame_MVC_Factory::getModel('com_projects', 'comments');
+                $modelComments = PHPFrame_MVC_Factory::getModel(
+                                                           'com_projects', 
+                                                           'comments', 
+                                                           array($this->_project)
+                                                       );
                 $row->comments = $modelComments->getTotalComments($row->id, 'files');
                     
                 // Get older revisions
@@ -90,26 +106,42 @@ class projectsModelFiles extends PHPFrame_MVC_Model
         return $rows;
     }
     
-    public function getFilesDetail($projectid, $fileid)
+    /**
+     * Get a row object representing the file in the db table
+     * 
+     * @param int $fileid
+     * 
+     * @access public
+     * @return PHPFrame_Database_Row
+     * @since  1.0
+     */
+    public function getRow($fileid)
     {
-        $query = "SELECT f.*, u.username AS created_by_name ";
-        $query .= " FROM #__files AS f ";
-        $query .= " JOIN #__users u ON u.id = f.userid ";
-        $query .= " WHERE f.id = ".$fileid;
-        $query .= " ORDER BY f.ts DESC";
+        // Build SQL query to get row using IdObject
+        $id_obj = new PHPFrame_Database_IdObject();
+        $id_obj->select(array("f.*", "u.username AS created_by_name"))
+               ->from("#__files AS f")
+               ->join("JOIN #__users u ON u.id = f.userid")
+               ->where("f.id", "=", ":fileid")
+               ->params(":fileid", $fileid)
+               ->orderby("f.ts", "DESC");
         
-        $row = PHPFrame::DB()->loadObject($query);
+        // Create instance of row
+        $row = new PHPFrame_Database_Row('#__files');
         
-        if ($row === false) {
-            return false;
-        }
+        // Load row data using query
+        $row->load($id_obj);
         
         // Get assignees
         $row->assignees = $this->getAssignees($fileid);
         
         // Get comments
-        $modelComments = PHPFrame_MVC_Factory::getModel('com_projects', 'comments');
-        $row->comments = $modelComments->getComments($projectid, 'files', $fileid);
+        $modelComments = PHPFrame_MVC_Factory::getModel(
+        									   	  'com_projects', 
+        									   	  'comments', 
+                                                  array($this->_project)
+                                               );
+        $row->comments = $modelComments->getCollection('files', $fileid);
         
         // Get older revisions
         $row->children = $this->_getOlderRevisions($row->parentid, $row->id);
@@ -122,8 +154,12 @@ class projectsModelFiles extends PHPFrame_MVC_Model
      * 
      * This method uploads a project file and stores the relevant entry in the database.
      * 
-     * @param    $post    The array to be used for binding to the row before storing it. Normally the HTTP_POST array.
-     * @return    mixed    Returns the stored table row object on success or FALSE on failure
+     * @param $post The array to be used for binding to the row before storing it.
+     *              Normally the HTTP_POST array.
+     *              
+     * @access public
+     * @return mixed  Returns the stored table row object on success or FALSE on failure
+     * @since  1.0
      */
     public function saveRow($post)
     {
@@ -203,10 +239,18 @@ class projectsModelFiles extends PHPFrame_MVC_Model
         return $row;
     }
     
-    public function deleteRow($projectid, $fileid)
+    /**
+     * Delete file row from database and file from filesystem
+     * 
+     * @param int $fileid The id of the file to delete
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function deleteRow($fileid)
     {
         //TODO: This function should allow ids as either int or array of ints.
-        //TODO: This function should also check permissions before deleting
         //TODO: This function should delete related items if any (comments, ...)
         
         // Instantiate table object    
@@ -216,15 +260,25 @@ class projectsModelFiles extends PHPFrame_MVC_Model
         $row->load($fileid);
         
         // Delete file from filesystem
-        unlink(config::FILESYSTEM.DS."projects".DS.$row->projectid.DS."files".DS.$row->filename);
+        $file_path = config::FILESYSTEM.DS."projects".DS.$row->projectid;
+        $file_path .= DS."files".DS.$row->filename;
+        unlink($file_path);
         
         // Delete row from database
         $row->delete($fileid);
     }
     
-    public function downloadFile($projectid, $fileid)
-    {
-        //TODO: This function should also check permissions        
+    /**
+     * Download a given project file
+     * 
+     * @param int $fileid The id of the file to download
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function downloadFile($fileid)
+    {       
         $row = new PHPFrame_Database_Row("#__files");
         
         // Load row data
@@ -239,8 +293,9 @@ class projectsModelFiles extends PHPFrame_MVC_Model
         ob_clean();
         flush();
         
-        # begin download
-        $path_to_file = config::FILESYSTEM.DS."projects".DS.$row->projectid.DS."files".DS.$row->filename;
+        // begin download
+        $path_to_file = config::FILESYSTEM.DS."projects".DS.$row->projectid;
+        $path_to_file .= DS."files".DS.$row->filename;
         $this->_readfile_chunked($path_to_file);
         exit;
     }
