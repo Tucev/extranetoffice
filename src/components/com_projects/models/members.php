@@ -76,9 +76,7 @@ class projectsModelMembers extends PHPFrame_MVC_Model
              ->params(":projectid", $this->_project->id)
              ->orderby("ur.roleid", "ASC");
         
-        // Add array with foreign field names to allow as row columns
-        $foreign_fields = array("rolename","username","firstname","lastname","email","photo");
-        $rows->load(null, null, $foreign_fields);
+        $rows->load();
         
         // Process row data before returning
         foreach ($rows as $row) {
@@ -86,7 +84,7 @@ class projectsModelMembers extends PHPFrame_MVC_Model
             $photo = $row->photo;
             $photo_url = config::UPLOAD_DIR.'/users/';
             $photo_url .= !empty($photo) ? $photo : 'default.png';
-            $row->set('photo', $photo_url);
+            $row->photo = $photo_url;
             
             // Add url to detail page
             $detail_url = "index.php?component=com_users&action=get_user";

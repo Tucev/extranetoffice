@@ -74,10 +74,6 @@ class projectsController extends PHPFrame_MVC_ActionController
             // Load the project data
             $modelProjects = $this->getModel('projects');
             $this->_project = $modelProjects->getRow($projectid);
-            
-            // Append page component name to document title
-            $document = PHPFrame::Response()->getDocument();
-            $document->setTitle($this->_project->name);
         }
     }
     
@@ -250,7 +246,7 @@ class projectsController extends PHPFrame_MVC_ActionController
         $project = $this->getModel('projects')->saveRow($post);
         
         if ($project instanceof PHPFrame_Database_Row && $project->get('id') > 0) {
-            $this->sysevents->setSummary(_LANG_PROJECT_DELETE_SUCCESS, "success");
+            $this->sysevents->setSummary(_LANG_PROJECT_SAVE_SUCCESS, "success");
             
             // If NEW project saved correctly we now make project creator a project member
             if (empty($post['id'])) {
