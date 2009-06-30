@@ -57,9 +57,14 @@ class dashboardViewDashboard extends PHPFrame_MVC_View
      */
     public function display()
     {
-        $this->_data['page_title'] = _LANG_DASHBOARD;
+        // Add page title to view data
+        $this->addData('page_title', _LANG_DASHBOARD);
         
-        PHPFrame::Response()->setTitle(_LANG_DASHBOARD);
+        // Set title in response document
+        $this->getDocument()->setTitle(_LANG_DASHBOARD);
+        
+        // Add pathway item
+        $this->getPathway()->addItem(_LANG_DASHBOARD);
         
         parent::display();
     }
