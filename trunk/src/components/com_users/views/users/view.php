@@ -55,13 +55,13 @@ class usersViewUsers extends PHPFrame_MVC_View
      */
     public function display()
     {
-        parent::display();
+        // Set title in response document
+        $this->getDocument()->setTitle(_LANG_USERS);
         
-        // Append page title to document title
-        if ($this->_layout != 'list') {
-            $document = PHPFrame::Response()->getDocument();
-            $document->title .= ' - '.$this->page_title;
-        }
+        // Add pathway item
+        $this->getPathway()->addItem(_LANG_USERS, "index.php?component=com_users");
+        
+        parent::display();
     }
     
     /**
@@ -73,7 +73,8 @@ class usersViewUsers extends PHPFrame_MVC_View
      */
     protected function displayUsersList()
     {
-        $this->_data['page_title'] = _LANG_USERS;
+        // Add page title to view data
+        $this->addData('page_title', _LANG_USERS);
     }
     
     /**
@@ -85,11 +86,15 @@ class usersViewUsers extends PHPFrame_MVC_View
      */
     protected function displayUsersDetail()
     {
-        $name = $this->_data['row']->firstname.' '.$this->_data['row']->lastname;
-        // Set page title
-        $this->_data['page_title'] = $name;
+        $user = $this->_data['row'];
         
-        // Set pathway
-        $this->getPathway()->addItem($name);
+        // Set page title
+        $this->addData('page_title', $user->firstname.' '.$user->lastname);
+        
+        // Add pathway item
+        $this->getPathway()->addItem($user->firstname.' '.$user->lastname);
+        
+        // Append user name to document title
+        $this->getDocument()->appendTitle(" - ".$user->firstname.' '.$user->lastname);
     }
 }
