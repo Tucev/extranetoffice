@@ -74,6 +74,37 @@ class adminController extends PHPFrame_MVC_ActionController
     }
     
     /**
+     * Save global configuration
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function save_config()
+    {
+        // Check for request forgeries
+        PHPFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
+        
+        // Get request vars
+        $tmpl = PHPFrame::Request()->get('tmpl', '');
+        $post = PHPFrame::Request()->getPost();
+        
+        $modelConfig = $this->getModel('config');
+        
+        if ($modelConfig->saveConfig($post) === false) {
+            $this->sysevents->setSummary($modelConfig->getLastError());
+        } else {
+            $this->sysevents->setSummary(_LANG_CONFIG_SAVE_SUCCESS, "success");
+            $this->_success = true;
+        }
+        
+        $redirect_url = 'index.php?component=com_admin&action=get_config';
+        if (!empty($tmpl)) $redirect_url .= "&tmpl=".$tmpl;
+        
+        $this->setRedirect($redirect_url);
+    }
+    
+    /**
      * Display users list
      * 
      * @param string $orderby
@@ -132,59 +163,6 @@ class adminController extends PHPFrame_MVC_ActionController
     }
     
     /**
-     * Display components list
-     * 
-     * @access public
-     * @return void
-     * @since  1.0
-     */ 
-    public function get_components()
-    {
-    
-    }
-
-    /**
-     * Display widgets list
-     * 
-     * @access public
-     * @return void
-     * @since  1.0
-     */ 
-    public function get_widgets()
-    {
-    
-    }
-    
-    /**
-     * Save global configuration
-     * 
-     * @access public
-     * @return void
-     * @since  1.0
-     */
-    public function save_config()
-    {
-        // Check for request forgeries
-        PHPFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
-        
-        // Get request vars
-        $tmpl = PHPFrame::Request()->get('tmpl', '');
-        $post = PHPFrame::Request()->getPost();
-        
-        $modelConfig = $this->getModel('config');
-        
-        if ($modelConfig->saveConfig($post) === false) {
-            $this->sysevents->setSummary($modelConfig->getLastError());
-        } else {
-            $this->sysevents->setSummary(_LANG_CONFIG_SAVE_SUCCESS, "success");
-            $this->_success = true;
-        }
-        
-        if (!empty($tmpl)) $tmpl = "&tmpl=".$tmpl;
-        $this->setRedirect('index.php?component=com_admin&action=get_config'.$tmpl);
-    }
-    
-    /**
      * Save user
      * 
      * @access public
@@ -209,8 +187,10 @@ class adminController extends PHPFrame_MVC_ActionController
             $this->_success = true;
         }
         
-        if (!empty($tmpl)) $tmpl = "&tmpl=".$tmpl;
-        $this->setRedirect('index.php?component=com_admin&action=get_users'.$tmpl);
+        $redirect_url = 'index.php?component=com_admin&action=get_users';
+        if (!empty($tmpl)) $redirect_url .= "&tmpl=".$tmpl;
+        
+        $this->setRedirect($redirect_url);
     }
     
     /**
@@ -220,21 +200,166 @@ class adminController extends PHPFrame_MVC_ActionController
      * @return void
      * @since  1.0
      */
-    public function remove_user()
+    public function remove_user($userid, $tmpl='')
     {
-        // Get request vars
-        $tmpl = PHPFrame::Request()->get('tmpl', '');
-        $userid = PHPFrame::Request()->get('id', 0);
+        $model = $this->getModel('users');
         
-        $modelUsers = $this->getModel('users');
-        
-        if ($modelUsers->deleteUser($userid) === false) {
-            $this->sysevents->setSummary($modelUsers->getLastError());
-        } else {
+        try {
+            $model->deleteUser($userid);
+            
             $this->sysevents->setSummary(_LANG_ADMIN_USERS_DELETE_SUCCESS, "success");
+            
+        } catch (Exception $e) {
+            $this->sysevents->setSummary(_LANG_ADMIN_USERS_DELETE_ERROR);
         }
         
-        if (!empty($tmpl)) $tmpl = "&tmpl=".$tmpl;
-        $this->setRedirect('index.php?component=com_admin&action=get_users'.$tmpl);
+        $redirect_url = 'index.php?component=com_admin&action=get_users';
+        if (!empty($tmpl)) $redirect_url .= "&tmpl=".$tmpl;
+        
+        $this->setRedirect($redirect_url);
+    }
+    
+    /**
+     * Display organisations list
+     * 
+     * @param string $orderby
+     * @param string $orderdir
+     * @param int    $limit
+     * @param int    $limitstart
+     * @param string $search
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function get_organisations(
+        $orderby="o.name", 
+        $orderdir="ASC", 
+        $limit=25, 
+        $limitstart=0, 
+        $search=""
+    ) {
+        // Get organisations using model
+        $model = $this->getModel('organisations');
+        $organisations = $model->getCollection(
+                                     $orderby, 
+                                     $orderdir, 
+                                     $limit, 
+                                     $limitstart, 
+                                     $search
+                                 );
+        
+        // Get view
+        $view = $this->getView('organisations', 'list');
+        // Set view data
+        $view->addData('rows', $organisations);
+        // Display view
+        $view->display();
+    }
+    
+    /**
+     * Display organisation form
+     * 
+     * @param int $organisationid The id of the organisation used to pre-populate the form 
+     *                            when editing exiting organisations.
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */ 
+    public function get_organisation_form($organisationid)
+    {
+        // Get users using model
+        $organisation = $this->getModel('organisations')->getRow($organisationid);
+        
+        // Get view
+        $view = $this->getView('organisations', 'form');
+        // Set view data
+        $view->addData('row', $organisation);
+        // Display view
+        $view->display();
+    }
+    
+    /**
+     * Save organisation
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function save_organisation($tmpl='')
+    {
+        // Check for request forgeries
+        PHPFrame_Utils_Crypt::checkToken() or exit( 'Invalid Token' );
+        
+        // Get post
+        $post = PHPFrame::Request()->getPost();
+        
+        $model = $this->getModel('organisations');
+        
+        try {
+            $model->saveRow($post);
+            
+            $this->sysevents->setSummary(_LANG_ORGANISATION_SAVE_SUCCESS, "success");
+            $this->_success = true;
+            
+        } catch (Exception $e) {
+            $this->sysevents->setSummary(_LANG_ORGANISATION_SAVE_ERROR);
+        }
+        
+        $redirect_url = 'index.php?component=com_admin&action=get_organisations';
+        if (!empty($tmpl)) $redirect_url .= "&tmpl=".$tmpl;
+        
+        $this->setRedirect($redirect_url);
+    }
+    
+    /**
+     * Remove organisation
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function remove_organisation($organisationid, $tmpl='')
+    {
+        $model = $this->getModel('organisations');
+        
+        try {
+            $model->deleteRow($organisationid);
+            
+            $this->sysevents->setSummary(_LANG_ORGANISATION_DELETE_SUCCESS, "success");
+            
+        } catch (Exception $e) {
+            $this->sysevents->setSummary(_LANG_ORGANISATION_DELETE_ERROR);
+        }
+        
+        $redirect_url = 'index.php?component=com_admin&action=get_organisations';
+        if (!empty($tmpl)) $redirect_url .= "&tmpl=".$tmpl;
+        
+        $this->setRedirect($redirect_url);
+    }
+    
+    /**
+     * Display components list
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */ 
+    public function get_components()
+    {
+    
+    }
+
+    /**
+     * Display widgets list
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */ 
+    public function get_widgets()
+    {
+    
     }
 }

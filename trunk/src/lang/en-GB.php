@@ -112,7 +112,20 @@ Password: %s
 This email has been automatically generated. Please do not reply to this message.");
 define("_LANG_ADMIN_USERS_DELETE_CONFIRM", "Are you sure you want to delete user");
 define("_LANG_ADMIN_USERS_DELETE_SUCCESS", "User successfully deleted");
+define("_LANG_ADMIN_USERS_DELETE_ERROR", "An error occurred while deleting user");
 
+// com_admin > organisations
+define("_LANG_ORGANISATIONS", "Organisations");
+define("_LANG_ORGANISATIONS_NAME", "Organisation name");
+define("_LANG_ADMIN_ORGANISATIONS_NEW", "New organisation");
+define("_LANG_ADMIN_ORGANISATIONS_EDIT", "Edit organisation");
+define("_LANG_ADMIN_ORGANISATIONS_DELETE", "Delete organisation");
+define("_LANG_ADMIN_ORGANISATIONS_DELETE_CONFIRM", "Are you sure you want to delete organisation");
+define("_LANG_ADMIN_ORGANISATION_DETAILS", "Organisation details");
+define("_LANG_ORGANISATION_SAVE_SUCCESS", "Organisation successfully saved");
+define("_LANG_ORGANISATION_SAVE_ERROR", "An error ocurred while saving organisation details");
+define("_LANG_ORGANISATION_DELETE_SUCCESS", "Organisation successfully deleted");
+define("_LANG_ORGANISATION_DELETE_ERROR", "An error occurred while deleting organisation");
 
 // com_login
 define("_LANG_LOGIN", "Log in");

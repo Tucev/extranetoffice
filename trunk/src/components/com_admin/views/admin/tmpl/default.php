@@ -44,6 +44,11 @@ $(function() {
             </a>
         </li>
         <li>
+            <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&action=get_organisations".$data['tmpl']); ?>">
+                Organisations
+            </a>
+        </li>
+        <li>
             <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_admin&action=get_users".$data['tmpl']); ?>">
                 Users
             </a>
