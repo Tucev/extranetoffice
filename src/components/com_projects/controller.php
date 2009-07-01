@@ -533,13 +533,15 @@ class projectsController extends PHPFrame_MVC_ActionController
         if (!$this->_authorise("issues")) return;
         
         // Get issues using model
-        $issues_model = $this->getModel('issues', array($this->_project));
-        $issues = $issues_model->getCollection($orderby, 
-                                               $orderdir, 
-                                               $limit, 
-                                               $limitstart, 
-                                               $search);
-        
+        $model = $this->getModel('issues', array($this->_project));
+        $issues = $model->getCollection(
+                              $orderby, 
+                              $orderdir, 
+                              $limit, 
+                              $limitstart, 
+                              $search
+                          );
+                          
         // Get view
         $view = $this->getView('issues', 'list');
         // Set view data
@@ -549,16 +551,22 @@ class projectsController extends PHPFrame_MVC_ActionController
         $view->display();
     }
     
-    public function get_issue_detail()
+    /**
+     * Get issue detail
+     * 
+     * @param int $issueid
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function get_issue_detail($issueid)
     {
         if (!$this->_authorise("issues")) return;
         
-        // Get request data
-        $issueid = PHPFrame::Request()->get('issueid', 0);
-        
         // Get issue using model
-        $issues_model = $this->getModel('issues', array($this->_project));
-        $issue = $issues_model->getIssuesDetail($this->_project->id, $issueid);
+        $model = $this->getModel('issues', array($this->_project));
+        $issue = $model->getRow($issueid);
         
         // Get view
         $view = $this->getView('issues', 'detail');
@@ -569,12 +577,18 @@ class projectsController extends PHPFrame_MVC_ActionController
         $view->display();
     }
     
-    public function get_issue_form()
+    /**
+     * Display issue form
+     * 
+     * @param int $issueid
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function get_issue_form($issueid=0)
     {
         if (!$this->_authorise("issues")) return;
-        
-        // Get request data
-        $issueid = PHPFrame::Request()->get('issueid', 0);
         
         // Get view
         $view = $this->getView('issues', 'form');
@@ -583,12 +597,13 @@ class projectsController extends PHPFrame_MVC_ActionController
             
         if ($issueid != 0) {        
             // Get issue using model
-            $issues_model = $this->getModel('issues', array($this->_project));
-            $issue = $issues_model->getIssuesDetail($this->_project->id, $issueid);
+            $model = $this->getModel('issues', array($this->_project));
+            $issue = $model->getRow($issueid);
             $view->addData('row', $issue);
         } else {
-            $issue = new stdClass();
-            $issue->access = 1;
+            $issue = new PHPFrame_Database_Row("#__issues");
+            $issue->set("access", 1);
+            $issue->assignees = null;
             $view->addData('row', $issue);
         }
         
@@ -596,6 +611,13 @@ class projectsController extends PHPFrame_MVC_ActionController
         $view->display();
     }
     
+    /**
+     * Save issue
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
     public function save_issue()
     {
         if (!$this->_authorise("issues")) return;
@@ -608,30 +630,56 @@ class projectsController extends PHPFrame_MVC_ActionController
         
         // Save issue using issues model
         $modelIssues = $this->getModel('issues', array($this->_project));
-        $row = $modelIssues->saveIssue($post);
-
-        if ($row === false) {
-            $this->sysevents->setSummary($modelIssues->getLastError());
-        } else {
+        
+        try {
+            $row = $modelIssues->saveRow($post);
+            
             $this->sysevents->setSummary(_LANG_ISSUE_SAVED, "success");
             
             // Prepare data for activity log entry
             $action = empty($post['id']) ? _LANG_ISSUES_ACTION_NEW : _LANG_ISSUES_ACTION_EDIT;
             $title = $row->title;
-            $description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-            $url = "index.php?component=com_projects&action=get_issue_detail&projectid=".$row->projectid."&issueid=".$row->id;
+            $description = sprintf(
+                               _LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, 
+                               $row->title, 
+                               $row->description
+                           );
+            $url = "index.php?component=com_projects&action=get_issue_detail";
+            $url .= "&projectid=".$row->projectid."&issueid=".$row->id;
+            
             $notify = $post['notify'] == 'on' ? true : false;
             
             // Add entry in activity log
             $modelActivityLog = $this->getModel('activitylog', array($this->_project));
-            if (!$modelActivityLog->insertRow('issues', $action, $title, $description, $url, $post['assignees'], $notify)) {
-                $this->sysevents->setSummary($modelActivityLog->getLastError());
-            } else {
+            
+            try {
+                $modelActivityLog->insertRow(
+                			           'issues', 
+                                       $action, 
+                                       $title, 
+                                       $description, 
+                                       $url, 
+                                       $post['assignees'], 
+                                       $notify
+                                   );
+                                   
                 $this->_success = true;
+            } catch (Exception $e) {
+                $this->sysevents->addEventLog($e->getMessage());
             }
+            
+            $redirect_url = "index.php?component=com_projects&action=get_issue_detail";
+            $redirect_url .= "&projectid=".$post['projectid']."&issueid=".$row->id;
+            
+        } catch (Exception $e) {
+            $this->sysevents->setSummary(_LANG_ISSUE_SAVE_ERROR);
+            
+            $redirect_url = "index.php?component=com_projects&action=get_issue_form";
+            $redirect_url .= "&projectid=".$post['projectid'];
         }
         
-        $this->setRedirect("index.php?component=com_projects&action=get_issue_detail&projectid=".$post['projectid']."&issueid=".$row->id);
+        
+        $this->setRedirect($redirect_url);
     }
     
     public function remove_issue()
@@ -651,66 +699,126 @@ class projectsController extends PHPFrame_MVC_ActionController
         $this->setRedirect('index.php?component=com_projects&action=get_issues&projectid='.$projectid);
     }
     
-    public function close_issue()
+    /**
+     * Close a given issue
+     * 
+     * @param int $projectid
+     * @param int $issueid
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function close_issue($projectid, $issueid)
     {
         if (!$this->_authorise("issues")) return;
         
-        $projectid = PHPFrame::Request()->get('projectid', 0);
-        $issueid = PHPFrame::Request()->get('issueid', 0);
+        $modelIssues = $this->getModel('issues', array($this->_project));
         
-        $modelIssues = &$this->getModel('issues', array($this->_project));
-        $row = $modelIssues->closeIssue($projectid, $issueid);
-        if ($row === false) {
-            $this->sysevents->setSummary($modelIssues->getLastError());
-        } else {
+        try {
+            $row = $modelIssues->closeIssue($projectid, $issueid);
+            
             $this->sysevents->setSummary(_LANG_ISSUE_CLOSED, "success");
             
             // Prepare data for activity log entry
             $assignees = $modelIssues->getAssignees($row->id, false);
             $action = _LANG_ISSUE_CLOSED;
             $title = $row->title;
-            $description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-            $url = "index.php?component=com_projects&action=get_issue_detail&projectid=".$row->projectid."&issueid=".$row->id;
+            $description = sprintf(
+                               _LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, 
+                               $row->title, 
+                               $row->description
+                           );
+                           
+            $url = "index.php?component=com_projects&action=get_issue_detail";
+            $url .= "&projectid=".$row->projectid."&issueid=".$row->id;
             
             // Add entry in activity log
             $modelActivityLog = $this->getModel('activitylog', array($this->_project));
-            if (!$modelActivityLog->insertRow($row->projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, true)) {
-                $this->sysevents->setSummary($modelActivityLog->getLastError());
+            
+            try {
+                $modelActivityLog->insertRow(
+                                       'issues', 
+                                       $action, 
+                                       $title, 
+                                       $description, 
+                                       $url, 
+                                       $assignees, 
+                                       true
+                                   );
+                                   
+            } catch (Exception $e) {
+                $this->sysevents->addEventLog($e->getMessage());
             }
+            
+        } catch (Exception $e) {
+            $this->sysevents->setSummary(_LANG_ISSUE_CLOSE_ERROR);
         }
         
-        $this->setRedirect('index.php?component=com_projects&action=get_issue_detail&projectid='.$projectid."&issueid=".$issueid);
+        $redirect_url = "index.php?component=com_projects&action=get_issue_detail";
+        $redirect_url .= "&projectid=".$projectid."&issueid=".$issueid;
+        $this->setRedirect($redirect_url);
     }
     
-    public function reopen_issue()
+    /**
+     * Reopen issue
+     * 
+     * @param int $projectid
+     * @param int $issueid
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function reopen_issue($projectid, $issueid)
     {
         if (!$this->_authorise("issues")) return;
         
-        $projectid = PHPFrame::Request()->get('projectid', 0);
-        $issueid = PHPFrame::Request()->get('issueid', 0);
-        
         $modelIssues = $this->getModel('issues', array($this->_project));
-        $row = $modelIssues->reopenIssue($projectid, $issueid);
-        if ($row === false) {
-            $this->sysevents->setSummary($modelIssues->getLastError());
-        } else {
+        
+        try {
+            $row = $modelIssues->reopenIssue($projectid, $issueid);
+            
             $this->sysevents->setSummary(_LANG_ISSUE_REOPENED, "success");
             
             // Prepare data for activity log entry
             $assignees = $modelIssues->getAssignees($row->id, false);
             $action = _LANG_ISSUE_REOPENED;
             $title = $row->title;
-            $description = sprintf(_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, $row->title, $row->description);
-            $url = "index.php?component=com_projects&action=get_issue_detail&projectid=".$row->projectid."&issueid=".$row->id;
+            $description = sprintf(
+                               _LANG_ISSUES_ACTIVITYLOG_DESCRIPTION, 
+                               $row->title, 
+                               $row->description
+                           );
+                           
+            $url = "index.php?component=com_projects&action=get_issue_detail";
+            $url .= "&projectid=".$row->projectid."&issueid=".$row->id;
             
             // Add entry in activity log
             $modelActivityLog = $this->getModel('activitylog', array($this->_project));
-            if (!$modelActivityLog->insertRow($projectid, $row->created_by, 'issues', $action, $title, $description, $url, $assignees, true)) {
-                $this->sysevents->setSummary($modelActivityLog->getLastError());
+            
+            try {
+                $modelActivityLog->insertRow(
+                                       'issues', 
+                                       $action, 
+                                       $title, 
+                                       $description, 
+                                       $url, 
+                                       $assignees, 
+                                       true
+                                   );
+                                   
+            } catch (Exception $e) {
+                $this->sysevents->addEventLog($e->getMessage());
             }
+            
+        } catch (Exception $e) {
+            $this->sysevents->setSummary(_LANG_ISSUE_REOPEN_ERROR);
         }
         
-        $this->setRedirect('index.php?component=com_projects&action=get_issue_detail&projectid='.$projectid."&issueid=".$issueid);
+        $redirect_url = "index.php?component=com_projects&action=get_issue_detail";
+        $redirect_url .= "&projectid=".$projectid."&issueid=".$issueid;
+        $this->setRedirect($redirect_url);
     }
     
     /**
@@ -859,7 +967,7 @@ class projectsController extends PHPFrame_MVC_ActionController
                                        $notify
                                    );
             } catch (Exception $e) {
-                $this->sysevents->setSummary($e->getMessage());
+                $this->sysevents->addEventLog($e->getMessage());
             }
         } catch (Exception $e) {
             $this->sysevents->setSummary(_LANG_FILE_SAVE_ERROR);
@@ -917,43 +1025,42 @@ class projectsController extends PHPFrame_MVC_ActionController
         $model->downloadFile($fileid);
     }
     
-    public function get_messages()
-    {
+    public function get_messages(
+        $projectid=0,
+        $orderby='m.date_sent',
+        $orderdir='DESC',
+        $limit=25,
+        $limitstart=0,
+        $search=''
+    ) {
         if (!$this->_authorise("messages")) return;
         
-        // Get request data
-        $projectid = PHPFrame::Request()->get('projectid', 0);
-        $orderby = PHPFrame::Request()->get('orderby', 'm.date_sent');
-        $orderdir = PHPFrame::Request()->get('orderdir', 'DESC');
-        $limit = PHPFrame::Request()->get('limit', 25);
-        $limitstart = PHPFrame::Request()->get('limitstart', 0);
-        $search = PHPFrame::Request()->get('search', '');
-        
-        // Create list filter needed for getMessages()
-        $list_filter = new PHPFrame_Database_CollectionFilter($orderby, $orderdir, $limit, $limitstart, $search);
-        
         // Get messages using model
-        $messages = $this->getModel('messages')->getMessages($list_filter, $projectid);
+        $model = $this->getModel('messages', array($this->_project));
+        $messages = $model->getCollection(
+                                $orderby, 
+                                $orderdir, 
+                                $limit, 
+                                $limitstart, 
+                                $search
+                            );
         
         // Get view
         $view = $this->getView('messages', 'list');
         // Set view data
         $view->addData('project', $this->_project);
         $view->addData('rows', $messages);
-        $view->addData('page_nav', new PHPFrame_HTML_Pagination($list_filter));
         // Display view
         $view->display();
     }
     
-    public function get_message_detail()
+    public function get_message_detail($messageid)
     {
         if (!$this->_authorise("messages")) return;
         
-        // Get request data
-        $messageid = PHPFrame::Request()->get('messageid', 0);
-        
         // Get message using model
-        $message = $this->getModel('messages')->getMessagesDetail($this->_project->id, $messageid);
+        $model = $this->getModel('messages', array($this->_project));
+        $message = $model->getRow($messageid);
         
         // Get view
         $view = $this->getView('messages', 'detail');
@@ -976,6 +1083,13 @@ class projectsController extends PHPFrame_MVC_ActionController
         $view->display();
     }
     
+    /**
+     * Post new message
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
     public function save_message()
     {
         if (!$this->_authorise("messages")) return;
@@ -987,46 +1101,82 @@ class projectsController extends PHPFrame_MVC_ActionController
         $post = PHPFrame::Request()->getPost();
         
         // Save message using messages model
-        $modelMessages = $this->getModel('messages');
-        $row = $modelMessages->saveMessage($post);
-        if ($row === false) {
-            $this->sysevents->setSummary($modelMessages->getLastError());
-        } else {
+        $modelMessages = $this->getModel('messages', array($this->_project));
+        
+        try {
+            $row = $modelMessages->saveRow($post);
+            
             $this->sysevents->setSummary(_LANG_MESSAGE_SAVED, "success");
             
             // Prepare data for activity log entry
             $action = _LANG_MESSAGES_ACTION_NEW;
             $title = $row->subject;
-            $description = sprintf(_LANG_MESSAGES_ACTIVITYLOG_DESCRIPTION, $row->subject, $row->body);
-            $url = "index.php?component=com_projects&action=get_message_detail&projectid=".$row->projectid."&messageid=".$row->id;
+            $description = sprintf(
+                               _LANG_MESSAGES_ACTIVITYLOG_DESCRIPTION, 
+                               $row->subject, 
+                               $row->body
+                           );
+                           
+            $url = "index.php?component=com_projects&action=get_message_detail";
+            $url .= "&projectid=".$row->projectid."&messageid=".$row->id;
+            
             $notify = $post['notify'] == 'on' ? true : false;
             
             // Add entry in activity log
             $modelActivityLog = $this->getModel('activitylog', array($this->_project));
-            if (!$modelActivityLog->insertRow($row->projectid, $row->userid, 'messages', $action, $title, $description, $url, $post['assignees'], $notify)) {
-                $this->sysevents->setSummary($modelActivityLog->getLastError());
+            
+            try {
+                $modelActivityLog->insertRow(
+                                       'messages', 
+                                       $action, 
+                                       $title, 
+                                       $description, 
+                                       $url, 
+                                       $post['assignees'], 
+                                       $notify
+                                   );
+                                   
+            } catch (Exception $e) {
+                $this->sysevents->addEventLog($e->getMessage());
             }
+            
+        } catch (Exception $e) {
+            $this->sysevents->setSummary(_LANG_MESSAGE_SAVE_ERROR);
         }
         
-        $this->setRedirect('index.php?component=com_projects&action=get_messages&projectid='.$post['projectid']);
+        $redirect_url = "index.php?component=com_projects&action=get_messages";
+        $redirect_url .= "&projectid=".$post['projectid'];
+        $this->setRedirect($redirect_url);
     }
     
-    public function remove_message()
+    /**
+     * Remove project message
+     * 
+     * @param int $projectid
+     * @param int $messageid
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function remove_message($projectid, $messageid)
     {
         if (!$this->_authorise("messages")) return;
         
-        $projectid = PHPFrame::Request()->get('projectid', 0);
-        $messageid = PHPFrame::Request()->get('messageid', 0);
+        $modelMessages = $this->getModel('messages', array($this->_project));
         
-        $modelMessages = &$this->getModel('messages');
-        
-        if ($modelMessages->deleteMessage($projectid, $messageid) === true) {
+        try {
+            $modelMessages->deleteRow($messageid);
+            
             $this->sysevents->setSummary(_LANG_MESSAGE_DELETE_SUCCESS, "success");
-        } else {
+            
+        } catch (Exception $e) {
             $this->sysevents->setSummary(_LANG_MESSAGE_DELETE_ERROR);
         }
         
-        $this->setRedirect('index.php?component=com_projects&action=get_messages&projectid='.$projectid);
+        $redirect_url = "index.php?component=com_projects&action=get_messages";
+        $redirect_url .= "&projectid=".$projectid;
+        $this->setRedirect($redirect_url);
     }
     
     /**

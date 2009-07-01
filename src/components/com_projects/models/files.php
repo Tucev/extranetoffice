@@ -174,7 +174,8 @@ class projectsModelFiles extends PHPFrame_MVC_Model
         $row->bind($post);
         
         // Generate revision
-        if (empty($row->parentid)) {
+        $parentid = $row->parentid;
+        if (empty($parentid)) {
             $row->set('revision', 0);
         }
         else {
@@ -195,7 +196,12 @@ class projectsModelFiles extends PHPFrame_MVC_Model
         PHPFrame_Utils_Filesystem::ensureWritableDir($upload_dir);
         $accept = config::UPLOAD_ACCEPT; // mime types
         $max_upload_size = config::MAX_UPLOAD_SIZE*(1024*1024); // Mb
-        $file = PHPFrame_Utils_Filesystem::uploadFile('filename', $upload_dir, $accept, $max_upload_size);
+        $file = PHPFrame_Utils_Filesystem::uploadFile(
+                                               'filename',
+                                               $upload_dir, 
+                                               $accept, 
+                                               $max_upload_size
+                                           );
         
         if (!empty($file['error'])) {
             $this->_error[] = $file['error'];
@@ -207,11 +213,13 @@ class projectsModelFiles extends PHPFrame_MVC_Model
         $row->set('mimetype', $file['file_type']);
         
         $row->set('userid', PHPFrame::Session()->getUser()->id);
+        $row->set("ts", date("Y-m-d H:i:s"));
         
         $row->store();
         
         // Make parent files have their own id as their parentid
-        if (empty($row->parentid)) {
+        $parentid = $row->parentid;
+        if (empty($parentid)) {
             $row->set('parentid', $row->id);
             $row->store();
         }
@@ -314,21 +322,22 @@ class projectsModelFiles extends PHPFrame_MVC_Model
         $query .= "LEFT JOIN #__users u ON u.id = uf.userid";
         $query .= " WHERE uf.fileid = ".$fileid;
         
-        $assignees = PHPFrame::DB()->fetchObjectList($query);
+        $rows = PHPFrame::DB()->fetchObjectList($query);
         
         // Prepare assignee data
-        for ($i=0; $i<count($assignees); $i++) {
+        $assignees = array();
+        for ($i=0; $i<count($rows); $i++) {
             if ($asoc === false) {
-                $new_assignees[$i] = $assignees[$i]->userid;
+                $assignees[$i] = $rows[$i]->userid;
             }
             else {
-                $new_assignees[$i]['id'] = $assignees[$i]->userid;
-                $new_assignees[$i]['name'] = PHPFrame_User_Helper::fullname_format($assignees[$i]->firstname, $assignees[$i]->lastname);
-                $new_assignees[$i]['email'] = $assignees[$i]->email;
+                $assignees[$i]['id'] = $rows[$i]->userid;
+                $assignees[$i]['name'] = PHPFrame_User_Helper::fullname_format($rows[$i]->firstname, $rows[$i]->lastname);
+                $assignees[$i]['email'] = $rows[$i]->email;
             }
         }
         
-        return $new_assignees;
+        return $assignees;
     }
     
     private function _readfile_chunked($filename, $retbytes=true)

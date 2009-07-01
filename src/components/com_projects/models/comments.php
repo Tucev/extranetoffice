@@ -107,22 +107,24 @@ class projectsModelComments extends PHPFrame_MVC_Model
         return $row;
     }
     
-    function deleteComment($projectid, $commentid)
+    /**
+     * Delete comment
+     * 
+     * @param int $commentid
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    function deleteRow($commentid)
     {
         //TODO: This function should allow ids as either int or array of ints.
-        //TODO: This function should also check permissions before deleting
         
         // Instantiate table object
-        $row = $this->getTable('comments');
+        $row = new PHPFrame_Database_Row("#__comments");
         
         // Delete row from database
-        if (!$row->delete($commentid)) {
-            $this->_error[] = $row->getLastError();
-            return false;
-        }
-        else {
-            return true;
-        }
+        $row->delete($commentid);
     }
     
     function itemid2title($itemid, $type)
@@ -155,12 +157,20 @@ class projectsModelComments extends PHPFrame_MVC_Model
         $sql = "SELECT COUNT(id) FROM #__comments ";
         $sql .= " WHERE itemid = :itemid AND type = :type";
         
-        return PHPFrame::DB()->fetchColumn($sql, array(":itemid"=>$itemid, ":type"=>$type));
+        $params = array(":itemid"=>$itemid, ":type"=>$type);
+        
+        return PHPFrame::DB()->fetchColumn($sql, $params);
     }
     
     function fetchCommentsFromEmail()
     {
-        $imap = new PHPFrame_Mail_IMAP(config::IMAP_HOST, config::IMAP_PORT, config::IMAP_USER, config::IMAP_PASSWORD);
+        $imap = new PHPFrame_Mail_IMAP(
+                        config::IMAP_HOST, 
+                        config::IMAP_PORT, 
+                        config::IMAP_USER, 
+                        config::IMAP_PASSWORD
+                    );
+                    
         $messages = $imap->getMessages();
         $imap->close();
         

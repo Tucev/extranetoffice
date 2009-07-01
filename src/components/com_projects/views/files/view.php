@@ -44,7 +44,8 @@ class projectsViewFiles extends PHPFrame_MVC_View
     /**
      * Override view display method
      * 
-     * This method overrides the parent display() method and appends the page title to the document title.
+     * This method overrides the parent display() method and appends the page 
+     * title to the document title.
      * 
      * @access public
      * @return void
@@ -63,15 +64,14 @@ class projectsViewFiles extends PHPFrame_MVC_View
         $project = $this->_data['project'];
         $projectid = $project->id;
         if (!empty($projectid)) {
-            $url = "index.php?component=com_projects&action=get_project_detail";
-            $url .= "&projectid=".$project->id;
-            $this->getPathway()->addItem($project->name, $url);
-            
             // Add url to project home
             $project_url = "index.php?component=com_projects&action=get_project_detail";
             $project_url .= "&projectid=".$project->id;
             $project_url = PHPFrame_Utils_Rewrite::rewriteURL($project_url);
             $this->addData("project_url", $project_url);
+            
+            // Add project wide pathway item
+            $this->getPathway()->addItem($project->name, $project_url);
             
             // Add url to tool list
             $tool_url = "index.php?component=com_projects&action=get_files";

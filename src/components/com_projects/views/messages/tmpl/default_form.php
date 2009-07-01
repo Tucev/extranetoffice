@@ -11,11 +11,15 @@
 PHPFrame_HTML::validate('messagesform');
 ?>
 
-<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
+<h2 class="componentheading">
+    <a href="<?php echo $data['project_url']?>">
+    <?php echo $data['page_title']; ?>
+    </a>
+</h2>
 
-<h2 class="subheading <?php echo strtolower($data['view']); ?>">
-    <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_messages&projectid='.$data['project']->id); ?>">
-        <?php echo $data['view']; ?>
+<h2 class="subheading <?php echo strtolower($view->getName()); ?>">
+    <a href="<?php echo $data["tool_url"]; ?>">
+        <?php echo $view->getName(); ?>
     </a>
 </h2>
 

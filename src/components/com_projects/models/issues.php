@@ -28,7 +28,7 @@
 class projectsModelIssues extends PHPFrame_MVC_Model
 {
     /**
-     * A reference to the project this issues belongs to
+     * A reference to the project these issues belong to
      * 
      * @var object
      */
@@ -115,11 +115,16 @@ class projectsModelIssues extends PHPFrame_MVC_Model
                 $row->assignees = $this->getAssignees($row->id);
                 
                 // get total comments
-                $modelComments = PHPFrame_MVC_Factory::getModel('com_projects', 'comments');
+                $modelComments = PHPFrame_MVC_Factory::getModel(
+                				 	'com_projects', 
+                				 	'comments',
+                                    array($this->_project)
+                                 );
+                                 
                 $row->comments = $modelComments->getTotalComments($row->id, 'issues');
                 
                 // set status
-                if ($row->closed != "0000-00-00 00:00:00") {
+                if ($row->closed != "0000-00-00 00:00:00" && $row->closed != null) {
                     $row->status = "closed";
                 } elseif ($row->dtend < date("Y-m-d")." 23:59:59") {
                     $row->status = "overdue";
@@ -135,26 +140,36 @@ class projectsModelIssues extends PHPFrame_MVC_Model
     /**
      * Get issues detail
      *
-     * @param int $projectid
      * @param int $issueid
-     * @return mixed returns $row on success and FALSE on failure
+     * 
+     * @access public
+     * @return PHPFrame_Database_Row
+     * @since  1.0
      */
-    public function getIssuesDetail($projectid, $issueid)
+    public function getRow($issueid)
     {
-        $query = "SELECT i.*, u.username AS created_by_name ";
-        $query .= " FROM #__issues AS i ";
-        $query .= " JOIN #__users u ON u.id = i.created_by ";
-        $query .= " WHERE i.id = ".$issueid;
-        $query .= " ORDER BY i.created DESC";
+        $id_obj = new PHPFrame_Database_IdObject();
+        $id_obj->select(array("i.*", "u.username AS created_by_name"))
+               ->from("#__issues AS i")
+               ->join("JOIN #__users u ON u.id = i.created_by")
+               ->where("i.id", "=", ":issueid")
+               ->params(":issueid", $issueid);
         
-        $row = PHPFrame::DB()->loadObject($query);
+        $row = new PHPFrame_Database_Row("#__issues");
+        
+        $row->load($id_obj);
         
         // Get assignees
         $row->assignees = $this->getAssignees($issueid);
         
         // Get comments
-        $modelComments = PHPFrame_MVC_Factory::getModel('com_projects', 'comments');
-        $row->comments = $modelComments->getComments($projectid, 'issues', $issueid);
+        $modelComments = PHPFrame_MVC_Factory::getModel(
+        				 	'com_projects', 
+        				 	'comments',
+        				 	array($this->_project)
+                         );
+                         
+        $row->comments = $modelComments->getCollection('issues', $issueid);
         
         return $row;
     }
@@ -166,10 +181,10 @@ class projectsModelIssues extends PHPFrame_MVC_Model
      *              Normally the HTTP_POST array.
      * 
      * @access public
-     * @return mixed  Returns the stored table row object on success or FALSE on failure
+     * @return PHPFrame_Database_Row
      * @since  1.0
      */
-    public function saveIssue($post)
+    public function saveRow($post)
     {
         // Check whether a project id is included in the post array
         if (empty($post['projectid'])) {
@@ -189,6 +204,10 @@ class projectsModelIssues extends PHPFrame_MVC_Model
         // Bind the post data to the row array (exluding created and created_by)
         $row->bind($post, 'created,created_by');
         
+        if (empty($post['expected_duration'])) {
+            $row->set("expected_duration", "0.0");
+        }
+        
         // Store row
         $row->store();
         
@@ -199,7 +218,10 @@ class projectsModelIssues extends PHPFrame_MVC_Model
         }
         
         // Store assignees
-        if (is_array($post['assignees']) && count($post['assignees']) > 0) {
+        if (isset($post['assignees']) 
+            && is_array($post['assignees']) 
+            && count($post['assignees']) > 0
+        ) {
             $query = "INSERT INTO #__users_issues ";
             $query .= " (id, userid, issueid) VALUES ";
             for ($i=0; $i<count($post['assignees']); $i++) {
@@ -322,19 +344,21 @@ class projectsModelIssues extends PHPFrame_MVC_Model
         $query .= " FROM #__users_issues AS ui ";
         $query .= "LEFT JOIN #__users u ON u.id = ui.userid";
         $query .= " WHERE ui.issueid = ".$issueid;
-        $assignees = PHPFrame::DB()->fetchObjectList($query);
+        
+        $rows = PHPFrame::DB()->fetchObjectList($query);
         
         // Prepare assignee data
-        for ($i=0; $i<count($assignees); $i++) {
+        $assignees = array();
+        for ($i=0; $i<count($rows); $i++) {
             if ($asoc === false) {
-                $new_assignees[$i] = $assignees[$i]->userid;
+                $assignees[$i] = $rows[$i]->userid;
             } else {
-                $new_assignees[$i]['id'] = $assignees[$i]->userid;
-                $new_assignees[$i]['name'] = PHPFrame_User_Helper::fullname_format($assignees[$i]->firstname, $assignees[$i]->lastname);
-                $new_assignees[$i]['email'] = $assignees[$i]->email;
+                $assignees[$i]['id'] = $rows[$i]->userid;
+                $assignees[$i]['name'] = PHPFrame_User_Helper::fullname_format($rows[$i]->firstname, $rows[$i]->lastname);
+                $assignees[$i]['email'] = $rows[$i]->email;
             }
         }
         
-        return $new_assignees;
+        return $assignees;
     }
 }
