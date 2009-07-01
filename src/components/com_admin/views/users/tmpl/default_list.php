@@ -14,7 +14,12 @@
  * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
  */
 
-PHPFrame_HTML::confirm('delete_user', _LANG_ADMIN_USERS_DELETE, _LANG_ADMIN_USERS_DELETE_CONFIRM, "div[id^='ui-tabs']:has(a.delete_user)");
+PHPFrame_HTML::confirm(
+    'delete_user', 
+    _LANG_ADMIN_USERS_DELETE, 
+    _LANG_ADMIN_USERS_DELETE_CONFIRM, 
+    "div[id^='ui-tabs']:has(a.delete_user)"
+);
 ?>
 
 <h2 class="componentheading"><?php echo $data['page_title']; ?></h2>
