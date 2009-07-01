@@ -92,5 +92,12 @@ PHPFrame_HTML::confirm(
 <?php echo $this->renderPagination($data['rows']); ?>
 
 <?php else : ?>
+
+<?php 
+// We add this emty link here so that the add/edit dialogs have a reference to know
+// where to display the response from AJAX requests when listing is empty
+?>
+<a class="delete_organisation"></a>
+
 <?php echo PHPFrame_Base_String::html( _LANG_NO_ENTRIES ); ?>
 <?php endif; ?>
