@@ -8,10 +8,18 @@
  */
 
 // Add confirm behaviour to delete links
-PHPFrame_HTML::confirm('delete_message', _LANG_PROJECTS_MESSAGES_DELETE, _LANG_PROJECTS_MESSAGES_DELETE_CONFIRM);
+PHPFrame_HTML::confirm(
+	'delete_message', 
+    _LANG_PROJECTS_MESSAGES_DELETE, 
+    _LANG_PROJECTS_MESSAGES_DELETE_CONFIRM
+);
 ?>
 
-<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
+<h2 class="componentheading">
+    <a href="<?php echo $data['project_url']; ?>">
+    <?php echo $data['page_title']; ?>
+    </a>
+</h2>
 
 
 <div class="new">
@@ -20,14 +28,15 @@ PHPFrame_HTML::confirm('delete_message', _LANG_PROJECTS_MESSAGES_DELETE, _LANG_P
     </a>
 </div>
 
-<h2 class="subheading <?php echo strtolower($data['view']); ?>">
-    <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_messages&projectid='.$data['project']->id); ?>">
-        <?php echo $data['view']; ?>
+<h2 class="subheading <?php echo strtolower($view->getName()); ?>">
+    <a href="<?php echo $data["tool_url"]; ?>">
+        <?php echo $view->getName(); ?>
     </a>
 </h2>
 
+<?php echo $this->renderRowCollectionFilter($data['rows']); ?>
 
-<?php if (is_array($data['rows']) && count($data['rows']) > 0) : ?>
+<?php if (isset($data['rows']) && $data['rows']->countRows() > 0) : ?>
 
 <?php $k = 0; ?>
 <?php foreach($data['rows'] as $row) : ?>
@@ -76,6 +85,10 @@ PHPFrame_HTML::confirm('delete_message', _LANG_PROJECTS_MESSAGES_DELETE, _LANG_P
 </div>
 <?php $k = 1 - $k; ?>
 <?php endforeach; ?>
+
+<br />
+
+<?php echo $this->renderPagination($data['rows']); ?>
 
 <?php else : ?>
 <?php echo PHPFrame_Base_String::html( _LANG_NO_ENTRIES ); ?>

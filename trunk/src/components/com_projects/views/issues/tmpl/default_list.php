@@ -1,14 +1,25 @@
 <?php
 /**
- * @version     $Id$
- * @package        ExtranetOffice
- * @subpackage     com_projects
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_projects/views/issues/tmpl/default_list.php
+ * 
+ * PHP version 5
+ * 
+ * @category   MVC_Framework
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/extranetoffice/source/browse
  */
 
 // Add confirm behaviour to delete links
-PHPFrame_HTML::confirm('delete_issue', _LANG_PROJECTS_ISSUES_DELETE, _LANG_PROJECTS_ISSUES_DELETE_CONFIRM);
+PHPFrame_HTML::confirm(
+	'delete_issue', 
+    _LANG_PROJECTS_ISSUES_DELETE, 
+    _LANG_PROJECTS_ISSUES_DELETE_CONFIRM
+);
 ?>
 
 <!-- jquery slider for filter panel -->
@@ -24,42 +35,49 @@ $(document).ready(function() {
 });
 </script>
 
-<h2 class="componentheading"><?php echo $data['page_heading']; ?></h2>
+<h2 class="componentheading">
+    <a href="<?php echo $data['project_url']; ?>">
+    <?php echo $data['page_title']; ?>
+    </a>
+</h2>
 
 <div class="new">
-    <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_issue_form&projectid='.$data['project']->id); ?>">
+    <a href="<?php echo $data["new_issue_url"]; ?>">
         <?php echo PHPFrame_Base_String::html( _LANG_NEW ); ?>
     </a>
 </div>
 
-<h2 class="subheading <?php echo strtolower($data['view']); ?>">
-    <a href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL('index.php?component=com_projects&action=get_issues&projectid='.$data['project']->id); ?>">
-        <?php echo $data['view']; ?>
+<h2 class="subheading <?php echo strtolower($view->getName()); ?>">
+    <a href="<?php echo $data["tool_url"]; ?>">
+        <?php echo $view->getName(); ?>
     </a>
 </h2>
 
+<?php echo $this->renderRowCollectionFilter($data['rows']); ?>
 
+<?php 
+$filter_status= PHPFrame::Request()->get("filter_status", "open");
+$filter_assignees = PHPFrame::Request()->get("filter_assignees", "me");
+$orderby = PHPFrame::Request()->get("orderby", "i.dtstart");
+$orderdir = PHPFrame::Request()->get("orderdir", "DESC");
+?>
 <a id="toggle_filterpannel" href="#">Refine search</a>
 <br />
 <div id="filterpanel" class="list_filter_container">
     <form name="listsearchform" action="index.php" method="post">
     <table border="0" cellpadding="3" cellspacing="1">
     <tr>
-        <td>Search:</td>
-        <td><input type="text" name="search" value="<?php echo $data['search']; ?>" /></td>
-    </tr>
-    <tr>
         <td>Filter:</td>
         <td>
             <select name="filter_status">
-                <option value="open" <?php if ($this->lists['status'] == "open") { echo 'selected'; } ?>>Open</option>
-                <option value="closed" <?php if ($this->lists['status'] == "closed") { echo 'selected'; } ?>>Closed</option>
-                <option value="all" <?php if ($this->lists['status'] == "all") { echo 'selected'; } ?>>All</option>
+                <option value="open" <?php if ($filter_status == "open") { echo 'selected'; } ?>>Open</option>
+                <option value="closed" <?php if ($filter_status == "closed") { echo 'selected'; } ?>>Closed</option>
+                <option value="all" <?php if ($filter_status == "all") { echo 'selected'; } ?>>All</option>
             </select> 
             
             <select name="filter_assignees">
-                <option value="me" <?php if ($this->lists['assignees'] == "me") { echo 'selected'; } ?>>Assigned to me</option>
-                <option value="all" <?php if ($this->lists['assignees'] == "all") { echo 'selected'; } ?>>All</option>
+                <option value="me" <?php if ($filter_assignees == "me") { echo 'selected'; } ?>>Assigned to me</option>
+                <option value="all" <?php if ($filter_assignees == "all") { echo 'selected'; } ?>>All</option>
             </select>
         </td>
     </tr>
@@ -67,14 +85,14 @@ $(document).ready(function() {
         <td>Order by:</td>
         <td>
             <select name="filter_order">
-                <option value="i.title" <?php if ($this->lists['order'] == "i.title") { echo 'selected'; } ?>>Title</option>
-                <option value="i.dtstart" <?php if ($this->lists['order'] == "i.dtstart") { echo 'selected'; } ?>>Date Start</option>
-                <option value="i.dtend" <?php if ($this->lists['order'] == "i.dtend") { echo 'selected'; } ?>>Date End</option>
+                <option value="i.title" <?php if ($orderby == "i.title") { echo 'selected'; } ?>>Title</option>
+                <option value="i.dtstart" <?php if ($orderby == "i.dtstart") { echo 'selected'; } ?>>Date Start</option>
+                <option value="i.dtend" <?php if ($orderby == "i.dtend") { echo 'selected'; } ?>>Date End</option>
             </select>
             
             <select name="filter_order_Dir">
-                <option value="ASC" <?php if ($this->lists['order_Dir'] == "ASC") { echo 'selected'; } ?>>ASC</option>
-                <option value="DESC" <?php if ($this->lists['order_Dir'] == "DESC") { echo 'selected'; } ?>>DESC</option>
+                <option value="ASC" <?php if ($orderdir == "ASC") { echo 'selected'; } ?>>ASC</option>
+                <option value="DESC" <?php if ($orderdir == "DESC") { echo 'selected'; } ?>>DESC</option>
             </select>
         </td>
     </tr>
@@ -91,14 +109,13 @@ $(document).ready(function() {
     </form>
 </div>
 
-
-<?php if (is_array($data['rows']) && count($data['rows']) > 0) : ?>
+<?php if (isset($data['rows']) && $data['rows']->countRows() > 0) : ?>
 
 <?php $k = 0; ?>
 <?php foreach($data['rows'] as $row) : ?>
 <div class="thread_row<?php echo $k; ?>">
 
-    <?php if ($row->created_by == $this->_user->id) : ?>
+    <?php if ($row->created_by == PHPFrame::Session()->getUserId()) : ?>
     <div class="thread_delete">
         <a class="delete_issue" title="<?php echo PHPFrame_Base_String::html($row->title, true); ?>" href="index.php?component=com_projects&action=remove_issue&projectid=<?php echo $row->projectid; ?>&issueid=<?php echo $row->id; ?>">
             <?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>
@@ -152,7 +169,7 @@ $(document).ready(function() {
 
 <br />
 
-<?php echo $data['page_nav']->getListFooter(); ?>
+<?php echo $this->renderPagination($data['rows']); ?>
 
 <?php else : ?>
 <?php echo PHPFrame_Base_String::html( _LANG_NO_ENTRIES ); ?>

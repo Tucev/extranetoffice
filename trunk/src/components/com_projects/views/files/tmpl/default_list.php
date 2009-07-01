@@ -29,7 +29,7 @@ PHPFrame_HTML::confirm('delete_file',
 
 <div class="new">
     <a href="<?php echo $data["new_file_url"]; ?>">
-        <?php echo PHPFrame_Base_String::html( _LANG_NEW ); ?>
+        <?php echo PHPFrame_Base_String::html(_LANG_NEW); ?>
     </a>
 </div>
 

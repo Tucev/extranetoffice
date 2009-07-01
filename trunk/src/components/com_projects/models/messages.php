@@ -1,83 +1,103 @@
 <?php
 /**
- * @version     $Id$
- * @package        ExtranetOffice
- * @subpackage    com_projects
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_projects/models/messages.php
+ * 
+ * PHP version 5
+ * 
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/extranetoffice/source/browse
  */
 
 /**
- * projectsModelMessages Class
+ * projectsModelIssues Class
  * 
- * @package        ExtranetOffice
- * @subpackage     com_projects
- * @author         Luis Montero [e-noise.com]
- * @since         1.0
- * @see         PHPFrame_MVC_Model
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @link       http://code.google.com/p/extranetoffice/source/browse
+ * @since      1.0
  */
-class projectsModelMessages extends PHPFrame_MVC_Model {
+class projectsModelMessages extends PHPFrame_MVC_Model
+{
+    /**
+     * A reference to the project these messages belong to
+     * 
+     * @var object
+     */
+    private $_project=null;
+    
     /**
      * Constructor
+     * 
+     * @param object $project
      *
-     * @since 1.0.1
+     * @access public
+     * @return void
+     * @since  1.0
      */
-    function __construct() {}
+    public function __construct($project)
+    {
+        $this->_project = $project;
+    }
     
     /**
      * Get messages
      * 
-     * @param    object    $list_filter    Object of type PHPFrame_Database_CollectionFilter
-     * @param    int        $projectid
-     * @return    array
+     * @param string $orderby
+     * @param string $orderdir
+     * @param int    $limit
+     * @param int    $limitstart
+     * @param string $search
+     * 
+     * @access public
+     * @return PHPFrame_Database_RowCollection
+     * @since  1.0
      */
-    public function getMessages(PHPFrame_Database_CollectionFilter $list_filter, $projectid) {
-        $where = array();
-        
-        // Show only public projects or projects where user has an assigned role
-        //TODO: Have to apply access levels
-        //$where[] = "( p.access = '0' OR (".PHPFrame::Session()->getUser()->id." IN (SELECT userid FROM #__users_roles WHERE projectid = p.id) ) )";
-        
-        $search = $list_filter->getSearchStr();
-        if ( $search ) {
-            $where[] = "m.subject LIKE '%".PHPFrame::DB()->getEscaped($search)."%'";
+    public function getCollection(
+        $orderby='m.date_sent',
+        $orderdir='DESC',
+        $limit=25,
+        $limitstart=0,
+        $search=''
+    ) {
+        $rows = new PHPFrame_Database_RowCollection();
+        $rows->select(array("m.*", "u.username AS created_by_name"))
+             ->from("#__messages AS m")
+             ->join("JOIN #__users u ON u.id = m.userid")
+             ->where("m.projectid", "=", ":projectid")
+             ->params(":projectid", $this->_project->id)
+             ->groupby("m.id")
+             ->orderby($orderby, $orderdir)
+             ->limit($limit, $limitstart);
+             
+        if ($search) {
+            $rows->where("m.subject", "LIKE", ":search")
+                 ->params(":search", "%".$search."%");
         }
         
-        if (!empty($projectid)) {
-            $where[] = "m.projectid = ".$projectid;    
-        }
-
-        $where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
-
-        // get the total number of records
-        // This query groups the files by parentid so and retireves the latest revision for each file in current project
-        $query = "SELECT 
-                  m.*, 
-                  u.username AS created_by_name 
-                  FROM #__messages AS m 
-                  JOIN #__users u ON u.id = m.userid "
-                  . $where . 
-                  " GROUP BY m.id ";
-        //echo str_replace('#__', 'eo_', $query); exit;
-
-        // Run query to get total rows before applying filter
-        $list_filter->setTotal(PHPFrame::DB()->query($query)->rowCount());
-        
-        // Add order by and limit statements for subset (based on filter)
-        $query .= $list_filter->getOrderBySQL();
-        $query .= $list_filter->getLimitSQL();
-        //echo str_replace('#__', 'eo_', $query); exit;
-        
-        $rows = PHPFrame::DB()->fetchObjectList($query);
+        $rows->load();
         
         // Prepare rows and add relevant data
-        if (is_array($rows) && count($rows) > 0) {
+        if ($rows->countRows() > 0) {
             foreach ($rows as $row) {
                 // Get assignees
                 $row->assignees = $this->getAssignees($row->id);
                 
                 // get total comments
-                $modelComments = PHPFrame_MVC_Factory::getModel('com_projects', 'comments');
+                $modelComments = PHPFrame_MVC_Factory::getModel(
+                				 	'com_projects', 
+                				 	'comments', 
+                                    array($this->_project)
+                                 );
+                                 
                 $row->comments = $modelComments->getTotalComments($row->id, 'messages');
             }
         }
@@ -85,20 +105,30 @@ class projectsModelMessages extends PHPFrame_MVC_Model {
         return $rows;
     }
     
-    public function getMessagesDetail($projectid, $messageid) {
-        $query = "SELECT m.*, u.username AS created_by_name ";
-        $query .= " FROM #__messages AS m ";
-        $query .= " JOIN #__users u ON u.id = m.userid ";
-        $query .= " WHERE m.id = ".$messageid;
-        $query .= " ORDER BY m.date_sent DESC";
-        $row = PHPFrame::DB()->loadObject($query);
+    public function getRow($messageid)
+    {
+        $id_obj = new PHPFrame_Database_IdObject();
+        $id_obj->select(array("m.*", "u.username AS created_by_name"))
+               ->from("#__messages AS m")
+               ->join("JOIN #__users u ON u.id = m.userid")
+               ->where("m.id", "=", ":messageid")
+               ->params(":messageid", $messageid);
+        
+        $row = new PHPFrame_Database_Row("#__messages");
+        
+        $row->load($id_obj);
         
         // Get assignees
         $row->assignees = $this->getAssignees($messageid);
         
         // Get comments
-        $modelComments = PHPFrame_MVC_Factory::getModel('com_projects', 'comments');
-        $row->comments = $modelComments->getComments($projectid, 'messages', $messageid);
+        $modelComments = PHPFrame_MVC_Factory::getModel(
+        				 	'com_projects', 
+        				 	'comments',
+                            array($this->_project)
+                         );
+                         
+        $row->comments = $modelComments->getCollection('messages', $messageid);
         
         return $row;
     }
@@ -106,38 +136,33 @@ class projectsModelMessages extends PHPFrame_MVC_Model {
     /**
      * Save a project message
      * 
-     * @param    $post    The array to be used for binding to the row before storing it. Normally the HTTP_POST array.
-     * @return    mixed    Returns the stored table row object on success or FALSE on failure
+     * @param array $post The array to be used for binding to the row before storing it. 
+     *                    Normally the HTTP_POST array.
+     *                    
+     * @access public
+     * @return PHPFrame_Database_Row
+     * @since  10
      */
-    public function saveMessage($post) {
+    public function saveRow($post)
+    {
         // Check whether a project id is included in the post array
         if (empty($post['projectid'])) {
             $this->_error[] = _LANG_ERROR_NO_PROJECT_SELECTED;
             return false;
         }
         
-        $row = $this->getTable('messages');
+        $row = new PHPFrame_Database_Row("#__messages");
         
-        if (!$row->bind($post)) {
-            $this->_error[] = $row->getLastError();
-            return false;
-        }
+        $row->bind($post);
         
-        if (empty($row->id)) {
-            $row->userid = PHPFrame::Session()->getUser()->id;
-            $row->date_sent = date("Y-m-d H:i:s");
-            $row->status = '1';
-        }
-        
-        if (!$row->check()) {
-            $this->_error[] = $row->getLastError();
-            return false;
+        $messageid = $row->id;
+        if (empty($messageid)) {
+            $row->set("userid", PHPFrame::Session()->getUser()->id);
+            $row->set("date_sent", date("Y-m-d H:i:s"));
+            $row->set("status", '1');
         }
     
-        if (!$row->store()) {
-            $this->_error[] = $row->getLastError();
-            return false;
-        }
+        $row->store();
         
         // Delete existing assignees before we store new ones if editing existing issue
         if (!empty($post['id'])) {
@@ -160,13 +185,23 @@ class projectsModelMessages extends PHPFrame_MVC_Model {
         return $row;
     }
     
-    public function deleteMessage($projectid, $messageid) {
+    /**
+     * Delete message
+     * 
+     * @param int $projectid
+     * @param int $messageid
+     * 
+     * @access public
+     * @return void
+     * @since  1.0
+     */
+    public function deleteRow($messageid)
+    {
         //TODO: This function should allow ids as either int or array of ints.
-        //TODO: This function should also check permissions before deleting
         
         // Delete message's comments
         $query = "DELETE FROM #__comments ";
-        $query .= " WHERE projectid = ".$projectid." AND type = 'messages' AND itemid = ".$messageid;
+        $query .= " WHERE projectid = ".$this->_project->id." AND type = 'messages' AND itemid = ".$messageid;
         PHPFrame::DB()->query($query);
         
         // Delete message's assignees
@@ -174,45 +209,45 @@ class projectsModelMessages extends PHPFrame_MVC_Model {
         $query .= " WHERE messageid = ".$messageid;
         PHPFrame::DB()->query($query);
         
-        // Instantiate table object
-        $row = $this->getTable('messages');
+        // Instantiate row object
+        $row = new PHPFrame_Database_Row("#__messages");
         
         // Delete row from database
-        if (!$row->delete($messageid)) {
-            $this->_error[] = $row->getLastError();
-            return false;
-        }
-        else {
-            return true;
-        }
+        $row->delete($messageid);
     }
     
     /**
      * Get list of assignees
      *
-     * @param    int        $messageid
-     * @param    bool    $asoc
-     * @return    array    Array containing assignees ids or asociative array with id, name and email if asoc is true.
+     * @param int  $messageid
+     * @param bool $asoc
+     * 
+     * @access public
+     * @return array Array containing assignees ids or asociative array with id, 
+     *               name and email if asoc is true.
+     * @since  1.0
      */
-    public function getAssignees($messageid, $asoc=true) {
+    public function getAssignees($messageid, $asoc=true)
+    {
         $query = "SELECT um.userid, u.firstname, u.lastname, u.email";
         $query .= " FROM #__users_messages AS um ";
         $query .= "LEFT JOIN #__users u ON u.id = um.userid";
         $query .= " WHERE um.messageid = ".$messageid;
-        $assignees = PHPFrame::DB()->fetchObjectList($query);
+        
+        $rows = PHPFrame::DB()->fetchObjectList($query);
         
         // Prepare assignee data
-        for ($i=0; $i<count($assignees); $i++) {
+        $assignees = array();
+        for ($i=0; $i<count($rows); $i++) {
             if ($asoc === false) {
-                $new_assignees[$i] = $assignees[$i]->userid;
-            }
-            else {
-                $new_assignees[$i]['id'] = $assignees[$i]->userid;
-                $new_assignees[$i]['name'] = PHPFrame_User_Helper::fullname_format($assignees[$i]->firstname, $assignees[$i]->lastname);
-                $new_assignees[$i]['email'] = $assignees[$i]->email;
+                $assignees[$i] = $rows[$i]->userid;
+            } else {
+                $assignees[$i]['id'] = $rows[$i]->userid;
+                $assignees[$i]['name'] = PHPFrame_User_Helper::fullname_format($rows[$i]->firstname, $rows[$i]->lastname);
+                $assignees[$i]['email'] = $rows[$i]->email;
             }
         }
         
-        return $new_assignees;
+        return $assignees;
     }
 }

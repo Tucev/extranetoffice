@@ -111,6 +111,7 @@ class projectsHelperProjects
         $options[] = PHPFrame_HTML::_('select.option', 2, _LANG_PROJECTS_PRIORITY_HIGH );
 
         $output = PHPFrame_HTML::_('select.genericlist', $options, 'priority', $attribs, $selected);
+        
         return $output;
     }
     

@@ -36,7 +36,7 @@ PHPFrame_HTML::validate('filesform');
 <fieldset>
 <legend><?php echo PHPFrame_Base_String::html( _LANG_FILES_NEW ); ?></legend>
 <table cellpadding="0" cellspacing="0" border="0" width="100%" class="edit">
-<?php if (isset($data['row']) && !empty($data['row']->id)) : ?>
+<?php if (isset($data['row'])) : ?>
 <tr>
     <td width="30%">
         <label id="parentidmsg" for="parentid">
@@ -44,8 +44,8 @@ PHPFrame_HTML::validate('filesform');
         </label>
     </td>
     <td>
-        <?php if (isset($data['row'])) echo $data['row']->title; ?>
-        <input type="hidden" id="parentid" name="parentid" value="<?php if (isset($data['row'])) echo $data['row']->id; ?>" />
+        <?php echo $data['row']->title; ?>
+        <input type="hidden" id="parentid" name="parentid" value="<?php echo $data['row']->id; ?>" />
     </td>
 </tr>
 <?php endif; ?>

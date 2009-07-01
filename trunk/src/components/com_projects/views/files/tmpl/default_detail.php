@@ -16,10 +16,10 @@
 
 // Add confirm behaviour to delete links
 PHPFrame_HTML::confirm(
-			       'delete_file', 
-                   _LANG_PROJECTS_FILES_DELETE, 
-                   _LANG_PROJECTS_FILES_DELETE_CONFIRM
-               );
+   'delete_file', 
+   _LANG_PROJECTS_FILES_DELETE, 
+   _LANG_PROJECTS_FILES_DELETE_CONFIRM
+);
 
 // Load jQuery validation behaviour for forms
 PHPFrame_HTML::validate('commentsform');

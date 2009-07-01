@@ -279,10 +279,13 @@ define("_LANG_ISSUES_EDIT", "Edit issue");
 define("_LANG_ISSUES_TYPE", "Issue type");
 define("_LANG_ISSUES_EXPECTED_DURATION", "Expected duration");
 define("_LANG_ISSUE_SAVED", "Issue raised");
+define("_LANG_ISSUE_SAVE_ERROR", "An error occurred while saving issue");
 define("_LANG_ISSUES_ACTION_EDIT", "Issue modified");
 define("_LANG_ISSUE_CLOSED", "Issue closed");
+define("_LANG_ISSUE_CLOSE_ERROR", "An error has occurred while closing issue");
 define("_LANG_ISSUES_REOPEN", "Reopen issue");
 define("_LANG_ISSUE_REOPENED", "Issue has been reopened");
+define("_LANG_ISSUE_REOPEN_ERROR", "An error has occurred while re-opening issue");
 define("_LANG_ISSUES_CLOSE", "Mark issue as closed");
 define("_LANG_ISSUES_ACTION_NEW", "Issue raised");
 define("_LANG_ISSUES_ACTIVITYLOG_DESCRIPTION", "Title: %s
@@ -334,6 +337,7 @@ define("_LANG_MESSAGES_SUBJECT", "Subject");
 define("_LANG_MESSAGES_SUBJECT_REQUIRED", "Subject is required");
 define("_LANG_MESSAGES_BODY_REQUIRED", "Message must contain some text");
 define("_LANG_MESSAGE_SAVED", "Message saved");
+define("_LANG_MESSAGE_SAVE_ERROR", "An error occurred while saving message");
 define("_LANG_MESSAGES_ACTION_NEW", "New message sent");
 define("_LANG_MESSAGES_BODY", "Body");
 define("_LANG_MESSAGES_ACTIVITYLOG_DESCRIPTION", "Subject: %s

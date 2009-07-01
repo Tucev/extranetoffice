@@ -1,32 +1,42 @@
 <?php
 /**
- * @version     $Id$
- * @package        ExtranetOffice
- * @subpackage    com_projects
- * @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
- * @license        BSD revised. See LICENSE.
+ * src/components/com_projects/views/messages/view.php
+ * 
+ * PHP version 5
+ * 
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @copyright  2009 E-noise.com Limited
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/extranetoffice/source/browse
  */
 
 /**
- * projectsViewMessages Class
+ * projectsViewIssues Class
  * 
- * The methods in this class are invoked by its parent class. See display() 
- * method in 'view' class.
- * 
- * @package        ExtranetOffice
- * @subpackage     com_projects
- * @author         Luis Montero [e-noise.com]
- * @since         1.0
- * @see         PHPFrame_MVC_View
+ * @category   Project_Management
+ * @package    ExtranetOffice
+ * @subpackage com_projects
+ * @author     Luis Montero <luis.montero@e-noise.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @link       http://code.google.com/p/extranetoffice/source/browse
+ * @see        PHPFrame_MVC_View
+ * @since      1.0
  */
-class projectsViewMessages extends PHPFrame_MVC_View {
+class projectsViewMessages extends PHPFrame_MVC_View
+{
     /**
      * Constructor
      * 
-     * @return     void
-     * @since    1.0
+     * @access public
+     * @return void
+     * @since  1.0
      */
-    function __construct($layout) {
+    function __construct($layout)
+    {
         // Invoke the parent to set the view name and default layout
         parent::__construct('messages', $layout);
     }
@@ -34,40 +44,90 @@ class projectsViewMessages extends PHPFrame_MVC_View {
     /**
      * Override view display method
      * 
-     * This method overrides the parent display() method and appends the page title to the document title.
+     * This method overrides the parent display() method and appends the page 
+     * title to the document title.
      * 
-     * @return    void
-     * @since    1.0
+     * @access public
+     * @return void
+     * @since  1.0
      */
-    function display() {
-        $this->_data['page_title'] = _LANG_MESSAGES;
-        $this->_data['page_heading'] = $this->_data['project']->name;
+    function display()
+    {
+        // Set title in response document
+        $this->getDocument()->setTitle(_LANG_PROJECTS);
+        
+        // Add component wide pathway item
+        $url = "index.php?component=com_projects";
+        $this->getPathway()->addItem(_LANG_PROJECTS, $url);
+        
+        // Add project specific pathway item
+        $project = $this->_data['project'];
+        $projectid = $project->id;
+        if (!empty($projectid)) {
+            // Add url to project home
+            $project_url = "index.php?component=com_projects&action=get_project_detail";
+            $project_url .= "&projectid=".$project->id;
+            $project_url = PHPFrame_Utils_Rewrite::rewriteURL($project_url);
+            $this->addData("project_url", $project_url);
+            
+            // Add project wide pathway item
+            $this->getPathway()->addItem($project->name, $project_url);
+            
+            // Add url to tool list
+            $tool_url = "index.php?component=com_projects&action=get_issues";
+            $tool_url .= "&projectid=".$project->id;
+            $tool_url = PHPFrame_Utils_Rewrite::rewriteURL($tool_url);
+            $this->addData("tool_url", $tool_url);
+        
+            // Append page title to document title
+            $this->getDocument()->appendTitle(" - ".$project->name." - "._LANG_MESSAGES);
+            
+            $this->addData('page_title', $project->name);
+        
+            // Add pathway item
+            $this->getPathway()->addItem(_LANG_MESSAGES, $tool_url);
+        }
         
         parent::display();
-        
-        // Append page title to document title
-        $document = PHPFrame::Response()->getDocument();
-        $document->title .= ' - '.$this->_data['page_title'];
     }
     
     /**
-     * Custom display method triggered by list layout.
+     * Custom display method triggered by list layout
      * 
+     * @access protected
      * @return void
+     * @since  1.0
      */
-    protected function displayMessagesList() {
-        $this->getPathway()->addItem($this->_data['page_title']);
+    protected function displayMessagesList()
+    {
+        //$this->getPathway()->addItem($this->_data['page_title']);
     }
     
-    protected function displayMessagesDetail() {
-        $this->_data['page_title'] .= ' - '.$this->_data['row']->subject;
-        $this->getPathway()->addItem(_LANG_MESSAGES, "index.php?component=com_projects&action=get_messages&projectid=".$this->_data['project']->id);
-        $this->getPathway()->addItem($this->_data['row']->subject);
+    /**
+     * Custom display method triggered by detail layout
+     * 
+     * @access protected
+     * @return void
+     * @since  1.0
+     */
+    protected function displayMessagesDetail()
+    {
+        //$this->_data['page_title'] .= ' - '.$this->_data['row']->subject;
+        //$this->getPathway()->addItem(_LANG_MESSAGES, "index.php?component=com_projects&action=get_messages&projectid=".$this->_data['project']->id);
+        //$this->getPathway()->addItem($this->_data['row']->subject);
     }
     
-    protected function displayMessagesForm() {
-        $this->_data['page_title'] .= ' - '._LANG_MESSAGES_NEW;
-        $this->getPathway()->addItem(_LANG_MESSAGES, "index.php?component=com_projects&action=get_messages&projectid=".$this->_data['project']->id);
-        $this->getPathway()->addItem(_LANG_MESSAGES_NEW);
+    /**
+     * Custom display method triggered by form layout
+     * 
+     * @access protected
+     * @return void
+     * @since  1.0
+     */
+    protected function displayMessagesForm()
+    {
+        //$this->_data['page_title'] .= ' - '._LANG_MESSAGES_NEW;
+        //$this->getPathway()->addItem(_LANG_MESSAGES, "index.php?component=com_projects&action=get_messages&projectid=".$this->_data['project']->id);
+        //$this->getPathway()->addItem(_LANG_MESSAGES_NEW);
     }
 }
