@@ -1,16 +1,14 @@
 $Id$
 
-Extranet Office installation instructions
------------------------------------------
+PHPFrame Scaffold installation instructions
+-------------------------------------------
 
 This installation instructions are temporary and only intended to be used by developers.
-A web installer will be included with released versions, but since we don't have it yet 
-this basic guide should do for now.
 
 Requirements
 ------------
 
-Before installing Extranet Office please make sure that you have a working web server 
+Before installing PHPFrame Scaffold please make sure that you have a working web server 
 and that it meets the recommended minimum requirements: 
 
 - MySQL 5.x or higher
@@ -20,6 +18,7 @@ and that it meets the recommended minimum requirements:
     - Filter
     - GD
     - IMAP
+- PHPFrame 1.0
 
 You can check this by looking at the output of phpinfo() in a php script. Simply create 
 a text file in your web server, add the following code and save it with a .php extension 
@@ -34,14 +33,12 @@ Command line installation
 -------------------------
 
 1. Download source from repository
-
-    Browse to the directory where you want to install Extranet Office. This will have to be 
-    inside the web root (ie: /var/www or /home/sites/mysite/public_html).
     
-    Use this command to anonymously check out the latest project source code to the current 
-    working directory:
+    Use this command to anonymously export the latest source code to the directory where you 
+    want to install PHPFrame Scaffold.
     
-    svn checkout http://extranetoffice.googlecode.com/svn/trunk/src/ ./
+    For example, to deploy a scaffold for MyApp under /opt in a linux box:
+    svn export http://phpframe.googlecode.com/svn/PHPFrame_Scaffold/trunk/ /opt/MyApp/
     
     * Developers with commit access remember to checkout using HTTPS and authentication to be 
     able to make changes. 
@@ -54,28 +51,23 @@ Command line installation
     in this example.
 
     mysql -u root -p
-    mysql> CREATE USER 'extranetoffice'@'localhost' IDENTIFIED BY 'ChangeMe' ; 
-    mysql> GRANT USAGE ON * . * TO 'extranetoffice'@'localhost' IDENTIFIED BY 'ChangeMe' ; 
-    mysql> CREATE DATABASE `extranetoffice` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ; 
-    mysql> GRANT ALL PRIVILEGES ON `extranetoffice` . * TO 'extranetoffice'@'localhost' ;
+    mysql> CREATE USER 'myapp'@'localhost' IDENTIFIED BY 'ChangeMe' ; 
+    mysql> GRANT USAGE ON * . * TO 'myapp'@'localhost' IDENTIFIED BY 'ChangeMe' ; 
+    mysql> CREATE DATABASE `myapp` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ; 
+    mysql> GRANT ALL PRIVILEGES ON `myapp` . * TO 'myapp'@'localhost' ;
     mysql> quit
     
 
 3. Import database structure and initial data
     
-    mysql -u root -p extranetoffice < installation/install.sql
+    mysql -u root -p myapp < installation/install.sql
     
     
 4. Filesystem settings
 
-    Create "filesystem" folder outside of web root, but make sure the webserver has both read 
-    and write access.
-    
-    For example:
-    mkdir /var/extranet_fs
+    Make sure the webserver has both read and write access to the var folder.
 
-    Give web server user write access to uploads folder. By default this is a directory named 
-    "uploads".
+    Give web server user write access to public/uploads folder.
     
     Check overall filesystem permissions. Make sure the webserver has read access to the whole 
     site, but only write access on the directories mentioned above.
@@ -106,6 +98,6 @@ Command line installation
     password: Passw0rd
     
 If you have any questions or problems regarding the installation process please feel free to ask 
-in the developers discussion group at http://groups.google.com/group/extranetoffice-dev or 
-directly via email at extranetoffice-dev@googlegroups.com.
+in the developers discussion group at http://groups.google.com/group/phpframe-dev or 
+directly via email at phpframe-dev@googlegroups.com.
     

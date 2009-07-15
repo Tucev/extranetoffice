@@ -82,7 +82,7 @@ class projectsModelMembers extends PHPFrame_MVC_Model
         foreach ($rows as $row) {
             // Translate photo field to valid URL for frontend
             $photo = $row->photo;
-            $photo_url = config::UPLOAD_DIR.'/users/';
+            $photo_url = PHPFrame::Config()->get("UPLOAD_DIR").'/users/';
             $photo_url .= !empty($photo) ? $photo : 'default.png';
             $row->photo = $photo_url;
             
@@ -192,7 +192,7 @@ class projectsModelMembers extends PHPFrame_MVC_Model
                                      _LANG_PROJECTS_INVITATION_SUBJECT, 
                                      $name, 
                                      $project_name, 
-                                     config::SITENAME
+                                     PHPFrame::Config()->get("SITENAME")
                                  );
                                  
             $new_mail->Body = sprintf(
@@ -274,7 +274,7 @@ class projectsModelMembers extends PHPFrame_MVC_Model
                                  _LANG_PROJECTS_INVITATION_SUBJECT, 
                                  $name, 
                                  $project_name, 
-                                 config::SITENAME
+                                 PHPFrame::Config()->get("SITENAME")
                              );
         $new_mail->Body = sprintf(
                               _LANG_PROJECTS_INVITATION_NEW_USER_BODY, 

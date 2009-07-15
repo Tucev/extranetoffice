@@ -19,33 +19,22 @@
  * @link       http://code.google.com/p/phpframe/source/browse/#svn/PHPFrame_Scaffold
  */
 
-/**
- * Set constant containing absolute path to application
- */
-define('_ABS_PATH', str_replace(DIRECTORY_SEPARATOR."public", "", dirname(__FILE__)));
+//Hack to override path to PHPFrame source
+//$PHPFrame_path = "/Users/lupomontero/Documents/workspace/PHPFrame/src";
+//set_include_path($PHPFrame_path . PATH_SEPARATOR . get_include_path());
 
 /**
- * Path to configuration file
- * 
- * @var string
+ * Installation constants
  */
-$config_file_path = _ABS_PATH.DIRECTORY_SEPARATOR."src".DIRECTORY_SEPARATOR."config.php";
-
-/**
- * If there is no config file we redirect to installation directory
- */
-if (!file_exists($config_file_path)) {
-    header("Location: installation/index.php");
-}
-else {
-    require_once $config_file_path;    
-}
+define("PHPFRAME_INSTALL_DIR", "/Users/lupomontero/Documents/workspace/extranetoffice");
+define("PHPFRAME_CONFIG_DIR", "/Users/lupomontero/Documents/workspace/extranetoffice/etc");
+define("PHPFRAME_VAR_DIR", "/Users/lupomontero/Documents/workspace/extranetoffice/var");
 
 // Include PHPFrame main file
 require_once "PHPFrame.php";
 
-// Include autoloader
-require_once _ABS_PATH.DIRECTORY_SEPARATOR."src".DIRECTORY_SEPARATOR."autoload.php";
+// Require the scaffold's autoloader
+require_once PHPFRAME_INSTALL_DIR.DS."src".DS."autoload.php";
 
 // Fire up PHPFrame
 PHPFrame::Fire();

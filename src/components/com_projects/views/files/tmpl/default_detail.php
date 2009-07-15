@@ -59,7 +59,7 @@ PHPFrame_HTML::validate('commentsform');
     </div>
     
     <div style="float: left; padding: 0 3px 0 0; ">
-        <img height="48" width="48" src="themes/<?php echo config::THEME; ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($data['row']->mimetype); ?>" alt="<?php echo $data['row']->mimetype; ?>" />
+        <img height="48" width="48" src="themes/<?php echo PHPFrame::Config()->get("THEME"); ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($data['row']->mimetype); ?>" alt="<?php echo $data['row']->mimetype; ?>" />
     </div>
     
     <div class="thread_heading">
@@ -129,7 +129,7 @@ PHPFrame_HTML::validate('commentsform');
     <?php foreach ($data['row']->comments as $comment) : ?>
         <div class="comment_row">
             <div style="float:left; margin-right: 10px;">
-                <img src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo PHPFrame_User_Helper::id2photo($comment->userid); ?>" />
+                <img src="<?php echo PHPFrame::Config()->get("UPLOAD_DIR").'/users/'; ?><?php echo PHPFrame_User_Helper::id2photo($comment->userid); ?>" />
             </div>
             <div style="margin-left: 95px;">
                 <div class="comment_details">
@@ -151,7 +151,7 @@ PHPFrame_HTML::validate('commentsform');
     	$user = PHPFrame::Session()->getUser();
     	$photo = $user->photo;
     	?>
-        <img src="<?php echo config::UPLOAD_DIR.'/users/'; ?><?php echo !empty($photo) ? $photo : 'default.png'; ?>" />
+        <img src="<?php echo PHPFrame::Config()->get("UPLOAD_DIR").'/users/'; ?><?php echo !empty($photo) ? $photo : 'default.png'; ?>" />
     </div>
     <div style="margin-left: 95px;">
         <form action="index.php" method="post" id="commentsform">

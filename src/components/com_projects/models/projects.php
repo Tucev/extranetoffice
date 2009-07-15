@@ -152,10 +152,10 @@ class projectsModelProjects extends PHPFrame_MVC_Model
         $row->store();
         
         // Create filesystem directories if they don't exist yet
-        PHPFrame_Utils_Filesystem::ensureWritableDir(config::FILESYSTEM.DS."projects");
-        PHPFrame_Utils_Filesystem::ensureWritableDir(config::FILESYSTEM.DS."projects".DS.$row->id);
-        PHPFrame_Utils_Filesystem::ensureWritableDir(_ABS_PATH.DS."public".DS.config::UPLOAD_DIR.DS."projects");
-        PHPFrame_Utils_Filesystem::ensureWritableDir(_ABS_PATH.DS."public".DS.config::UPLOAD_DIR.DS."projects".DS.$row->id);
+        PHPFrame_Utils_Filesystem::ensureWritableDir(PHPFRAME_VAR_DIR.DS."projects");
+        PHPFrame_Utils_Filesystem::ensureWritableDir(PHPFRAME_VAR_DIR.DS."projects".DS.$row->id);
+        PHPFrame_Utils_Filesystem::ensureWritableDir(_ABS_PATH.DS."public".DS.PHPFrame::Config()->get("UPLOAD_DIR").DS."projects");
+        PHPFrame_Utils_Filesystem::ensureWritableDir(_ABS_PATH.DS."public".DS.PHPFrame::Config()->get("UPLOAD_DIR").DS."projects".DS.$row->id);
         
         return $row;
     }

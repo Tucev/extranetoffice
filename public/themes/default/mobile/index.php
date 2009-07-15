@@ -18,9 +18,9 @@ $module_positions['right'] = $this->modules->display('right');
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->lang; ?>" lang="<?php echo $this->lang; ?>" >
 <head>
-<title><?php echo config::SITENAME; ?> - <?php echo $document->title; ?></title>
+<title><?php echo PHPFrame::Config()->get("SITENAME"); ?> - <?php echo $document->title; ?></title>
 <?php $document->printHead(); ?>
-<link rel="stylesheet" href="templates/<?php echo config::THEME ?>/mobile/css/styles.css" type="text/css" />
+<link rel="stylesheet" href="templates/<?php echo PHPFrame::Config()->get("THEME") ?>/mobile/css/styles.css" type="text/css" />
 </head>
 
 <body>
@@ -30,7 +30,7 @@ $module_positions['right'] = $this->modules->display('right');
 
 <div id="sitename">
     <a href="index.php">
-    <?php echo config::SITENAME; ?>
+    <?php echo PHPFrame::Config()->get("SITENAME"); ?>
     </a>
 </div>
 
@@ -69,7 +69,7 @@ $module_positions['right'] = $this->modules->display('right');
 <div id="footer">
 Powered by Extranet Office 1.0 Alpha and PHPFrame<br />
 &copy; 2009 E-noise.com Limited
-<?php if (config::DEBUG) : ?>
+<?php if (PHPFrame::Config()->get("DEBUG")) : ?>
 <br />
 Script Execution Time: <?php echo PHPFrame_Debug_Profiler::getExecutionTime(); ?> seconds
 <?php endif; ?>

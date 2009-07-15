@@ -1,0 +1,19 @@
+/**
+* @version         $Id: styles.css 39 2009-01-28 22:35:49Z luis.montero $
+* @package        ExtranetOffice
+* @subpackage     tmpl_default
+* @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+* @license        BSD revised. See LICENSE.
+* @author         Luis Montero [e-noise.com]
+*/
+
+@import "com_dashboard.css";
+@import "com_email.css";
+@import "com_project.css";
+@import "com_login.css";
+@import "component.css";
+@import "componentsonly.css";
+@import "sysevents.css";
+@import "extranetoffice.css";
+@import "generic.css";
+@import "structure.css";

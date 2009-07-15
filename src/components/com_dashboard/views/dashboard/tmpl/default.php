@@ -28,7 +28,7 @@
     <div style="float:right;">
         <?php 
             $img = '<img style="float:right; margin: 5px 0 3px 3px;" src="' ;
-            $img .= config::UPLOAD_DIR."/users/".PHPFrame::Session()->getUser()->photo . '" />'; 
+            $img .= PHPFrame::Config()->get("UPLOAD_DIR")."/users/".PHPFrame::Session()->getUser()->photo . '" />'; 
             PHPFrame_HTML::dialog($img, 'index.php?component=com_users&action=get_settings', 600, 560, true);
         ?> 
     </div>
@@ -101,13 +101,13 @@
     <?php foreach ($this->emails as $email) : ?>
     <?php 
       if ($email->answered == 1) { 
-          $status_icon = '<img src="templates/'.config::THEME.'/images/icons/email/replied.png" alt="Unread" />';
+          $status_icon = '<img src="templates/'.PHPFrame::Config()->get("THEME").'/images/icons/email/replied.png" alt="Unread" />';
       }
       elseif ($email->seen == 0) {
-          $status_icon = '<img src="templates/'.config::THEME.'/images/icons/email/new.png" alt="Unread" />';
+          $status_icon = '<img src="templates/'.PHPFrame::Config()->get("THEME").'/images/icons/email/new.png" alt="Unread" />';
       }
       else { 
-          $status_icon = '<img src="templates/'.config::THEME.'/images/icons/email/read.png" alt="Read" />'; 
+          $status_icon = '<img src="templates/'.PHPFrame::Config()->get("THEME").'/images/icons/email/read.png" alt="Read" />'; 
       }
     ?>
     <tr class="row<?php echo $k; ?> seen<?php echo $email->seen; ?> <?php if ($email->deleted == 1) echo 'deleted'; ?>">

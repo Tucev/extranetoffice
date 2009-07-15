@@ -1,0 +1,110 @@
+/**
+* @version         $Id: structure.css 584 2009-06-17 04:35:09Z luis.montero@e-noise.com $
+* @package        ExtranetOffice
+* @subpackage     tmpl_default
+* @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+* @license        BSD revised. See LICENSE.
+* @author         Luis Montero [e-noise.com]
+*/
+
+/* Structure */
+
+div#top {
+float: right;
+margin-top: 15px;
+text-align: right;
+}
+div#top div {
+font-size: 0.8em;
+color: #CCCCCC;
+margin: 20px 5px 0 0;
+}
+
+div#sitename {
+font-size:3em;
+color: #FFFFFF;
+padding: 3px 0 10px 0;
+}
+div#sitename a {
+color: #FFFFFF;
+}
+
+div.pathway {
+color: #999999;
+font-size: 0.5em;
+padding: 4px 3px 3px 10px;
+}
+div.pathway span.pathway_item {
+font-size: 1.6em;
+}
+div.pathway span.pathway_item a {
+color: white;
+}
+div.pathway span.pathway_item a:hover {
+color: #ffff99;
+}
+
+div#wrapper_outer {
+border:1px solid #999999;
+background-color: #F0F0F0;
+padding:20px;
+height:100%;
+min-width:850px;
+color: #333333;
+}
+
+.module_mainmenu {
+z-index:1000;
+}
+
+.module_topright {
+float: right;
+}
+.module_topright div {
+margin-left: 15px;
+}
+
+ul#menu {
+height:21px;
+list-style-type:none;
+margin:0 0 5px 10px;
+padding:1px;
+}
+ul#menu li {
+/* display:inline; */
+float: left;
+font-size:14px;
+margin:0 1px -1px 1px;
+padding:5px 15px;
+background-color: #CCCCCC;
+border-top: 1px solid #999999;
+border-right: 1px solid #999999;
+border-bottom: 1px solid #999999;
+border-left: 1px solid #999999;
+}
+ul#menu li a {
+float: left;
+height: 16px;
+}
+ul#menu li:hover {
+background-color: #ffff99;
+}
+ul#menu li.selected {
+background-color: #FFFFFF;
+border-bottom: 1px solid #FFFFFF;
+}
+
+div#wrapper {
+background-color: #FFFFFF;
+border:1px solid #CCCCCC;
+margin: 0;
+overflow: auto;
+padding:20px;
+z-index:1;
+}
+
+div#footer {
+padding: 10px;
+font-size: 0.8em;
+color: #999999;
+}

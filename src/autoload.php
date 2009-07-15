@@ -31,21 +31,21 @@ spl_autoload_register('__autoload');
 function __autoload($class_name) {
     // PHPMailer
     if ($class_name == 'PHPMailer') {
-        $file_path = _ABS_PATH.DS."lib".DS."phpmailer".DS."phpmailer.php";
+        $file_path = PHPFRAME_INSTALL_DIR.DS."lib".DS."phpmailer".DS."phpmailer.php";
     
     // PHPInputFilter
     } elseif ($class_name == 'InputFilter') {
-        $file_path = _ABS_PATH.DS."lib".DS."phpinputfilter".DS."inputfilter.php";
+        $file_path = PHPFRAME_INSTALL_DIR.DS."lib".DS."phpinputfilter".DS."inputfilter.php";
     
     } elseif ($class_name == 'vCard') {
-        $file_path = _ABS_PATH.DS."lib".DS."bitfolge".DS."vcard.php";
+        $file_path = PHPFRAME_INSTALL_DIR.DS."lib".DS."bitfolge".DS."vcard.php";
     
     } else {
         // Components classes
         $pattern = '/^([a-z]+)([A-Z]{1}[a-z]+)([A-Z]{1}[a-z]+)?([A-Z]{1}[a-z]+)?$/';
         preg_match($pattern, $class_name, $matches);
         if (is_array($matches) && count($matches) > 1) {
-            $file_path = _ABS_PATH.DS."src".DS."components".DS;
+            $file_path = PHPFRAME_INSTALL_DIR.DS."src".DS."components".DS;
             $file_path .= "com_".strtolower($matches[1]).DS;
             
             switch ($matches[2]) {

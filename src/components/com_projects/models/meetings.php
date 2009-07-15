@@ -288,12 +288,12 @@ class projectsModelMeetings extends PHPFrame_MVC_Model {
         
         if (is_array($slides) && count($slides) > 0) {
             foreach ($slides as $slide) {
-                $file = _ABS_PATH.DS.config::UPLOAD_DIR.DS."projects".DS.$projectid.DS."slideshows".DS.$slideshowid.DS.$slide->filename;
+                $file = _ABS_PATH.DS.PHPFrame::Config()->get("UPLOAD_DIR").DS."projects".DS.$projectid.DS."slideshows".DS.$slideshowid.DS.$slide->filename;
                 if (file_exists($file) && !unlink($file)) {
                     $this->_error[] = _LANG_MEETINGS_SLIDE_FILE_DELETE_ERROR;
                     return false;
                 }
-                $thumb = _ABS_PATH.DS.config::UPLOAD_DIR.DS."projects".DS.$projectid.DS."slideshows".DS.$slideshowid.DS."thumb".DS.$slide->filename;
+                $thumb = _ABS_PATH.DS.PHPFrame::Config()->get("UPLOAD_DIR").DS."projects".DS.$projectid.DS."slideshows".DS.$slideshowid.DS."thumb".DS.$slide->filename;
                 if (file_exists($thumb) && !unlink($thumb)) {
                     $this->_error[] = _LANG_MEETINGS_SLIDE_FILE_DELETE_ERROR;
                     return false;
@@ -306,12 +306,12 @@ class projectsModelMeetings extends PHPFrame_MVC_Model {
             }
         }
         
-        $slideshow_dir_thumb = _ABS_PATH.DS.config::UPLOAD_DIR.DS."projects".DS.$projectid.DS."slideshows".DS.$slideshowid.DS."thumb".DS;
+        $slideshow_dir_thumb = _ABS_PATH.DS.PHPFrame::Config()->get("UPLOAD_DIR").DS."projects".DS.$projectid.DS."slideshows".DS.$slideshowid.DS."thumb".DS;
         if (is_dir($slideshow_dir_thumb) && !rmdir($slideshow_dir_thumb)) {
             $this->_error[] = _LANG_MEETINGS_SLIDE_FILE_DELETE_ERROR;
             return false;
         }
-        $slideshow_dir = _ABS_PATH.DS.config::UPLOAD_DIR.DS."projects".DS.$projectid.DS."slideshows".DS.$slideshowid.DS;
+        $slideshow_dir = _ABS_PATH.DS.PHPFrame::Config()->get("UPLOAD_DIR").DS."projects".DS.$projectid.DS."slideshows".DS.$slideshowid.DS;
         if (is_dir($slideshow_dir) && !rmdir($slideshow_dir)) {
             $this->_error[] = _LANG_MEETINGS_SLIDE_FILE_DELETE_ERROR;
             return false;
@@ -349,7 +349,7 @@ class projectsModelMeetings extends PHPFrame_MVC_Model {
         
         // upload the file
         //TODO: Have to catch errors and look at file permissions
-        $upload_dir = config::UPLOAD_DIR.DS."projects".DS.$post['projectid'].DS."slideshows".DS;
+        $upload_dir = PHPFrame::Config()->get("UPLOAD_DIR").DS."projects".DS.$post['projectid'].DS."slideshows".DS;
         if (!is_dir($upload_dir)) {
             mkdir($upload_dir, 0711);
         }
@@ -361,7 +361,7 @@ class projectsModelMeetings extends PHPFrame_MVC_Model {
             mkdir($upload_dir."thumb".DS, 0711);
         }
         $accept = 'image/jpg,image/jpeg,image/png,image/gif'; // mime types
-        $max_upload_size = config::MAX_UPLOAD_SIZE*(1024*1024); // Mb
+        $max_upload_size = PHPFrame::Config()->get("MAX_UPLOAD_SIZE")*(1024*1024); // Mb
         $file = PHPFrame_Utils_Filesystem::uploadFile('filename', $upload_dir, $accept, $max_upload_size);
         
         if (!empty($file['error'])) {
@@ -407,7 +407,7 @@ class projectsModelMeetings extends PHPFrame_MVC_Model {
         
         $row->load($slideid);
         
-        $upload_dir = config::UPLOAD_DIR.DS."projects".DS.$projectid.DS."slideshows".DS.$row->slideshowid.DS;
+        $upload_dir = PHPFrame::Config()->get("UPLOAD_DIR").DS."projects".DS.$projectid.DS."slideshows".DS.$row->slideshowid.DS;
         if (!unlink($upload_dir.$row->filename) || !unlink($upload_dir."thumb".DS.$row->filename)) {
             $this->_error[] = _LANG_MEETINGS_SLIDE_DELETE_ERROR;
             return false;

@@ -192,10 +192,10 @@ class projectsModelFiles extends PHPFrame_MVC_Model
         }
         
         // upload the file
-        $upload_dir = config::FILESYSTEM.DS."projects".DS.$post['projectid'].DS."files";
+        $upload_dir = PHPFRAME_VAR_DIR.DS."projects".DS.$post['projectid'].DS."files";
         PHPFrame_Utils_Filesystem::ensureWritableDir($upload_dir);
-        $accept = config::UPLOAD_ACCEPT; // mime types
-        $max_upload_size = config::MAX_UPLOAD_SIZE*(1024*1024); // Mb
+        $accept = PHPFrame::Config()->get("UPLOAD_ACCEPT"); // mime types
+        $max_upload_size = PHPFrame::Config()->get("MAX_UPLOAD_SIZE")*(1024*1024); // Mb
         $file = PHPFrame_Utils_Filesystem::uploadFile(
                                                'filename',
                                                $upload_dir, 
@@ -268,7 +268,7 @@ class projectsModelFiles extends PHPFrame_MVC_Model
         $row->load($fileid);
         
         // Delete file from filesystem
-        $file_path = config::FILESYSTEM.DS."projects".DS.$row->projectid;
+        $file_path = PHPFRAME_VAR_DIR.DS."projects".DS.$row->projectid;
         $file_path .= DS."files".DS.$row->filename;
         unlink($file_path);
         
@@ -302,7 +302,7 @@ class projectsModelFiles extends PHPFrame_MVC_Model
         flush();
         
         // begin download
-        $path_to_file = config::FILESYSTEM.DS."projects".DS.$row->projectid;
+        $path_to_file = PHPFRAME_VAR_DIR.DS."projects".DS.$row->projectid;
         $path_to_file .= DS."files".DS.$row->filename;
         $this->_readfile_chunked($path_to_file);
         exit;

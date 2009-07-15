@@ -1,0 +1,192 @@
+/**
+* @version         $Id:
+* @package        ExtranetOffice
+* @subpackage     tmpl_default
+* @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+* @license        BSD revised. See LICENSE.
+* @author         Luis Montero [e-noise.com]
+*/
+
+/*************** Component specific styles ***************/
+
+/* Generic Component forms */
+
+table.edit {
+
+}
+table.edit tr td {
+padding:2px;
+vertical-align: top;
+}
+
+.label_small {
+font-size: 0.8em;
+}
+
+.input_big {
+font-size: 2.6em;
+}
+
+/* jQuery validation errors */
+input.error,
+textarea.error {
+border: 1px solid #FF0000;
+}
+label.error {
+background-image: url(../images/icons/generic/16x16/error.png);
+padding: 2px 2px 2px 30px;
+background-repeat: no-repeat;
+background-position: 10px center;
+font-style: italic;
+}
+
+/* data list filter */
+
+div.row_collection_filter {
+border: 1px solid #CCCCCC;
+padding: 10px 8px;
+margin: 5px 10px 10px 0;
+background-color: #F0F0F0;
+}
+
+div.row_collection_filter div.subset_info {
+float:right;
+padding: 4px 20px 4px 0;
+}
+
+div.row_collection_filter div.subset_limit {
+float:right;
+}
+
+/* Pagination */
+div.pagination ul {
+padding: 0;
+margin: 0;
+}
+div.pagination ul li {
+display: inline;
+padding: 3px 6px 3px 0;
+}
+
+/* Data tables */
+
+table.data_list {
+padding: 0 10px 0 0;
+}
+table.data_list img {
+border:0;
+}
+table.data_list thead tr th {
+padding:5px;
+vertical-align: top;
+font-size:0.9em;
+text-align: left;
+}
+table.data_list tbody tr:hover {
+background-color: #ffff99;
+}
+table.data_list tbody tr.row0 {
+background-color: #F6F6F6;
+}
+table.data_list tbody tr.row0:hover {
+background-color: #ffff99;
+}
+table.data_list tbody tr td {
+padding:2px;
+vertical-align: middle;
+font-size:0.9em;
+}
+table.data_list tbody tr.deleted td {
+text-decoration: line-through;
+}
+
+/* Data list thread style */
+
+div.thread_row0,
+div.thread_row1 {
+border:1px dotted #CCCCCC;
+background-color: #F6F6F6;
+padding: 10px 8px;
+margin: 0 10px 5px 0;
+}
+div.thread_date {
+font-size: 0.9em;
+font-style: italic;
+color: #999999;
+}
+div.thread_heading {
+font-size: 1.4em;
+margin: 0 0 4px 0;
+}
+div.thread_details {
+font-size: 0.9em;
+padding: 0 0 4px 0;
+}
+div.thread_body {
+border:1px dotted #CCCCCC;
+background-color: #FFFFFF;
+padding: 10px;
+margin: 5px 0;
+}
+div.thread_new,
+div.thread_delete,
+div.thread_download,
+div.thread_upload,
+div.thread_edit,
+div.thread_close,
+div.thread_reopen {
+float:right;
+background-position: 0 2px;
+background-repeat: no-repeat;
+padding: 5px 2px 2px 18px;
+margin: 0 0 0 3px;
+border: 1px dotted #CCCCCC;
+vertical-align: middle;
+min-height: 16px;
+}
+div.thread_new {
+background-image: url(../images/icons/generic/16x16/new.png);
+}
+div.thread_delete {
+background-image: url(../images/icons/generic/16x16/remove.png);
+}
+div.thread_download {
+background-image: url(../images/icons/generic/16x16/down.png);
+}
+div.thread_upload {
+background-image: url(../images/icons/generic/16x16/up.png);
+}
+div.thread_edit {
+background-image: url(../images/icons/generic/16x16/edit.png);
+}
+div.thread_close {
+background-image: url(../images/icons/generic/16x16/ok.png);
+}
+div.thread_reopen {
+background-image: url(../images/icons/generic/16x16/reopen.png);
+}
+div.thread_new:hover,
+div.thread_delete:hover,
+div.thread_download:hover,
+div.thread_upload:hover,
+div.thread_edit:hover,
+div.thread_close:hover,
+div.thread_reopen:hover {
+background-color: #ffff99;
+}
+
+/* data list rendered as icons */
+div.row_icons {
+width: 100px;
+float: left;
+border:1px dotted #CCCCCC;
+background-color: #F6F6F6;
+padding: 10px 8px;
+margin: 0 10px 5px 0;
+min-height:142px;
+text-align: center;
+}
+div.row_icons_heading {
+padding: 10px 0 0 0;
+font-size: 1.2em;
+}

@@ -39,7 +39,7 @@ class adminModelConfig extends PHPFrame_MVC_Model
      */
     function saveConfig($post)
     {
-        $fname = _ABS_PATH.DS."src".DS."config.php";
+        $fname = PHPFRAME_INSTALL_DIR.DS."src".DS."config.php";
         // Open file for reading first
         if (!$fhandle = fopen($fname, "r")) {
             $this->_error[] = 'Error opening file '.$fname.'.';

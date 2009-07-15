@@ -9,7 +9,7 @@
  */
 
 $projectid = PHPFrame::Request()->get('projectid', 0);
-require_once _ABS_PATH.DS."src".DS."components".DS."com_projects".DS."helpers".DS."projects.helper.php";
+require_once PHPFRAME_INSTALL_DIR.DS."src".DS."components".DS."com_projects".DS."helpers".DS."projects.helper.php";
 ?>
 
 <!-- Project switcher -->
