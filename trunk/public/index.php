@@ -26,9 +26,9 @@
 /**
  * Installation constants
  */
-define("PHPFRAME_INSTALL_DIR", "/Users/lupomontero/Documents/workspace/extranetoffice");
-define("PHPFRAME_CONFIG_DIR", "/Users/lupomontero/Documents/workspace/extranetoffice/etc");
-define("PHPFRAME_VAR_DIR", "/Users/lupomontero/Documents/workspace/extranetoffice/var");
+define('PHPFRAME_INSTALL_DIR', str_replace(DIRECTORY_SEPARATOR."public", "", dirname(__FILE__)));
+define("PHPFRAME_CONFIG_DIR", PHPFRAME_INSTALL_DIR.DIRECTORY_SEPARATOR."etc");
+define("PHPFRAME_VAR_DIR", PHPFRAME_INSTALL_DIR.DIRECTORY_SEPARATOR."var");
 
 // Include PHPFrame main file
 require_once "PHPFrame.php";
