@@ -142,7 +142,7 @@ PHPFrame_HTML::confirm('delete_member', _LANG_PROJECTS_DELETE_MEMBER, _LANG_PROJ
     <?php if ($row->userid != PHPFrame::Session()->getUserId()) : ?>
     <?php PHPFrame_HTML::dialog(_LANG_PROJECTS_CHANGE_ROLE, 'index.php?component=com_projects&action=get_member_role_form&projectid='.$data['project']->id.'&userid='.$row->userid, 300, 150, true); ?> 
     <a class="delete_member" title="<?php echo PHPFrame_Base_String::html($row->firstname." ". $row->lastname, true); ?>" href="<?php echo PHPFrame_Utils_Rewrite::rewriteURL("index.php?component=com_projects&action=remove_member&projectid=".$data['project']->id."&userid=".$row->userid); ?>">
-        <img src="templates/<?php echo config::THEME; ?>/images/icons/generic/16x16/remove.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>" />
+        <img src="templates/<?php echo PHPFrame::Config()->get("THEME"); ?>/images/icons/generic/16x16/remove.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>" />
     </a>
     <?php else : ?>
     <?php echo _LANG_PROJECTS_CANT_CHANGE_OWN_ROLE; ?>

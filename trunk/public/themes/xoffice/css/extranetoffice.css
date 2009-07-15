@@ -1,0 +1,203 @@
+/**
+* @version         $Id:
+* @package        ExtranetOffice
+* @subpackage     tmpl_default
+* @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+* @license        BSD revised. See LICENSE.
+* @author         Luis Montero [e-noise.com]
+*/
+
+
+/* Component structure */
+
+div#main_col_1 {
+min-height: 300px;
+}
+div#main_col_2 {
+margin-right: 230px;
+min-height: 300px;
+border-right: 1px dotted #999999;
+}
+div#main_col_3 {
+margin-right: 230px;
+margin-left: 230px;
+min-height: 300px;
+border-right: 1px dotted #999999;
+}
+
+div#main_col_inner {
+padding: 0 15px 0 0;
+}
+
+div#right_col {
+float:right;
+width: 210px;
+padding: 0 0 0 10px;
+}
+div#right_col ul {
+padding:0;
+margin:0;
+list-style: none;
+}
+div#right_col ul li {
+border-top: 1px dotted #336699;
+padding: 5px 0;
+}
+
+.rss_top_right {
+float:right;
+background-image: url(../images/icons/generic/16x16/rss.png);
+background-repeat: no-repeat;
+padding: 2px 0 0 20px;
+height:16px;
+}
+
+.componentheading {
+font-size: 2.4em;
+padding: 0 0 8px 0;
+margin: 0 0 10px 0;
+border-bottom: 1px solid #CCCCCC;
+font-weight: normal;
+}
+.componentheading a {
+color: #333333;
+}
+.componentheading a:hover {
+color: #336699;
+}
+
+div.main_col_module {
+border:1px dotted #CCCCCC;
+background-color: #F6F6F6;
+padding: 5px 8px 10px 8px;
+margin: 0 10px 5px 0;
+}
+div.main_col_module_half {
+border:1px dotted #CCCCCC;
+background-color: #F6F6F6;
+padding: 5px 8px 10px 8px;
+margin: 0 10px 5px 0;
+float: left;
+width:45%;
+height: 205px;
+overflow: auto;
+}
+div.main_col_module h3,
+div.main_col_module_half h3 {
+background-repeat: no-repeat;
+background-position: 0 5px;
+padding: 0 0 0 40px;
+margin: 0;
+height: 46px;
+display:table-cell;
+vertical-align: middle;
+font-size: 1.4em;
+font-weight: normal;
+color: #333333;
+}
+
+div.main_col_module h4 {
+padding:0 0 3px 0;
+margin: 7px 0;
+font-weight: normal;
+border-bottom: 1px solid #CCCCCC;
+}
+div.main_col_module h4 a {
+color: #333333;
+}
+
+div.main_col_module table {
+width:100%;
+background-color: white;
+}
+div.main_col_module table th {
+text-align: left;
+padding:2px;
+vertical-align: top;
+font-size:0.9em;
+}
+div.main_col_module table tbody tr:hover {
+background-color: #F0F0F0;
+}
+div.main_col_module table tbody tr.row0 {
+background-color: #F6F6F6;
+}
+div.main_col_module table tbody tr.row0:hover {
+background-color: #F0F0F0;
+}
+div.main_col_module table tbody td {
+padding:2px;
+vertical-align: middle;
+font-size:0.9em;
+}
+
+
+/* Default Actions */
+div.new {
+background-image: url(../images/icons/generic/16x16/new.png);
+background-repeat: no-repeat;
+padding:2px 20px 0 20px;
+height:16px;
+float:right;
+}
+div.edit {
+background-image: url(../images/icons/generic/16x16/edit.png);
+background-repeat: no-repeat;
+padding:2px 0 0 20px;
+height:16px;
+}
+div.delete {
+background-image: url(../images/icons/generic/16x16/remove.png);
+background-repeat: no-repeat;
+padding:2px 0 0 20px;
+height:16px;
+}
+
+/* System Icons */
+
+span.icons_16_outer {
+border: 1px dotted #999999;
+padding: 8px;
+margin-left: 5px;
+background-color: #CCCCCC;
+}
+span.icons_16 {
+padding: 2px 2px 2px 20px;
+background-repeat: no-repeat;
+background-position: center left;
+}
+span.users_16 {
+background-image: url(../images/icons/generic/16x16/people.png);
+}
+span.sysadmin_16 {
+background-image: url(../images/icons/generic/16x16/sysadmin.png);
+}
+span.security_16 {
+background-image: url(../images/icons/generic/16x16/security.png);
+}
+
+
+/* AJAX Loading gif */
+div.loading {
+background-image: url(../images/activity.gif);
+background-repeat: no-repeat;
+width: 220px;
+height: 19px;
+}
+
+/* JQuery UI Drag and Drop */
+#draggables_container { float: left; width: 55%; min-height: 12em; } * html #draggables_container { height: 12em; } /* IE6 */
+#draggables_container li { float: left; padding: 3px; margin: 0 3px 3px 0; text-align: center; }
+.draggables_container.custom-state-active { background: #eee; }
+    
+    
+.draggables_container li h5 { margin: 0 0 0.4em; cursor: move; }
+/* .draggables_container li a { float: right; } */
+/* .draggables_container li a.ui-icon-zoomin { float: left; } */
+.draggables_container li img { cursor: move; }
+
+#droppable_area { float: right; width: 40%; min-height: 24em; padding: 1%;} * html #droppable_area { height: 18em; } /* IE6 */
+#droppable_area h4 { line-height: 16px; margin: 0 0 0.4em; }
+/* #droppable_area h4 .ui-icon { float: left; } */
+#droppable_area .draggables_container h5 { font-size: 0.6em; }
+#droppable_area .draggables_container li { float: left; padding: 3px; margin: 0 2px 2px 0; text-align: center; }

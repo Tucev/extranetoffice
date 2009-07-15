@@ -65,7 +65,7 @@ PHPFrame_HTML::confirm('delete_file',
     </div>
     
     <div style="float: left; padding: 0 3px 0 0; ">
-        <img height="48" width="48" src="themes/<?php echo config::THEME; ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($row->mimetype); ?>" alt="<?php echo $row->mimetype; ?>" />
+        <img height="48" width="48" src="themes/<?php echo PHPFrame::Config()->get("THEME"); ?>/images/icons/mimetypes/32x32/<?php echo projectsHelperProjects::mimetype2icon($row->mimetype); ?>" alt="<?php echo $row->mimetype; ?>" />
     </div>
     
     <div class="thread_heading">

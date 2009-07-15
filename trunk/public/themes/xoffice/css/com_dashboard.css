@@ -1,0 +1,27 @@
+/**
+* @version         $Id: com_dashboard.css 584 2009-06-17 04:35:09Z luis.montero@e-noise.com $
+* @package        ExtranetOffice
+* @subpackage     tmpl_default
+* @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+* @license        BSD revised. See LICENSE.
+* @author         Luis Montero [e-noise.com]
+*/
+
+/*************** Dashboard component (com_dashboard) ***************/
+
+div.overdue_issues_16 {
+background-image: url(../images/icons/projects/16x16/overdue.png);
+background-repeat: no-repeat;
+padding: 0 15px 0 20px;
+height: 20px;
+display:table-cell;
+vertical-align: middle;
+}
+div.upcoming_milestones_16 {
+background-image: url(../images/icons/projects/16x16/milestones.png);
+background-repeat: no-repeat;
+padding: 0 0 0 20px;
+height: 20px;
+display:table-cell;
+vertical-align: middle;
+}

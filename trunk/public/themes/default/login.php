@@ -17,7 +17,7 @@
 
 <div id="sitename">
     <a href="index.php">
-    <?php echo config::SITENAME; ?>
+    <?php echo PHPFrame::Config()->get("SITENAME"); ?>
     </a>
 </div>
 

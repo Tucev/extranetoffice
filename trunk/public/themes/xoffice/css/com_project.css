@@ -1,0 +1,214 @@
+/**
+* @version         $Id:
+* @package        ExtranetOffice
+* @subpackage     tmpl_default
+* @copyright    Copyright (C) 2009 E-noise.com Limited. All rights reserved.
+* @license        BSD revised. See LICENSE.
+* @author         Luis Montero [e-noise.com]
+*/
+
+/*************** Projects component (com_project) ***************/
+
+h3.overdue_issues {
+background-image: url(../images/icons/projects/32x32/overdue.png);
+}
+h3.upcoming_milestones {
+background-image: url(../images/icons/projects/32x32/milestones.png);
+}
+h3.project_updates {
+background-image: url(../images/icons/projects/32x32/project_updates.png);
+}
+h3.recent_email {
+background-image: url(../images/icons/email/32x32/email.png);
+}
+h3.project_details {
+background-image: url(../images/icons/projects/32x32/projects.png);
+}
+h3.project_permissions {
+background-image: url(../images/icons/projects/32x32/security.png);
+}
+h3.people {
+background-image: url(../images/icons/projects/32x32/people.png);
+}
+div.project_details {
+font-size: 0.9em;
+padding: 10px;
+border: 1px dotted #CCCCCC;
+}
+
+/* Tools subheadings */
+
+h2.subheading {
+margin: 0 0 12px 0;
+padding: 0;
+}
+h2.subheading a {
+display: table-cell;
+min-height: 16px;
+min-width: 160px;
+padding:4px 5px 3px 3px;
+text-align: right;
+vertical-align: middle;
+color: white;
+text-transform: uppercase;
+font-weight: normal;
+font-size: 12px;
+}
+h2.issues a {
+background-color: #f3a839;
+}
+h2.messages a {
+background-color: #7094b7;
+}
+h2.milestones a {
+background-color: #aea148;
+}
+h2.files a {
+background-color: #913024;
+}
+h2.meetings a {
+background-color: #6a7a54;
+}
+h2.people a {
+background-color: #333333;
+}
+
+/* Admin */
+
+table.projects_permissions_detail {
+padding: 3px 10px 3px 10px;
+border: 1px solid #CCCCCC;
+}
+table.projects_permissions_detail img {
+border:0;
+}
+table.projects_permissions_detail thead tr th {
+padding:1px;
+vertical-align: top;
+font-size:0.8em;
+text-align: left;
+}
+table.projects_permissions_detail tbody tr.row0 {
+background-color: #F6F6F6;
+}
+table.projects_permissions_detail tbody tr th {
+padding:0;
+vertical-align: middle;
+font-size:0.8em;
+text-align: left;
+}
+table.projects_permissions_detail tbody tr td {
+padding:0;
+vertical-align: middle;
+font-size:0.8em;
+}
+
+/* Files */
+div.thread_oldrevisions {
+border:1px dotted #CCCCCC;
+background-color: #FFFFFF;
+padding: 10px;
+margin: 5px 0;
+}
+div.thread_oldrevision_entry {
+border-bottom:1px dotted #CCCCCC;
+font-size: 0.9em;
+padding: 5px 0;
+min-height:30px;
+}
+a.show_revisions {
+font-size: 0.8em;
+}
+
+/* Status colours */
+
+.status {
+margin: 7px 0 0 0;
+}
+.status span {
+padding: 3px;
+text-transform: uppercase;
+font-size: 0.8em;
+}
+.closed span {
+color: white;
+background-color: #339933;
+}
+.overdue span {
+color: white;
+background-color: #ff6666;
+}
+.open span {
+color: #333333;
+background-color: #ffff99;
+}
+
+/* Slideshows */
+div.thumbnail {
+float: left;
+margin: 0 5px 5px 0;
+padding: 5px 5px 4px 5px;
+border: 1px dotted #336699;
+}
+div.thumbnail:hover {
+background-color: #ffff99;
+}
+div.thumbnail a img {
+border: 0;
+}
+
+/* Comments */
+div.comment_row {
+border-top: 1px solid #CCCCCC;
+padding-top: 10px;
+}
+div.comment_details {
+background-color: #ac75c8;
+font-size: 0.9em;
+padding: 2px;
+margin-bottom: 7px;
+}
+div.comments_info {
+background-image: url(../images/icons/generic/16x16/comment.png);
+background-repeat: no-repeat;
+padding: 2px 2px 2px 20px;
+vertical-align: middle;
+min-height: 16px;
+}
+
+/* Activity log */
+
+div.activitylog_files,
+div.activitylog_messages,
+div.activitylog_issues,
+div.activitylog_meetings,
+div.activitylog_comments,
+div.activitylog_milestones {
+display: table-cell;
+min-height: 16px;
+min-width: 70px;
+padding:3px;
+text-align: right;
+vertical-align: middle;
+color: white;
+font-size: 0.9em;
+font-weight: bold;
+}
+div.activitylog_files {
+background-color: #913024;
+}
+div.activitylog_messages {
+background-color: #7094b7;
+}
+div.activitylog_issues {
+background-color: #f3a839;
+}
+div.activitylog_meetings {
+background-color: #6a7a54;
+}
+div.activitylog_comments {
+background-color: #ac75c8;
+}
+div.activitylog_milestones {
+background-color: #aea148;
+}

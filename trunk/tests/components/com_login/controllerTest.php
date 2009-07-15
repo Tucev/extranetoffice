@@ -8,10 +8,10 @@
  */
 
 define( 'DS', DIRECTORY_SEPARATOR );
-define('_ABS_PATH_TEST', str_replace(DS."components".DS."com_login", "", dirname(__FILE__)) );
+define('PHPFRAME_INSTALL_DIR_TEST', str_replace(DS."components".DS."com_login", "", dirname(__FILE__)) );
 
 // Require test helper class
-require_once _ABS_PATH_TEST.DS."test.helper.php";
+require_once PHPFRAME_INSTALL_DIR_TEST.DS."test.helper.php";
 // Prepare application for tests. This sets constants and include config and autoloader
 testHelper::prepareApplication();
 // Reset installation before running tests. This will reset database and filesystem.

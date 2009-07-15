@@ -83,22 +83,22 @@ function add_attachment(path, size, type) {
 <div id="email_detail_actions">
     <div>
         <a href="Javascript:window.history.back();" title="<?php echo PHPFrame_Base_String::html( _LANG_BACK ); ?>">
-        <img border="0" src="templates/<?php echo config::THEME; ?>/images/icons/generic/32x32/back.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_BACK ); ?>" />
+        <img border="0" src="templates/<?php echo PHPFrame::Config()->get("THEME"); ?>/images/icons/generic/32x32/back.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_BACK ); ?>" />
         </a>
     </div>
     <div>
         <a href="Javascript:submitbutton();" title="<?php echo PHPFrame_Base_String::html( _LANG_SEND ); ?>">
-        <img border="0" src="templates/<?php echo config::THEME; ?>/images/icons/email/32x32/mail_send-32x32.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_SEND ); ?>" />
+        <img border="0" src="templates/<?php echo PHPFrame::Config()->get("THEME"); ?>/images/icons/email/32x32/mail_send-32x32.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_SEND ); ?>" />
         </a>
     </div>
     <div>
         <a class="modal" href="index.php?component=com_intranetoffice&amp;view=email&amp;folder=<?php echo $this->folder; ?>&amp;type=new_attachment&tmpl=component" rel="{handler: 'iframe', size: {x: 340, y: 160}}">
-        <img border="0" src="templates/<?php echo config::THEME; ?>/images/icons/email/32x32/attach.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_ATTACH ); ?>" />
+        <img border="0" src="templates/<?php echo PHPFrame::Config()->get("THEME"); ?>/images/icons/email/32x32/attach.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_ATTACH ); ?>" />
         </a>
     </div>
     <div>
         <a href="#" title="<?php echo PHPFrame_Base_String::html( _LANG_SAVE_DRAFT ); ?>">
-        <img border="0" src="templates/<?php echo config::THEME; ?>/images/icons/generic/32x32/save.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_SAVE_DRAFT ); ?>" />
+        <img border="0" src="templates/<?php echo PHPFrame::Config()->get("THEME"); ?>/images/icons/generic/32x32/save.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_SAVE_DRAFT ); ?>" />
         </a>
     </div>
 </div>

@@ -10,12 +10,12 @@
 class testHelper {
     public static function prepareApplication() {
         // Set constants
-        define('_ABS_PATH', str_replace(DS."test", "", dirname(__FILE__) ));
+        define('PHPFRAME_INSTALL_DIR', str_replace(DS."test", "", dirname(__FILE__) ));
         
         // Include test config
-        require_once _ABS_PATH_TEST.DS."inc".DS."config.php";
+        require_once PHPFRAME_INSTALL_DIR_TEST.DS."inc".DS."config.php";
         // Include autoloader
-        require_once _ABS_PATH.DS."src".DS."autoload.php";
+        require_once PHPFRAME_INSTALL_DIR.DS."src".DS."autoload.php";
     }
     
     public static function freshInstall() {
@@ -24,21 +24,21 @@ class testHelper {
     }
     
     public static function resetDatabase() {
-        $cmd = "mysql -u ".config::DB_USER." -p".config::DB_PASS." ".config::DB_NAME." < "._ABS_PATH.DS."installation".DS."install.sql";
+        $cmd = "mysql -u ".PHPFrame::Config()->get("DB_HOST")." -p".PHPFrame::Config()->get("DB_PASS")." ".PHPFrame::Config()->get("DB_NAME")." < ".PHPFRAME_INSTALL_DIR.DS."installation".DS."install.sql";
         passthru($cmd, $status);
         if ($status == 1) {
             throw new Exception('Could NOT reset database before running com_project controller tests.');
         }
         
         // Add system user for tests to database table
-        $cmd = "mysql -u ".config::DB_USER." -p".config::DB_PASS." ".config::DB_NAME." < "._ABS_PATH_TEST.DS."testuser.sql";
+        $cmd = "mysql -u ".PHPFrame::Config()->get("DB_HOST")." -p".PHPFrame::Config()->get("DB_PASS")." ".PHPFrame::Config()->get("DB_NAME")." < ".PHPFRAME_INSTALL_DIR_TEST.DS."testuser.sql";
         passthru($cmd, $status);
     }
     
     public static function resetFilesystem() {
-        self::_emptyDir(config::FILESYSTEM);
-        self::_emptyDir(_ABS_PATH.DS.config::UPLOAD_DIR.DS."projects");
-        self::_emptyDir(_ABS_PATH.DS.config::UPLOAD_DIR.DS."users");
+        self::_emptyDir(PHPFRAME_VAR_DIR);
+        self::_emptyDir(PHPFRAME_INSTALL_DIR.DS.PHPFrame::Config()->get("UPLOAD_DIR").DS."projects");
+        self::_emptyDir(PHPFRAME_INSTALL_DIR.DS.PHPFrame::Config()->get("UPLOAD_DIR").DS."users");
     }
     
     private static function _emptyDir($dir) {

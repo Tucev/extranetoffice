@@ -97,11 +97,11 @@ function submit_filter(reset) {
     </td>
     <td>
         <a href="index.php?option=com_intranetoffice&amp;view=contacts&amp;type=edit&amp;id=<?php echo $contact->id; ?>" title="<?php echo PHPFrame_Base_String::html( _LANG_EDIT ); ?>">
-            <img src="templates/<?php echo config::THEME; ?>/images/icons/generic/16x16/edit.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_EDIT ); ?>" />
+            <img src="templates/<?php echo PHPFrame::Config()->get("THEME"); ?>/images/icons/generic/16x16/edit.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_EDIT ); ?>" />
         </a>
         
         <a href="Javascript:confirm_delete(<?php echo $contact->id; ?>, '<?php echo PHPFrame_Base_String::html($contact->fn, true); ?>');" title="<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>">
-            <img src="templates/<?php echo config::THEME; ?>/mages/icons/generic/16x16/remove.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>" />
+            <img src="templates/<?php echo PHPFrame::Config()->get("THEME"); ?>/mages/icons/generic/16x16/remove.png" alt="<?php echo PHPFrame_Base_String::html( _LANG_DELETE ); ?>" />
         </a>
     </td>
   </tr>

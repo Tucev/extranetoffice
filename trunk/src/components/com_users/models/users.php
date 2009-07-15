@@ -66,7 +66,7 @@ class usersModelUsers extends PHPFrame_MVC_Model
         foreach ($rows as $row) {
             // Translate photo field to valid URL for frontend
             $photo = $row->photo;
-            $photo_url = config::UPLOAD_DIR.'/users/';
+            $photo_url = PHPFrame::Config()->get("UPLOAD_DIR").'/users/';
             $photo_url .= !empty($photo) ? $photo : 'default.png';
             $row->photo = $photo_url;
             
@@ -98,7 +98,7 @@ class usersModelUsers extends PHPFrame_MVC_Model
         
         // Translate photo field to valid URL for frontend
         $photo = $user->photo;
-        $photo_url = config::UPLOAD_DIR.'/users/';
+        $photo_url = PHPFrame::Config()->get("UPLOAD_DIR").'/users/';
         $photo_url .= !empty($photo) ? $photo : 'default.png';
         $user->photo = $photo_url;
         
@@ -125,7 +125,7 @@ class usersModelUsers extends PHPFrame_MVC_Model
         
         // Upload image if photo sent in request
         if (!empty($_FILES['photo']['name'])) {
-            $dir = _ABS_PATH.DS."public".DS.config::UPLOAD_DIR.DS."users";
+            $dir = PHPFRAME_INSTALL_DIR.DS."public".DS.PHPFrame::Config()->get("UPLOAD_DIR").DS."users";
             $accept = 'image/jpeg,image/jpg,image/png,image/gif';
             $upload = PHPFrame_Utils_Filesystem::uploadFile('photo', $dir, $accept);
             if (!empty($upload['error'])) {
